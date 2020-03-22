@@ -1,0 +1,15 @@
+# Default behavior where git autodetects a need for EOL conversions (in case people don't have core.autocrlf set).
+# This setting will handle all files that are not specified bellow.
+* text=auto
+
+# These files are text, but need to have converted eols to CRLF on checkout (windows specific files).
+*.bat text eol=crlf
+
+# These files are text, but need to have converted eols to LF on checkout (unix specific files).
+*.sh text eol=lf
+gradlew text eol=lf
+
+# These are binary files
+*.jks binary
+*.jar binary
+*.db binary
