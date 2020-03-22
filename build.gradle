@@ -2,4 +2,54 @@ buildscript {
   repositories {
     maven { url "https://plugins.gradle.org/m2/" }
   }
+
+  dependencies {
+    classpath "fr.brouillard.oss.gradle:gradle-jgitver-plugin:$gradleJgitverPluginVersion"
+    classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+  }
+}
+
+apply plugin: "fr.brouillard.oss.gradle.jgitver"
+
+jgitver {
+  mavenLike true
+  policy {
+    pattern = "(.*)"
+    transformations = ["IGNORE"]
+  }
+}
+
+configure(subprojects) {
+  group = "net.croz.cargo-tracker"
+}
+
+configure(subprojects.findAll({ !["cargo-tracker-platform"].contains(it.name) })) {
+  repositories {
+    mavenCentral()
+  }
+
+  apply plugin: "groovy"
+  apply plugin: "maven-publish"
+
+  java {
+    sourceCompatibility = JavaVersion .VERSION_1_8
+    targetCompatibility = JavaVersion .VERSION_1_8
+
+    withSourcesJar()
+  }
+
+  tasks.register("groovyDocJar", Jar) {
+    dependsOn groovydoc
+    classifier "groovydoc"
+    from groovydoc.destinationDir
+  }
+
+  publishing {
+    publications {
+      myLibrary(MavenPublication) {
+        from components.java
+        artifact groovyDocJar
+      }
+    }
+  }
 }

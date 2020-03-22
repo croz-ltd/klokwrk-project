@@ -1,0 +1,25 @@
+apply plugin: "java-platform"
+apply plugin: "maven-publish"
+
+javaPlatform {
+  allowDependencies()
+}
+
+dependencies {
+  constraints {
+    api "org.axonframework:axon-modelling:$axonFrameworkVersion"
+    api "org.axonframework:axon-spring-boot-starter:$axonFrameworkVersion"
+
+    api "org.codehaus.groovy:groovy:$groovyVersion"
+  }
+
+  api(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
+}
+
+publishing {
+  publications {
+    myPlatform(MavenPublication) {
+      from components.javaPlatform
+    }
+  }
+}

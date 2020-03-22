@@ -1,0 +1,8 @@
+include(
+    "booking-api",
+    "booking-commandside",
+    "booking-queryside",
+    "cargo-tracker-platform"
+)
+
+rootProject.name = "cargo-tracker"
