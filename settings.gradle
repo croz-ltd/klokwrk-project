@@ -1,7 +1,9 @@
 include(
     "booking-api",
-    "booking-commandside",
-    "booking-queryside",
+    "booking-commandside-app",
+    "booking-queryside-app",
+    "booking-queryside-rdbms-model",
+    "booking-queryside-rdbms-projection-app",
     "cargo-tracker-platform"
 )
 

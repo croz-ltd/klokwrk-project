@@ -1,0 +1,21 @@
+spring.application.name: booking-queryside-rdbms-projection-app
+server.servlet.context-path: /booking-queryside-rdbms-projection-app
+
+server.port: 8082
+
+spring.jpa.open-in-view: false
+spring.jpa.hibernate.ddl-auto: create
+spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+
+spring.datasource.url: jdbc:h2:tcp://${H2_SERVICE_HOST:localhost}:${H2_SERVICE_PORT:11092}/~/devRuntime/h2/cargo-tracker/cargoTrackerQueryDatabase;LOCK_TIMEOUT=10000;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+spring.datasource.username: sa
+spring.datasource.password:
+spring.datasource.driverClassName: org.h2.Driver
+
+axon.axonserver.servers: localhost
+
+logging.pattern.console: "${CONSOLE_LOG_PATTERN:%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr(${PID:-}){magenta} %clr([%100.100t]){faint} %clr(%-60.60logger{59}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}}"
+
+logging.level.org.axonframework.eventsourcing: DEBUG
+logging.level.org.hibernate.SQL: DEBUG  # To see hibernate statements without parameters
+logging.level.org.hibernate.type: TRACE # To see parameters bound to hibernate statements

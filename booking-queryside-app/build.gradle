@@ -10,7 +10,7 @@ configurations {
 dependencies {
   implementation(platform(project(":cargo-tracker-platform")))
 
-  implementation project(":booking-api")
+  implementation project(":booking-queryside-rdbms-model")
 
   implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.codehaus.groovy:groovy"

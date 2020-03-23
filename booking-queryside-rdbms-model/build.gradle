@@ -1,0 +1,9 @@
+apply plugin: "java-library"
+
+dependencies {
+  implementation(platform(project(":cargo-tracker-platform")))
+
+  implementation "jakarta.persistence:jakarta.persistence-api"
+  implementation "org.springframework.data:spring-data-jpa"
+  implementation "org.codehaus.groovy:groovy"
+}
