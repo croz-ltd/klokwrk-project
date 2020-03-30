@@ -1,7 +1,7 @@
 spring.application.name: booking-commandside-app
-server.servlet.context-path: /booking-commandside
 
 server.port: 8080
+server.servlet.context-path: /booking-commandside
 
 axon.axonserver.servers: ${CARGO_TRACKER_AXON_SERVER_HOSTNAME:localhost}:${CARGO_TRACKER_AXON_SERVER_PORT_GRPC:8124}
 
