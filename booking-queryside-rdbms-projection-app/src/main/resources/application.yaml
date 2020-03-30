@@ -5,6 +5,11 @@ server.servlet.context-path: /booking-queryside-rdbms-projection-app
 
 axon.axonserver.servers: ${CARGO_TRACKER_AXON_SERVER_HOSTNAME:localhost}:${CARGO_TRACKER_AXON_SERVER_PORT_GRPC:8124}
 
+management.endpoints.web.base-path: /management
+management.endpoints.web.exposure.include: '*'
+management.endpoint.health.show-details: when_authorized
+management.info.git.mode: simple
+
 spring.datasource.url: jdbc:postgresql://${CARGO_TRACKER_POSTGRES_HOSTNAME:localhost}:${CARGO_TRACKER_POSTGRES_PORT:5432}/cargo_tracker_query_database
 spring.datasource.driverClassName: org.postgresql.Driver
 spring.datasource.username: cargotracker
