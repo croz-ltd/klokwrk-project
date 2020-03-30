@@ -3,7 +3,7 @@ server.servlet.context-path: /booking-commandside
 
 server.port: 8080
 
-axon.axonserver.servers: localhost
+axon.axonserver.servers: ${CARGO_TRACKER_AXON_SERVER_HOSTNAME:localhost}:${CARGO_TRACKER_AXON_SERVER_PORT_GRPC:8124}
 
 logging.pattern.console: "${CONSOLE_LOG_PATTERN:%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr(${PID:-}){magenta} %clr([%100.100t]){faint} %clr(%-60.60logger{59}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}}"
 
