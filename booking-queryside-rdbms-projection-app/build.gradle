@@ -7,6 +7,10 @@ configurations {
   }
 }
 
+springBoot {
+  buildInfo()
+}
+
 dependencies {
   implementation(platform(project(":cargo-tracker-platform")))
 
@@ -16,6 +20,7 @@ dependencies {
 
   implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.codehaus.groovy:groovy"
+  implementation "org.springframework.boot:spring-boot-starter-actuator"
   implementation "org.springframework.boot:spring-boot-starter-data-jpa"
   implementation "org.springframework.boot:spring-boot-starter-web"
 
