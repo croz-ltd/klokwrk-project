@@ -5,7 +5,7 @@ server.port: 8082
 
 spring.jpa.open-in-view: false
 spring.jpa.hibernate.ddl-auto: create
-spring.jpa.database-platform: org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.database-platform: net.croz.cargotracker.infrastructure.shared.hibernate.dialect.PostgreSqlCustomDialect
 
 spring.datasource.url: jdbc:postgresql://${CARGO_TRACKER_POSTGRES_HOSTNAME:localhost}:${CARGO_TRACKER_POSTGRES_PORT:5432}/cargo_tracker_query_database
 spring.datasource.username: cargotracker

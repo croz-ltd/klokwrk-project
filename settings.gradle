@@ -4,7 +4,8 @@ include(
     "booking-queryside-app",
     "booking-queryside-rdbms-model",
     "booking-queryside-rdbms-projection-app",
-    "cargo-tracker-platform"
+    "cargo-tracker-platform",
+    "infrastructure-shared-hibernate"
 )
 
 rootProject.name = "cargo-tracker"
