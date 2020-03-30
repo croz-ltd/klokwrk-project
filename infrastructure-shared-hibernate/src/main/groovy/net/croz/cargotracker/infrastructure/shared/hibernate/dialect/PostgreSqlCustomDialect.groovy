@@ -11,7 +11,6 @@ import java.sql.Types
  * <p/>
  * In particular customizations are:
  * <ul>
- *   <li>native sequence per table usage</li>
  *   <li>inlined blob handling</li>
  * </ul>
  */
@@ -37,17 +36,5 @@ class PostgreSqlCustomDialect extends PostgreSQL10Dialect {
     }
 
     return super.remapSqlTypeDescriptor(sqlTypeDescriptor)
-  }
-
-  /**
-   * Use sequence per table instead of a single 'hibernate_sequence' sequence.
-   * <p/>
-   * By default postgresql dialect uses a single sequence "hibernate_sequence" for all identifiers. This strategy causes the problems with projections with multiple applied events where applying
-   * previous events is not reflected and flushed in database before next event handling is started. Therefore this dialect uses identity strategy which in postgresql creates a sequence per table and
-   * projections work as expected after that.
-   */
-  @Override
-  String getNativeIdentifierGeneratorStrategy() {
-    return "identity"
   }
 }
