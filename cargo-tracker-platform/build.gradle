@@ -9,11 +9,10 @@ dependencies {
   constraints {
     api "org.axonframework:axon-modelling:$axonFrameworkVersion"
     api "org.axonframework:axon-spring-boot-starter:$axonFrameworkVersion"
-
     api "org.codehaus.groovy:groovy:$groovyVersion"
   }
 
-  api(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
+  api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
 }
 
 publishing {

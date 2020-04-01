@@ -1,7 +1,7 @@
 apply plugin: "java-library"
 
 dependencies {
-  implementation(platform(project(":cargo-tracker-platform")))
+  implementation platform(project(":cargo-tracker-platform"))
 
   implementation "jakarta.persistence:jakarta.persistence-api"
   implementation "org.codehaus.groovy:groovy"

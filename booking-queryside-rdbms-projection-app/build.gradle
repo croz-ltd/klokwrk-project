@@ -12,7 +12,7 @@ springBoot {
 }
 
 dependencies {
-  implementation(platform(project(":cargo-tracker-platform")))
+  implementation platform(project(":cargo-tracker-platform"))
 
   implementation project(":booking-api")
   implementation project(":booking-queryside-rdbms-model")
