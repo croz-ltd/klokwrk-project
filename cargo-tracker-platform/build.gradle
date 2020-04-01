@@ -7,6 +7,7 @@ javaPlatform {
 
 dependencies {
   constraints {
+    api "net.ttddyy:datasource-proxy:$dataSourceProxyVersion"
     api "org.axonframework:axon-modelling:$axonFrameworkVersion"
     api "org.axonframework:axon-spring-boot-starter:$axonFrameworkVersion"
     api "org.codehaus.groovy:groovy:$groovyVersion"
