@@ -15,6 +15,7 @@ dependencies {
   implementation platform(project(":cargo-tracker-platform"))
 
   implementation project(":booking-queryside-rdbms-model")
+  implementation project(":infrastructure-shared-datasource-proxy-springboot")
   implementation project(":infrastructure-shared-hibernate")
 
   implementation "org.axonframework:axon-spring-boot-starter"
