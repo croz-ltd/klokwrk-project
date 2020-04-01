@@ -5,6 +5,8 @@ include(
     "booking-queryside-rdbms-model",
     "booking-queryside-rdbms-projection-app",
     "cargo-tracker-platform",
+    "infrastructure-shared-datasource-proxy",
+    "infrastructure-shared-datasource-proxy-springboot",
     "infrastructure-shared-hibernate"
 )
 
