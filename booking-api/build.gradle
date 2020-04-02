@@ -3,6 +3,8 @@ apply plugin: "java-library"
 dependencies {
   implementation platform(project(":cargo-tracker-platform"))
 
+  implementation project(":lang-shared-groovy")
+
   implementation("org.axonframework:axon-modelling") { transitive(false) }
   implementation "org.codehaus.groovy:groovy"
 }
