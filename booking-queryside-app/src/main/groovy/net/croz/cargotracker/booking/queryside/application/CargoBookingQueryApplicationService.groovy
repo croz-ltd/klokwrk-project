@@ -2,6 +2,9 @@ package net.croz.cargotracker.booking.queryside.application
 
 import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryQuery
 import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryResult
+import net.croz.cargotracker.shared.operation.OperationRequest
+import org.axonframework.messaging.GenericMessage
+import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.stereotype.Service
 
@@ -13,8 +16,10 @@ class CargoBookingQueryApplicationService {
     this.queryGateway = queryGateway
   }
 
-  CargoSummaryResult queryCargoSummary(CargoSummaryQuery cargoSummaryQuery) {
-    CargoSummaryResult cargoSummaryResult = queryGateway.query(cargoSummaryQuery, CargoSummaryResult).join()
+  CargoSummaryResult queryCargoSummary(OperationRequest<CargoSummaryQuery> cargoSummaryQueryOperationRequest) {
+    GenericMessage cargoSummaryQueryMessage = new GenericMessage(cargoSummaryQueryOperationRequest.payload, cargoSummaryQueryOperationRequest.metaData)
+    CargoSummaryResult cargoSummaryResult = queryGateway.query(CargoSummaryQuery.name, cargoSummaryQueryMessage, ResponseTypes.instanceOf(CargoSummaryResult)).join()
+
     return cargoSummaryResult
   }
 }
