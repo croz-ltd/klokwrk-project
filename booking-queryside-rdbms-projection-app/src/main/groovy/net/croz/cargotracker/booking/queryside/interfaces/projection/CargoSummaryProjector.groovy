@@ -26,13 +26,7 @@ class CargoSummaryProjector {
   }
 
   static CargoSummary cargoSummaryFromCargoBookedEvent(CargoBookedEvent cargoBookedEvent) {
-    CargoSummary cargoSummary = new CargoSummary(
-        aggregateIdentifier: cargoBookedEvent.aggregateIdentifier,
-        aggregateSequenceNumber: 0,
-        originLocation: cargoBookedEvent.originLocation,
-        destinationLocation: cargoBookedEvent.destinationLocation
-    )
-
+    CargoSummary cargoSummary = new CargoSummary(cargoBookedEvent.properties + [aggregateSequenceNumber: 0])
     return cargoSummary
   }
 }

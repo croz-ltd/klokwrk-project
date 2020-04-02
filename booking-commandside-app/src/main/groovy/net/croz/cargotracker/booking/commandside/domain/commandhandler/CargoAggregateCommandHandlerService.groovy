@@ -18,10 +18,8 @@ class CargoAggregateCommandHandlerService {
 
   @CommandHandler
   CargoAggregate bookCargo(CargoBookCommand cargoBookCommand) {
-    Aggregate<CargoAggregate> createdCargoAggregate = cargoAggregateRepository.newInstance(() -> {
-      return new CargoAggregate(
-          aggregateIdentifier: cargoBookCommand.aggregateIdentifier, originLocation: cargoBookCommand.originLocation, destinationLocation: cargoBookCommand.destinationLocation
-      )
+    Aggregate<CargoAggregate> createdCargoAggregate = cargoAggregateRepository.newInstance({
+      return new CargoAggregate(cargoBookCommand.properties)
     })
 
     CargoAggregate cargoAggregateInstance = createdCargoAggregate.invoke({ CargoAggregate cargoAggregate ->

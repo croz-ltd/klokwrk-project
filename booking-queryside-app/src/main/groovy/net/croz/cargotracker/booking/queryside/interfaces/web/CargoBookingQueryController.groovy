@@ -25,6 +25,6 @@ class CargoBookingQueryController {
   }
 
   static CargoSummaryQuery cargoSummaryQueryFromCargoSummaryWebRequest(CargoSummaryWebRequest cargoSummaryWebRequest) {
-    return new CargoSummaryQuery(aggregateIdentifier: cargoSummaryWebRequest.aggregateIdentifier)
+    return new CargoSummaryQuery(cargoSummaryWebRequest.properties)
   }
 }

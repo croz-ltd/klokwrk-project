@@ -24,7 +24,7 @@ class CargoAggregate {
   }
 
   static CargoBookedEvent cargoBookedEventFromCargoBookCommand(CargoBookCommand cargoBookCommand) {
-    return new CargoBookedEvent(aggregateIdentifier: cargoBookCommand.aggregateIdentifier, originLocation: cargoBookCommand.originLocation, destinationLocation: cargoBookCommand.destinationLocation)
+    return new CargoBookedEvent(cargoBookCommand.properties)
   }
 
   @EventSourcingHandler
