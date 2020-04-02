@@ -18,7 +18,7 @@ dependencies {
   implementation platform(project(":cargo-tracker-platform"))
 
   implementation project(":booking-api")
-  implementation project(":lang-shared-groovy")
+  implementation project(":lang-groovy")
 
   implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.codehaus.groovy:groovy"
