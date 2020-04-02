@@ -19,6 +19,7 @@ dependencies {
 
   implementation project(":booking-api")
   implementation project(":lang-groovy")
+  implementation project(":project-shared-operation")
 
   implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.codehaus.groovy:groovy"

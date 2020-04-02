@@ -1,0 +1,9 @@
+apply plugin: "java-library"
+
+dependencies {
+  implementation platform(project(":cargo-tracker-platform"))
+
+  implementation project(":lang-groovy")
+
+  implementation "org.codehaus.groovy:groovy"
+}
