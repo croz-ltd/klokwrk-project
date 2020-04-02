@@ -7,7 +7,8 @@ include(
     "cargo-tracker-platform",
     "infrastructure-shared-datasource-proxy",
     "infrastructure-shared-datasource-proxy-springboot",
-    "infrastructure-shared-hibernate"
+    "infrastructure-shared-hibernate",
+    "lang-shared-groovy"
 )
 
 rootProject.name = "cargo-tracker"
