@@ -20,6 +20,6 @@ class CargoBookingApplicationService {
   }
 
   static CargoBookResponse cargoBookResponseFromCargoAggregate(CargoAggregate cargoAggregate) {
-    return new CargoBookResponse(cargoAggregate.properties.findAll { it.key != "class" })
+    return new CargoBookResponse(cargoAggregate.properties)
   }
 }

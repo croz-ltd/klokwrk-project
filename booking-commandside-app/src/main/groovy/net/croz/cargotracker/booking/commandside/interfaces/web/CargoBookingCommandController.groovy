@@ -25,10 +25,9 @@ class CargoBookingCommandController {
   }
 
   static CargoBookCommand cargoBookWebRequestToCargoBookCommand(CargoBookWebRequest cargoBookWebRequest) {
-    new CargoBookCommand(
-        aggregateIdentifier: cargoBookWebRequest.aggregateIdentifier ?: UUID.randomUUID().toString(),
-        originLocation: cargoBookWebRequest.originLocation,
-        destinationLocation: cargoBookWebRequest.destinationLocation
-    )
+    Map cargoBookWebRequestProperties = cargoBookWebRequest.properties
+    cargoBookWebRequestProperties.aggregateIdentifier = cargoBookWebRequest.aggregateIdentifier ?: UUID.randomUUID().toString()
+
+    new CargoBookCommand(cargoBookWebRequestProperties)
   }
 }

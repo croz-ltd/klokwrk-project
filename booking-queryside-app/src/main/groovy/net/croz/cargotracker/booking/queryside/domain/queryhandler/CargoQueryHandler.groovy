@@ -18,6 +18,6 @@ class CargoQueryHandler {
   @QueryHandler
   CargoSummaryResult handleCargoSummaryQuery(CargoSummaryQuery cargoSummaryQuery) {
     CargoSummary cargoSummary = cargoSummaryRepository.findByAggregateIdentifier(cargoSummaryQuery.aggregateIdentifier)
-    return new CargoSummaryResult(cargoSummary.properties.findAll { (it.key as String) !in ["class", "id"] })
+    return new CargoSummaryResult(cargoSummary.properties)
   }
 }
