@@ -42,6 +42,28 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     '"    "'                       | _
   }
 
+  static class MyBeanWithTransientProperties {
+    transient String first
+    String last
+  }
+
+  def "deserialization - should not deserialize transient properties"() {
+    given:
+    String stringToDeserialize = """
+      {
+        "first": "someFirst",
+        "last": "someLast"
+      }
+      """
+
+    when:
+    MyBeanWithTransientProperties myBeanWithTransientProperties = objectMapper.readValue(stringToDeserialize, MyBeanWithTransientProperties)
+
+    then:
+    myBeanWithTransientProperties.first == null
+    myBeanWithTransientProperties.last == "someLast"
+  }
+
   def "deserialization - should allow comments in JSON"() {
     given:
     String stringToDeserialize = """
@@ -197,11 +219,6 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
 
     then:
     serializedString.contains("123 456")
-  }
-
-  static class MyBeanWithTransientProperties {
-    transient String first
-    String last
   }
 
   @SuppressWarnings("GroovyPointlessBoolean")
