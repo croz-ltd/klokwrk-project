@@ -8,6 +8,7 @@ include(
     "infrastructure-shared-datasource-proxy",
     "infrastructure-shared-datasource-proxy-springboot",
     "infrastructure-shared-hibernate",
+    "infrastructure-shared-jackson",
     "lang-groovy",
     "project-shared-operation"
 )

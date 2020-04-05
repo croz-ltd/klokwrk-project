@@ -1,0 +1,15 @@
+apply plugin: "java-library"
+
+test {
+  useJUnitPlatform()
+}
+
+dependencies {
+  implementation platform(project(":cargo-tracker-platform"))
+
+  implementation "com.fasterxml.jackson.core:jackson-core"
+  implementation "com.fasterxml.jackson.core:jackson-databind"
+  implementation "org.codehaus.groovy:groovy"
+
+  testImplementation "org.spockframework:spock-core"
+}
