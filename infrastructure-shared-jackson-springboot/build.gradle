@@ -1,0 +1,40 @@
+apply plugin: "java-library"
+apply plugin: "idea"
+
+idea {
+  module {
+    inheritOutputDirs = false
+    outputDir = file("build/classes/groovy/main")
+    testOutputDir = file("build/classes/groovy/test")
+  }
+}
+
+compileGroovy {
+  groovyOptions.javaAnnotationProcessing = true
+}
+
+test {
+  useJUnitPlatform()
+}
+
+dependencies {
+  implementation platform(project(":cargo-tracker-platform"))
+  annotationProcessor platform(project(":cargo-tracker-platform"))
+
+  annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+  implementation project(":infrastructure-shared-jackson")
+
+  implementation "com.fasterxml.jackson.core:jackson-annotations"
+  implementation "com.fasterxml.jackson.core:jackson-core"
+  implementation "com.fasterxml.jackson.core:jackson-databind"
+  implementation "org.codehaus.groovy:groovy"
+  implementation "org.springframework:spring-web"
+  implementation "org.springframework.boot:spring-boot-autoconfigure"
+
+  testImplementation "org.spockframework:spock-core"
+  testImplementation "org.spockframework:spock-spring"
+  testImplementation "org.springframework:spring-test"
+  testImplementation "org.springframework.boot:spring-boot-starter-web"
+  testImplementation "org.springframework.boot:spring-boot-test"
+}

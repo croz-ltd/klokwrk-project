@@ -1,0 +1,19 @@
+package net.croz.cargotracker.booking.commandside.infrastructure.springbootconfig
+
+
+import net.croz.cargotracker.infrastructure.shared.springboot.jackson.EssentialJacksonCustomizer
+import net.croz.cargotracker.infrastructure.shared.springboot.jackson.EssentialJacksonCustomizerConfigurationProperties
+import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+
+@EnableConfigurationProperties(EssentialJacksonCustomizerConfigurationProperties)
+@Configuration
+class SpringBootConfig {
+
+  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+  @Bean
+  EssentialJacksonCustomizer essentialJacksonCustomizer(EssentialJacksonCustomizerConfigurationProperties essentialJacksonCustomizerConfigurationProperties) {
+    return new EssentialJacksonCustomizer(essentialJacksonCustomizerConfigurationProperties)
+  }
+}

@@ -12,6 +12,9 @@ dependencies {
     api "org.axonframework:axon-spring-boot-starter:$axonFrameworkVersion"
     api "org.codehaus.groovy:groovy:$groovyVersion"
     api "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion"
+
+    api "org.spockframework:spock-core:$spockVersion"
+    api "org.spockframework:spock-spring:$spockVersion"
   }
 
   api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
