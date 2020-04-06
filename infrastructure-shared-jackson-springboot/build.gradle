@@ -1,13 +1,4 @@
 apply plugin: "java-library"
-apply plugin: "idea"
-
-idea {
-  module {
-    inheritOutputDirs = false
-    outputDir = file("build/classes/groovy/main")
-    testOutputDir = file("build/classes/groovy/test")
-  }
-}
 
 compileGroovy {
   groovyOptions.javaAnnotationProcessing = true
