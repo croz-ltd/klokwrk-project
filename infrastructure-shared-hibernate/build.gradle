@@ -1,8 +1,6 @@
 apply plugin: "java-library"
 
 dependencies {
-  implementation platform(project(":cargo-tracker-platform"))
-
   implementation "org.codehaus.groovy:groovy"
   implementation "org.hibernate:hibernate-core"
 }
