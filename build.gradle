@@ -39,6 +39,11 @@ configure(subprojects.findAll({ !["cargo-tracker-platform"].contains(it.name) })
     withSourcesJar()
   }
 
+  test {
+    jvmArgs = ["-noverify", "-XX:TieredStopAtLevel=1"]
+    useJUnitPlatform()
+  }
+
   tasks.register("groovyDocJar", Jar) {
     dependsOn groovydoc
     classifier "groovydoc"

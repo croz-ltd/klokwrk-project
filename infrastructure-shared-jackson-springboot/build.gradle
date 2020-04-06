@@ -4,11 +4,6 @@ compileGroovy {
   groovyOptions.javaAnnotationProcessing = true
 }
 
-test {
-  jvmArgs = ["-noverify", "-XX:TieredStopAtLevel=1"]
-  useJUnitPlatform()
-}
-
 dependencies {
   annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
