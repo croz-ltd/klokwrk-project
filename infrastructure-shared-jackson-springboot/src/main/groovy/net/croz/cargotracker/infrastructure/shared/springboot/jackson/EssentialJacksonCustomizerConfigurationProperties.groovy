@@ -2,6 +2,23 @@ package net.croz.cargotracker.infrastructure.shared.springboot.jackson
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
+/**
+ * Spring Boot configuration properties for {@link EssentialJacksonCustomizer}.
+ * <p/>
+ * To be able to use this from Spring Boot application minimal configuration is required that enables this configuration properties and configures accompanying bean post processor like in following
+ * example:
+ * <pre>
+ * &#64;EnableConfigurationProperties(EssentialJacksonCustomizerConfigurationProperties)
+ * &#64;Configuration
+ * class SpringBootConfig {
+ *   &#64;SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+ *   &#64;Bean
+ *   EssentialJacksonCustomizer essentialJacksonCustomizer(EssentialJacksonCustomizerConfigurationProperties essentialJacksonCustomizerConfigurationProperties) {
+ *     return new EssentialJacksonCustomizer(essentialJacksonCustomizerConfigurationProperties)
+ *   }
+ * }
+ * </pre>
+ */
 @SuppressWarnings("ConfigurationProperties")
 @ConfigurationProperties(prefix = "cargotracker.jackson.customizer.essential")
 class EssentialJacksonCustomizerConfigurationProperties {
