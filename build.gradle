@@ -52,4 +52,9 @@ configure(subprojects.findAll({ !["cargo-tracker-platform"].contains(it.name) })
       }
     }
   }
+
+  dependencies {
+    implementation platform(project(":cargo-tracker-platform"))
+    annotationProcessor platform(project(":cargo-tracker-platform"))
+  }
 }

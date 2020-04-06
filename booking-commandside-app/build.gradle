@@ -15,8 +15,6 @@ springBoot {
 }
 
 dependencies {
-  implementation platform(project(":cargo-tracker-platform"))
-
   implementation project(":booking-api")
   implementation project(":lang-groovy")
   implementation project(":project-shared-operation")

@@ -14,9 +14,6 @@ compileGroovy {
 }
 
 dependencies {
-  implementation platform(project(":cargo-tracker-platform"))
-  annotationProcessor platform(project(":cargo-tracker-platform"))
-
   annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
   implementation project(":infrastructure-shared-datasource-proxy")

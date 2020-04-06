@@ -34,7 +34,7 @@ dependencies {
     api "org.codehaus.groovy:groovy-testng:$groovyVersion"
     api "org.codehaus.groovy:groovy-xml:$groovyVersion"
 
-    api "org.openclover:clover:$gradleCloverPluginOpenCloverVersion"
+//    api "org.openclover:clover:$gradleCloverPluginOpenCloverVersion"
     api "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion"
     api "org.spockframework:spock-core:$spockVersion"
     api "org.spockframework:spock-spring:$spockVersion"
