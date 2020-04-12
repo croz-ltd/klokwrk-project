@@ -1,7 +1,7 @@
 package net.croz.cargotracker.booking.commandside.interfaces.web
 
-import net.croz.cargotracker.booking.commandside.api.command.CargoBookCommand
 import net.croz.cargotracker.booking.commandside.application.CargoBookingApplicationService
+import net.croz.cargotracker.booking.commandside.conversation.CargoBookRequest
 import net.croz.cargotracker.booking.commandside.conversation.CargoBookResponse
 import net.croz.cargotracker.booking.commandside.interfaces.web.dto.CargoBookWebRequest
 import net.croz.cargotracker.shared.operation.OperationRequest
@@ -21,14 +21,11 @@ class CargoBookingCommandController {
 
   @PostMapping("/cargo-book")
   CargoBookResponse cargoBook(@RequestBody CargoBookWebRequest cargoBookWebRequest) {
-    CargoBookResponse cargoBookResponse = cargoBookingApplicationService.cargoBook(cargoBookWebRequestToCargoBookCommandOperationRequest(cargoBookWebRequest)).payload
+    CargoBookResponse cargoBookResponse = cargoBookingApplicationService.cargoBook(cargoBookWebRequestToCargoBookOperationRequest(cargoBookWebRequest)).payload
     return cargoBookResponse
   }
 
-  static OperationRequest<CargoBookCommand> cargoBookWebRequestToCargoBookCommandOperationRequest(CargoBookWebRequest cargoBookWebRequest) {
-    Map cargoBookWebRequestProperties = cargoBookWebRequest.properties
-    cargoBookWebRequestProperties.aggregateIdentifier = cargoBookWebRequest.aggregateIdentifier ?: UUID.randomUUID().toString()
-
-    return new OperationRequest(payload: new CargoBookCommand(cargoBookWebRequestProperties))
+  static OperationRequest<CargoBookRequest> cargoBookWebRequestToCargoBookOperationRequest(CargoBookWebRequest cargoBookWebRequest) {
+    return new OperationRequest(payload: new CargoBookRequest(cargoBookWebRequest.properties))
   }
 }

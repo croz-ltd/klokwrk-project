@@ -2,6 +2,7 @@ package net.croz.cargotracker.booking.commandside.domain.model
 
 import net.croz.cargotracker.booking.commandside.api.command.CargoBookCommand
 import net.croz.cargotracker.booking.commandside.api.event.CargoBookedEvent
+import net.croz.cargotracker.booking.commandside.api.model.Location
 import net.croz.cargotracker.lang.groovy.transform.MapConstructorRelaxed
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier
@@ -15,8 +16,8 @@ class CargoAggregate {
   @AggregateIdentifier
   String aggregateIdentifier
 
-  String originLocation
-  String destinationLocation
+  Location originLocation
+  Location destinationLocation
 
   CargoAggregate bookCargo(CargoBookCommand cargoBookCommand) {
     apply(cargoBookedEventFromCargoBookCommand(cargoBookCommand))
