@@ -26,7 +26,16 @@ class CargoSummaryProjector {
   }
 
   static CargoSummary cargoSummaryFromCargoBookedEvent(CargoBookedEvent cargoBookedEvent) {
-    CargoSummary cargoSummary = new CargoSummary(cargoBookedEvent.properties + [aggregateSequenceNumber: 0])
+    // TODO dmurat: automate populating persistent entity
+    String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
+    String originLocation = cargoBookedEvent.originLocation.unLoCode.code
+    String destinationLocation = cargoBookedEvent.destinationLocation.unLoCode.code
+    Long aggregateSequenceNumber = 0
+
+    CargoSummary cargoSummary = new CargoSummary(
+        aggregateIdentifier: aggregateIdentifier, aggregateSequenceNumber: aggregateSequenceNumber, originLocation: originLocation, destinationLocation: destinationLocation
+    )
+
     return cargoSummary
   }
 }

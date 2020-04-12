@@ -9,6 +9,6 @@ import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandle
 class CargoBookResponse {
   String aggregateIdentifier
 
-  String originLocation
-  String destinationLocation
+  Map<String, ?> originLocation
+  Map<String, ?> destinationLocation
 }
