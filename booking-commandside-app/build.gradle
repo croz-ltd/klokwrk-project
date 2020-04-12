@@ -15,6 +15,7 @@ springBoot {
 }
 
 dependencies {
+  implementation project(":api-axon-shared")
   implementation project(":booking-api-open")
   implementation project(":booking-api-axon")
   implementation project(":booking-domain-model")

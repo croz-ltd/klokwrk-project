@@ -1,4 +1,6 @@
 include(
+    "api-axon-shared",
+
     "booking-api-open",
     "booking-api-axon",
     "booking-commandside-app",
