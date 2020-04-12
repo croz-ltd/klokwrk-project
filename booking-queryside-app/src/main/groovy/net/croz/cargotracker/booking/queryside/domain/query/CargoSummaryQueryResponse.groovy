@@ -6,7 +6,7 @@ import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandle
 
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
-class CargoSummaryResult {
+class CargoSummaryQueryResponse {
   String aggregateIdentifier
   Long aggregateSequenceNumber
 

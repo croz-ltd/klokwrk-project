@@ -3,7 +3,7 @@ package net.croz.cargotracker.booking.queryside.application
 import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
 import net.croz.cargotracker.api.open.shared.conversation.OperationResponse
 import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryQueryRequest
-import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryResult
+import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryQueryResponse
 import org.axonframework.messaging.GenericMessage
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway
@@ -17,14 +17,14 @@ class CargoBookingQueryApplicationService {
     this.queryGateway = queryGateway
   }
 
-  OperationResponse<CargoSummaryResult> queryCargoSummary(OperationRequest<CargoSummaryQueryRequest> cargoSummaryQueryOperationRequest) {
+  OperationResponse<CargoSummaryQueryResponse> queryCargoSummary(OperationRequest<CargoSummaryQueryRequest> cargoSummaryQueryOperationRequest) {
     GenericMessage cargoSummaryQueryMessage = new GenericMessage(cargoSummaryQueryOperationRequest.payload, cargoSummaryQueryOperationRequest.metaData)
-    CargoSummaryResult cargoSummaryQueryResponse = queryGateway.query(CargoSummaryQueryRequest.name, cargoSummaryQueryMessage, ResponseTypes.instanceOf(CargoSummaryResult)).join()
+    CargoSummaryQueryResponse cargoSummaryQueryResponse = queryGateway.query(CargoSummaryQueryRequest.name, cargoSummaryQueryMessage, ResponseTypes.instanceOf(CargoSummaryQueryResponse)).join()
 
     return cargoSummaryOperationResponseFromCargoSummaryQueryResponse(cargoSummaryQueryResponse)
   }
 
-  static OperationResponse<CargoSummaryResult> cargoSummaryOperationResponseFromCargoSummaryQueryResponse(CargoSummaryResult cargoSummaryQueryResponse) {
-    return new OperationResponse<CargoSummaryResult>(payload: cargoSummaryQueryResponse)
+  static OperationResponse<CargoSummaryQueryResponse> cargoSummaryOperationResponseFromCargoSummaryQueryResponse(CargoSummaryQueryResponse cargoSummaryQueryResponse) {
+    return new OperationResponse<CargoSummaryQueryResponse>(payload: cargoSummaryQueryResponse)
   }
 }

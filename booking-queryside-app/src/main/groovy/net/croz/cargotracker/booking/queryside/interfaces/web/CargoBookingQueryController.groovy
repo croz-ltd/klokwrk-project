@@ -3,7 +3,7 @@ package net.croz.cargotracker.booking.queryside.interfaces.web
 import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
 import net.croz.cargotracker.booking.queryside.application.CargoBookingQueryApplicationService
 import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryQueryRequest
-import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryResult
+import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryQueryResponse
 import net.croz.cargotracker.booking.queryside.interfaces.web.dto.CargoSummaryWebRequest
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -20,8 +20,8 @@ class CargoBookingQueryController {
   }
 
   @PostMapping("/cargo-summary-query")
-  CargoSummaryResult cargoSummaryQuery(@RequestBody CargoSummaryWebRequest cargoSummaryWebRequest) {
-    CargoSummaryResult cargoSummary = cargoBookingQueryApplicationService.queryCargoSummary(cargoSummaryWebRequestToCargoSummaryQueryOperationRequest(cargoSummaryWebRequest)).payload
+  CargoSummaryQueryResponse cargoSummaryQuery(@RequestBody CargoSummaryWebRequest cargoSummaryWebRequest) {
+    CargoSummaryQueryResponse cargoSummary = cargoBookingQueryApplicationService.queryCargoSummary(cargoSummaryWebRequestToCargoSummaryQueryOperationRequest(cargoSummaryWebRequest)).payload
     return cargoSummary
   }
 
