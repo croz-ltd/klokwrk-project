@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.commandside.api.event
+package net.croz.cargotracker.booking.api.axon.event
 
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions

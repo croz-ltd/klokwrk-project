@@ -1,6 +1,6 @@
 package net.croz.cargotracker.booking.commandside.application
 
-import net.croz.cargotracker.booking.commandside.api.command.CargoBookCommand
+import net.croz.cargotracker.booking.api.axon.command.CargoBookCommand
 import net.croz.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
 import net.croz.cargotracker.booking.domain.model.Location
 import net.croz.cargotracker.booking.commandside.conversation.CargoBookRequest

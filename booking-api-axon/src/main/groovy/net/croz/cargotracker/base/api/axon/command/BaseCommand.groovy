@@ -1,4 +1,4 @@
-package net.croz.cargotracker.base.api.command
+package net.croz.cargotracker.base.api.axon.command
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier
 import org.axonframework.modelling.command.TargetAggregateVersion
