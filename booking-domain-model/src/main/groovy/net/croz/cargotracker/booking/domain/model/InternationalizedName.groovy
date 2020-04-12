@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.commandside.api.model
+package net.croz.cargotracker.booking.domain.model
 
 import groovy.transform.Immutable
 import groovy.transform.MapConstructor

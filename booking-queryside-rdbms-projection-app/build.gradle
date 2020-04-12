@@ -12,6 +12,7 @@ springBoot {
 }
 
 dependencies {
+  implementation project(":booking-domain-model")
   implementation project(":booking-api")
   implementation project(":booking-queryside-rdbms-model")
   implementation project(":infrastructure-shared-datasource-proxy-springboot")

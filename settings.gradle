@@ -1,6 +1,7 @@
 include(
     "booking-api",
     "booking-commandside-app",
+    "booking-domain-model",
     "booking-queryside-app",
     "booking-queryside-rdbms-model",
     "booking-queryside-rdbms-projection-app",

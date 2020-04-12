@@ -16,6 +16,7 @@ springBoot {
 
 dependencies {
   implementation project(":booking-api")
+  implementation project(":booking-domain-model")
   implementation project(":lang-groovy")
   implementation project(":project-shared-operation")
   implementation project(":infrastructure-shared-jackson-springboot")

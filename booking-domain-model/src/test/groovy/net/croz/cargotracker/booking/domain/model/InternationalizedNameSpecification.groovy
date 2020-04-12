@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.commandside.api.model
+package net.croz.cargotracker.booking.domain.model
 
 import spock.lang.Shared
 import spock.lang.Specification
