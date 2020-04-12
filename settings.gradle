@@ -16,8 +16,7 @@ include(
     "infrastructure-shared-jackson-springboot",
 
     "lang-groovy",
-
-    "project-shared-operation"
+    "api-open-shared"
 )
 
 rootProject.name = "cargo-tracker"

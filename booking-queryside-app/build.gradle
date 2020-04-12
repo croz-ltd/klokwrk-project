@@ -17,7 +17,7 @@ dependencies {
   implementation project(":infrastructure-shared-hibernate")
   implementation project(":infrastructure-shared-jackson-springboot")
   implementation project(":lang-groovy")
-  implementation project(":project-shared-operation")
+  implementation project(":api-open-shared")
 
   implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.codehaus.groovy:groovy"

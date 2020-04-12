@@ -19,7 +19,7 @@ dependencies {
   implementation project(":booking-api-axon")
   implementation project(":booking-domain-model")
   implementation project(":lang-groovy")
-  implementation project(":project-shared-operation")
+  implementation project(":api-open-shared")
   implementation project(":infrastructure-shared-jackson-springboot")
 
   implementation "org.axonframework:axon-spring-boot-starter"
