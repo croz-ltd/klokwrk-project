@@ -1,7 +1,7 @@
 package net.croz.cargotracker.booking.queryside.domain.queryhandler
 
-import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryQueryRequest
-import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryQueryResponse
+import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryRequest
+import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryResponse
 import net.croz.cargotracker.booking.queryside.domain.readmodel.CargoSummary
 import net.croz.cargotracker.booking.queryside.domain.readmodel.CargoSummaryRepository
 import org.axonframework.queryhandling.QueryHandler

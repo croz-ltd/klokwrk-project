@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.queryside.domain.query
+package net.croz.cargotracker.booking.api.open.queryside.conversation
 
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions

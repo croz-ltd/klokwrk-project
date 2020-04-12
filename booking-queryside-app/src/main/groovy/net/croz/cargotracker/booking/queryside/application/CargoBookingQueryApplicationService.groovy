@@ -2,8 +2,8 @@ package net.croz.cargotracker.booking.queryside.application
 
 import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
 import net.croz.cargotracker.api.open.shared.conversation.OperationResponse
-import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryQueryRequest
-import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryQueryResponse
+import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryRequest
+import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryResponse
 import org.axonframework.messaging.GenericMessage
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway

@@ -1,9 +1,9 @@
 package net.croz.cargotracker.booking.queryside.interfaces.web
 
 import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
+import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryRequest
+import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryResponse
 import net.croz.cargotracker.booking.queryside.application.CargoBookingQueryApplicationService
-import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryQueryRequest
-import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryQueryResponse
 import net.croz.cargotracker.booking.queryside.interfaces.web.dto.CargoSummaryWebRequest
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
