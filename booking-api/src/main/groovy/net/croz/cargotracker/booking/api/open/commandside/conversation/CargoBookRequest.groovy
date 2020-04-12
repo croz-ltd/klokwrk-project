@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.commandside.conversation
+package net.croz.cargotracker.booking.api.open.commandside.conversation
 
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
