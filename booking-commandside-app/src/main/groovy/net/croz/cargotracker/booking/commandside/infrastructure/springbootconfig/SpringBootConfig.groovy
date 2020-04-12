@@ -1,6 +1,5 @@
 package net.croz.cargotracker.booking.commandside.infrastructure.springbootconfig
 
-
 import net.croz.cargotracker.infrastructure.shared.springboot.jackson.EssentialJacksonCustomizer
 import net.croz.cargotracker.infrastructure.shared.springboot.jackson.EssentialJacksonCustomizerConfigurationProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties

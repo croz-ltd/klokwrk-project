@@ -1,9 +1,9 @@
 package net.croz.cargotracker.booking.commandside.infrastructure.registry
 
-import net.croz.cargotracker.booking.commandside.api.model.InternationalizedName
-import net.croz.cargotracker.booking.commandside.api.model.Location
-import net.croz.cargotracker.booking.commandside.api.model.UnLoCode
 import net.croz.cargotracker.booking.commandside.domain.repository.LocationRegistryRepositoryService
+import net.croz.cargotracker.booking.domain.model.InternationalizedName
+import net.croz.cargotracker.booking.domain.model.Location
+import net.croz.cargotracker.booking.domain.model.UnLoCode
 import org.springframework.stereotype.Service
 
 // TODO dmurat: implement real registry

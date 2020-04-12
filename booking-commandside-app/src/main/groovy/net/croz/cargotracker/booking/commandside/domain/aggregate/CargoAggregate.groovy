@@ -2,9 +2,9 @@ package net.croz.cargotracker.booking.commandside.domain.aggregate
 
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
-import net.croz.cargotracker.booking.commandside.api.command.CargoBookCommand
-import net.croz.cargotracker.booking.commandside.api.event.CargoBookedEvent
-import net.croz.cargotracker.booking.commandside.api.model.Location
+import net.croz.cargotracker.booking.api.axon.command.CargoBookCommand
+import net.croz.cargotracker.booking.api.axon.event.CargoBookedEvent
+import net.croz.cargotracker.booking.domain.model.Location
 import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier

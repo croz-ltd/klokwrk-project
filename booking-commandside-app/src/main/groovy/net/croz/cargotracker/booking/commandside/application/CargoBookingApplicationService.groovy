@@ -1,13 +1,13 @@
 package net.croz.cargotracker.booking.commandside.application
 
-import net.croz.cargotracker.booking.commandside.api.command.CargoBookCommand
-import net.croz.cargotracker.booking.commandside.api.model.Location
-import net.croz.cargotracker.booking.commandside.conversation.CargoBookRequest
-import net.croz.cargotracker.booking.commandside.conversation.CargoBookResponse
+import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
+import net.croz.cargotracker.api.open.shared.conversation.OperationResponse
+import net.croz.cargotracker.booking.api.axon.command.CargoBookCommand
+import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookRequest
+import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookResponse
 import net.croz.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
 import net.croz.cargotracker.booking.commandside.domain.repository.LocationRegistryRepositoryService
-import net.croz.cargotracker.shared.operation.OperationRequest
-import net.croz.cargotracker.shared.operation.OperationResponse
+import net.croz.cargotracker.booking.domain.model.Location
 import org.axonframework.commandhandling.GenericCommandMessage
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.stereotype.Service

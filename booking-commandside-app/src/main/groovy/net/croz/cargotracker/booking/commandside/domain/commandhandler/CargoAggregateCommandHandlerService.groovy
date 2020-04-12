@@ -1,6 +1,6 @@
 package net.croz.cargotracker.booking.commandside.domain.commandhandler
 
-import net.croz.cargotracker.booking.commandside.api.command.CargoBookCommand
+import net.croz.cargotracker.booking.api.axon.command.CargoBookCommand
 import net.croz.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.modelling.command.Aggregate

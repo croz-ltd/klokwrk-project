@@ -1,17 +1,24 @@
 include(
-    "booking-api",
+    "api-axon-shared",
+    "api-open-shared",
+
+    "booking-api-axon",
+    "booking-api-open",
     "booking-commandside-app",
+    "booking-domain-model",
     "booking-queryside-app",
     "booking-queryside-rdbms-model",
     "booking-queryside-rdbms-projection-app",
+
     "cargo-tracker-platform",
+
     "infrastructure-shared-datasource-proxy",
     "infrastructure-shared-datasource-proxy-springboot",
     "infrastructure-shared-hibernate",
     "infrastructure-shared-jackson",
     "infrastructure-shared-jackson-springboot",
-    "lang-groovy",
-    "project-shared-operation"
+
+    "lang-groovy"
 )
 
 rootProject.name = "cargo-tracker"

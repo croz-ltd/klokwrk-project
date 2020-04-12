@@ -1,7 +1,7 @@
 package net.croz.cargotracker.booking.queryside.domain.queryhandler
 
-import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryQuery
-import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryResult
+import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryRequest
+import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryResponse
 import net.croz.cargotracker.booking.queryside.domain.readmodel.CargoSummary
 import net.croz.cargotracker.booking.queryside.domain.readmodel.CargoSummaryRepository
 import org.axonframework.queryhandling.QueryHandler
@@ -16,8 +16,8 @@ class CargoQueryHandler {
   }
 
   @QueryHandler
-  CargoSummaryResult handleCargoSummaryQuery(CargoSummaryQuery cargoSummaryQuery) {
+  CargoSummaryQueryResponse handleCargoSummaryQuery(CargoSummaryQueryRequest cargoSummaryQuery) {
     CargoSummary cargoSummary = cargoSummaryRepository.findByAggregateIdentifier(cargoSummaryQuery.aggregateIdentifier)
-    return new CargoSummaryResult(cargoSummary.properties)
+    return new CargoSummaryQueryResponse(cargoSummary.properties)
   }
 }

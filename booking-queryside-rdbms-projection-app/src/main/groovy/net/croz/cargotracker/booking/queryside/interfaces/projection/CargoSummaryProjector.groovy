@@ -1,6 +1,6 @@
 package net.croz.cargotracker.booking.queryside.interfaces.projection
 
-import net.croz.cargotracker.booking.commandside.api.event.CargoBookedEvent
+import net.croz.cargotracker.booking.api.axon.event.CargoBookedEvent
 import net.croz.cargotracker.booking.queryside.domain.readmodel.CargoSummary
 import net.croz.cargotracker.booking.queryside.domain.readmodel.CargoSummaryRepository
 import org.axonframework.eventhandling.EventHandler

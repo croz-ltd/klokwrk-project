@@ -1,8 +1,9 @@
 package net.croz.cargotracker.booking.queryside.application
 
-import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryQuery
-import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryResult
-import net.croz.cargotracker.shared.operation.OperationRequest
+import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
+import net.croz.cargotracker.api.open.shared.conversation.OperationResponse
+import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryRequest
+import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryResponse
 import org.axonframework.messaging.GenericMessage
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway
@@ -16,10 +17,14 @@ class CargoBookingQueryApplicationService {
     this.queryGateway = queryGateway
   }
 
-  CargoSummaryResult queryCargoSummary(OperationRequest<CargoSummaryQuery> cargoSummaryQueryOperationRequest) {
+  OperationResponse<CargoSummaryQueryResponse> queryCargoSummary(OperationRequest<CargoSummaryQueryRequest> cargoSummaryQueryOperationRequest) {
     GenericMessage cargoSummaryQueryMessage = new GenericMessage(cargoSummaryQueryOperationRequest.payload, cargoSummaryQueryOperationRequest.metaData)
-    CargoSummaryResult cargoSummaryResult = queryGateway.query(CargoSummaryQuery.name, cargoSummaryQueryMessage, ResponseTypes.instanceOf(CargoSummaryResult)).join()
+    CargoSummaryQueryResponse cargoSummaryQueryResponse = queryGateway.query(CargoSummaryQueryRequest.name, cargoSummaryQueryMessage, ResponseTypes.instanceOf(CargoSummaryQueryResponse)).join()
 
-    return cargoSummaryResult
+    return cargoSummaryOperationResponseFromCargoSummaryQueryResponse(cargoSummaryQueryResponse)
+  }
+
+  static OperationResponse<CargoSummaryQueryResponse> cargoSummaryOperationResponseFromCargoSummaryQueryResponse(CargoSummaryQueryResponse cargoSummaryQueryResponse) {
+    return new OperationResponse<CargoSummaryQueryResponse>(payload: cargoSummaryQueryResponse)
   }
 }
