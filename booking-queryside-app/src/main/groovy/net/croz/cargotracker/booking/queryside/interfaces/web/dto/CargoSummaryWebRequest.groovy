@@ -1,5 +1,7 @@
 package net.croz.cargotracker.booking.queryside.interfaces.web.dto
 
-class CargoSummaryWebRequest {
-  String aggregateIdentifier
+import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryRequest
+
+// In general, in web interface we can use only CargoSummaryQueryRequest, but CargoSummaryWebRequest can be used for adding additional properties that are only web specific.
+class CargoSummaryWebRequest extends CargoSummaryQueryRequest {
 }
