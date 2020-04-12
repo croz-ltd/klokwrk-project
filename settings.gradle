@@ -1,8 +1,9 @@
 include(
     "api-axon-shared",
+    "api-open-shared",
 
-    "booking-api-open",
     "booking-api-axon",
+    "booking-api-open",
     "booking-commandside-app",
     "booking-domain-model",
     "booking-queryside-app",
@@ -17,8 +18,7 @@ include(
     "infrastructure-shared-jackson",
     "infrastructure-shared-jackson-springboot",
 
-    "lang-groovy",
-    "api-open-shared"
+    "lang-groovy"
 )
 
 rootProject.name = "cargo-tracker"
