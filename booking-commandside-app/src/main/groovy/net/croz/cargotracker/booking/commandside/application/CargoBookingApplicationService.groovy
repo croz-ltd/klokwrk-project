@@ -1,7 +1,7 @@
 package net.croz.cargotracker.booking.commandside.application
 
 import net.croz.cargotracker.booking.commandside.api.command.CargoBookCommand
-import net.croz.cargotracker.booking.commandside.api.command.CargoBookResponse
+import net.croz.cargotracker.booking.commandside.conversation.CargoBookResponse
 import net.croz.cargotracker.booking.commandside.domain.model.CargoAggregate
 import net.croz.cargotracker.shared.operation.OperationRequest
 import net.croz.cargotracker.shared.operation.OperationResponse
