@@ -1,8 +1,15 @@
 apply plugin: "java-library"
 
+clover {
+  // TODO dmurat: investigate why clover does not work with annotations from @Immutable collector
+  enabled = false
+}
+
 dependencies {
   implementation project(":lang-groovy")
 
   implementation("org.axonframework:axon-modelling") { transitive(false) }
   implementation "org.codehaus.groovy:groovy"
+
+  testImplementation "org.spockframework:spock-core"
 }
