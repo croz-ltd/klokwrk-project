@@ -1,5 +1,5 @@
 include(
-    "booking-api",
+    "booking-api-open",
     "booking-api-axon",
     "booking-commandside-app",
     "booking-domain-model",
