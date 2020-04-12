@@ -1,6 +1,8 @@
 package net.croz.cargotracker.booking.queryside.domain.readmodel
 
-import net.croz.cargotracker.lang.groovy.transform.MapConstructorRelaxed
+import groovy.transform.MapConstructor
+import groovy.transform.PropertyOptions
+import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandler
 
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -8,7 +10,8 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.SequenceGenerator
 
-@MapConstructorRelaxed(noArg = true)
+@PropertyOptions(propertyHandler = RelaxedPropertyHandler)
+@MapConstructor(noArg = true)
 @Entity
 class CargoSummary {
   @Id
