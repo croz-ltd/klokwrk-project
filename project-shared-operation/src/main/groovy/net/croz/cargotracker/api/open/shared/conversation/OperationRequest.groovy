@@ -1,4 +1,4 @@
-package net.croz.cargotracker.shared.operation
+package net.croz.cargotracker.api.open.shared.conversation
 
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
