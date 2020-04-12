@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.commandside.domain.model
+package net.croz.cargotracker.booking.commandside.domain.aggregate
 
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions

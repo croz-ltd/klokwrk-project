@@ -4,7 +4,7 @@ import net.croz.cargotracker.booking.commandside.api.command.CargoBookCommand
 import net.croz.cargotracker.booking.commandside.api.model.Location
 import net.croz.cargotracker.booking.commandside.conversation.CargoBookRequest
 import net.croz.cargotracker.booking.commandside.conversation.CargoBookResponse
-import net.croz.cargotracker.booking.commandside.domain.model.CargoAggregate
+import net.croz.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
 import net.croz.cargotracker.booking.commandside.domain.repository.LocationRegistryRepositoryService
 import net.croz.cargotracker.shared.operation.OperationRequest
 import net.croz.cargotracker.shared.operation.OperationResponse
