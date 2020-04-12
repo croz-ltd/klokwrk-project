@@ -5,4 +5,6 @@ dependencies {
 
   implementation("org.axonframework:axon-modelling") { transitive(false) }
   implementation "org.codehaus.groovy:groovy"
+
+  testImplementation "org.spockframework:spock-core"
 }
