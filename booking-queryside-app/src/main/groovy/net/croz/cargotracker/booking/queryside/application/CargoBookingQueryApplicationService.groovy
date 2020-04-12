@@ -1,6 +1,7 @@
 package net.croz.cargotracker.booking.queryside.application
 
 import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
+import net.croz.cargotracker.api.open.shared.conversation.OperationResponse
 import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryQuery
 import net.croz.cargotracker.booking.queryside.domain.query.CargoSummaryResult
 import org.axonframework.messaging.GenericMessage
@@ -16,10 +17,14 @@ class CargoBookingQueryApplicationService {
     this.queryGateway = queryGateway
   }
 
-  CargoSummaryResult queryCargoSummary(OperationRequest<CargoSummaryQuery> cargoSummaryQueryOperationRequest) {
+  OperationResponse<CargoSummaryResult> queryCargoSummary(OperationRequest<CargoSummaryQuery> cargoSummaryQueryOperationRequest) {
     GenericMessage cargoSummaryQueryMessage = new GenericMessage(cargoSummaryQueryOperationRequest.payload, cargoSummaryQueryOperationRequest.metaData)
-    CargoSummaryResult cargoSummaryResult = queryGateway.query(CargoSummaryQuery.name, cargoSummaryQueryMessage, ResponseTypes.instanceOf(CargoSummaryResult)).join()
+    CargoSummaryResult cargoSummaryQueryResponse = queryGateway.query(CargoSummaryQuery.name, cargoSummaryQueryMessage, ResponseTypes.instanceOf(CargoSummaryResult)).join()
 
-    return cargoSummaryResult
+    return cargoSummaryOperationResponseFromCargoSummaryQueryResponse(cargoSummaryQueryResponse)
+  }
+
+  static OperationResponse<CargoSummaryResult> cargoSummaryOperationResponseFromCargoSummaryQueryResponse(CargoSummaryResult cargoSummaryQueryResponse) {
+    return new OperationResponse<CargoSummaryResult>(payload: cargoSummaryQueryResponse)
   }
 }

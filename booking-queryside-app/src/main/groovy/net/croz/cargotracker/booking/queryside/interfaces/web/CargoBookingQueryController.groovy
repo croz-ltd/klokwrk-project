@@ -21,7 +21,7 @@ class CargoBookingQueryController {
 
   @PostMapping("/cargo-summary-query")
   CargoSummaryResult cargoSummaryQuery(@RequestBody CargoSummaryWebRequest cargoSummaryWebRequest) {
-    CargoSummaryResult cargoSummary = cargoBookingQueryApplicationService.queryCargoSummary(cargoSummaryWebRequestToCargoSummaryQueryOperationRequest(cargoSummaryWebRequest))
+    CargoSummaryResult cargoSummary = cargoBookingQueryApplicationService.queryCargoSummary(cargoSummaryWebRequestToCargoSummaryQueryOperationRequest(cargoSummaryWebRequest)).payload
     return cargoSummary
   }
 
