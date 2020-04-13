@@ -1,10 +1,5 @@
 apply plugin: "java-library"
 
-clover {
-  // TODO dmurat: investigate why clover does not work with annotations from @Immutable collector
-  enabled = false
-}
-
 dependencies {
   implementation project(":booking-domain-model")
   implementation project(":lang-groovy")

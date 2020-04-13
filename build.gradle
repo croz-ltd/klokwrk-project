@@ -4,17 +4,13 @@ buildscript {
   }
 
   dependencies {
-    classpath "com.bmuschko:gradle-clover-plugin:$gradleCloverPluginVersion"
     classpath "fr.brouillard.oss.gradle:gradle-jgitver-plugin:$gradleJgitverPluginVersion"
     classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
   }
 }
 
-// To enable "clean" task on the root project to be able to clean-up artifacts produced by "cloverAggregateReports" task
+// To enable "clean" task on the root project
 apply plugin: "base"
-
-// To enable "cloverAggregateReports" on the root project
-apply plugin: "com.bmuschko.clover"
 
 apply plugin: "fr.brouillard.oss.gradle.jgitver"
 
@@ -26,10 +22,38 @@ jgitver {
   }
 }
 
-clover {
-  report {
-    html = true
-    xml = true
+task jacocoAggregatedMerge(type: JacocoMerge) {
+  afterEvaluate {
+    Set<Project> jacocoSubprojects = subprojects.findAll { Project subproject -> subproject.pluginManager.hasPlugin('jacoco') }
+    dependsOn jacocoSubprojects.test
+
+    destinationFile file("${rootProject.buildDir}/jacoco/jacocoTestAggregated.exec")
+    jacocoClasspath = jacocoSubprojects.first().configurations.jacocoAnt
+    jacocoSubprojects.each { Project subproject ->
+      executionData subproject.tasks.withType(Test)
+    }
+
+    doFirst {
+      executionData = files(executionData.findAll { it.exists() })
+    }
+  }
+}
+
+task jacocoAggregatedReport(type: JacocoReport) {
+  afterEvaluate {
+    executionData jacocoAggregatedMerge.destinationFile as File
+    dependsOn jacocoAggregatedMerge
+
+    Set<Project> jacocoSubprojects = subprojects.findAll { Project subproject -> subproject.pluginManager.hasPlugin('jacoco') }
+    jacocoClasspath = jacocoSubprojects.first().configurations.jacocoAnt
+
+    sourceDirectories.from files(jacocoSubprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories.from files(jacocoSubprojects.sourceSets.main.output)
+
+    reports {
+      html.enabled = true
+      html.outputLocation = file("${rootProject.buildDir}/reports/jacoco/jacocoTestAggregated/html")
+    }
   }
 }
 
@@ -45,7 +69,7 @@ configure(subprojects.findAll({ !["cargo-tracker-platform"].contains(it.name) })
   apply plugin: "groovy"
   apply plugin: "maven-publish"
   apply plugin: "idea"
-  apply plugin: "com.bmuschko.clover"
+  apply plugin: "jacoco"
 
   java {
     sourceCompatibility = JavaVersion .VERSION_1_8
@@ -59,17 +83,8 @@ configure(subprojects.findAll({ !["cargo-tracker-platform"].contains(it.name) })
     useJUnitPlatform()
   }
 
-  clover {
-    // NOTE: cloverGenerateReport task executes all tests task in the project. Before doing so, it backs up previously compiled source code, then triggers compilation again with clover
-    //       instrumentation included, executes tests and finally restores originally compiled classes.
-    // NOTE: after changing following settings, task 'cloverGenerateReport' sometime requires to be run with '--rerun-tasks' option. Don't know what is root cause of this.
-    enabled = true
-    testIncludes = ["**/*Specification.groovy", "**/*Test.java", "**/*Test.groovy", "**/*Spec.groovy"]
-
-    report {
-      html = true
-      xml = true
-    }
+  jacoco {
+    toolVersion = "$gradleJacocoLibraryVersion"
   }
 
   tasks.register("groovyDocJar", Jar) {
@@ -101,11 +116,5 @@ configure(subprojects.findAll({ !["cargo-tracker-platform"].contains(it.name) })
   dependencies {
     implementation platform(project(":cargo-tracker-platform"))
     annotationProcessor platform(project(":cargo-tracker-platform"))
-
-    clover platform(project(":cargo-tracker-platform"))
-    clover "org.openclover:clover"
-
-    // NOTE - need to specify this one when Spock is used with Clover
-    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
   }
 }
