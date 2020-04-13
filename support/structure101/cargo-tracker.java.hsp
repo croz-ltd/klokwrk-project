@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<local-project language="java" version="5.0.15206" xml-version="3" flavor="j2se">
+  <property name="show-as-module" value="false" />
+  <property name="publish-architecture-artifacts" value="true" />
+  <property name="force-classpath" value="false" />
+  <property name="project-type" value="classpath" />
+  <property name="hide-externals" value="true" />
+  <property name="parse-archive-in-archive" value="false" />
+  <property name="include-injected-dependency" value="false" />
+  <property name="relative-to" value="const(THIS_FILE)" />
+  <property name="action-set-mod" value="1" />
+  <property name="detail-mode" value="true" />
+  <property name="hide-deprecated" value="false" />
+  <property name="resolve-name-clashes" value="true" />
+  <property name="project-excluded" />
+  <property name="show-needs-to-compile" value="false" />
+  <classpath>
+    <classpathentry kind="lib" path="../../api-axon-shared/build/classes/groovy/main" module="api-axon-shared" displaymodule="api-axon-shared" />
+    <classpathentry kind="lib" path="../../api-open-shared/build/classes/groovy/main" module="api-open-shared" displaymodule="api-open-shared" />
+    <classpathentry kind="lib" path="../../booking-api-axon/build/classes/groovy/main" module="booking-api-axon" displaymodule="booking-api-axon" />
+    <classpathentry kind="lib" path="../../booking-api-open/build/classes/groovy/main" module="booking-api-open" displaymodule="booking-api-open" />
+    <classpathentry kind="lib" path="../../booking-commandside-app/build/classes/groovy/main" module="booking-commandside-app" displaymodule="booking-commandside-app" />
+    <classpathentry kind="lib" path="../../booking-domain-model/build/classes/groovy/main" module="booking-domain-model" displaymodule="booking-domain-model" />
+    <classpathentry kind="lib" path="../../booking-queryside-app/build/classes/groovy/main" module="booking-queryside-app" displaymodule="booking-queryside-app" />
+    <classpathentry kind="lib" path="../../booking-queryside-rdbms-model/build/classes/groovy/main" module="booking-queryside-rdbms-model" displaymodule="booking-queryside-rdbms-model" />
+    <classpathentry kind="lib" path="../../booking-queryside-rdbms-projection-app/build/classes/groovy/main" module="booking-queryside-rdbms-projection-app" displaymodule="booking-queryside-rdbms-projection-app" />
+    <classpathentry kind="lib" path="../../infrastructure-shared-datasource-proxy/build/classes/groovy/main" module="infrastructure-shared-datasource-proxy" displaymodule="infrastructure-shared-datasource-proxy" />
+    <classpathentry kind="lib" path="../../infrastructure-shared-datasource-proxy-springboot/build/classes/groovy/main" module="infrastructure-shared-datasource-proxy-springboot" displaymodule="infrastructure-shared-datasource-proxy-springboot" />
+    <classpathentry kind="lib" path="../../infrastructure-shared-hibernate/build/classes/groovy/main" module="infrastructure-shared-hibernate" displaymodule="infrastructure-shared-hibernate" />
+    <classpathentry kind="lib" path="../../infrastructure-shared-jackson/build/classes/groovy/main" module="infrastructure-shared-jackson" displaymodule="infrastructure-shared-jackson" />
+    <classpathentry kind="lib" path="../../infrastructure-shared-jackson-springboot/build/classes/groovy/main" module="infrastructure-shared-jackson-springboot" displaymodule="infrastructure-shared-jackson-springboot" />
+    <classpathentry kind="lib" path="../../lang-groovy/build/classes/groovy/main" module="lang-groovy" displaymodule="lang-groovy" />
+  </classpath>
+  <pom-root-files />
+  <modules-in-scope />
+  <restructuring>
+    <set version="3" name="Action list 1" hiview="Codemap" active="true" todo="false" list="0" />
+  </restructuring>
+  <grid-set sep="." version="5.0.15206" />
+</local-project>
