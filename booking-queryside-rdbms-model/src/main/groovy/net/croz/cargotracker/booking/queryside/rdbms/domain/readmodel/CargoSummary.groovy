@@ -1,5 +1,6 @@
 package net.croz.cargotracker.booking.queryside.rdbms.domain.readmodel
 
+import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandler
@@ -13,6 +14,7 @@ import javax.persistence.SequenceGenerator
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @Entity
+@CompileStatic
 class CargoSummary {
   @Id
   @GeneratedValue(generator = "cargoSummarySequenceGenerator", strategy = GenerationType.SEQUENCE)
