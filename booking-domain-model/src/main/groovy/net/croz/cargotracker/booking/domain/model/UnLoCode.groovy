@@ -1,5 +1,6 @@
 package net.croz.cargotracker.booking.domain.model
 
+import groovy.transform.CompileStatic
 import groovy.transform.Immutable
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
@@ -21,6 +22,7 @@ import java.util.regex.Pattern
 @TupleConstructor(visibilityId = "privateVisibility", pre = { throw new IllegalArgumentException("Calling a private constructor is not allowed") })
 @VisibilityOptions(id = "privateVisibility", value = Visibility.PRIVATE)
 @MapConstructor(post = { postMapConstructorCheckProtocol(args as Map) })
+@CompileStatic
 class UnLoCode implements PostMapConstructorCheckable {
 
   // Note: be careful to put this static field before UNKNOWN_UN_LO_CODE. Otherwise there will be NPE while constructing UNKNOWN_UN_LO_CODE.

@@ -1,5 +1,6 @@
 package net.croz.cargotracker.booking.domain.model
 
+import groovy.transform.CompileStatic
 import groovy.transform.Immutable
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
@@ -37,6 +38,7 @@ import java.util.regex.Pattern
 @TupleConstructor(visibilityId = "privateVisibility", pre = { throw new IllegalArgumentException("Calling a private constructor is not allowed") })
 @VisibilityOptions(id = "privateVisibility", value = Visibility.PRIVATE)
 @MapConstructor(post = { postMapConstructorCheckProtocol(args as Map) })
+@CompileStatic
 class InternationalizedName implements PostMapConstructorCheckable {
   static final InternationalizedName UNKNOWN_INTERNATIONALIZED_NAME = new InternationalizedName(name: "UNKNOWN")
 
@@ -44,7 +46,7 @@ class InternationalizedName implements PostMapConstructorCheckable {
   private static final Map<CharSequence, CharSequence> ADDITIONAL_REPLACEMENTS_MAP = [
       đ: "d",
       Đ: "D"
-  ]
+  ] as Map<CharSequence, CharSequence>
 
   String name
 
