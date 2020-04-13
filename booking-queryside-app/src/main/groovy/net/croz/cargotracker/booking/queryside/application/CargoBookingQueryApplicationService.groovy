@@ -1,5 +1,6 @@
 package net.croz.cargotracker.booking.queryside.application
 
+import groovy.transform.CompileStatic
 import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
 import net.croz.cargotracker.api.open.shared.conversation.OperationResponse
 import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryRequest
@@ -10,6 +11,7 @@ import org.axonframework.queryhandling.QueryGateway
 import org.springframework.stereotype.Service
 
 @Service
+@CompileStatic
 class CargoBookingQueryApplicationService {
   private QueryGateway queryGateway
 
