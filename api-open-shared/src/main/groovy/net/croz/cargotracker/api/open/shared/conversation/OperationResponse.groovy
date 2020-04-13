@@ -1,5 +1,6 @@
 package net.croz.cargotracker.api.open.shared.conversation
 
+import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import net.croz.cargotracker.lang.groovy.constructor.support.PostMapConstructorCheckable
@@ -7,6 +8,7 @@ import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandle
 
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(post = { postMapConstructorCheckProtocol(args as Map) })
+@CompileStatic
 class OperationResponse<P> implements OperationMessage<P, Map<String, ?>>, PostMapConstructorCheckable {
   P payload
   Map<String, ?> metaData = Collections.emptyMap()
