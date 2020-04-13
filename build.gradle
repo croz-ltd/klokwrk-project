@@ -22,6 +22,41 @@ jgitver {
   }
 }
 
+task jacocoAggregatedMerge(type: JacocoMerge) {
+  afterEvaluate {
+    Set<Project> jacocoSubprojects = subprojects.findAll { Project subproject -> subproject.pluginManager.hasPlugin('jacoco') }
+    dependsOn jacocoSubprojects.test
+
+    destinationFile file("${rootProject.buildDir}/jacoco/jacocoTestAggregated.exec")
+    jacocoClasspath = jacocoSubprojects.first().configurations.jacocoAnt
+    jacocoSubprojects.each { Project subproject ->
+      executionData subproject.tasks.withType(Test)
+    }
+
+    doFirst {
+      executionData = files(executionData.findAll { it.exists() })
+    }
+  }
+}
+
+task jacocoAggregatedReport(type: JacocoReport) {
+  afterEvaluate {
+    executionData jacocoAggregatedMerge.destinationFile as File
+    dependsOn jacocoAggregatedMerge
+
+    Set<Project> jacocoSubprojects = subprojects.findAll { Project subproject -> subproject.pluginManager.hasPlugin('jacoco') }
+    jacocoClasspath = jacocoSubprojects.first().configurations.jacocoAnt
+
+    sourceDirectories.from files(jacocoSubprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories.from files(jacocoSubprojects.sourceSets.main.output)
+
+    reports {
+      html.enabled = true
+      html.outputLocation = file("${rootProject.buildDir}/reports/jacoco/jacocoTestAggregated/html")
+    }
+  }
+}
+
 configure(subprojects) {
   group = "net.croz.cargo-tracker"
 }
@@ -34,6 +69,7 @@ configure(subprojects.findAll({ !["cargo-tracker-platform"].contains(it.name) })
   apply plugin: "groovy"
   apply plugin: "maven-publish"
   apply plugin: "idea"
+  apply plugin: "jacoco"
 
   java {
     sourceCompatibility = JavaVersion .VERSION_1_8
@@ -45,6 +81,10 @@ configure(subprojects.findAll({ !["cargo-tracker-platform"].contains(it.name) })
   test {
     jvmArgs = ["-noverify", "-XX:TieredStopAtLevel=1"]
     useJUnitPlatform()
+  }
+
+  jacoco {
+    toolVersion = "$gradleJacocoLibraryVersion"
   }
 
   tasks.register("groovyDocJar", Jar) {
