@@ -1,5 +1,6 @@
 package net.croz.cargotracker.infrastructure.shared.hibernate.dialect
 
+import groovy.transform.CompileStatic
 import org.hibernate.dialect.PostgreSQL10Dialect
 import org.hibernate.type.descriptor.sql.BinaryTypeDescriptor
 import org.hibernate.type.descriptor.sql.SqlTypeDescriptor
@@ -15,6 +16,7 @@ import java.sql.Types
  * </ul>
  */
 @SuppressWarnings("unused")
+@CompileStatic
 class PostgreSqlCustomDialect extends PostgreSQL10Dialect {
   PostgreSqlCustomDialect() {
     registerColumnType(Types.BLOB, "bytea")
