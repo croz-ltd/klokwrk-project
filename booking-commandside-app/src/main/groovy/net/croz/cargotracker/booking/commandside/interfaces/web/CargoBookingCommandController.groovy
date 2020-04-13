@@ -1,5 +1,6 @@
 package net.croz.cargotracker.booking.commandside.interfaces.web
 
+import groovy.transform.CompileStatic
 import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
 import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookRequest
 import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookResponse
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/cargo-booking-command")
+@CompileStatic
 class CargoBookingCommandController {
   private CargoBookingApplicationService cargoBookingApplicationService
 
