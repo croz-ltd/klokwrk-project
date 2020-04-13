@@ -1,5 +1,6 @@
 package net.croz.cargotracker.infrastructure.shared.springboot.datasourceproxy
 
+import groovy.transform.CompileStatic
 import net.croz.cargotracker.infrastructure.shared.datasourceproxy.Slf4jFilterableQueryLoggingListener
 import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder
 import org.aopalliance.intercept.MethodInterceptor
@@ -13,6 +14,7 @@ import java.util.concurrent.TimeUnit
 /**
  * AOP alliance proxy interceptor that decorates all invocations of {@link DataSource} instance methods with dataSourceProxy features.
  */
+@CompileStatic
 class DataSourceProxyInterceptor implements MethodInterceptor {
   DataSource dataSource
 

@@ -1,5 +1,6 @@
 package net.croz.cargotracker.infrastructure.shared.datasourceproxy
 
+import groovy.transform.CompileStatic
 import net.ttddyy.dsproxy.ExecutionInfo
 import net.ttddyy.dsproxy.QueryInfo
 import net.ttddyy.dsproxy.listener.logging.SLF4JLogLevel
@@ -13,6 +14,7 @@ import java.util.regex.Pattern
  * <p/>
  * If needed, filtered out queries can still be sent to log if the logging level is set to <code>TRACE</code> for the appropriate logger.
  */
+@CompileStatic
 class Slf4jFilterableQueryLoggingListener extends SLF4JQueryLoggingListener {
   List<Pattern> filteringOutPatternList
 

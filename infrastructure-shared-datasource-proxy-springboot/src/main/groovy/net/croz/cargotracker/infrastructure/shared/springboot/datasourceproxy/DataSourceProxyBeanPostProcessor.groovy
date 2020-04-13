@@ -1,5 +1,6 @@
 package net.croz.cargotracker.infrastructure.shared.springboot.datasourceproxy
 
+import groovy.transform.CompileStatic
 import net.ttddyy.dsproxy.support.ProxyDataSource
 import org.springframework.aop.framework.ProxyFactory
 import org.springframework.beans.factory.config.BeanPostProcessor
@@ -9,6 +10,7 @@ import javax.sql.DataSource
 /**
  * Spring bean post-processor that sets up dataSourceProxy for intercepting all {@link DataSource} beans from the application context.
  */
+@CompileStatic
 class DataSourceProxyBeanPostProcessor implements BeanPostProcessor {
   DataSourceProxyConfigurationProperties dataSourceProxyConfigurationProperties
 

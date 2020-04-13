@@ -11,6 +11,11 @@ dependencies {
 
   implementation "net.ttddyy:datasource-proxy"
   implementation "org.codehaus.groovy:groovy"
+
+  // Note: although currently there is no direct code dependencies to the slf4j-api module, need to have it as implementation dependency for CompileStatic to work. Otherwise,
+  // java.lang.NoClassDefFoundError id thrown for org.slf4j.Logger class.
+  implementation "org.slf4j:slf4j-api"
+
   implementation "org.springframework:spring-aop"
   implementation "org.springframework:spring-beans"
   implementation "org.springframework:spring-core"
