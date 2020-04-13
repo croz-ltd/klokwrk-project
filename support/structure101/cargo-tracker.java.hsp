@@ -37,4 +37,68 @@
     <set version="3" name="Action list 1" hiview="Codemap" active="true" todo="false" list="0" />
   </restructuring>
   <grid-set sep="." version="5.0.15206" />
+  <physical-grid-set sep="." version="5.0.15206">
+    <grid name="Workspace spec" enforce="true" locked="true" strict="false">
+      <row>
+        <cell name="booking-commandside-app" pattern="booking-commandside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+        <cell name="booking-queryside-rdbms-projection-app" pattern="booking-queryside-rdbms-projection-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+        <cell name="booking-queryside-app" pattern="booking-queryside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+      </row>
+      <row>
+        <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+          <grid>
+            <row>
+              <cell name="booking-api-open" pattern="booking-api-open.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+            <row>
+              <cell name="api-open-shared" pattern="api-open-shared.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+          </grid>
+        </cell>
+        <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+          <grid>
+            <row>
+              <cell name="booking-api-axon" pattern="booking-api-axon.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+            <row>
+              <cell name="api-axon-shared" pattern="api-axon-shared.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="domain-model" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+                <grid>
+                  <row>
+                    <cell name="booking-domain-model" pattern="booking-domain-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                </grid>
+              </cell>
+            </row>
+          </grid>
+        </cell>
+        <cell name="booking-queryside-rdbms-model" pattern="booking-queryside-rdbms-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+        <cell name="infrastructure-jackson" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+          <grid>
+            <row>
+              <cell name="infrastructure-shared-jackson-springboot" pattern="infrastructure-shared-jackson-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+            <row>
+              <cell name="infrastructure-shared-jackson" pattern="infrastructure-shared-jackson.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+          </grid>
+        </cell>
+        <cell name="infrastructure-datasource-proxy" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+          <grid>
+            <row>
+              <cell name="infrastructure-shared-datasource-proxy-springboot" pattern="infrastructure-shared-datasource-proxy-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+            <row>
+              <cell name="infrastructure-shared-datasource-proxy" pattern="infrastructure-shared-datasource-proxy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+          </grid>
+        </cell>
+        <cell name="infrastructure-shared-hibernate" pattern="infrastructure-shared-hibernate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+      </row>
+      <row>
+        <cell name="lang-groovy" pattern="lang-groovy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+      </row>
+      <description>Top-level breakout</description>
+    </grid>
+  </physical-grid-set>
 </local-project>
