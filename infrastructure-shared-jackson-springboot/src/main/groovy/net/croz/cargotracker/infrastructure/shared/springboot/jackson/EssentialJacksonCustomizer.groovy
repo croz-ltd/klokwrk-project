@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
+import groovy.transform.CompileStatic
 import net.croz.cargotracker.infrastructure.shared.jackson.databind.deser.StringSanitizingDeserializer
 import net.croz.cargotracker.infrastructure.shared.jackson.databind.ser.GStringSerializer
 import org.springframework.beans.factory.config.BeanPostProcessor
@@ -36,6 +37,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
  *   <li>deserialization - null values are skipped (<code>defaultSetterInfo = JsonSetter.Value.forValueNulls(Nulls.SKIP)</code>)</li>
  * </ul>
  */
+@CompileStatic
 class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomizer, BeanPostProcessor {
   static private final String DEFAULT_SPRING_BOOT_OBJECT_MAPPER_BEAN_NAME = "jacksonObjectMapper"
 

@@ -1,5 +1,6 @@
 package net.croz.cargotracker.booking.commandside.application
 
+import groovy.transform.CompileStatic
 import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
 import net.croz.cargotracker.api.open.shared.conversation.OperationResponse
 import net.croz.cargotracker.booking.api.axon.command.CargoBookCommand
@@ -13,6 +14,7 @@ import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.stereotype.Service
 
 @Service
+@CompileStatic
 class CargoBookingApplicationService {
   private CommandGateway commandGateway
   private LocationRegistryRepositoryService locationRegistryService

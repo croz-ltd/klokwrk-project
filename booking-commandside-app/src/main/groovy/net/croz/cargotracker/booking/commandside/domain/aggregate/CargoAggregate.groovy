@@ -1,5 +1,6 @@
 package net.croz.cargotracker.booking.commandside.domain.aggregate
 
+import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import net.croz.cargotracker.booking.api.axon.command.CargoBookCommand
@@ -15,6 +16,7 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @Aggregate
+@CompileStatic
 class CargoAggregate {
   @AggregateIdentifier
   String aggregateIdentifier

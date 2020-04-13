@@ -1,5 +1,6 @@
 package net.croz.cargotracker.booking.commandside.infrastructure.registry
 
+import groovy.transform.CompileStatic
 import net.croz.cargotracker.booking.commandside.domain.repository.LocationRegistryRepositoryService
 import net.croz.cargotracker.booking.domain.model.InternationalizedName
 import net.croz.cargotracker.booking.domain.model.Location
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service
 
 // TODO dmurat: implement real registry
 @Service
+@CompileStatic
 class InMemoryLocationRegistryRepositoryService implements LocationRegistryRepositoryService {
   Map<String, Location> locationMockRegistry = [
       "HRALJ": new Location(unLoCode: new UnLoCode(code: "HRALJ"), name: new InternationalizedName(name: "Aljmaš"), countryName: new InternationalizedName(name: "Hrvatska")),

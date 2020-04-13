@@ -1,5 +1,6 @@
 package net.croz.cargotracker.booking.queryside.rdbms.infrastructure.springbootconfig
 
+import groovy.transform.CompileStatic
 import net.croz.cargotracker.infrastructure.shared.springboot.datasourceproxy.DataSourceProxyBeanPostProcessor
 import net.croz.cargotracker.infrastructure.shared.springboot.datasourceproxy.DataSourceProxyConfigurationProperties
 import net.croz.cargotracker.infrastructure.shared.springboot.jackson.EssentialJacksonCustomizer
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration
 
 @EnableConfigurationProperties([DataSourceProxyConfigurationProperties, EssentialJacksonCustomizerConfigurationProperties])
 @Configuration
+@CompileStatic
 class SpringBootConfig {
 
   @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")

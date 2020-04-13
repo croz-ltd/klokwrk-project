@@ -1,5 +1,6 @@
 package net.croz.cargotracker.infrastructure.shared.springboot.datasourceproxy
 
+import groovy.transform.CompileStatic
 import net.ttddyy.dsproxy.listener.logging.SLF4JLogLevel
 import org.springframework.boot.context.properties.ConfigurationProperties
 
@@ -24,6 +25,7 @@ import java.time.Duration
  */
 @SuppressWarnings("ConfigurationProperties")
 @ConfigurationProperties(prefix = "cargotracker.data-source-proxy")
+@CompileStatic
 class DataSourceProxyConfigurationProperties {
   /**
    * By default data source proxy is enabled. Set to <code>false</code> to disable it.

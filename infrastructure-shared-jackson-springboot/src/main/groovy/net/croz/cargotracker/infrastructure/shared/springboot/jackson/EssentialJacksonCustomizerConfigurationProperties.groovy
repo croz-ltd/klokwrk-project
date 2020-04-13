@@ -1,5 +1,6 @@
 package net.croz.cargotracker.infrastructure.shared.springboot.jackson
 
+import groovy.transform.CompileStatic
 import org.springframework.boot.context.properties.ConfigurationProperties
 
 /**
@@ -21,6 +22,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
  */
 @SuppressWarnings("ConfigurationProperties")
 @ConfigurationProperties(prefix = "cargotracker.jackson.customizer.essential")
+@CompileStatic
 class EssentialJacksonCustomizerConfigurationProperties {
   /**
    * By default EssentialJacksonCustomizer is enabled. Set to <code>false</code> to disable it.
