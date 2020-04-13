@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.queryside
+package net.croz.cargotracker.booking.queryside.rdbms
 
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
