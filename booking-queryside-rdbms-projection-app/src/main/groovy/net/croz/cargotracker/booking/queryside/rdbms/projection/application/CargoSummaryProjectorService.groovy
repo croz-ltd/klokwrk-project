@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.queryside.rdbms.projection.interfaces.projection
+package net.croz.cargotracker.booking.queryside.rdbms.projection.application
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.booking.api.axon.event.CargoBookedEvent
@@ -12,11 +12,11 @@ import javax.transaction.Transactional
 @Service
 @Transactional
 @CompileStatic
-class CargoSummaryProjector {
+class CargoSummaryProjectorService {
 
   private CargoSummaryRepository cargoSummaryRepository
 
-  CargoSummaryProjector(CargoSummaryRepository cargoSummaryRepository) {
+  CargoSummaryProjectorService(CargoSummaryRepository cargoSummaryRepository) {
     this.cargoSummaryRepository = cargoSummaryRepository
   }
 
