@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.queryside.rdbms.projection.application
+package net.croz.cargotracker.booking.queryside.rdbms.projection.application.service
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.booking.api.axon.event.CargoBookedEvent
