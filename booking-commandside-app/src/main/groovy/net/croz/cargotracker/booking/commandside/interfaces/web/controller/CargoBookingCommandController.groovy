@@ -1,10 +1,9 @@
 package net.croz.cargotracker.booking.commandside.interfaces.web.controller
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
-import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookRequest
 import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookResponse
 import net.croz.cargotracker.booking.commandside.application.service.CargoBookingApplicationService
+import net.croz.cargotracker.booking.commandside.interfaces.web.assembler.CargoBookingCommandAssembler
 import net.croz.cargotracker.booking.commandside.interfaces.web.conversation.CargoBookWebRequest
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -23,11 +22,9 @@ class CargoBookingCommandController {
 
   @PostMapping("/cargo-book")
   CargoBookResponse cargoBook(@RequestBody CargoBookWebRequest cargoBookWebRequest) {
-    CargoBookResponse cargoBookResponse = cargoBookingApplicationService.cargoBook(cargoBookWebRequestToCargoBookOperationRequest(cargoBookWebRequest)).payload
-    return cargoBookResponse
-  }
+    CargoBookResponse cargoBookResponse =
+        CargoBookingCommandAssembler.fromCargoBookResponse(cargoBookingApplicationService.cargoBook(CargoBookingCommandAssembler.toCargoBookRequest(cargoBookWebRequest)))
 
-  static OperationRequest<CargoBookRequest> cargoBookWebRequestToCargoBookOperationRequest(CargoBookWebRequest cargoBookWebRequest) {
-    return new OperationRequest(payload: new CargoBookRequest(cargoBookWebRequest.properties))
+    return cargoBookResponse
   }
 }
