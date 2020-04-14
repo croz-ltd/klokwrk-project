@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.commandside.domain.repository
+package net.croz.cargotracker.booking.commandside.application.repository
 
 import net.croz.cargotracker.booking.domain.model.Location
 import org.springframework.stereotype.Service

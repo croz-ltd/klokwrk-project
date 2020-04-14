@@ -5,7 +5,7 @@ import net.croz.cargotracker.booking.api.axon.command.CargoBookCommand
 import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookRequest
 import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookResponse
 import net.croz.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
-import net.croz.cargotracker.booking.commandside.domain.repository.LocationRegistryRepositoryService
+import net.croz.cargotracker.booking.commandside.application.repository.LocationRegistryRepositoryService
 import net.croz.cargotracker.booking.domain.model.Location
 import org.springframework.stereotype.Service
 

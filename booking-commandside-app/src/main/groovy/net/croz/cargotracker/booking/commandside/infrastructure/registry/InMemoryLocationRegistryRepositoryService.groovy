@@ -1,7 +1,7 @@
 package net.croz.cargotracker.booking.commandside.infrastructure.registry
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.booking.commandside.domain.repository.LocationRegistryRepositoryService
+import net.croz.cargotracker.booking.commandside.application.repository.LocationRegistryRepositoryService
 import net.croz.cargotracker.booking.domain.model.InternationalizedName
 import net.croz.cargotracker.booking.domain.model.Location
 import net.croz.cargotracker.booking.domain.model.UnLoCode
