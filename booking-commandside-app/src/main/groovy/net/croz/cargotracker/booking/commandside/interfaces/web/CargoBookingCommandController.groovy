@@ -5,7 +5,7 @@ import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
 import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookRequest
 import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookResponse
 import net.croz.cargotracker.booking.commandside.application.service.CargoBookingApplicationService
-import net.croz.cargotracker.booking.commandside.interfaces.web.dto.CargoBookWebRequest
+import net.croz.cargotracker.booking.commandside.interfaces.web.conversation.CargoBookWebRequest
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
