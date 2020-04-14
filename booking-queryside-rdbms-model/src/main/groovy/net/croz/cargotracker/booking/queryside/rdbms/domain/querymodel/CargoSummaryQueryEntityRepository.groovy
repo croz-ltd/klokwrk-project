@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.queryside.rdbms.domain.readmodel
+package net.croz.cargotracker.booking.queryside.rdbms.domain.querymodel
 
 import org.springframework.data.jpa.repository.JpaRepository
 

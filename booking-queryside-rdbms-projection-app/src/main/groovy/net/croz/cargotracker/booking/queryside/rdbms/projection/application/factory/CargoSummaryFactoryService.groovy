@@ -2,7 +2,7 @@ package net.croz.cargotracker.booking.queryside.rdbms.projection.application.fac
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.booking.api.axon.event.CargoBookedEvent
-import net.croz.cargotracker.booking.queryside.rdbms.domain.readmodel.CargoSummaryQueryEntity
+import net.croz.cargotracker.booking.queryside.rdbms.domain.querymodel.CargoSummaryQueryEntity
 
 @CompileStatic
 class CargoSummaryFactoryService {
