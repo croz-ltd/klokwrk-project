@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.queryside.interfaces.web
+package net.croz.cargotracker.booking.queryside.interfaces.web.controller
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
