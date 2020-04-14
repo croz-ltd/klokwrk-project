@@ -6,9 +6,8 @@ import net.croz.cargotracker.api.open.shared.conversation.OperationResponse
 import net.croz.cargotracker.booking.api.axon.command.CargoBookCommand
 import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookRequest
 import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookResponse
+import net.croz.cargotracker.booking.commandside.application.factory.CargoBookingFactoryService
 import net.croz.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
-import net.croz.cargotracker.booking.commandside.domain.repository.LocationRegistryRepositoryService
-import net.croz.cargotracker.booking.domain.model.Location
 import org.axonframework.commandhandling.GenericCommandMessage
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.stereotype.Service
@@ -17,63 +16,19 @@ import org.springframework.stereotype.Service
 @CompileStatic
 class CargoBookingApplicationService {
   private CommandGateway commandGateway
-  private LocationRegistryRepositoryService locationRegistryService
+  private CargoBookingFactoryService cargoBookingFactoryService
 
-  CargoBookingApplicationService(CommandGateway commandGateway, LocationRegistryRepositoryService locationRegistryRepositoryService) {
+  CargoBookingApplicationService(CommandGateway commandGateway, CargoBookingFactoryService cargoBookingFactoryService) {
     this.commandGateway = commandGateway
-    this.locationRegistryService = locationRegistryRepositoryService
+    this.cargoBookingFactoryService = cargoBookingFactoryService
   }
 
   OperationResponse<CargoBookResponse> cargoBook(OperationRequest<CargoBookRequest> cargoBookOperationRequest) {
-    // TODO dmurat: automate converting into commands
-    Map cargoBookRequestProperties = cargoBookOperationRequest.payload.properties
-
-    String aggregateIdentifier = cargoBookRequestProperties.aggregateIdentifier ?: UUID.randomUUID().toString()
-    Location originLocation = locationRegistryService.findByUnLoCode(cargoBookOperationRequest.payload.originLocation)
-    Location destinationLocation = locationRegistryService.findByUnLoCode(cargoBookOperationRequest.payload.destinationLocation)
-
-    CargoBookCommand cargoBookCommand = new CargoBookCommand(aggregateIdentifier: aggregateIdentifier, originLocation: originLocation, destinationLocation: destinationLocation)
+    CargoBookCommand cargoBookCommand = cargoBookingFactoryService.createCargoBookCommand(cargoBookOperationRequest.payload)
 
     GenericCommandMessage<CargoBookCommand> cargoBookCommandMessage = new GenericCommandMessage(cargoBookCommand, cargoBookOperationRequest.metaData)
     CargoAggregate cargoAggregate = commandGateway.sendAndWait(cargoBookCommandMessage)
 
-    return cargoBookOperationResponseFromCargoAggregate(cargoAggregate)
-  }
-
-  static OperationResponse<CargoBookResponse> cargoBookOperationResponseFromCargoAggregate(CargoAggregate cargoAggregate) {
-    // TODO dmurat: automate generating responses
-    Map<String, ?> originLocationMap = [
-        name: cargoAggregate.originLocation.name.name,
-        nameInternationalized: cargoAggregate.originLocation.name.nameInternationalized,
-        country: [
-            name: cargoAggregate.originLocation.countryName.name,
-            nameInternationalized: cargoAggregate.originLocation.countryName.nameInternationalized
-        ],
-        unLoCode: [
-            code: cargoAggregate.originLocation.unLoCode.code,
-            countryCode: cargoAggregate.originLocation.unLoCode.countryCode,
-            locationCode: cargoAggregate.originLocation.unLoCode.locationCode
-        ]
-    ]
-
-    Map<String, ?> destinationLocationMap = [
-        name: cargoAggregate.destinationLocation.name.name,
-        nameInternationalized: cargoAggregate.destinationLocation.name.nameInternationalized,
-        country: [
-            name: cargoAggregate.destinationLocation.countryName.name,
-            nameInternationalized: cargoAggregate.destinationLocation.countryName.nameInternationalized
-        ],
-        unLoCode: [
-            code: cargoAggregate.destinationLocation.unLoCode.code,
-            countryCode: cargoAggregate.destinationLocation.unLoCode.countryCode,
-            locationCode: cargoAggregate.destinationLocation.unLoCode.locationCode
-        ]
-    ]
-
-    return new OperationResponse(
-        payload: new CargoBookResponse(
-            aggregateIdentifier: cargoAggregate.aggregateIdentifier, originLocation: originLocationMap, destinationLocation: destinationLocationMap
-        )
-    )
+    return new OperationResponse(payload: cargoBookingFactoryService.createCargoBookResponse(cargoAggregate))
   }
 }
