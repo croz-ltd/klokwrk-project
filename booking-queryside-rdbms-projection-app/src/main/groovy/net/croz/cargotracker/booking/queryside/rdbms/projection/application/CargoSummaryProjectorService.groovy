@@ -2,8 +2,8 @@ package net.croz.cargotracker.booking.queryside.rdbms.projection.application
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.booking.api.axon.event.CargoBookedEvent
-import net.croz.cargotracker.booking.queryside.rdbms.domain.readmodel.CargoSummary
 import net.croz.cargotracker.booking.queryside.rdbms.domain.readmodel.CargoSummaryRepository
+import net.croz.cargotracker.booking.queryside.rdbms.projection.application.factory.CargoSummaryFactoryService
 import org.axonframework.eventhandling.EventHandler
 import org.springframework.stereotype.Service
 
@@ -24,20 +24,6 @@ class CargoSummaryProjectorService {
   void onCargoBookedEvent(CargoBookedEvent cargoBookedEvent) {
 
     println "----- handling event: ${cargoBookedEvent.dump()}"
-    cargoSummaryRepository.save(cargoSummaryFromCargoBookedEvent(cargoBookedEvent))
-  }
-
-  static CargoSummary cargoSummaryFromCargoBookedEvent(CargoBookedEvent cargoBookedEvent) {
-    // TODO dmurat: automate populating persistent entity
-    String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
-    String originLocation = cargoBookedEvent.originLocation.unLoCode.code
-    String destinationLocation = cargoBookedEvent.destinationLocation.unLoCode.code
-    Long aggregateSequenceNumber = 0
-
-    CargoSummary cargoSummary = new CargoSummary(
-        aggregateIdentifier: aggregateIdentifier, aggregateSequenceNumber: aggregateSequenceNumber, originLocation: originLocation, destinationLocation: destinationLocation
-    )
-
-    return cargoSummary
+    cargoSummaryRepository.save(CargoSummaryFactoryService.createCargoSummaryQueryEntity(cargoBookedEvent))
   }
 }
