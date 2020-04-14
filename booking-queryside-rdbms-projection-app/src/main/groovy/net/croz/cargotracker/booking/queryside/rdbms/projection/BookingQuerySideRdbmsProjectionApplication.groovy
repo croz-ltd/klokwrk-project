@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
-@SpringBootApplication(scanBasePackages = ["net.croz.cargotracker.booking.queryside.rdbms.projection", "net.croz.cargotracker.booking.queryside.rdbms.domain.querymodel"])
+@SpringBootApplication
 @EnableJpaRepositories(basePackages = ["net.croz.cargotracker.booking.queryside.rdbms.domain.querymodel"])
 @EntityScan(basePackages = ["org.axonframework.eventhandling.tokenstore.jpa", "net.croz.cargotracker.booking.queryside.rdbms.domain.querymodel"])
 @CompileStatic
