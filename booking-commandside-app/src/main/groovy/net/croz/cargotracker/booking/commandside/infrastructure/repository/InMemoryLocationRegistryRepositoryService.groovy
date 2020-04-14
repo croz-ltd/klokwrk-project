@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.commandside.infrastructure.registry
+package net.croz.cargotracker.booking.commandside.infrastructure.repository
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.booking.commandside.application.repository.LocationRegistryRepositoryService
