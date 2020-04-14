@@ -2,7 +2,7 @@ package net.croz.cargotracker.booking.queryside.rdbms.projection.application.ser
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.booking.api.axon.event.CargoBookedEvent
-import net.croz.cargotracker.booking.queryside.rdbms.domain.readmodel.CargoSummaryRepository
+import net.croz.cargotracker.booking.queryside.rdbms.domain.querymodel.CargoSummaryQueryEntityRepository
 import net.croz.cargotracker.booking.queryside.rdbms.projection.application.factory.CargoSummaryFactoryService
 import org.axonframework.eventhandling.EventHandler
 import org.springframework.stereotype.Service
@@ -14,16 +14,16 @@ import javax.transaction.Transactional
 @CompileStatic
 class CargoSummaryProjectorService {
 
-  private CargoSummaryRepository cargoSummaryRepository
+  private CargoSummaryQueryEntityRepository cargoSummaryQueryEntityRepository
 
-  CargoSummaryProjectorService(CargoSummaryRepository cargoSummaryRepository) {
-    this.cargoSummaryRepository = cargoSummaryRepository
+  CargoSummaryProjectorService(CargoSummaryQueryEntityRepository cargoSummaryQueryEntityRepository) {
+    this.cargoSummaryQueryEntityRepository = cargoSummaryQueryEntityRepository
   }
 
   @EventHandler
   void onCargoBookedEvent(CargoBookedEvent cargoBookedEvent) {
 
     println "----- handling event: ${cargoBookedEvent.dump()}"
-    cargoSummaryRepository.save(CargoSummaryFactoryService.createCargoSummaryQueryEntity(cargoBookedEvent))
+    cargoSummaryQueryEntityRepository.save(CargoSummaryFactoryService.createCargoSummaryQueryEntity(cargoBookedEvent))
   }
 }
