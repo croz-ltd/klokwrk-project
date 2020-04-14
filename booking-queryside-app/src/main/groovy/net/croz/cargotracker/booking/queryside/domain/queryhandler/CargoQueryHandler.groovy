@@ -3,23 +3,23 @@ package net.croz.cargotracker.booking.queryside.domain.queryhandler
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryRequest
 import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryResponse
-import net.croz.cargotracker.booking.queryside.rdbms.domain.readmodel.CargoSummary
-import net.croz.cargotracker.booking.queryside.rdbms.domain.readmodel.CargoSummaryRepository
+import net.croz.cargotracker.booking.queryside.rdbms.domain.readmodel.CargoSummaryQueryEntity
+import net.croz.cargotracker.booking.queryside.rdbms.domain.readmodel.CargoSummaryQueryEntityRepository
 import org.axonframework.queryhandling.QueryHandler
 import org.springframework.stereotype.Service
 
 @Service
 @CompileStatic
 class CargoQueryHandler {
-  private CargoSummaryRepository cargoSummaryRepository
+  private CargoSummaryQueryEntityRepository cargoSummaryQueryEntityRepository
 
-  CargoQueryHandler(CargoSummaryRepository cargoSummaryRepository) {
-    this.cargoSummaryRepository = cargoSummaryRepository
+  CargoQueryHandler(CargoSummaryQueryEntityRepository cargoSummaryQueryEntityRepository) {
+    this.cargoSummaryQueryEntityRepository = cargoSummaryQueryEntityRepository
   }
 
   @QueryHandler
   CargoSummaryQueryResponse handleCargoSummaryQuery(CargoSummaryQueryRequest cargoSummaryQuery) {
-    CargoSummary cargoSummary = cargoSummaryRepository.findByAggregateIdentifier(cargoSummaryQuery.aggregateIdentifier)
-    return new CargoSummaryQueryResponse(cargoSummary.properties)
+    CargoSummaryQueryEntity cargoSummaryQueryEntity = cargoSummaryQueryEntityRepository.findByAggregateIdentifier(cargoSummaryQuery.aggregateIdentifier)
+    return new CargoSummaryQueryResponse(cargoSummaryQueryEntity.properties)
   }
 }

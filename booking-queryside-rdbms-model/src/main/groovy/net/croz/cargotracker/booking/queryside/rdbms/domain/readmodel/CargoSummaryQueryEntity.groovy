@@ -10,12 +10,14 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.SequenceGenerator
+import javax.persistence.Table
 
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @Entity
 @CompileStatic
-class CargoSummary {
+@Table(name = "cargo_summary")
+class CargoSummaryQueryEntity {
   @Id
   @GeneratedValue(generator = "cargoSummarySequenceGenerator", strategy = GenerationType.SEQUENCE)
   @SequenceGenerator(name = "cargoSummarySequenceGenerator", sequenceName = "cargo_summary_sequence", initialValue = 1, allocationSize = 50)
