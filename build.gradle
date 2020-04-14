@@ -61,7 +61,7 @@ configure(subprojects) {
   group = "net.croz.cargo-tracker"
 }
 
-configure(subprojects.findAll({ !["cargo-tracker-platform"].contains(it.name) })) {
+configure(subprojects.findAll({ !["cargo-tracker-platform"].contains(it.name) })) { Project subproject ->
   repositories {
     mavenCentral()
   }
@@ -85,6 +85,21 @@ configure(subprojects.findAll({ !["cargo-tracker-platform"].contains(it.name) })
 
   jacoco {
     toolVersion = "$gradleJacocoLibraryVersion"
+  }
+
+  // When Groovy project contains Java files, and these Java files contain javadoc comments, javaparser-core needs to be added into groovydoc classpath (otherwise, groovydoc task might fail).
+  // Do note that javaparser-core is a dependency of groovy-groovydoc, and its version should be updated when Groovy version changes.
+  // Helpful documentation link: https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/GroovyRuntime.html
+  Closure<FileCollection> createGroovyDocGroovyClasspath = { Project project ->
+    Dependency javaParserDependency = project.getDependencies().create("com.github.javaparser:javaparser-core:$javaparserCoreVersion")
+    FileCollection javaParserDependencyFileCollection = project.getConfigurations().detachedConfiguration(javaParserDependency)
+
+    FileCollection groovyClasspath = project.groovyRuntime.inferGroovyClasspath(configurations.runtimeClasspath) + javaParserDependencyFileCollection
+    return groovyClasspath
+  }
+
+  groovydoc {
+    groovyClasspath = createGroovyDocGroovyClasspath(subproject)
   }
 
   tasks.register("groovyDocJar", Jar) {
