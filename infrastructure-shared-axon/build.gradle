@@ -1,0 +1,7 @@
+apply plugin: "java-library"
+
+dependencies {
+  implementation "org.axonframework:axon-eventsourcing"
+  implementation "org.axonframework:axon-messaging"
+  implementation "org.codehaus.groovy:groovy"
+}

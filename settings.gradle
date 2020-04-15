@@ -12,6 +12,7 @@ include(
 
     "cargo-tracker-platform",
 
+    "infrastructure-shared-axon",
     "infrastructure-shared-datasource-proxy",
     "infrastructure-shared-datasource-proxy-springboot",
     "infrastructure-shared-hibernate",

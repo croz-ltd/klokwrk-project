@@ -8,6 +8,8 @@ javaPlatform {
 dependencies {
   constraints {
     api "net.ttddyy:datasource-proxy:$dataSourceProxyVersion"
+    api "org.axonframework:axon-eventsourcing:$axonFrameworkVersion"
+    api "org.axonframework:axon-messaging:$axonFrameworkVersion"
     api "org.axonframework:axon-modelling:$axonFrameworkVersion"
     api "org.axonframework:axon-spring-boot-starter:$axonFrameworkVersion"
 
@@ -44,7 +46,9 @@ dependencies {
 
 publishing {
   publications {
+    //noinspection GroovyAssignabilityCheck
     myPlatform(MavenPublication) {
+      //noinspection GroovyAssignabilityCheck
       from components.javaPlatform
     }
   }
