@@ -8,6 +8,7 @@ javaPlatform {
 dependencies {
   constraints {
     api "net.ttddyy:datasource-proxy:$dataSourceProxyVersion"
+    api "org.axonframework:axon-configuration:$axonFrameworkVersion"
     api "org.axonframework:axon-eventsourcing:$axonFrameworkVersion"
     api "org.axonframework:axon-messaging:$axonFrameworkVersion"
     api "org.axonframework:axon-modelling:$axonFrameworkVersion"
@@ -39,6 +40,7 @@ dependencies {
     api "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion"
     api "org.spockframework:spock-core:$spockVersion"
     api "org.spockframework:spock-spring:$spockVersion"
+    api "uk.org.lidalia:slf4j-test:$slf4jTestVersion"
   }
 
   api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
