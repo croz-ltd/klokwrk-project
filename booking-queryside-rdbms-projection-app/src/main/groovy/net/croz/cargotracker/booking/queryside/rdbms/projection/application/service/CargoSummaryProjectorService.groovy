@@ -22,8 +22,6 @@ class CargoSummaryProjectorService {
 
   @EventHandler
   void onCargoBookedEvent(CargoBookedEvent cargoBookedEvent) {
-
-    println "----- handling event: ${cargoBookedEvent.dump()}"
     cargoSummaryQueryEntityRepository.save(CargoSummaryFactoryService.createCargoSummaryQueryEntity(cargoBookedEvent))
   }
 }

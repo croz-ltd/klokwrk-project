@@ -1,0 +1,12 @@
+apply plugin: "java-library"
+
+dependencies {
+  implementation "org.axonframework:axon-eventsourcing"
+  implementation "org.axonframework:axon-messaging"
+  implementation "org.codehaus.groovy:groovy"
+
+  testImplementation "org.slf4j:slf4j-api"
+  testImplementation "org.spockframework:spock-core"
+  testImplementation "org.axonframework:axon-configuration"
+  testImplementation "uk.org.lidalia:slf4j-test"
+}
