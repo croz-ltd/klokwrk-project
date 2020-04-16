@@ -2,6 +2,7 @@ package net.croz.cargotracker.booking.commandside.infrastructure.springbootconfi
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.infrastructure.shared.axon.logging.LoggingCommandHandlerEnhancerDefinition
+import net.croz.cargotracker.infrastructure.shared.axon.logging.LoggingEventSourcingHandlerEnhancerDefinition
 import net.croz.cargotracker.infrastructure.shared.springboot.jackson.EssentialJacksonCustomizer
 import net.croz.cargotracker.infrastructure.shared.springboot.jackson.EssentialJacksonCustomizerConfigurationProperties
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
@@ -23,5 +24,10 @@ class SpringBootConfig {
   @Bean
   HandlerEnhancerDefinition loggingCommandHandlerEnhancerDefinition() {
     return new LoggingCommandHandlerEnhancerDefinition()
+  }
+
+  @Bean
+  HandlerEnhancerDefinition loggingEventSourcingHandlerEnhancerDefinition() {
+    return new LoggingEventSourcingHandlerEnhancerDefinition()
   }
 }
