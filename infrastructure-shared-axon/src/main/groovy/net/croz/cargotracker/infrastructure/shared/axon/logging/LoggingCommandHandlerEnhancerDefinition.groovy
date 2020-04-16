@@ -22,6 +22,9 @@ import java.lang.reflect.Method
  * ... cargotracker.axon.command-handler-logging : Executing CommandHandler constructor [PredmetAggregate(CreatePredmetCommand,PredmetClassificationDomainService)] with command [CreatePredmetCommand(aggregateIdentifier: 0eb588a9-cfeb-4be5-8ea9-04c9d14b7df9)]
  * </pre>
  * To register this HandlerEnhancerDefinition, use standard means as described in Axon documentation. In Spring Boot applications only a simple bean declaration is required.
+ * <p/>
+ * Logger output contains information about aggregate identifier and sequence number which enables easy correlation with logging outputs produced by {@link LoggingEventHandlerEnhancerDefinition}
+ * and {@link LoggingEventSourcingHandlerEnhancerDefinition}.
  */
 @CompileStatic
 class LoggingCommandHandlerEnhancerDefinition implements HandlerEnhancerDefinition {

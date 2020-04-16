@@ -25,6 +25,9 @@ import java.lang.reflect.Method
  * To register this HandlerEnhancerDefinition, use standard means as described in Axon documentation. Usually this will require adding a simple bean declaration in the Spring Boot config. However,
  * if you have standalone projector app <code>EventHandler</code> annotations are present (not a single <code>CommandHandler</code> or <code>QueryHandler</code> are present), only option at the moment
  * is to specify handler enhancer definition's fully qualified class name in <code>META-INF/services/org.axonframework.messaging.annotation.HandlerEnhancerDefinition</code>.
+ * <p/>
+ * Logger output contains information about aggregate identifier and sequence number which enables easy correlation with logging outputs produced by {@link LoggingCommandHandlerEnhancerDefinition}
+ * and {@link LoggingEventSourcingHandlerEnhancerDefinition}.
  */
 @CompileStatic
 class LoggingEventHandlerEnhancerDefinition implements HandlerEnhancerDefinition {
