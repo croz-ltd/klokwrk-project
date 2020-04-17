@@ -28,4 +28,7 @@ class CargoSummaryQueryEntity {
 
   String originLocation
   String destinationLocation
+
+  String inboundChannelName
+  String inboundChannelType
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+import javax.servlet.http.HttpServletRequest
+
 @RestController
 @RequestMapping("/cargo-booking-command")
 @CompileStatic
@@ -21,9 +23,9 @@ class CargoBookingCommandController {
   }
 
   @PostMapping("/cargo-book")
-  CargoBookResponse cargoBook(@RequestBody CargoBookWebRequest cargoBookWebRequest) {
+  CargoBookResponse cargoBook(@RequestBody CargoBookWebRequest cargoBookWebRequest, HttpServletRequest httpServletRequest) {
     CargoBookResponse cargoBookResponse =
-        CargoBookingCommandAssembler.fromCargoBookResponse(cargoBookingApplicationService.cargoBook(CargoBookingCommandAssembler.toCargoBookRequest(cargoBookWebRequest)))
+        CargoBookingCommandAssembler.fromCargoBookResponse(cargoBookingApplicationService.cargoBook(CargoBookingCommandAssembler.toCargoBookRequest(cargoBookWebRequest, httpServletRequest)))
 
     return cargoBookResponse
   }
