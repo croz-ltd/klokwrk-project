@@ -8,6 +8,7 @@ import net.croz.cargotracker.booking.api.axon.event.CargoBookedEvent
 import net.croz.cargotracker.booking.domain.model.Location
 import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
+import org.axonframework.messaging.MetaData
 import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.spring.stereotype.Aggregate
 
@@ -24,8 +25,8 @@ class CargoAggregate {
   Location originLocation
   Location destinationLocation
 
-  CargoAggregate bookCargo(CargoBookCommand cargoBookCommand) {
-    apply(cargoBookedEventFromCargoBookCommand(cargoBookCommand))
+  CargoAggregate bookCargo(CargoBookCommand cargoBookCommand, MetaData metaData) {
+    apply(cargoBookedEventFromCargoBookCommand(cargoBookCommand), metaData)
     return this
   }
 

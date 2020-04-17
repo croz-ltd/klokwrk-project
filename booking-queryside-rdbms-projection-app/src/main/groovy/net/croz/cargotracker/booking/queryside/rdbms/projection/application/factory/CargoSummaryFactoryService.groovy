@@ -3,6 +3,7 @@ package net.croz.cargotracker.booking.queryside.rdbms.projection.application.fac
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.booking.api.axon.event.CargoBookedEvent
 import net.croz.cargotracker.booking.queryside.rdbms.domain.querymodel.CargoSummaryQueryEntity
+import net.croz.cargotracker.infrastructure.shared.metadata.constant.MetaDataConstant
 import org.axonframework.eventhandling.DomainEventMessage
 
 @CompileStatic
@@ -15,7 +16,9 @@ class CargoSummaryFactoryService {
     Long aggregateSequenceNumber = domainEventMessage.sequenceNumber
 
     CargoSummaryQueryEntity cargoSummaryQueryEntity = new CargoSummaryQueryEntity(
-        aggregateIdentifier: aggregateIdentifier, aggregateSequenceNumber: aggregateSequenceNumber, originLocation: originLocation, destinationLocation: destinationLocation
+        aggregateIdentifier: aggregateIdentifier, aggregateSequenceNumber: aggregateSequenceNumber, originLocation: originLocation, destinationLocation: destinationLocation,
+        inboundChannelName: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_NAME_KEY] ?: "n/a",
+        inboundChannelType: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_TYPE_KEY] ?: "n/a"
     )
 
     return cargoSummaryQueryEntity
