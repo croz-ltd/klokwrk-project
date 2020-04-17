@@ -30,6 +30,7 @@
     <classpathentry kind="lib" path="../../infrastructure-shared-hibernate/build/classes/groovy/main" module="infrastructure-shared-hibernate" displaymodule="infrastructure-shared-hibernate" />
     <classpathentry kind="lib" path="../../infrastructure-shared-jackson/build/classes/groovy/main" module="infrastructure-shared-jackson" displaymodule="infrastructure-shared-jackson" />
     <classpathentry kind="lib" path="../../infrastructure-shared-jackson-springboot/build/classes/groovy/main" module="infrastructure-shared-jackson-springboot" displaymodule="infrastructure-shared-jackson-springboot" />
+    <classpathentry kind="lib" path="../../infrastructure-shared-metadata/build/classes/groovy/main" module="infrastructure-shared-metadata" displaymodule="infrastructure-shared-metadata" />
     <classpathentry kind="lib" path="../../lang-groovy/build/classes/groovy/main" module="lang-groovy" displaymodule="lang-groovy" />
   </classpath>
   <pom-root-files />
@@ -103,6 +104,9 @@
                 </grid>
               </cell>
               <cell name="infrastructure-shared-hibernate" pattern="infrastructure-shared-hibernate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+            <row>
+              <cell name="infrastructure-shared-metadata" pattern="infrastructure-shared-metadata.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
           </grid>
         </cell>
