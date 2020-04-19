@@ -10,8 +10,8 @@ import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandle
 @MapConstructor(post = { postMapConstructorCheckProtocol(args as Map) })
 @CompileStatic
 class OperationRequest<P> implements OperationMessage<P, Map<String, ?>>, PostMapConstructorCheckable {
-  P payload
   Map<String, ?> metaData = Collections.emptyMap()
+  P payload
 
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
