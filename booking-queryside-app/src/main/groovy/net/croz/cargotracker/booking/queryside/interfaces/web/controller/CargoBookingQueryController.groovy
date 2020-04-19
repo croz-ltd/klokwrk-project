@@ -2,6 +2,7 @@ package net.croz.cargotracker.booking.queryside.interfaces.web.controller
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
+import net.croz.cargotracker.api.open.shared.conversation.OperationResponse
 import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryRequest
 import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryResponse
 import net.croz.cargotracker.booking.queryside.application.CargoBookingQueryApplicationService
@@ -22,8 +23,8 @@ class CargoBookingQueryController {
   }
 
   @PostMapping("/cargo-summary-query")
-  CargoSummaryQueryResponse cargoSummaryQuery(@RequestBody CargoSummaryQueryWebRequest cargoSummaryQueryWebRequest) {
-    CargoSummaryQueryResponse cargoSummary = cargoBookingQueryApplicationService.queryCargoSummary(cargoSummaryQueryWebRequestToCargoSummaryQueryOperationRequest(cargoSummaryQueryWebRequest)).payload
+  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(@RequestBody CargoSummaryQueryWebRequest cargoSummaryQueryWebRequest) {
+    def cargoSummary = cargoBookingQueryApplicationService.queryCargoSummary(cargoSummaryQueryWebRequestToCargoSummaryQueryOperationRequest(cargoSummaryQueryWebRequest))
     return cargoSummary
   }
 
