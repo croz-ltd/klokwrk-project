@@ -2,9 +2,7 @@ package net.croz.cargotracker.booking.commandside.interfaces.web.assembler
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
-import net.croz.cargotracker.api.open.shared.conversation.OperationResponse
 import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookRequest
-import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookResponse
 import net.croz.cargotracker.booking.commandside.interfaces.web.conversation.CargoBookWebRequest
 import net.croz.cargotracker.infrastructure.shared.metadata.constant.MetaDataConstant
 
@@ -21,9 +19,5 @@ class CargoBookingCommandAssembler {
     ]
 
     return new OperationRequest(payload: new CargoBookRequest(cargoBookWebRequest.properties), metaData: metadataMap)
-  }
-
-  static CargoBookResponse fromCargoBookResponse(OperationResponse<CargoBookResponse> cargoBookResponseOperationResponse) {
-    return cargoBookResponseOperationResponse.payload
   }
 }
