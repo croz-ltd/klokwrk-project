@@ -1,0 +1,3 @@
+moduleName=@extensionModuleName@
+moduleVersion=@extensionModuleVersion@
+extensionClasses=net.croz.cargotracker.lang.groovy.extension.PropertiesExtension
