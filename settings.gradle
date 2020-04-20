@@ -18,7 +18,6 @@ include(
     "infrastructure-shared-hibernate",
     "infrastructure-shared-jackson",
     "infrastructure-shared-jackson-springboot",
-    "infrastructure-shared-metadata",
 
     "lang-groovy"
 )

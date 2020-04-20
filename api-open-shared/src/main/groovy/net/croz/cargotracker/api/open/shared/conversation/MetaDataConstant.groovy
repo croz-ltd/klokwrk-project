@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.shared.metadata.constant
+package net.croz.cargotracker.api.open.shared.conversation
 
 import groovy.transform.CompileStatic
 
@@ -30,4 +30,12 @@ class MetaDataConstant {
    * The values might be something like the IP for web/rest channel, originating server IP and queue for message queueing channel, topic for kafka channel etc.
    */
   static final String INBOUND_CHANNEL_REQUEST_IDENTIFIER_KEY = "INBOUND_CHANNEL_REQUEST_IDENTIFIER"
+
+  /**
+   * Key (as in Map key) to use for storing request's locale detected by the inbound channel.
+   * <p/>
+   * Stored locale comes from and is detected by inbound channel's specific means. For example, in Spring MVC environment, request's <code>Accept-Language</code> header will be translated into
+   * the locale of the current request.
+   */
+  static final String INBOUND_CHANNEL_REQUEST_LOCALE_KEY = "INBOUND_CHANNEL_REQUEST_LOCALE"
 }
