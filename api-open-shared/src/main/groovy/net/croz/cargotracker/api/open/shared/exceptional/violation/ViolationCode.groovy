@@ -17,18 +17,18 @@ import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandle
 @MapConstructor(post = { postMapConstructorCheckProtocol(args as Map) })
 @CompileStatic
 class ViolationCode implements PostMapConstructorCheckable {
-  static final ViolationCode UNKNOWN = new ViolationCode(code: "500", text: "Internal Server Error")
-  static final ViolationCode NOT_FOUND = new ViolationCode(code: "404", text: "Not Found")
+  static final ViolationCode UNKNOWN = new ViolationCode(code: "500", codeMessage: "Internal Server Error")
+  static final ViolationCode NOT_FOUND = new ViolationCode(code: "404", codeMessage: "Not Found")
 
   String code
-  String text
+  String codeMessage
 
   @SuppressWarnings("GroovyPointlessBoolean")
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     assert code
     assert code.isBlank() == false
-    assert text
-    assert text.isBlank() == false
+    assert codeMessage
+    assert codeMessage.isBlank() == false
   }
 }
