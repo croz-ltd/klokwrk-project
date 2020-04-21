@@ -80,7 +80,7 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
   protected ResponseReportViolationPart createResponseReportViolationPart(QueryException queryException) {
     ResponseReportViolationPart responseReportViolationPart = new ResponseReportViolationPart(
         code: queryException.violationInfo.violationCode.code,
-        codeText: queryException.violationInfo.violationCode.text
+        codeMessage: queryException.violationInfo.violationCode.codeMessage
     )
 
     return responseReportViolationPart

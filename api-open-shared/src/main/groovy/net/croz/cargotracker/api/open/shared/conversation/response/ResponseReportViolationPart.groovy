@@ -5,5 +5,5 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class ResponseReportViolationPart {
   String code
-  String codeText
+  String codeMessage
 }
