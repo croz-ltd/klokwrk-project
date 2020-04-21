@@ -8,7 +8,6 @@ import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummar
 import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryResponse
 import net.croz.cargotracker.booking.queryside.application.CargoBookingQueryApplicationService
 import net.croz.cargotracker.booking.queryside.interfaces.web.conversation.CargoSummaryQueryWebRequest
-import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -25,15 +24,15 @@ class CargoBookingQueryController {
   }
 
   @PostMapping("/cargo-summary-query")
-  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(@RequestBody CargoSummaryQueryWebRequest cargoSummaryQueryWebRequest) {
-    def cargoSummary = cargoBookingQueryApplicationService.queryCargoSummary(cargoSummaryQueryWebRequestToCargoSummaryQueryOperationRequest(cargoSummaryQueryWebRequest))
+  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(@RequestBody CargoSummaryQueryWebRequest cargoSummaryQueryWebRequest, Locale locale) {
+    def cargoSummary = cargoBookingQueryApplicationService.queryCargoSummary(cargoSummaryQueryWebRequestToCargoSummaryQueryOperationRequest(cargoSummaryQueryWebRequest, locale))
     return cargoSummary
   }
 
-  static OperationRequest<CargoSummaryQueryRequest> cargoSummaryQueryWebRequestToCargoSummaryQueryOperationRequest(CargoSummaryQueryWebRequest cargoSummaryWebRequest) {
+  static OperationRequest<CargoSummaryQueryRequest> cargoSummaryQueryWebRequestToCargoSummaryQueryOperationRequest(CargoSummaryQueryWebRequest cargoSummaryWebRequest, Locale locale) {
     OperationRequest<CargoSummaryQueryRequest> operationRequest = new OperationRequest<CargoSummaryQueryRequest>(
         payload: new CargoSummaryQueryRequest(cargoSummaryWebRequest.properties),
-        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): LocaleContextHolder.getLocale()]
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): locale]
     )
 
     return operationRequest
