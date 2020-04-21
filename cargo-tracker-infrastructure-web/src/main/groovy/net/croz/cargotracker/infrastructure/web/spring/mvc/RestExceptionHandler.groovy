@@ -8,13 +8,17 @@ import net.croz.cargotracker.api.open.shared.exceptional.exception.DomainExcepti
 import net.croz.cargotracker.api.open.shared.exceptional.exception.QueryException
 import net.croz.cargotracker.api.open.shared.exceptional.violation.Severity
 import net.croz.cargotracker.api.open.shared.exceptional.violation.ViolationInfo
-import net.croz.cargotracker.infrastructure.web.conversation.response.HttpResponseReportPart
+import net.croz.cargotracker.infrastructure.shared.spring.context.MessageSourceResolvableHelper
+import net.croz.cargotracker.infrastructure.shared.spring.context.MessageSourceResolvableSpecification
 import net.croz.cargotracker.infrastructure.web.conversation.response.HttpResponseReport
-import org.springframework.context.i18n.LocaleContextHolder
+import net.croz.cargotracker.infrastructure.web.conversation.response.HttpResponseReportPart
+import org.springframework.context.MessageSource
+import org.springframework.context.MessageSourceAware
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 
 import java.time.Instant
@@ -25,7 +29,13 @@ import java.time.Instant
 //   https://blog.restcase.com/rest-api-error-handling-problem-details-response/
 //   https://tools.ietf.org/html/rfc7807
 @CompileStatic
-class RestExceptionHandler extends ResponseEntityExceptionHandler {
+class RestExceptionHandler extends ResponseEntityExceptionHandler implements MessageSourceAware {
+  private MessageSource messageSource
+
+  @Override
+  void setMessageSource(MessageSource messageSource) {
+    this.messageSource = messageSource
+  }
 
   @ExceptionHandler
   ResponseEntity handleDomainException(DomainException domainException) {
@@ -33,8 +43,8 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler
-  ResponseEntity handleDomainQueryException(QueryException queryException) {
-    HttpResponseReport httpResponseReport = createHttpResponseReport(queryException)
+  ResponseEntity handleDomainQueryException(QueryException queryException, HandlerMethod handlerMethod, Locale locale) {
+    HttpResponseReport httpResponseReport = createHttpResponseReport(queryException, handlerMethod, locale)
     HttpStatus httpStatus = mapQueryExceptionToHttpStatus(queryException)
     OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseReport.propertiesFiltered)
     ResponseEntity responseEntity = new ResponseEntity(operationResponse, new HttpHeaders(), httpStatus)
@@ -48,17 +58,18 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
     throw commandException
   }
 
-  protected HttpResponseReport createHttpResponseReport(QueryException queryException) {
+  protected HttpResponseReport createHttpResponseReport(QueryException queryException, HandlerMethod handlerMethod, Locale locale) {
     HttpStatus httpStatus = mapQueryExceptionToHttpStatus(queryException)
 
-    // TODO dmurat: resolve responseReport's titleText and titleDetailedText and violationCodeText through resource bundle
     HttpResponseReport httpResponseReport = new HttpResponseReport(
         timestamp: Instant.now(),
         severity: Severity.WARNING,
-        locale: LocaleContextHolder.locale,
+        locale: locale,
         violation: createResponseReportViolationPart(queryException),
         http: createHttpResponseReportPart(httpStatus)
     )
+
+    httpResponseReport = localizeHttpResponseReport(httpResponseReport, queryException, handlerMethod, locale)
 
     return httpResponseReport
   }
@@ -93,5 +104,29 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
     )
 
     return httpResponseReportPart
+  }
+
+  protected HttpResponseReport localizeHttpResponseReport(HttpResponseReport httpResponseReport, QueryException queryException, HandlerMethod handlerMethod, Locale locale) {
+    MessageSourceResolvableSpecification resolvableMessageSpecification = new MessageSourceResolvableSpecification(
+        controllerSimpleName: handlerMethod.getBeanType().simpleName.uncapitalize(),
+        controllerMethodName: handlerMethod.getMethod().name,
+        messageCategory: "failure",
+        messageType: queryException.violationInfo.violationCode.codeAsText,
+        messageSubType: "",
+        severity: queryException.violationInfo.severity.toString().toLowerCase(),
+        propertyPath: "report.titleText"
+    )
+
+    httpResponseReport.titleText = MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
+
+    resolvableMessageSpecification.propertyPath = "report.titleDetailedText"
+    httpResponseReport.titleDetailedText =
+        MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
+
+    resolvableMessageSpecification.propertyPath = "report.violation.codeMessage"
+    httpResponseReport.violation.codeMessage =
+        MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
+
+    return httpResponseReport
   }
 }
