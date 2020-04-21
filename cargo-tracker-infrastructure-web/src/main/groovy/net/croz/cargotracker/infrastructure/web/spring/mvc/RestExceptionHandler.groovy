@@ -3,9 +3,7 @@ package net.croz.cargotracker.infrastructure.web.spring.mvc
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.api.open.shared.conversation.OperationResponse
 import net.croz.cargotracker.api.open.shared.conversation.response.ResponseReportViolationPart
-import net.croz.cargotracker.api.open.shared.exceptional.exception.CommandException
 import net.croz.cargotracker.api.open.shared.exceptional.exception.DomainException
-import net.croz.cargotracker.api.open.shared.exceptional.exception.QueryException
 import net.croz.cargotracker.api.open.shared.exceptional.violation.Severity
 import net.croz.cargotracker.api.open.shared.exceptional.violation.ViolationInfo
 import net.croz.cargotracker.infrastructure.shared.spring.context.MessageSourceResolvableHelper
@@ -38,45 +36,34 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler implements Mes
   }
 
   @ExceptionHandler
-  ResponseEntity handleDomainException(DomainException domainException) {
-    throw domainException
-  }
-
-  @ExceptionHandler
-  ResponseEntity handleDomainQueryException(QueryException queryException, HandlerMethod handlerMethod, Locale locale) {
-    HttpResponseReport httpResponseReport = createHttpResponseReport(queryException, handlerMethod, locale)
-    HttpStatus httpStatus = mapQueryExceptionToHttpStatus(queryException)
+  ResponseEntity handleDomainException(DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
+    HttpResponseReport httpResponseReport = createHttpResponseReport(domainException, handlerMethod, locale)
+    HttpStatus httpStatus = mapDomainExceptionToHttpStatus(domainException)
     OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseReport.propertiesFiltered)
     ResponseEntity responseEntity = new ResponseEntity(operationResponse, new HttpHeaders(), httpStatus)
 
     return responseEntity
   }
 
-  @ExceptionHandler
-  ResponseEntity handleDomainCommandException(CommandException commandException) {
-    // TODO dmurat: implement handling of CommandException
-    throw commandException
-  }
-
-  protected HttpResponseReport createHttpResponseReport(QueryException queryException, HandlerMethod handlerMethod, Locale locale) {
-    HttpStatus httpStatus = mapQueryExceptionToHttpStatus(queryException)
+  protected HttpResponseReport createHttpResponseReport(DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
+    HttpStatus httpStatus = mapDomainExceptionToHttpStatus(domainException)
 
     HttpResponseReport httpResponseReport = new HttpResponseReport(
         timestamp: Instant.now(),
         severity: Severity.WARNING,
         locale: locale,
-        violation: createResponseReportViolationPart(queryException),
+        violation: createResponseReportViolationPart(domainException),
         http: createHttpResponseReportPart(httpStatus)
     )
 
-    httpResponseReport = localizeHttpResponseReport(httpResponseReport, queryException, handlerMethod, locale)
+    httpResponseReport = localizeHttpResponseReport(httpResponseReport, domainException, handlerMethod, locale)
 
     return httpResponseReport
   }
 
-  protected HttpStatus mapQueryExceptionToHttpStatus(QueryException queryException) {
+  protected HttpStatus mapDomainExceptionToHttpStatus(DomainException domainException) {
     HttpStatus httpStatus
-    switch (queryException.violationInfo) {
+    switch (domainException.violationInfo) {
       case ViolationInfo.NOT_FOUND:
         httpStatus = HttpStatus.NOT_FOUND
         break
@@ -88,10 +75,10 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler implements Mes
     return httpStatus
   }
 
-  protected ResponseReportViolationPart createResponseReportViolationPart(QueryException queryException) {
+  protected ResponseReportViolationPart createResponseReportViolationPart(DomainException domainException) {
     ResponseReportViolationPart responseReportViolationPart = new ResponseReportViolationPart(
-        code: queryException.violationInfo.violationCode.code,
-        codeMessage: queryException.violationInfo.violationCode.codeMessage
+        code: domainException.violationInfo.violationCode.code,
+        codeMessage: domainException.violationInfo.violationCode.codeMessage
     )
 
     return responseReportViolationPart
@@ -106,14 +93,14 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler implements Mes
     return httpResponseReportPart
   }
 
-  protected HttpResponseReport localizeHttpResponseReport(HttpResponseReport httpResponseReport, QueryException queryException, HandlerMethod handlerMethod, Locale locale) {
+  protected HttpResponseReport localizeHttpResponseReport(HttpResponseReport httpResponseReport, DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
     MessageSourceResolvableSpecification resolvableMessageSpecification = new MessageSourceResolvableSpecification(
         controllerSimpleName: handlerMethod.getBeanType().simpleName.uncapitalize(),
         controllerMethodName: handlerMethod.getMethod().name,
         messageCategory: "failure",
-        messageType: queryException.violationInfo.violationCode.codeAsText,
+        messageType: domainException.violationInfo.violationCode.codeAsText,
         messageSubType: "",
-        severity: queryException.violationInfo.severity.toString().toLowerCase(),
+        severity: domainException.violationInfo.severity.toString().toLowerCase(),
         propertyPath: "report.titleText"
     )
 
