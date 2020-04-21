@@ -8,7 +8,6 @@ import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummar
 import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryResponse
 import net.croz.cargotracker.booking.queryside.application.CargoBookingQueryApplicationService
 import net.croz.cargotracker.booking.queryside.interfaces.web.conversation.CargoSummaryQueryWebRequest
-import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -25,15 +24,20 @@ class CargoBookingQueryController {
   }
 
   @PostMapping("/cargo-summary-query")
-  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(@RequestBody CargoSummaryQueryWebRequest cargoSummaryQueryWebRequest) {
-    def cargoSummary = cargoBookingQueryApplicationService.queryCargoSummary(cargoSummaryQueryWebRequestToCargoSummaryQueryOperationRequest(cargoSummaryQueryWebRequest))
+  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(@RequestBody CargoSummaryQueryWebRequest webRequest, Locale locale) {
+    OperationResponse<CargoSummaryQueryResponse> cargoSummary = cargoBookingQueryApplicationService.queryCargoSummary(createOperationRequest(webRequest, CargoSummaryQueryRequest, locale))
     return cargoSummary
   }
 
-  static OperationRequest<CargoSummaryQueryRequest> cargoSummaryQueryWebRequestToCargoSummaryQueryOperationRequest(CargoSummaryQueryWebRequest cargoSummaryWebRequest) {
-    OperationRequest<CargoSummaryQueryRequest> operationRequest = new OperationRequest<CargoSummaryQueryRequest>(
-        payload: new CargoSummaryQueryRequest(cargoSummaryWebRequest.properties),
-        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): LocaleContextHolder.getLocale()]
+  /**
+   * Creates {@link OperationRequest} from <code>webRequest</code> DTO.
+   *
+   * @param <P> Type of the {@link OperationRequest}'s payload.
+   */
+  static <P> OperationRequest<P> createOperationRequest(Object webRequest, Class<P> operationRequestPayloadType, Locale locale) {
+    OperationRequest<P> operationRequest = new OperationRequest(
+        payload: operationRequestPayloadType.newInstance(webRequest.properties),
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): locale]
     )
 
     return operationRequest
