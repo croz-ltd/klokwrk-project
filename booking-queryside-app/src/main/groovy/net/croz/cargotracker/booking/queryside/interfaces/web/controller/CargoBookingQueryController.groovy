@@ -24,14 +24,19 @@ class CargoBookingQueryController {
   }
 
   @PostMapping("/cargo-summary-query")
-  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(@RequestBody CargoSummaryQueryWebRequest cargoSummaryQueryWebRequest, Locale locale) {
-    def cargoSummary = cargoBookingQueryApplicationService.queryCargoSummary(cargoSummaryQueryWebRequestToCargoSummaryQueryOperationRequest(cargoSummaryQueryWebRequest, locale))
+  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(@RequestBody CargoSummaryQueryWebRequest webRequest, Locale locale) {
+    OperationResponse<CargoSummaryQueryResponse> cargoSummary = cargoBookingQueryApplicationService.queryCargoSummary(createOperationRequest(webRequest, CargoSummaryQueryRequest, locale))
     return cargoSummary
   }
 
-  static OperationRequest<CargoSummaryQueryRequest> cargoSummaryQueryWebRequestToCargoSummaryQueryOperationRequest(CargoSummaryQueryWebRequest cargoSummaryWebRequest, Locale locale) {
-    OperationRequest<CargoSummaryQueryRequest> operationRequest = new OperationRequest<CargoSummaryQueryRequest>(
-        payload: new CargoSummaryQueryRequest(cargoSummaryWebRequest.properties),
+  /**
+   * Creates {@link OperationRequest} from <code>webRequest</code> DTO.
+   *
+   * @param <P> Type of the {@link OperationRequest}'s payload.
+   */
+  static <P> OperationRequest<P> createOperationRequest(Object webRequest, Class<P> operationRequestPayloadType, Locale locale) {
+    OperationRequest<P> operationRequest = new OperationRequest(
+        payload: operationRequestPayloadType.newInstance(webRequest.properties),
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): locale]
     )
 
