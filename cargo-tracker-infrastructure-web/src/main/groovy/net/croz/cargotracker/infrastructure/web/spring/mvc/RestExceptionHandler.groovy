@@ -3,18 +3,20 @@ package net.croz.cargotracker.infrastructure.web.spring.mvc
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.api.open.shared.conversation.OperationResponse
 import net.croz.cargotracker.api.open.shared.conversation.response.ResponseReportViolationPart
-import net.croz.cargotracker.api.open.shared.exceptional.exception.CommandException
 import net.croz.cargotracker.api.open.shared.exceptional.exception.DomainException
-import net.croz.cargotracker.api.open.shared.exceptional.exception.QueryException
 import net.croz.cargotracker.api.open.shared.exceptional.violation.Severity
 import net.croz.cargotracker.api.open.shared.exceptional.violation.ViolationInfo
-import net.croz.cargotracker.infrastructure.web.conversation.response.HttpResponseReportPart
+import net.croz.cargotracker.infrastructure.shared.spring.context.MessageSourceResolvableHelper
+import net.croz.cargotracker.infrastructure.shared.spring.context.MessageSourceResolvableSpecification
 import net.croz.cargotracker.infrastructure.web.conversation.response.HttpResponseReport
-import org.springframework.context.i18n.LocaleContextHolder
+import net.croz.cargotracker.infrastructure.web.conversation.response.HttpResponseReportPart
+import org.springframework.context.MessageSource
+import org.springframework.context.MessageSourceAware
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 
 import java.time.Instant
@@ -25,47 +27,43 @@ import java.time.Instant
 //   https://blog.restcase.com/rest-api-error-handling-problem-details-response/
 //   https://tools.ietf.org/html/rfc7807
 @CompileStatic
-class RestExceptionHandler extends ResponseEntityExceptionHandler {
+class RestExceptionHandler extends ResponseEntityExceptionHandler implements MessageSourceAware {
+  private MessageSource messageSource
 
-  @ExceptionHandler
-  ResponseEntity handleDomainException(DomainException domainException) {
-    throw domainException
+  @Override
+  void setMessageSource(MessageSource messageSource) {
+    this.messageSource = messageSource
   }
 
   @ExceptionHandler
-  ResponseEntity handleDomainQueryException(QueryException queryException) {
-    HttpResponseReport httpResponseReport = createHttpResponseReport(queryException)
-    HttpStatus httpStatus = mapQueryExceptionToHttpStatus(queryException)
+  ResponseEntity handleDomainException(DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
+    HttpResponseReport httpResponseReport = createHttpResponseReport(domainException, handlerMethod, locale)
+    HttpStatus httpStatus = mapDomainExceptionToHttpStatus(domainException)
     OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseReport.propertiesFiltered)
     ResponseEntity responseEntity = new ResponseEntity(operationResponse, new HttpHeaders(), httpStatus)
 
     return responseEntity
   }
 
-  @ExceptionHandler
-  ResponseEntity handleDomainCommandException(CommandException commandException) {
-    // TODO dmurat: implement handling of CommandException
-    throw commandException
-  }
+  protected HttpResponseReport createHttpResponseReport(DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
+    HttpStatus httpStatus = mapDomainExceptionToHttpStatus(domainException)
 
-  protected HttpResponseReport createHttpResponseReport(QueryException queryException) {
-    HttpStatus httpStatus = mapQueryExceptionToHttpStatus(queryException)
-
-    // TODO dmurat: resolve responseReport's titleText and titleDetailedText and violationCodeText through resource bundle
     HttpResponseReport httpResponseReport = new HttpResponseReport(
         timestamp: Instant.now(),
         severity: Severity.WARNING,
-        locale: LocaleContextHolder.locale,
-        violation: createResponseReportViolationPart(queryException),
+        locale: locale,
+        violation: createResponseReportViolationPart(domainException),
         http: createHttpResponseReportPart(httpStatus)
     )
+
+    httpResponseReport = localizeHttpResponseReport(httpResponseReport, domainException, handlerMethod, locale)
 
     return httpResponseReport
   }
 
-  protected HttpStatus mapQueryExceptionToHttpStatus(QueryException queryException) {
+  protected HttpStatus mapDomainExceptionToHttpStatus(DomainException domainException) {
     HttpStatus httpStatus
-    switch (queryException.violationInfo) {
+    switch (domainException.violationInfo) {
       case ViolationInfo.NOT_FOUND:
         httpStatus = HttpStatus.NOT_FOUND
         break
@@ -77,10 +75,10 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
     return httpStatus
   }
 
-  protected ResponseReportViolationPart createResponseReportViolationPart(QueryException queryException) {
+  protected ResponseReportViolationPart createResponseReportViolationPart(DomainException domainException) {
     ResponseReportViolationPart responseReportViolationPart = new ResponseReportViolationPart(
-        code: queryException.violationInfo.violationCode.code,
-        codeMessage: queryException.violationInfo.violationCode.codeMessage
+        code: domainException.violationInfo.violationCode.code,
+        codeMessage: domainException.violationInfo.violationCode.codeMessage
     )
 
     return responseReportViolationPart
@@ -93,5 +91,29 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
     )
 
     return httpResponseReportPart
+  }
+
+  protected HttpResponseReport localizeHttpResponseReport(HttpResponseReport httpResponseReport, DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
+    MessageSourceResolvableSpecification resolvableMessageSpecification = new MessageSourceResolvableSpecification(
+        controllerSimpleName: handlerMethod.getBeanType().simpleName.uncapitalize(),
+        controllerMethodName: handlerMethod.getMethod().name,
+        messageCategory: "failure",
+        messageType: domainException.violationInfo.violationCode.codeAsText,
+        messageSubType: "",
+        severity: domainException.violationInfo.severity.toString().toLowerCase(),
+        propertyPath: "report.titleText"
+    )
+
+    httpResponseReport.titleText = MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
+
+    resolvableMessageSpecification.propertyPath = "report.titleDetailedText"
+    httpResponseReport.titleDetailedText =
+        MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
+
+    resolvableMessageSpecification.propertyPath = "report.violation.codeMessage"
+    httpResponseReport.violation.codeMessage =
+        MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
+
+    return httpResponseReport
   }
 }
