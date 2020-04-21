@@ -10,7 +10,7 @@ class QueryException extends DomainException {
   }
 
   QueryException(ViolationInfo violationInfo) {
-    this(violationInfo, violationInfo.violationCode.text)
+    this(violationInfo, violationInfo.violationCode.codeMessage)
   }
 
   QueryException(ViolationInfo violationInfo, String message) {

@@ -10,7 +10,7 @@ class CommandException extends DomainException {
   }
 
   CommandException(ViolationInfo violationInfo) {
-    this(violationInfo, violationInfo.violationCode.text)
+    this(violationInfo, violationInfo.violationCode.codeMessage)
   }
 
   CommandException(ViolationInfo violationInfo, String message) {

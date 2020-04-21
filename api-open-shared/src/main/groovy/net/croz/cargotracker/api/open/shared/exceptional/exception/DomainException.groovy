@@ -12,7 +12,7 @@ class DomainException extends RuntimeException {
   }
 
   DomainException(ViolationInfo violationInfo) {
-    this(violationInfo, violationInfo.violationCode.text)
+    this(violationInfo, violationInfo.violationCode.codeMessage)
   }
 
   DomainException(ViolationInfo violationInfo, String message) {
@@ -24,7 +24,7 @@ class DomainException extends RuntimeException {
   }
 
   DomainException(ViolationInfo violationInfo, String message, Throwable cause, Boolean writableStackTrace) {
-    super(message ?: violationInfo.violationCode.text, cause, false, writableStackTrace)
+    super(message ?: violationInfo.violationCode.codeMessage, cause, false, writableStackTrace)
     this.violationInfo = violationInfo
   }
 }
