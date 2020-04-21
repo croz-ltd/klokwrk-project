@@ -21,17 +21,11 @@ class CargoBookingQueryApplicationService {
 
   OperationResponse<CargoSummaryQueryResponse> queryCargoSummary(OperationRequest<CargoSummaryQueryRequest> cargoSummaryQueryOperationRequest) {
     CargoSummaryQueryResponse cargoSummaryQueryResponse = queryGatewayAdapter.query(cargoSummaryQueryOperationRequest, CargoSummaryQueryResponse)
-    return cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(cargoSummaryQueryResponse, cargoSummaryQueryOperationRequest)
+    return cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(cargoSummaryQueryResponse)
   }
 
-  static OperationResponse<CargoSummaryQueryResponse> cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(
-      CargoSummaryQueryResponse cargoSummaryQueryResponse, OperationRequest<CargoSummaryQueryRequest> cargoSummaryQueryOperationRequest)
-  {
-    ResponseReport responseReport = ResponseReport.createBasicInfoReport().tap {
-      locale = cargoSummaryQueryOperationRequest.locale
-    }
-
-    // TODO dmurat: make an web interceptor for resolving responseReport's titleText and titleDetailedText and for converting responseReport into HttpResponseReport
+  static OperationResponse<CargoSummaryQueryResponse> cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(CargoSummaryQueryResponse cargoSummaryQueryResponse) {
+    ResponseReport responseReport = ResponseReport.createBasicInfoReport()
     return new OperationResponse<CargoSummaryQueryResponse>(payload: cargoSummaryQueryResponse, metaData: responseReport.propertiesFiltered)
   }
 }
