@@ -98,8 +98,19 @@ configure(subprojects.findAll({ !["cargo-tracker-platform"].contains(it.name) })
     return groovyClasspath
   }
 
+  // Sometimes groovydoc needs additional dependencies in its classpath. With configuration bellow each subproject can configure additional groovydoc dependencies by using
+  // groovydocExtendedClasspath. For example:
+  //
+  //   dependencies {
+  //     ...
+  //     groovydocExtendedClasspath "org.apache.tomcat.embed:tomcat-embed-core"
+  //   }
+  configurations {
+    groovydocExtendedClasspath.extendsFrom(runtimeClasspath)
+  }
+
   groovydoc {
-    groovyClasspath = createGroovyDocGroovyClasspath(subproject)
+    groovyClasspath = createGroovyDocGroovyClasspath(subproject) + subproject.configurations.groovydocExtendedClasspath
   }
 
   tasks.register("groovyDocJar", Jar) {
