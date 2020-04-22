@@ -19,6 +19,7 @@ import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandle
  *   <li>https://service.unece.org/trade/locode/Service/LocodeColumn.htm</li>
  *   <li>https://www.unece.org/cefact/locode/service/location</li>
  *   <li>https://service.unece.org/trade/locode/hr.htm</li>
+ *   <li>http://tfig.unece.org/contents/recommendation-16.htm</li>
  * </ul>
  */
 @Immutable
@@ -43,8 +44,11 @@ class Location implements PostMapConstructorCheckable {
    */
   InternationalizedName countryName
 
-  // TODO dmurat: expand it into object. Do not use right now
-//  String function
+  /**
+   * 8-character function classifier code for the UN/LOCODE location.
+   */
+  UnLoCodeFunction unLoCodeFunction
+
   // TODO dmurat: expand it into object. Do not use right now
 //  String status
   // TODO dmurat: expand it into object. Do not use right now
@@ -55,5 +59,26 @@ class Location implements PostMapConstructorCheckable {
     assert unLoCode
     assert name
     assert countryName
+    assert unLoCodeFunction
+  }
+
+  Boolean canAcceptCargoFrom(Location originLocation) {
+    if (this == originLocation) {
+      return false
+    }
+
+    if (!originLocation) {
+      return false
+    }
+
+    if (unLoCodeFunction.isPort() && originLocation.unLoCodeFunction.isPort()) {
+      return true
+    }
+
+    if (unLoCodeFunction.isRailTerminal() && originLocation.unLoCodeFunction.isRailTerminal()) {
+      return true
+    }
+
+    return false
   }
 }
