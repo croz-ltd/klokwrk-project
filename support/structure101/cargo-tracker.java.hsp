@@ -24,13 +24,15 @@
     <classpathentry kind="lib" path="../../booking-queryside-app/build/classes/groovy/main" module="booking-queryside-app" displaymodule="booking-queryside-app" />
     <classpathentry kind="lib" path="../../booking-queryside-rdbms-model/build/classes/groovy/main" module="booking-queryside-rdbms-model" displaymodule="booking-queryside-rdbms-model" />
     <classpathentry kind="lib" path="../../booking-queryside-rdbms-projection-app/build/classes/groovy/main" module="booking-queryside-rdbms-projection-app" displaymodule="booking-queryside-rdbms-projection-app" />
+    <classpathentry kind="lib" path="../../cargo-tracker-infrastructure-axon/build/classes/groovy/main" module="cargo-tracker-infrastructure-axon" displaymodule="cargo-tracker-infrastructure-axon" />
+    <classpathentry kind="lib" path="../../cargo-tracker-infrastructure-web/build/classes/groovy/main" module="cargo-tracker-infrastructure-web" displaymodule="cargo-tracker-infrastructure-web" />
     <classpathentry kind="lib" path="../../infrastructure-shared-axon/build/classes/groovy/main" module="infrastructure-shared-axon" displaymodule="infrastructure-shared-axon" />
     <classpathentry kind="lib" path="../../infrastructure-shared-datasource-proxy/build/classes/groovy/main" module="infrastructure-shared-datasource-proxy" displaymodule="infrastructure-shared-datasource-proxy" />
     <classpathentry kind="lib" path="../../infrastructure-shared-datasource-proxy-springboot/build/classes/groovy/main" module="infrastructure-shared-datasource-proxy-springboot" displaymodule="infrastructure-shared-datasource-proxy-springboot" />
     <classpathentry kind="lib" path="../../infrastructure-shared-hibernate/build/classes/groovy/main" module="infrastructure-shared-hibernate" displaymodule="infrastructure-shared-hibernate" />
     <classpathentry kind="lib" path="../../infrastructure-shared-jackson/build/classes/groovy/main" module="infrastructure-shared-jackson" displaymodule="infrastructure-shared-jackson" />
     <classpathentry kind="lib" path="../../infrastructure-shared-jackson-springboot/build/classes/groovy/main" module="infrastructure-shared-jackson-springboot" displaymodule="infrastructure-shared-jackson-springboot" />
-    <classpathentry kind="lib" path="../../infrastructure-shared-metadata/build/classes/groovy/main" module="infrastructure-shared-metadata" displaymodule="infrastructure-shared-metadata" />
+    <classpathentry kind="lib" path="../../infrastructure-shared-spring-context/build/classes/groovy/main" module="infrastructure-shared-spring-context" displaymodule="infrastructure-shared-spring-context" />
     <classpathentry kind="lib" path="../../lang-groovy/build/classes/groovy/main" module="lang-groovy" displaymodule="lang-groovy" />
   </classpath>
   <pom-root-files />
@@ -45,6 +47,16 @@
         <cell name="booking-commandside-app" pattern="booking-commandside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
         <cell name="booking-queryside-rdbms-projection-app" pattern="booking-queryside-rdbms-projection-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
         <cell name="booking-queryside-app" pattern="booking-queryside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+      </row>
+      <row>
+        <cell name="cargo-tracker-infrastructure" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+          <grid>
+            <row>
+              <cell name="cargo-tracker-infrastructure-axon" pattern="cargo-tracker-infrastructure-axon.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="cargo-tracker-infrastructure-web" pattern="cargo-tracker-infrastructure-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+          </grid>
+        </cell>
       </row>
       <row>
         <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
@@ -104,9 +116,7 @@
                 </grid>
               </cell>
               <cell name="infrastructure-shared-hibernate" pattern="infrastructure-shared-hibernate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-            </row>
-            <row>
-              <cell name="infrastructure-shared-metadata" pattern="infrastructure-shared-metadata.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="infrastructure-shared-spring-context" pattern="infrastructure-shared-spring-context.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
           </grid>
         </cell>
