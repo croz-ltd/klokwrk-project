@@ -5,7 +5,7 @@ import net.croz.cargotracker.api.open.shared.conversation.OperationResponse
 import net.croz.cargotracker.api.open.shared.conversation.response.ResponseReportViolationPart
 import net.croz.cargotracker.api.open.shared.exceptional.exception.DomainException
 import net.croz.cargotracker.api.open.shared.exceptional.violation.Severity
-import net.croz.cargotracker.api.open.shared.exceptional.violation.ViolationInfo
+import net.croz.cargotracker.api.open.shared.exceptional.violation.ViolationCode
 import net.croz.cargotracker.infrastructure.shared.spring.context.MessageSourceResolvableHelper
 import net.croz.cargotracker.infrastructure.shared.spring.context.MessageSourceResolvableSpecification
 import net.croz.cargotracker.infrastructure.web.conversation.response.HttpResponseReport
@@ -63,8 +63,11 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler implements Mes
 
   protected HttpStatus mapDomainExceptionToHttpStatus(DomainException domainException) {
     HttpStatus httpStatus
-    switch (domainException.violationInfo) {
-      case ViolationInfo.NOT_FOUND:
+    switch (domainException.violationInfo.violationCode.code) {
+      case ViolationCode.BAD_REQUEST.code:
+        httpStatus = HttpStatus.BAD_REQUEST
+        break
+      case ViolationCode.NOT_FOUND.code:
         httpStatus = HttpStatus.NOT_FOUND
         break
       default:
