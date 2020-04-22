@@ -18,3 +18,4 @@ logging.level.cargotracker.axon.eventsourcing-handler-logging: DEBUG # To see ev
 logging.level.org.axonframework.eventsourcing: DEBUG
 logging.level.org.hibernate.SQL: DEBUG  # To see hibernate statements without parameters
 logging.level.org.hibernate.type: TRACE # To see parameters bound to hibernate statements
+logging.level.net.croz.cargotracker.infrastructure.axon.messagehandler.CommandHandlerTrait: DEBUG # To see original exception stacktrace (before remoting) thrown in axon query handlers.
