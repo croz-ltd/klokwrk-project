@@ -3,9 +3,13 @@ package net.croz.cargotracker.booking.commandside.domain.aggregate
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
+import net.croz.cargotracker.api.open.shared.exceptional.exception.CommandException
+import net.croz.cargotracker.api.open.shared.exceptional.violation.ViolationCode
+import net.croz.cargotracker.api.open.shared.exceptional.violation.ViolationInfo
 import net.croz.cargotracker.booking.api.axon.command.CargoBookCommand
 import net.croz.cargotracker.booking.api.axon.event.CargoBookedEvent
 import net.croz.cargotracker.booking.domain.model.Location
+import net.croz.cargotracker.infrastructure.axon.messagehandler.CommandHandlerTrait
 import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.messaging.MetaData
@@ -18,7 +22,7 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply
 @MapConstructor(noArg = true)
 @Aggregate
 @CompileStatic
-class CargoAggregate {
+class CargoAggregate implements CommandHandlerTrait {
   @AggregateIdentifier
   String aggregateIdentifier
 
@@ -26,6 +30,12 @@ class CargoAggregate {
   Location destinationLocation
 
   CargoAggregate bookCargo(CargoBookCommand cargoBookCommand, MetaData metaData) {
+    if (!cargoBookCommand.destinationLocation.canAcceptCargoFrom(cargoBookCommand.originLocation)) {
+      ViolationCode violationCode = new ViolationCode(code: ViolationCode.BAD_REQUEST.code, codeAsText: "destinationLocationCannotAcceptCargo", codeMessage: ViolationCode.BAD_REQUEST.codeMessage)
+      ViolationInfo violationInfo = new ViolationInfo(severity: ViolationInfo.BAD_REQUEST.severity, violationCode: violationCode)
+      doThrow(new CommandException(violationInfo))
+    }
+
     apply(cargoBookedEventFromCargoBookCommand(cargoBookCommand), metaData)
     return this
   }

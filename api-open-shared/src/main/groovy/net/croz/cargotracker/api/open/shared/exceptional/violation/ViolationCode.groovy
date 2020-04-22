@@ -18,6 +18,7 @@ import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandle
 @CompileStatic
 class ViolationCode implements PostMapConstructorCheckable {
   static final ViolationCode UNKNOWN = new ViolationCode(code: "500", codeAsText: "internalServerError", codeMessage: "Internal Server Error")
+  static final ViolationCode BAD_REQUEST = new ViolationCode(code: "400", codeAsText: "badRequest", codeMessage: "Bad Request")
   static final ViolationCode NOT_FOUND = new ViolationCode(code: "404", codeAsText: "notFound", codeMessage: "Not Found")
 
   String code
