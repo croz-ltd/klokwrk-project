@@ -10,12 +10,12 @@ include(
 
     "cargo-tracker-platform",
 
+    "infrastructure-library-datasource-proxy",
     "infrastructure-project-axon-api",
     "infrastructure-project-axon-logging",
     "infrastructure-project-axon-cqrs",
     "infrastructure-project-boundary-api",
     "infrastructure-project-web",
-    "infrastructure-shared-datasource-proxy",
     "infrastructure-shared-datasource-proxy-springboot",
     "infrastructure-shared-hibernate",
     "infrastructure-shared-jackson",
