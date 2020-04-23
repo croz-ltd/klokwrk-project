@@ -1,9 +1,9 @@
 apply plugin: "java-library"
 
 dependencies {
-  implementation project(":api-axon-shared")
   implementation project(":booking-api-open")
   implementation project(":booking-domain-model")
+  implementation project(":infrastructure-project-axon-api")
   implementation project(":lang-groovy")
 
   implementation("org.axonframework:axon-modelling") { transitive(false) }
