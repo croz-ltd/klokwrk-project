@@ -24,8 +24,8 @@
     <classpathentry kind="lib" path="../../booking-queryside-app/build/classes/groovy/main" module="booking-queryside-app" displaymodule="booking-queryside-app" />
     <classpathentry kind="lib" path="../../booking-queryside-rdbms-model/build/classes/groovy/main" module="booking-queryside-rdbms-model" displaymodule="booking-queryside-rdbms-model" />
     <classpathentry kind="lib" path="../../booking-queryside-rdbms-projection-app/build/classes/groovy/main" module="booking-queryside-rdbms-projection-app" displaymodule="booking-queryside-rdbms-projection-app" />
-    <classpathentry kind="lib" path="../../cargo-tracker-infrastructure-axon/build/classes/groovy/main" module="cargo-tracker-infrastructure-axon" displaymodule="cargo-tracker-infrastructure-axon" />
     <classpathentry kind="lib" path="../../cargo-tracker-infrastructure-web/build/classes/groovy/main" module="cargo-tracker-infrastructure-web" displaymodule="cargo-tracker-infrastructure-web" />
+    <classpathentry kind="lib" path="../../infrastructure-project-axon-cqrs/build/classes/groovy/main" module="infrastructure-project-axon-cqrs" displaymodule="infrastructure-project-axon-cqrs" />
     <classpathentry kind="lib" path="../../infrastructure-shared-axon/build/classes/groovy/main" module="infrastructure-shared-axon" displaymodule="infrastructure-shared-axon" />
     <classpathentry kind="lib" path="../../infrastructure-shared-datasource-proxy/build/classes/groovy/main" module="infrastructure-shared-datasource-proxy" displaymodule="infrastructure-shared-datasource-proxy" />
     <classpathentry kind="lib" path="../../infrastructure-shared-datasource-proxy-springboot/build/classes/groovy/main" module="infrastructure-shared-datasource-proxy-springboot" displaymodule="infrastructure-shared-datasource-proxy-springboot" />
@@ -52,7 +52,7 @@
         <cell name="cargo-tracker-infrastructure" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
             <row>
-              <cell name="cargo-tracker-infrastructure-axon" pattern="cargo-tracker-infrastructure-axon.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="infrastructure-project-axon-cqrs" pattern="infrastructure-project-axon-cqrs.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
               <cell name="cargo-tracker-infrastructure-web" pattern="cargo-tracker-infrastructure-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
           </grid>

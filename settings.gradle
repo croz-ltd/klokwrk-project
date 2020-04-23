@@ -10,10 +10,10 @@ include(
     "booking-queryside-rdbms-model",
     "booking-queryside-rdbms-projection-app",
 
-    "cargo-tracker-infrastructure-axon",
     "cargo-tracker-infrastructure-web",
     "cargo-tracker-platform",
 
+    "infrastructure-project-axon-cqrs",
     "infrastructure-shared-axon",
     "infrastructure-shared-datasource-proxy",
     "infrastructure-shared-datasource-proxy-springboot",
