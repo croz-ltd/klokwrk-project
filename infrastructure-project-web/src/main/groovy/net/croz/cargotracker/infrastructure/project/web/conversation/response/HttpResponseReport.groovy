@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.web.conversation.response
+package net.croz.cargotracker.infrastructure.project.web.conversation.response
 
 import net.croz.cargotracker.api.open.shared.conversation.response.ResponseReport
 

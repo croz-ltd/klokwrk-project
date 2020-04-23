@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.web.spring.mvc
+package net.croz.cargotracker.infrastructure.project.web.spring.mvc
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.api.open.shared.conversation.OperationResponse
@@ -6,10 +6,10 @@ import net.croz.cargotracker.api.open.shared.conversation.response.ResponseRepor
 import net.croz.cargotracker.api.open.shared.exceptional.exception.DomainException
 import net.croz.cargotracker.api.open.shared.exceptional.violation.Severity
 import net.croz.cargotracker.api.open.shared.exceptional.violation.ViolationCode
+import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseReport
+import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseReportPart
 import net.croz.cargotracker.infrastructure.shared.spring.context.MessageSourceResolvableHelper
 import net.croz.cargotracker.infrastructure.shared.spring.context.MessageSourceResolvableSpecification
-import net.croz.cargotracker.infrastructure.web.conversation.response.HttpResponseReport
-import net.croz.cargotracker.infrastructure.web.conversation.response.HttpResponseReportPart
 import org.springframework.context.MessageSource
 import org.springframework.context.MessageSourceAware
 import org.springframework.http.HttpHeaders
