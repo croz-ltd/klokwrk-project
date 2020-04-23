@@ -1,8 +1,8 @@
 package net.croz.cargotracker.booking.queryside.application
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryRequest
-import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryResponse
+import net.croz.cargotracker.booking.boundary.api.queryside.conversation.CargoSummaryQueryRequest
+import net.croz.cargotracker.booking.boundary.api.queryside.conversation.CargoSummaryQueryResponse
 import net.croz.cargotracker.infrastructure.project.axon.cqrs.querygateway.QueryGatewayAdapter
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationRequest
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
