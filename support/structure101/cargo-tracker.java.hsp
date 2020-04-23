@@ -15,7 +15,7 @@
   <property name="project-excluded" />
   <property name="show-needs-to-compile" value="false" />
   <classpath>
-    <classpathentry kind="lib" path="../../booking-api-axon/build/classes/groovy/main" module="booking-api-axon" displaymodule="booking-api-axon" />
+    <classpathentry kind="lib" path="../../booking-axon-api/build/classes/groovy/main" module="booking-axon-api" displaymodule="booking-axon-api" />
     <classpathentry kind="lib" path="../../booking-api-open/build/classes/groovy/main" module="booking-api-open" displaymodule="booking-api-open" />
     <classpathentry kind="lib" path="../../booking-commandside-app/build/classes/groovy/main" module="booking-commandside-app" displaymodule="booking-commandside-app" />
     <classpathentry kind="lib" path="../../booking-domain-model/build/classes/groovy/main" module="booking-domain-model" displaymodule="booking-domain-model" />
@@ -55,7 +55,7 @@
               <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                 <grid>
                   <row>
-                    <cell name="booking-api-axon" pattern="booking-api-axon.*" vexpanded="false" illegal="false" visibility="public" drill="true" bgcolor="204,204,204" />
+                    <cell name="booking-axon-api" pattern="booking-axon-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" bgcolor="204,204,204" />
                   </row>
                   <row>
                     <cell name="booking-api-open" pattern="booking-api-open.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
