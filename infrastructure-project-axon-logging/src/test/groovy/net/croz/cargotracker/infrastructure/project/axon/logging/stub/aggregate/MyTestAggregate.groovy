@@ -1,9 +1,9 @@
-package net.croz.cargotracker.infrastructure.shared.axon.logging.stub.aggregate
+package net.croz.cargotracker.infrastructure.project.axon.logging.stub.aggregate
 
-import net.croz.cargotracker.infrastructure.shared.axon.logging.stub.command.CreateMyTestAggregateCommand
-import net.croz.cargotracker.infrastructure.shared.axon.logging.stub.command.UpdateMyTestAggregateCommand
-import net.croz.cargotracker.infrastructure.shared.axon.logging.stub.event.MyTestAggregateCreatedEvent
-import net.croz.cargotracker.infrastructure.shared.axon.logging.stub.event.MyTestAggregateUpdatedEvent
+import net.croz.cargotracker.infrastructure.project.axon.logging.stub.command.CreateMyTestAggregateCommand
+import net.croz.cargotracker.infrastructure.project.axon.logging.stub.command.UpdateMyTestAggregateCommand
+import net.croz.cargotracker.infrastructure.project.axon.logging.stub.event.MyTestAggregateCreatedEvent
+import net.croz.cargotracker.infrastructure.project.axon.logging.stub.event.MyTestAggregateUpdatedEvent
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier

@@ -1,7 +1,7 @@
-package net.croz.cargotracker.infrastructure.shared.axon.logging.stub.projection
+package net.croz.cargotracker.infrastructure.project.axon.logging.stub.projection
 
-import net.croz.cargotracker.infrastructure.shared.axon.logging.stub.event.MyTestAggregateCreatedEvent
-import net.croz.cargotracker.infrastructure.shared.axon.logging.stub.event.MyTestAggregateUpdatedEvent
+import net.croz.cargotracker.infrastructure.project.axon.logging.stub.event.MyTestAggregateCreatedEvent
+import net.croz.cargotracker.infrastructure.project.axon.logging.stub.event.MyTestAggregateUpdatedEvent
 import org.axonframework.eventhandling.EventHandler
 
 class MyTestProjector {

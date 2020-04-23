@@ -1,8 +1,8 @@
-package net.croz.cargotracker.infrastructure.shared.axon.logging
+package net.croz.cargotracker.infrastructure.project.axon.logging
 
 import com.google.common.collect.ImmutableList
-import net.croz.cargotracker.infrastructure.shared.axon.logging.stub.query.MyTestQuery
-import net.croz.cargotracker.infrastructure.shared.axon.logging.stub.query.MyTestQueryHandler
+import net.croz.cargotracker.infrastructure.project.axon.logging.stub.query.MyTestQuery
+import net.croz.cargotracker.infrastructure.project.axon.logging.stub.query.MyTestQueryHandler
 import org.axonframework.config.Configuration
 import org.axonframework.config.Configurer
 import org.axonframework.config.DefaultConfigurer

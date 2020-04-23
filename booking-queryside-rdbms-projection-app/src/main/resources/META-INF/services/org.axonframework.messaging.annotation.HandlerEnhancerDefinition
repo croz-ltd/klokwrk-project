@@ -1,1 +1,1 @@
-net.croz.cargotracker.infrastructure.shared.axon.logging.LoggingEventHandlerEnhancerDefinition
+net.croz.cargotracker.infrastructure.project.axon.logging.LoggingEventHandlerEnhancerDefinition

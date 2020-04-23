@@ -1,10 +1,10 @@
-package net.croz.cargotracker.infrastructure.shared.axon.logging
+package net.croz.cargotracker.infrastructure.project.axon.logging
 
 import com.google.common.collect.ImmutableList
-import net.croz.cargotracker.infrastructure.shared.axon.logging.stub.aggregate.MyTestAggregate
-import net.croz.cargotracker.infrastructure.shared.axon.logging.stub.command.CreateMyTestAggregateCommand
-import net.croz.cargotracker.infrastructure.shared.axon.logging.stub.command.UpdateMyTestAggregateCommand
-import net.croz.cargotracker.infrastructure.shared.axon.logging.stub.projection.MyTestProjector
+import net.croz.cargotracker.infrastructure.project.axon.logging.stub.aggregate.MyTestAggregate
+import net.croz.cargotracker.infrastructure.project.axon.logging.stub.command.CreateMyTestAggregateCommand
+import net.croz.cargotracker.infrastructure.project.axon.logging.stub.command.UpdateMyTestAggregateCommand
+import net.croz.cargotracker.infrastructure.project.axon.logging.stub.projection.MyTestProjector
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.config.Configuration
 import org.axonframework.config.Configurer

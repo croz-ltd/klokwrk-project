@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.shared.axon.logging.stub.query
+package net.croz.cargotracker.infrastructure.project.axon.logging.stub.query
 
 import org.axonframework.queryhandling.QueryHandler
 

@@ -1,7 +1,7 @@
 package net.croz.cargotracker.booking.queryside.infrastructure.springbootconfig
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.shared.axon.logging.LoggingQueryHandlerEnhancerDefinition
+import net.croz.cargotracker.infrastructure.project.axon.logging.LoggingQueryHandlerEnhancerDefinition
 import net.croz.cargotracker.infrastructure.shared.springboot.datasourceproxy.DataSourceProxyBeanPostProcessor
 import net.croz.cargotracker.infrastructure.shared.springboot.datasourceproxy.DataSourceProxyConfigurationProperties
 import net.croz.cargotracker.infrastructure.shared.springboot.jackson.EssentialJacksonCustomizer

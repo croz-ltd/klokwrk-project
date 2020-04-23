@@ -1,8 +1,8 @@
 package net.croz.cargotracker.booking.commandside.infrastructure.springbootconfig
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.shared.axon.logging.LoggingCommandHandlerEnhancerDefinition
-import net.croz.cargotracker.infrastructure.shared.axon.logging.LoggingEventSourcingHandlerEnhancerDefinition
+import net.croz.cargotracker.infrastructure.project.axon.logging.LoggingCommandHandlerEnhancerDefinition
+import net.croz.cargotracker.infrastructure.project.axon.logging.LoggingEventSourcingHandlerEnhancerDefinition
 import net.croz.cargotracker.infrastructure.shared.springboot.jackson.EssentialJacksonCustomizer
 import net.croz.cargotracker.infrastructure.shared.springboot.jackson.EssentialJacksonCustomizerConfigurationProperties
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition

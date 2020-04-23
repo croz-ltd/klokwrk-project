@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.shared.axon.logging.stub.command
+package net.croz.cargotracker.infrastructure.project.axon.logging.stub.command
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier
 
