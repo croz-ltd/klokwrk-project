@@ -1,6 +1,6 @@
 include(
     "booking-axon-api",
-    "booking-api-open",
+    "booking-boundary-api",
     "booking-commandside-app",
     "booking-domain-model",
     "booking-queryside-app",

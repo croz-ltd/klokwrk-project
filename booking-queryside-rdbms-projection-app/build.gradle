@@ -13,7 +13,7 @@ springBoot {
 
 dependencies {
   implementation project(":booking-axon-api")
-  implementation project(":booking-api-open")
+  implementation project(":booking-boundary-api")
   implementation project(":booking-domain-model")
   implementation project(":booking-queryside-rdbms-model")
   implementation project(":infrastructure-library-datasourceproxy-springboot")
