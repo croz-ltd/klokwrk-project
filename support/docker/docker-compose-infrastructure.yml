@@ -19,7 +19,7 @@ services:
 
   cargo-tracker-axon-server:
     container_name: cargo-tracker-axon-server
-    image: axoniq/axonserver:4.3.1
+    image: axoniq/axonserver:4.3.2
     ports:
       - 8024:8024
       - 8124:8124
