@@ -23,12 +23,12 @@
     <classpathentry kind="lib" path="../../booking-queryside-rdbms-model/build/classes/groovy/main" module="booking-queryside-rdbms-model" displaymodule="booking-queryside-rdbms-model" />
     <classpathentry kind="lib" path="../../booking-queryside-rdbms-projection-app/build/classes/groovy/main" module="booking-queryside-rdbms-projection-app" displaymodule="booking-queryside-rdbms-projection-app" />
     <classpathentry kind="lib" path="../../infrastructure-library-datasource-proxy/build/classes/groovy/main" module="infrastructure-library-datasource-proxy" displaymodule="infrastructure-library-datasource-proxy" />
+    <classpathentry kind="lib" path="../../infrastructure-library-datasource-proxy-springboot/build/classes/groovy/main" module="infrastructure-library-datasource-proxy-springboot" displaymodule="infrastructure-library-datasource-proxy-springboot" />
     <classpathentry kind="lib" path="../../infrastructure-project-axon-api/build/classes/groovy/main" module="infrastructure-project-axon-api" displaymodule="infrastructure-project-axon-api" />
     <classpathentry kind="lib" path="../../infrastructure-project-axon-cqrs/build/classes/groovy/main" module="infrastructure-project-axon-cqrs" displaymodule="infrastructure-project-axon-cqrs" />
     <classpathentry kind="lib" path="../../infrastructure-project-axon-logging/build/classes/groovy/main" module="infrastructure-project-axon-logging" displaymodule="infrastructure-project-axon-logging" />
     <classpathentry kind="lib" path="../../infrastructure-project-boundary-api/build/classes/groovy/main" module="infrastructure-project-boundary-api" displaymodule="infrastructure-project-boundary-api" />
     <classpathentry kind="lib" path="../../infrastructure-project-web/build/classes/groovy/main" module="infrastructure-project-web" displaymodule="infrastructure-project-web" />
-    <classpathentry kind="lib" path="../../infrastructure-shared-datasource-proxy-springboot/build/classes/groovy/main" module="infrastructure-shared-datasource-proxy-springboot" displaymodule="infrastructure-shared-datasource-proxy-springboot" />
     <classpathentry kind="lib" path="../../infrastructure-shared-hibernate/build/classes/groovy/main" module="infrastructure-shared-hibernate" displaymodule="infrastructure-shared-hibernate" />
     <classpathentry kind="lib" path="../../infrastructure-shared-jackson/build/classes/groovy/main" module="infrastructure-shared-jackson" displaymodule="infrastructure-shared-jackson" />
     <classpathentry kind="lib" path="../../infrastructure-shared-jackson-springboot/build/classes/groovy/main" module="infrastructure-shared-jackson-springboot" displaymodule="infrastructure-shared-jackson-springboot" />
@@ -108,7 +108,7 @@
               <cell name="infrastructure-datasource-proxy" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                 <grid>
                   <row>
-                    <cell name="infrastructure-shared-datasource-proxy-springboot" pattern="infrastructure-shared-datasource-proxy-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="infrastructure-library-datasource-proxy-springboot" pattern="infrastructure-library-datasource-proxy-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
                     <cell name="infrastructure-library-datasource-proxy" pattern="infrastructure-library-datasource-proxy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />

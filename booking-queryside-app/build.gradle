@@ -14,11 +14,11 @@ springBoot {
 dependencies {
   implementation project(":booking-api-open")
   implementation project(":booking-queryside-rdbms-model")
+  implementation project(":infrastructure-library-datasource-proxy-springboot")
   implementation project(":infrastructure-project-axon-cqrs")
   implementation project(":infrastructure-project-axon-logging")
   implementation project(":infrastructure-project-boundary-api")
   implementation project(":infrastructure-project-web")
-  implementation project(":infrastructure-shared-datasource-proxy-springboot")
   implementation project(":infrastructure-shared-hibernate")
   implementation project(":infrastructure-shared-jackson-springboot")
   implementation project(":lang-groovy")
