@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.shared.springboot.datasourceproxy
+package net.croz.cargotracker.infrastructure.library.datasourceproxy.springboot
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.infrastructure.library.datasourceproxy.Slf4jFilterableQueryLoggingListener
