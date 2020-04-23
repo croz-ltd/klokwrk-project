@@ -1,6 +1,5 @@
 include(
     "api-axon-shared",
-    "api-open-shared",
 
     "booking-api-axon",
     "booking-api-open",
@@ -13,6 +12,7 @@ include(
     "cargo-tracker-platform",
 
     "infrastructure-project-axon-cqrs",
+    "infrastructure-project-boundary-api",
     "infrastructure-project-web",
     "infrastructure-shared-axon",
     "infrastructure-shared-datasource-proxy",

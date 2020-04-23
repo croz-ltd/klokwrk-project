@@ -16,7 +16,6 @@
   <property name="show-needs-to-compile" value="false" />
   <classpath>
     <classpathentry kind="lib" path="../../api-axon-shared/build/classes/groovy/main" module="api-axon-shared" displaymodule="api-axon-shared" />
-    <classpathentry kind="lib" path="../../api-open-shared/build/classes/groovy/main" module="api-open-shared" displaymodule="api-open-shared" />
     <classpathentry kind="lib" path="../../booking-api-axon/build/classes/groovy/main" module="booking-api-axon" displaymodule="booking-api-axon" />
     <classpathentry kind="lib" path="../../booking-api-open/build/classes/groovy/main" module="booking-api-open" displaymodule="booking-api-open" />
     <classpathentry kind="lib" path="../../booking-commandside-app/build/classes/groovy/main" module="booking-commandside-app" displaymodule="booking-commandside-app" />
@@ -25,6 +24,7 @@
     <classpathentry kind="lib" path="../../booking-queryside-rdbms-model/build/classes/groovy/main" module="booking-queryside-rdbms-model" displaymodule="booking-queryside-rdbms-model" />
     <classpathentry kind="lib" path="../../booking-queryside-rdbms-projection-app/build/classes/groovy/main" module="booking-queryside-rdbms-projection-app" displaymodule="booking-queryside-rdbms-projection-app" />
     <classpathentry kind="lib" path="../../infrastructure-project-axon-cqrs/build/classes/groovy/main" module="infrastructure-project-axon-cqrs" displaymodule="infrastructure-project-axon-cqrs" />
+    <classpathentry kind="lib" path="../../infrastructure-project-boundary-api/build/classes/groovy/main" module="infrastructure-project-boundary-api" displaymodule="infrastructure-project-boundary-api" />
     <classpathentry kind="lib" path="../../infrastructure-project-web/build/classes/groovy/main" module="infrastructure-project-web" displaymodule="infrastructure-project-web" />
     <classpathentry kind="lib" path="../../infrastructure-shared-axon/build/classes/groovy/main" module="infrastructure-shared-axon" displaymodule="infrastructure-shared-axon" />
     <classpathentry kind="lib" path="../../infrastructure-shared-datasource-proxy/build/classes/groovy/main" module="infrastructure-shared-datasource-proxy" displaymodule="infrastructure-shared-datasource-proxy" />
@@ -65,7 +65,7 @@
               <cell name="booking-api-open" pattern="booking-api-open.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
             <row>
-              <cell name="api-open-shared" pattern="api-open-shared.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="infrastructure-project-boundary-api" pattern="infrastructure-project-boundary-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
           </grid>
         </cell>

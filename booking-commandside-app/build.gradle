@@ -16,11 +16,11 @@ springBoot {
 
 dependencies {
   implementation project(":api-axon-shared")
-  implementation project(":api-open-shared")
   implementation project(":booking-api-axon")
   implementation project(":booking-api-open")
   implementation project(":booking-domain-model")
   implementation project(":infrastructure-project-axon-cqrs")
+  implementation project(":infrastructure-project-boundary-api")
   implementation project(":infrastructure-project-web")
   implementation project(":infrastructure-shared-axon")
   implementation project(":infrastructure-shared-jackson-springboot")

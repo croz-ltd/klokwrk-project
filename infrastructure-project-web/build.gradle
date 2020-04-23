@@ -1,7 +1,7 @@
 apply plugin: "java-library"
 
 dependencies {
-  implementation project(":api-open-shared")
+  implementation project(":infrastructure-project-boundary-api")
   implementation project(":infrastructure-shared-spring-context")
   implementation project(":lang-groovy")
 
