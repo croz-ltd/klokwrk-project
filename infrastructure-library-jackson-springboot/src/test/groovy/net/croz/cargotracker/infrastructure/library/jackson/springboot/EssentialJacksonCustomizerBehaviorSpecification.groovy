@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.shared.springboot.jackson
+package net.croz.cargotracker.infrastructure.library.jackson.springboot
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired

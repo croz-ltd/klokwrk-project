@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.shared.springboot.jackson
+package net.croz.cargotracker.infrastructure.library.jackson.springboot
 
 import groovy.transform.CompileStatic
 import org.springframework.boot.context.properties.ConfigurationProperties
