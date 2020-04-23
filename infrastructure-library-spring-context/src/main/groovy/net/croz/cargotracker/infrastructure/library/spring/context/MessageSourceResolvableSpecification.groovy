@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.shared.spring.context
+package net.croz.cargotracker.infrastructure.library.spring.context
 
 import groovy.transform.CompileStatic
 

@@ -8,8 +8,8 @@ import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.vio
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationCode
 import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseReport
 import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseReportPart
-import net.croz.cargotracker.infrastructure.shared.spring.context.MessageSourceResolvableHelper
-import net.croz.cargotracker.infrastructure.shared.spring.context.MessageSourceResolvableSpecification
+import net.croz.cargotracker.infrastructure.library.spring.context.MessageSourceResolvableHelper
+import net.croz.cargotracker.infrastructure.library.spring.context.MessageSourceResolvableSpecification
 import org.springframework.context.MessageSource
 import org.springframework.context.MessageSourceAware
 import org.springframework.http.HttpHeaders
