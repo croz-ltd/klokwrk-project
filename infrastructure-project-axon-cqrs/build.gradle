@@ -1,0 +1,9 @@
+apply plugin: "java-library"
+
+dependencies {
+  implementation project(":infrastructure-project-boundary-api")
+  implementation project(":lang-groovy")
+
+  implementation "org.axonframework:axon-messaging"
+  implementation "org.codehaus.groovy:groovy"
+}

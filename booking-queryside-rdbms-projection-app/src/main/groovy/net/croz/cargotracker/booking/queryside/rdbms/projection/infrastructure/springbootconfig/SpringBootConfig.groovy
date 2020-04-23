@@ -1,10 +1,10 @@
 package net.croz.cargotracker.booking.queryside.rdbms.projection.infrastructure.springbootconfig
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.shared.springboot.datasourceproxy.DataSourceProxyBeanPostProcessor
-import net.croz.cargotracker.infrastructure.shared.springboot.datasourceproxy.DataSourceProxyConfigurationProperties
-import net.croz.cargotracker.infrastructure.shared.springboot.jackson.EssentialJacksonCustomizer
-import net.croz.cargotracker.infrastructure.shared.springboot.jackson.EssentialJacksonCustomizerConfigurationProperties
+import net.croz.cargotracker.infrastructure.library.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
+import net.croz.cargotracker.infrastructure.library.datasourceproxy.springboot.DataSourceProxyConfigurationProperties
+import net.croz.cargotracker.infrastructure.library.jackson.springboot.EssentialJacksonCustomizer
+import net.croz.cargotracker.infrastructure.library.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean

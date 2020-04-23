@@ -1,11 +1,11 @@
 package net.croz.cargotracker.booking.commandside.interfaces.web.controller
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.api.open.shared.conversation.OperationResponse
-import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookResponse
+import net.croz.cargotracker.booking.boundary.api.commandside.conversation.CargoBookResponse
 import net.croz.cargotracker.booking.commandside.application.service.CargoBookingApplicationService
 import net.croz.cargotracker.booking.commandside.interfaces.web.assembler.CargoBookingCommandAssembler
 import net.croz.cargotracker.booking.commandside.interfaces.web.conversation.CargoBookWebRequest
+import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping

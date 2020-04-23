@@ -1,10 +1,10 @@
 package net.croz.cargotracker.booking.commandside.interfaces.web.assembler
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.api.open.shared.conversation.MetaDataConstant
-import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
-import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookRequest
+import net.croz.cargotracker.booking.boundary.api.commandside.conversation.CargoBookRequest
 import net.croz.cargotracker.booking.commandside.interfaces.web.conversation.CargoBookWebRequest
+import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.MetaDataConstant
+import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationRequest
 
 import javax.servlet.http.HttpServletRequest
 

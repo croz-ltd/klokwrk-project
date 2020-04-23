@@ -1,26 +1,25 @@
 include(
-    "api-axon-shared",
-    "api-open-shared",
-
-    "booking-api-axon",
-    "booking-api-open",
+    "booking-axon-api",
+    "booking-boundary-api",
     "booking-commandside-app",
     "booking-domain-model",
     "booking-queryside-app",
     "booking-queryside-rdbms-model",
     "booking-queryside-rdbms-projection-app",
 
-    "cargo-tracker-infrastructure-axon",
-    "cargo-tracker-infrastructure-web",
     "cargo-tracker-platform",
 
-    "infrastructure-shared-axon",
-    "infrastructure-shared-datasource-proxy",
-    "infrastructure-shared-datasource-proxy-springboot",
-    "infrastructure-shared-hibernate",
-    "infrastructure-shared-jackson",
-    "infrastructure-shared-jackson-springboot",
-    "infrastructure-shared-spring-context",
+    "infrastructure-library-datasourceproxy",
+    "infrastructure-library-datasourceproxy-springboot",
+    "infrastructure-library-hibernate",
+    "infrastructure-library-jackson",
+    "infrastructure-library-jackson-springboot",
+    "infrastructure-library-spring-context",
+    "infrastructure-project-axon-api",
+    "infrastructure-project-axon-logging",
+    "infrastructure-project-axon-cqrs",
+    "infrastructure-project-boundary-api",
+    "infrastructure-project-web",
 
     "lang-groovy"
 )

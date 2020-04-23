@@ -1,0 +1,13 @@
+apply plugin: "java-library"
+
+dependencies {
+  implementation project(":booking-boundary-api")
+  implementation project(":booking-domain-model")
+  implementation project(":infrastructure-project-axon-api")
+  implementation project(":lang-groovy")
+
+  implementation("org.axonframework:axon-modelling") { transitive(false) }
+  implementation "org.codehaus.groovy:groovy"
+
+  testImplementation "org.spockframework:spock-core"
+}

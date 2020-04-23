@@ -15,24 +15,24 @@
   <property name="project-excluded" />
   <property name="show-needs-to-compile" value="false" />
   <classpath>
-    <classpathentry kind="lib" path="../../api-axon-shared/build/classes/groovy/main" module="api-axon-shared" displaymodule="api-axon-shared" />
-    <classpathentry kind="lib" path="../../api-open-shared/build/classes/groovy/main" module="api-open-shared" displaymodule="api-open-shared" />
-    <classpathentry kind="lib" path="../../booking-api-axon/build/classes/groovy/main" module="booking-api-axon" displaymodule="booking-api-axon" />
-    <classpathentry kind="lib" path="../../booking-api-open/build/classes/groovy/main" module="booking-api-open" displaymodule="booking-api-open" />
+    <classpathentry kind="lib" path="../../booking-axon-api/build/classes/groovy/main" module="booking-axon-api" displaymodule="booking-axon-api" />
+    <classpathentry kind="lib" path="../../booking-boundary-api/build/classes/groovy/main" module="booking-boundary-api" displaymodule="booking-boundary-api" />
     <classpathentry kind="lib" path="../../booking-commandside-app/build/classes/groovy/main" module="booking-commandside-app" displaymodule="booking-commandside-app" />
     <classpathentry kind="lib" path="../../booking-domain-model/build/classes/groovy/main" module="booking-domain-model" displaymodule="booking-domain-model" />
     <classpathentry kind="lib" path="../../booking-queryside-app/build/classes/groovy/main" module="booking-queryside-app" displaymodule="booking-queryside-app" />
     <classpathentry kind="lib" path="../../booking-queryside-rdbms-model/build/classes/groovy/main" module="booking-queryside-rdbms-model" displaymodule="booking-queryside-rdbms-model" />
     <classpathentry kind="lib" path="../../booking-queryside-rdbms-projection-app/build/classes/groovy/main" module="booking-queryside-rdbms-projection-app" displaymodule="booking-queryside-rdbms-projection-app" />
-    <classpathentry kind="lib" path="../../cargo-tracker-infrastructure-axon/build/classes/groovy/main" module="cargo-tracker-infrastructure-axon" displaymodule="cargo-tracker-infrastructure-axon" />
-    <classpathentry kind="lib" path="../../cargo-tracker-infrastructure-web/build/classes/groovy/main" module="cargo-tracker-infrastructure-web" displaymodule="cargo-tracker-infrastructure-web" />
-    <classpathentry kind="lib" path="../../infrastructure-shared-axon/build/classes/groovy/main" module="infrastructure-shared-axon" displaymodule="infrastructure-shared-axon" />
-    <classpathentry kind="lib" path="../../infrastructure-shared-datasource-proxy/build/classes/groovy/main" module="infrastructure-shared-datasource-proxy" displaymodule="infrastructure-shared-datasource-proxy" />
-    <classpathentry kind="lib" path="../../infrastructure-shared-datasource-proxy-springboot/build/classes/groovy/main" module="infrastructure-shared-datasource-proxy-springboot" displaymodule="infrastructure-shared-datasource-proxy-springboot" />
-    <classpathentry kind="lib" path="../../infrastructure-shared-hibernate/build/classes/groovy/main" module="infrastructure-shared-hibernate" displaymodule="infrastructure-shared-hibernate" />
-    <classpathentry kind="lib" path="../../infrastructure-shared-jackson/build/classes/groovy/main" module="infrastructure-shared-jackson" displaymodule="infrastructure-shared-jackson" />
-    <classpathentry kind="lib" path="../../infrastructure-shared-jackson-springboot/build/classes/groovy/main" module="infrastructure-shared-jackson-springboot" displaymodule="infrastructure-shared-jackson-springboot" />
-    <classpathentry kind="lib" path="../../infrastructure-shared-spring-context/build/classes/groovy/main" module="infrastructure-shared-spring-context" displaymodule="infrastructure-shared-spring-context" />
+    <classpathentry kind="lib" path="../../infrastructure-library-datasourceproxy/build/classes/groovy/main" module="infrastructure-library-datasourceproxy" displaymodule="infrastructure-library-datasourceproxy" />
+    <classpathentry kind="lib" path="../../infrastructure-library-datasourceproxy-springboot/build/classes/groovy/main" module="infrastructure-library-datasourceproxy-springboot" displaymodule="infrastructure-library-datasourceproxy-springboot" />
+    <classpathentry kind="lib" path="../../infrastructure-library-hibernate/build/classes/groovy/main" module="infrastructure-library-hibernate" displaymodule="infrastructure-library-hibernate" />
+    <classpathentry kind="lib" path="../../infrastructure-library-jackson/build/classes/groovy/main" module="infrastructure-library-jackson" displaymodule="infrastructure-library-jackson" />
+    <classpathentry kind="lib" path="../../infrastructure-library-jackson-springboot/build/classes/groovy/main" module="infrastructure-library-jackson-springboot" displaymodule="infrastructure-library-jackson-springboot" />
+    <classpathentry kind="lib" path="../../infrastructure-library-spring-context/build/classes/groovy/main" module="infrastructure-library-spring-context" displaymodule="infrastructure-library-spring-context" />
+    <classpathentry kind="lib" path="../../infrastructure-project-axon-api/build/classes/groovy/main" module="infrastructure-project-axon-api" displaymodule="infrastructure-project-axon-api" />
+    <classpathentry kind="lib" path="../../infrastructure-project-axon-cqrs/build/classes/groovy/main" module="infrastructure-project-axon-cqrs" displaymodule="infrastructure-project-axon-cqrs" />
+    <classpathentry kind="lib" path="../../infrastructure-project-axon-logging/build/classes/groovy/main" module="infrastructure-project-axon-logging" displaymodule="infrastructure-project-axon-logging" />
+    <classpathentry kind="lib" path="../../infrastructure-project-boundary-api/build/classes/groovy/main" module="infrastructure-project-boundary-api" displaymodule="infrastructure-project-boundary-api" />
+    <classpathentry kind="lib" path="../../infrastructure-project-web/build/classes/groovy/main" module="infrastructure-project-web" displaymodule="infrastructure-project-web" />
     <classpathentry kind="lib" path="../../lang-groovy/build/classes/groovy/main" module="lang-groovy" displaymodule="lang-groovy" />
   </classpath>
   <pom-root-files />
@@ -44,85 +44,101 @@
   <physical-grid-set sep="." version="5.0.15206">
     <grid name="Workspace spec" enforce="true" locked="true" strict="false">
       <row>
-        <cell name="booking-commandside-app" pattern="booking-commandside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-        <cell name="booking-queryside-rdbms-projection-app" pattern="booking-queryside-rdbms-projection-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-        <cell name="booking-queryside-app" pattern="booking-queryside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-      </row>
-      <row>
-        <cell name="cargo-tracker-infrastructure" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+        <cell name="booking" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
             <row>
-              <cell name="cargo-tracker-infrastructure-axon" pattern="cargo-tracker-infrastructure-axon.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-              <cell name="cargo-tracker-infrastructure-web" pattern="cargo-tracker-infrastructure-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-            </row>
-          </grid>
-        </cell>
-      </row>
-      <row>
-        <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
-          <grid>
-            <row>
-              <cell name="booking-api-open" pattern="booking-api-open.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="booking-commandside-app" pattern="booking-commandside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="booking-queryside-rdbms-projection-app" pattern="booking-queryside-rdbms-projection-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="booking-queryside-app" pattern="booking-queryside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
             <row>
-              <cell name="api-open-shared" pattern="api-open-shared.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-            </row>
-          </grid>
-        </cell>
-        <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
-          <grid>
-            <row>
-              <cell name="booking-api-axon" pattern="booking-api-axon.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-            </row>
-            <row>
-              <cell name="api-axon-shared" pattern="api-axon-shared.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-            </row>
-            <row>
-              <cell name="domain-model" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+              <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                 <grid>
                   <row>
-                    <cell name="booking-domain-model" pattern="booking-domain-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="booking-axon-api" pattern="booking-axon-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" bgcolor="204,204,204" />
+                  </row>
+                  <row>
+                    <cell name="booking-boundary-api" pattern="booking-boundary-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                 </grid>
               </cell>
+              <cell name="booking-queryside-rdbms-model" pattern="booking-queryside-rdbms-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+            <row>
+              <cell name="booking-domain-model" pattern="booking-domain-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
           </grid>
         </cell>
-        <cell name="booking-queryside-rdbms-model" pattern="booking-queryside-rdbms-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
       </row>
       <row>
-        <cell name="infrastructure" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+        <cell name="infrastructure-project" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
             <row>
-              <cell name="infrastructure-shared-axon" pattern="infrastructure-shared-axon.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-              <cell name="infrastructure-jackson" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+              <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                 <grid>
                   <row>
-                    <cell name="infrastructure-shared-jackson-springboot" pattern="infrastructure-shared-jackson-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="infrastructure-project-axon-cqrs" pattern="infrastructure-project-axon-cqrs.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
-                    <cell name="infrastructure-shared-jackson" pattern="infrastructure-shared-jackson.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="infrastructure-project-axon-logging" pattern="infrastructure-project-axon-logging.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
+                    <cell name="infrastructure-project-axon-api" pattern="infrastructure-project-axon-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                 </grid>
               </cell>
-              <cell name="infrastructure-datasource-proxy" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
-                <grid>
-                  <row>
-                    <cell name="infrastructure-shared-datasource-proxy-springboot" pattern="infrastructure-shared-datasource-proxy-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                  </row>
-                  <row>
-                    <cell name="infrastructure-shared-datasource-proxy" pattern="infrastructure-shared-datasource-proxy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                  </row>
-                </grid>
-              </cell>
-              <cell name="infrastructure-shared-hibernate" pattern="infrastructure-shared-hibernate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-              <cell name="infrastructure-shared-spring-context" pattern="infrastructure-shared-spring-context.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="infrastructure-project-web" pattern="infrastructure-project-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
           </grid>
         </cell>
       </row>
       <row>
-        <cell name="lang-groovy" pattern="lang-groovy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+        <cell name="infrastructure-project-boundary" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+          <grid>
+            <row>
+              <cell name="infrastructure-project-boundary-api" pattern="infrastructure-project-boundary-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+          </grid>
+        </cell>
+      </row>
+      <row>
+        <cell name="infrastructure-library" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+          <grid>
+            <row>
+              <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+                <grid>
+                  <row>
+                    <cell name="infrastructure-library-jackson-springboot" pattern="infrastructure-library-jackson-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
+                    <cell name="infrastructure-library-jackson" pattern="infrastructure-library-jackson.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                </grid>
+              </cell>
+              <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+                <grid>
+                  <row>
+                    <cell name="infrastructure-library-datasourceproxy-springboot" pattern="infrastructure-library-datasourceproxy-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
+                    <cell name="infrastructure-library-datasourceproxy" pattern="infrastructure-library-datasourceproxy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                </grid>
+              </cell>
+              <cell name="infrastructure-library-hibernate" pattern="infrastructure-library-hibernate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="infrastructure-library-spring-context" pattern="infrastructure-library-spring-context.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+          </grid>
+        </cell>
+      </row>
+      <row>
+        <cell name="lang" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+          <grid>
+            <row>
+              <cell name="lang-groovy" pattern="lang-groovy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+          </grid>
+        </cell>
       </row>
       <description>Top-level breakout</description>
     </grid>

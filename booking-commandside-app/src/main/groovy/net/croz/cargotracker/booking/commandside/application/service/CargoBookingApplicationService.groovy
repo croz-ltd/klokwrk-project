@@ -1,14 +1,14 @@
 package net.croz.cargotracker.booking.commandside.application.service
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
-import net.croz.cargotracker.api.open.shared.conversation.OperationResponse
-import net.croz.cargotracker.booking.api.axon.command.CargoBookCommand
-import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookRequest
-import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookResponse
+import net.croz.cargotracker.booking.axon.api.command.CargoBookCommand
+import net.croz.cargotracker.booking.boundary.api.commandside.conversation.CargoBookRequest
+import net.croz.cargotracker.booking.boundary.api.commandside.conversation.CargoBookResponse
 import net.croz.cargotracker.booking.commandside.application.factory.CargoBookingFactoryService
 import net.croz.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
-import net.croz.cargotracker.infrastructure.axon.commandgateway.CommandGatewayAdapter
+import net.croz.cargotracker.infrastructure.project.axon.cqrs.commandgateway.CommandGatewayAdapter
+import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationRequest
+import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.stereotype.Service
 

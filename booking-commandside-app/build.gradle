@@ -15,15 +15,15 @@ springBoot {
 }
 
 dependencies {
-  implementation project(":api-axon-shared")
-  implementation project(":api-open-shared")
-  implementation project(":booking-api-axon")
-  implementation project(":booking-api-open")
+  implementation project(":booking-axon-api")
+  implementation project(":booking-boundary-api")
   implementation project(":booking-domain-model")
-  implementation project(":cargo-tracker-infrastructure-axon")
-  implementation project(":cargo-tracker-infrastructure-web")
-  implementation project(":infrastructure-shared-axon")
-  implementation project(":infrastructure-shared-jackson-springboot")
+  implementation project(":infrastructure-library-jackson-springboot")
+  implementation project(":infrastructure-project-axon-api")
+  implementation project(":infrastructure-project-axon-logging")
+  implementation project(":infrastructure-project-axon-cqrs")
+  implementation project(":infrastructure-project-boundary-api")
+  implementation project(":infrastructure-project-web")
   implementation project(":lang-groovy")
 
   implementation "org.axonframework:axon-spring-boot-starter"
