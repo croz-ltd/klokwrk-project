@@ -11,6 +11,10 @@ import org.axonframework.config.Configurer
 import org.axonframework.config.DefaultConfigurer
 import org.axonframework.config.EventProcessingModule
 import org.axonframework.eventsourcing.eventstore.inmemory.InMemoryEventStorageEngine
+import org.axonframework.messaging.annotation.ClasspathHandlerDefinition
+import org.axonframework.messaging.annotation.ClasspathHandlerEnhancerDefinition
+import org.axonframework.messaging.annotation.MultiHandlerDefinition
+import org.axonframework.messaging.annotation.MultiHandlerEnhancerDefinition
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 import uk.org.lidalia.slf4jext.Level
@@ -33,19 +37,14 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
     axonConfigurer.configureEmbeddedEventStore((Configuration axonConfiguration) -> new InMemoryEventStorageEngine())
                   .configureAggregate(MyTestAggregate)
                   .registerModule(eventProcessingModule)
+                  .registerHandlerDefinition((Configuration configuration, Class inspectedClass) -> {
+                    MultiHandlerDefinition multiHandlerDefinition = MultiHandlerDefinition.ordered(
+                        MultiHandlerEnhancerDefinition.ordered(ClasspathHandlerEnhancerDefinition.forClass(inspectedClass), new LoggingEventHandlerEnhancerDefinition()),
+                        ClasspathHandlerDefinition.forClass(inspectedClass)
+                    )
 
-    // TODO dmurat: I believe that commented out code should work, but it does not. Take a look again when https://github.com/AxonFramework/AxonFramework/issues/1407 is resolved.
-    //              The problem manifests itself only for @EventHandler methods. The consequence is requirement to use META-INF/services/org.axonframework.messaging.annotation.HandlerEnhancerDefinition
-    //              for registering HandlerEnhancerDefinition that need to operate over @EventHandler methods.
-
-//                  .registerHandlerDefinition((Configuration configuration, Class inspectedClass) -> {
-//                    MultiHandlerDefinition multiHandlerDefinition = MultiHandlerDefinition.ordered(
-//                        MultiHandlerEnhancerDefinition.ordered(ClasspathHandlerEnhancerDefinition.forClass(inspectedClass), new LoggingEventHandlerEnhancerDefinition()),
-//                        ClasspathHandlerDefinition.forClass(inspectedClass)
-//                    )
-//
-//                    return multiHandlerDefinition
-//                  })
+                    return multiHandlerDefinition
+                  })
 
     axonConfiguration = axonConfigurer.buildConfiguration()
     axonConfiguration.start()
