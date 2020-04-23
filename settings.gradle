@@ -10,7 +10,7 @@ include(
 
     "cargo-tracker-platform",
 
-    "infrastructure-library-datasource-proxy",
+    "infrastructure-library-datasourceproxy",
     "infrastructure-library-datasource-proxy-springboot",
     "infrastructure-library-hibernate",
     "infrastructure-library-jackson",

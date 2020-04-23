@@ -22,7 +22,7 @@
     <classpathentry kind="lib" path="../../booking-queryside-app/build/classes/groovy/main" module="booking-queryside-app" displaymodule="booking-queryside-app" />
     <classpathentry kind="lib" path="../../booking-queryside-rdbms-model/build/classes/groovy/main" module="booking-queryside-rdbms-model" displaymodule="booking-queryside-rdbms-model" />
     <classpathentry kind="lib" path="../../booking-queryside-rdbms-projection-app/build/classes/groovy/main" module="booking-queryside-rdbms-projection-app" displaymodule="booking-queryside-rdbms-projection-app" />
-    <classpathentry kind="lib" path="../../infrastructure-library-datasource-proxy/build/classes/groovy/main" module="infrastructure-library-datasource-proxy" displaymodule="infrastructure-library-datasource-proxy" />
+    <classpathentry kind="lib" path="../../infrastructure-library-datasourceproxy/build/classes/groovy/main" module="infrastructure-library-datasourceproxy" displaymodule="infrastructure-library-datasourceproxy" />
     <classpathentry kind="lib" path="../../infrastructure-library-datasource-proxy-springboot/build/classes/groovy/main" module="infrastructure-library-datasource-proxy-springboot" displaymodule="infrastructure-library-datasource-proxy-springboot" />
     <classpathentry kind="lib" path="../../infrastructure-library-hibernate/build/classes/groovy/main" module="infrastructure-library-hibernate" displaymodule="infrastructure-library-hibernate" />
     <classpathentry kind="lib" path="../../infrastructure-library-jackson/build/classes/groovy/main" module="infrastructure-library-jackson" displaymodule="infrastructure-library-jackson" />
@@ -111,7 +111,7 @@
                     <cell name="infrastructure-library-datasource-proxy-springboot" pattern="infrastructure-library-datasource-proxy-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
-                    <cell name="infrastructure-library-datasource-proxy" pattern="infrastructure-library-datasource-proxy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="infrastructure-library-datasourceproxy" pattern="infrastructure-library-datasourceproxy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                 </grid>
               </cell>
