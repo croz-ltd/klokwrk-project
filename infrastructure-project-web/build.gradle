@@ -1,8 +1,8 @@
 apply plugin: "java-library"
 
 dependencies {
+  implementation project(":infrastructure-library-spring-context")
   implementation project(":infrastructure-project-boundary-api")
-  implementation project(":infrastructure-shared-spring-context")
   implementation project(":lang-groovy")
 
   implementation "org.codehaus.groovy:groovy"

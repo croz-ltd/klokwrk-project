@@ -15,12 +15,12 @@ include(
     "infrastructure-library-hibernate",
     "infrastructure-library-jackson",
     "infrastructure-library-jackson-springboot",
+    "infrastructure-library-spring-context",
     "infrastructure-project-axon-api",
     "infrastructure-project-axon-logging",
     "infrastructure-project-axon-cqrs",
     "infrastructure-project-boundary-api",
     "infrastructure-project-web",
-    "infrastructure-shared-spring-context",
 
     "lang-groovy"
 )
