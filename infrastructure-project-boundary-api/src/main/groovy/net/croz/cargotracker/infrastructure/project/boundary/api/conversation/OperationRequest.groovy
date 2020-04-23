@@ -18,9 +18,4 @@ class OperationRequest<P> implements OperationMessage<P, Map<String, ?>>, PostMa
     assert metaData != null
     assert payload != null
   }
-
-  Locale getLocale() {
-    Locale locale = this.metaData[MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY] as Locale ?: Locale.getDefault()
-    return locale
-  }
 }
