@@ -16,11 +16,11 @@ dependencies {
   implementation project(":booking-queryside-rdbms-model")
   implementation project(":infrastructure-library-datasource-proxy-springboot")
   implementation project(":infrastructure-library-hibernate")
+  implementation project(":infrastructure-library-jackson-springboot")
   implementation project(":infrastructure-project-axon-cqrs")
   implementation project(":infrastructure-project-axon-logging")
   implementation project(":infrastructure-project-boundary-api")
   implementation project(":infrastructure-project-web")
-  implementation project(":infrastructure-shared-jackson-springboot")
   implementation project(":lang-groovy")
 
   implementation "org.axonframework:axon-spring-boot-starter"

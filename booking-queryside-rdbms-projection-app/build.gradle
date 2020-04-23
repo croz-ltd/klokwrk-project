@@ -18,9 +18,9 @@ dependencies {
   implementation project(":booking-queryside-rdbms-model")
   implementation project(":infrastructure-library-datasource-proxy-springboot")
   implementation project(":infrastructure-library-hibernate")
+  implementation project(":infrastructure-library-jackson-springboot")
   implementation project(":infrastructure-project-axon-logging")
   implementation project(":infrastructure-project-boundary-api")
-  implementation project(":infrastructure-shared-jackson-springboot")
 
   // Note: although currently there is no direct code dependencies to the lang-groovy module, need to have it as implementation dependency for CompileStatic to work. Otherwise,
   // java.lang.NoClassDefFoundError id thrown for PostMapConstructorCheckable class.
