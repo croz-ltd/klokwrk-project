@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.shared.hibernate.dialect
+package net.croz.cargotracker.infrastructure.library.hibernate.dialect
 
 import groovy.transform.CompileStatic
 import org.hibernate.dialect.PostgreSQL10Dialect
