@@ -1,13 +1,13 @@
 package net.croz.cargotracker.booking.queryside.domain.queryhandler
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.QueryException
-import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationInfo
 import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryRequest
 import net.croz.cargotracker.booking.api.open.queryside.conversation.CargoSummaryQueryResponse
 import net.croz.cargotracker.booking.queryside.rdbms.domain.querymodel.CargoSummaryQueryEntity
 import net.croz.cargotracker.booking.queryside.rdbms.domain.querymodel.CargoSummaryQueryEntityRepository
 import net.croz.cargotracker.infrastructure.project.axon.cqrs.messagehandler.QueryHandlerTrait
+import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.QueryException
+import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationInfo
 import org.axonframework.queryhandling.QueryHandler
 import org.springframework.stereotype.Service
 
