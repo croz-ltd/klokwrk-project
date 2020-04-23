@@ -12,12 +12,12 @@ include(
 
     "infrastructure-library-datasource-proxy",
     "infrastructure-library-datasource-proxy-springboot",
+    "infrastructure-library-hibernate",
     "infrastructure-project-axon-api",
     "infrastructure-project-axon-logging",
     "infrastructure-project-axon-cqrs",
     "infrastructure-project-boundary-api",
     "infrastructure-project-web",
-    "infrastructure-shared-hibernate",
     "infrastructure-shared-jackson",
     "infrastructure-shared-jackson-springboot",
     "infrastructure-shared-spring-context",
