@@ -1,0 +1,80 @@
+<?xml version="1.0" ?>
+<ns2:softwareSystem xmlns:ns2="http://www.hello2morrow.com/sonargraph/core" id="edd1ad79d85b492f81d20049f28e84f2" version="9.14.0.615">
+	<description></description>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="booking-axon-api" id="873f5826c942ca8549a9c1adfcd15fba" language="Java">
+		<description></description>
+		<rootPath name="../../booking-axon-api/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="booking-boundary-api" id="408a267f589cdb6ca67a412542e97192" language="Java">
+		<description></description>
+		<rootPath name="../../booking-boundary-api/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="booking-commandside-app" id="e792ed73624e0d1f43b5dd411f35313d" language="Java">
+		<description></description>
+		<rootPath name="../../booking-commandside-app/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="booking-domain-model" id="e40ce62140f7b2333df8fe1ca52c5865" language="Java">
+		<description></description>
+		<rootPath name="../../booking-domain-model/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="booking-queryside-app" id="7f8cb652de137cff243e6e945f6ee102" language="Java">
+		<description></description>
+		<rootPath name="../../booking-queryside-app/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="booking-queryside-rdbms-model" id="f07c1689ef8ec8589a0367c35f64ea83" language="Java">
+		<description></description>
+		<rootPath name="../../booking-queryside-rdbms-model/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="booking-queryside-rdbms-projection-app" id="469932ffac841d2f303237efd279b938" language="Java">
+		<description></description>
+		<rootPath name="../../booking-queryside-rdbms-projection-app/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="infrastructure-library-datasourceproxy" id="a7f439d842a6a6d53cd176ba44ff0382" language="Java">
+		<description></description>
+		<rootPath name="../../infrastructure-library-datasourceproxy/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="infrastructure-library-datasourceproxy-springboot" id="865468c990dcd2dc5910f63a57e53f79" language="Java">
+		<description></description>
+		<rootPath name="../../infrastructure-library-datasourceproxy-springboot/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="infrastructure-library-hibernate" id="45e81d020cb446257a59412f0358df60" language="Java">
+		<description></description>
+		<rootPath name="../../infrastructure-library-hibernate/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="infrastructure-library-jackson" id="c962002e2dc04b85961d4059c9a1ec93" language="Java">
+		<description></description>
+		<rootPath name="../../infrastructure-library-jackson/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="infrastructure-library-jackson-springboot" id="d40a6e4258dc23757787a2d4cdcb152b" language="Java">
+		<description></description>
+		<rootPath name="../../infrastructure-library-jackson-springboot/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="infrastructure-library-spring-context" id="9716a4c196151f747f529319cbb39bbb" language="Java">
+		<description></description>
+		<rootPath name="../../infrastructure-library-spring-context/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="infrastructure-project-axon-api" id="5ece46900ade30ddc1ef2598edc8d0ca" language="Java">
+		<description></description>
+		<rootPath name="../../infrastructure-project-axon-api/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="infrastructure-project-axon-cqrs" id="999e476a2a41627b0858c2523a699c8e" language="Java">
+		<description></description>
+		<rootPath name="../../infrastructure-project-axon-cqrs/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="infrastructure-project-axon-logging" id="531f23cadcc5ea0d30c83880f6e998c1" language="Java">
+		<description></description>
+		<rootPath name="../../infrastructure-project-axon-logging/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="infrastructure-project-boundary-api" id="771eea1c054bb421bf51fc1add2c94fb" language="Java">
+		<description></description>
+		<rootPath name="../../infrastructure-project-boundary-api/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="infrastructure-project-web" id="6227501579de345a8ad26de6d06df19f" language="Java">
+		<description></description>
+		<rootPath name="../../infrastructure-project-web/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="lang-groovy" id="8fceb7f243264de800ea1bb7e57fe666" language="Java">
+		<description></description>
+		<rootPath name="../../lang-groovy/build/classes/groovy/main"></rootPath>
+	</module>
+</ns2:softwareSystem>
