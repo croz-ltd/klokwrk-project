@@ -44,58 +44,68 @@
   <physical-grid-set sep="." version="5.0.15206">
     <grid name="Workspace spec" enforce="true" locked="true" strict="false">
       <row>
-        <cell name="booking-commandside-app" pattern="booking-commandside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-        <cell name="booking-queryside-rdbms-projection-app" pattern="booking-queryside-rdbms-projection-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-        <cell name="booking-queryside-app" pattern="booking-queryside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+        <cell name="booking" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+          <grid>
+            <row>
+              <cell name="booking-commandside-app" pattern="booking-commandside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="booking-queryside-rdbms-projection-app" pattern="booking-queryside-rdbms-projection-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="booking-queryside-app" pattern="booking-queryside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+            <row>
+              <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+                <grid>
+                  <row>
+                    <cell name="booking-api-axon" pattern="booking-api-axon.*" vexpanded="false" illegal="false" visibility="public" drill="true" bgcolor="204,204,204" />
+                  </row>
+                  <row>
+                    <cell name="booking-api-open" pattern="booking-api-open.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                </grid>
+              </cell>
+              <cell name="booking-queryside-rdbms-model" pattern="booking-queryside-rdbms-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+            <row>
+              <cell name="booking-domain-model" pattern="booking-domain-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+          </grid>
+        </cell>
       </row>
       <row>
         <cell name="infrastructure-project" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
             <row>
-              <cell name="infrastructure-project-axon-cqrs" pattern="infrastructure-project-axon-cqrs.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+                <grid>
+                  <row>
+                    <cell name="infrastructure-project-axon-cqrs" pattern="infrastructure-project-axon-cqrs.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
+                    <cell name="infrastructure-project-axon-logging" pattern="infrastructure-project-axon-logging.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
+                    <cell name="infrastructure-project-axon-api" pattern="infrastructure-project-axon-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                </grid>
+              </cell>
               <cell name="infrastructure-project-web" pattern="infrastructure-project-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
           </grid>
         </cell>
       </row>
       <row>
-        <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+        <cell name="infrastructure-project-boundary" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
-            <row>
-              <cell name="booking-api-open" pattern="booking-api-open.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-            </row>
             <row>
               <cell name="infrastructure-project-boundary-api" pattern="infrastructure-project-boundary-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
           </grid>
         </cell>
-        <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
-          <grid>
-            <row>
-              <cell name="booking-api-axon" pattern="booking-api-axon.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-            </row>
-            <row>
-              <cell name="infrastructure-project-axon-api" pattern="infrastructure-project-axon-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-            </row>
-            <row>
-              <cell name="domain-model" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
-                <grid>
-                  <row>
-                    <cell name="booking-domain-model" pattern="booking-domain-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                  </row>
-                </grid>
-              </cell>
-            </row>
-          </grid>
-        </cell>
-        <cell name="booking-queryside-rdbms-model" pattern="booking-queryside-rdbms-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
       </row>
       <row>
-        <cell name="infrastructure" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+        <cell name="infrastructure-library" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
             <row>
-              <cell name="infrastructure-project-axon-logging" pattern="infrastructure-project-axon-logging.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-              <cell name="infrastructure-jackson" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+              <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                 <grid>
                   <row>
                     <cell name="infrastructure-library-jackson-springboot" pattern="infrastructure-library-jackson-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
@@ -105,7 +115,7 @@
                   </row>
                 </grid>
               </cell>
-              <cell name="infrastructure-datasource-proxy" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+              <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                 <grid>
                   <row>
                     <cell name="infrastructure-library-datasourceproxy-springboot" pattern="infrastructure-library-datasourceproxy-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
@@ -122,7 +132,13 @@
         </cell>
       </row>
       <row>
-        <cell name="lang-groovy" pattern="lang-groovy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+        <cell name="lang" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+          <grid>
+            <row>
+              <cell name="lang-groovy" pattern="lang-groovy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+          </grid>
+        </cell>
       </row>
       <description>Top-level breakout</description>
     </grid>
