@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.axon.messagehandler
+package net.croz.cargotracker.infrastructure.project.axon.cqrs.messagehandler
 
 import groovy.transform.CompileStatic
 

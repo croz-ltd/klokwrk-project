@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.axon.querygateway
+package net.croz.cargotracker.infrastructure.project.axon.cqrs.querygateway
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.api.open.shared.conversation.OperationRequest

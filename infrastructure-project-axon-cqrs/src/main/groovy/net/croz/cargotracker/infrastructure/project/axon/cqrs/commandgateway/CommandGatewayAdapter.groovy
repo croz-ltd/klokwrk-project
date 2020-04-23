@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.axon.commandgateway
+package net.croz.cargotracker.infrastructure.project.axon.cqrs.commandgateway
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.api.open.shared.exceptional.exception.CommandException

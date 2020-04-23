@@ -9,7 +9,7 @@ import net.croz.cargotracker.api.open.shared.exceptional.violation.ViolationInfo
 import net.croz.cargotracker.booking.api.axon.command.CargoBookCommand
 import net.croz.cargotracker.booking.api.axon.event.CargoBookedEvent
 import net.croz.cargotracker.booking.domain.model.Location
-import net.croz.cargotracker.infrastructure.axon.messagehandler.CommandHandlerTrait
+import net.croz.cargotracker.infrastructure.project.axon.cqrs.messagehandler.CommandHandlerTrait
 import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.messaging.MetaData
