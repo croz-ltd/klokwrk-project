@@ -1,4 +1,4 @@
-package net.croz.cargotracker.api.open.shared.conversation.response
+package net.croz.cargotracker.infrastructure.project.boundary.api.conversation.response
 
 import groovy.transform.CompileStatic
 

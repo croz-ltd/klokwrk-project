@@ -1,7 +1,7 @@
-package net.croz.cargotracker.api.open.shared.conversation.response
+package net.croz.cargotracker.infrastructure.project.boundary.api.conversation.response
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.api.open.shared.exceptional.violation.Severity
+import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.Severity
 
 import java.time.Instant
 

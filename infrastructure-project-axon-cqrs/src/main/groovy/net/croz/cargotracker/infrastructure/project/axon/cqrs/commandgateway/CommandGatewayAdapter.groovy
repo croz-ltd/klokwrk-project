@@ -1,7 +1,7 @@
 package net.croz.cargotracker.infrastructure.project.axon.cqrs.commandgateway
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.api.open.shared.exceptional.exception.CommandException
+import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.CommandException
 import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.GenericCommandMessage
 import org.axonframework.commandhandling.gateway.CommandGateway

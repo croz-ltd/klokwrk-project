@@ -1,7 +1,7 @@
-package net.croz.cargotracker.api.open.shared.exceptional.exception
+package net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.api.open.shared.exceptional.violation.ViolationInfo
+import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationInfo
 
 @CompileStatic
 class CommandException extends DomainException {

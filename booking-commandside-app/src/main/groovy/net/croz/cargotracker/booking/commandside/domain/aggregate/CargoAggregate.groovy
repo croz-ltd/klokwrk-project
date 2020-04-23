@@ -3,9 +3,9 @@ package net.croz.cargotracker.booking.commandside.domain.aggregate
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
-import net.croz.cargotracker.api.open.shared.exceptional.exception.CommandException
-import net.croz.cargotracker.api.open.shared.exceptional.violation.ViolationCode
-import net.croz.cargotracker.api.open.shared.exceptional.violation.ViolationInfo
+import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.CommandException
+import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationCode
+import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationInfo
 import net.croz.cargotracker.booking.api.axon.command.CargoBookCommand
 import net.croz.cargotracker.booking.api.axon.event.CargoBookedEvent
 import net.croz.cargotracker.booking.domain.model.Location

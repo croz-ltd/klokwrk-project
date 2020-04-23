@@ -1,7 +1,7 @@
 package net.croz.cargotracker.booking.queryside.rdbms.projection.application.factory
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.api.open.shared.conversation.MetaDataConstant
+import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.MetaDataConstant
 import net.croz.cargotracker.booking.api.axon.event.CargoBookedEvent
 import net.croz.cargotracker.booking.queryside.rdbms.domain.querymodel.CargoSummaryQueryEntity
 import org.axonframework.eventhandling.DomainEventMessage

@@ -1,4 +1,4 @@
-package net.croz.cargotracker.api.open.shared.exceptional.violation
+package net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation
 
 import groovy.transform.CompileStatic
 import groovy.transform.Immutable

@@ -1,8 +1,8 @@
 package net.croz.cargotracker.infrastructure.project.axon.cqrs.querygateway
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.api.open.shared.conversation.OperationRequest
-import net.croz.cargotracker.api.open.shared.exceptional.exception.QueryException
+import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationRequest
+import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.QueryException
 import org.axonframework.messaging.GenericMessage
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryExecutionException
