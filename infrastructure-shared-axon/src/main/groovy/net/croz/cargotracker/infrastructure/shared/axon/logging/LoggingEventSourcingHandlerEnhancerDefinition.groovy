@@ -2,7 +2,6 @@ package net.croz.cargotracker.infrastructure.shared.axon.logging
 
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-import net.croz.cargotracker.infrastructure.shared.axon.message.AxonMessageHelper
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.messaging.Message
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition

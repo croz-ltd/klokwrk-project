@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.shared.axon.message
+package net.croz.cargotracker.infrastructure.shared.axon.logging
 
 import groovy.transform.CompileStatic
 import org.axonframework.eventhandling.GapAwareTrackingToken
