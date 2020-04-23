@@ -12,8 +12,8 @@ import com.fasterxml.jackson.databind.deser.BeanDeserializerFactory
 import com.fasterxml.jackson.databind.deser.Deserializers
 import com.fasterxml.jackson.databind.ser.BeanSerializerFactory
 import com.fasterxml.jackson.databind.ser.Serializers
-import net.croz.cargotracker.infrastructure.shared.jackson.databind.deser.StringSanitizingDeserializer
-import net.croz.cargotracker.infrastructure.shared.jackson.databind.ser.GStringSerializer
+import net.croz.cargotracker.infrastructure.library.jackson.databind.deser.StringSanitizingDeserializer
+import net.croz.cargotracker.infrastructure.library.jackson.databind.ser.GStringSerializer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
