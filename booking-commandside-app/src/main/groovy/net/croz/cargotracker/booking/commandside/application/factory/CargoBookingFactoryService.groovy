@@ -1,9 +1,9 @@
 package net.croz.cargotracker.booking.commandside.application.factory
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.booking.api.axon.command.CargoBookCommand
 import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookRequest
 import net.croz.cargotracker.booking.api.open.commandside.conversation.CargoBookResponse
+import net.croz.cargotracker.booking.axon.api.command.CargoBookCommand
 import net.croz.cargotracker.booking.commandside.application.repository.LocationRegistryRepositoryService
 import net.croz.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
 import net.croz.cargotracker.booking.domain.model.Location
