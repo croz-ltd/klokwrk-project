@@ -16,7 +16,7 @@ dependencies {
   implementation project(":booking-api-open")
   implementation project(":booking-domain-model")
   implementation project(":booking-queryside-rdbms-model")
-  implementation project(":infrastructure-library-datasource-proxy-springboot")
+  implementation project(":infrastructure-library-datasourceproxy-springboot")
   implementation project(":infrastructure-library-hibernate")
   implementation project(":infrastructure-library-jackson-springboot")
   implementation project(":infrastructure-project-axon-logging")
