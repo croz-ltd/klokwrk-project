@@ -1,7 +1,7 @@
 package net.croz.cargotracker.infrastructure.shared.springboot.datasourceproxy
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.shared.datasourceproxy.Slf4jFilterableQueryLoggingListener
+import net.croz.cargotracker.infrastructure.library.datasourceproxy.Slf4jFilterableQueryLoggingListener
 import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder
 import org.aopalliance.intercept.MethodInterceptor
 import org.aopalliance.intercept.MethodInvocation

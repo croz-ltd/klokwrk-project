@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.shared.datasourceproxy
+package net.croz.cargotracker.infrastructure.library.datasourceproxy
 
 import groovy.transform.CompileStatic
 import net.ttddyy.dsproxy.ExecutionInfo
