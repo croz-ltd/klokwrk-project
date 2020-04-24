@@ -1,5 +1,6 @@
 package net.croz.cargotracker.booking.domain.model
 
+import net.croz.cargotracker.booking.domain.modelsample.LocationSample
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -21,7 +22,10 @@ class LocationSpecification extends Specification {
   @Unroll
   def "map constructor should fail for invalid input params: [code: #codeParameter, name: #nameParameter, countryName: #countryNameParameter, function: #functionParameter]"() {
     when:
-    new Location(code: new UnLoCode(code: codeParameter), name: new InternationalizedName(name: nameParameter), countryName: new InternationalizedName(name: countryNameParameter))
+    new Location(
+        code: new UnLoCode(code: codeParameter), name: new InternationalizedName(name: nameParameter), countryName: new InternationalizedName(name: countryNameParameter),
+        unLoCodeFunction: new UnLoCodeFunction(functionParameter)
+    )
 
     then:
     thrown(IllegalArgumentException)
@@ -34,98 +38,54 @@ class LocationSpecification extends Specification {
     "HRRJK"       | "someName"    | "someCountry"        | null
   }
 
-  @SuppressWarnings("GroovyPointlessBoolean")
-  def "canAcceptCargoFrom() should return false for same locations"() {
-    given:
-    Location originLocation = new Location(
-        unLoCode: new UnLoCode(code: "HRRJK"), name: new InternationalizedName(name: "Rijeka"), countryName: new InternationalizedName(name: "Hrvatska"),
-        unLoCodeFunction: new UnLoCodeFunction(functionEncoded: "1234----")
-    )
-
-    Location destinationLocation = new Location(
-        unLoCode: new UnLoCode(code: "HRRJK"), name: new InternationalizedName(name: "Rijeka"), countryName: new InternationalizedName(name: "Hrvatska"),
-        unLoCodeFunction: new UnLoCodeFunction(functionEncoded: "1234----")
-    )
-
+  def "create() factory method should work for correct input params"() {
     when:
-    Boolean canAccept = destinationLocation.canAcceptCargoFrom(originLocation)
+    Location location = Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----")
 
     then:
-    canAccept == false
+    location.unLoCode == new UnLoCode(code: "HRRJK")
+    location.name == new InternationalizedName(name: "Rijeka")
+    location.countryName == new InternationalizedName(name: "Hrvatska")
   }
 
-  @SuppressWarnings("GroovyPointlessBoolean")
-  def "canAcceptCargoFrom() should return false when origin location is null"() {
-    given:
-    Location destinationLocation = new Location(
-        unLoCode: new UnLoCode(code: "HRZAD"), name: new InternationalizedName(name: "Zadar"), countryName: new InternationalizedName(name: "Hrvatska"),
-        unLoCodeFunction: new UnLoCodeFunction(functionEncoded: "1234----")
-    )
-
+  @Unroll
+  def "create() factory method should fail for invalid input params: [code: #codeParameter, name: #nameParameter, countryName: #countryNameParameter, function: #functionParameter]"() {
     when:
-    Boolean canAccept = destinationLocation.canAcceptCargoFrom(null)
+    Location.create(codeParameter, nameParameter, countryNameParameter, functionParameter)
 
     then:
-    canAccept == false
+    thrown(IllegalArgumentException)
+
+    where:
+    codeParameter | nameParameter | countryNameParameter | functionParameter
+    null          | "someName"    | "someCountry"        | "0------"
+    "HRRJK"       | null          | "someCountry"        | "0------"
+    "HRRJK"       | "someName"    | null                 | "0------"
+    "HRRJK"       | "someName"    | "someCountry"        | null
   }
 
-  @SuppressWarnings("GroovyPointlessBoolean")
-  def "canAcceptCargoFrom() should return true for port locations"() {
-    given:
-    Location originLocation = new Location(
-        unLoCode: new UnLoCode(code: "HRRJK"), name: new InternationalizedName(name: "Rijeka"), countryName: new InternationalizedName(name: "Hrvatska"),
-        unLoCodeFunction: new UnLoCodeFunction(functionEncoded: "1234----")
-    )
-
-    Location destinationLocation = new Location(
-        unLoCode: new UnLoCode(code: "HRZAD"), name: new InternationalizedName(name: "Zadar"), countryName: new InternationalizedName(name: "Hrvatska"),
-        unLoCodeFunction: new UnLoCodeFunction(functionEncoded: "1234----")
-    )
-
+  @Unroll
+  def "destinationLocation.canAcceptCargoFrom() should work as expected: [origin: #originDescription, destination: #destinationDescription]"() {
     when:
-    Boolean canAccept = destinationLocation.canAcceptCargoFrom(originLocation)
+    Location originLocation = originLocationInstance
+    Location destinationLocation = destinationLocationInstance
 
     then:
-    canAccept == true
-  }
+    destinationLocation.canAcceptCargoFrom(originLocation) == destinationCanAccept
 
-  @SuppressWarnings("GroovyPointlessBoolean")
-  def "canAcceptCargoFrom() should return true for rail terminal locations"() {
-    given:
-    Location originLocation = new Location(
-        unLoCode: new UnLoCode(code: "HRRJK"), name: new InternationalizedName(name: "Rijeka"), countryName: new InternationalizedName(name: "Hrvatska"),
-        unLoCodeFunction: new UnLoCodeFunction(functionEncoded: "1234----")
-    )
-
-    Location destinationLocation = new Location(
-        unLoCode: new UnLoCode(code: "HRZAG"), name: new InternationalizedName(name: "Zagreb"), countryName: new InternationalizedName(name: "Hrvatska"),
-        unLoCodeFunction: new UnLoCodeFunction(functionEncoded: "-2345---")
-    )
-
-    when:
-    Boolean canAccept = destinationLocation.canAcceptCargoFrom(originLocation)
-
-    then:
-    canAccept == true
-  }
-
-  @SuppressWarnings("GroovyPointlessBoolean")
-  def "canAcceptCargoFrom() should return false when locations cannot be connected as ports or as rail terminals"() {
-    given:
-    Location originLocation = new Location(
-        unLoCode: new UnLoCode(code: "HRKRK"), name: new InternationalizedName(name: "Krk"), countryName: new InternationalizedName(name: "Hrvatska"),
-        unLoCodeFunction: new UnLoCodeFunction(functionEncoded: "1-3-----")
-    )
-
-    Location destinationLocation = new Location(
-        unLoCode: new UnLoCode(code: "HRZAG"), name: new InternationalizedName(name: "Zagreb"), countryName: new InternationalizedName(name: "Hrvatska"),
-        unLoCodeFunction: new UnLoCodeFunction(functionEncoded: "-2345---")
-    )
-
-    when:
-    Boolean canAccept = destinationLocation.canAcceptCargoFrom(originLocation)
-
-    then:
-    canAccept == false
+    where:
+    originLocationInstance                 | destinationLocationInstance            | destinationCanAccept | originDescription              | destinationDescription
+    LocationSample.findByUnLoCode("HRRJK") | LocationSample.findByUnLoCode("HRRJK") | false                | "any"                          | "same as origin"
+    null                                   | LocationSample.findByUnLoCode("HRRJK") | false                | "null"                         | "any"
+    LocationSample.findByUnLoCode("HRZAD") | LocationSample.findByUnLoCode("HRRJK") | true                 | "port & rail terminal"         | "port & rail terminal"
+    LocationSample.findByUnLoCode("HRZAD") | LocationSample.findByUnLoCode("HRKRK") | true                 | "port & rail terminal"         | "port"
+    LocationSample.findByUnLoCode("HRKRK") | LocationSample.findByUnLoCode("HRZAD") | true                 | "port"                         | "port & rail terminal"
+    LocationSample.findByUnLoCode("HRZAG") | LocationSample.findByUnLoCode("HRZAD") | true                 | "rail terminal"                | "port & rail terminal"
+    LocationSample.findByUnLoCode("HRZAG") | LocationSample.findByUnLoCode("HRVZN") | true                 | "rail terminal"                | "rail terminal"
+    LocationSample.findByUnLoCode("HRZAG") | LocationSample.findByUnLoCode("HRKRK") | false                | "rail terminal"                | "port"
+    LocationSample.findByUnLoCode("HRKRK") | LocationSample.findByUnLoCode("HRZAG") | false                | "port"                         | "rail terminal"
+    LocationSample.findByUnLoCode("HRDKO") | LocationSample.findByUnLoCode("HRZAG") | false                | "not port & not rail terminal" | "rail terminal"
+    LocationSample.findByUnLoCode("HRZAG") | LocationSample.findByUnLoCode("HRDKO") | false                | "rail terminal"                | "not port & not rail terminal"
+    LocationSample.findByUnLoCode("HRMVN") | LocationSample.findByUnLoCode("HRDKO") | false                | "not port & not rail terminal" | "not port & not rail terminal"
   }
 }
