@@ -1,5 +1,6 @@
 package net.croz.cargotracker.booking.domain.model
 
+import net.croz.cargotracker.booking.domain.modelsample.LocationSample
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -66,8 +67,8 @@ class LocationSpecification extends Specification {
   @SuppressWarnings("GroovyPointlessBoolean")
   def "canAcceptCargoFrom() should return false for same locations"() {
     given:
-    Location originLocation = Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----")
-    Location destinationLocation = Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----")
+    Location originLocation = LocationSample.findByUnLoCode("HRRJK")
+    Location destinationLocation = LocationSample.findByUnLoCode("HRRJK")
 
     when:
     Boolean canAccept = destinationLocation.canAcceptCargoFrom(originLocation)
@@ -79,7 +80,7 @@ class LocationSpecification extends Specification {
   @SuppressWarnings("GroovyPointlessBoolean")
   def "canAcceptCargoFrom() should return false when origin location is null"() {
     given:
-    Location destinationLocation = Location.create("HRZAD", "Zadar", "Hrvatska", "1234----")
+    Location destinationLocation = LocationSample.findByUnLoCode("HRZAD")
 
     when:
     Boolean canAccept = destinationLocation.canAcceptCargoFrom(null)
@@ -91,8 +92,8 @@ class LocationSpecification extends Specification {
   @SuppressWarnings("GroovyPointlessBoolean")
   def "canAcceptCargoFrom() should return true for port locations"() {
     given:
-    Location originLocation = Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----")
-    Location destinationLocation = Location.create("HRZAD", "Zadar", "Hrvatska", "1234----")
+    Location originLocation = LocationSample.findByUnLoCode("HRRJK")
+    Location destinationLocation = LocationSample.findByUnLoCode("HRZAD")
 
     when:
     Boolean canAccept = destinationLocation.canAcceptCargoFrom(originLocation)
@@ -104,8 +105,8 @@ class LocationSpecification extends Specification {
   @SuppressWarnings("GroovyPointlessBoolean")
   def "canAcceptCargoFrom() should return true for rail terminal locations"() {
     given:
-    Location originLocation = Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----")
-    Location destinationLocation = Location.create("HRZAG", "Zagreb", "Hrvatska", "-2345---")
+    Location originLocation = LocationSample.findByUnLoCode("HRRJK")
+    Location destinationLocation = LocationSample.findByUnLoCode("HRZAG")
 
     when:
     Boolean canAccept = destinationLocation.canAcceptCargoFrom(originLocation)
@@ -117,8 +118,8 @@ class LocationSpecification extends Specification {
   @SuppressWarnings("GroovyPointlessBoolean")
   def "canAcceptCargoFrom() should return false when locations cannot be connected as ports or as rail terminals"() {
     given:
-    Location originLocation = Location.create("HRKRK", "Krk", "Hrvatska", "1-3-----")
-    Location destinationLocation = Location.create("HRZAG", "Zagreb", "Hrvatska", "-2345---")
+    Location originLocation = LocationSample.findByUnLoCode("HRKRK")
+    Location destinationLocation = LocationSample.findByUnLoCode("HRZAG")
 
     when:
     Boolean canAccept = destinationLocation.canAcceptCargoFrom(originLocation)
