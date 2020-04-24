@@ -64,67 +64,28 @@ class LocationSpecification extends Specification {
     "HRRJK"       | "someName"    | "someCountry"        | null
   }
 
-  @SuppressWarnings("GroovyPointlessBoolean")
-  def "canAcceptCargoFrom() should return false for same locations"() {
-    given:
-    Location originLocation = LocationSample.findByUnLoCode("HRRJK")
-    Location destinationLocation = LocationSample.findByUnLoCode("HRRJK")
-
+  @Unroll
+  def "destinationLocation.canAcceptCargoFrom() should work as expected: [origin: #originDescription, destination: #destinationDescription]"() {
     when:
-    Boolean canAccept = destinationLocation.canAcceptCargoFrom(originLocation)
+    Location originLocation = originLocationInstance
+    Location destinationLocation = destinationLocationInstance
 
     then:
-    canAccept == false
-  }
+    destinationLocation.canAcceptCargoFrom(originLocation) == destinationCanAccept
 
-  @SuppressWarnings("GroovyPointlessBoolean")
-  def "canAcceptCargoFrom() should return false when origin location is null"() {
-    given:
-    Location destinationLocation = LocationSample.findByUnLoCode("HRZAD")
-
-    when:
-    Boolean canAccept = destinationLocation.canAcceptCargoFrom(null)
-
-    then:
-    canAccept == false
-  }
-
-  @SuppressWarnings("GroovyPointlessBoolean")
-  def "canAcceptCargoFrom() should return true for port locations"() {
-    given:
-    Location originLocation = LocationSample.findByUnLoCode("HRRJK")
-    Location destinationLocation = LocationSample.findByUnLoCode("HRZAD")
-
-    when:
-    Boolean canAccept = destinationLocation.canAcceptCargoFrom(originLocation)
-
-    then:
-    canAccept == true
-  }
-
-  @SuppressWarnings("GroovyPointlessBoolean")
-  def "canAcceptCargoFrom() should return true for rail terminal locations"() {
-    given:
-    Location originLocation = LocationSample.findByUnLoCode("HRRJK")
-    Location destinationLocation = LocationSample.findByUnLoCode("HRZAG")
-
-    when:
-    Boolean canAccept = destinationLocation.canAcceptCargoFrom(originLocation)
-
-    then:
-    canAccept == true
-  }
-
-  @SuppressWarnings("GroovyPointlessBoolean")
-  def "canAcceptCargoFrom() should return false when locations cannot be connected as ports or as rail terminals"() {
-    given:
-    Location originLocation = LocationSample.findByUnLoCode("HRKRK")
-    Location destinationLocation = LocationSample.findByUnLoCode("HRZAG")
-
-    when:
-    Boolean canAccept = destinationLocation.canAcceptCargoFrom(originLocation)
-
-    then:
-    canAccept == false
+    where:
+    originLocationInstance                 | destinationLocationInstance            | destinationCanAccept | originDescription              | destinationDescription
+    LocationSample.findByUnLoCode("HRRJK") | LocationSample.findByUnLoCode("HRRJK") | false                | "any"                          | "same as origin"
+    null                                   | LocationSample.findByUnLoCode("HRRJK") | false                | "null"                         | "any"
+    LocationSample.findByUnLoCode("HRZAD") | LocationSample.findByUnLoCode("HRRJK") | true                 | "port & rail terminal"         | "port & rail terminal"
+    LocationSample.findByUnLoCode("HRZAD") | LocationSample.findByUnLoCode("HRKRK") | true                 | "port & rail terminal"         | "port"
+    LocationSample.findByUnLoCode("HRKRK") | LocationSample.findByUnLoCode("HRZAD") | true                 | "port"                         | "port & rail terminal"
+    LocationSample.findByUnLoCode("HRZAG") | LocationSample.findByUnLoCode("HRZAD") | true                 | "rail terminal"                | "port & rail terminal"
+    LocationSample.findByUnLoCode("HRZAG") | LocationSample.findByUnLoCode("HRVZN") | true                 | "rail terminal"                | "rail terminal"
+    LocationSample.findByUnLoCode("HRZAG") | LocationSample.findByUnLoCode("HRKRK") | false                | "rail terminal"                | "port"
+    LocationSample.findByUnLoCode("HRKRK") | LocationSample.findByUnLoCode("HRZAG") | false                | "port"                         | "rail terminal"
+    LocationSample.findByUnLoCode("HRDKO") | LocationSample.findByUnLoCode("HRZAG") | false                | "not port & not rail terminal" | "rail terminal"
+    LocationSample.findByUnLoCode("HRZAG") | LocationSample.findByUnLoCode("HRDKO") | false                | "rail terminal"                | "not port & not rail terminal"
+    LocationSample.findByUnLoCode("HRMVN") | LocationSample.findByUnLoCode("HRDKO") | false                | "not port & not rail terminal" | "not port & not rail terminal"
   }
 }
