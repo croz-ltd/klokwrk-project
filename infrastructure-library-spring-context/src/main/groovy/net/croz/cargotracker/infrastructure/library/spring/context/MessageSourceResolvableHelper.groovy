@@ -21,8 +21,30 @@ class MessageSourceResolvableHelper {
   /**
    * Creates a list of message codes that can be resolved via Spring's {@link MessageSource}.
    * <p/>
-   * {@link MessageSource} tries to resolve a message starting from the first element of a given message code list (most specific message must be at the start of the list).
+   * The order of list elements is significant, and in general should go from most specific message code first, then ending with more general elements. Spring's {@link MessageSource} machinery will
+   * try to resolve message codes in given order, from first to last.
    * <p/>
+   * Message code list is constructed from properties of provided {@link MessageSourceResolvableSpecification} parameter in (roughly), following way:
+   * <pre>
+   * List<String> messageCodeList = [
+   *     "${ controllerSimpleName }${ controllerMethodName }${ messageCategory }${ messageType }${ messageSubType }${ severity }${ propertyPath }".toString(),
+   *     "${ controllerSimpleName }${ controllerMethodName }${ messageCategory }${ messageType }${ messageSubType }${ propertyPath }".toString(),
+   *
+   *     "${ controllerSimpleName }${ controllerMethodName }${ messageCategory }${ severity }${ propertyPath }".toString(),
+   *     "${ controllerSimpleName }${ controllerMethodName }${ messageCategory }${ propertyPath }".toString(),
+   *
+   *     "${ controllerMethodName }${ messageCategory }${ severity }${ propertyPath }".toString(),
+   *     "${ controllerMethodName }${ messageCategory }${ propertyPath }".toString(),
+   *
+   *     "default${ messageCategory }${ messageType }${ messageSubType }${ severity }${ propertyPath }".toString(),
+   *     "default${ messageCategory }${ messageType }${ messageSubType }${ propertyPath }".toString(),
+   *
+   *     "default${ messageCategory }${ severity }${ propertyPath }".toString(),
+   *     "default${ messageCategory }${ propertyPath }".toString(),
+   *     "default${ severity }${ propertyPath }".toString(),
+   *     "default${ severity }".toString()
+   * ]
+   * <pre/>
    * For example, when a given {@link MessageSourceResolvableSpecification} instance contains following properties:
    * <pre>
    * MessageSourceResolvableSpecification {
@@ -63,31 +85,31 @@ class MessageSourceResolvableHelper {
     String severity = specification.severity?.trim() ?: "warning"
     String propertyPath = specification.propertyPath?.trim() ?: ""
 
-    String innerControllerMethodName = controllerMethodName ? ".${controllerMethodName}" : controllerMethodName
-    String innerMessageCategory = messageCategory ? ".${messageCategory}" : messageCategory
-    String innerMessageType = messageType ? ".${messageType}" : messageType
-    String innerMessageSubType = messageSubType ? ".${messageSubType}" : messageSubType
-    String innerSeverity = ".${severity}"
-    String innerPropertyPath = propertyPath ? ".${propertyPath}" : propertyPath
+    String innerControllerMethodName = controllerMethodName ? ".${ controllerMethodName }" : controllerMethodName
+    String innerMessageCategory = messageCategory ? ".${ messageCategory }" : messageCategory
+    String innerMessageType = messageType ? ".${ messageType }" : messageType
+    String innerMessageSubType = messageSubType ? ".${ messageSubType }" : messageSubType
+    String innerSeverity = ".${ severity }"
+    String innerPropertyPath = propertyPath ? ".${ propertyPath }" : propertyPath
 
-    List<String> messageCodeList = []
+    List<String> messageCodeList = [
+        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerSeverity }${ innerPropertyPath }".toString(),
+        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerPropertyPath }".toString(),
 
-    messageCodeList << "${controllerSimpleName}${innerControllerMethodName}${innerMessageCategory}${innerMessageType}${innerMessageSubType}${innerSeverity}${innerPropertyPath}".toString()
-    messageCodeList << "${controllerSimpleName}${innerControllerMethodName}${innerMessageCategory}${innerMessageType}${innerMessageSubType}${innerPropertyPath}".toString()
+        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerSeverity }${ innerPropertyPath }".toString(),
+        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerPropertyPath }".toString(),
 
-    messageCodeList << "${controllerSimpleName}${innerControllerMethodName}${innerMessageCategory}${innerSeverity}${innerPropertyPath}".toString()
-    messageCodeList << "${controllerSimpleName}${innerControllerMethodName}${innerMessageCategory}${innerPropertyPath}".toString()
+        "${ controllerMethodName }${ innerMessageCategory }${ innerSeverity }${ innerPropertyPath }".toString(),
+        "${ controllerMethodName }${ innerMessageCategory }${ innerPropertyPath }".toString(),
 
-    messageCodeList << "${controllerMethodName}${innerMessageCategory}${innerSeverity}${innerPropertyPath}".toString()
-    messageCodeList << "${controllerMethodName}${innerMessageCategory}${innerPropertyPath}".toString()
+        "default${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerSeverity }${ innerPropertyPath }".toString(),
+        "default${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerPropertyPath }".toString(),
 
-    messageCodeList << "default${innerMessageCategory}${innerMessageType}${innerMessageSubType}${innerSeverity}${innerPropertyPath}".toString()
-    messageCodeList << "default${innerMessageCategory}${innerMessageType}${innerMessageSubType}${innerPropertyPath}".toString()
-
-    messageCodeList << "default${innerMessageCategory}${innerSeverity}${innerPropertyPath}".toString()
-    messageCodeList << "default${innerMessageCategory}${innerPropertyPath}".toString()
-    messageCodeList << "default${innerSeverity}${innerPropertyPath}".toString()
-    messageCodeList << "default${innerSeverity}".toString()
+        "default${ innerMessageCategory }${ innerSeverity }${ innerPropertyPath }".toString(),
+        "default${ innerMessageCategory }${ innerPropertyPath }".toString(),
+        "default${ innerSeverity }${ innerPropertyPath }".toString(),
+        "default${ innerSeverity }".toString()
+    ]
 
     return messageCodeList.unique()
   }
