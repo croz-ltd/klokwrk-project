@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse
 import java.time.Instant
 
 @CompileStatic
-class RestResponseBodyAdvice implements ResponseBodyAdvice<OperationResponse<?>>, ApplicationContextAware {
+class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<OperationResponse<?>>, ApplicationContextAware {
   private ApplicationContext applicationContext
 
   @Override
