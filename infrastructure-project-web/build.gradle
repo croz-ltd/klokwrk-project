@@ -10,4 +10,6 @@ dependencies {
   implementation "org.springframework:spring-web"
   implementation "org.springframework:spring-webmvc"
   implementation "org.apache.tomcat.embed:tomcat-embed-core"
+
+  testImplementation "org.spockframework:spock-core"
 }
