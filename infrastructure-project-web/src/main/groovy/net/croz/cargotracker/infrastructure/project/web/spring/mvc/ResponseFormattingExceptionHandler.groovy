@@ -24,10 +24,8 @@ import java.time.Instant
 // useful references:
 //   https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-exceptionhandler
 //   https://www.baeldung.com/global-error-handler-in-a-spring-rest-api
-//   https://blog.restcase.com/rest-api-error-handling-problem-details-response/
-//   https://tools.ietf.org/html/rfc7807
 @CompileStatic
-class RestExceptionHandler extends ResponseEntityExceptionHandler implements MessageSourceAware {
+class ResponseFormattingExceptionHandler extends ResponseEntityExceptionHandler implements MessageSourceAware {
   private MessageSource messageSource
 
   @Override
