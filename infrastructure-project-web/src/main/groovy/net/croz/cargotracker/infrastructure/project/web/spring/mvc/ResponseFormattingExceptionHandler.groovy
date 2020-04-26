@@ -48,7 +48,7 @@ class ResponseFormattingExceptionHandler extends ResponseEntityExceptionHandler 
 
     HttpResponseReport httpResponseReport = new HttpResponseReport(
         timestamp: Instant.now(),
-        severity: Severity.WARNING,
+        severity: domainException.violationInfo.severity,
         locale: locale,
         violation: createResponseReportViolationPart(domainException),
         http: createHttpResponseReportPart(httpStatus)
