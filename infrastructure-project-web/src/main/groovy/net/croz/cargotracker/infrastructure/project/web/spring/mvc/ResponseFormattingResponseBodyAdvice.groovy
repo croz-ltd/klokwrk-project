@@ -19,7 +19,6 @@ import org.springframework.http.server.ServerHttpRequest
 import org.springframework.http.server.ServerHttpResponse
 import org.springframework.http.server.ServletServerHttpRequest
 import org.springframework.http.server.ServletServerHttpResponse
-import org.springframework.lang.Nullable
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerExecutionChain
 import org.springframework.web.servlet.HandlerMapping
@@ -45,24 +44,14 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
 
   @Override
   OperationResponse<?> beforeBodyWrite(
-      @Nullable OperationResponse<?> operationResponseBody, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType,
+      OperationResponse<?> operationResponseBody, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType,
       ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse)
   {
-    if (serverHttpRequest !instanceof ServletServerHttpRequest || serverHttpResponse !instanceof ServletServerHttpResponse) {
-      return operationResponseBody
-    }
-
     HttpServletRequest httpServletRequest = (serverHttpRequest as ServletServerHttpRequest).servletRequest
     HttpServletResponse httpServletResponse = (serverHttpResponse as ServletServerHttpResponse).servletResponse
 
     HttpResponseReport httpResponseReport = createHttpResponseReport(httpServletResponse, httpServletRequest)
-
-    if (operationResponseBody == null) {
-      operationResponseBody = new OperationResponse(payload: [:], metaData: httpResponseReport.propertiesFiltered)
-    }
-    else {
-      operationResponseBody.metaData = httpResponseReport.propertiesFiltered
-    }
+    operationResponseBody.metaData = httpResponseReport.propertiesFiltered
 
     return operationResponseBody
   }
@@ -97,11 +86,6 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
   protected HandlerMethod fetchHandlerMethod(HttpServletRequest httpServletRequest) {
     Collection<HandlerMapping> handlerMappingCollection = applicationContext.getBeansOfType(HandlerMapping).values()
     HandlerMapping handlerMapping = handlerMappingCollection.find({ HandlerMapping handlerMapping -> handlerMapping.getHandler(httpServletRequest) })
-
-    if (!handlerMapping) {
-      return null
-    }
-
     HandlerExecutionChain handlerExecutionChain = handlerMapping.getHandler(httpServletRequest)
     Object handler = handlerExecutionChain.getHandler()
 

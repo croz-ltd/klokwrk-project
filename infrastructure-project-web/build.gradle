@@ -11,5 +11,8 @@ dependencies {
   implementation "org.springframework:spring-webmvc"
   implementation "org.apache.tomcat.embed:tomcat-embed-core"
 
+  testImplementation "com.fasterxml.jackson.core:jackson-databind"
   testImplementation "org.spockframework:spock-core"
+  testImplementation "org.spockframework:spock-spring"
+  testImplementation "org.springframework:spring-test"
 }
