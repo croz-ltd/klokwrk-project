@@ -6,7 +6,6 @@ import net.croz.cargotracker.infrastructure.library.spring.context.MessageSource
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.response.ResponseReportViolationPart
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.DomainException
-import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.Severity
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationCode
 import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseReport
 import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseReportPart
@@ -21,13 +20,61 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.Instant
 
-// useful references:
-//   https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-exceptionhandler
-//   https://www.baeldung.com/global-error-handler-in-a-spring-rest-api
-//   https://blog.restcase.com/rest-api-error-handling-problem-details-response/
-//   https://tools.ietf.org/html/rfc7807
+// @formatter:off
+/**
+ * Handles shaping and internationalization of the HTTP responses in case of {@link DomainException}.
+ * <p/>
+ * When used from Spring Boot application, the easiest is to create controller advice and register it with the spring context:
+ * <pre>
+ * &#64;ControllerAdvice
+ * class ResponseFormattingExceptionHandlerControllerAdvice extends ResponseFormattingExceptionHandler {
+ * }
+ *
+ * &#64;Configuration
+ * class SpringBootConfig {
+ *   &#64;Bean
+ *   ResponseFormattingExceptionHandlerControllerAdvice responseFormattingExceptionHandlerControllerAdvice() {
+ *     return new ResponseFormattingExceptionHandlerControllerAdvice()
+ *   }
+ * }
+ * </pre>
+ * For internationalization of default messages, we are using resource bundle with base name <code>responseFormattingDefaultMessages</code>. In Spring Boot application, that resource bundle needs to
+ * be configured, for example, in <code>application.yml</code>:
+ * <pre>
+ * ...
+ * spring.messages.basename: messages,responseFormattingDefaultMessages
+ * ...
+ * </pre>
+ * The list of message codes which will be tried against the resource bundle is defined my {@link MessageSourceResolvableHelper}.
+ * <p/>
+ * HTTP response body is an instance of {@link OperationResponse} containing resolved <code>metaData</code> and empty <code>payload</code>. When serialized into JSON it looks something like
+ * following example:
+ * <pre>
+ * {
+ *   "metaData": {
+ *     "http": {
+ *       "status": "400",
+ *       "message": "Bad Request"
+ *     },
+ *     "severity": "WARNING",
+ *     "violation": {
+ *       "code": "400",
+ *       "codeMessage": "Destination location cannot accept cargo from specified origin location."*
+ *     },
+ *     "locale": "en_GB",
+ *     "titleText": "Warning",
+ *     "timestamp": "2020-04-26T09:41:04.917666Z",
+ *     "titleDetailedText": "Cargo is not booked since destination location cannot accept cargo from specified oriocation."
+ *   },
+ *   "payload": {}
+ * }
+ * </pre>
+ *
+ * @see MessageSourceResolvableHelper
+ */
+// @formatter:on
 @CompileStatic
-class RestExceptionHandler extends ResponseEntityExceptionHandler implements MessageSourceAware {
+class ResponseFormattingExceptionHandler extends ResponseEntityExceptionHandler implements MessageSourceAware {
   private MessageSource messageSource
 
   @Override
@@ -50,7 +97,7 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler implements Mes
 
     HttpResponseReport httpResponseReport = new HttpResponseReport(
         timestamp: Instant.now(),
-        severity: Severity.WARNING,
+        severity: domainException.violationInfo.severity,
         locale: locale,
         violation: createResponseReportViolationPart(domainException),
         http: createHttpResponseReportPart(httpStatus)

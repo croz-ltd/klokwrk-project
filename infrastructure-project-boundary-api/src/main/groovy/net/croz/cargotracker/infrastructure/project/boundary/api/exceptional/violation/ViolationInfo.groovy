@@ -18,7 +18,7 @@ import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandle
 @CompileStatic
 class ViolationInfo implements PostMapConstructorCheckable {
   static final ViolationInfo UNKNOWN = new ViolationInfo(severity: Severity.ERROR, violationCode: ViolationCode.UNKNOWN)
-  static final ViolationInfo BAD_REQUEST = new ViolationInfo(severity: Severity.WARNING, violationCode: ViolationCode.NOT_FOUND)
+  static final ViolationInfo BAD_REQUEST = new ViolationInfo(severity: Severity.WARNING, violationCode: ViolationCode.BAD_REQUEST)
   static final ViolationInfo NOT_FOUND = new ViolationInfo(severity: Severity.WARNING, violationCode: ViolationCode.NOT_FOUND)
 
   Severity severity
