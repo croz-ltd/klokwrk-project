@@ -15,11 +15,11 @@ import com.fasterxml.jackson.databind.ser.Serializers
 import net.croz.cargotracker.infrastructure.library.jackson.databind.deser.StringSanitizingDeserializer
 import net.croz.cargotracker.infrastructure.library.jackson.databind.ser.GStringSerializer
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.autoconfigure.json.JsonTest
 import spock.lang.Specification
 import spock.lang.Unroll
 
-@SpringBootTest
+@JsonTest
 class EssentialJacksonCustomizerDefaultSetupSpecification extends Specification {
   @Autowired
   ObjectMapper objectMapper
