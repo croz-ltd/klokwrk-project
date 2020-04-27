@@ -6,16 +6,17 @@ package net.croz.cargotracker.lang.groovy.constructor.support
  * It is intended to be used as an mean for verifying if object is in consistent state after creation. If not, <code>postMapConstructorCheck()</code> implementation should throw
  * <code>IllegalArgumentException</code> or <code>AssertionError</code>.
  * <p/>
- * If supplied <code>constructorArguments</code> map is empty, <code>postMapConstructorCheckProtocol()</code> immediately returns. Otherwise, it calls <code>postMapConstructorCheck()</code>
- * implementation provided by the implementor of this interface.
+ * If supplied <code>constructorArguments</code> map is empty, <code>postMapConstructorCheckProtocol()</code> immediately returns. Normally, it would be better to throw an exception, but many
+ * libraries require availability of no-args constructor (i.e. jackson). There is an option to change this behavior by overriding <code>postMapConstructorShouldThrowForEmptyConstructorArguments()</code>.
+ * After completing checking of <code>constructorArguments</code>, <code>postMapConstructorCheckProtocol()</code> calls <code>postMapConstructorCheck()</code> implementation.
  * <p/>
  * Example usage:
  * <pre>
  *   &#64;MapConstructor(post = { postMapConstructorCheckProtocol(args as Map) })
- *   &#64;Override
  *   class UnLoCode implements PostMapConstructorCheckable {
  *     String code
  *
+ *     &#64;Override
  *     void postMapConstructorCheck(Map<String, ?> constructorArguments) {
  *       assert code
  *       assert code.isBlank() == false
@@ -26,6 +27,10 @@ package net.croz.cargotracker.lang.groovy.constructor.support
 interface PostMapConstructorCheckable {
   default void postMapConstructorCheckProtocol(Map<String, ?> constructorArguments) {
     if (!constructorArguments) {
+      if (postMapConstructorShouldThrowForEmptyConstructorArguments()) {
+        throw new IllegalArgumentException("Map constructor's parameter map is empty. Cannot continue.")
+      }
+
       return
     }
 
@@ -35,6 +40,10 @@ interface PostMapConstructorCheckable {
     catch (AssertionError ae) {
       throw new IllegalArgumentException("\n${ ae.getMessage() }", ae)
     }
+  }
+
+  default Boolean postMapConstructorShouldThrowForEmptyConstructorArguments() {
+    return false
   }
 
   void postMapConstructorCheck(Map<String, ?> constructorArguments)
