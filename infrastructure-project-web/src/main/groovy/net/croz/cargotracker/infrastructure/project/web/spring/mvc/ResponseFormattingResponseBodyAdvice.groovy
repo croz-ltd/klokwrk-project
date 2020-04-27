@@ -28,6 +28,60 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import java.time.Instant
 
+// @formatter:off
+/**
+ * Handles shaping and internationalization of the body in HTTP JSON responses when successful result of controller execution is {@link OperationResponse} instance.
+ * <p/>
+ * Produced HTTP response body is a modified instance of {@link OperationResponse} where modifications only affect "<code>metaData</code>", while "<code>payload</code>" is left unchanged.
+ * "<code>metaData</code>" is affected by adding {@link HttpResponseReport} into it.
+ * <p/>
+ * When serialized into JSON it looks something like following example ("<code>payload</code>" is left out since it is not affected):
+ * <pre>
+ * {
+ *   "metaData": {
+ *     "http": {
+ *       "status": "200",
+ *       "message": "OK"
+ *     },
+ *     "severity": "INFO",
+ *     "locale": "en_GB",
+ *     "titleText": "Info",
+ *     "timestamp": "2020-04-27T06:13:09.225Z",
+ *     "titleDetailedText": "Your request is successfully executed."
+ *   },
+ *   "payload": {
+ *     ...
+ *   }
+ * }
+ * </pre>
+ * Here, internationalized "<code>metaData</code>" entries are "<code>titleText</code>" and "<code>titleDetailedText</code>".
+ * <p/>
+ * When used from Spring Boot application, the easiest is to create controller advice and register it with the spring context:
+ * <pre>
+ * &#64;ControllerAdvice
+ * class ResponseFormattingResponseBodyAdviceControllerAdvice extends ResponseFormattingResponseBodyAdvice {
+ * }
+ *
+ * &#64;Configuration
+ * class SpringBootConfig {
+ *   &#64;Bean
+ *   ResponseFormattingResponseBodyAdviceControllerAdvice responseFormattingResponseBodyAdviceControllerAdvice() {
+ *     return new ResponseFormattingResponseBodyAdviceControllerAdvice()
+ *   }
+ * }
+ * </pre>
+ * For internationalization of default messages, we are defining a resource bundle with base name "<code>responseFormattingDefaultMessages</code>". In Spring Boot application, that resource bundle
+ * needs to be configured, for example, in <code>application.yml</code>:
+ * <pre>
+ * ...
+ * spring.messages.basename: messages,responseFormattingDefaultMessages
+ * ...
+ * </pre>
+ * The list of message codes which will be tried against the resource bundle is created by {@link MessageSourceResolvableHelper}.
+ *
+ * @see MessageSourceResolvableHelper
+ */
+// @formatter:on
 @CompileStatic
 class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<OperationResponse<?>>, ApplicationContextAware {
   private ApplicationContext applicationContext
