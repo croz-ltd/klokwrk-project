@@ -22,7 +22,31 @@ import java.time.Instant
 
 // @formatter:off
 /**
- * Handles shaping and internationalization of the HTTP responses in case of {@link DomainException}.
+ * Handles shaping and internationalization of the body in HTTP responses when execution of controller results in throwing a {@link DomainException}.
+ * <p/>
+ * Produced HTTP response body is an instance of {@link OperationResponse} containing resolved "<code>metaData</code>" and empty "<code>payload</code>". When serialized into JSON it looks something
+ * like following example:
+ * <pre>
+ * {
+ *   "metaData": {
+ *     "http": {
+ *       "status": "400",
+ *       "message": "Bad Request"
+ *     },
+ *     "severity": "WARNING",
+ *     "violation": {
+ *       "code": "400",
+ *       "codeMessage": "Destination location cannot accept cargo from specified origin location."
+ *     },
+ *     "locale": "en_GB",
+ *     "titleText": "Warning",
+ *     "timestamp": "2020-04-26T09:41:04.917666Z",
+ *     "titleDetailedText": "Cargo is not booked since destination location cannot accept cargo from specified origin location."
+ *   },
+ *   "payload": {}
+ * }
+ * </pre>
+ * Here, internationalized "<code>metaData</code>" entries are "<code>violation.codeMessage</code>", "<code>titleText</code>" and "<code>titleDetailedText</code>".
  * <p/>
  * When used from Spring Boot application, the easiest is to create controller advice and register it with the spring context:
  * <pre>
@@ -38,37 +62,14 @@ import java.time.Instant
  *   }
  * }
  * </pre>
- * For internationalization of default messages, we are using resource bundle with base name <code>responseFormattingDefaultMessages</code>. In Spring Boot application, that resource bundle needs to
- * be configured, for example, in <code>application.yml</code>:
+ * For internationalization of default messages, we are defining a resource bundle with base name "<code>responseFormattingDefaultMessages</code>". In Spring Boot application, that resource bundle
+ * needs to be configured, for example, in <code>application.yml</code>:
  * <pre>
  * ...
  * spring.messages.basename: messages,responseFormattingDefaultMessages
  * ...
  * </pre>
- * The list of message codes which will be tried against the resource bundle is defined my {@link MessageSourceResolvableHelper}.
- * <p/>
- * HTTP response body is an instance of {@link OperationResponse} containing resolved <code>metaData</code> and empty <code>payload</code>. When serialized into JSON it looks something like
- * following example:
- * <pre>
- * {
- *   "metaData": {
- *     "http": {
- *       "status": "400",
- *       "message": "Bad Request"
- *     },
- *     "severity": "WARNING",
- *     "violation": {
- *       "code": "400",
- *       "codeMessage": "Destination location cannot accept cargo from specified origin location."*
- *     },
- *     "locale": "en_GB",
- *     "titleText": "Warning",
- *     "timestamp": "2020-04-26T09:41:04.917666Z",
- *     "titleDetailedText": "Cargo is not booked since destination location cannot accept cargo from specified oriocation."
- *   },
- *   "payload": {}
- * }
- * </pre>
+ * The list of message codes which will be tried against the resource bundle is created by {@link MessageSourceResolvableHelper}.
  *
  * @see MessageSourceResolvableHelper
  */
