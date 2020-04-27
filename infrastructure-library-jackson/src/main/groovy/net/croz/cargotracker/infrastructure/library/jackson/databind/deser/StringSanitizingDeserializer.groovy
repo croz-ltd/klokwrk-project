@@ -22,6 +22,6 @@ class StringSanitizingDeserializer extends StdDeserializer<String> {
       return null
     }
 
-    node.asText()
+    return node.asText()
   }
 }
