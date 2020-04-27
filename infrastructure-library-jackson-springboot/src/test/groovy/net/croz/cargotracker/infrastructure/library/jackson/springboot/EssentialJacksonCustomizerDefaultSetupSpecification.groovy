@@ -20,7 +20,7 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 @SpringBootTest
-class EssentialJacksonCustomizerSetupSpecification extends Specification {
+class EssentialJacksonCustomizerDefaultSetupSpecification extends Specification {
   @Autowired
   ObjectMapper objectMapper
 
