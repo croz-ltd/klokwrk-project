@@ -20,7 +20,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.Instant
 
-// @formatter:off
 /**
  * Handles shaping and internationalization of the body in HTTP responses when execution of controller results in throwing a {@link DomainException}.
  * <p/>
@@ -73,7 +72,6 @@ import java.time.Instant
  *
  * @see MessageSourceResolvableHelper
  */
-// @formatter:on
 @CompileStatic
 class ResponseFormattingExceptionHandler extends ResponseEntityExceptionHandler implements MessageSourceAware {
   private MessageSource messageSource

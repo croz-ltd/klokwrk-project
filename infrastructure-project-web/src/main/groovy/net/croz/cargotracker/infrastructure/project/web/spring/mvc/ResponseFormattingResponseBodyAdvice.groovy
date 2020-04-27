@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import java.time.Instant
 
-// @formatter:off
 /**
  * Handles shaping and internationalization of the body in HTTP JSON responses when successful result of controller execution is {@link OperationResponse} instance.
  * <p/>
@@ -81,7 +80,6 @@ import java.time.Instant
  *
  * @see MessageSourceResolvableHelper
  */
-// @formatter:on
 @CompileStatic
 class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<OperationResponse<?>>, ApplicationContextAware {
   private ApplicationContext applicationContext
