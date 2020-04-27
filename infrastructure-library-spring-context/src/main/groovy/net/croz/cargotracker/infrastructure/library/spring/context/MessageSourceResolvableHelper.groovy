@@ -17,7 +17,6 @@ class MessageSourceResolvableHelper {
     return message
   }
 
-  // @formatter:off
   /**
    * Creates a list of message codes that can be resolved via Spring's {@link MessageSource}.
    * <p/>
@@ -75,7 +74,6 @@ class MessageSourceResolvableHelper {
    * ]
    * <pre>
    */
-  // @formatter:on
   static List<String> createMessageCodeList(MessageSourceResolvableSpecification specification) {
     String controllerSimpleName = specification.controllerSimpleName?.trim() ?: ""
     String controllerMethodName = specification.controllerMethodName?.trim() ?: ""
