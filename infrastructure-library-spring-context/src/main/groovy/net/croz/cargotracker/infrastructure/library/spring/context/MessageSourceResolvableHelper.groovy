@@ -109,6 +109,36 @@ class MessageSourceResolvableHelper {
         "default${ innerSeverity }".toString()
     ]
 
+    messageCodeList = removeLeadingDot(messageCodeList)
+    messageCodeList = removeStandaloneStrings(messageCodeList)
+
     return messageCodeList.unique()
+  }
+
+  protected static List<String> removeLeadingDot(List<String> messageCodeList) {
+    List<String> withoutLeadingDotMessageCodeList = messageCodeList.collect { String messageCode ->
+      if (!messageCode) {
+        return messageCode
+      }
+
+      if (messageCode[0] == ".") {
+        return messageCode[1..-1]
+      }
+
+      return messageCode
+    }
+
+    return withoutLeadingDotMessageCodeList
+  }
+
+  /**
+   * Filters out any standalone (without containing dots) strings, i.e. empty strings, "warning", "default" etc.
+   */
+  protected static List<String> removeStandaloneStrings(List<String> messageCodeList) {
+    List<String> withoutStandaloneStringsMessageCodeList = messageCodeList.findAll { String messageCode ->
+      messageCode.contains(".")
+    }
+
+    return withoutStandaloneStringsMessageCodeList
   }
 }
