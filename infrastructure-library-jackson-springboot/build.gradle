@@ -21,5 +21,4 @@ dependencies {
   testImplementation "org.springframework:spring-test"
   testImplementation "org.springframework.boot:spring-boot-starter-json"
   testImplementation "org.springframework.boot:spring-boot-test-autoconfigure"
-  testImplementation "org.springframework.boot:spring-boot-test"
 }
