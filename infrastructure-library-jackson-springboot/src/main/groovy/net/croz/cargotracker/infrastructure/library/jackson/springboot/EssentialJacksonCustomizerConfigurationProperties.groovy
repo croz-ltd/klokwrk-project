@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 /**
  * Spring Boot configuration properties for {@link EssentialJacksonCustomizer}.
  * <p/>
- * To be able to use this from Spring Boot application minimal configuration is required that enables this configuration properties and configures accompanying bean post processor like in following
+ * To be able to use this from Spring Boot application, minimal configuration is required that enables this configuration properties and configures accompanying bean post processor like in following
  * example:
  * <pre>
  * &#64;EnableConfigurationProperties(EssentialJacksonCustomizerConfigurationProperties)
