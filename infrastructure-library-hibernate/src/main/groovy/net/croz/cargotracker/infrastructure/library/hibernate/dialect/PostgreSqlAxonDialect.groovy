@@ -17,8 +17,8 @@ import java.sql.Types
  */
 @SuppressWarnings("unused")
 @CompileStatic
-class PostgreSqlCustomDialect extends PostgreSQL10Dialect {
-  PostgreSqlCustomDialect() {
+class PostgreSqlAxonDialect extends PostgreSQL10Dialect {
+  PostgreSqlAxonDialect() {
     registerColumnType(Types.BLOB, "bytea")
   }
 
