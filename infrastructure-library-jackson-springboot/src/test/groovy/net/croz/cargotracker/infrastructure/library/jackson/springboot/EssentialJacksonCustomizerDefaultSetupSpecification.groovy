@@ -1,6 +1,8 @@
 package net.croz.cargotracker.infrastructure.library.jackson.springboot
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonSetter
+import com.fasterxml.jackson.annotation.Nulls
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonDeserializer
@@ -69,6 +71,11 @@ class EssentialJacksonCustomizerDefaultSetupSpecification extends Specification 
   def "objectMapper - should have default serialization inclusion configured to NON_NULL"() {
     expect:
     objectMapper.getSerializationConfig().getDefaultPropertyInclusion().getValueInclusion() == JsonInclude.Include.NON_NULL
+  }
+
+  def "objectMapper - should have default deserialization setter info configured to Nulls.SKIP"() {
+    expect:
+    objectMapper.getDeserializationConfig().defaultSetterInfo == JsonSetter.Value.forValueNulls(Nulls.SKIP)
   }
 
   def "objectMapper - should have default StringSanitizingDeserializer configured"() {
