@@ -47,9 +47,9 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
     this.essentialJacksonCustomizerConfigurationProperties = essentialJacksonCustomizerConfigurationProperties
   }
 
-  @SuppressWarnings("GroovyPointlessBoolean")
   @Override
   void customize(Jackson2ObjectMapperBuilder jacksonObjectMapperBuilder) {
+    //noinspection GroovyPointlessBoolean
     if (essentialJacksonCustomizerConfigurationProperties.enabled == false) {
       return
     }
@@ -79,7 +79,10 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
     }
 
     List<Object> myFeatureToDisableList = []
-    if (essentialJacksonCustomizerConfigurationProperties.deserialization.failOnUnknownProperties == false) {
+    if (essentialJacksonCustomizerConfigurationProperties.deserialization.failOnUnknownProperties) {
+      myFeatureToEnableList << DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES
+    }
+    else {
       myFeatureToDisableList << DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES
     }
 

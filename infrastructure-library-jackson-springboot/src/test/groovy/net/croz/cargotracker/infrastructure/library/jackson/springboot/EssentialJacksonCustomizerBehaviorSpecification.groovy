@@ -2,7 +2,7 @@ package net.croz.cargotracker.infrastructure.library.jackson.springboot
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.autoconfigure.json.JsonTest
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -14,7 +14,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-@SpringBootTest
+@JsonTest
 class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
   @Autowired
   ObjectMapper objectMapper
