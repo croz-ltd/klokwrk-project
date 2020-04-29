@@ -24,22 +24,22 @@ class Slf4jFilterableQueryLoggingListener extends SLF4JQueryLoggingListener {
 
   Slf4jFilterableQueryLoggingListener(List<String> filteringOutPatternStringList = []) {
     super()
-
+    assert filteringOutPatternStringList != null
     this.filteringOutPatternList = filteringOutPatternStringList.collect({ String patternString -> Pattern.compile(patternString) })
   }
 
   @Override
   void afterQuery(ExecutionInfo execInfo, List<QueryInfo> originalQueryInfoList) {
     if (loggingCondition.getAsBoolean()) {
-      List<QueryInfo> filteredOutQueryInfoList = filterOutQueryInfoList(originalQueryInfoList)
-      if (filteredOutQueryInfoList) {
-        String entry = getEntry(execInfo, filteredOutQueryInfoList)
-        writeLog(entry)
+      if (getLogger().isTraceEnabled()) {
+        String entry = getEntry(execInfo, originalQueryInfoList)
+        SLF4JLogUtils.writeLog(getLogger(), SLF4JLogLevel.TRACE, entry)
       }
       else {
-        if (getLogger().isTraceEnabled()) {
-          String entry = getEntry(execInfo, originalQueryInfoList)
-          SLF4JLogUtils.writeLog(getLogger(), SLF4JLogLevel.TRACE, entry)
+        List<QueryInfo> filteredOutQueryInfoList = filterOutQueryInfoList(originalQueryInfoList)
+        if (filteredOutQueryInfoList) {
+          String entry = getEntry(execInfo, filteredOutQueryInfoList)
+          writeLog(entry)
         }
       }
     }
