@@ -20,4 +20,15 @@ dependencies {
   implementation "org.springframework:spring-beans"
   implementation "org.springframework:spring-core"
   implementation "org.springframework.boot:spring-boot"
+
+  testImplementation "org.spockframework:spock-core"
+  testImplementation "org.spockframework:spock-spring"
+  testImplementation "org.springframework:spring-test"
+  testImplementation("org.springframework.boot:spring-boot-starter-jdbc") {
+    exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+  }
+  testImplementation "org.springframework.boot:spring-boot-test-autoconfigure"
+  testImplementation "uk.org.lidalia:slf4j-test"
+
+  testRuntimeOnly "com.h2database:h2"
 }
