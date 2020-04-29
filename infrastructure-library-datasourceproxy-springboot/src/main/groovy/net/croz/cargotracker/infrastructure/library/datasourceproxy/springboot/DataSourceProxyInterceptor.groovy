@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
 class DataSourceProxyInterceptor implements MethodInterceptor {
   DataSource dataSource
 
-  DataSourceProxyInterceptor(DataSource dataSource, DataSourceProxyConfigurationProperties dataSourceProxyConfigurationProperties) {
+  DataSourceProxyInterceptor(String originalDataSourceBeanName, DataSource dataSource, DataSourceProxyConfigurationProperties dataSourceProxyConfigurationProperties) {
     Slf4jFilterableQueryLoggingListener slf4jFilterableQueryLoggingListener =
         new Slf4jFilterableQueryLoggingListener(dataSourceProxyConfigurationProperties.queryLogger.filteringOutRegularExpressionList)
 
@@ -34,7 +34,7 @@ class DataSourceProxyInterceptor implements MethodInterceptor {
 
     this.dataSource = ProxyDataSourceBuilder
         .create(dataSource)
-        .name(dataSourceProxyConfigurationProperties.dataSourceName)
+        .name("${dataSourceProxyConfigurationProperties.dataSourceNamePrefix}${originalDataSourceBeanName}")
         .listener(slf4jFilterableQueryLoggingListener)
         .logSlowQueryBySlf4j(
             dataSourceProxyConfigurationProperties.slowQueryLogger.threshold.toMillis(), TimeUnit.MILLISECONDS,

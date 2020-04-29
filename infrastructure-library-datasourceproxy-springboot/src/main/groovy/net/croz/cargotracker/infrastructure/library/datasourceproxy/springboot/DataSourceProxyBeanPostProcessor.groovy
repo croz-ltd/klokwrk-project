@@ -60,7 +60,7 @@ class DataSourceProxyBeanPostProcessor implements BeanPostProcessor {
     if (bean instanceof DataSource && !(bean instanceof ProxyDataSource)) {
       ProxyFactory aopProxyFactory = new ProxyFactory(bean)
       aopProxyFactory.proxyTargetClass = true
-      aopProxyFactory.addAdvice(new DataSourceProxyInterceptor(bean, dataSourceProxyConfigurationProperties))
+      aopProxyFactory.addAdvice(new DataSourceProxyInterceptor(beanName, bean, dataSourceProxyConfigurationProperties))
 
       return aopProxyFactory.proxy
     }

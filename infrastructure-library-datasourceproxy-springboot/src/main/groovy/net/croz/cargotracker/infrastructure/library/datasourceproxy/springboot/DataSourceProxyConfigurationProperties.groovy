@@ -22,11 +22,13 @@ class DataSourceProxyConfigurationProperties {
   Boolean enabled = true
 
   /**
-   * The name of proxied data source.
+   * The prefix of a proxying data source name.
    * <p/>
-   * Default value is <code>'dataSourceProxy'</code>.
+   * Constructed full data source name will consist of this prefix and original bean name of a proxied data source.
+   * <p/>
+   * Default value is <code>'datasource-proxy:::'</code>.
    */
-  String dataSourceName = "dataSourceProxy"
+  String dataSourceNamePrefix = "datasource-proxy:::"
 
   @SuppressWarnings("unused")
   QueryLogger queryLogger = new QueryLogger()
