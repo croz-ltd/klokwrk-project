@@ -4,4 +4,7 @@ dependencies {
   implementation "net.ttddyy:datasource-proxy"
   implementation "org.codehaus.groovy:groovy"
   implementation "org.slf4j:slf4j-api"
+
+  testImplementation "org.spockframework:spock-core"
+  testImplementation "uk.org.lidalia:slf4j-test"
 }
