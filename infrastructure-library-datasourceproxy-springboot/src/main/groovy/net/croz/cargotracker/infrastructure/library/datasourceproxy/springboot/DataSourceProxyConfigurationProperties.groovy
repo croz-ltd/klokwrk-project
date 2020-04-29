@@ -7,21 +7,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import java.time.Duration
 
 /**
- * Spring Boot configuration properties for {@link DataSourceProxyBeanPostProcessor} and {@link DataSourceProxyInterceptor}.
- * <p/>
- * To be able to use this from Spring Boot application minimal configuration is required that enables this configuration properties and configures accompanying bean post processor like in following
- * example:
- * <pre>
- * &#64;EnableConfigurationProperties(DataSourceProxyConfigurationProperties)
- * &#64;Configuration
- * class SpringBootConfig {
- *   &#64;SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
- *   &#64;Bean
- *   BeanPostProcessor dataSourceProxyBeanPostProcessor(DataSourceProxyConfigurationProperties dataSourceProxyConfigurationProperties) {
- *     return new DataSourceProxyBeanPostProcessor(dataSourceProxyConfigurationProperties)
- *   }
- * }
- * </pre>
+ * Spring Boot configuration properties for configuring some aspects of datasource-proxy features that are enabled via {@link DataSourceProxyBeanPostProcessor} and {@link DataSourceProxyInterceptor}.
+ *
+ * @see DataSourceProxyBeanPostProcessor
+ * @see DataSourceProxyInterceptor
  */
 @SuppressWarnings("ConfigurationProperties")
 @ConfigurationProperties(prefix = "cargotracker.data-source-proxy")
@@ -33,11 +22,13 @@ class DataSourceProxyConfigurationProperties {
   Boolean enabled = true
 
   /**
-   * The name of proxied data source.
+   * The prefix of a proxying data source name.
    * <p/>
-   * Default value is <code>'dataSourceProxy'</code>.
+   * Constructed full data source name will consist of this prefix and original bean name of a proxied data source.
+   * <p/>
+   * Default value is <code>'datasource-proxy:::'</code>.
    */
-  String dataSourceName = "dataSourceProxy"
+  String dataSourceNamePrefix = "datasource-proxy:::"
 
   @SuppressWarnings("unused")
   QueryLogger queryLogger = new QueryLogger()
