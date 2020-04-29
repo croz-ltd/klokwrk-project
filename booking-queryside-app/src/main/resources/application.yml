@@ -25,4 +25,4 @@ logging.level.cargotracker.axon.query-handler-logging: DEBUG # To see query hand
 logging.level.cargotracker.data-source-proxy.queryLogger: DEBUG
 logging.level.cargotracker.data-source-proxy.slowQueryLogger: WARN
 logging.level.org.axonframework.eventsourcing: DEBUG
-logging.level.net.croz.cargotracker.infrastructure.axon.messagehandler.QueryHandlerTrait: DEBUG # To see original exception stacktrace (before remoting) thrown in axon query handlers.
+logging.level.net.croz.cargotracker.infrastructure.project.axon.cqrs.messagehandler.QueryHandlerTrait : DEBUG # To see original exception stacktrace (before remoting) thrown in axon query handlers.
