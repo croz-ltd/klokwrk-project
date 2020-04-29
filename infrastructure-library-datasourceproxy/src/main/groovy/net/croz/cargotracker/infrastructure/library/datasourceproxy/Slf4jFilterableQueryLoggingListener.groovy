@@ -13,6 +13,10 @@ import java.util.regex.Pattern
  * Extends DataSourceProxy's {@link SLF4JQueryLoggingListener} by adding capability of filtering out queries based on regular expression match.
  * <p/>
  * If needed, filtered out queries can still be sent to log if the logging level is set to <code>TRACE</code> for the appropriate logger.
+ * <p/>
+ * Filtering queries might be very useful when there is some kind of recurring queries happening, for example when we have some kind of database polling. One good example is Axon queryside projection
+ * application, where projection is projecting into RDBMS database. In that scenario, Axon continually issues <code>update token_entry</code> statements for maintaining <code>token_entry</code> table.
+ * Commonly we do not want to see these statements all the time and it is convenient to be able to filter them out.
  */
 @CompileStatic
 class Slf4jFilterableQueryLoggingListener extends SLF4JQueryLoggingListener {
