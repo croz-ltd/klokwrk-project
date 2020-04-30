@@ -17,12 +17,8 @@ class ResponseMetaDataReport {
 
   ResponseMetaDataReportViolationPart violation
 
-  static ResponseMetaDataReport createBasicInfoReport() {
-    ResponseMetaDataReport responseReport = new ResponseMetaDataReport(
-        timestamp: Instant.now(),
-        severity: Severity.INFO
-    )
-
-    return responseReport
+  static ResponseMetaDataReport createBasicInfoMetaDataReport() {
+    ResponseMetaDataReport responseMetadataReport = new ResponseMetaDataReport(timestamp: Instant.now(), severity: Severity.INFO)
+    return responseMetadataReport
   }
 }

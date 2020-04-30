@@ -102,37 +102,37 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     HttpServletRequest httpServletRequest = (serverHttpRequest as ServletServerHttpRequest).servletRequest
     HttpServletResponse httpServletResponse = (serverHttpResponse as ServletServerHttpResponse).servletResponse
 
-    HttpResponseMetaDataReport httpResponseReport = createHttpResponseReport(httpServletResponse, httpServletRequest)
-    operationResponseBody.metaData = httpResponseReport.propertiesFiltered
+    HttpResponseMetaDataReport httpResponseMetaDataReport = createHttpResponseMetaDataReport(httpServletResponse, httpServletRequest)
+    operationResponseBody.metaData = httpResponseMetaDataReport.propertiesFiltered
 
     return operationResponseBody
   }
 
-  protected HttpResponseMetaDataReport createHttpResponseReport(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) {
+  protected HttpResponseMetaDataReport createHttpResponseMetaDataReport(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) {
     HttpStatus httpStatus = HttpStatus.resolve(httpServletResponse.status)
 
-    HttpResponseMetaDataReport httpResponseReport = new HttpResponseMetaDataReport(
+    HttpResponseMetaDataReport httpResponseMetaDataReport = new HttpResponseMetaDataReport(
         timestamp: Instant.now(),
         severity: Severity.INFO,
         locale: httpServletRequest.getLocale(),
-        http: createHttpResponseReportPart(httpStatus)
+        http: createHttpResponseMetaDataReportPart(httpStatus)
     )
 
     HandlerMethod handlerMethod = fetchHandlerMethod(httpServletRequest)
     if (handlerMethod) {
-      httpResponseReport = localizeHttpResponseReport(httpResponseReport, handlerMethod, httpServletRequest.getLocale())
+      httpResponseMetaDataReport = localizeHttpResponseMetaDataReport(httpResponseMetaDataReport, handlerMethod, httpServletRequest.getLocale())
     }
 
-    return httpResponseReport
+    return httpResponseMetaDataReport
   }
 
-  protected HttpResponseMetaDataReportPart createHttpResponseReportPart(HttpStatus httpStatus) {
-    HttpResponseMetaDataReportPart httpResponseReportPart = new HttpResponseMetaDataReportPart(
+  protected HttpResponseMetaDataReportPart createHttpResponseMetaDataReportPart(HttpStatus httpStatus) {
+    HttpResponseMetaDataReportPart httpResponseMetaDataReportPart = new HttpResponseMetaDataReportPart(
         status: httpStatus.value().toString(),
         message: httpStatus.reasonPhrase
     )
 
-    return httpResponseReportPart
+    return httpResponseMetaDataReportPart
   }
 
   protected HandlerMethod fetchHandlerMethod(HttpServletRequest httpServletRequest) {
@@ -149,7 +149,7 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     return handlerMethod
   }
 
-  protected HttpResponseMetaDataReport localizeHttpResponseReport(HttpResponseMetaDataReport httpResponseReport, HandlerMethod handlerMethod, Locale locale) {
+  protected HttpResponseMetaDataReport localizeHttpResponseMetaDataReport(HttpResponseMetaDataReport httpResponseMetaDataReport, HandlerMethod handlerMethod, Locale locale) {
     MessageSourceResolvableSpecification resolvableMessageSpecification = new MessageSourceResolvableSpecification(
         controllerSimpleName: handlerMethod.getBeanType().simpleName.uncapitalize(),
         controllerMethodName: handlerMethod.getMethod().name,
@@ -161,12 +161,12 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     )
 
     MessageSource messageSource = applicationContext
-    httpResponseReport.titleText = MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
+    httpResponseMetaDataReport.titleText = MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
 
     resolvableMessageSpecification.propertyPath = "report.titleDetailedText"
-    httpResponseReport.titleDetailedText =
+    httpResponseMetaDataReport.titleDetailedText =
         MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
 
-    return httpResponseReport
+    return httpResponseMetaDataReport
   }
 }
