@@ -11,6 +11,15 @@ import net.croz.cargotracker.infrastructure.project.boundary.api.severity.Severi
 import net.croz.cargotracker.lang.groovy.constructor.support.PostMapConstructorCheckable
 import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandler
 
+/**
+ * Defines an immutable data structure that describes the reason for the <code>DomainException</code> exception.
+ * <p/>
+ * It contains the violation's severity and data structure describing the code of the violation. Both members need to be specified at construction time.
+ *
+ * @see net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.DomainException
+ * @see ViolationCode
+ * @see Severity
+ */
 @Immutable
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @TupleConstructor(visibilityId = "privateVisibility", pre = { throw new IllegalArgumentException("Calling a private constructor is not allowed") })
