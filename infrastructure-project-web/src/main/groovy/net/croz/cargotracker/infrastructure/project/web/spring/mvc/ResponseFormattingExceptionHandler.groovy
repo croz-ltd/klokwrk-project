@@ -7,8 +7,8 @@ import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.Op
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.metadata.ResponseMetaDataReportViolationPart
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.DomainException
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationCode
-import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseMetaDataReport
-import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseMetaDataReportPart
+import net.croz.cargotracker.infrastructure.project.web.conversation.metadata.HttpResponseMetaDataReport
+import net.croz.cargotracker.infrastructure.project.web.conversation.metadata.HttpResponseMetaDataReportPart
 import org.springframework.context.MessageSource
 import org.springframework.context.MessageSourceAware
 import org.springframework.http.HttpHeaders

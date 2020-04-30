@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.project.web.conversation.response
+package net.croz.cargotracker.infrastructure.project.web.conversation.metadata
 
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.metadata.ResponseMetaDataReport
 

@@ -5,8 +5,8 @@ import net.croz.cargotracker.infrastructure.library.spring.context.MessageSource
 import net.croz.cargotracker.infrastructure.library.spring.context.MessageSourceResolvableSpecification
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.Severity
-import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseMetaDataReport
-import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseMetaDataReportPart
+import net.croz.cargotracker.infrastructure.project.web.conversation.metadata.HttpResponseMetaDataReport
+import net.croz.cargotracker.infrastructure.project.web.conversation.metadata.HttpResponseMetaDataReportPart
 import org.springframework.beans.BeansException
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
