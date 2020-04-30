@@ -3,7 +3,7 @@ package net.croz.cargotracker.infrastructure.project.boundary.api.conversation.m
 import groovy.transform.CompileStatic
 
 @CompileStatic
-class ResponseReportViolationPart {
+class ResponseMetaDataReportViolationPart {
   String code
   String codeMessage
 }

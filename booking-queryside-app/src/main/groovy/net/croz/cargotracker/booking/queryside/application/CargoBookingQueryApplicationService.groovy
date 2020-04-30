@@ -6,7 +6,7 @@ import net.croz.cargotracker.booking.boundary.api.queryside.conversation.CargoSu
 import net.croz.cargotracker.infrastructure.project.axon.cqrs.querygateway.QueryGatewayAdapter
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationRequest
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
-import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.metadata.ResponseReport
+import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.metadata.ResponseMetaDataReport
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.stereotype.Service
 
@@ -25,7 +25,7 @@ class CargoBookingQueryApplicationService {
   }
 
   static OperationResponse<CargoSummaryQueryResponse> cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(CargoSummaryQueryResponse cargoSummaryQueryResponse) {
-    ResponseReport responseReport = ResponseReport.createBasicInfoReport()
+    ResponseMetaDataReport responseReport = ResponseMetaDataReport.createBasicInfoReport()
     return new OperationResponse<CargoSummaryQueryResponse>(payload: cargoSummaryQueryResponse, metaData: responseReport.propertiesFiltered)
   }
 }

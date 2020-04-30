@@ -6,7 +6,7 @@ import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.vio
 import java.time.Instant
 
 @CompileStatic
-class ResponseReport {
+class ResponseMetaDataReport {
   Instant timestamp
   Severity severity
 
@@ -15,10 +15,10 @@ class ResponseReport {
 
   Locale locale
 
-  ResponseReportViolationPart violation
+  ResponseMetaDataReportViolationPart violation
 
-  static ResponseReport createBasicInfoReport() {
-    ResponseReport responseReport = new ResponseReport(
+  static ResponseMetaDataReport createBasicInfoReport() {
+    ResponseMetaDataReport responseReport = new ResponseMetaDataReport(
         timestamp: Instant.now(),
         severity: Severity.INFO
     )

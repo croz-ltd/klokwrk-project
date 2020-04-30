@@ -5,8 +5,8 @@ import net.croz.cargotracker.infrastructure.library.spring.context.MessageSource
 import net.croz.cargotracker.infrastructure.library.spring.context.MessageSourceResolvableSpecification
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.Severity
-import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseReport
-import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseReportPart
+import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseMetaDataReport
+import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseMetaDataReportPart
 import org.springframework.beans.BeansException
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -32,7 +32,7 @@ import java.time.Instant
  * Handles shaping and internationalization of the body in HTTP JSON responses when successful result of controller execution is {@link OperationResponse} instance.
  * <p/>
  * Produced HTTP response body is a modified instance of {@link OperationResponse} where modifications only affect "<code>metaData</code>", while "<code>payload</code>" is left unchanged.
- * "<code>metaData</code>" is affected by adding {@link HttpResponseReport} into it.
+ * "<code>metaData</code>" is affected by adding {@link HttpResponseMetaDataReport} into it.
  * <p/>
  * When serialized into JSON it looks something like following example ("<code>payload</code>" is left out since it is not affected):
  * <pre>
@@ -102,16 +102,16 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     HttpServletRequest httpServletRequest = (serverHttpRequest as ServletServerHttpRequest).servletRequest
     HttpServletResponse httpServletResponse = (serverHttpResponse as ServletServerHttpResponse).servletResponse
 
-    HttpResponseReport httpResponseReport = createHttpResponseReport(httpServletResponse, httpServletRequest)
+    HttpResponseMetaDataReport httpResponseReport = createHttpResponseReport(httpServletResponse, httpServletRequest)
     operationResponseBody.metaData = httpResponseReport.propertiesFiltered
 
     return operationResponseBody
   }
 
-  protected HttpResponseReport createHttpResponseReport(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) {
+  protected HttpResponseMetaDataReport createHttpResponseReport(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) {
     HttpStatus httpStatus = HttpStatus.resolve(httpServletResponse.status)
 
-    HttpResponseReport httpResponseReport = new HttpResponseReport(
+    HttpResponseMetaDataReport httpResponseReport = new HttpResponseMetaDataReport(
         timestamp: Instant.now(),
         severity: Severity.INFO,
         locale: httpServletRequest.getLocale(),
@@ -126,8 +126,8 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     return httpResponseReport
   }
 
-  protected HttpResponseReportPart createHttpResponseReportPart(HttpStatus httpStatus) {
-    HttpResponseReportPart httpResponseReportPart = new HttpResponseReportPart(
+  protected HttpResponseMetaDataReportPart createHttpResponseReportPart(HttpStatus httpStatus) {
+    HttpResponseMetaDataReportPart httpResponseReportPart = new HttpResponseMetaDataReportPart(
         status: httpStatus.value().toString(),
         message: httpStatus.reasonPhrase
     )
@@ -149,7 +149,7 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     return handlerMethod
   }
 
-  protected HttpResponseReport localizeHttpResponseReport(HttpResponseReport httpResponseReport, HandlerMethod handlerMethod, Locale locale) {
+  protected HttpResponseMetaDataReport localizeHttpResponseReport(HttpResponseMetaDataReport httpResponseReport, HandlerMethod handlerMethod, Locale locale) {
     MessageSourceResolvableSpecification resolvableMessageSpecification = new MessageSourceResolvableSpecification(
         controllerSimpleName: handlerMethod.getBeanType().simpleName.uncapitalize(),
         controllerMethodName: handlerMethod.getMethod().name,
