@@ -1,7 +1,7 @@
 package net.croz.cargotracker.infrastructure.project.boundary.api.conversation.metadata
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.Severity
+import net.croz.cargotracker.infrastructure.project.boundary.api.severity.Severity
 
 import java.time.Instant
 
