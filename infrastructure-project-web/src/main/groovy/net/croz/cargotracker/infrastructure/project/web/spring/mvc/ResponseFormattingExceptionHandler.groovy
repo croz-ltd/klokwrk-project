@@ -4,11 +4,11 @@ import groovy.transform.CompileStatic
 import net.croz.cargotracker.infrastructure.library.spring.context.MessageSourceResolvableHelper
 import net.croz.cargotracker.infrastructure.library.spring.context.MessageSourceResolvableSpecification
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
-import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.response.ResponseReportViolationPart
+import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.metadata.ResponseMetaDataReportViolationPart
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.DomainException
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationCode
-import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseReport
-import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseReportPart
+import net.croz.cargotracker.infrastructure.project.web.conversation.metadata.HttpResponseMetaDataReport
+import net.croz.cargotracker.infrastructure.project.web.conversation.metadata.HttpResponseMetaDataReportPart
 import org.springframework.context.MessageSource
 import org.springframework.context.MessageSourceAware
 import org.springframework.http.HttpHeaders
@@ -83,28 +83,28 @@ class ResponseFormattingExceptionHandler extends ResponseEntityExceptionHandler 
 
   @ExceptionHandler
   ResponseEntity handleDomainException(DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
-    HttpResponseReport httpResponseReport = createHttpResponseReport(domainException, handlerMethod, locale)
+    HttpResponseMetaDataReport httpResponseMetaDataReport = createHttpResponseReport(domainException, handlerMethod, locale)
     HttpStatus httpStatus = mapDomainExceptionToHttpStatus(domainException)
-    OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseReport.propertiesFiltered)
+    OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseMetaDataReport.propertiesFiltered)
     ResponseEntity responseEntity = new ResponseEntity(operationResponse, new HttpHeaders(), httpStatus)
 
     return responseEntity
   }
 
-  protected HttpResponseReport createHttpResponseReport(DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
+  protected HttpResponseMetaDataReport createHttpResponseReport(DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
     HttpStatus httpStatus = mapDomainExceptionToHttpStatus(domainException)
 
-    HttpResponseReport httpResponseReport = new HttpResponseReport(
+    HttpResponseMetaDataReport httpResponseMetaDataReport = new HttpResponseMetaDataReport(
         timestamp: Instant.now(),
         severity: domainException.violationInfo.severity,
         locale: locale,
-        violation: createResponseReportViolationPart(domainException),
-        http: createHttpResponseReportPart(httpStatus)
+        violation: createResponseMetaDataReportViolationPart(domainException),
+        http: createHttpResponseMetaDataReportPart(httpStatus)
     )
 
-    httpResponseReport = localizeHttpResponseReport(httpResponseReport, domainException, handlerMethod, locale)
+    httpResponseMetaDataReport = localizeHttpResponseMetaDataReport(httpResponseMetaDataReport, domainException, handlerMethod, locale)
 
-    return httpResponseReport
+    return httpResponseMetaDataReport
   }
 
   protected HttpStatus mapDomainExceptionToHttpStatus(DomainException domainException) {
@@ -124,25 +124,27 @@ class ResponseFormattingExceptionHandler extends ResponseEntityExceptionHandler 
     return httpStatus
   }
 
-  protected ResponseReportViolationPart createResponseReportViolationPart(DomainException domainException) {
-    ResponseReportViolationPart responseReportViolationPart = new ResponseReportViolationPart(
+  protected ResponseMetaDataReportViolationPart createResponseMetaDataReportViolationPart(DomainException domainException) {
+    ResponseMetaDataReportViolationPart responseMetaDataReportViolationPart = new ResponseMetaDataReportViolationPart(
         code: domainException.violationInfo.violationCode.code,
         codeMessage: domainException.violationInfo.violationCode.codeMessage
     )
 
-    return responseReportViolationPart
+    return responseMetaDataReportViolationPart
   }
 
-  protected HttpResponseReportPart createHttpResponseReportPart(HttpStatus httpStatus) {
-    HttpResponseReportPart httpResponseReportPart = new HttpResponseReportPart(
+  protected HttpResponseMetaDataReportPart createHttpResponseMetaDataReportPart(HttpStatus httpStatus) {
+    HttpResponseMetaDataReportPart httpResponseMetaDataReportPart = new HttpResponseMetaDataReportPart(
         status: httpStatus.value().toString(),
         message: httpStatus.reasonPhrase
     )
 
-    return httpResponseReportPart
+    return httpResponseMetaDataReportPart
   }
 
-  protected HttpResponseReport localizeHttpResponseReport(HttpResponseReport httpResponseReport, DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
+  protected HttpResponseMetaDataReport localizeHttpResponseMetaDataReport(
+      HttpResponseMetaDataReport httpResponseMetaDataReport, DomainException domainException, HandlerMethod handlerMethod, Locale locale)
+  {
     MessageSourceResolvableSpecification resolvableMessageSpecification = new MessageSourceResolvableSpecification(
         controllerSimpleName: handlerMethod.getBeanType().simpleName.uncapitalize(),
         controllerMethodName: handlerMethod.getMethod().name,
@@ -153,16 +155,17 @@ class ResponseFormattingExceptionHandler extends ResponseEntityExceptionHandler 
         propertyPath: "report.titleText"
     )
 
-    httpResponseReport.titleText = MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
+    httpResponseMetaDataReport.titleText =
+        MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
 
     resolvableMessageSpecification.propertyPath = "report.titleDetailedText"
-    httpResponseReport.titleDetailedText =
+    httpResponseMetaDataReport.titleDetailedText =
         MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
 
     resolvableMessageSpecification.propertyPath = "report.violation.codeMessage"
-    httpResponseReport.violation.codeMessage =
+    httpResponseMetaDataReport.violation.codeMessage =
         MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
 
-    return httpResponseReport
+    return httpResponseMetaDataReport
   }
 }

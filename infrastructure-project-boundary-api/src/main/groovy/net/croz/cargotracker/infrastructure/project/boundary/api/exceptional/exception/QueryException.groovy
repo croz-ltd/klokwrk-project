@@ -3,6 +3,9 @@ package net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.ex
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationInfo
 
+/**
+ * Intended to communicate non-fatal domain conditions that prevent successful fulfillment of domain query.
+ */
 @CompileStatic
 class QueryException extends DomainException {
   QueryException() {

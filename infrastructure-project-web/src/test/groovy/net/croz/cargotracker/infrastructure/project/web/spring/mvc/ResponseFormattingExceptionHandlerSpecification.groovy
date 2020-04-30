@@ -4,9 +4,9 @@ import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.Op
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.CommandException
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.DomainException
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.QueryException
-import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.Severity
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationCode
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationInfo
+import net.croz.cargotracker.infrastructure.project.boundary.api.severity.Severity
 import org.springframework.context.support.ResourceBundleMessageSource
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

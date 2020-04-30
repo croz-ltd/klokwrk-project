@@ -6,6 +6,11 @@ import groovy.transform.PropertyOptions
 import net.croz.cargotracker.lang.groovy.constructor.support.PostMapConstructorCheckable
 import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandler
 
+/**
+ * Defines the basic format of request messages exchanged over domain facade boundary.
+ *
+ * @see OperationMessage
+ */
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(post = { postMapConstructorCheckProtocol(args as Map) })
 @CompileStatic
