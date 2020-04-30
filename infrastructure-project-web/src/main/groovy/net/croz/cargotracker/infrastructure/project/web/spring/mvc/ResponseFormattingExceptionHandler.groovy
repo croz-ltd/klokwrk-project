@@ -4,7 +4,7 @@ import groovy.transform.CompileStatic
 import net.croz.cargotracker.infrastructure.library.spring.context.MessageSourceResolvableHelper
 import net.croz.cargotracker.infrastructure.library.spring.context.MessageSourceResolvableSpecification
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
-import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.response.ResponseReportViolationPart
+import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.metadata.ResponseReportViolationPart
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.DomainException
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationCode
 import net.croz.cargotracker.infrastructure.project.web.conversation.response.HttpResponseReport

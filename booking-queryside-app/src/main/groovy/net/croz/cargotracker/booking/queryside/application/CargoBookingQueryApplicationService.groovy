@@ -6,7 +6,7 @@ import net.croz.cargotracker.booking.boundary.api.queryside.conversation.CargoSu
 import net.croz.cargotracker.infrastructure.project.axon.cqrs.querygateway.QueryGatewayAdapter
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationRequest
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
-import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.response.ResponseReport
+import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.metadata.ResponseReport
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.stereotype.Service
 

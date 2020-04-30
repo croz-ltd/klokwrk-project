@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.project.boundary.api.conversation.response
+package net.croz.cargotracker.infrastructure.project.boundary.api.conversation.metadata
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.Severity
