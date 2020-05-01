@@ -44,4 +44,83 @@ ruleset {
   RemoveAllOnSelf
   ReturnFromFinallyBlock
   ThrowExceptionFromFinallyBlock
+
+  // rulesets/braces.xml
+  ElseBlockBraces
+  ForStatementBraces
+  IfStatementBraces
+  WhileStatementBraces
+
+  // rulesets/comments.xml
+  ClassJavadoc { enabled = false }
+  JavadocConsecutiveEmptyLines
+  JavadocEmptyAuthorTag
+  JavadocEmptyExceptionTag
+  JavadocEmptyFirstLine
+  JavadocEmptyLastLine
+  JavadocEmptyParamTag
+  JavadocEmptyReturnTag
+  JavadocEmptySeeTag
+  JavadocEmptySinceTag
+  JavadocEmptyThrowsTag
+  JavadocEmptyVersionTag
+  JavadocMissingExceptionDescription
+  JavadocMissingParamDescription
+  JavadocMissingThrowsDescription
+
+  // rulesets/concurrency.xml
+  BusyWait
+  DoubleCheckedLocking
+  InconsistentPropertyLocking
+  InconsistentPropertySynchronization
+  NestedSynchronization
+  StaticCalendarField
+  StaticConnection
+  StaticDateFormatField
+  StaticMatcherField
+  StaticSimpleDateFormatField
+  SynchronizedMethod
+  SynchronizedOnBoxedPrimitive
+  SynchronizedOnGetClass
+  SynchronizedOnReentrantLock
+  SynchronizedOnString
+  SynchronizedOnThis
+  SynchronizedReadObjectMethod
+  SystemRunFinalizersOnExit
+  ThisReferenceEscapesConstructor
+  ThreadGroup
+  ThreadLocalNotStaticFinal
+  ThreadYield
+  UseOfNotifyMethod
+  VolatileArrayField
+  VolatileLongOrDoubleField
+  WaitOutsideOfWhileLoop
+
+  // rulesets/convention.xml
+  CompileStatic
+  ConfusingTernary
+  CouldBeElvis
+  CouldBeSwitchStatement
+  FieldTypeRequired
+  HashtableIsObsolete
+  IfStatementCouldBeTernary { enabled = false }
+  ImplicitClosureParameter { enabled = false }
+  InvertedCondition
+  InvertedIfElse
+  LongLiteralWithLowerCaseL
+  MethodParameterTypeRequired
+  MethodReturnTypeRequired
+  NoDef
+  NoDouble
+  NoFloat
+  NoJavaUtilDate
+  NoTabCharacter
+  ParameterReassignment
+  PublicMethodsBeforeNonPublicMethods { enabled = false }
+  StaticFieldsBeforeInstanceFields
+  StaticMethodsBeforeInstanceMethods
+  TernaryCouldBeElvis
+  TrailingComma { enabled = false }
+  VariableTypeRequired
+  VectorIsObsolete
 }
