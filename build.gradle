@@ -1,19 +1,23 @@
 buildscript {
   repositories {
-    maven { url "https://plugins.gradle.org/m2/" }
+    gradlePluginPortal()
+    mavenCentral()
   }
 
   dependencies {
     classpath "fr.brouillard.oss.gradle:gradle-jgitver-plugin:$gradleJgitverPluginVersion"
+    classpath "org.kordamp.gradle:groovydoc-gradle-plugin:$gradleKordampPluginVersion"
+    classpath "org.kordamp.gradle:jacoco-gradle-plugin:$gradleKordampPluginVersion"
+    classpath "org.kordamp.gradle:testing-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
   }
 }
 
-// To enable "clean" task on the root project
-apply plugin: "base"
+repositories {
+  mavenCentral()
+}
 
 apply plugin: "fr.brouillard.oss.gradle.jgitver"
-
 jgitver {
   mavenLike true
   policy {
@@ -22,46 +26,29 @@ jgitver {
   }
 }
 
-task jacocoAggregatedMerge(type: JacocoMerge) {
-  afterEvaluate {
-    Set<Project> jacocoSubprojects = subprojects.findAll { Project subproject -> subproject.pluginManager.hasPlugin('jacoco') }
-    dependsOn jacocoSubprojects.test
-
-    destinationFile file("${rootProject.buildDir}/jacoco/jacocoTestAggregated.exec")
-    jacocoClasspath = jacocoSubprojects.first().configurations.jacocoAnt
-    jacocoSubprojects.each { Project subproject ->
-      executionData subproject.tasks.withType(Test)
+apply plugin: "org.kordamp.gradle.groovydoc"
+apply plugin: "org.kordamp.gradle.jacoco"
+apply plugin: "org.kordamp.gradle.testing"
+config {
+  docs {
+    groovydoc {
+      // If one don't want to execute groovydoc as part of the assemble task, use gradle CLI task exclusion. For example: gw clean assemble -x groovydocJar
+      // It also very useful to know which tasks exactly are part of task graph during execution. For that use: gw clean assemble -m
+      enabled = true
     }
-
-    doFirst {
-      executionData = files(executionData.findAll { it.exists() })
-    }
-  }
-}
-
-task jacocoAggregatedReport(type: JacocoReport) {
-  afterEvaluate {
-    executionData jacocoAggregatedMerge.destinationFile as File
-    dependsOn jacocoAggregatedMerge
-
-    Set<Project> jacocoSubprojects = subprojects.findAll { Project subproject -> subproject.pluginManager.hasPlugin('jacoco') }
-    jacocoClasspath = jacocoSubprojects.first().configurations.jacocoAnt
-
-    sourceDirectories.from files(jacocoSubprojects.sourceSets.main.allSource.srcDirs)
-    classDirectories.from files(jacocoSubprojects.sourceSets.main.output)
-
-    reports {
-      html.enabled = true
-      html.outputLocation = file("${rootProject.buildDir}/reports/jacoco/jacocoTestAggregated/html")
+    javadoc {
+      enabled = false
     }
   }
 }
 
-configure(subprojects) {
+configure(subprojects) { Project subproject ->
   group = "net.croz.cargo-tracker"
-}
 
-configure(subprojects.findAll({ !["cargo-tracker-platform"].contains(it.name) })) { Project subproject ->
+  if (["cargo-tracker-platform"].contains(subproject.name)) {
+    return
+  }
+
   repositories {
     mavenCentral()
   }
@@ -69,7 +56,6 @@ configure(subprojects.findAll({ !["cargo-tracker-platform"].contains(it.name) })
   apply plugin: "groovy"
   apply plugin: "maven-publish"
   apply plugin: "idea"
-  apply plugin: "jacoco"
 
   java {
     sourceCompatibility = JavaVersion .VERSION_1_8
@@ -81,10 +67,6 @@ configure(subprojects.findAll({ !["cargo-tracker-platform"].contains(it.name) })
   test {
     jvmArgs = ["-noverify", "-XX:TieredStopAtLevel=1"]
     useJUnitPlatform()
-  }
-
-  jacoco {
-    toolVersion = "$gradleJacocoLibraryVersion"
   }
 
   // When Groovy project contains Java files, and these Java files contain javadoc comments, javaparser-core needs to be added into groovydoc classpath (otherwise, groovydoc task might fail).
@@ -113,17 +95,10 @@ configure(subprojects.findAll({ !["cargo-tracker-platform"].contains(it.name) })
     groovyClasspath = createGroovyDocGroovyClasspath(subproject) + subproject.configurations.groovydocExtendedClasspath
   }
 
-  tasks.register("groovyDocJar", Jar) {
-    dependsOn groovydoc
-    classifier "groovydoc"
-    from groovydoc.destinationDir
-  }
-
   publishing {
     publications {
       myLibrary(MavenPublication) {
         from components.java
-        artifact groovyDocJar
       }
     }
   }
