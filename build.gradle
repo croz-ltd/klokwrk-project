@@ -53,6 +53,7 @@ configure(subprojects) { Project subproject ->
     mavenCentral()
   }
 
+  apply plugin: "codenarc"
   apply plugin: "groovy"
   apply plugin: "maven-publish"
   apply plugin: "idea"
@@ -114,8 +115,25 @@ configure(subprojects) { Project subproject ->
     }
   }
 
+  codenarc {
+    ignoreFailures = true
+  }
+
+  codenarcMain {
+    configFile = rootProject.file("support/codenarc/codenarcMain.groovy")
+  }
+
+  codenarcTest {
+    configFile = rootProject.file("support/codenarc/codenarcTest.groovy")
+  }
+
   dependencies {
-    implementation platform(project(":cargo-tracker-platform"))
     annotationProcessor platform(project(":cargo-tracker-platform"))
+    implementation platform(project(":cargo-tracker-platform"))
+    codenarc platform(project(":cargo-tracker-platform"))
+
+    codenarc "org.codenarc:CodeNarc"
+    codenarc "org.codehaus.groovy:groovy"
+    codenarc "org.codehaus.groovy:groovy-templates"
   }
 }
