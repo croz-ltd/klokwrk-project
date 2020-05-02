@@ -59,7 +59,7 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
   void "should work for constructor command handler"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.command-handler-logging")
-    String aggregateIdentifier = UUID.randomUUID().toString()
+    String aggregateIdentifier = UUID.randomUUID()
 
     when:
     axonCommandGateway.sendAndWait(new CreateMyTestAggregateCommand(aggregateIdentifier: aggregateIdentifier, name: "bla"))
@@ -78,7 +78,7 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
   void "should work for method command handler"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.command-handler-logging")
-    String aggregateIdentifier = UUID.randomUUID().toString()
+    String aggregateIdentifier = UUID.randomUUID()
 
     when:
     axonCommandGateway.sendAndWait(new CreateMyTestAggregateCommand(aggregateIdentifier: aggregateIdentifier, name: "bla"))
@@ -102,7 +102,7 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.command-handler-logging")
     logger.enabledLevelsForAllThreads = Level.INFO
-    String aggregateIdentifier = UUID.randomUUID().toString()
+    String aggregateIdentifier = UUID.randomUUID()
 
     when:
     axonCommandGateway.sendAndWait(new CreateMyTestAggregateCommand(aggregateIdentifier: aggregateIdentifier, name: "bla"))

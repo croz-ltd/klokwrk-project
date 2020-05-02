@@ -65,7 +65,7 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
   void "should work for event handler"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.event-handler-logging")
-    String aggregateIdentifier = UUID.randomUUID().toString()
+    String aggregateIdentifier = UUID.randomUUID()
 
     when:
     axonCommandGateway.sendAndWait(new CreateMyTestAggregateCommand(aggregateIdentifier: aggregateIdentifier, name: "bla"))
@@ -93,7 +93,7 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.event-handler-logging")
     logger.enabledLevelsForAllThreads = Level.INFO
-    String aggregateIdentifier = UUID.randomUUID().toString()
+    String aggregateIdentifier = UUID.randomUUID()
 
     when:
     axonCommandGateway.sendAndWait(new CreateMyTestAggregateCommand(aggregateIdentifier: aggregateIdentifier, name: "bla"))

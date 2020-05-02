@@ -59,7 +59,7 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
   void "should work for event sourcing handler"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.eventsourcing-handler-logging")
-    String aggregateIdentifier = UUID.randomUUID().toString()
+    String aggregateIdentifier = UUID.randomUUID()
 
     when:
     axonCommandGateway.sendAndWait(new CreateMyTestAggregateCommand(aggregateIdentifier: aggregateIdentifier, name: "bla"))
@@ -99,7 +99,7 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.eventsourcing-handler-logging")
     logger.enabledLevelsForAllThreads = Level.INFO
-    String aggregateIdentifier = UUID.randomUUID().toString()
+    String aggregateIdentifier = UUID.randomUUID()
 
     when:
     axonCommandGateway.sendAndWait(new CreateMyTestAggregateCommand(aggregateIdentifier: aggregateIdentifier, name: "bla"))
