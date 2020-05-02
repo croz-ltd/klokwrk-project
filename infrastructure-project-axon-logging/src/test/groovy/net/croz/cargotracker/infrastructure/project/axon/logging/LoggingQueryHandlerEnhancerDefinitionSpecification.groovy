@@ -23,6 +23,7 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
   Configuration axonConfiguration
   QueryGateway axonQueryGateway
 
+  @SuppressWarnings("Indentation")
   void setup() {
     TestLoggerFactory.clearAll()
     TestLoggerFactory.getInstance().setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test

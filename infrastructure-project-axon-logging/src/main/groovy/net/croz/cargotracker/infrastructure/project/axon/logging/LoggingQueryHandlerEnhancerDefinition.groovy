@@ -28,11 +28,12 @@ class LoggingQueryHandlerEnhancerDefinition implements HandlerEnhancerDefinition
     MessageHandlingMember selectedMessageHandlingMember = originalMessageHandlingMember
         .annotationAttributes(QueryHandler)
         .map((Map<String, Object> attr) -> new LoggingQueryHandlingMember(originalMessageHandlingMember) as MessageHandlingMember)
-        .orElse(originalMessageHandlingMember)
+        .orElse(originalMessageHandlingMember) as MessageHandlingMember
 
     return selectedMessageHandlingMember
   }
 
+  @SuppressWarnings("Indentation")
   @Slf4j(category = "cargotracker.axon.query-handler-logging")
   static class LoggingQueryHandlingMember<T> extends WrappedMessageHandlingMember<T> {
     MessageHandlingMember<T> messageHandlingMember

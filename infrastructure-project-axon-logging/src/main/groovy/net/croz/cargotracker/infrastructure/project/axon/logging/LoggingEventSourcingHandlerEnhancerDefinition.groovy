@@ -38,6 +38,7 @@ class LoggingEventSourcingHandlerEnhancerDefinition implements HandlerEnhancerDe
     return selectedMessageHandlingMember
   }
 
+  @SuppressWarnings("Indentation")
   @Slf4j(category = "cargotracker.axon.eventsourcing-handler-logging")
   static class LoggingEventSourcingHandlingMember<T> extends WrappedMessageHandlingMember<T> {
     MessageHandlingMember<T> messageHandlingMember

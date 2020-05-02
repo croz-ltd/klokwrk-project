@@ -26,6 +26,7 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
   Configuration axonConfiguration
   CommandGateway axonCommandGateway
 
+  @SuppressWarnings("Indentation")
   void setup() {
     TestLoggerFactory.clearAll()
 //    TestLoggerFactory.getInstance().setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test

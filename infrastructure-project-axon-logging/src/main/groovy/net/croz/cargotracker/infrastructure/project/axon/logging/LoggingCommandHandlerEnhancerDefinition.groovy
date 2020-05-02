@@ -43,6 +43,7 @@ class LoggingCommandHandlerEnhancerDefinition implements HandlerEnhancerDefiniti
     return selectedMessageHandlingMember
   }
 
+  @SuppressWarnings("Indentation")
   @Slf4j(category = "cargotracker.axon.command-handler-logging")
   static class LoggingCommandHandlingMember<T> extends WrappedMessageHandlingMember<T> {
     MessageHandlingMember<T> messageHandlingMember

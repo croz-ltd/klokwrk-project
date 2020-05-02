@@ -18,6 +18,7 @@ import java.lang.reflect.Field
 import java.lang.reflect.Method
 
 class ResponseFormattingExceptionHandlerSpecification extends Specification {
+  @SuppressWarnings("Indentation")
   static class TestController {
     @SuppressWarnings("unused")
     OperationResponse<Map> testControllerMethod() {
