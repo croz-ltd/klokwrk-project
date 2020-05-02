@@ -123,4 +123,28 @@ ruleset {
   TrailingComma { enabled = false }
   VariableTypeRequired
   VectorIsObsolete
+
+  // rulesets/design.xml
+  AbstractClassWithPublicConstructor
+  AbstractClassWithoutAbstractMethod
+  AssignmentToStaticFieldFromInstanceMethod
+  BooleanMethodReturnsNull
+  BuilderMethodWithSideEffects
+  CloneableWithoutClone
+  CloseWithoutCloseable
+  CompareToWithoutComparable
+  ConstantsOnlyInterface
+  EmptyMethodInAbstractClass
+  FinalClassWithProtectedMember
+  ImplementationAsType
+  Instanceof
+  LocaleSetDefault
+  NestedForLoop
+  PrivateFieldCouldBeFinal
+  PublicInstanceField
+  ReturnsNullInsteadOfEmptyArray
+  ReturnsNullInsteadOfEmptyCollection
+  SimpleDateFormatMissingLocale
+  StatelessSingleton
+  ToStringReturnsNull
 }
