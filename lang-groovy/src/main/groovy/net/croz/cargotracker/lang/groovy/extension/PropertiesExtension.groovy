@@ -19,7 +19,7 @@ class PropertiesExtension {
    * Returns a map of all properties without those whose names are on the default filtered-out list {@link #DEFAULT_FILTER_OUT_PROPERTY_NAME_LIST}.
    */
   static Map<String, ?> getPropertiesFiltered(Object self) {
-    Map<String, ?> filteredProperties = self.properties.findAll { it.key as String !in DEFAULT_FILTER_OUT_PROPERTY_NAME_LIST}
+    Map<String, ?> filteredProperties = self.properties.findAll { it.key as String !in DEFAULT_FILTER_OUT_PROPERTY_NAME_LIST }
     return filteredProperties
   }
 
@@ -29,7 +29,7 @@ class PropertiesExtension {
   static Map<String, ?> getPropertiesFiltered(Object self, List<String> filterOutPropertyNameList) {
     assert filterOutPropertyNameList != null
 
-    Map<String, ?> filteredProperties = self.properties.findAll { it.key as String !in filterOutPropertyNameList}
+    Map<String, ?> filteredProperties = self.properties.findAll { it.key as String !in filterOutPropertyNameList }
     return filteredProperties
   }
 }
