@@ -26,7 +26,7 @@ class QueryGatewayAdapter {
     try {
       queryResponse = queryGateway.query(queryOperationRequest.payload.getClass().name, queryMessage, ResponseTypes.instanceOf(queryResponseClass)).join()
     }
-    catch(CompletionException completionException) {
+    catch (CompletionException completionException) {
       if (completionException?.cause instanceof QueryExecutionException) {
         QueryExecutionException queryExecutionException = completionException.cause as QueryExecutionException
         if (queryExecutionException.details.isPresent()) {
