@@ -105,7 +105,7 @@ ruleset {
   HashtableIsObsolete
   IfStatementCouldBeTernary { enabled = false }
   ImplicitClosureParameter { enabled = false }
-  InvertedCondition
+  InvertedCondition { enabled = false }
   InvertedIfElse
   LongLiteralWithLowerCaseL
   MethodParameterTypeRequired
