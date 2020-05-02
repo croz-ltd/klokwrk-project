@@ -100,6 +100,7 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
   /**
    * For default Spring Boot's {@link ObjectMapper} bean, configures properties that are not exposed via builder customization.
    */
+  @SuppressWarnings("Instanceof")
   @Override
   Object postProcessAfterInitialization(Object bean, String beanName) {
     //noinspection GroovyPointlessBoolean

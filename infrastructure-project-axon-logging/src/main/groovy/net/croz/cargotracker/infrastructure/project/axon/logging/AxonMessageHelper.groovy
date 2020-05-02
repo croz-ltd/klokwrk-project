@@ -13,6 +13,7 @@ class AxonMessageHelper {
     return fetchGlobalIndexIfPossible(message) ?: nonExistingPlaceholder
   }
 
+  @SuppressWarnings("Instanceof")
   static Long fetchGlobalIndexIfPossible(Message<?> message) {
     Long eventGlobalIndex = null
 
