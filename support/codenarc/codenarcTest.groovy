@@ -442,4 +442,13 @@ ruleset {
   UnnecessaryTernaryExpression
   UnnecessaryToString
   UnnecessaryTransientModifier
+
+  // rulesets/unused.xml
+  UnusedArray
+  UnusedMethodParameter
+  UnusedObject
+  UnusedPrivateField
+  UnusedPrivateMethod
+  UnusedPrivateMethodParameter
+  UnusedVariable
 }
