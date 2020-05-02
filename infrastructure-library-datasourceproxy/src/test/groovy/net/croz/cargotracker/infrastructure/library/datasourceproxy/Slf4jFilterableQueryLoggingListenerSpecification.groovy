@@ -28,9 +28,9 @@ class Slf4jFilterableQueryLoggingListenerSpecification extends Specification {
   }
 
   void configureEnabledLevels(TestLogger testLogger, Level enabledLevel) {
-    List<Level> allLevels = [Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG, Level.TRACE]
-    List<Level> selectedLevels = allLevels[0 .. allLevels.findIndexOf({ Level level -> level == enabledLevel })]
-    testLogger.setEnabledLevelsForAllThreads(selectedLevels as Level[])
+    Level[] allLevels = [Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG, Level.TRACE]
+    Level[] selectedLevels = allLevels[0 .. allLevels.findIndexOf({ Level level -> level == enabledLevel })]
+    testLogger.enabledLevelsForAllThreads = selectedLevels
   }
 
   void "should fail for null regex pattern list"() {

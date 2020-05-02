@@ -33,11 +33,11 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
   void setup() {
     locale = new Locale("en")
     ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource()
-    messageSource.setDefaultEncoding("UTF-8")
+    messageSource.defaultEncoding = "UTF-8"
     messageSource.setBasenames("responseFormattingDefaultMessages", "responseFormattingTestMessages")
 
     responseFormattingExceptionHandler = new ResponseFormattingExceptionHandler()
-    responseFormattingExceptionHandler.setMessageSource(messageSource)
+    responseFormattingExceptionHandler.messageSource = messageSource
 
     TestController testController = new TestController()
     Method testControllerMethod = TestController.declaredMethods.find({ Method method -> method.name == "testControllerMethod" })
@@ -81,7 +81,7 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
   private String findViolationInfoConstantName(ViolationInfo violationInfo) {
     Field[] fieldList = violationInfo.getClass().declaredFields
     Field foundField = fieldList.find { Field field ->
-      field.setAccessible(true)
+      field.accessible = true
       field.get(violationInfo) == violationInfo
     }
 

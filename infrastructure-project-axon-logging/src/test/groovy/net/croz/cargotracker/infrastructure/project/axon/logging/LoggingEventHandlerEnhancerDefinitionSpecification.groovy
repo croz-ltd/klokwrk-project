@@ -92,7 +92,7 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
   void "should not log for logger level higher than DEBUG"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.event-handler-logging")
-    logger.setEnabledLevelsForAllThreads(Level.INFO)
+    logger.enabledLevelsForAllThreads = Level.INFO
     String aggregateIdentifier = UUID.randomUUID().toString()
 
     when:

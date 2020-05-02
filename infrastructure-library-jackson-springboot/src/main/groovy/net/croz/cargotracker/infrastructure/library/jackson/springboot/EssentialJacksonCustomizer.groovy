@@ -110,7 +110,7 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
 
     if (bean instanceof ObjectMapper && beanName == DEFAULT_SPRING_BOOT_OBJECT_MAPPER_BEAN_NAME) {
       if (essentialJacksonCustomizerConfigurationProperties.deserialization.skipNullValues) {
-        bean.setDefaultSetterInfo(JsonSetter.Value.forValueNulls(Nulls.SKIP))
+        bean.defaultSetterInfo = JsonSetter.Value.forValueNulls(Nulls.SKIP)
       }
     }
 

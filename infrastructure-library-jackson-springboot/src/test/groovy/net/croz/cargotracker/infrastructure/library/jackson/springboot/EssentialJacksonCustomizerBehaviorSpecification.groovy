@@ -169,7 +169,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     given:
     String legacyDateString = "2020-04-04T22:35:35.654+0200"
     SimpleDateFormat legacySimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", new Locale("hr"))
-    legacySimpleDateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zagreb"))
+    legacySimpleDateFormat.timeZone = TimeZone.getTimeZone("Europe/Zagreb")
     Date legacyDate = legacySimpleDateFormat.parse(legacyDateString)
 
     String stringToDeserialize = /{
@@ -243,7 +243,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     given:
     String legacyDateString = "2020-04-04T22:35:35.654+0200"
     SimpleDateFormat legacySimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", new Locale("hr"))
-    legacySimpleDateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zagreb"))
+    legacySimpleDateFormat.timeZone = TimeZone.getTimeZone("Europe/Zagreb")
     Date legacyDate = legacySimpleDateFormat.parse(legacyDateString)
 
     Clock clock = Clock.fixed(Instant.parse("2020-04-04T20:35:35.654321Z"), ZoneId.of("Europe/Zagreb"))

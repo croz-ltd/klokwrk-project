@@ -26,7 +26,7 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
   @SuppressWarnings("Indentation")
   void setup() {
     TestLoggerFactory.clearAll()
-    TestLoggerFactory.instance.setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test
+//    TestLoggerFactory.instance.printLevel = Level.DEBUG // uncomment if you want to see logging output during the test
 
     Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
     axonConfigurer.configureEmbeddedEventStore((Configuration axonConfiguration) -> new InMemoryEventStorageEngine())
@@ -74,7 +74,7 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
   void "should not log for logger level higher than DEBUG"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.query-handler-logging")
-    logger.setEnabledLevelsForAllThreads(Level.INFO)
+    logger.enabledLevelsForAllThreads = Level.INFO
 
     when:
     axonQueryGateway.query(new MyTestQuery(query: "123"), Map).join()

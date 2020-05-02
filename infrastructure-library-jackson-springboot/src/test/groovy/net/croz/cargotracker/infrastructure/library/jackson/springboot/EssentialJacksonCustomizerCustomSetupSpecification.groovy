@@ -35,7 +35,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
    */
   ApplicationContext createNewTestApplicationContext() {
     SpringBootTestContextBootstrapper contextBootstrapper = new SpringBootTestContextBootstrapper()
-    contextBootstrapper.setBootstrapContext(new DefaultBootstrapContext(EssentialJacksonCustomizerCustomSetupSpecification, new DefaultCacheAwareContextLoaderDelegate()))
+    contextBootstrapper.bootstrapContext = new DefaultBootstrapContext(EssentialJacksonCustomizerCustomSetupSpecification, new DefaultCacheAwareContextLoaderDelegate())
     MergedContextConfiguration contextConfiguration = contextBootstrapper.buildMergedContextConfiguration()
     ApplicationContext applicationContext = new AnnotationConfigContextLoader().loadContext(contextConfiguration)
 

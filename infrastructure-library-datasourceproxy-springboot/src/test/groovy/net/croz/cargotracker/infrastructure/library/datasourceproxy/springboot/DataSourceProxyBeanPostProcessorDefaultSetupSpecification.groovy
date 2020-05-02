@@ -25,14 +25,14 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
   JdbcTemplate jdbcTemplate
 
   void configureEnabledLevels(TestLogger testLogger, Level enabledLevel) {
-    List<Level> allLevels = [Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG, Level.TRACE]
-    List<Level> selectedLevels = allLevels[0..allLevels.findIndexOf({ Level level -> level == enabledLevel })]
-    testLogger.setEnabledLevelsForAllThreads(selectedLevels as Level[])
+    Level[] allLevels = [Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG, Level.TRACE]
+    Level[] selectedLevels = allLevels[0..allLevels.findIndexOf({ Level level -> level == enabledLevel })]
+    testLogger.enabledLevelsForAllThreads = selectedLevels
   }
 
   void setup() {
     TestLoggerFactory.clearAll()
-    TestLoggerFactory.instance.setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test
+//    TestLoggerFactory.instance.printLevel = Level.DEBUG // uncomment if you want to see logging output during the test
     queryLogger = TestLoggerFactory.getTestLogger("cargotracker.data-source-proxy.queryLogger")
     slowQueryLogger = TestLoggerFactory.getTestLogger("cargotracker.data-source-proxy.slowQueryLogger")
   }

@@ -70,7 +70,7 @@ class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
     @Bean
     MessageSource messageSource() {
       ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource()
-      messageSource.setDefaultEncoding("UTF-8")
+      messageSource.defaultEncoding = "UTF-8"
       messageSource.setBasenames("responseFormattingDefaultMessages", "responseFormattingTestMessages")
       return messageSource
     }
