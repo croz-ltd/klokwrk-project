@@ -253,7 +253,6 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
 
     when:
     String serializedString = objectMapper.writeValueAsString(myBeanWithTimeStamps)
-    println serializedString
 
     then:
     serializedString.contains(/"legacyDate":"2020-04-04T20:35:35.654+0000"/)
