@@ -153,4 +153,66 @@ ruleset {
   DuplicateMapLiteral { enabled = false }
   DuplicateNumberLiteral { enabled = false }
   DuplicateStringLiteral { enabled = false }
+
+  // rulesets/enhanced.xml
+  CloneWithoutCloneable { enabled = false }
+  JUnitAssertEqualsConstantActualValue { enabled = false }
+  MissingOverrideAnnotation { enabled = false }
+  UnsafeImplementationAsMap { enabled = false }
+
+  // rulesets/exceptions.xml
+  CatchArrayIndexOutOfBoundsException
+  CatchError
+  CatchException
+  CatchIllegalMonitorStateException
+  CatchIndexOutOfBoundsException
+  CatchNullPointerException
+  CatchRuntimeException
+  CatchThrowable
+  ConfusingClassNamedException
+  ExceptionExtendsError
+  ExceptionExtendsThrowable
+  ExceptionNotThrown
+  MissingNewInThrowStatement
+  ReturnNullFromCatchBlock
+  SwallowThreadDeath
+  ThrowError
+  ThrowException
+  ThrowNullPointerException
+  ThrowRuntimeException
+  ThrowThrowable
+
+  // rulesets/formatting.xml
+  BlankLineBeforePackage
+  BlockEndsWithBlankLine
+  BlockStartsWithBlankLine
+  BracesForClass
+  BracesForForLoop
+  BracesForIfElse
+  BracesForMethod
+  BracesForTryCatchFinally
+  ClassEndsWithBlankLine { enabled = false }
+  ClassStartsWithBlankLine { enabled = false }
+  ClosureStatementOnOpeningLineOfMultipleLineClosure
+  ConsecutiveBlankLines
+  FileEndsWithoutNewline
+  Indentation { spacesPerIndentLevel = 2 }
+  LineLength { length = 210 }
+  MissingBlankLineAfterImports
+  MissingBlankLineAfterPackage
+  SpaceAfterCatch
+  SpaceAfterClosingBrace
+  SpaceAfterComma
+  SpaceAfterFor
+  SpaceAfterIf
+  SpaceAfterOpeningBrace
+  SpaceAfterSemicolon
+  SpaceAfterSwitch
+  SpaceAfterWhile
+  SpaceAroundClosureArrow
+  SpaceAroundMapEntryColon
+  SpaceAroundOperator
+  SpaceBeforeClosingBrace
+  SpaceBeforeOpeningBrace
+  TrailingWhitespace
 }
