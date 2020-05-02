@@ -40,7 +40,7 @@ class CargoAggregate implements CommandHandlerTrait {
     return this
   }
 
-  static CargoBookedEvent cargoBookedEventFromCargoBookCommand(CargoBookCommand cargoBookCommand) {
+  CargoBookedEvent cargoBookedEventFromCargoBookCommand(CargoBookCommand cargoBookCommand) {
     return new CargoBookedEvent(cargoBookCommand.properties)
   }
 
