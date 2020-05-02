@@ -360,4 +360,33 @@ ruleset {
   ParameterName
   PropertyName
   VariableName
+
+  // rulesets/security.xml
+  FileCreateTempFile
+  InsecureRandom
+  JavaIoPackageAccess
+  NonFinalPublicField
+  NonFinalSubclassOfSensitiveInterface
+  ObjectFinalize
+  PublicFinalizeMethod
+  SystemExit
+  UnsafeArrayDeclaration
+
+  // rulesets/serialization.xml
+  EnumCustomSerializationIgnored
+  SerialPersistentFields
+  SerialVersionUID
+  SerializableClassMustDefineSerialVersionUID
+
+  // rulesets/size.xml
+  AbcMetric   // Requires the GMetrics jar
+  ClassSize
+  CrapMetric {   // Requires the GMetrics jar and a Cobertura coverage file
+    enabled = false
+  }
+  CyclomaticComplexity   // Requires the GMetrics jar
+  MethodCount
+  MethodSize
+  NestedBlockDepth
+  ParameterCount
 }
