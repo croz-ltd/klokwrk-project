@@ -1,5 +1,7 @@
 package net.croz.cargotracker.lang.groovy.constructor.support
 
+import groovy.transform.CompileStatic
+
 /**
  * Defines protocol and simplifies implementation for common validation checking when <code>&#64;MapConstructor</code> is used with <code>post</code> attribute.
  * <p/>
@@ -24,6 +26,7 @@ package net.croz.cargotracker.lang.groovy.constructor.support
  *   }
  * </pre>
  */
+@CompileStatic
 interface PostMapConstructorCheckable {
   default void postMapConstructorCheckProtocol(Map<String, ?> constructorArguments) {
     if (!constructorArguments) {
