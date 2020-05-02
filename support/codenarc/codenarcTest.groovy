@@ -226,4 +226,114 @@ ruleset {
   SpaceBeforeClosingBrace
   SpaceBeforeOpeningBrace
   TrailingWhitespace
+
+  // rulesets/generic.xml
+  IllegalClassMember
+  IllegalClassReference
+  IllegalPackageReference
+  IllegalRegex
+  IllegalString
+  IllegalSubclass
+  RequiredRegex
+  RequiredString
+  StatelessClass
+
+  // rulesets/grails.xml
+  GrailsDomainHasEquals { enabled = false }
+  GrailsDomainHasToString { enabled = false }
+  GrailsDomainReservedSqlKeywordName { enabled = false }
+  GrailsDomainStringPropertyMaxSize { enabled = false }
+  GrailsDomainWithServiceReference { enabled = false }
+  GrailsDuplicateConstraint { enabled = false }
+  GrailsDuplicateMapping { enabled = false }
+  GrailsMassAssignment { enabled = false }
+  GrailsPublicControllerMethod { enabled = false }
+  GrailsServletContextReference { enabled = false }
+  GrailsStatelessService { enabled = false }
+
+  // rulesets/groovyism.xml
+  AssignCollectionSort
+  AssignCollectionUnique
+  ClosureAsLastMethodParameter { enabled = false }
+  CollectAllIsDeprecated
+  ConfusingMultipleReturns
+  ExplicitArrayListInstantiation
+  ExplicitCallToAndMethod
+  ExplicitCallToCompareToMethod
+  ExplicitCallToDivMethod
+  ExplicitCallToEqualsMethod
+  ExplicitCallToGetAtMethod
+  ExplicitCallToLeftShiftMethod
+  ExplicitCallToMinusMethod
+  ExplicitCallToModMethod
+  ExplicitCallToMultiplyMethod
+  ExplicitCallToOrMethod
+  ExplicitCallToPlusMethod
+  ExplicitCallToPowerMethod
+  ExplicitCallToPutAtMethod
+  ExplicitCallToRightShiftMethod
+  ExplicitCallToXorMethod
+  ExplicitHashMapInstantiation
+  ExplicitHashSetInstantiation
+  ExplicitLinkedHashMapInstantiation
+  ExplicitLinkedListInstantiation
+  ExplicitStackInstantiation
+  ExplicitTreeSetInstantiation
+  GStringAsMapKey
+  GStringExpressionWithinString
+  GetterMethodCouldBeProperty
+  GroovyLangImmutable
+  UseCollectMany
+  UseCollectNested
+
+  // rulesets/imports.xml
+  DuplicateImport
+  ImportFromSamePackage
+  ImportFromSunPackages
+  MisorderedStaticImports { comesBefore = false }
+  NoWildcardImports
+  UnnecessaryGroovyImport
+  UnusedImport
+
+  // rulesets/jdbc.xml
+  DirectConnectionManagement
+  JdbcConnectionReference
+  JdbcResultSetReference
+  JdbcStatementReference
+
+  // rulesets/junit.xml
+  ChainedTest
+  CoupledTestCase
+  JUnitAssertAlwaysFails
+  JUnitAssertAlwaysSucceeds
+  JUnitFailWithoutMessage
+  JUnitLostTest
+  JUnitPublicField
+  JUnitPublicNonTestMethod
+  JUnitPublicProperty
+  JUnitSetUpCallsSuper
+  JUnitStyleAssertions
+  JUnitTearDownCallsSuper
+  JUnitTestMethodWithoutAssert
+  JUnitUnnecessarySetUp
+  JUnitUnnecessaryTearDown
+  JUnitUnnecessaryThrowsException
+  SpockIgnoreRestUsed
+  UnnecessaryFail
+  UseAssertEqualsInsteadOfAssertTrue
+  UseAssertFalseInsteadOfNegation
+  UseAssertNullInsteadOfAssertEquals
+  UseAssertSameInsteadOfAssertTrue
+  UseAssertTrueInsteadOfAssertEquals
+  UseAssertTrueInsteadOfNegation
+
+  // rulesets/logging.xml
+  LoggerForDifferentClass
+  LoggerWithWrongModifiers
+  LoggingSwallowsStacktrace
+  MultipleLoggers
+  PrintStackTrace
+  Println
+  SystemErrPrint
+  SystemOutPrint
 }
