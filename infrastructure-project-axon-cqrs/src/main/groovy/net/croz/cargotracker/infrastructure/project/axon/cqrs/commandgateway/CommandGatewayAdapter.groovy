@@ -30,8 +30,8 @@ class CommandGatewayAdapter {
       else {
         throw commandExecutionException
       }
-
     }
+
     return commandResponse
   }
 }
