@@ -163,7 +163,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
   void "deserialization - timestamp types should work as expected"() {
     given:
     String legacyDateString = "2020-04-04T22:35:35.654+0200"
-    SimpleDateFormat legacySimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    SimpleDateFormat legacySimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", new Locale("hr"))
     legacySimpleDateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zagreb"))
     Date legacyDate = legacySimpleDateFormat.parse(legacyDateString)
 
@@ -237,7 +237,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
   void "serialization - timestamp types should work as expected"() {
     given:
     String legacyDateString = "2020-04-04T22:35:35.654+0200"
-    SimpleDateFormat legacySimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    SimpleDateFormat legacySimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", new Locale("hr"))
     legacySimpleDateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zagreb"))
     Date legacyDate = legacySimpleDateFormat.parse(legacyDateString)
 
