@@ -8,7 +8,7 @@ import spock.lang.Unroll
 class StringSanitizingDeserializerSpecification extends Specification {
   ObjectMapper objectMapper
 
-  def setup() {
+  void setup() {
     SimpleModule simpleModule = new SimpleModule()
     simpleModule.addDeserializer(String, new StringSanitizingDeserializer())
 
@@ -19,7 +19,7 @@ class StringSanitizingDeserializerSpecification extends Specification {
   }
 
   @Unroll
-  def "should deserialize empty string into null - string value is #aggregateIdentifierStringValue"() {
+  void "should deserialize empty string into null - string value is #aggregateIdentifierStringValue"() {
     given:
     String stringToDeserialize = """
       {
@@ -41,7 +41,7 @@ class StringSanitizingDeserializerSpecification extends Specification {
     '"    "'                       | _
   }
 
-  def "should deserialize null into null"() {
+  void "should deserialize null into null"() {
     given:
     String stringToDeserialize = """
       {

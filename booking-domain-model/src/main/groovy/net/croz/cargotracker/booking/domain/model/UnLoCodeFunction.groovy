@@ -15,6 +15,7 @@ import java.util.regex.Pattern
 /**
  * Represents an 8-character function classifier code for the UN/LOCODE location.
  */
+@SuppressWarnings(["DuplicateNumberLiteral", "DuplicateStringLiteral"])
 @Immutable
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @TupleConstructor(visibilityId = "privateVisibility", pre = { throw new IllegalArgumentException("Calling a private constructor is not allowed") })

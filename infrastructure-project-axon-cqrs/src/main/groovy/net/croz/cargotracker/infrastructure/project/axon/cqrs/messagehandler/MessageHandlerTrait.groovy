@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 
 @CompileStatic
 trait MessageHandlerTrait {
+  @SuppressWarnings("Indentation")
   static class ThrowAwayRuntimeException extends RuntimeException {
     ThrowAwayRuntimeException() {
       super(null, null, false, false)

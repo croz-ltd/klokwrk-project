@@ -100,6 +100,7 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
   /**
    * For default Spring Boot's {@link ObjectMapper} bean, configures properties that are not exposed via builder customization.
    */
+  @SuppressWarnings("Instanceof")
   @Override
   Object postProcessAfterInitialization(Object bean, String beanName) {
     //noinspection GroovyPointlessBoolean
@@ -109,7 +110,7 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
 
     if (bean instanceof ObjectMapper && beanName == DEFAULT_SPRING_BOOT_OBJECT_MAPPER_BEAN_NAME) {
       if (essentialJacksonCustomizerConfigurationProperties.deserialization.skipNullValues) {
-        bean.setDefaultSetterInfo(JsonSetter.Value.forValueNulls(Nulls.SKIP))
+        bean.defaultSetterInfo = JsonSetter.Value.forValueNulls(Nulls.SKIP)
       }
     }
 

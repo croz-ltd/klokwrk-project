@@ -6,6 +6,8 @@ import net.croz.cargotracker.booking.queryside.rdbms.domain.querymodel.CargoSumm
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.metadata.MetaDataConstant
 import org.axonframework.eventhandling.DomainEventMessage
 
+import static net.croz.cargotracker.lang.groovy.constant.CommonConstants.NOT_AVAILABLE
+
 @CompileStatic
 class CargoSummaryFactoryService {
   static CargoSummaryQueryEntity createCargoSummaryQueryEntity(CargoBookedEvent cargoBookedEvent, DomainEventMessage domainEventMessage) {
@@ -17,8 +19,8 @@ class CargoSummaryFactoryService {
 
     CargoSummaryQueryEntity cargoSummaryQueryEntity = new CargoSummaryQueryEntity(
         aggregateIdentifier: aggregateIdentifier, aggregateSequenceNumber: aggregateSequenceNumber, originLocation: originLocation, destinationLocation: destinationLocation,
-        inboundChannelName: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_NAME_KEY] ?: "n/a",
-        inboundChannelType: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_TYPE_KEY] ?: "n/a"
+        inboundChannelName: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_NAME_KEY] ?: NOT_AVAILABLE,
+        inboundChannelType: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_TYPE_KEY] ?: NOT_AVAILABLE
     )
 
     return cargoSummaryQueryEntity

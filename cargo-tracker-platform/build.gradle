@@ -41,6 +41,8 @@ dependencies {
     api "org.spockframework:spock-core:$spockVersion"
     api "org.spockframework:spock-spring:$spockVersion"
     api "uk.org.lidalia:slf4j-test:$slf4jTestVersion"
+
+    api "org.codenarc:CodeNarc:$codeNarcVersion"
   }
 
   api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")

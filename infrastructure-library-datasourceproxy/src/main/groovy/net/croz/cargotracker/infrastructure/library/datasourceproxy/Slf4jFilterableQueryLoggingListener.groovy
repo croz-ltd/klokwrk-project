@@ -30,10 +30,10 @@ class Slf4jFilterableQueryLoggingListener extends SLF4JQueryLoggingListener {
 
   @Override
   void afterQuery(ExecutionInfo execInfo, List<QueryInfo> originalQueryInfoList) {
-    if (loggingCondition.getAsBoolean()) {
-      if (getLogger().isTraceEnabled()) {
+    if (loggingCondition.asBoolean) {
+      if (logger.isTraceEnabled()) {
         String entry = getEntry(execInfo, originalQueryInfoList)
-        SLF4JLogUtils.writeLog(getLogger(), SLF4JLogLevel.TRACE, entry)
+        SLF4JLogUtils.writeLog(logger, SLF4JLogLevel.TRACE, entry)
       }
       else {
         List<QueryInfo> filteredOutQueryInfoList = filterOutQueryInfoList(originalQueryInfoList)

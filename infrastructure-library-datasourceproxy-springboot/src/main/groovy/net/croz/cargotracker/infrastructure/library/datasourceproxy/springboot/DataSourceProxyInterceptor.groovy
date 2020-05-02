@@ -29,8 +29,8 @@ class DataSourceProxyInterceptor implements MethodInterceptor {
     Slf4jFilterableQueryLoggingListener slf4jFilterableQueryLoggingListener =
         new Slf4jFilterableQueryLoggingListener(dataSourceProxyConfigurationProperties.queryLogger.filteringOutRegularExpressionList)
 
-    slf4jFilterableQueryLoggingListener.setLogLevel(dataSourceProxyConfigurationProperties.queryLogger.logLevel)
-    slf4jFilterableQueryLoggingListener.setLogger(dataSourceProxyConfigurationProperties.queryLogger.name)
+    slf4jFilterableQueryLoggingListener.logLevel = dataSourceProxyConfigurationProperties.queryLogger.logLevel
+    slf4jFilterableQueryLoggingListener.logger = dataSourceProxyConfigurationProperties.queryLogger.name
 
     this.dataSource = ProxyDataSourceBuilder
         .create(dataSource)

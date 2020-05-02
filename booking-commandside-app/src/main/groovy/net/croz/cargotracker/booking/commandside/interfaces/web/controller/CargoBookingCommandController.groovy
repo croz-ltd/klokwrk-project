@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest
 @RequestMapping("/cargo-booking-command")
 @CompileStatic
 class CargoBookingCommandController {
-  private CargoBookingApplicationService cargoBookingApplicationService
+  private final CargoBookingApplicationService cargoBookingApplicationService
 
   CargoBookingCommandController(CargoBookingApplicationService cargoBookingApplicationService) {
     this.cargoBookingApplicationService = cargoBookingApplicationService

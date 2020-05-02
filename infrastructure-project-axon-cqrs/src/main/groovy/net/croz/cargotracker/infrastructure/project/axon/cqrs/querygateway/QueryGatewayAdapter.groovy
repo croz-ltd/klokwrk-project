@@ -12,7 +12,7 @@ import java.util.concurrent.CompletionException
 
 @CompileStatic
 class QueryGatewayAdapter {
-  private QueryGateway queryGateway
+  private final QueryGateway queryGateway
 
   QueryGatewayAdapter(QueryGateway queryGateway) {
     this.queryGateway = queryGateway
@@ -26,7 +26,7 @@ class QueryGatewayAdapter {
     try {
       queryResponse = queryGateway.query(queryOperationRequest.payload.getClass().name, queryMessage, ResponseTypes.instanceOf(queryResponseClass)).join()
     }
-    catch(CompletionException completionException) {
+    catch (CompletionException completionException) {
       if (completionException?.cause instanceof QueryExecutionException) {
         QueryExecutionException queryExecutionException = completionException.cause as QueryExecutionException
         if (queryExecutionException.details.isPresent()) {

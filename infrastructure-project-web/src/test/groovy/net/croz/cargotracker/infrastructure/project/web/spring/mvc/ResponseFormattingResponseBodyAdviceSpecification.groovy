@@ -29,6 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @ContextConfiguration(classes = [WebConfig])
 class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
 
+  @SuppressWarnings("Indentation")
   @RestController
   @RequestMapping("/test")
   static class TestController {
@@ -47,10 +48,12 @@ class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
     }
   }
 
+  @SuppressWarnings("Indentation")
   @ControllerAdvice
   static class ResponseFormattingResponseBodyAdviceControllerAdvice extends ResponseFormattingResponseBodyAdvice {
   }
 
+  @SuppressWarnings("Indentation")
   @EnableWebMvc
   @Configuration
   static class WebConfig implements WebMvcConfigurer {
@@ -67,7 +70,7 @@ class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
     @Bean
     MessageSource messageSource() {
       ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource()
-      messageSource.setDefaultEncoding("UTF-8")
+      messageSource.defaultEncoding = "UTF-8"
       messageSource.setBasenames("responseFormattingDefaultMessages", "responseFormattingTestMessages")
       return messageSource
     }
@@ -88,7 +91,7 @@ class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
   void "should format successful response as expected when result is returned from controller"() {
     when:
     MvcResult mvcResult = mockMvc.perform(post("/test/testControllerMethodWithOperationResponse").accept(MediaType.APPLICATION_JSON)).andReturn()
-    String bodyText = mvcResult.response.getContentAsString()
+    String bodyText = mvcResult.response.contentAsString
     Map bodyMap = jsonSlurper.parseText(bodyText) as Map
 
     then:
@@ -117,7 +120,7 @@ class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
   void "should ignore response that is not an instance of OperationResponse"() {
     when:
     MvcResult mvcResult = mockMvc.perform(post("/test/testControllerMethodWithMapResponse").accept(MediaType.APPLICATION_JSON)).andReturn()
-    String bodyText = mvcResult.response.getContentAsString()
+    String bodyText = mvcResult.response.contentAsString
     Map bodyMap = jsonSlurper.parseText(bodyText) as Map
 
     then:
@@ -132,7 +135,7 @@ class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
   void "should ignore response without body"() {
     when:
     MvcResult mvcResult = mockMvc.perform(post("/test/testControllerMethodWithoutResponse").accept(MediaType.APPLICATION_JSON)).andReturn()
-    String bodyText = mvcResult.response.getContentAsString()
+    String bodyText = mvcResult.response.contentAsString
 
     then:
     verifyAll {

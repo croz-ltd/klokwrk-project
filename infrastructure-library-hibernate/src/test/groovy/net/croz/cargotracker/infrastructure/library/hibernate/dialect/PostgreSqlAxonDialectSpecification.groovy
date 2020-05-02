@@ -1,6 +1,5 @@
 package net.croz.cargotracker.infrastructure.library.hibernate.dialect
 
-
 import org.hibernate.type.descriptor.sql.BinaryTypeDescriptor
 import org.hibernate.type.descriptor.sql.BlobTypeDescriptor
 import org.hibernate.type.descriptor.sql.SqlTypeDescriptor
@@ -27,7 +26,7 @@ class PostgreSqlAxonDialectSpecification extends Specification {
 
     then:
     sqlTypeDescriptor == BinaryTypeDescriptor.INSTANCE
-    sqlTypeDescriptor.getSqlType() == Types.BINARY
+    sqlTypeDescriptor.sqlType == Types.BINARY
   }
 
   void "should not change remapping for other types"() {
@@ -38,6 +37,6 @@ class PostgreSqlAxonDialectSpecification extends Specification {
     SqlTypeDescriptor sqlTypeDescriptor = postgreSqlAxonDialect.remapSqlTypeDescriptor(VarcharTypeDescriptor.INSTANCE)
 
     then:
-    sqlTypeDescriptor.getSqlType() == Types.VARCHAR
+    sqlTypeDescriptor.sqlType == Types.VARCHAR
   }
 }

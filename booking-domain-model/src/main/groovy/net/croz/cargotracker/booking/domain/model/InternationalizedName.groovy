@@ -43,6 +43,8 @@ class InternationalizedName implements PostMapConstructorCheckable {
   static final InternationalizedName UNKNOWN_INTERNATIONALIZED_NAME = new InternationalizedName(name: "UNKNOWN")
 
   private static final Pattern DIACRITIC_MATCHING_PATTERN = Pattern.compile(/[\p{InCombiningDiacriticalMarks}]+/)
+
+  @SuppressWarnings("UnnecessaryCast")
   private static final Map<CharSequence, CharSequence> ADDITIONAL_REPLACEMENTS_MAP = [
       đ: "d",
       Đ: "D"

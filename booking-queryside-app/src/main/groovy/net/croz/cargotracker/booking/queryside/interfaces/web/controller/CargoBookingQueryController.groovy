@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/cargo-booking-query")
 @CompileStatic
 class CargoBookingQueryController {
-  private CargoBookingQueryApplicationService cargoBookingQueryApplicationService
+  private final CargoBookingQueryApplicationService cargoBookingQueryApplicationService
 
   CargoBookingQueryController(CargoBookingQueryApplicationService cargoBookingQueryApplicationService) {
     this.cargoBookingQueryApplicationService = cargoBookingQueryApplicationService
@@ -34,7 +34,8 @@ class CargoBookingQueryController {
    *
    * @param <P> Type of the {@link OperationRequest}'s payload.
    */
-  static <P> OperationRequest<P> createOperationRequest(Object webRequest, Class<P> operationRequestPayloadType, Locale locale) {
+  @SuppressWarnings("GrUnnecessaryPublicModifier")
+  public <P> OperationRequest<P> createOperationRequest(Object webRequest, Class<P> operationRequestPayloadType, Locale locale) {
     OperationRequest<P> operationRequest = new OperationRequest(
         payload: operationRequestPayloadType.newInstance(webRequest.properties),
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): locale]

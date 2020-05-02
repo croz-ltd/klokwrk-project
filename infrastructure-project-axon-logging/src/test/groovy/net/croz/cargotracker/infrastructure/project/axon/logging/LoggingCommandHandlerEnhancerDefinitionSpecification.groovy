@@ -24,7 +24,8 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
   Configuration axonConfiguration
   CommandGateway axonCommandGateway
 
-  def setup() {
+  @SuppressWarnings("Indentation")
+  void setup() {
     TestLoggerFactory.clearAll()
 //    TestLoggerFactory.getInstance().setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test
 
@@ -47,7 +48,7 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
   }
 
   @SuppressWarnings("unused")
-  def cleanup() {
+  void cleanup() {
     TestLoggerFactory.clearAll()
 
     axonConfiguration.shutdown()
@@ -55,17 +56,17 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
     axonConfiguration = null
   }
 
-  def "should work for constructor command handler"() {
+  void "should work for constructor command handler"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.command-handler-logging")
-    String aggregateIdentifier = UUID.randomUUID().toString()
+    String aggregateIdentifier = UUID.randomUUID()
 
     when:
     axonCommandGateway.sendAndWait(new CreateMyTestAggregateCommand(aggregateIdentifier: aggregateIdentifier, name: "bla"))
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
 
       loggingEvents.size() == 1
 
@@ -74,10 +75,10 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
     }
   }
 
-  def "should work for method command handler"() {
+  void "should work for method command handler"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.command-handler-logging")
-    String aggregateIdentifier = UUID.randomUUID().toString()
+    String aggregateIdentifier = UUID.randomUUID()
 
     when:
     axonCommandGateway.sendAndWait(new CreateMyTestAggregateCommand(aggregateIdentifier: aggregateIdentifier, name: "bla"))
@@ -85,7 +86,7 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
 
       loggingEvents.size() == 2
 
@@ -97,11 +98,11 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
     }
   }
 
-  def "should not log for logger level higher than DEBUG"() {
+  void "should not log for logger level higher than DEBUG"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.command-handler-logging")
-    logger.setEnabledLevelsForAllThreads(Level.INFO)
-    String aggregateIdentifier = UUID.randomUUID().toString()
+    logger.enabledLevelsForAllThreads = Level.INFO
+    String aggregateIdentifier = UUID.randomUUID()
 
     when:
     axonCommandGateway.sendAndWait(new CreateMyTestAggregateCommand(aggregateIdentifier: aggregateIdentifier, name: "bla"))
@@ -109,7 +110,7 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 0
     }
   }

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service
 @Service
 @CompileStatic
 class CargoBookingQueryApplicationService {
-  private QueryGatewayAdapter queryGatewayAdapter
+  private final QueryGatewayAdapter queryGatewayAdapter
 
   CargoBookingQueryApplicationService(QueryGateway queryGateway) {
     this.queryGatewayAdapter = new QueryGatewayAdapter(queryGateway)
@@ -24,7 +24,7 @@ class CargoBookingQueryApplicationService {
     return cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(cargoSummaryQueryResponse)
   }
 
-  static OperationResponse<CargoSummaryQueryResponse> cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(CargoSummaryQueryResponse cargoSummaryQueryResponse) {
+  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(CargoSummaryQueryResponse cargoSummaryQueryResponse) {
     ResponseMetaDataReport responseMetaDataReport = ResponseMetaDataReport.createBasicInfoMetaDataReport()
     return new OperationResponse<CargoSummaryQueryResponse>(payload: cargoSummaryQueryResponse, metaData: responseMetaDataReport.propertiesFiltered)
   }

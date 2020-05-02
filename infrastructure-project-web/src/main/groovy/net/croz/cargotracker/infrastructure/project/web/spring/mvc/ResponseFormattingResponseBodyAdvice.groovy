@@ -91,7 +91,7 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
 
   @Override
   boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-    return returnType.getParameterType() == OperationResponse
+    return returnType.parameterType == OperationResponse
   }
 
   @Override
@@ -114,13 +114,13 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     HttpResponseMetaDataReport httpResponseMetaDataReport = new HttpResponseMetaDataReport(
         timestamp: Instant.now(),
         severity: Severity.INFO,
-        locale: httpServletRequest.getLocale(),
+        locale: httpServletRequest.locale,
         http: createHttpResponseMetaDataReportPart(httpStatus)
     )
 
     HandlerMethod handlerMethod = fetchHandlerMethod(httpServletRequest)
     if (handlerMethod) {
-      httpResponseMetaDataReport = localizeHttpResponseMetaDataReport(httpResponseMetaDataReport, handlerMethod, httpServletRequest.getLocale())
+      httpResponseMetaDataReport = localizeHttpResponseMetaDataReport(httpResponseMetaDataReport, handlerMethod, httpServletRequest.locale)
     }
 
     return httpResponseMetaDataReport
@@ -139,7 +139,7 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     Collection<HandlerMapping> handlerMappingCollection = applicationContext.getBeansOfType(HandlerMapping).values()
     HandlerMapping handlerMapping = handlerMappingCollection.find({ HandlerMapping handlerMapping -> handlerMapping.getHandler(httpServletRequest) })
     HandlerExecutionChain handlerExecutionChain = handlerMapping.getHandler(httpServletRequest)
-    Object handler = handlerExecutionChain.getHandler()
+    Object handler = handlerExecutionChain.handler
 
     if (handler !instanceof HandlerMethod) {
       return null
@@ -151,8 +151,8 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
 
   protected HttpResponseMetaDataReport localizeHttpResponseMetaDataReport(HttpResponseMetaDataReport httpResponseMetaDataReport, HandlerMethod handlerMethod, Locale locale) {
     MessageSourceResolvableSpecification resolvableMessageSpecification = new MessageSourceResolvableSpecification(
-        controllerSimpleName: handlerMethod.getBeanType().simpleName.uncapitalize(),
-        controllerMethodName: handlerMethod.getMethod().name,
+        controllerSimpleName: handlerMethod.beanType.simpleName.uncapitalize(),
+        controllerMethodName: handlerMethod.method.name,
         messageCategory: "success",
         messageType: "",
         messageSubType: "",

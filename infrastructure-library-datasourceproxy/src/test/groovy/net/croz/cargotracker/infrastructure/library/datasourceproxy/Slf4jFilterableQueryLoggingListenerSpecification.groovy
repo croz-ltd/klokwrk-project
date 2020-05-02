@@ -28,9 +28,9 @@ class Slf4jFilterableQueryLoggingListenerSpecification extends Specification {
   }
 
   void configureEnabledLevels(TestLogger testLogger, Level enabledLevel) {
-    List<Level> allLevels = [Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG, Level.TRACE]
-    List<Level> selectedLevels = allLevels[0 .. allLevels.findIndexOf({ Level level -> level == enabledLevel })]
-    testLogger.setEnabledLevelsForAllThreads(selectedLevels as Level[])
+    Level[] allLevels = [Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG, Level.TRACE]
+    Level[] selectedLevels = allLevels[0 .. allLevels.findIndexOf({ Level level -> level == enabledLevel })]
+    testLogger.enabledLevelsForAllThreads = selectedLevels
   }
 
   void "should fail for null regex pattern list"() {
@@ -48,7 +48,7 @@ class Slf4jFilterableQueryLoggingListenerSpecification extends Specification {
 
     when:
     listener.afterQuery(new ExecutionInfo(), [new QueryInfo("select * from myTable")])
-    ImmutableList<LoggingEvent> loggingEventList = logger.getAllLoggingEvents()
+    ImmutableList<LoggingEvent> loggingEventList = logger.allLoggingEvents
 
     then:
     loggingEventList.size() == 0
@@ -61,7 +61,7 @@ class Slf4jFilterableQueryLoggingListenerSpecification extends Specification {
 
     when:
     listener.afterQuery(new ExecutionInfo(), [])
-    ImmutableList<LoggingEvent> loggingEventList = logger.getAllLoggingEvents()
+    ImmutableList<LoggingEvent> loggingEventList = logger.allLoggingEvents
 
     then:
     loggingEventList.size() == 0
@@ -74,7 +74,7 @@ class Slf4jFilterableQueryLoggingListenerSpecification extends Specification {
 
     when:
     listener.afterQuery(new ExecutionInfo(), [new QueryInfo("select * from myTable")])
-    ImmutableList<LoggingEvent> loggingEventList = logger.getAllLoggingEvents()
+    ImmutableList<LoggingEvent> loggingEventList = logger.allLoggingEvents
 
     then:
     loggingEventList.size() == 1
@@ -87,7 +87,7 @@ class Slf4jFilterableQueryLoggingListenerSpecification extends Specification {
 
     when:
     listener.afterQuery(new ExecutionInfo(), [new QueryInfo("update token_entry set timestamp=? where processor_name=? and segment=? and owner=?")])
-    ImmutableList<LoggingEvent> loggingEventList = logger.getAllLoggingEvents()
+    ImmutableList<LoggingEvent> loggingEventList = logger.allLoggingEvents
 
     then:
     loggingEventList.size() == 0
@@ -107,7 +107,7 @@ class Slf4jFilterableQueryLoggingListenerSpecification extends Specification {
             new QueryInfo("select * from myOtherTable")
         ]
     )
-    ImmutableList<LoggingEvent> loggingEventList = logger.getAllLoggingEvents()
+    ImmutableList<LoggingEvent> loggingEventList = logger.allLoggingEvents
 
     then:
     loggingEventList.size() == 1
@@ -125,7 +125,7 @@ class Slf4jFilterableQueryLoggingListenerSpecification extends Specification {
 
     when:
     listener.afterQuery(new ExecutionInfo(), [new QueryInfo("update token_entry set timestamp=? where processor_name=? and segment=? and owner=?")])
-    ImmutableList<LoggingEvent> loggingEventList = logger.getAllLoggingEvents()
+    ImmutableList<LoggingEvent> loggingEventList = logger.allLoggingEvents
 
     then:
     loggingEventList.size() == 1
@@ -147,7 +147,7 @@ class Slf4jFilterableQueryLoggingListenerSpecification extends Specification {
             new QueryInfo("select * from myOtherTable")
         ]
     )
-    ImmutableList<LoggingEvent> loggingEventList = logger.getAllLoggingEvents()
+    ImmutableList<LoggingEvent> loggingEventList = logger.allLoggingEvents
 
     then:
     loggingEventList.size() == 1

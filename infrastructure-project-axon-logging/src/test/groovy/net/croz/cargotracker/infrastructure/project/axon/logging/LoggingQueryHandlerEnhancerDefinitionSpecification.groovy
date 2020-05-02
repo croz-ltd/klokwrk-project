@@ -23,9 +23,10 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
   Configuration axonConfiguration
   QueryGateway axonQueryGateway
 
-  def setup() {
+  @SuppressWarnings("Indentation")
+  void setup() {
     TestLoggerFactory.clearAll()
-    TestLoggerFactory.getInstance().setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test
+//    TestLoggerFactory.instance.printLevel = Level.DEBUG // uncomment if you want to see logging output during the test
 
     Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
     axonConfigurer.configureEmbeddedEventStore((Configuration axonConfiguration) -> new InMemoryEventStorageEngine())
@@ -46,7 +47,7 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
   }
 
   @SuppressWarnings("unused")
-  def cleanup() {
+  void cleanup() {
     TestLoggerFactory.clearAll()
 
     axonConfiguration.shutdown()
@@ -54,7 +55,7 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
     axonConfiguration = null
   }
 
-  def "should work for query handler"() {
+  void "should work for query handler"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.query-handler-logging")
 
@@ -63,24 +64,24 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 1
       loggingEvents[0].level == Level.DEBUG
       loggingEvents[0].message ==~ /Executing QueryHandler method \[MyTestQueryHandler.handleSomeQuery\(MyTestQuery\)] with payload \[query:123]/
     }
   }
 
-  def "should not log for logger level higher than DEBUG"() {
+  void "should not log for logger level higher than DEBUG"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.query-handler-logging")
-    logger.setEnabledLevelsForAllThreads(Level.INFO)
+    logger.enabledLevelsForAllThreads = Level.INFO
 
     when:
     axonQueryGateway.query(new MyTestQuery(query: "123"), Map).join()
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 0
     }
   }

@@ -3,9 +3,10 @@ package net.croz.cargotracker.booking.domain.modelsample
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.booking.domain.model.Location
 
+@SuppressWarnings("DuplicateStringLiteral")
 @CompileStatic
 class LocationSample {
-  static final Map<String, Location> locationSampleMap = [
+  static final Map<String, Location> LOCATION_SAMPLE_MAP = [
       "HRALJ": Location.create("HRALJ", "Aljmaš", "Hrvatska", "1-3-----"),
       "HRBAK": Location.create("HRBAK", "Bakar", "Hrvatska", "123-----"),
       "HRBAS": Location.create("HRBAS", "Baška", "Hrvatska", "1-3-----"),
@@ -25,7 +26,7 @@ class LocationSample {
   ]
 
   static Location findByUnLoCode(String unLoCode) {
-    Location locationFound = locationSampleMap.get(unLoCode, Location.UNKNOWN_LOCATION)
+    Location locationFound = LOCATION_SAMPLE_MAP.get(unLoCode, Location.UNKNOWN_LOCATION)
     return locationFound
   }
 }

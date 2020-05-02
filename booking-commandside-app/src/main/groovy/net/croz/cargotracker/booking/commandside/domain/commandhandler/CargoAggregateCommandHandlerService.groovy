@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 @Service
 @CompileStatic
 class CargoAggregateCommandHandlerService {
-  private Repository<CargoAggregate> cargoAggregateRepository
+  private final Repository<CargoAggregate> cargoAggregateRepository
 
   @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   CargoAggregateCommandHandlerService(Repository<CargoAggregate> cargoAggregateRepository) {
@@ -27,7 +27,7 @@ class CargoAggregateCommandHandlerService {
 
     CargoAggregate cargoAggregateInstance = createdCargoAggregate.invoke({ CargoAggregate cargoAggregate ->
       cargoAggregate.bookCargo(cargoBookCommand, commandMessage.metaData)
-    })
+    }) as CargoAggregate
 
     return cargoAggregateInstance
   }

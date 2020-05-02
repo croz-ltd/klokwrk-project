@@ -5,7 +5,7 @@ import spock.lang.Unroll
 
 class UnLoCodeFunctionSpecification extends Specification {
   @Unroll
-  def "map constructor should work for correct input params: [functionEncoded: #functionParameter]"() {
+  void "map constructor should work for correct input params: [functionEncoded: #functionParameter]"() {
     when:
     UnLoCodeFunction unLoCodeFunction = new UnLoCodeFunction(functionEncoded: functionParameter)
 
@@ -21,7 +21,7 @@ class UnLoCodeFunctionSpecification extends Specification {
   }
 
   @Unroll
-  def "map constructor should fail for invalid input params: [functionEncoded: #functionParameter]"() {
+  void "map constructor should fail for invalid input params: [functionEncoded: #functionParameter]"() {
     when:
     new UnLoCodeFunction(functionEncoded: functionParameter)
 
@@ -46,7 +46,7 @@ class UnLoCodeFunctionSpecification extends Specification {
     "-------b"        | _
   }
 
-  def "createWithPortClassifier() should work as expected"() {
+  void "createWithPortClassifier() should work as expected"() {
     when:
     UnLoCodeFunction unLoCodeFunction = UnLoCodeFunction.createWithPortClassifier()
 
@@ -54,7 +54,7 @@ class UnLoCodeFunctionSpecification extends Specification {
     unLoCodeFunction.functionEncoded == "1-------"
   }
 
-  def "copyWithPortClassifier() should work as expected"() {
+  void "copyWithPortClassifier() should work as expected"() {
     given:
     UnLoCodeFunction unLoCodeFunctionOriginal = new UnLoCodeFunction(functionEncoded: "-234---B")
 
@@ -66,7 +66,7 @@ class UnLoCodeFunctionSpecification extends Specification {
     unLoCodeFunctionCopy.functionEncoded == "1234---B"
   }
 
-  def "copyWithPortClassifier() should return same instance when it already is a port"() {
+  void "copyWithPortClassifier() should return same instance when it already is a port"() {
     given:
     UnLoCodeFunction unLoCodeFunctionOriginal = new UnLoCodeFunction(functionEncoded: "1234---B")
 
@@ -78,7 +78,7 @@ class UnLoCodeFunctionSpecification extends Specification {
   }
 
   @Unroll
-  def "isSpecified() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
+  void "isSpecified() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
     given:
     UnLoCodeFunction unLoCodeFunction = new UnLoCodeFunction(functionEncoded: functionParameter)
 
@@ -95,7 +95,7 @@ class UnLoCodeFunctionSpecification extends Specification {
   }
 
   @Unroll
-  def "isPort() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
+  void "isPort() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
     given:
     UnLoCodeFunction unLoCodeFunction = new UnLoCodeFunction(functionEncoded: functionParameter)
 
@@ -112,7 +112,7 @@ class UnLoCodeFunctionSpecification extends Specification {
   }
 
   @Unroll
-  def "isRailTerminal() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
+  void "isRailTerminal() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
     given:
     UnLoCodeFunction unLoCodeFunction = new UnLoCodeFunction(functionEncoded: functionParameter)
 
@@ -129,7 +129,7 @@ class UnLoCodeFunctionSpecification extends Specification {
   }
 
   @Unroll
-  def "isRoadTerminal() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
+  void "isRoadTerminal() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
     given:
     UnLoCodeFunction unLoCodeFunction = new UnLoCodeFunction(functionEncoded: functionParameter)
 
@@ -147,7 +147,7 @@ class UnLoCodeFunctionSpecification extends Specification {
   }
 
   @Unroll
-  def "isAirport() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
+  void "isAirport() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
     given:
     UnLoCodeFunction unLoCodeFunction = new UnLoCodeFunction(functionEncoded: functionParameter)
 
@@ -166,7 +166,7 @@ class UnLoCodeFunctionSpecification extends Specification {
   }
 
   @Unroll
-  def "isPostalExchangeOffice() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
+  void "isPostalExchangeOffice() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
     given:
     UnLoCodeFunction unLoCodeFunction = new UnLoCodeFunction(functionEncoded: functionParameter)
 
@@ -185,7 +185,7 @@ class UnLoCodeFunctionSpecification extends Specification {
   }
 
   @Unroll
-  def "isBorderCrossing() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
+  void "isBorderCrossing() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
     given:
     UnLoCodeFunction unLoCodeFunction = new UnLoCodeFunction(functionEncoded: functionParameter)
 

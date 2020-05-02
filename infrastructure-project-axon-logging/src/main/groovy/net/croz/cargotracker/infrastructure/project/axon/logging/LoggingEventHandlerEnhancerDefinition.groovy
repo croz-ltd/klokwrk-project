@@ -17,9 +17,10 @@ import java.lang.reflect.Method
  * Corresponding Slf4j logger uses '<code>cargotracker.axon.event-handler-logging</code>' category and it logs on <code>DEBUG</code> level. Logger output contains information about aggregate
  * identifier, sequence number, global index and event id.
  * <p/>
- * Logged output looks similar to this:
+ * Logged output looks similar to this (single line in output):
  * <pre>
- * ... cargotracker.axon.event-handler-logging : Executing EventHandler method [CargoSummaryProjectorService.onCargoBookedEvent(CargoBookedEvent)] with event [eventGlobalIndex: 6, eventId: 76e6ea70-4fd8-47f9-a15b-ce8df4a939e2, CargoBookedEvent(aggregateIdentifier: eaa1efa4-ff9d-4bd8-8e83-4e4b2c1bbcfb, sequenceNumber: 0)]
+ * ... cargotracker.axon.event-handler-logging : Executing EventHandler method [CargoSummaryProjectorService.onCargoBookedEvent(CargoBookedEvent)]
+ *         with event [eventGlobalIndex: 6, eventId: 76e6ea70-4fd8-47f9-a15b-ce8df4a939e2, CargoBookedEvent(aggregateIdentifier: eaa1efa4-ff9d-4bd8-8e83-4e4b2c1bbcfb, sequenceNumber: 0)]
  * </pre>
  * To register this HandlerEnhancerDefinition, use standard means as described in Axon documentation. Usually this will require adding a simple bean declaration in the Spring Boot config. However,
  * if you have standalone projector app <code>EventHandler</code> annotations are present (not a single <code>CommandHandler</code> or <code>QueryHandler</code> are present), only option at the moment
@@ -39,11 +40,12 @@ class LoggingEventHandlerEnhancerDefinition implements HandlerEnhancerDefinition
     MessageHandlingMember selectedMessageHandlingMember = originalMessageHandlingMember
         .annotationAttributes(EventHandler)
         .map((Map<String, Object> attr) -> new LoggingEventHandlingMember(originalMessageHandlingMember) as MessageHandlingMember)
-        .orElse(originalMessageHandlingMember)
+        .orElse(originalMessageHandlingMember) as MessageHandlingMember
 
     return selectedMessageHandlingMember
   }
 
+  @SuppressWarnings("Indentation")
   @Slf4j(category = "cargotracker.axon.event-handler-logging")
   static class LoggingEventHandlingMember<T> extends WrappedMessageHandlingMember<T> {
     MessageHandlingMember<T> messageHandlingMember

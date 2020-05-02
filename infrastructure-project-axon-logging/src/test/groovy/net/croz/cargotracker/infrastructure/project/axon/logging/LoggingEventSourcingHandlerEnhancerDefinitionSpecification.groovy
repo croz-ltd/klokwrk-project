@@ -24,7 +24,8 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
   Configuration axonConfiguration
   CommandGateway axonCommandGateway
 
-  def setup() {
+  @SuppressWarnings("Indentation")
+  void setup() {
     TestLoggerFactory.clearAll()
 //    TestLoggerFactory.getInstance().setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test
 
@@ -47,7 +48,7 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
   }
 
   @SuppressWarnings("unused")
-  def cleanup() {
+  void cleanup() {
     TestLoggerFactory.clearAll()
 
     axonConfiguration.shutdown()
@@ -55,10 +56,10 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
     axonConfiguration = null
   }
 
-  def "should work for event sourcing handler"() {
+  void "should work for event sourcing handler"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.eventsourcing-handler-logging")
-    String aggregateIdentifier = UUID.randomUUID().toString()
+    String aggregateIdentifier = UUID.randomUUID()
 
     when:
     axonCommandGateway.sendAndWait(new CreateMyTestAggregateCommand(aggregateIdentifier: aggregateIdentifier, name: "bla"))
@@ -67,7 +68,7 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 6
       loggingEvents*.level == (0..5).collect({ Level.DEBUG })
 
@@ -94,11 +95,11 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
     }
   }
 
-  def "should not log for logger level higher than DEBUG"() {
+  void "should not log for logger level higher than DEBUG"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.eventsourcing-handler-logging")
-    logger.setEnabledLevelsForAllThreads(Level.INFO)
-    String aggregateIdentifier = UUID.randomUUID().toString()
+    logger.enabledLevelsForAllThreads = Level.INFO
+    String aggregateIdentifier = UUID.randomUUID()
 
     when:
     axonCommandGateway.sendAndWait(new CreateMyTestAggregateCommand(aggregateIdentifier: aggregateIdentifier, name: "bla"))
@@ -107,7 +108,7 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 0
     }
   }

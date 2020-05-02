@@ -15,7 +15,7 @@ class InternationalizedNameSpecification extends Specification {
   String funkyStringInternationalized = "This is a funky String"
 
   @Unroll
-  def "map constructor should work for correct input params: [name: #nameParameter]"() {
+  void "map constructor should work for correct input params: [name: #nameParameter]"() {
     when:
     InternationalizedName internationalizedName = new InternationalizedName(name: nameParameter)
 
@@ -32,7 +32,7 @@ class InternationalizedNameSpecification extends Specification {
   }
 
   @Unroll
-  def "map constructor should fail for invalid input params: [name: #nameParameter]"() {
+  void "map constructor should fail for invalid input params: [name: #nameParameter]"() {
     when:
     new InternationalizedName(name: nameParameter)
 
@@ -47,7 +47,7 @@ class InternationalizedNameSpecification extends Specification {
   }
 
   @Unroll
-  def "getNameInternationalized() should return expected value: [name: #nameParameter]"() {
+  void "getNameInternationalized() should return expected value: [name: #nameParameter]"() {
     when:
     InternationalizedName internationalizedName = new InternationalizedName(name: nameParameter)
 

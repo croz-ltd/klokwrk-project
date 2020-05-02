@@ -40,12 +40,12 @@ class CargoAggregate implements CommandHandlerTrait {
     return this
   }
 
-  static CargoBookedEvent cargoBookedEventFromCargoBookCommand(CargoBookCommand cargoBookCommand) {
+  CargoBookedEvent cargoBookedEventFromCargoBookCommand(CargoBookCommand cargoBookCommand) {
     return new CargoBookedEvent(cargoBookCommand.properties)
   }
 
   @EventSourcingHandler
-  onCargoBookedEvent(CargoBookedEvent cargoBookedEvent) {
+  void onCargoBookedEvent(CargoBookedEvent cargoBookedEvent) {
     aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
     originLocation = cargoBookedEvent.originLocation
     destinationLocation = cargoBookedEvent.destinationLocation

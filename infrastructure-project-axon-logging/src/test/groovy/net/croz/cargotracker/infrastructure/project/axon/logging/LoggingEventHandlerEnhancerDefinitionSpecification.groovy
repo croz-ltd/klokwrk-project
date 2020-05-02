@@ -26,7 +26,8 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
   Configuration axonConfiguration
   CommandGateway axonCommandGateway
 
-  def setup() {
+  @SuppressWarnings("Indentation")
+  void setup() {
     TestLoggerFactory.clearAll()
 //    TestLoggerFactory.getInstance().setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test
 
@@ -53,7 +54,7 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
   }
 
   @SuppressWarnings("unused")
-  def cleanup() {
+  void cleanup() {
     TestLoggerFactory.clearAll()
 
     axonConfiguration.shutdown()
@@ -61,10 +62,10 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
     axonConfiguration = null
   }
 
-  def "should work for event handler"() {
+  void "should work for event handler"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.event-handler-logging")
-    String aggregateIdentifier = UUID.randomUUID().toString()
+    String aggregateIdentifier = UUID.randomUUID()
 
     when:
     axonCommandGateway.sendAndWait(new CreateMyTestAggregateCommand(aggregateIdentifier: aggregateIdentifier, name: "bla"))
@@ -72,29 +73,27 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 2
       loggingEvents[0].level == Level.DEBUG
       loggingEvents[0].message.contains(aggregateIdentifier)
 
       // sample message: Executing EventSourcingHandler method [MyTestAggregate.onMyTestAggregateCreatedEvent(MyTestAggregateCreatedEvent)] with event [MyTestAggregateCreatedEvent(aggregateIdentifier: 4bbf8ddd-6310-424d-8085-882f9df64200, sequenceNumber: 0)]
-      loggingEvents[0].message ==~
-      /Executing EventHandler method \[MyTestProjector.handle\(MyTestAggregateCreatedEvent\)] with event \[eventGlobalIndex: n\/a, eventId: \p{Graph}{36}, MyTestAggregateCreatedEvent\(aggregateIdentifier: \p{Graph}{36}, sequenceNumber: 0\)]/
+      loggingEvents[0].message ==~ /Executing EventHandler method \[MyTestProjector.handle\(MyTestAggregateCreatedEvent\)] with event \[eventGlobalIndex: n\/a, eventId: \p{Graph}{36}, MyTestAggregateCreatedEvent\(aggregateIdentifier: \p{Graph}{36}, sequenceNumber: 0\)]/
 
       loggingEvents[1].level == Level.DEBUG
       loggingEvents[1].message.contains(aggregateIdentifier)
 
       // sample message: Executing EventHandler method [MyTestProjector.handle(MyTestAggregateUpdatedEvent)] with event [eventId: bd88fa8e-d834-4c93-8cc2-d39dc619d009, MyTestAggregateUpdatedEvent(aggregateIdentifier: 000580e3-5682-46be-8b41-8aabbb39f7b5, sequenceNumber: 1)]
-      loggingEvents[1].message ==~
-      /Executing EventHandler method \[MyTestProjector.handle\(MyTestAggregateUpdatedEvent\)] with event \[eventGlobalIndex: 1, eventId: \p{Graph}{36}, MyTestAggregateUpdatedEvent\(aggregateIdentifier: \p{Graph}{36}, sequenceNumber: 1\)]/
+      loggingEvents[1].message ==~ /Executing EventHandler method \[MyTestProjector.handle\(MyTestAggregateUpdatedEvent\)] with event \[eventGlobalIndex: 1, eventId: \p{Graph}{36}, MyTestAggregateUpdatedEvent\(aggregateIdentifier: \p{Graph}{36}, sequenceNumber: 1\)]/
     }
   }
 
-  def "should not log for logger level higher than DEBUG"() {
+  void "should not log for logger level higher than DEBUG"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.event-handler-logging")
-    logger.setEnabledLevelsForAllThreads(Level.INFO)
-    String aggregateIdentifier = UUID.randomUUID().toString()
+    logger.enabledLevelsForAllThreads = Level.INFO
+    String aggregateIdentifier = UUID.randomUUID()
 
     when:
     axonCommandGateway.sendAndWait(new CreateMyTestAggregateCommand(aggregateIdentifier: aggregateIdentifier, name: "bla"))
@@ -102,7 +101,7 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 0
     }
   }

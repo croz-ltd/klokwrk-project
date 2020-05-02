@@ -7,7 +7,7 @@ import spock.lang.Specification
 class GStringSerializerSpecification extends Specification {
   ObjectMapper objectMapper
 
-  def setup() {
+  void setup() {
     SimpleModule simpleModule = new SimpleModule()
     simpleModule.addSerializer(GString, new GStringSerializer())
 
@@ -17,7 +17,7 @@ class GStringSerializerSpecification extends Specification {
     this.objectMapper = objectMapper
   }
 
-  def "should serialize GString as a String"() {
+  void "should serialize GString as a String"() {
     given:
     Closure closure = {
       return "${123} 456"

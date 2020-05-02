@@ -29,6 +29,7 @@ import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandle
 @MapConstructor(post = { postMapConstructorCheckProtocol(args as Map) })
 @CompileStatic
 class Location implements PostMapConstructorCheckable {
+
   static final Location UNKNOWN_LOCATION = new Location(
       unLoCode: UnLoCode.UNKNOWN_UN_LO_CODE, name: InternationalizedName.UNKNOWN_INTERNATIONALIZED_NAME, countryName: InternationalizedName.UNKNOWN_INTERNATIONALIZED_NAME,
       unLoCodeFunction: UnLoCodeFunction.UNKNOWN_UN_LO_CODE_FUNCTION
@@ -59,14 +60,6 @@ class Location implements PostMapConstructorCheckable {
   // TODO dmurat: expand it into object. Do not use right now
 //  String coordinates
 
-  @Override
-  void postMapConstructorCheck(Map<String, ?> constructorArguments) {
-    assert unLoCode
-    assert name
-    assert countryName
-    assert unLoCodeFunction
-  }
-
   static Location create(String unLoCode, String name, String countryName, String unLoCodeFunction) {
     Location createdLocation = new Location(
         unLoCode: new UnLoCode(code: unLoCode), name: new InternationalizedName(name: name), countryName: new InternationalizedName(name: countryName),
@@ -74,6 +67,14 @@ class Location implements PostMapConstructorCheckable {
     )
 
     return createdLocation
+  }
+
+  @Override
+  void postMapConstructorCheck(Map<String, ?> constructorArguments) {
+    assert unLoCode
+    assert name
+    assert countryName
+    assert unLoCodeFunction
   }
 
   Boolean canAcceptCargoFrom(Location originLocation) {

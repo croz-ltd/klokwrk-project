@@ -47,7 +47,7 @@ class PostgreSqlAxonDialect extends PostgreSQL10Dialect {
    */
   @Override
   SqlTypeDescriptor remapSqlTypeDescriptor(SqlTypeDescriptor sqlTypeDescriptor) {
-    if (sqlTypeDescriptor.getSqlType() == Types.BLOB) {
+    if (sqlTypeDescriptor.sqlType == Types.BLOB) {
       return BinaryTypeDescriptor.INSTANCE
     }
 
