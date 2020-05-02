@@ -343,11 +343,17 @@ ruleset {
   ClassNameSameAsFilename
   ClassNameSameAsSuperclass
   ConfusingMethodName
-  FactoryMethodName
-  FieldName
+  FactoryMethodName {
+    regex = /(build.*|make.*)/
+  }
+  FieldName {
+    ignoreFieldNames = "serialVersionUID,log,logger"
+  }
   InterfaceName
   InterfaceNameSameAsSuperInterface
-  MethodName
+  MethodName {
+    regex = /[a-z]([\w\[\]#:\s(),.-]|\')*/ // Test method names can include various unusual characters like []#:(),.-' . This is especially true for unrolled Spock methods.
+  }
   ObjectOverrideMisspelledMethodName
   PackageName
   PackageNameMatchesFilePath
