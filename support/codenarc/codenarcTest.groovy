@@ -129,7 +129,7 @@ ruleset {
   AbstractClassWithoutAbstractMethod
   AssignmentToStaticFieldFromInstanceMethod
   BooleanMethodReturnsNull
-  BuilderMethodWithSideEffects
+  BuilderMethodWithSideEffects { enabled = false }
   CloneableWithoutClone
   CloseWithoutCloseable
   CompareToWithoutComparable
@@ -137,7 +137,7 @@ ruleset {
   EmptyMethodInAbstractClass
   FinalClassWithProtectedMember
   ImplementationAsType
-  Instanceof
+  Instanceof { enabled = false }
   LocaleSetDefault
   NestedForLoop
   PrivateFieldCouldBeFinal
