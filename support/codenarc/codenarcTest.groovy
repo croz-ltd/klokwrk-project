@@ -147,4 +147,10 @@ ruleset {
   SimpleDateFormatMissingLocale
   StatelessSingleton
   ToStringReturnsNull
+
+  // rulesets/dry.xml
+  DuplicateListLiteral
+  DuplicateMapLiteral
+  DuplicateNumberLiteral
+  DuplicateStringLiteral
 }
