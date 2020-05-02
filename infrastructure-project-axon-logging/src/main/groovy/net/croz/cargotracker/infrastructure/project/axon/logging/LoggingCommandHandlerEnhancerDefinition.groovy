@@ -21,9 +21,10 @@ import static net.croz.cargotracker.lang.groovy.constant.CommonConstants.NOT_AVA
  * Corresponding Slf4j logger uses '<code>cargotracker.axon.command-handler-logging</code>' category and it logs on <code>DEBUG</code> level. Logger output contains information about aggregate
  * identifier and sequence number.
  * <p/>
- * Logged output looks similar to this:
+ * Logged output looks similar to this (single line in output):
  * <pre>
- * ... cargotracker.axon.command-handler-logging : Executing CommandHandler constructor [PredmetAggregate(CreatePredmetCommand,PredmetClassificationDomainService)] with command [CreatePredmetCommand(aggregateIdentifier: 0eb588a9-cfeb-4be5-8ea9-04c9d14b7df9)]
+ * ... cargotracker.axon.command-handler-logging : Executing CommandHandler constructor [PredmetAggregate(CreatePredmetCommand,PredmetClassificationDomainService)]
+ *         with command [CreatePredmetCommand(aggregateIdentifier: 0eb588a9-cfeb-4be5-8ea9-04c9d14b7df9)]
  * </pre>
  * To register this HandlerEnhancerDefinition, use standard means as described in Axon documentation. In Spring Boot applications only a simple bean declaration is required.
  * <p/>
