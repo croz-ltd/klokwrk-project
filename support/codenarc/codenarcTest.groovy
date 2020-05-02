@@ -446,7 +446,7 @@ ruleset {
   // rulesets/unused.xml
   UnusedArray
   UnusedMethodParameter
-  UnusedObject
+  UnusedObject { enabled = false }
   UnusedPrivateField
   UnusedPrivateMethod
   UnusedPrivateMethodParameter
