@@ -6,7 +6,7 @@ import spock.lang.Unroll
 
 class LocationSpecification extends Specification {
 
-  def "map constructor should work for correct input params"() {
+  void "map constructor should work for correct input params"() {
     when:
     Location location = new Location(
         unLoCode: new UnLoCode(code: "HRRJK"), name: new InternationalizedName(name: "Rijeka"), countryName: new InternationalizedName(name: "Hrvatska"),
@@ -20,7 +20,7 @@ class LocationSpecification extends Specification {
   }
 
   @Unroll
-  def "map constructor should fail for invalid input params: [code: #codeParameter, name: #nameParameter, countryName: #countryNameParameter, function: #functionParameter]"() {
+  void "map constructor should fail for invalid input params: [code: #codeParameter, name: #nameParameter, countryName: #countryNameParameter, function: #functionParameter]"() {
     when:
     new Location(
         code: new UnLoCode(code: codeParameter), name: new InternationalizedName(name: nameParameter), countryName: new InternationalizedName(name: countryNameParameter),
@@ -38,7 +38,7 @@ class LocationSpecification extends Specification {
     "HRRJK"       | "someName"    | "someCountry"        | null
   }
 
-  def "create() factory method should work for correct input params"() {
+  void "create() factory method should work for correct input params"() {
     when:
     Location location = Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----")
 
@@ -49,7 +49,7 @@ class LocationSpecification extends Specification {
   }
 
   @Unroll
-  def "create() factory method should fail for invalid input params: [code: #codeParameter, name: #nameParameter, countryName: #countryNameParameter, function: #functionParameter]"() {
+  void "create() factory method should fail for invalid input params: [code: #codeParameter, name: #nameParameter, countryName: #countryNameParameter, function: #functionParameter]"() {
     when:
     Location.create(codeParameter, nameParameter, countryNameParameter, functionParameter)
 
@@ -65,7 +65,7 @@ class LocationSpecification extends Specification {
   }
 
   @Unroll
-  def "destinationLocation.canAcceptCargoFrom() should work as expected: [origin: #originDescription, destination: #destinationDescription]"() {
+  void "destinationLocation.canAcceptCargoFrom() should work as expected: [origin: #originDescription, destination: #destinationDescription]"() {
     when:
     Location originLocation = originLocationInstance
     Location destinationLocation = destinationLocationInstance

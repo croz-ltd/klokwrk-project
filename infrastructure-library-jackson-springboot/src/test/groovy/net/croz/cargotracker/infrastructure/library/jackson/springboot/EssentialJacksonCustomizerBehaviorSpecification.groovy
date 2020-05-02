@@ -20,7 +20,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
   ObjectMapper objectMapper
 
   @Unroll
-  def "deserialization - should deserialize empty string into null - string value is #aggregateIdentifierStringValue"() {
+  void "deserialization - should deserialize empty string into null - string value is #aggregateIdentifierStringValue"() {
     given:
     String stringToDeserialize = """
       {
@@ -47,7 +47,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     String last
   }
 
-  def "deserialization - should not deserialize transient properties"() {
+  void "deserialization - should not deserialize transient properties"() {
     given:
     String stringToDeserialize = """
       {
@@ -64,7 +64,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     myBeanWithTransientProperties.last == "someLast"
   }
 
-  def "deserialization - should allow comments in JSON"() {
+  void "deserialization - should allow comments in JSON"() {
     given:
     String stringToDeserialize = """
       {
@@ -87,7 +87,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     String last
   }
 
-  def "deserialization - should not fail for unknown properties"() {
+  void "deserialization - should not fail for unknown properties"() {
     given:
     String stringToDeserialize = """
       {
@@ -109,7 +109,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     String last = "someLast"
   }
 
-  def "deserialization - null should not deserialize null values"() {
+  void "deserialization - null should not deserialize null values"() {
     given:
     String stringToDeserialize = """
       {
@@ -132,7 +132,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     String[] nameList
   }
 
-  def "deserialization - should deserialize single value into an array"() {
+  void "deserialization - should deserialize single value into an array"() {
     given:
     String stringToDeserialize = """
       {
@@ -160,7 +160,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     ZonedDateTime zonedDateTime
   }
 
-  def "deserialization - timestamp types should work as expected"() {
+  void "deserialization - timestamp types should work as expected"() {
     given:
     String legacyDateString = "2020-04-04T22:35:35.654+0200"
     SimpleDateFormat legacySimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
@@ -188,7 +188,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
   }
 
   @SuppressWarnings("GroovyPointlessBoolean")
-  def "serialization - should serialize only non-null values"() {
+  void "serialization - should serialize only non-null values"() {
     given:
     MyBean myBean = new MyBean(first: "someFirst")
     assert myBean.last == null
@@ -204,7 +204,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     serializedString.contains(/"someFirst"/) == true
   }
 
-  def "serialization - should serialize GString as a String"() {
+  void "serialization - should serialize GString as a String"() {
     given:
     Closure closure = {
       return "${123} 456"
@@ -222,7 +222,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
   }
 
   @SuppressWarnings("GroovyPointlessBoolean")
-  def "serialization - should not serialize transient properties"() {
+  void "serialization - should not serialize transient properties"() {
     given:
     MyBeanWithTransientProperties myBeanWithTransientProperties = new MyBeanWithTransientProperties(first: "someFirst", last: "someLast")
 
@@ -234,7 +234,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     serializedString.contains(/"someFirst"/) == false
   }
 
-  def "serialization - timestamp types should work as expected"() {
+  void "serialization - timestamp types should work as expected"() {
     given:
     String legacyDateString = "2020-04-04T22:35:35.654+0200"
     SimpleDateFormat legacySimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")

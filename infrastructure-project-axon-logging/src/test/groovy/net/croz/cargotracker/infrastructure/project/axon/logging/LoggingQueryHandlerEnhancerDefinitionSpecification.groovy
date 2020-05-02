@@ -23,7 +23,7 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
   Configuration axonConfiguration
   QueryGateway axonQueryGateway
 
-  def setup() {
+  void setup() {
     TestLoggerFactory.clearAll()
     TestLoggerFactory.getInstance().setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test
 
@@ -46,7 +46,7 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
   }
 
   @SuppressWarnings("unused")
-  def cleanup() {
+  void cleanup() {
     TestLoggerFactory.clearAll()
 
     axonConfiguration.shutdown()
@@ -54,7 +54,7 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
     axonConfiguration = null
   }
 
-  def "should work for query handler"() {
+  void "should work for query handler"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.query-handler-logging")
 
@@ -70,7 +70,7 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
     }
   }
 
-  def "should not log for logger level higher than DEBUG"() {
+  void "should not log for logger level higher than DEBUG"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.query-handler-logging")
     logger.setEnabledLevelsForAllThreads(Level.INFO)

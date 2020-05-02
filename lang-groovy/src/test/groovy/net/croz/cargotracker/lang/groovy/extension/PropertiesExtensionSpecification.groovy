@@ -9,7 +9,7 @@ class PropertiesExtensionSpecification extends Specification {
   }
 
   @SuppressWarnings("GroovyPointlessBoolean")
-  def "getPropertiesFiltered - should return a map without properties excluded by default"() {
+  void "getPropertiesFiltered - should return a map without properties excluded by default"() {
     given:
     MyPogoPerson person = new MyPogoPerson(firstName: "myFirstName", lastName: "myLastName")
 
@@ -23,7 +23,7 @@ class PropertiesExtensionSpecification extends Specification {
     filteredProperties.any({ it.key in PropertiesExtension.DEFAULT_FILTER_OUT_PROPERTY_NAME_LIST }) == false
   }
 
-  def "getPropertiesFiltered(Map) - should return a map without properties excluded by parameter"() {
+  void "getPropertiesFiltered(Map) - should return a map without properties excluded by parameter"() {
     given:
     MyPogoPerson person = new MyPogoPerson(firstName: "myFirstName", lastName: "myLastName")
 
@@ -35,7 +35,7 @@ class PropertiesExtensionSpecification extends Specification {
     filteredProperties.collect({ it.key }).containsAll(["firstName", "class"])
   }
 
-  def "getPropertiesFiltered(Map) - should throw for invalid parameter"() {
+  void "getPropertiesFiltered(Map) - should throw for invalid parameter"() {
     given:
     MyPogoPerson person = new MyPogoPerson(firstName: "myFirstName", lastName: "myLastName")
 
@@ -46,7 +46,7 @@ class PropertiesExtensionSpecification extends Specification {
     thrown(AssertionError)
   }
 
-  def "getPropertiesFiltered(Map) - for empty input list should return all properties"() {
+  void "getPropertiesFiltered(Map) - for empty input list should return all properties"() {
     given:
     MyPogoPerson person = new MyPogoPerson(firstName: "myFirstName", lastName: "myLastName")
 

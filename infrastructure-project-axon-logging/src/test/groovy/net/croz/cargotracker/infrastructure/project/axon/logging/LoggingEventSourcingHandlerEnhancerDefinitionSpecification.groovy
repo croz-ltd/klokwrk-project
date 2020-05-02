@@ -24,7 +24,7 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
   Configuration axonConfiguration
   CommandGateway axonCommandGateway
 
-  def setup() {
+  void setup() {
     TestLoggerFactory.clearAll()
 //    TestLoggerFactory.getInstance().setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test
 
@@ -47,7 +47,7 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
   }
 
   @SuppressWarnings("unused")
-  def cleanup() {
+  void cleanup() {
     TestLoggerFactory.clearAll()
 
     axonConfiguration.shutdown()
@@ -55,7 +55,7 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
     axonConfiguration = null
   }
 
-  def "should work for event sourcing handler"() {
+  void "should work for event sourcing handler"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.eventsourcing-handler-logging")
     String aggregateIdentifier = UUID.randomUUID().toString()
@@ -94,7 +94,7 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
     }
   }
 
-  def "should not log for logger level higher than DEBUG"() {
+  void "should not log for logger level higher than DEBUG"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.eventsourcing-handler-logging")
     logger.setEnabledLevelsForAllThreads(Level.INFO)

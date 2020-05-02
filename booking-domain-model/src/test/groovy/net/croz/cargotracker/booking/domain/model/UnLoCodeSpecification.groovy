@@ -6,7 +6,7 @@ import spock.lang.Unroll
 class UnLoCodeSpecification extends Specification {
 
   @Unroll
-  def "map constructor should work for correct input params: [code: #codeParameter]"() {
+  void "map constructor should work for correct input params: [code: #codeParameter]"() {
     when:
     UnLoCode unLoCode = new UnLoCode(code: codeParameter)
 
@@ -21,7 +21,7 @@ class UnLoCodeSpecification extends Specification {
   }
 
   @Unroll
-  def "map constructor should fail for invalid input params: [code: #codeParameter]"() {
+  void "map constructor should fail for invalid input params: [code: #codeParameter]"() {
     when:
     new UnLoCode(code: codeParameter)
 
@@ -40,7 +40,7 @@ class UnLoCodeSpecification extends Specification {
     "HRRJ0"       | _
   }
 
-  def "getCountryCode() should return expected value"() {
+  void "getCountryCode() should return expected value"() {
     when:
     UnLoCode unLoCode = new UnLoCode(code: "HRRJK")
 
@@ -48,7 +48,7 @@ class UnLoCodeSpecification extends Specification {
     unLoCode.countryCode == "HR"
   }
 
-  def "getLocationCode() should return expected value"() {
+  void "getLocationCode() should return expected value"() {
     when:
     UnLoCode unLoCode = new UnLoCode(code: "HRRJK")
 
