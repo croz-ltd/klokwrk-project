@@ -195,10 +195,12 @@ ruleset {
   BracesForTryCatchFinally
   ClassEndsWithBlankLine { enabled = false }
   ClassStartsWithBlankLine { enabled = false }
-  ClosureStatementOnOpeningLineOfMultipleLineClosure
+  ClosureStatementOnOpeningLineOfMultipleLineClosure {
+    enabled = false // TODO dmurat: check when new CodeNarc is release. Currently it is not compatible with Closure Lambda syntax supported by Groovy 3.
+  }
   ConsecutiveBlankLines
   FileEndsWithoutNewline
-  Indentation { spacesPerIndentLevel = 2 }
+  Indentation { spacesPerIndentLevel = 2 }  // TODO dmurat: after new CodeNarc release, check SuppressWarnings for this rule. Currently it is not compatible with Closure Lambda syntax supported by Groovy 3.
   LineLength { length = 210 }
   MissingBlankLineAfterImports
   MissingBlankLineAfterPackage
@@ -207,12 +209,18 @@ ruleset {
   SpaceAfterComma
   SpaceAfterFor
   SpaceAfterIf
-  SpaceAfterOpeningBrace
+  SpaceAfterOpeningBrace {
+    enabled = false // TODO dmurat: check when new CodeNarc is release. Currently it is not compatible with Closure Lambda syntax supported by Groovy 3.
+  }
   SpaceAfterSemicolon
   SpaceAfterSwitch
   SpaceAfterWhile
   SpaceAroundClosureArrow
-  SpaceAroundMapEntryColon
+  SpaceAroundMapEntryColon {
+    enabled = false  // TODO dmurat: it looks like this rule does not work correctly with Groovy 3. Didn't tried, but maybe setting up codenarc compile classpath can help.
+    characterBeforeColonRegex = /\S/
+    characterAfterColonRegex = /\s/
+  }
   SpaceAroundOperator
   SpaceBeforeClosingBrace
   SpaceBeforeOpeningBrace

@@ -193,11 +193,16 @@ ruleset {
   BracesForTryCatchFinally
   ClassEndsWithBlankLine { enabled = false }
   ClassStartsWithBlankLine { enabled = false }
-  ClosureStatementOnOpeningLineOfMultipleLineClosure
+  ClosureStatementOnOpeningLineOfMultipleLineClosure {
+    enabled = false // see the comment in Main source set rules.
+  }
   ConsecutiveBlankLines
   FileEndsWithoutNewline
-  Indentation { spacesPerIndentLevel = 2 }
-  LineLength { length = 210 }
+  Indentation { spacesPerIndentLevel = 2 } // see the comment in Main source set rules.
+  LineLength {
+    length = 210
+    ignoreLineRegex = /^.*(==~?|\/\/).*$/ // ignore for equality comparisons, matches comparisons and line comments in tests
+  }
   MissingBlankLineAfterImports
   MissingBlankLineAfterPackage
   SpaceAfterCatch
@@ -205,12 +210,18 @@ ruleset {
   SpaceAfterComma
   SpaceAfterFor
   SpaceAfterIf
-  SpaceAfterOpeningBrace
+  SpaceAfterOpeningBrace {
+    enabled = false // see the comment in Main source set rules.
+  }
   SpaceAfterSemicolon
   SpaceAfterSwitch
   SpaceAfterWhile
   SpaceAroundClosureArrow
-  SpaceAroundMapEntryColon
+  SpaceAroundMapEntryColon {
+    enabled = false // see the comment in Main source set rules.
+    characterBeforeColonRegex = /\S/
+    characterAfterColonRegex = /\s/
+  }
   SpaceAroundOperator
   SpaceBeforeClosingBrace
   SpaceBeforeOpeningBrace
