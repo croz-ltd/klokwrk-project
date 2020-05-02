@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
 
 @CompileStatic
 trait CommandHandlerTrait extends MessageHandlerTrait {
-  static private Logger log = LoggerFactory.getLogger(CommandHandlerTrait.name)
+  static private final Logger log = LoggerFactory.getLogger(CommandHandlerTrait.name)
 
   void doThrow(CommandException domainException) {
     CommandExecutionException commandExecutionException = new CommandExecutionException("command execution failed", new ThrowAwayRuntimeException(), domainException)

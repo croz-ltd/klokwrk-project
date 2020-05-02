@@ -14,8 +14,7 @@ import javax.transaction.Transactional
 @Transactional
 @CompileStatic
 class CargoSummaryProjectorService {
-
-  private CargoSummaryQueryEntityRepository cargoSummaryQueryEntityRepository
+  private final CargoSummaryQueryEntityRepository cargoSummaryQueryEntityRepository
 
   CargoSummaryProjectorService(CargoSummaryQueryEntityRepository cargoSummaryQueryEntityRepository) {
     this.cargoSummaryQueryEntityRepository = cargoSummaryQueryEntityRepository

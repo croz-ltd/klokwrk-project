@@ -8,7 +8,7 @@ import org.axonframework.commandhandling.gateway.CommandGateway
 
 @CompileStatic
 class CommandGatewayAdapter {
-  private CommandGateway commandGateway
+  private final CommandGateway commandGateway
 
   CommandGatewayAdapter(CommandGateway commandGateway) {
     this.commandGateway = commandGateway

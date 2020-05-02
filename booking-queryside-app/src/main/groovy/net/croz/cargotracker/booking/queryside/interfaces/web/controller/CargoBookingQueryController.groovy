@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/cargo-booking-query")
 @CompileStatic
 class CargoBookingQueryController {
-  private CargoBookingQueryApplicationService cargoBookingQueryApplicationService
+  private final CargoBookingQueryApplicationService cargoBookingQueryApplicationService
 
   CargoBookingQueryController(CargoBookingQueryApplicationService cargoBookingQueryApplicationService) {
     this.cargoBookingQueryApplicationService = cargoBookingQueryApplicationService

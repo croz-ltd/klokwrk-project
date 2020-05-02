@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
 
 @CompileStatic
 trait QueryHandlerTrait extends MessageHandlerTrait {
-  static private Logger log = LoggerFactory.getLogger(QueryHandlerTrait.name)
+  static private final Logger log = LoggerFactory.getLogger(QueryHandlerTrait.name)
 
   void doThrow(QueryException domainException) {
     QueryExecutionException queryExecutionException = new QueryExecutionException("query execution failed", new ThrowAwayRuntimeException(), domainException)

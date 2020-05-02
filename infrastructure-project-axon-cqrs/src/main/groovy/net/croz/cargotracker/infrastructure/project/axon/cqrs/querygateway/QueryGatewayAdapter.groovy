@@ -12,7 +12,7 @@ import java.util.concurrent.CompletionException
 
 @CompileStatic
 class QueryGatewayAdapter {
-  private QueryGateway queryGateway
+  private final QueryGateway queryGateway
 
   QueryGatewayAdapter(QueryGateway queryGateway) {
     this.queryGateway = queryGateway

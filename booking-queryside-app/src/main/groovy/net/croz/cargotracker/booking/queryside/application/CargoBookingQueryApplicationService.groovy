@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service
 @Service
 @CompileStatic
 class CargoBookingQueryApplicationService {
-  private QueryGatewayAdapter queryGatewayAdapter
+  private final QueryGatewayAdapter queryGatewayAdapter
 
   CargoBookingQueryApplicationService(QueryGateway queryGateway) {
     this.queryGatewayAdapter = new QueryGatewayAdapter(queryGateway)

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
 @Service
 @CompileStatic
 class CargoQueryHandler implements QueryHandlerTrait {
-  private CargoSummaryQueryEntityRepository cargoSummaryQueryEntityRepository
+  private final CargoSummaryQueryEntityRepository cargoSummaryQueryEntityRepository
 
   CargoQueryHandler(CargoSummaryQueryEntityRepository cargoSummaryQueryEntityRepository) {
     this.cargoSummaryQueryEntityRepository = cargoSummaryQueryEntityRepository
