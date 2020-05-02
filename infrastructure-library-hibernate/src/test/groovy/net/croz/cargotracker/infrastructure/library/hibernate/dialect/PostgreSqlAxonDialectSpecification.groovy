@@ -1,6 +1,5 @@
 package net.croz.cargotracker.infrastructure.library.hibernate.dialect
 
-
 import org.hibernate.type.descriptor.sql.BinaryTypeDescriptor
 import org.hibernate.type.descriptor.sql.BlobTypeDescriptor
 import org.hibernate.type.descriptor.sql.SqlTypeDescriptor
