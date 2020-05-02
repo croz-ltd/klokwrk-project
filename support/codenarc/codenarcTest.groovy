@@ -402,7 +402,7 @@ ruleset {
   UnnecessaryCallToSubstring
   UnnecessaryCast
   UnnecessaryCatchBlock
-  UnnecessaryCollectCall
+  UnnecessaryCollectCall { enabled = false }
   UnnecessaryCollectionCall
   UnnecessaryConstructor
   UnnecessaryDefInFieldDeclaration
@@ -413,9 +413,13 @@ ruleset {
   UnnecessaryElseStatement
   UnnecessaryFinalOnPrivateMethod
   UnnecessaryFloatInstantiation
-  UnnecessaryGString
-  UnnecessaryGetter
-  UnnecessaryIfStatement
+  UnnecessaryGString { enabled = false }
+  UnnecessaryGetter {
+    checkIsMethods = false
+  }
+  UnnecessaryIfStatement {
+    checkLastStatementImplicitElse = false
+  }
   UnnecessaryInstanceOfCheck
   UnnecessaryInstantiationToGetClass
   UnnecessaryIntegerInstantiation
@@ -428,7 +432,7 @@ ruleset {
   UnnecessaryPackageReference
   UnnecessaryParenthesesForMethodCallWithClosure
   UnnecessaryPublicModifier
-  UnnecessaryReturnKeyword
+  UnnecessaryReturnKeyword { enabled = false }
   UnnecessarySafeNavigationOperator
   UnnecessarySelfAssignment
   UnnecessarySemicolon
