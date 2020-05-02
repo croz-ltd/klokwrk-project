@@ -149,8 +149,8 @@ ruleset {
   ToStringReturnsNull
 
   // rulesets/dry.xml
-  DuplicateListLiteral
-  DuplicateMapLiteral
-  DuplicateNumberLiteral
-  DuplicateStringLiteral
+  DuplicateListLiteral { enabled = false }
+  DuplicateMapLiteral { enabled = false }
+  DuplicateNumberLiteral { enabled = false }
+  DuplicateStringLiteral { enabled = false }
 }

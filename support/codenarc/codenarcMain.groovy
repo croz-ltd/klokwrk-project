@@ -152,5 +152,7 @@ ruleset {
   DuplicateListLiteral
   DuplicateMapLiteral
   DuplicateNumberLiteral
-  DuplicateStringLiteral
+  DuplicateStringLiteral {
+    ignoreStrings = ", ,."
+  }
 }
