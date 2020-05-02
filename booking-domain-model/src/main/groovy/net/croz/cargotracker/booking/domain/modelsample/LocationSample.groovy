@@ -3,6 +3,7 @@ package net.croz.cargotracker.booking.domain.modelsample
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.booking.domain.model.Location
 
+@SuppressWarnings("DuplicateStringLiteral")
 @CompileStatic
 class LocationSample {
   static final Map<String, Location> locationSampleMap = [

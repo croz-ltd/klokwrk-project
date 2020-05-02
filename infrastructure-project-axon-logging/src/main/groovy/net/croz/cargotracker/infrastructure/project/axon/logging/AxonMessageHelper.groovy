@@ -7,9 +7,16 @@ import org.axonframework.eventhandling.GlobalSequenceTrackingToken
 import org.axonframework.eventhandling.TrackingToken
 import org.axonframework.messaging.Message
 
+import static net.croz.cargotracker.lang.groovy.constant.CommonConstants.NOT_AVAILABLE
+
 @CompileStatic
 class AxonMessageHelper {
-  static String fetchGlobalIndexAsStringIfPossible(Message<?> message, String nonExistingPlaceholder = "n/a") {
+  // TODO dmurat: If the need arises, following two constants should go into standalone module (module could be named something like infrastructure-project-axon-base or
+  //              infrastructure-project-axon-constant)
+  static final String AGGREGATE_IDENTIFIER = "aggregateIdentifier"
+  static final String SEQUENCE_NUMBER = "sequenceNumber"
+
+  static String fetchGlobalIndexAsStringIfPossible(Message<?> message, String nonExistingPlaceholder = NOT_AVAILABLE) {
     return fetchGlobalIndexIfPossible(message) ?: nonExistingPlaceholder
   }
 
@@ -30,23 +37,23 @@ class AxonMessageHelper {
     return eventGlobalIndex
   }
 
-  static String fetchAggregateIdentifierIfPossible(Message<?> message, String nonExistingPlaceholder = "n/a") {
+  static String fetchAggregateIdentifierIfPossible(Message<?> message, String nonExistingPlaceholder = NOT_AVAILABLE) {
     String eventAggregateIdentifier = nonExistingPlaceholder
     Object event = message.payload
 
-    if (event?.hasProperty("aggregateIdentifier")) {
-      eventAggregateIdentifier = event["aggregateIdentifier"]
+    if (event?.hasProperty(AGGREGATE_IDENTIFIER)) {
+      eventAggregateIdentifier = event[AGGREGATE_IDENTIFIER]
     }
 
-    if (eventAggregateIdentifier == nonExistingPlaceholder && message.hasProperty("aggregateIdentifier")) {
-      eventAggregateIdentifier = message["aggregateIdentifier"]
+    if (eventAggregateIdentifier == nonExistingPlaceholder && message.hasProperty(AGGREGATE_IDENTIFIER)) {
+      eventAggregateIdentifier = message[AGGREGATE_IDENTIFIER]
     }
 
     return eventAggregateIdentifier
   }
 
-  static String fetchSequenceNumberAsStringIfPossible(Message<?> message, String nonExistingPlaceholder = "n/a") {
-    String eventSequenceNumber = message.hasProperty("sequenceNumber") ? message["sequenceNumber"] : nonExistingPlaceholder
+  static String fetchSequenceNumberAsStringIfPossible(Message<?> message, String nonExistingPlaceholder = NOT_AVAILABLE) {
+    String eventSequenceNumber = message.hasProperty(SEQUENCE_NUMBER) ? message[SEQUENCE_NUMBER] : nonExistingPlaceholder
     return eventSequenceNumber
   }
 }

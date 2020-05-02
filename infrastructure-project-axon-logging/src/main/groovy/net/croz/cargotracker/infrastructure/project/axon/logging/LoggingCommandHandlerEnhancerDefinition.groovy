@@ -11,6 +11,10 @@ import org.axonframework.messaging.annotation.WrappedMessageHandlingMember
 import java.lang.reflect.Constructor
 import java.lang.reflect.Method
 
+import static net.croz.cargotracker.infrastructure.project.axon.logging.AxonMessageHelper.AGGREGATE_IDENTIFIER
+import static net.croz.cargotracker.infrastructure.project.axon.logging.AxonMessageHelper.SEQUENCE_NUMBER
+import static net.croz.cargotracker.lang.groovy.constant.CommonConstants.NOT_AVAILABLE
+
 /**
  * Defines Axon's {@link HandlerEnhancerDefinition} for detailed logging of command handlers executions in projectors.
  * <p/>
@@ -33,7 +37,7 @@ class LoggingCommandHandlerEnhancerDefinition implements HandlerEnhancerDefiniti
     MessageHandlingMember selectedMessageHandlingMember = originalMessageHandlingMember
         .annotationAttributes(CommandHandler)
         .map((Map<String, Object> attr) -> new LoggingCommandHandlingMember(originalMessageHandlingMember) as MessageHandlingMember)
-        .orElse(originalMessageHandlingMember)
+        .orElse(originalMessageHandlingMember) as MessageHandlingMember
 
     return selectedMessageHandlingMember
   }
@@ -47,14 +51,15 @@ class LoggingCommandHandlerEnhancerDefinition implements HandlerEnhancerDefiniti
       this.messageHandlingMember = messageHandlingMember
     }
 
+    @SuppressWarnings("DuplicateStringLiteral") // TODO dmurat: remove if https://github.com/CodeNarc/CodeNarc/issues/490 gets fixed.
     @Override
     Object handle(Message<?> message, T target) throws Exception {
       if (log.isDebugEnabled()) {
         // Logging for a method annotated with @CommandHandler
         messageHandlingMember.unwrap(Method).ifPresent((Method method) -> {
           Object command = message.payload
-          String commandAggregateIdentifier = command.hasProperty("aggregateIdentifier") ? command["aggregateIdentifier"] : "n/a"
-          String commandSequenceNumber = command.hasProperty("sequenceNumber") ? command["sequenceNumber"] : "n/a"
+          String commandAggregateIdentifier = command.hasProperty(AGGREGATE_IDENTIFIER) ? command[AGGREGATE_IDENTIFIER] : NOT_AVAILABLE
+          String commandSequenceNumber = command.hasProperty(SEQUENCE_NUMBER) ? command[SEQUENCE_NUMBER] : NOT_AVAILABLE
           String commandOutput = "${ command.getClass().simpleName }(aggregateIdentifier: ${ commandAggregateIdentifier }, sequenceNumber: ${ commandSequenceNumber })"
 
           log.debug("Executing CommandHandler method [${ method.declaringClass.simpleName }.${ method.name }(${ method.parameterTypes*.simpleName?.join(",") })] with command [$commandOutput]")
@@ -63,7 +68,7 @@ class LoggingCommandHandlerEnhancerDefinition implements HandlerEnhancerDefiniti
         // Logging for a constructor annotated with @CommandHandler
         messageHandlingMember.unwrap(Constructor).ifPresent({ Constructor executable ->
           Object command = message.payload
-          String commandAggregateIdentifier = command.hasProperty("aggregateIdentifier") ? command["aggregateIdentifier"] : "n/a"
+          String commandAggregateIdentifier = command.hasProperty(AGGREGATE_IDENTIFIER) ? command[AGGREGATE_IDENTIFIER] : NOT_AVAILABLE
           String commandOutput = "${ command.getClass().simpleName }(aggregateIdentifier: ${ commandAggregateIdentifier })"
 
           log.debug("Executing CommandHandler constructor [${ executable.declaringClass.simpleName }(${ executable.parameterTypes*.simpleName?.join(",") })] with command [$commandOutput]")
