@@ -68,7 +68,7 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 6
       loggingEvents*.level == (0..5).collect({ Level.DEBUG })
 
@@ -108,7 +108,7 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 0
     }
   }

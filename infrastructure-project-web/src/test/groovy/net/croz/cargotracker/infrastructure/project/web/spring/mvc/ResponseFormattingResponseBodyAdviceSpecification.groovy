@@ -91,7 +91,7 @@ class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
   void "should format successful response as expected when result is returned from controller"() {
     when:
     MvcResult mvcResult = mockMvc.perform(post("/test/testControllerMethodWithOperationResponse").accept(MediaType.APPLICATION_JSON)).andReturn()
-    String bodyText = mvcResult.response.getContentAsString()
+    String bodyText = mvcResult.response.contentAsString
     Map bodyMap = jsonSlurper.parseText(bodyText) as Map
 
     then:
@@ -120,7 +120,7 @@ class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
   void "should ignore response that is not an instance of OperationResponse"() {
     when:
     MvcResult mvcResult = mockMvc.perform(post("/test/testControllerMethodWithMapResponse").accept(MediaType.APPLICATION_JSON)).andReturn()
-    String bodyText = mvcResult.response.getContentAsString()
+    String bodyText = mvcResult.response.contentAsString
     Map bodyMap = jsonSlurper.parseText(bodyText) as Map
 
     then:
@@ -135,7 +135,7 @@ class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
   void "should ignore response without body"() {
     when:
     MvcResult mvcResult = mockMvc.perform(post("/test/testControllerMethodWithoutResponse").accept(MediaType.APPLICATION_JSON)).andReturn()
-    String bodyText = mvcResult.response.getContentAsString()
+    String bodyText = mvcResult.response.contentAsString
 
     then:
     verifyAll {

@@ -26,7 +26,7 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
   @SuppressWarnings("Indentation")
   void setup() {
     TestLoggerFactory.clearAll()
-    TestLoggerFactory.getInstance().setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test
+    TestLoggerFactory.instance.setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test
 
     Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
     axonConfigurer.configureEmbeddedEventStore((Configuration axonConfiguration) -> new InMemoryEventStorageEngine())
@@ -64,7 +64,7 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 1
       loggingEvents[0].level == Level.DEBUG
       loggingEvents[0].message ==~ /Executing QueryHandler method \[MyTestQueryHandler.handleSomeQuery\(MyTestQuery\)] with payload \[query:123]/
@@ -81,7 +81,7 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 0
     }
   }

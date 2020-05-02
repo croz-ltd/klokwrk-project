@@ -66,7 +66,7 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
 
       loggingEvents.size() == 1
 
@@ -86,7 +86,7 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
 
       loggingEvents.size() == 2
 
@@ -110,7 +110,7 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 0
     }
   }

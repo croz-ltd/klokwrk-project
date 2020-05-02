@@ -62,7 +62,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     when:
-    Deserializers jsonDeserializers = (objectMapper.getDeserializationContext().getFactory() as BeanDeserializerFactory).factoryConfig.deserializers().find({ Deserializers deserializers ->
+    Deserializers jsonDeserializers = (objectMapper.deserializationContext.factory as BeanDeserializerFactory).factoryConfig.deserializers().find({ Deserializers deserializers ->
       deserializers.findBeanDeserializer(objectMapper.constructType(String), null, null)
     }) as Deserializers
 
@@ -78,7 +78,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     when:
-    Serializers jsonSerializers = (objectMapper.getSerializerFactory() as BeanSerializerFactory).factoryConfig.serializers().find({ Serializers serializers ->
+    Serializers jsonSerializers = (objectMapper.serializerFactory as BeanSerializerFactory).factoryConfig.serializers().find({ Serializers serializers ->
       serializers.findSerializer(null, objectMapper.constructType(GString), null)
     }) as Serializers
 
@@ -119,7 +119,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
 
     expect:
     //noinspection GroovyPointlessBoolean
-    objectMapper.getDeserializationConfig().isEnabled(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY) == false
+    objectMapper.deserializationConfig.isEnabled(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY) == false
   }
 
   @RestoreSystemProperties
@@ -131,7 +131,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
 
     expect:
     //noinspection GroovyPointlessBoolean
-    objectMapper.getDeserializationConfig().isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES) == true
+    objectMapper.deserializationConfig.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES) == true
   }
 
   @RestoreSystemProperties
@@ -142,7 +142,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     expect:
-    objectMapper.getSerializationConfig().getDefaultPropertyInclusion().getValueInclusion() != JsonInclude.Include.NON_NULL
+    objectMapper.serializationConfig.defaultPropertyInclusion.valueInclusion != JsonInclude.Include.NON_NULL
   }
 
   @RestoreSystemProperties
@@ -153,6 +153,6 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     expect:
-    objectMapper.getDeserializationConfig().defaultSetterInfo != JsonSetter.Value.forValueNulls(Nulls.SKIP)
+    objectMapper.deserializationConfig.defaultSetterInfo != JsonSetter.Value.forValueNulls(Nulls.SKIP)
   }
 }

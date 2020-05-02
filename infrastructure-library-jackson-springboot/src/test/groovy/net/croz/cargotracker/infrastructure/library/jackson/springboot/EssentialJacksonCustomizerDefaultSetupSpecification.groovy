@@ -29,7 +29,7 @@ class EssentialJacksonCustomizerDefaultSetupSpecification extends Specification 
   @Unroll
   void "objectMapper - should have default deserialization features configured - #deserializationFeature - #isEnabled"() {
     expect:
-    objectMapper.getDeserializationConfig().isEnabled(deserializationFeature) == isEnabled
+    objectMapper.deserializationConfig.isEnabled(deserializationFeature) == isEnabled
 
     where:
     deserializationFeature                              | isEnabled
@@ -40,7 +40,7 @@ class EssentialJacksonCustomizerDefaultSetupSpecification extends Specification 
   @Unroll
   void "objectMapper - should have default serialization features as defined by Spring Boot configured - #serializationFeature - #isEnabled"() {
     expect:
-    objectMapper.getSerializationConfig().isEnabled(serializationFeature) == isEnabled
+    objectMapper.serializationConfig.isEnabled(serializationFeature) == isEnabled
 
     where:
     serializationFeature                               | isEnabled
@@ -70,17 +70,17 @@ class EssentialJacksonCustomizerDefaultSetupSpecification extends Specification 
 
   void "objectMapper - should have default serialization inclusion configured to NON_NULL"() {
     expect:
-    objectMapper.getSerializationConfig().getDefaultPropertyInclusion().getValueInclusion() == JsonInclude.Include.NON_NULL
+    objectMapper.serializationConfig.defaultPropertyInclusion.valueInclusion == JsonInclude.Include.NON_NULL
   }
 
   void "objectMapper - should have default deserialization setter info configured to Nulls.SKIP"() {
     expect:
-    objectMapper.getDeserializationConfig().defaultSetterInfo == JsonSetter.Value.forValueNulls(Nulls.SKIP)
+    objectMapper.deserializationConfig.defaultSetterInfo == JsonSetter.Value.forValueNulls(Nulls.SKIP)
   }
 
   void "objectMapper - should have default StringSanitizingDeserializer configured"() {
     given:
-    Deserializers jsonDeserializers = (objectMapper.getDeserializationContext().getFactory() as BeanDeserializerFactory).factoryConfig.deserializers().find({ Deserializers deserializers ->
+    Deserializers jsonDeserializers = (objectMapper.deserializationContext.factory as BeanDeserializerFactory).factoryConfig.deserializers().find({ Deserializers deserializers ->
       deserializers.findBeanDeserializer(objectMapper.constructType(String), null, null)
     }) as Deserializers
 
@@ -92,7 +92,7 @@ class EssentialJacksonCustomizerDefaultSetupSpecification extends Specification 
 
   void "objectMapper - should have default GStringSerializer configured"() {
     given:
-    Serializers jsonSerializers = (objectMapper.getSerializerFactory() as BeanSerializerFactory).factoryConfig.serializers().find({ Serializers serializers ->
+    Serializers jsonSerializers = (objectMapper.serializerFactory as BeanSerializerFactory).factoryConfig.serializers().find({ Serializers serializers ->
       serializers.findSerializer(null, objectMapper.constructType(GString), null)
     }) as Serializers
 

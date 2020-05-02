@@ -32,7 +32,7 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
 
   void setup() {
     TestLoggerFactory.clearAll()
-    TestLoggerFactory.getInstance().setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test
+    TestLoggerFactory.instance.setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test
     queryLogger = TestLoggerFactory.getTestLogger("cargotracker.data-source-proxy.queryLogger")
     slowQueryLogger = TestLoggerFactory.getTestLogger("cargotracker.data-source-proxy.slowQueryLogger")
   }
@@ -52,7 +52,7 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
     jdbcTemplate.query("select * from person", new ColumnMapRowMapper())
     jdbcTemplate.query("select * from not_so_interesting_person", new ColumnMapRowMapper())
 
-    ImmutableList<LoggingEvent> loggingEventList = queryLogger.getAllLoggingEvents()
+    ImmutableList<LoggingEvent> loggingEventList = queryLogger.allLoggingEvents
 
     then:
     loggingEventList.size() == 1
@@ -69,7 +69,7 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
     jdbcTemplate.query("select * from person", new ColumnMapRowMapper())
     jdbcTemplate.query("select * from not_so_interesting_person", new ColumnMapRowMapper())
 
-    ImmutableList<LoggingEvent> loggingEventList = queryLogger.getAllLoggingEvents()
+    ImmutableList<LoggingEvent> loggingEventList = queryLogger.allLoggingEvents
 
     then:
     loggingEventList.size() == 2
@@ -85,7 +85,7 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
     when:
     jdbcTemplate.query("select * from person", new ColumnMapRowMapper())
     jdbcTemplate.query("select sleep(1100), name from person", new ColumnMapRowMapper())
-    ImmutableList<LoggingEvent> loggingEventList = slowQueryLogger.getAllLoggingEvents()
+    ImmutableList<LoggingEvent> loggingEventList = slowQueryLogger.allLoggingEvents
 
     then:
     loggingEventList.size() == 1

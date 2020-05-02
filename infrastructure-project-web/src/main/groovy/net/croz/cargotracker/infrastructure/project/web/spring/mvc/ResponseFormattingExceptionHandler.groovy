@@ -146,8 +146,8 @@ class ResponseFormattingExceptionHandler extends ResponseEntityExceptionHandler 
       HttpResponseMetaDataReport httpResponseMetaDataReport, DomainException domainException, HandlerMethod handlerMethod, Locale locale)
   {
     MessageSourceResolvableSpecification resolvableMessageSpecification = new MessageSourceResolvableSpecification(
-        controllerSimpleName: handlerMethod.getBeanType().simpleName.uncapitalize(),
-        controllerMethodName: handlerMethod.getMethod().name,
+        controllerSimpleName: handlerMethod.beanType.simpleName.uncapitalize(),
+        controllerMethodName: handlerMethod.method.name,
         messageCategory: "failure",
         messageType: domainException.violationInfo.violationCode.codeAsText,
         messageSubType: "",

@@ -41,7 +41,7 @@ interface PostMapConstructorCheckable {
       postMapConstructorCheck(constructorArguments)
     }
     catch (AssertionError ae) {
-      throw new IllegalArgumentException("\n${ ae.getMessage() }", ae)
+      throw new IllegalArgumentException("\n${ ae.message }", ae)
     }
   }
 

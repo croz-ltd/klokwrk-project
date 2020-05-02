@@ -73,7 +73,7 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 2
       loggingEvents[0].level == Level.DEBUG
       loggingEvents[0].message.contains(aggregateIdentifier)
@@ -101,7 +101,7 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.getAllLoggingEvents()
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 0
     }
   }

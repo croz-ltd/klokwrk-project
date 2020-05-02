@@ -26,7 +26,7 @@ class PostgreSqlAxonDialectSpecification extends Specification {
 
     then:
     sqlTypeDescriptor == BinaryTypeDescriptor.INSTANCE
-    sqlTypeDescriptor.getSqlType() == Types.BINARY
+    sqlTypeDescriptor.sqlType == Types.BINARY
   }
 
   void "should not change remapping for other types"() {
@@ -37,6 +37,6 @@ class PostgreSqlAxonDialectSpecification extends Specification {
     SqlTypeDescriptor sqlTypeDescriptor = postgreSqlAxonDialect.remapSqlTypeDescriptor(VarcharTypeDescriptor.INSTANCE)
 
     then:
-    sqlTypeDescriptor.getSqlType() == Types.VARCHAR
+    sqlTypeDescriptor.sqlType == Types.VARCHAR
   }
 }
