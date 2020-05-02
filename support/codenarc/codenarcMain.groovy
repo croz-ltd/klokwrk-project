@@ -335,4 +335,22 @@ ruleset {
   Println
   SystemErrPrint
   SystemOutPrint
+
+  // rulesets/naming.xml
+  AbstractClassName
+  ClassName
+  ClassNameSameAsFilename
+  ClassNameSameAsSuperclass
+  ConfusingMethodName
+  FactoryMethodName
+  FieldName
+  InterfaceName
+  InterfaceNameSameAsSuperInterface
+  MethodName
+  ObjectOverrideMisspelledMethodName
+  PackageName
+  PackageNameMatchesFilePath
+  ParameterName
+  PropertyName
+  VariableName
 }
