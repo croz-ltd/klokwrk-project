@@ -1,7 +1,6 @@
 package net.croz.cargotracker.infrastructure.project.axon.cqrs.commandgateway
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.CommandException
 import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.GenericCommandMessage
 import org.axonframework.commandhandling.gateway.CommandGateway
@@ -15,7 +14,14 @@ class CommandGatewayAdapter {
   }
 
   @SuppressWarnings("GrUnnecessaryPublicModifier")
+  public <R, C> R sendAndWait(C command) {
+    sendAndWait(command, null)
+  }
+
+  @SuppressWarnings("GrUnnecessaryPublicModifier")
   public <R, C> R sendAndWait(C command, Map metaData) {
+    assert command != null
+
     GenericCommandMessage<C> cargoBookCommandMessage = new GenericCommandMessage(command, metaData)
 
     R commandResponse
@@ -24,12 +30,11 @@ class CommandGatewayAdapter {
     }
     catch (CommandExecutionException commandExecutionException) {
       if (commandExecutionException.details.isPresent()) {
-        CommandException commandException = commandExecutionException.details.get() as CommandException
-        throw commandException
+        Throwable detailsThrowable = commandExecutionException.details.get() as Throwable
+        throw detailsThrowable
       }
-      else {
-        throw commandExecutionException
-      }
+
+      throw commandExecutionException
     }
 
     return commandResponse
