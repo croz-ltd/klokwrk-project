@@ -110,7 +110,7 @@ ruleset {
   LongLiteralWithLowerCaseL
   MethodParameterTypeRequired
   MethodReturnTypeRequired
-  NoDef
+  NoDef { enabled = false }
   NoDouble
   NoFloat
   NoJavaUtilDate
@@ -121,7 +121,7 @@ ruleset {
   StaticMethodsBeforeInstanceMethods
   TernaryCouldBeElvis
   TrailingComma { enabled = false }
-  VariableTypeRequired
+  VariableTypeRequired { enabled = false }
   VectorIsObsolete
 
   // rulesets/design.xml
