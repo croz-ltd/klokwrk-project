@@ -1,0 +1,45 @@
+### booking-queryside, cargo-summary-query, success, hr
+POST http://{{host}}:{{port-queryside}}/booking-queryside/cargo-booking-query/cargo-summary-query
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
+Accept-Language: hr-HR
+
+{
+  "aggregateIdentifier": "{{receivedAggregateIdentifier}}"
+}
+
+### booking-queryside, cargo-summary-query, success, en
+POST http://{{host}}:{{port-queryside}}/booking-queryside/cargo-booking-query/cargo-summary-query
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
+Accept-Language: en
+
+{
+  "aggregateIdentifier": "{{receivedAggregateIdentifier}}"
+}
+
+### booking-queryside, cargo-summary-query, failure, hr
+POST http://{{host}}:{{port-queryside}}/booking-queryside/cargo-booking-query/cargo-summary-query
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
+Accept-Language: hr-HR
+
+{
+  "aggregateIdentifier": "{{$uuid}}"
+}
+
+### booking-queryside, cargo-summary-query, failure, en
+POST http://{{host}}:{{port-queryside}}/booking-queryside/cargo-booking-query/cargo-summary-query
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
+Accept-Language: en
+
+{
+  "aggregateIdentifier": "{{$uuid}}"
+}
+
+###
