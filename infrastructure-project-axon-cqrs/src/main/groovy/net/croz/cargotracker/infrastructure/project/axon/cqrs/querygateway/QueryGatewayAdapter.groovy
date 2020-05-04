@@ -9,6 +9,9 @@ import org.axonframework.queryhandling.QueryGateway
 
 import java.util.concurrent.CompletionException
 
+/**
+ * Simplifies the API usage and exception handling of Axon <code>QueryGateway</code>.
+ */
 @CompileStatic
 class QueryGatewayAdapter {
   private final QueryGateway queryGateway
@@ -17,11 +20,32 @@ class QueryGatewayAdapter {
     this.queryGateway = queryGateway
   }
 
+  /**
+   * Delegates calls to the <code>QueryGateway.query()</code> method.
+   * <p/>
+   * In case when an exception is thrown from <code>QueryGateway</code>, it unwraps details exception (if available), and rethrows it to the caller.
+   *
+   * @see #query(java.lang.Object, java.util.Map, java.lang.Class)
+   */
   @SuppressWarnings("GrUnnecessaryPublicModifier")
   public <R, Q> R query(OperationRequest<Q> queryOperationRequest, Class<R> queryResponseClass) {
     return query(queryOperationRequest.payload, queryOperationRequest.metaData, queryResponseClass)
   }
 
+  /**
+   * Delegates calls to the <code>QueryGateway.query()</code> method.
+   * <p/>
+   * In case when an exception is thrown from <code>QueryGateway</code>, it unwraps details exception (if available), and rethrows it to the caller.
+   *
+   * @param query The query to be executed.
+   * @param metaData The metadata to dispatch with the query.
+   * @param <R> The type of result expected from query execution.
+   * @return the result of query execution.
+   * @throws AssertionError when query is null.
+   * @throws CompletionException when cause is not an instance of <code>QueryExecutionException</code>.
+   * @throws QueryExecutionException when details exception is not available.
+   * @throws Throwable when available as details of <code>QueryExecutionException</code>.
+   */
   @SuppressWarnings("GrUnnecessaryPublicModifier")
   public <R, Q> R query(Q query, Map<String, ?> metaData, Class<R> queryResponseClass) {
     assert query != null
