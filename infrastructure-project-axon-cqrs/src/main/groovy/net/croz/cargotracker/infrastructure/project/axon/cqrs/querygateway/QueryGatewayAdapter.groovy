@@ -2,7 +2,6 @@ package net.croz.cargotracker.infrastructure.project.axon.cqrs.querygateway
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationRequest
-import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.QueryException
 import org.axonframework.messaging.GenericMessage
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryExecutionException
@@ -20,23 +19,31 @@ class QueryGatewayAdapter {
 
   @SuppressWarnings("GrUnnecessaryPublicModifier")
   public <R, Q> R query(OperationRequest<Q> queryOperationRequest, Class<R> queryResponseClass) {
-    GenericMessage queryMessage = new GenericMessage(queryOperationRequest.payload, queryOperationRequest.metaData)
+    return query(queryOperationRequest.payload, queryOperationRequest.metaData, queryResponseClass)
+  }
 
-    R queryResponse = null
+  @SuppressWarnings("GrUnnecessaryPublicModifier")
+  public <R, Q> R query(Q query, Map<String, ?> metaData, Class<R> queryResponseClass) {
+    assert query != null
+
+    GenericMessage queryMessage = new GenericMessage(query, metaData)
+
+    R queryResponse
     try {
-      queryResponse = queryGateway.query(queryOperationRequest.payload.getClass().name, queryMessage, ResponseTypes.instanceOf(queryResponseClass)).join()
+      queryResponse = queryGateway.query(query.getClass().name, queryMessage, ResponseTypes.instanceOf(queryResponseClass)).join()
     }
     catch (CompletionException completionException) {
-      if (completionException?.cause instanceof QueryExecutionException) {
+      if (completionException.cause instanceof QueryExecutionException) {
         QueryExecutionException queryExecutionException = completionException.cause as QueryExecutionException
         if (queryExecutionException.details.isPresent()) {
-          QueryException queryException = queryExecutionException.details.get() as QueryException
-          throw queryException
+          Throwable detailsThrowable = queryExecutionException.details.get() as Throwable
+          throw detailsThrowable
         }
+
+        throw queryExecutionException
       }
-      else {
-        throw completionException
-      }
+
+      throw completionException
     }
 
     return queryResponse
