@@ -6,7 +6,7 @@ include(
     "booking-queryside-rdbms-model",
     "booking-queryside-rdbms-projection-app",
 
-    "cargotracker:booking-commandside-app",
+    "cargotracker:cargotracker-booking-commandside-app",
 
     "klokwrk-project-platform",
 

@@ -1,7 +1,7 @@
-spring.application.name: booking-commandside-app
+spring.application.name: cargotracker-booking-commandside-app
 
 server.port: 8080
-server.servlet.context-path: /booking-commandside
+server.servlet.context-path: /cargotracker-booking-commandside
 
 axon.axonserver.servers: ${CARGO_TRACKER_AXON_SERVER_HOSTNAME:localhost}:${CARGO_TRACKER_AXON_SERVER_PORT_GRPC:8124}
 axon.serializer.general: JACKSON

@@ -1,5 +1,5 @@
-### booking-commandside, cargo-book, success, hr
-POST http://{{host}}:{{port-commandside}}/booking-commandside/cargo-booking-command/cargo-book
+### cargotracker-booking-commandside, cargo-book, success, hr
+POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking-command/cargo-book
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8
@@ -15,8 +15,8 @@ Accept-Language: hr-HR
 client.global.set("receivedAggregateIdentifier", response.body.payload.aggregateIdentifier);
 %}
 
-### booking-commandside, cargo-book, success, en
-POST http://{{host}}:{{port-commandside}}/booking-commandside/cargo-booking-command/cargo-book
+### cargotracker-booking-commandside, cargo-book, success, en
+POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking-command/cargo-book
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8
@@ -32,8 +32,8 @@ Accept-Language: en
 client.global.set("receivedAggregateIdentifier", response.body.payload.aggregateIdentifier);
 %}
 
-### booking-commandside, cargo-book, failure, hr
-POST http://{{host}}:{{port-commandside}}/booking-commandside/cargo-booking-command/cargo-book
+### cargotracker-booking-commandside, cargo-book, failure, hr
+POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking-command/cargo-book
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8
@@ -44,8 +44,8 @@ Accept-Language: hr-HR
   "destinationLocation": "HRZAG"
 }
 
-### booking-commandside, cargo-book, failure, en
-POST http://{{host}}:{{port-commandside}}/booking-commandside/cargo-booking-command/cargo-book
+### cargotracker-booking-commandside, cargo-book, failure, en
+POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking-command/cargo-book
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8
