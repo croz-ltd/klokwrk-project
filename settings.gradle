@@ -13,7 +13,7 @@ include(
     "lib:klokwrk-lib-datasourceproxy-springboot",
     "infrastructure-library-hibernate",
     "infrastructure-library-jackson",
-    "infrastructure-library-jackson-springboot",
+    "lib:infrastructure-library-jackson-springboot",
     "infrastructure-library-spring-context",
 
     "cargotracker:cargotracker-lib-axon-api",
