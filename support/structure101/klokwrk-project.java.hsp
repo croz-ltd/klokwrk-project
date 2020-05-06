@@ -96,7 +96,7 @@
         <cell name="cargotracker-lib-boundary-api" pattern="cargotracker-lib-boundary-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
       </row>
       <row>
-        <cell name="infrastructure-library" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+        <cell name="klokwrk-lib" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
             <row>
               <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
