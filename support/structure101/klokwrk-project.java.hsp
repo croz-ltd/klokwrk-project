@@ -30,7 +30,7 @@
     <classpathentry kind="lib" path="../../infrastructure-library-spring-context/build/classes/groovy/main" module="infrastructure-library-spring-context" displaymodule="infrastructure-library-spring-context" />
     <classpathentry kind="lib" path="../../infrastructure-project-axon-api/build/classes/groovy/main" module="infrastructure-project-axon-api" displaymodule="infrastructure-project-axon-api" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-cqrs/build/classes/groovy/main" module="cargotracker-lib-axon-cqrs" displaymodule="cargotracker-lib-axon-cqrs" />
-    <classpathentry kind="lib" path="../../cargotracker/infrastructure-project-axon-logging/build/classes/groovy/main" module="infrastructure-project-axon-logging" displaymodule="infrastructure-project-axon-logging" />
+    <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-logging/build/classes/groovy/main" module="cargotracker-lib-axon-logging" displaymodule="cargotracker-lib-axon-logging" />
     <classpathentry kind="lib" path="../../infrastructure-project-boundary-api/build/classes/groovy/main" module="infrastructure-project-boundary-api" displaymodule="infrastructure-project-boundary-api" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-web/build/classes/groovy/main" module="cargotracker-lib-web" displaymodule="cargotracker-lib-web" />
     <classpathentry kind="lib" path="../../lang-groovy/build/classes/groovy/main" module="lang-groovy" displaymodule="lang-groovy" />
@@ -80,7 +80,7 @@
                     <cell name="cargotracker-lib-axon-cqrs" pattern="cargotracker-lib-axon-cqrs.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
-                    <cell name="infrastructure-project-axon-logging" pattern="infrastructure-project-axon-logging.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracker-lib-axon-logging" pattern="cargotracker-lib-axon-logging.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
                     <cell name="infrastructure-project-axon-api" pattern="infrastructure-project-axon-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
