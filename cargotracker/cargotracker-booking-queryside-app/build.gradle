@@ -14,13 +14,13 @@ springBoot {
 dependencies {
   implementation project(":cargotracker:cargotracker-booking-boundary-api")
   implementation project(":cargotracker:cargotracker-booking-queryside-rdbms-model")
-  implementation project(":lib:klokwrk-lib-datasourceproxy-springboot")
-  implementation project(":lib:klokwrk-lib-hibernate")
-  implementation project(":lib:klokwrk-lib-jackson-springboot")
   implementation project(":cargotracker:cargotracker-lib-axon-cqrs")
   implementation project(":cargotracker:cargotracker-lib-axon-logging")
   implementation project(":cargotracker:cargotracker-lib-boundary-api")
   implementation project(":cargotracker:cargotracker-lib-web")
+  implementation project(":lib:klokwrk-lib-datasourceproxy-springboot")
+  implementation project(":lib:klokwrk-lib-hibernate")
+  implementation project(":lib:klokwrk-lib-jackson-springboot")
   implementation project(":lang:klokwrk-lang-groovy")
 
   implementation "org.axonframework:axon-spring-boot-starter"

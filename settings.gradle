@@ -7,6 +7,12 @@ include(
     "cargotracker:cargotracker-booking-queryside-rdbms-model",
     "cargotracker:cargotracker-booking-queryside-rdbms-projection-app",
 
+    "cargotracker:cargotracker-lib-axon-api",
+    "cargotracker:cargotracker-lib-axon-cqrs",
+    "cargotracker:cargotracker-lib-axon-logging",
+    "cargotracker:cargotracker-lib-boundary-api",
+    "cargotracker:cargotracker-lib-web",
+
     "klokwrk-project-platform",
 
     "lib:klokwrk-lib-datasourceproxy",
@@ -15,12 +21,6 @@ include(
     "lib:klokwrk-lib-jackson",
     "lib:klokwrk-lib-jackson-springboot",
     "lib:klokwrk-lib-spring-context",
-
-    "cargotracker:cargotracker-lib-axon-api",
-    "cargotracker:cargotracker-lib-axon-cqrs",
-    "cargotracker:cargotracker-lib-axon-logging",
-    "cargotracker:cargotracker-lib-boundary-api",
-    "cargotracker:cargotracker-lib-web",
 
     "lang:klokwrk-lang-groovy"
 )
