@@ -1,6 +1,6 @@
 include(
     "cargotracker:cargotracker-booking-commandside-app",
-    "cargotracker:booking-axon-api",
+    "cargotracker:cargotracker-booking-axon-api",
     "booking-boundary-api",
     "booking-domain-model",
     "cargotracker:cargotracker-booking-queryside-app",
