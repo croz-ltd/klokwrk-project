@@ -18,7 +18,7 @@ include(
 
     "infrastructure-project-axon-api",
     "cargotracker:cargotracker-lib-axon-cqrs",
-    "infrastructure-project-axon-logging",
+    "cargotracker:infrastructure-project-axon-logging",
     "infrastructure-project-boundary-api",
     "cargotracker:cargotracker-lib-web",
 
