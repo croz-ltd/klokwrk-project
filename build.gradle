@@ -56,7 +56,7 @@ void createAggregateCodenarcTasks() {
         rootProject.pluginManager.apply(CodeNarcPlugin)
 
         Set<CodeNarc> subProjectCodenarcTaskList = new LinkedHashSet<>()
-        rootProject.childProjects.values().each { Project subproject ->
+        rootProject.subprojects.each { Project subproject ->
           subproject.tasks.withType(CodeNarc) { CodeNarc task ->
             if (task.name == "codenarc${ codenarcSourceSetName }") {
               subProjectCodenarcTaskList << task
