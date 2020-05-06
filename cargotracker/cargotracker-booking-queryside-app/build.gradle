@@ -17,7 +17,7 @@ dependencies {
   implementation project(":infrastructure-library-datasourceproxy-springboot")
   implementation project(":infrastructure-library-hibernate")
   implementation project(":infrastructure-library-jackson-springboot")
-  implementation project(":cargotracker:infrastructure-project-axon-cqrs")
+  implementation project(":cargotracker:cargotracker-lib-axon-cqrs")
   implementation project(":infrastructure-project-axon-logging")
   implementation project(":infrastructure-project-boundary-api")
   implementation project(":cargotracker:cargotracker-lib-web")
