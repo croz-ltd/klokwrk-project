@@ -32,7 +32,7 @@
     <classpathentry kind="lib" path="../../infrastructure-project-axon-cqrs/build/classes/groovy/main" module="infrastructure-project-axon-cqrs" displaymodule="infrastructure-project-axon-cqrs" />
     <classpathentry kind="lib" path="../../infrastructure-project-axon-logging/build/classes/groovy/main" module="infrastructure-project-axon-logging" displaymodule="infrastructure-project-axon-logging" />
     <classpathentry kind="lib" path="../../infrastructure-project-boundary-api/build/classes/groovy/main" module="infrastructure-project-boundary-api" displaymodule="infrastructure-project-boundary-api" />
-    <classpathentry kind="lib" path="../../cargotracker/infrastructure-project-web/build/classes/groovy/main" module="infrastructure-project-web" displaymodule="infrastructure-project-web" />
+    <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-web/build/classes/groovy/main" module="cargotracker-lib-web" displaymodule="cargotracker-lib-web" />
     <classpathentry kind="lib" path="../../lang-groovy/build/classes/groovy/main" module="lang-groovy" displaymodule="lang-groovy" />
   </classpath>
   <pom-root-files />
@@ -87,7 +87,7 @@
                   </row>
                 </grid>
               </cell>
-              <cell name="infrastructure-project-web" pattern="infrastructure-project-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="cargotracker-lib-web" pattern="cargotracker-lib-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
           </grid>
         </cell>
