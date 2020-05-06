@@ -20,7 +20,7 @@ dependencies {
   implementation project(":infrastructure-library-hibernate")
   implementation project(":infrastructure-library-jackson-springboot")
   implementation project(":cargotracker:cargotracker-lib-axon-logging")
-  implementation project(":infrastructure-project-boundary-api")
+  implementation project(":cargotracker:infrastructure-project-boundary-api")
 
   // Note: although currently there is no direct code dependencies to the lang-groovy module, need to have it as implementation dependency for CompileStatic to work. Otherwise,
   // java.lang.NoClassDefFoundError id thrown for PostMapConstructorCheckable class.

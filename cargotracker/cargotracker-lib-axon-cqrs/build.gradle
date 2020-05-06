@@ -1,7 +1,7 @@
 apply plugin: "java-library"
 
 dependencies {
-  implementation project(":infrastructure-project-boundary-api")
+  implementation project(":cargotracker:infrastructure-project-boundary-api")
   implementation project(":lang-groovy")
 
   implementation "org.axonframework:axon-messaging"

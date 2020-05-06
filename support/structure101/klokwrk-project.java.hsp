@@ -31,7 +31,7 @@
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-api/build/classes/groovy/main" module="cargotracker-lib-axon-api" displaymodule="cargotracker-lib-axon-api" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-cqrs/build/classes/groovy/main" module="cargotracker-lib-axon-cqrs" displaymodule="cargotracker-lib-axon-cqrs" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-logging/build/classes/groovy/main" module="cargotracker-lib-axon-logging" displaymodule="cargotracker-lib-axon-logging" />
-    <classpathentry kind="lib" path="../../infrastructure-project-boundary-api/build/classes/groovy/main" module="infrastructure-project-boundary-api" displaymodule="infrastructure-project-boundary-api" />
+    <classpathentry kind="lib" path="../../cargotracker/infrastructure-project-boundary-api/build/classes/groovy/main" module="infrastructure-project-boundary-api" displaymodule="infrastructure-project-boundary-api" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-web/build/classes/groovy/main" module="cargotracker-lib-web" displaymodule="cargotracker-lib-web" />
     <classpathentry kind="lib" path="../../lang-groovy/build/classes/groovy/main" module="lang-groovy" displaymodule="lang-groovy" />
   </classpath>

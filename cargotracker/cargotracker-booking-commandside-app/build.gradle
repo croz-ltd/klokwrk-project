@@ -22,7 +22,7 @@ dependencies {
   implementation project(":cargotracker:cargotracker-lib-axon-api")
   implementation project(":cargotracker:cargotracker-lib-axon-logging")
   implementation project(":cargotracker:cargotracker-lib-axon-cqrs")
-  implementation project(":infrastructure-project-boundary-api")
+  implementation project(":cargotracker:infrastructure-project-boundary-api")
   implementation project(":cargotracker:cargotracker-lib-web")
   implementation project(":lang-groovy")
 
