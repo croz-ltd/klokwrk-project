@@ -25,7 +25,7 @@
     <classpathentry kind="lib" path="../../lib/klokwrk-lib-datasourceproxy/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy" displaymodule="klokwrk-lib-datasourceproxy" />
     <classpathentry kind="lib" path="../../lib/klokwrk-lib-datasourceproxy-springboot/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy-springboot" displaymodule="klokwrk-lib-datasourceproxy-springboot" />
     <classpathentry kind="lib" path="../../infrastructure-library-hibernate/build/classes/groovy/main" module="infrastructure-library-hibernate" displaymodule="infrastructure-library-hibernate" />
-    <classpathentry kind="lib" path="../../lib/infrastructure-library-jackson/build/classes/groovy/main" module="infrastructure-library-jackson" displaymodule="infrastructure-library-jackson" />
+    <classpathentry kind="lib" path="../../lib/klokwrk-lib-jackson/build/classes/groovy/main" module="klokwrk-lib-jackson" displaymodule="klokwrk-lib-jackson" />
     <classpathentry kind="lib" path="../../lib/klokwrk-lib-jackson-springboot/build/classes/groovy/main" module="klokwrk-lib-jackson-springboot" displaymodule="klokwrk-lib-jackson-springboot" />
     <classpathentry kind="lib" path="../../infrastructure-library-spring-context/build/classes/groovy/main" module="infrastructure-library-spring-context" displaymodule="infrastructure-library-spring-context" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-api/build/classes/groovy/main" module="cargotracker-lib-axon-api" displaymodule="cargotracker-lib-axon-api" />
@@ -105,7 +105,7 @@
                     <cell name="klokwrk-lib-jackson-springboot" pattern="klokwrk-lib-jackson-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
-                    <cell name="infrastructure-library-jackson" pattern="infrastructure-library-jackson.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="klokwrk-lib-jackson" pattern="klokwrk-lib-jackson.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                 </grid>
               </cell>

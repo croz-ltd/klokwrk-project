@@ -41,9 +41,9 @@
 		<description></description>
 		<rootPath name="../../infrastructure-library-hibernate/build/classes/groovy/main"></rootPath>
 	</module>
-	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="infrastructure-library-jackson" id="c962002e2dc04b85961d4059c9a1ec93" language="Java">
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-jackson" id="c962002e2dc04b85961d4059c9a1ec93" language="Java">
 		<description></description>
-		<rootPath name="../../lib/infrastructure-library-jackson/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../lib/klokwrk-lib-jackson/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-jackson-springboot" id="d40a6e4258dc23757787a2d4cdcb152b" language="Java">
 		<description></description>

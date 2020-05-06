@@ -7,7 +7,7 @@ compileGroovy {
 dependencies {
   annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
-  implementation project(":lib:infrastructure-library-jackson")
+  implementation project(":lib:klokwrk-lib-jackson")
 
   implementation "com.fasterxml.jackson.core:jackson-annotations"
   implementation "com.fasterxml.jackson.core:jackson-core"
