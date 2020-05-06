@@ -51,7 +51,7 @@
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="infrastructure-library-spring-context" id="9716a4c196151f747f529319cbb39bbb" language="Java">
 		<description></description>
-		<rootPath name="../../infrastructure-library-spring-context/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../lib/infrastructure-library-spring-context/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-lib-axon-api" id="5ece46900ade30ddc1ef2598edc8d0ca" language="Java">
 		<description></description>

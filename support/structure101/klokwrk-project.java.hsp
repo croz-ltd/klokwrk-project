@@ -27,7 +27,7 @@
     <classpathentry kind="lib" path="../../lib/klokwrk-lib-hibernate/build/classes/groovy/main" module="klokwrk-lib-hibernate" displaymodule="klokwrk-lib-hibernate" />
     <classpathentry kind="lib" path="../../lib/klokwrk-lib-jackson/build/classes/groovy/main" module="klokwrk-lib-jackson" displaymodule="klokwrk-lib-jackson" />
     <classpathentry kind="lib" path="../../lib/klokwrk-lib-jackson-springboot/build/classes/groovy/main" module="klokwrk-lib-jackson-springboot" displaymodule="klokwrk-lib-jackson-springboot" />
-    <classpathentry kind="lib" path="../../infrastructure-library-spring-context/build/classes/groovy/main" module="infrastructure-library-spring-context" displaymodule="infrastructure-library-spring-context" />
+    <classpathentry kind="lib" path="../../lib/infrastructure-library-spring-context/build/classes/groovy/main" module="infrastructure-library-spring-context" displaymodule="infrastructure-library-spring-context" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-api/build/classes/groovy/main" module="cargotracker-lib-axon-api" displaymodule="cargotracker-lib-axon-api" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-cqrs/build/classes/groovy/main" module="cargotracker-lib-axon-cqrs" displaymodule="cargotracker-lib-axon-cqrs" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-logging/build/classes/groovy/main" module="cargotracker-lib-axon-logging" displaymodule="cargotracker-lib-axon-logging" />
