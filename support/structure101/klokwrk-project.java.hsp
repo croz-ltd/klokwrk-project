@@ -93,13 +93,7 @@
         </cell>
       </row>
       <row>
-        <cell name="infrastructure-project-boundary" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
-          <grid>
-            <row>
-              <cell name="cargotracker-lib-boundary-api" pattern="cargotracker-lib-boundary-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-            </row>
-          </grid>
-        </cell>
+        <cell name="cargotracker-lib-boundary-api" pattern="cargotracker-lib-boundary-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
       </row>
       <row>
         <cell name="infrastructure-library" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
