@@ -1,9 +1,0 @@
-apply plugin: "java-library"
-
-dependencies {
-  implementation project(":lang-groovy")
-
-  implementation "org.codehaus.groovy:groovy"
-
-  testImplementation "org.spockframework:spock-core"
-}

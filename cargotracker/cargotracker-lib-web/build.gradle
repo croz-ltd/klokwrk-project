@@ -1,0 +1,18 @@
+apply plugin: "java-library"
+
+dependencies {
+  implementation project(":cargotracker-lib-boundary-api")
+  implementation project(":klokwrk-lib-spring-context")
+  implementation project(":klokwrk-lang-groovy")
+
+  implementation "org.codehaus.groovy:groovy"
+  implementation "org.springframework:spring-context"
+  implementation "org.springframework:spring-web"
+  implementation "org.springframework:spring-webmvc"
+  implementation "org.apache.tomcat.embed:tomcat-embed-core"
+
+  testImplementation "com.fasterxml.jackson.core:jackson-databind"
+  testImplementation "org.spockframework:spock-core"
+  testImplementation "org.spockframework:spock-spring"
+  testImplementation "org.springframework:spring-test"
+}

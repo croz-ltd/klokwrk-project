@@ -1,0 +1,10 @@
+apply plugin: "java-library"
+
+dependencies {
+  implementation project(":klokwrk-lang-groovy")
+
+  implementation "org.codehaus.groovy:groovy"
+  implementation "org.springframework:spring-context"
+
+  testImplementation "org.spockframework:spock-core"
+}

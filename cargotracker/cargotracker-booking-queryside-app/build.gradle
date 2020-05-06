@@ -1,0 +1,33 @@
+apply plugin: "org.springframework.boot"
+
+configurations {
+  [apiElements, runtimeElements].each {
+    it.outgoing.artifacts.removeIf { it.buildDependencies.getDependencies(null).contains(jar) }
+    it.outgoing.artifact(bootJar)
+  }
+}
+
+springBoot {
+  buildInfo()
+}
+
+dependencies {
+  implementation project(":cargotracker-booking-boundary-api")
+  implementation project(":cargotracker-booking-queryside-rdbms-model")
+  implementation project(":cargotracker-lib-axon-cqrs")
+  implementation project(":cargotracker-lib-axon-logging")
+  implementation project(":cargotracker-lib-boundary-api")
+  implementation project(":cargotracker-lib-web")
+  implementation project(":klokwrk-lib-datasourceproxy-springboot")
+  implementation project(":klokwrk-lib-hibernate")
+  implementation project(":klokwrk-lib-jackson-springboot")
+  implementation project(":klokwrk-lang-groovy")
+
+  implementation "org.axonframework:axon-spring-boot-starter"
+  implementation "org.codehaus.groovy:groovy"
+  implementation "org.springframework.boot:spring-boot-starter-actuator"
+  implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+  implementation "org.springframework.boot:spring-boot-starter-web"
+
+  runtimeOnly "org.postgresql:postgresql"
+}

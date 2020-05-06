@@ -1,0 +1,36 @@
+apply plugin: "org.springframework.boot"
+
+configurations {
+  [apiElements, runtimeElements].each {
+    it.outgoing.artifacts.removeIf { it.buildDependencies.getDependencies(null).contains(jar) }
+    it.outgoing.artifact(bootJar)
+  }
+}
+
+springBoot {
+  buildInfo()
+}
+
+dependencies {
+  implementation project(":cargotracker-booking-axon-api")
+  implementation project(":cargotracker-booking-boundary-api")
+  implementation project(":cargotracker-booking-domain-model")
+  implementation project(":cargotracker-booking-queryside-rdbms-model")
+  implementation project(":cargotracker-lib-axon-logging")
+  implementation project(":cargotracker-lib-boundary-api")
+  implementation project(":klokwrk-lib-datasourceproxy-springboot")
+  implementation project(":klokwrk-lib-hibernate")
+  implementation project(":klokwrk-lib-jackson-springboot")
+
+  // Note: although currently there is no direct code dependencies to the klokwrk-lang-groovy module, need to have it as implementation dependency for CompileStatic to work. Otherwise,
+  // java.lang.NoClassDefFoundError id thrown for PostMapConstructorCheckable class.
+  implementation project(":klokwrk-lang-groovy")
+
+  implementation "org.axonframework:axon-spring-boot-starter"
+  implementation "org.codehaus.groovy:groovy"
+  implementation "org.springframework.boot:spring-boot-starter-actuator"
+  implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+  implementation "org.springframework.boot:spring-boot-starter-web"
+
+  runtimeOnly "org.postgresql:postgresql"
+}

@@ -1,0 +1,11 @@
+apply plugin: "java-library"
+
+dependencies {
+  implementation project(":cargotracker-lib-boundary-api")
+  implementation project(":klokwrk-lang-groovy")
+
+  implementation "org.axonframework:axon-messaging"
+  implementation "org.codehaus.groovy:groovy"
+
+  testImplementation "org.spockframework:spock-core"
+}

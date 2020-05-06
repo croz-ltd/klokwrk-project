@@ -1,9 +1,0 @@
-apply plugin: "java-library"
-
-dependencies {
-  implementation project(":lang-groovy")
-
-  implementation "jakarta.persistence:jakarta.persistence-api"
-  implementation "org.codehaus.groovy:groovy"
-  implementation "org.springframework.data:spring-data-jpa"
-}

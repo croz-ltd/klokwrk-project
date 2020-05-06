@@ -1,28 +1,23 @@
-include(
-    "booking-axon-api",
-    "booking-boundary-api",
-    "booking-commandside-app",
-    "booking-domain-model",
-    "booking-queryside-app",
-    "booking-queryside-rdbms-model",
-    "booking-queryside-rdbms-projection-app",
+buildscript {
+  repositories {
+    gradlePluginPortal()
+    mavenCentral()
+  }
 
-    "cargo-tracker-platform",
+  dependencies {
+    classpath "org.kordamp.gradle:settings-gradle-plugin:$gradleKordampPluginVersion"
+  }
+}
 
-    "infrastructure-library-datasourceproxy",
-    "infrastructure-library-datasourceproxy-springboot",
-    "infrastructure-library-hibernate",
-    "infrastructure-library-jackson",
-    "infrastructure-library-jackson-springboot",
-    "infrastructure-library-spring-context",
+apply plugin: 'org.kordamp.gradle.settings'
 
-    "infrastructure-project-axon-api",
-    "infrastructure-project-axon-cqrs",
-    "infrastructure-project-axon-logging",
-    "infrastructure-project-boundary-api",
-    "infrastructure-project-web",
+rootProject.name = "klokwrk-project"
 
-    "lang-groovy"
+include (
+    "klokwrk-project-platform"
 )
 
-rootProject.name = "cargo-tracker"
+projects {
+  directories = ["cargotracker", "lang", "lib"]
+  enforceNamingConvention = false
+}
