@@ -19,7 +19,7 @@ dependencies {
   implementation project(":cargotracker:cargotracker-booking-boundary-api")
   implementation project(":cargotracker:cargotracker-booking-domain-model")
   implementation project(":infrastructure-library-jackson-springboot")
-  implementation project(":cargotracker:infrastructure-project-axon-api")
+  implementation project(":cargotracker:cargotracker-lib-axon-api")
   implementation project(":cargotracker:cargotracker-lib-axon-logging")
   implementation project(":cargotracker:cargotracker-lib-axon-cqrs")
   implementation project(":infrastructure-project-boundary-api")
