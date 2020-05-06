@@ -1,7 +1,7 @@
-spring.application.name: booking-queryside-rdbms-projection-app
+spring.application.name: cargotracker-booking-queryside-rdbms-projection-app
 
 server.port: 8082
-server.servlet.context-path: /booking-queryside-rdbms-projection-app
+server.servlet.context-path: /cargotracker-booking-queryside-rdbms-projection-app
 
 axon.axonserver.servers: ${CARGO_TRACKER_AXON_SERVER_HOSTNAME:localhost}:${CARGO_TRACKER_AXON_SERVER_PORT_GRPC:8124}
 axon.serializer.general: JACKSON

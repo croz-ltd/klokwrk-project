@@ -25,9 +25,9 @@
 		<description></description>
 		<rootPath name="../../booking-queryside-rdbms-model/build/classes/groovy/main"></rootPath>
 	</module>
-	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="booking-queryside-rdbms-projection-app" id="469932ffac841d2f303237efd279b938" language="Java">
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-queryside-rdbms-projection-app" id="469932ffac841d2f303237efd279b938" language="Java">
 		<description></description>
-		<rootPath name="../../booking-queryside-rdbms-projection-app/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../cargotracker/cargotracker-booking-queryside-rdbms-projection-app/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="infrastructure-library-datasourceproxy" id="a7f439d842a6a6d53cd176ba44ff0382" language="Java">
 		<description></description>
