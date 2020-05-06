@@ -31,7 +31,7 @@
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="infrastructure-library-datasourceproxy" id="a7f439d842a6a6d53cd176ba44ff0382" language="Java">
 		<description></description>
-		<rootPath name="../../infrastructure-library-datasourceproxy/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../lib/infrastructure-library-datasourceproxy/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-datasourceproxy-springboot" id="865468c990dcd2dc5910f63a57e53f79" language="Java">
 		<description></description>
