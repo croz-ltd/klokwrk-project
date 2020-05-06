@@ -12,7 +12,7 @@ springBoot {
 }
 
 dependencies {
-  implementation project(":booking-boundary-api")
+  implementation project(":cargotracker:booking-boundary-api")
   implementation project(":cargotracker:cargotracker-booking-queryside-rdbms-model")
   implementation project(":infrastructure-library-datasourceproxy-springboot")
   implementation project(":infrastructure-library-hibernate")
