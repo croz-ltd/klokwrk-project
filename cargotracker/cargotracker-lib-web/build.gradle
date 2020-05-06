@@ -2,7 +2,7 @@ apply plugin: "java-library"
 
 dependencies {
   implementation project(":infrastructure-library-spring-context")
-  implementation project(":cargotracker:infrastructure-project-boundary-api")
+  implementation project(":cargotracker:cargotracker-lib-boundary-api")
   implementation project(":lang-groovy")
 
   implementation "org.codehaus.groovy:groovy"

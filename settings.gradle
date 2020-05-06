@@ -19,7 +19,7 @@ include(
     "cargotracker:cargotracker-lib-axon-api",
     "cargotracker:cargotracker-lib-axon-cqrs",
     "cargotracker:cargotracker-lib-axon-logging",
-    "cargotracker:infrastructure-project-boundary-api",
+    "cargotracker:cargotracker-lib-boundary-api",
     "cargotracker:cargotracker-lib-web",
 
     "lang-groovy"
