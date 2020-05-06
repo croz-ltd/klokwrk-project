@@ -14,7 +14,7 @@ include(
     "lib:klokwrk-lib-hibernate",
     "lib:klokwrk-lib-jackson",
     "lib:klokwrk-lib-jackson-springboot",
-    "lib:infrastructure-library-spring-context",
+    "lib:klokwrk-lib-spring-context",
 
     "cargotracker:cargotracker-lib-axon-api",
     "cargotracker:cargotracker-lib-axon-cqrs",
