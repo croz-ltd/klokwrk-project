@@ -17,7 +17,7 @@ include(
     "infrastructure-library-spring-context",
 
     "infrastructure-project-axon-api",
-    "infrastructure-project-axon-cqrs",
+    "cargotracker:infrastructure-project-axon-cqrs",
     "infrastructure-project-axon-logging",
     "infrastructure-project-boundary-api",
     "cargotracker:cargotracker-lib-web",
