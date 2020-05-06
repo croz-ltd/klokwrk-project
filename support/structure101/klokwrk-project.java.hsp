@@ -18,7 +18,7 @@
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-axon-api/build/classes/groovy/main" module="cargotracker-booking-axon-api" displaymodule="cargotracker-booking-axon-api" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-boundary-api/build/classes/groovy/main" module="cargotracker-booking-boundary-api" displaymodule="cargotracker-booking-boundary-api" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-commandside-app/build/classes/groovy/main" module="cargotracker-booking-commandside-app" displaymodule="cargotracker-booking-commandside-app" />
-    <classpathentry kind="lib" path="../../cargotracker/booking-domain-model/build/classes/groovy/main" module="booking-domain-model" displaymodule="booking-domain-model" />
+    <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model/build/classes/groovy/main" module="cargotracker-booking-domain-model" displaymodule="cargotracker-booking-domain-model" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-app/build/classes/groovy/main" module="cargotracker-booking-queryside-app" displaymodule="cargotracker-booking-queryside-app" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-rdbms-model/build/classes/groovy/main" module="cargotracker-booking-queryside-rdbms-model" displaymodule="cargotracker-booking-queryside-rdbms-model" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-rdbms-projection-app/build/classes/groovy/main" module="cargotracker-booking-queryside-rdbms-projection-app" displaymodule="cargotracker-booking-queryside-rdbms-projection-app" />
@@ -65,7 +65,7 @@
               <cell name="cargotracker-booking-queryside-rdbms-model" pattern="cargotracker-booking-queryside-rdbms-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
             <row>
-              <cell name="booking-domain-model" pattern="booking-domain-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="cargotracker-booking-domain-model" pattern="cargotracker-booking-domain-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
           </grid>
         </cell>

@@ -2,7 +2,7 @@ apply plugin: "java-library"
 
 dependencies {
   implementation project(":cargotracker:cargotracker-booking-boundary-api")
-  implementation project(":cargotracker:booking-domain-model")
+  implementation project(":cargotracker:cargotracker-booking-domain-model")
   implementation project(":infrastructure-project-axon-api")
   implementation project(":lang-groovy")
 
