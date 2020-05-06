@@ -10,7 +10,7 @@ include(
     "klokwrk-project-platform",
 
     "infrastructure-library-datasourceproxy",
-    "lib:infrastructure-library-datasourceproxy-springboot",
+    "lib:klokwrk-lib-datasourceproxy-springboot",
     "infrastructure-library-hibernate",
     "infrastructure-library-jackson",
     "infrastructure-library-jackson-springboot",

@@ -23,7 +23,7 @@
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-rdbms-model/build/classes/groovy/main" module="cargotracker-booking-queryside-rdbms-model" displaymodule="cargotracker-booking-queryside-rdbms-model" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-rdbms-projection-app/build/classes/groovy/main" module="cargotracker-booking-queryside-rdbms-projection-app" displaymodule="cargotracker-booking-queryside-rdbms-projection-app" />
     <classpathentry kind="lib" path="../../infrastructure-library-datasourceproxy/build/classes/groovy/main" module="infrastructure-library-datasourceproxy" displaymodule="infrastructure-library-datasourceproxy" />
-    <classpathentry kind="lib" path="../../lib/infrastructure-library-datasourceproxy-springboot/build/classes/groovy/main" module="infrastructure-library-datasourceproxy-springboot" displaymodule="infrastructure-library-datasourceproxy-springboot" />
+    <classpathentry kind="lib" path="../../lib/klokwrk-lib-datasourceproxy-springboot/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy-springboot" displaymodule="klokwrk-lib-datasourceproxy-springboot" />
     <classpathentry kind="lib" path="../../infrastructure-library-hibernate/build/classes/groovy/main" module="infrastructure-library-hibernate" displaymodule="infrastructure-library-hibernate" />
     <classpathentry kind="lib" path="../../infrastructure-library-jackson/build/classes/groovy/main" module="infrastructure-library-jackson" displaymodule="infrastructure-library-jackson" />
     <classpathentry kind="lib" path="../../infrastructure-library-jackson-springboot/build/classes/groovy/main" module="infrastructure-library-jackson-springboot" displaymodule="infrastructure-library-jackson-springboot" />
@@ -112,7 +112,7 @@
               <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                 <grid>
                   <row>
-                    <cell name="infrastructure-library-datasourceproxy-springboot" pattern="infrastructure-library-datasourceproxy-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="klokwrk-lib-datasourceproxy-springboot" pattern="klokwrk-lib-datasourceproxy-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
                     <cell name="infrastructure-library-datasourceproxy" pattern="infrastructure-library-datasourceproxy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
