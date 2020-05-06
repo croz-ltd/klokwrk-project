@@ -2,7 +2,7 @@ apply plugin: "java-library"
 
 dependencies {
   implementation project(":cargotracker:cargotracker-booking-domain-model")
-  implementation project(":lang:lang-groovy")
+  implementation project(":lang:klokwrk-lang-groovy")
 
   implementation "org.codehaus.groovy:groovy"
 

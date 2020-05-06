@@ -22,7 +22,7 @@ include(
     "cargotracker:cargotracker-lib-boundary-api",
     "cargotracker:cargotracker-lib-web",
 
-    "lang:lang-groovy"
+    "lang:klokwrk-lang-groovy"
 )
 
 rootProject.name = "klokwrk-project"

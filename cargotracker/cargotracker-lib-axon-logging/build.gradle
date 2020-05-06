@@ -1,7 +1,7 @@
 apply plugin: "java-library"
 
 dependencies {
-  implementation project(":lang:lang-groovy")
+  implementation project(":lang:klokwrk-lang-groovy")
 
   implementation "org.axonframework:axon-eventsourcing"
   implementation "org.axonframework:axon-messaging"

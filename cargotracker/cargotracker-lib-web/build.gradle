@@ -3,7 +3,7 @@ apply plugin: "java-library"
 dependencies {
   implementation project(":lib:klokwrk-lib-spring-context")
   implementation project(":cargotracker:cargotracker-lib-boundary-api")
-  implementation project(":lang:lang-groovy")
+  implementation project(":lang:klokwrk-lang-groovy")
 
   implementation "org.codehaus.groovy:groovy"
   implementation "org.springframework:spring-context"

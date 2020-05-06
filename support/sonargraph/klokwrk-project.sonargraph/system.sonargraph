@@ -73,8 +73,8 @@
 		<description></description>
 		<rootPath name="../../cargotracker/cargotracker-lib-web/build/classes/groovy/main"></rootPath>
 	</module>
-	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="lang-groovy" id="8fceb7f243264de800ea1bb7e57fe666" language="Java">
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lang-groovy" id="8fceb7f243264de800ea1bb7e57fe666" language="Java">
 		<description></description>
-		<rootPath name="../../lang/lang-groovy/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../lang/klokwrk-lang-groovy/build/classes/groovy/main"></rootPath>
 	</module>
 </ns2:softwareSystem>
