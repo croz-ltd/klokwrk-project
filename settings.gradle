@@ -2,10 +2,10 @@ include(
     "booking-axon-api",
     "booking-boundary-api",
     "booking-domain-model",
-    "booking-queryside-app",
     "booking-queryside-rdbms-model",
     "booking-queryside-rdbms-projection-app",
 
+    "cargotracker:booking-queryside-app",
     "cargotracker:cargotracker-booking-commandside-app",
 
     "klokwrk-project-platform",
