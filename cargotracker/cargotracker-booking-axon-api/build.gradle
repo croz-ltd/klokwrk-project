@@ -1,10 +1,10 @@
 apply plugin: "java-library"
 
 dependencies {
-  implementation project(":cargotracker:cargotracker-booking-boundary-api")
-  implementation project(":cargotracker:cargotracker-booking-domain-model")
-  implementation project(":cargotracker:cargotracker-lib-axon-api")
-  implementation project(":lang:klokwrk-lang-groovy")
+  implementation project(":cargotracker-booking-boundary-api")
+  implementation project(":cargotracker-booking-domain-model")
+  implementation project(":cargotracker-lib-axon-api")
+  implementation project(":klokwrk-lang-groovy")
 
   implementation("org.axonframework:axon-modelling") { transitive(false) }
   implementation "org.codehaus.groovy:groovy"

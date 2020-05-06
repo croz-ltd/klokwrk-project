@@ -1,28 +1,23 @@
-include(
-    "cargotracker:cargotracker-booking-commandside-app",
-    "cargotracker:cargotracker-booking-axon-api",
-    "cargotracker:cargotracker-booking-boundary-api",
-    "cargotracker:cargotracker-booking-domain-model",
-    "cargotracker:cargotracker-booking-queryside-app",
-    "cargotracker:cargotracker-booking-queryside-rdbms-model",
-    "cargotracker:cargotracker-booking-queryside-rdbms-projection-app",
+buildscript {
+  repositories {
+    gradlePluginPortal()
+    mavenCentral()
+  }
 
-    "cargotracker:cargotracker-lib-axon-api",
-    "cargotracker:cargotracker-lib-axon-cqrs",
-    "cargotracker:cargotracker-lib-axon-logging",
-    "cargotracker:cargotracker-lib-boundary-api",
-    "cargotracker:cargotracker-lib-web",
+  dependencies {
+    classpath "org.kordamp.gradle:settings-gradle-plugin:$gradleKordampPluginVersion"
+  }
+}
 
-    "klokwrk-project-platform",
-
-    "lib:klokwrk-lib-datasourceproxy",
-    "lib:klokwrk-lib-datasourceproxy-springboot",
-    "lib:klokwrk-lib-hibernate",
-    "lib:klokwrk-lib-jackson",
-    "lib:klokwrk-lib-jackson-springboot",
-    "lib:klokwrk-lib-spring-context",
-
-    "lang:klokwrk-lang-groovy"
-)
+apply plugin: 'org.kordamp.gradle.settings'
 
 rootProject.name = "klokwrk-project"
+
+include (
+    "klokwrk-project-platform"
+)
+
+projects {
+  directories = ["cargotracker", "lang", "lib"]
+  enforceNamingConvention = false
+}

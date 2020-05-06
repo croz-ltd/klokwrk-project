@@ -1,7 +1,7 @@
 apply plugin: "java-library"
 
 dependencies {
-  implementation project(":lang:klokwrk-lang-groovy")
+  implementation project(":klokwrk-lang-groovy")
 
   implementation "org.codehaus.groovy:groovy"
   implementation "org.springframework:spring-context"
