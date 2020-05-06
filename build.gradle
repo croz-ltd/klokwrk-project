@@ -79,9 +79,9 @@ void createAggregateCodenarcTasks() {
 createAggregateCodenarcTasks()
 
 configure(subprojects) { Project subproject ->
-  group = "net.croz.cargo-tracker"
+  group = "ork.klokwrk.project"
 
-  if (["cargo-tracker-platform"].contains(subproject.name)) {
+  if (["klokwrk-project-platform"].contains(subproject.name)) {
     return
   }
 
@@ -164,9 +164,9 @@ configure(subprojects) { Project subproject ->
   }
 
   dependencies {
-    annotationProcessor platform(project(":cargo-tracker-platform"))
-    implementation platform(project(":cargo-tracker-platform"))
-    codenarc platform(project(":cargo-tracker-platform"))
+    annotationProcessor platform(project(":klokwrk-project-platform"))
+    implementation platform(project(":klokwrk-project-platform"))
+    codenarc platform(project(":klokwrk-project-platform"))
 
     codenarc "org.codenarc:CodeNarc"
     codenarc "org.codehaus.groovy:groovy"

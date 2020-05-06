@@ -7,7 +7,7 @@ include(
     "booking-queryside-rdbms-model",
     "booking-queryside-rdbms-projection-app",
 
-    "cargo-tracker-platform",
+    "klokwrk-project-platform",
 
     "infrastructure-library-datasourceproxy",
     "infrastructure-library-datasourceproxy-springboot",
@@ -25,4 +25,4 @@ include(
     "lang-groovy"
 )
 
-rootProject.name = "cargo-tracker"
+rootProject.name = "klokwrk-project"

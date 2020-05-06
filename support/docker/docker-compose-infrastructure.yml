@@ -1,8 +1,8 @@
 version: "3.7"
 
 services:
-  cargo-tracker-postgres:
-    container_name: cargo-tracker-postgres
+  klokwrk-project-postgres:
+    container_name: klokwrk-project-postgres
     image: postgres:12.2
     ports:
       - 5432:5432
@@ -11,33 +11,33 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
     networks:
-      - cargo-tracker-network
+      - klokwrk-project-network
     volumes:
       - ./postgres/1-init-user-db.sh:/docker-entrypoint-initdb.d/1-init-user-db.sh
-      - cargo-tracker-postgres:/data/postgres
+      - klokwrk-project-postgres:/data/postgres
     restart: unless-stopped
 
-  cargo-tracker-axon-server:
-    container_name: cargo-tracker-axon-server
+  klokwrk-project-axon-server:
+    container_name: klokwrk-project-axon-server
     image: axoniq/axonserver:4.3.2
     ports:
       - 8024:8024
       - 8124:8124
     networks:
-      - cargo-tracker-network
+      - klokwrk-project-network
     volumes:
-      - cargo-tracker-axon-server-data:/data
-      - cargo-tracker-axon-server-eventdata:/eventdata
+      - klokwrk-project-axon-server-data:/data
+      - klokwrk-project-axon-server-eventdata:/eventdata
     restart: unless-stopped
 
 networks:
-  cargo-tracker-network:
-    name: cargo-tracker-network
+  klokwrk-project-network:
+    name: klokwrk-project-network
 
 volumes:
-  cargo-tracker-postgres:
-    name: cargo-tracker-postgres
-  cargo-tracker-axon-server-data:
-    name: cargo-tracker-axon-server-data
-  cargo-tracker-axon-server-eventdata:
-    name: cargo-tracker-axon-server-eventdata
+  klokwrk-project-postgres:
+    name: klokwrk-project-postgres
+  klokwrk-project-axon-server-data:
+    name: klokwrk-project-axon-server-data
+  klokwrk-project-axon-server-eventdata:
+    name: klokwrk-project-axon-server-eventdata
