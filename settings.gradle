@@ -20,7 +20,7 @@ include(
     "infrastructure-project-axon-cqrs",
     "infrastructure-project-axon-logging",
     "infrastructure-project-boundary-api",
-    "infrastructure-project-web",
+    "cargotracker:infrastructure-project-web",
 
     "lang-groovy"
 )
