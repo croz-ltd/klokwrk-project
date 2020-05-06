@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<local-project language="java" version="5.0.15206" xml-version="3" flavor="j2se">
+<local-project language="java" version="5.0.15265" xml-version="3" flavor="j2se">
   <property name="show-as-module" value="false" />
   <property name="publish-architecture-artifacts" value="true" />
   <property name="force-classpath" value="false" />
@@ -40,11 +40,11 @@
   <restructuring>
     <set version="3" name="Action list 1" hiview="Codemap" active="true" todo="false" list="0" />
   </restructuring>
-  <grid-set sep="." version="5.0.15206" />
-  <physical-grid-set sep="." version="5.0.15206">
+  <grid-set sep="." version="5.0.15265" />
+  <physical-grid-set sep="." version="5.0.15265">
     <grid name="Workspace spec" enforce="true" locked="true" strict="false">
       <row>
-        <cell name="booking" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+        <cell name="cargotracker-booking" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
             <row>
               <cell name="cargotracker-booking-commandside-app" pattern="cargotracker-booking-commandside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
