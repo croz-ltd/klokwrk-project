@@ -71,7 +71,7 @@
         </cell>
       </row>
       <row>
-        <cell name="infrastructure-project" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+        <cell name="cargotracker-lib" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
             <row>
               <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
