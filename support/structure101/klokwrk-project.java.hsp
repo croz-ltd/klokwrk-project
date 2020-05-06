@@ -25,7 +25,7 @@
     <classpathentry kind="lib" path="../../lib/klokwrk-lib-datasourceproxy/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy" displaymodule="klokwrk-lib-datasourceproxy" />
     <classpathentry kind="lib" path="../../lib/klokwrk-lib-datasourceproxy-springboot/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy-springboot" displaymodule="klokwrk-lib-datasourceproxy-springboot" />
     <classpathentry kind="lib" path="../../infrastructure-library-hibernate/build/classes/groovy/main" module="infrastructure-library-hibernate" displaymodule="infrastructure-library-hibernate" />
-    <classpathentry kind="lib" path="../../infrastructure-library-jackson/build/classes/groovy/main" module="infrastructure-library-jackson" displaymodule="infrastructure-library-jackson" />
+    <classpathentry kind="lib" path="../../lib/infrastructure-library-jackson/build/classes/groovy/main" module="infrastructure-library-jackson" displaymodule="infrastructure-library-jackson" />
     <classpathentry kind="lib" path="../../lib/klokwrk-lib-jackson-springboot/build/classes/groovy/main" module="klokwrk-lib-jackson-springboot" displaymodule="klokwrk-lib-jackson-springboot" />
     <classpathentry kind="lib" path="../../infrastructure-library-spring-context/build/classes/groovy/main" module="infrastructure-library-spring-context" displaymodule="infrastructure-library-spring-context" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-api/build/classes/groovy/main" module="cargotracker-lib-axon-api" displaymodule="cargotracker-lib-axon-api" />
