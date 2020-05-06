@@ -24,7 +24,7 @@ dependencies {
   implementation project(":cargotracker:cargotracker-lib-axon-cqrs")
   implementation project(":cargotracker:cargotracker-lib-boundary-api")
   implementation project(":cargotracker:cargotracker-lib-web")
-  implementation project(":lang-groovy")
+  implementation project(":lang:lang-groovy")
 
   implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.codehaus.groovy:groovy"

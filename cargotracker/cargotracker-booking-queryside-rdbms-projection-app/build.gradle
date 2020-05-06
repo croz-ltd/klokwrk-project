@@ -24,7 +24,7 @@ dependencies {
 
   // Note: although currently there is no direct code dependencies to the lang-groovy module, need to have it as implementation dependency for CompileStatic to work. Otherwise,
   // java.lang.NoClassDefFoundError id thrown for PostMapConstructorCheckable class.
-  implementation project(":lang-groovy")
+  implementation project(":lang:lang-groovy")
 
   implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.codehaus.groovy:groovy"

@@ -33,7 +33,7 @@
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-logging/build/classes/groovy/main" module="cargotracker-lib-axon-logging" displaymodule="cargotracker-lib-axon-logging" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-boundary-api/build/classes/groovy/main" module="cargotracker-lib-boundary-api" displaymodule="cargotracker-lib-boundary-api" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-web/build/classes/groovy/main" module="cargotracker-lib-web" displaymodule="cargotracker-lib-web" />
-    <classpathentry kind="lib" path="../../lang-groovy/build/classes/groovy/main" module="lang-groovy" displaymodule="lang-groovy" />
+    <classpathentry kind="lib" path="../../lang/lang-groovy/build/classes/groovy/main" module="lang-groovy" displaymodule="lang-groovy" />
   </classpath>
   <pom-root-files />
   <modules-in-scope />
