@@ -126,13 +126,7 @@
         </cell>
       </row>
       <row>
-        <cell name="lang" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
-          <grid>
-            <row>
-              <cell name="klokwrk-lang-groovy" pattern="klokwrk-lang-groovy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-            </row>
-          </grid>
-        </cell>
+        <cell name="klokwrk-lang-groovy" pattern="klokwrk-lang-groovy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
       </row>
       <description>Top-level breakout</description>
     </grid>
