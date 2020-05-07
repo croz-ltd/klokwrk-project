@@ -1,5 +1,5 @@
-klokwrk.data-source-proxy.query-logger.filtering-out-regular-expression-list: >
+klokwrk.datasourceproxy.query-logger.filtering-out-regular-expression-list: >
   ^select.*from not_so_interesting_person.*$
 
-logging.level.klokwrk.data-source-proxy.queryLogger: DEBUG
-logging.level.klokwrk.data-source-proxy.slowQueryLogger: WARN
+logging.level.klokwrk.datasourceproxy.queryLogger: DEBUG
+logging.level.klokwrk.datasourceproxy.slowQueryLogger: WARN

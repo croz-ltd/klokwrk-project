@@ -12,9 +12,9 @@ import java.lang.reflect.Method
 import java.util.concurrent.TimeUnit
 
 /**
- * AOP alliance proxy interceptor that decorates all invocations of {@link DataSource} instance methods with datasource-proxy features.
+ * AOP alliance proxy interceptor that decorates all invocations of {@link DataSource} instance methods with datasourceproxy features.
  * <p/>
- * Some aspects of datasource-proxy features can be configured via {@link DataSourceProxyConfigurationProperties}.
+ * Some aspects of datasourceproxy features can be configured via {@link DataSourceProxyConfigurationProperties}.
  * <p/>
  * Integration with Spring Boot application is implemented via {@link DataSourceProxyBeanPostProcessor}
  *

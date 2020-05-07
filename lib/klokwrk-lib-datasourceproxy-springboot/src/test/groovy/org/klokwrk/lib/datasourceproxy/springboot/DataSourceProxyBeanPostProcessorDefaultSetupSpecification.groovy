@@ -33,8 +33,8 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
   void setup() {
     TestLoggerFactory.clearAll()
 //    TestLoggerFactory.instance.printLevel = Level.DEBUG // uncomment if you want to see logging output during the test
-    queryLogger = TestLoggerFactory.getTestLogger("klokwrk.data-source-proxy.queryLogger")
-    slowQueryLogger = TestLoggerFactory.getTestLogger("klokwrk.data-source-proxy.slowQueryLogger")
+    queryLogger = TestLoggerFactory.getTestLogger("klokwrk.datasourceproxy.queryLogger")
+    slowQueryLogger = TestLoggerFactory.getTestLogger("klokwrk.datasourceproxy.slowQueryLogger")
   }
 
   void "should configure proxying of default data source"() {

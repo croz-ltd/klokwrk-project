@@ -7,13 +7,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import java.time.Duration
 
 /**
- * Spring Boot configuration properties for configuring some aspects of datasource-proxy features that are enabled via {@link DataSourceProxyBeanPostProcessor} and {@link DataSourceProxyInterceptor}.
+ * Spring Boot configuration properties for configuring some aspects of datasourceproxy features that are enabled via {@link DataSourceProxyBeanPostProcessor} and {@link DataSourceProxyInterceptor}.
  *
  * @see DataSourceProxyBeanPostProcessor
  * @see DataSourceProxyInterceptor
  */
 @SuppressWarnings("ConfigurationProperties")
-@ConfigurationProperties(prefix = "klokwrk.data-source-proxy")
+@ConfigurationProperties(prefix = "klokwrk.datasourceproxy")
 @CompileStatic
 class DataSourceProxyConfigurationProperties {
   /**
@@ -26,9 +26,9 @@ class DataSourceProxyConfigurationProperties {
    * <p/>
    * Constructed full data source name will consist of this prefix and original bean name of a proxied data source.
    * <p/>
-   * Default value is <code>'datasource-proxy:::'</code>.
+   * Default value is <code>'datasourceproxy:::'</code>.
    */
-  String dataSourceNamePrefix = "datasource-proxy:::"
+  String dataSourceNamePrefix = "datasourceproxy:::"
 
   @SuppressWarnings("unused")
   QueryLogger queryLogger = new QueryLogger()
@@ -37,9 +37,9 @@ class DataSourceProxyConfigurationProperties {
     /**
      * The name of query logger as it will be seen in the log.
      * <p/>
-     * Default value is <code>'klokwrk.data-source-proxy.queryLogger'</code>.
+     * Default value is <code>'klokwrk.datasourceproxy.queryLogger'</code>.
      */
-    String name = "klokwrk.data-source-proxy.queryLogger"
+    String name = "klokwrk.datasourceproxy.queryLogger"
 
     /**
      * SLF4j log level to be used for queryLogger.
@@ -65,9 +65,9 @@ class DataSourceProxyConfigurationProperties {
     /**
      * The name of slow query logger as it will be seen in the log.
      * <p/>
-     * Default value is <code>'klokwrk.datasource-proxy.slowQueryLogger'</code>.
+     * Default value is <code>'klokwrk.datasourceproxy.slowQueryLogger'</code>.
      */
-    String name = "klokwrk.data-source-proxy.slowQueryLogger"
+    String name = "klokwrk.datasourceproxy.slowQueryLogger"
 
     /**
      * SLF4j log level to be used for slowQueryLogger.
