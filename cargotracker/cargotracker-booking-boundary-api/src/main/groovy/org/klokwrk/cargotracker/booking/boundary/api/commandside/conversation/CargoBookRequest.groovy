@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.boundary.api.queryside.conversation
+package org.klokwrk.cargotracker.booking.boundary.api.commandside.conversation
 
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
@@ -8,6 +8,9 @@ import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandle
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
-class CargoSummaryQueryRequest {
+class CargoBookRequest {
   String aggregateIdentifier
+
+  String originLocation
+  String destinationLocation
 }
