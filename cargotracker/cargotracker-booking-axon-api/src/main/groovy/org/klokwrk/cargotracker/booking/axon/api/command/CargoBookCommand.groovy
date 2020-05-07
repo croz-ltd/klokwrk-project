@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.axon.api.command
+package org.klokwrk.cargotracker.booking.axon.api.command
 
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor

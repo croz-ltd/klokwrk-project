@@ -1,13 +1,13 @@
 package org.klokwrk.cargotracker.booking.commandside.application.service
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.booking.axon.api.command.CargoBookCommand
 import net.croz.cargotracker.booking.boundary.api.commandside.conversation.CargoBookRequest
 import net.croz.cargotracker.booking.boundary.api.commandside.conversation.CargoBookResponse
 import net.croz.cargotracker.infrastructure.project.axon.cqrs.commandgateway.CommandGatewayAdapter
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationRequest
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
 import org.axonframework.commandhandling.gateway.CommandGateway
+import org.klokwrk.cargotracker.booking.axon.api.command.CargoBookCommand
 import org.klokwrk.cargotracker.booking.commandside.application.factory.CargoBookingFactoryService
 import org.klokwrk.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
 import org.springframework.stereotype.Service
