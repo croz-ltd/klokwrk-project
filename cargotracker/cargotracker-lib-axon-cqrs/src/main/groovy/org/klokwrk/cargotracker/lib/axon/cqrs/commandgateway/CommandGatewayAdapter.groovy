@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.project.axon.cqrs.commandgateway
+package org.klokwrk.cargotracker.lib.axon.cqrs.commandgateway
 
 import groovy.transform.CompileStatic
 import org.axonframework.commandhandling.CommandExecutionException

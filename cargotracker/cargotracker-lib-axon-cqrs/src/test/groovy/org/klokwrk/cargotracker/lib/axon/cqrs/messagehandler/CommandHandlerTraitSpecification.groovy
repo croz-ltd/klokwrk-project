@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.project.axon.cqrs.messagehandler
+package org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler
 
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.CommandException
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationCode

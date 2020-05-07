@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.project.axon.cqrs.commandgateway
+package org.klokwrk.cargotracker.lib.axon.cqrs.commandgateway
 
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.CommandException
 import org.axonframework.commandhandling.CommandExecutionException

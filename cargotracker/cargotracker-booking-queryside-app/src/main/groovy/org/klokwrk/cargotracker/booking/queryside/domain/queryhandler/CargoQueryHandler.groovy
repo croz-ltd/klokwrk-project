@@ -1,7 +1,6 @@
 package org.klokwrk.cargotracker.booking.queryside.domain.queryhandler
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.project.axon.cqrs.messagehandler.QueryHandlerTrait
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.QueryException
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationInfo
 import org.axonframework.queryhandling.QueryHandler
@@ -9,6 +8,7 @@ import org.klokwrk.cargotracker.booking.boundary.api.queryside.conversation.Carg
 import org.klokwrk.cargotracker.booking.boundary.api.queryside.conversation.CargoSummaryQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.rdbms.domain.querymodel.CargoSummaryQueryEntity
 import org.klokwrk.cargotracker.booking.queryside.rdbms.domain.querymodel.CargoSummaryQueryEntityRepository
+import org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.QueryHandlerTrait
 import org.springframework.stereotype.Service
 
 @Service

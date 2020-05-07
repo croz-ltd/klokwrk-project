@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.project.axon.cqrs.querygateway
+package org.klokwrk.cargotracker.lib.axon.cqrs.querygateway
 
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationRequest
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.QueryException

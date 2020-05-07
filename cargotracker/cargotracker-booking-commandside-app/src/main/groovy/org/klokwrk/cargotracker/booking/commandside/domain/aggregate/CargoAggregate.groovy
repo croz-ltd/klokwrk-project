@@ -3,7 +3,6 @@ package org.klokwrk.cargotracker.booking.commandside.domain.aggregate
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
-import net.croz.cargotracker.infrastructure.project.axon.cqrs.messagehandler.CommandHandlerTrait
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.CommandException
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationCode
 import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationInfo
@@ -15,6 +14,7 @@ import org.axonframework.spring.stereotype.Aggregate
 import org.klokwrk.cargotracker.booking.axon.api.command.CargoBookCommand
 import org.klokwrk.cargotracker.booking.axon.api.event.CargoBookedEvent
 import org.klokwrk.cargotracker.booking.domain.model.Location
+import org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.CommandHandlerTrait
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply
 
