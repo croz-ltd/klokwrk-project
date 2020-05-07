@@ -1,14 +1,14 @@
 package org.klokwrk.cargotracker.lib.web.spring.mvc
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.library.spring.context.MessageSourceResolvableHelper
-import net.croz.cargotracker.infrastructure.library.spring.context.MessageSourceResolvableSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.metadata.ResponseMetaDataReportViolationPart
 import org.klokwrk.cargotracker.lib.boundary.api.exceptional.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.exceptional.violation.ViolationCode
 import org.klokwrk.cargotracker.lib.web.conversation.metadata.HttpResponseMetaDataReport
 import org.klokwrk.cargotracker.lib.web.conversation.metadata.HttpResponseMetaDataReportPart
+import org.klokwrk.lib.spring.context.MessageSourceResolvableHelper
+import org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification
 import org.springframework.context.MessageSource
 import org.springframework.context.MessageSourceAware
 import org.springframework.http.HttpHeaders

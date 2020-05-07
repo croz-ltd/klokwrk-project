@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.library.spring.context
+package org.klokwrk.lib.spring.context
 
 import spock.lang.Specification
 import spock.lang.Unroll
