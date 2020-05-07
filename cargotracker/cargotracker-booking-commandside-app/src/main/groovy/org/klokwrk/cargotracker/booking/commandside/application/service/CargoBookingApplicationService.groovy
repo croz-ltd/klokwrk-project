@@ -1,8 +1,6 @@
 package org.klokwrk.cargotracker.booking.commandside.application.service
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationRequest
-import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.klokwrk.cargotracker.booking.axon.api.command.CargoBookCommand
 import org.klokwrk.cargotracker.booking.boundary.api.commandside.conversation.CargoBookRequest
@@ -10,6 +8,8 @@ import org.klokwrk.cargotracker.booking.boundary.api.commandside.conversation.Ca
 import org.klokwrk.cargotracker.booking.commandside.application.factory.CargoBookingFactoryService
 import org.klokwrk.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.lib.axon.cqrs.commandgateway.CommandGatewayAdapter
+import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationRequest
+import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
 import org.springframework.stereotype.Service
 
 @Service

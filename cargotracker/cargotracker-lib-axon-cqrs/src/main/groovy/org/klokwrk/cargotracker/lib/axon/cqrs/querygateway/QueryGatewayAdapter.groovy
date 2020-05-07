@@ -1,11 +1,11 @@
 package org.klokwrk.cargotracker.lib.axon.cqrs.querygateway
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationRequest
 import org.axonframework.messaging.GenericMessage
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryExecutionException
 import org.axonframework.queryhandling.QueryGateway
+import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationRequest
 
 import java.util.concurrent.CompletionException
 

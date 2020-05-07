@@ -1,12 +1,12 @@
 package org.klokwrk.cargotracker.lib.axon.cqrs.querygateway
 
-import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationRequest
-import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.QueryException
 import org.axonframework.messaging.GenericMessage
 import org.axonframework.messaging.MetaData
 import org.axonframework.messaging.responsetypes.ResponseType
 import org.axonframework.queryhandling.QueryExecutionException
 import org.axonframework.queryhandling.QueryGateway
+import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationRequest
+import org.klokwrk.cargotracker.lib.boundary.api.exceptional.exception.QueryException
 import spock.lang.Specification
 import spock.lang.Unroll
 

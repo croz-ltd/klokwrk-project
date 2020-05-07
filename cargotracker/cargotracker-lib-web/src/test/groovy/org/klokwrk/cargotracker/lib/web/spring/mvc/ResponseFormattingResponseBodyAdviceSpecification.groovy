@@ -1,7 +1,7 @@
 package org.klokwrk.cargotracker.lib.web.spring.mvc
 
 import groovy.json.JsonSlurper
-import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
+import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean

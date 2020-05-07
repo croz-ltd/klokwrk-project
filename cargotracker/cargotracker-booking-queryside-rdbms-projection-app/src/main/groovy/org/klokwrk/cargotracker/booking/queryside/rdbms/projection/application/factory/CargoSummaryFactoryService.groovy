@@ -1,10 +1,10 @@
 package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.application.factory
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.metadata.MetaDataConstant
 import org.axonframework.eventhandling.DomainEventMessage
 import org.klokwrk.cargotracker.booking.axon.api.event.CargoBookedEvent
 import org.klokwrk.cargotracker.booking.queryside.rdbms.domain.querymodel.CargoSummaryQueryEntity
+import org.klokwrk.cargotracker.lib.boundary.api.conversation.metadata.MetaDataConstant
 
 import static net.croz.cargotracker.lang.groovy.constant.CommonConstants.NOT_AVAILABLE
 

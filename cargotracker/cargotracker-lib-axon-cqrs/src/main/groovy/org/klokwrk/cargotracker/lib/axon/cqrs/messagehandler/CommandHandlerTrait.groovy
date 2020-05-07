@@ -1,8 +1,8 @@
 package org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.CommandException
 import org.axonframework.commandhandling.CommandExecutionException
+import org.klokwrk.cargotracker.lib.boundary.api.exceptional.exception.CommandException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

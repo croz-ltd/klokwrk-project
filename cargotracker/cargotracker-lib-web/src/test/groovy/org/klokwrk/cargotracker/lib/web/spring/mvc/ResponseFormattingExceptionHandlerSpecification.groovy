@@ -1,12 +1,12 @@
 package org.klokwrk.cargotracker.lib.web.spring.mvc
 
-import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
-import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.CommandException
-import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.DomainException
-import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.exception.QueryException
-import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationCode
-import net.croz.cargotracker.infrastructure.project.boundary.api.exceptional.violation.ViolationInfo
-import net.croz.cargotracker.infrastructure.project.boundary.api.severity.Severity
+import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
+import org.klokwrk.cargotracker.lib.boundary.api.exceptional.exception.CommandException
+import org.klokwrk.cargotracker.lib.boundary.api.exceptional.exception.DomainException
+import org.klokwrk.cargotracker.lib.boundary.api.exceptional.exception.QueryException
+import org.klokwrk.cargotracker.lib.boundary.api.exceptional.violation.ViolationCode
+import org.klokwrk.cargotracker.lib.boundary.api.exceptional.violation.ViolationInfo
+import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import org.springframework.context.support.ResourceBundleMessageSource
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
