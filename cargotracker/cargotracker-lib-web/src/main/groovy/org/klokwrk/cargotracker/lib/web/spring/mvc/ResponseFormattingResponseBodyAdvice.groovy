@@ -1,12 +1,12 @@
-package net.croz.cargotracker.infrastructure.project.web.spring.mvc
+package org.klokwrk.cargotracker.lib.web.spring.mvc
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.infrastructure.library.spring.context.MessageSourceResolvableHelper
 import net.croz.cargotracker.infrastructure.library.spring.context.MessageSourceResolvableSpecification
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
 import net.croz.cargotracker.infrastructure.project.boundary.api.severity.Severity
-import net.croz.cargotracker.infrastructure.project.web.conversation.metadata.HttpResponseMetaDataReport
-import net.croz.cargotracker.infrastructure.project.web.conversation.metadata.HttpResponseMetaDataReportPart
+import org.klokwrk.cargotracker.lib.web.conversation.metadata.HttpResponseMetaDataReport
+import org.klokwrk.cargotracker.lib.web.conversation.metadata.HttpResponseMetaDataReportPart
 import org.springframework.beans.BeansException
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware

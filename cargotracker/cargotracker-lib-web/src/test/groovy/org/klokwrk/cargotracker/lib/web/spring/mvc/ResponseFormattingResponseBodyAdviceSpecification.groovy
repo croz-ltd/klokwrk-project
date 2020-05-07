@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.project.web.spring.mvc
+package org.klokwrk.cargotracker.lib.web.spring.mvc
 
 import groovy.json.JsonSlurper
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
