@@ -10,8 +10,8 @@ import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.library.jackson.databind.deser.StringSanitizingDeserializer
-import net.croz.cargotracker.infrastructure.library.jackson.databind.ser.GStringSerializer
+import org.klokwrk.lib.jackson.databind.deser.StringSanitizingDeserializer
+import org.klokwrk.lib.jackson.databind.ser.GStringSerializer
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder

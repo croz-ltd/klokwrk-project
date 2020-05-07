@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.library.jackson.databind.deser
+package org.klokwrk.lib.jackson.databind.deser
 
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext

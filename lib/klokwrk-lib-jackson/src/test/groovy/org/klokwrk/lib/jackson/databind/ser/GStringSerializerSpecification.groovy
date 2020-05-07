@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.library.jackson.databind.ser
+package org.klokwrk.lib.jackson.databind.ser
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
