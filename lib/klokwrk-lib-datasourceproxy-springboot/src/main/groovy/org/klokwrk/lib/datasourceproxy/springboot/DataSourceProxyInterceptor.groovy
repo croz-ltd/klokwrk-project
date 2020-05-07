@@ -1,10 +1,10 @@
 package org.klokwrk.lib.datasourceproxy.springboot
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.library.datasourceproxy.Slf4jFilterableQueryLoggingListener
 import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder
 import org.aopalliance.intercept.MethodInterceptor
 import org.aopalliance.intercept.MethodInvocation
+import org.klokwrk.lib.datasourceproxy.Slf4jFilterableQueryLoggingListener
 import org.springframework.util.ReflectionUtils
 
 import javax.sql.DataSource
