@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.library.jackson.springboot
+package org.klokwrk.lib.jackson.springboot
 
 import groovy.transform.CompileStatic
 import org.springframework.boot.context.properties.ConfigurationProperties
@@ -21,7 +21,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
  * </pre>
  */
 @SuppressWarnings("ConfigurationProperties")
-@ConfigurationProperties(prefix = "cargotracker.jackson.customizer.essential")
+@ConfigurationProperties(prefix = "klokwrk.jackson.customizer.essential")
 @CompileStatic
 class EssentialJacksonCustomizerConfigurationProperties {
   /**

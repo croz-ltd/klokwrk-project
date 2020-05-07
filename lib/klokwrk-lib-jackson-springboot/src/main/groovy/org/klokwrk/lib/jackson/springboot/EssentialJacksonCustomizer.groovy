@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.library.jackson.springboot
+package org.klokwrk.lib.jackson.springboot
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonSetter

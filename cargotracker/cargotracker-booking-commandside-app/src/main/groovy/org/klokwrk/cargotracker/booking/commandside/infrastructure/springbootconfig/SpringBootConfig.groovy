@@ -1,11 +1,11 @@
 package org.klokwrk.cargotracker.booking.commandside.infrastructure.springbootconfig
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.library.jackson.springboot.EssentialJacksonCustomizer
-import net.croz.cargotracker.infrastructure.library.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingCommandHandlerEnhancerDefinition
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingEventSourcingHandlerEnhancerDefinition
+import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizer
+import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

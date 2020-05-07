@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.library.jackson.springboot
+package org.klokwrk.lib.jackson.springboot
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonSetter
@@ -45,7 +45,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   @RestoreSystemProperties
   void "should be disabled when configured so"() {
     given:
-    System.setProperty("cargotracker.jackson.customizer.essential.enabled", "false")
+    System.setProperty("klokwrk.jackson.customizer.essential.enabled", "false")
     ApplicationContext applicationContext = createNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
@@ -57,7 +57,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   @RestoreSystemProperties
   void "should not add StringSanitizingDeserializer when configured so"() {
     given:
-    System.setProperty("cargotracker.jackson.customizer.essential.deserialization.stringSanitizingDeserializer.enabled", "false")
+    System.setProperty("klokwrk.jackson.customizer.essential.deserialization.stringSanitizingDeserializer.enabled", "false")
     ApplicationContext applicationContext = createNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
@@ -73,7 +73,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   @RestoreSystemProperties
   void "should not add GStringSerializer when configured so"() {
     given:
-    System.setProperty("cargotracker.jackson.customizer.essential.serialization.gStringSerializer.enabled", "false")
+    System.setProperty("klokwrk.jackson.customizer.essential.serialization.gStringSerializer.enabled", "false")
     ApplicationContext applicationContext = createNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
@@ -89,7 +89,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   @RestoreSystemProperties
   void "should not ignore transients when configured so"() {
     given:
-    System.setProperty("cargotracker.jackson.customizer.essential.mapper.ignoreTransient", "false")
+    System.setProperty("klokwrk.jackson.customizer.essential.mapper.ignoreTransient", "false")
     ApplicationContext applicationContext = createNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
@@ -101,7 +101,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   @RestoreSystemProperties
   void "should not allow json comments when configured so"() {
     given:
-    System.setProperty("cargotracker.jackson.customizer.essential.deserialization.allowJsonComments", "false")
+    System.setProperty("klokwrk.jackson.customizer.essential.deserialization.allowJsonComments", "false")
     ApplicationContext applicationContext = createNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
@@ -113,7 +113,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   @RestoreSystemProperties
   void "should not accept single value as array when configured so"() {
     given:
-    System.setProperty("cargotracker.jackson.customizer.essential.deserialization.acceptSingleValueAsArray", "false")
+    System.setProperty("klokwrk.jackson.customizer.essential.deserialization.acceptSingleValueAsArray", "false")
     ApplicationContext applicationContext = createNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
@@ -125,7 +125,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   @RestoreSystemProperties
   void "should fail on unknown properties when configured so"() {
     given:
-    System.setProperty("cargotracker.jackson.customizer.essential.deserialization.failOnUnknownProperties", "true")
+    System.setProperty("klokwrk.jackson.customizer.essential.deserialization.failOnUnknownProperties", "true")
     ApplicationContext applicationContext = createNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
@@ -137,7 +137,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   @RestoreSystemProperties
   void "should not skip null values on serialization when configured so"() {
     given:
-    System.setProperty("cargotracker.jackson.customizer.essential.serialization.skipNullValues", "false")
+    System.setProperty("klokwrk.jackson.customizer.essential.serialization.skipNullValues", "false")
     ApplicationContext applicationContext = createNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
@@ -148,7 +148,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   @RestoreSystemProperties
   void "should not skip null values on deserialization when configured so"() {
     given:
-    System.setProperty("cargotracker.jackson.customizer.essential.deserialization.skipNullValues", "false")
+    System.setProperty("klokwrk.jackson.customizer.essential.deserialization.skipNullValues", "false")
     ApplicationContext applicationContext = createNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 

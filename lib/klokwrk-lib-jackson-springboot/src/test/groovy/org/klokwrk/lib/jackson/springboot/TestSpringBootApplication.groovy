@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.library.jackson.springboot
+package org.klokwrk.lib.jackson.springboot
 
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
