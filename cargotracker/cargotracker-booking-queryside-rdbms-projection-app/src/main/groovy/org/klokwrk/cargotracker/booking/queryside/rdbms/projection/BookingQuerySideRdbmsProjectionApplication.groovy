@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.queryside.rdbms.projection
+package org.klokwrk.cargotracker.booking.queryside.rdbms.projection
 
 import groovy.transform.CompileStatic
 import org.springframework.boot.SpringApplication
