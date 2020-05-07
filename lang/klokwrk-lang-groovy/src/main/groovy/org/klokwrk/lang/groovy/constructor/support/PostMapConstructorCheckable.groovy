@@ -1,4 +1,4 @@
-package net.croz.cargotracker.lang.groovy.constructor.support
+package org.klokwrk.lang.groovy.constructor.support
 
 import groovy.transform.CompileStatic
 

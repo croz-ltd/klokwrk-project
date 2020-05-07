@@ -1,8 +1,8 @@
-package net.croz.cargotracker.lang.groovy.constructor.support.stub
+package org.klokwrk.lang.groovy.constructor.support.stub
 
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
-import net.croz.cargotracker.lang.groovy.constructor.support.PostMapConstructorCheckable
+import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 
 @MapConstructor(post = { postMapConstructorCheckProtocol(args as Map) })
 @CompileStatic

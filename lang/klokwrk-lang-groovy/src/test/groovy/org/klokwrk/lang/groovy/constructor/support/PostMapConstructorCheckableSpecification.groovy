@@ -1,7 +1,7 @@
-package net.croz.cargotracker.lang.groovy.constructor.support
+package org.klokwrk.lang.groovy.constructor.support
 
-import net.croz.cargotracker.lang.groovy.constructor.support.stub.TestPerson
-import net.croz.cargotracker.lang.groovy.constructor.support.stub.TestStrictPerson
+import org.klokwrk.lang.groovy.constructor.support.stub.TestPerson
+import org.klokwrk.lang.groovy.constructor.support.stub.TestStrictPerson
 import spock.lang.Specification
 import spock.lang.Unroll
 

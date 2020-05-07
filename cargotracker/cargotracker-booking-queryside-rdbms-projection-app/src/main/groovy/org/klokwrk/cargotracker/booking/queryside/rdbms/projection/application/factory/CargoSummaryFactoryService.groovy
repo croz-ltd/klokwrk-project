@@ -6,7 +6,7 @@ import org.klokwrk.cargotracker.booking.axon.api.event.CargoBookedEvent
 import org.klokwrk.cargotracker.booking.queryside.rdbms.domain.querymodel.CargoSummaryQueryEntity
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.metadata.MetaDataConstant
 
-import static net.croz.cargotracker.lang.groovy.constant.CommonConstants.NOT_AVAILABLE
+import static org.klokwrk.lang.groovy.constant.CommonConstants.NOT_AVAILABLE
 
 @CompileStatic
 class CargoSummaryFactoryService {

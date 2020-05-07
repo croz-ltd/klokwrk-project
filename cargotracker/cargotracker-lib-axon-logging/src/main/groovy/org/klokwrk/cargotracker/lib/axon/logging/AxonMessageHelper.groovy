@@ -7,7 +7,7 @@ import org.axonframework.eventhandling.GlobalSequenceTrackingToken
 import org.axonframework.eventhandling.TrackingToken
 import org.axonframework.messaging.Message
 
-import static net.croz.cargotracker.lang.groovy.constant.CommonConstants.NOT_AVAILABLE
+import static org.klokwrk.lang.groovy.constant.CommonConstants.NOT_AVAILABLE
 
 @CompileStatic
 class AxonMessageHelper {

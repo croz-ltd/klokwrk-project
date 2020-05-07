@@ -3,7 +3,7 @@ package org.klokwrk.cargotracker.booking.queryside.rdbms.domain.querymodel
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
-import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue

@@ -13,7 +13,7 @@ import java.lang.reflect.Method
 
 import static AxonMessageHelper.AGGREGATE_IDENTIFIER
 import static AxonMessageHelper.SEQUENCE_NUMBER
-import static net.croz.cargotracker.lang.groovy.constant.CommonConstants.NOT_AVAILABLE
+import static org.klokwrk.lang.groovy.constant.CommonConstants.NOT_AVAILABLE
 
 /**
  * Defines Axon's {@link HandlerEnhancerDefinition} for detailed logging of command handlers executions in projectors.

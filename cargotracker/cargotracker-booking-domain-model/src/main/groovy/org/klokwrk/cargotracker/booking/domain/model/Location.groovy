@@ -7,8 +7,8 @@ import groovy.transform.PropertyOptions
 import groovy.transform.TupleConstructor
 import groovy.transform.VisibilityOptions
 import groovy.transform.options.Visibility
-import net.croz.cargotracker.lang.groovy.constructor.support.PostMapConstructorCheckable
-import net.croz.cargotracker.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
+import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
 /**
  * Represents a location data as specified by UN/LOCODE standard.
