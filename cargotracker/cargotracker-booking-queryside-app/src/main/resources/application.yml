@@ -14,7 +14,7 @@ spring.datasource.username: cargotracker
 spring.datasource.password: cargotracker
 
 spring.jpa.hibernate.ddl-auto: none
-spring.jpa.properties.hibernate.dialect: net.croz.cargotracker.infrastructure.library.hibernate.dialect.PostgreSqlAxonDialect
+spring.jpa.properties.hibernate.dialect: org.klokwrk.lib.hibernate.dialect.PostgreSqlAxonDialect
 spring.jpa.open-in-view: false
 
 spring.messages.basename: messages,responseFormattingDefaultMessages
