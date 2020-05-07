@@ -5,8 +5,8 @@ import net.croz.cargotracker.infrastructure.library.datasourceproxy.springboot.D
 import net.croz.cargotracker.infrastructure.library.datasourceproxy.springboot.DataSourceProxyConfigurationProperties
 import net.croz.cargotracker.infrastructure.library.jackson.springboot.EssentialJacksonCustomizer
 import net.croz.cargotracker.infrastructure.library.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
-import net.croz.cargotracker.infrastructure.project.axon.logging.LoggingQueryHandlerEnhancerDefinition
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
+import org.klokwrk.cargotracker.lib.axon.logging.LoggingQueryHandlerEnhancerDefinition
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
