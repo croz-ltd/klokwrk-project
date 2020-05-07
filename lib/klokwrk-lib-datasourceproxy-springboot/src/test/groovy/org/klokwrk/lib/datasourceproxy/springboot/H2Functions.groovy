@@ -1,7 +1,8 @@
-package net.croz.cargotracker.infrastructure.library.datasourceproxy.springboot
+package org.klokwrk.lib.datasourceproxy.springboot
 
 import groovy.transform.CompileStatic
 
+@SuppressWarnings("unused")
 @CompileStatic
 class H2Functions {
 

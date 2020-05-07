@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.library.datasourceproxy.springboot
+package org.klokwrk.lib.datasourceproxy.springboot
 
 import com.google.common.collect.ImmutableList
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,8 +33,8 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
   void setup() {
     TestLoggerFactory.clearAll()
 //    TestLoggerFactory.instance.printLevel = Level.DEBUG // uncomment if you want to see logging output during the test
-    queryLogger = TestLoggerFactory.getTestLogger("cargotracker.data-source-proxy.queryLogger")
-    slowQueryLogger = TestLoggerFactory.getTestLogger("cargotracker.data-source-proxy.slowQueryLogger")
+    queryLogger = TestLoggerFactory.getTestLogger("klokwrk.data-source-proxy.queryLogger")
+    slowQueryLogger = TestLoggerFactory.getTestLogger("klokwrk.data-source-proxy.slowQueryLogger")
   }
 
   void "should configure proxying of default data source"() {

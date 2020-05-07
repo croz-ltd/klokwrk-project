@@ -1,10 +1,10 @@
 package org.klokwrk.cargotracker.booking.queryside.infrastructure.springbootconfig
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.infrastructure.library.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
-import net.croz.cargotracker.infrastructure.library.datasourceproxy.springboot.DataSourceProxyConfigurationProperties
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingQueryHandlerEnhancerDefinition
+import org.klokwrk.lib.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
+import org.klokwrk.lib.datasourceproxy.springboot.DataSourceProxyConfigurationProperties
 import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizer
 import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
 import org.springframework.beans.factory.config.BeanPostProcessor

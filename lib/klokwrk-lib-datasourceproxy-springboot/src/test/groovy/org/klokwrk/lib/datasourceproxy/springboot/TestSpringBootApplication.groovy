@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.library.datasourceproxy.springboot
+package org.klokwrk.lib.datasourceproxy.springboot
 
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.SpringApplication

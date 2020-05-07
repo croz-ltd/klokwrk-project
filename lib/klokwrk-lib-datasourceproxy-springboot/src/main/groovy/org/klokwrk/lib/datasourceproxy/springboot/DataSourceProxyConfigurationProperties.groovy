@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.library.datasourceproxy.springboot
+package org.klokwrk.lib.datasourceproxy.springboot
 
 import groovy.transform.CompileStatic
 import net.ttddyy.dsproxy.listener.logging.SLF4JLogLevel
@@ -13,7 +13,7 @@ import java.time.Duration
  * @see DataSourceProxyInterceptor
  */
 @SuppressWarnings("ConfigurationProperties")
-@ConfigurationProperties(prefix = "cargotracker.data-source-proxy")
+@ConfigurationProperties(prefix = "klokwrk.data-source-proxy")
 @CompileStatic
 class DataSourceProxyConfigurationProperties {
   /**
@@ -37,9 +37,9 @@ class DataSourceProxyConfigurationProperties {
     /**
      * The name of query logger as it will be seen in the log.
      * <p/>
-     * Default value is <code>'cargotracker.data-source-proxy.queryLogger'</code>.
+     * Default value is <code>'klokwrk.data-source-proxy.queryLogger'</code>.
      */
-    String name = "cargotracker.data-source-proxy.queryLogger"
+    String name = "klokwrk.data-source-proxy.queryLogger"
 
     /**
      * SLF4j log level to be used for queryLogger.
@@ -65,9 +65,9 @@ class DataSourceProxyConfigurationProperties {
     /**
      * The name of slow query logger as it will be seen in the log.
      * <p/>
-     * Default value is <code>'cargotracker.datasource-proxy.slowQueryLogger'</code>.
+     * Default value is <code>'klokwrk.datasource-proxy.slowQueryLogger'</code>.
      */
-    String name = "cargotracker.data-source-proxy.slowQueryLogger"
+    String name = "klokwrk.data-source-proxy.slowQueryLogger"
 
     /**
      * SLF4j log level to be used for slowQueryLogger.

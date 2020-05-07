@@ -1,4 +1,4 @@
-package net.croz.cargotracker.infrastructure.library.datasourceproxy.springboot
+package org.klokwrk.lib.datasourceproxy.springboot
 
 import groovy.transform.CompileStatic
 import net.ttddyy.dsproxy.support.ProxyDataSource
@@ -26,8 +26,8 @@ import javax.sql.DataSource
  * This will configure and enable datasource-proxy's "query logging" and "slow query logging" features. Some aspects of these datasource-proxy features can be configured via
  * {@link DataSourceProxyConfigurationProperties} configuration properties. Usually, it is enough to configure appropriate loggers like in following example:
  * <pre>
- * logging.level.cargotracker.data-source-proxy.queryLogger: DEBUG
- * logging.level.cargotracker.data-source-proxy.slowQueryLogger: WARN
+ * logging.level.klokwrk.data-source-proxy.queryLogger: DEBUG
+ * logging.level.klokwrk.data-source-proxy.slowQueryLogger: WARN
  * </pre>
  * For more configuration options, take a look at the documentation of {@link DataSourceProxyConfigurationProperties}.
  * <p/>
@@ -35,10 +35,10 @@ import javax.sql.DataSource
  * queries, like in polling-a-database scenarios. Queries that need to be filtered out are specified as a list of regular expressions. When query string matches regular expression, it won't be
  * present in the log output. For example, following configuration will prevent logging of any updates to the <code>token_entry</code> table.
  * <pre>
- * cargotracker.data-source-proxy.query-logger.filtering-out-regular-expression-list: >
+ * klokwrk.data-source-proxy.query-logger.filtering-out-regular-expression-list: >
  *   ^update token_entry.*$
  * </pre>
- * This 'filterable query logging' feature is implemented in <code>net.croz.cargotracker.infrastructure.library.datasourceproxy.Slf4jFilterableQueryLoggingListener</code>.
+ * This 'filterable query logging' feature is implemented in <code>org.klokwrk.lib.datasourceproxy.Slf4jFilterableQueryLoggingListener</code>.
  *
  * @see DataSourceProxyConfigurationProperties
  * @see DataSourceProxyInterceptor
