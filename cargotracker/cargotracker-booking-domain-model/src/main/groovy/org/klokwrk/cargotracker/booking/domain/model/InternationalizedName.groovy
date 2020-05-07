@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.domain.model
+package org.klokwrk.cargotracker.booking.domain.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.Immutable

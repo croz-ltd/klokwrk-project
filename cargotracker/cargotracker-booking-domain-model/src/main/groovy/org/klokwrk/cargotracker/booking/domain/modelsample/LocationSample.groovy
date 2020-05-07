@@ -1,7 +1,7 @@
-package net.croz.cargotracker.booking.domain.modelsample
+package org.klokwrk.cargotracker.booking.domain.modelsample
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.booking.domain.model.Location
+import org.klokwrk.cargotracker.booking.domain.model.Location
 
 @SuppressWarnings("DuplicateStringLiteral")
 @CompileStatic

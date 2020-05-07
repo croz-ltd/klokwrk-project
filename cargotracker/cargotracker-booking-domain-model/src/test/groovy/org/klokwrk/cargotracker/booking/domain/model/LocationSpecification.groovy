@@ -1,6 +1,6 @@
-package net.croz.cargotracker.booking.domain.model
+package org.klokwrk.cargotracker.booking.domain.model
 
-import net.croz.cargotracker.booking.domain.modelsample.LocationSample
+import org.klokwrk.cargotracker.booking.domain.modelsample.LocationSample
 import spock.lang.Specification
 import spock.lang.Unroll
 

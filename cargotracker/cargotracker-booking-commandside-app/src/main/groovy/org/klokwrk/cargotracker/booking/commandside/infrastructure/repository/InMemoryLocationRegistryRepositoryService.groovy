@@ -1,9 +1,9 @@
 package org.klokwrk.cargotracker.booking.commandside.infrastructure.repository
 
 import groovy.transform.CompileStatic
-import net.croz.cargotracker.booking.domain.model.Location
-import net.croz.cargotracker.booking.domain.modelsample.LocationSample
 import org.klokwrk.cargotracker.booking.commandside.application.repository.LocationRegistryRepositoryService
+import org.klokwrk.cargotracker.booking.domain.model.Location
+import org.klokwrk.cargotracker.booking.domain.modelsample.LocationSample
 import org.springframework.stereotype.Service
 
 // TODO dmurat: implement real registry
