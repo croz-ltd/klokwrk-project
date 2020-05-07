@@ -1,13 +1,13 @@
-package net.croz.cargotracker.booking.queryside.interfaces.web.controller
+package org.klokwrk.cargotracker.booking.queryside.interfaces.web.controller
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.booking.boundary.api.queryside.conversation.CargoSummaryQueryRequest
 import net.croz.cargotracker.booking.boundary.api.queryside.conversation.CargoSummaryQueryResponse
-import net.croz.cargotracker.booking.queryside.application.CargoBookingQueryApplicationService
-import net.croz.cargotracker.booking.queryside.interfaces.web.conversation.CargoSummaryQueryWebRequest
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationRequest
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.OperationResponse
 import net.croz.cargotracker.infrastructure.project.boundary.api.conversation.metadata.MetaDataConstant
+import org.klokwrk.cargotracker.booking.queryside.application.CargoBookingQueryApplicationService
+import org.klokwrk.cargotracker.booking.queryside.interfaces.web.conversation.CargoSummaryQueryWebRequest
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping

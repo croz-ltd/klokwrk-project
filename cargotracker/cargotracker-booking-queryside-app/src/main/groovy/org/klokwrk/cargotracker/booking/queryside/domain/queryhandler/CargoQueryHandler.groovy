@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.queryside.domain.queryhandler
+package org.klokwrk.cargotracker.booking.queryside.domain.queryhandler
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.booking.boundary.api.queryside.conversation.CargoSummaryQueryRequest

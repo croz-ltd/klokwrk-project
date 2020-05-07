@@ -1,4 +1,4 @@
-package net.croz.cargotracker.booking.queryside.infrastructure.springbootconfig
+package org.klokwrk.cargotracker.booking.queryside.infrastructure.springbootconfig
 
 import groovy.transform.CompileStatic
 import net.croz.cargotracker.infrastructure.library.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
