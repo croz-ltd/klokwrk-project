@@ -1,4 +1,4 @@
-CREATE ALIAS SLEEP FOR "net.croz.cargotracker.infrastructure.library.datasourceproxy.springboot.H2Functions.sleep";
+CREATE ALIAS SLEEP FOR "org.klokwrk.lib.datasourceproxy.springboot.H2Functions.sleep";
 
 CREATE TABLE IF NOT EXISTS person (
   id integer not null auto_increment,
