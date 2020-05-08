@@ -69,7 +69,7 @@ Applications can also be started from CLI, but it might be preferable to use UI.
 
     ![](./support/docs/images/01-startup-02-queryside-projection-bootRun.jpg)
 
-- Start queryside projection app by double-clicking on its `bootRun` Gradle task and wait until it is started up:
+- Start queryside app by double-clicking on its `bootRun` Gradle task and wait until it is started up:
 
     ![](./support/docs/images/01-startup-03-queryside-bootRun.jpg)
 
