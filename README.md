@@ -3,7 +3,9 @@ Environment:
 - OSX (should work with any desktop Linux distro and with Windows with appropriate bash-shell like git-bash)
 - JDK 11 (should work with JDK 8)
 - Gradle 6.3.0
-- IDEA Ultimate 2020.1.1 (should work with IDEA Community).
+- IDEA Ultimate 2020.1.1 (should work with IDEA Community except for http client which is part of the Ultimate edition)
+- Docker
+- httpie
 
 ### From the shell
 Open your shell at the project root and execute following commands (shell-1):
@@ -11,9 +13,9 @@ Open your shell at the project root and execute following commands (shell-1):
     cd support/docker
     ./dockerComposeUpInfrastructure.sh
 
-Open another shell at the project root and execute following commands (shell-2):
+Open another shell (shell-2) at the project root and execute following command (generating Groovydoc is skipped to speed things up)
 
-    ./gradlew clean assemble
+    ./gradlew clean assemble -x groovydocJar
 
 There are three apps that needs to be run, and for each open a new shell at the project root (shell-3, shell-4 and shell-5)
 
