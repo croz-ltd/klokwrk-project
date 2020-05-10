@@ -15,6 +15,7 @@ class CargoBookingCommandAssembler {
     Map metadataMap = [
         (MetaDataConstant.INBOUND_CHANNEL_NAME_KEY): "booking",
         (MetaDataConstant.INBOUND_CHANNEL_TYPE_KEY): "web",
+        // TODO dmurat: insert here more elaborate mechanism for detecting client IP. Good reference: https://www.marcobehler.com/guides/spring-mvc#_how_to_get_the_users_ip_address
         (MetaDataConstant.INBOUND_CHANNEL_REQUEST_IDENTIFIER_KEY): httpServletRequest.remoteAddr
     ]
 
