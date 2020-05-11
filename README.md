@@ -1,3 +1,7 @@
+## Project information
+Project Klokwrk is in its incubation phase so please note that significant changes are possible during a couple of initial releases. We encourage you to take a look, try it out and give us your
+feedback and ideas for future development. After a couple of first releases we will also enable Issues. Until then, please feel free to send us your feedback directly via email.
+
 ## Starting up and trying the whole thing
 Environment:
 - OSX (should work with any desktop Linux distro and with Windows with appropriate bash-shell like git-bash)
