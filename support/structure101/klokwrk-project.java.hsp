@@ -89,11 +89,11 @@
               </cell>
               <cell name="cargotracker-lib-web" pattern="cargotracker-lib-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
+            <row>
+              <cell name="cargotracker-lib-boundary-api" pattern="cargotracker-lib-boundary-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
           </grid>
         </cell>
-      </row>
-      <row>
-        <cell name="cargotracker-lib-boundary-api" pattern="cargotracker-lib-boundary-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
       </row>
       <row>
         <cell name="klokwrk-lib" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
