@@ -16,7 +16,6 @@
   <property name="show-needs-to-compile" value="false" />
   <classpath>
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-axon-api/build/classes/groovy/main" module="cargotracker-booking-axon-api" displaymodule="cargotracker-booking-axon-api" />
-    <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-boundary-api/build/classes/groovy/main" module="cargotracker-booking-boundary-api" displaymodule="cargotracker-booking-boundary-api" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-commandside-app/build/classes/groovy/main" module="cargotracker-booking-commandside-app" displaymodule="cargotracker-booking-commandside-app" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model/build/classes/groovy/main" module="cargotracker-booking-domain-model" displaymodule="cargotracker-booking-domain-model" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-app/build/classes/groovy/main" module="cargotracker-booking-queryside-app" displaymodule="cargotracker-booking-queryside-app" />
@@ -52,16 +51,7 @@
               <cell name="cargotracker-booking-queryside-app" pattern="cargotracker-booking-queryside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
             <row>
-              <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
-                <grid>
-                  <row>
-                    <cell name="cargotracker-booking-axon-api" pattern="cargotracker-booking-axon-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" bgcolor="204,204,204" />
-                  </row>
-                  <row>
-                    <cell name="cargotracker-booking-boundary-api" pattern="cargotracker-booking-boundary-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                  </row>
-                </grid>
-              </cell>
+              <cell name="cargotracker-booking-axon-api" pattern="cargotracker-booking-axon-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
               <cell name="cargotracker-booking-queryside-rdbms-model" pattern="cargotracker-booking-queryside-rdbms-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
             <row>
