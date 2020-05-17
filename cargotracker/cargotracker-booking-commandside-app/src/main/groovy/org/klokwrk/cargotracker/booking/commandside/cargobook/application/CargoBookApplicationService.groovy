@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service
 
 @Service
 @CompileStatic
-class CargoBookingApplicationService {
-  private final CargoBookingFactoryService cargoBookingFactoryService
+class CargoBookApplicationService {
+  private final CargoBookFactoryService cargoBookingFactoryService
   private final CommandGatewayAdapter commandGatewayAdapter
 
-  CargoBookingApplicationService(CommandGateway commandGateway, CargoBookingFactoryService cargoBookingFactoryService) {
+  CargoBookApplicationService(CommandGateway commandGateway, CargoBookFactoryService cargoBookingFactoryService) {
     this.commandGatewayAdapter = new CommandGatewayAdapter(commandGateway)
     this.cargoBookingFactoryService = cargoBookingFactoryService
   }

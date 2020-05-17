@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service
 
 @Service
 @CompileStatic
-class CargoBookingFactoryService {
+class CargoBookFactoryService {
   private final LocationRegistryRepositoryService locationRegistryRepositoryService
 
-  CargoBookingFactoryService(LocationRegistryRepositoryService locationRegistryRepositoryService) {
+  CargoBookFactoryService(LocationRegistryRepositoryService locationRegistryRepositoryService) {
     this.locationRegistryRepositoryService = locationRegistryRepositoryService
   }
 

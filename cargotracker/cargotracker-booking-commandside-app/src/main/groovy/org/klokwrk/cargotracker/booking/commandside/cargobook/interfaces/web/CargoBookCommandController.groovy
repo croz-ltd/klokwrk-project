@@ -2,7 +2,7 @@ package org.klokwrk.cargotracker.booking.commandside.cargobook.interfaces.web
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.commandside.cargobook.boundary.api.conversation.CargoBookResponse
-import org.klokwrk.cargotracker.booking.commandside.cargobook.application.CargoBookingApplicationService
+import org.klokwrk.cargotracker.booking.commandside.cargobook.application.CargoBookApplicationService
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -14,16 +14,16 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 @RequestMapping("/cargo-booking-command")
 @CompileStatic
-class CargoBookingCommandController {
-  private final CargoBookingApplicationService cargoBookingApplicationService
+class CargoBookCommandController {
+  private final CargoBookApplicationService cargoBookingApplicationService
 
-  CargoBookingCommandController(CargoBookingApplicationService cargoBookingApplicationService) {
+  CargoBookCommandController(CargoBookApplicationService cargoBookingApplicationService) {
     this.cargoBookingApplicationService = cargoBookingApplicationService
   }
 
   @PostMapping("/cargo-book")
   OperationResponse<CargoBookResponse> cargoBook(@RequestBody CargoBookWebRequest cargoBookWebRequest, HttpServletRequest httpServletRequest) {
-    OperationResponse<CargoBookResponse> cargoBookResponse = cargoBookingApplicationService.cargoBook(CargoBookingCommandAssembler.toCargoBookRequest(cargoBookWebRequest, httpServletRequest))
+    OperationResponse<CargoBookResponse> cargoBookResponse = cargoBookingApplicationService.cargoBook(CargoBookCommandAssembler.toCargoBookRequest(cargoBookWebRequest, httpServletRequest))
     return cargoBookResponse
   }
 }

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest
 
 // Not really needed since implementation is very simple and be easily inlined into controller. However, it demonstrates where web-to-facade assemblers should live and how to operate.
 @CompileStatic
-class CargoBookingCommandAssembler {
+class CargoBookCommandAssembler {
   static OperationRequest<CargoBookRequest> toCargoBookRequest(CargoBookWebRequest cargoBookWebRequest, HttpServletRequest httpServletRequest) {
     Map metadataMap = [
         (MetaDataConstant.INBOUND_CHANNEL_NAME_KEY): "booking",
