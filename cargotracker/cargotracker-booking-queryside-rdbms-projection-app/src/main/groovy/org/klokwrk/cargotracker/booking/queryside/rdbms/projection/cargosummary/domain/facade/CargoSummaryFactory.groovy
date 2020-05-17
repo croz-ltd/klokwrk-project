@@ -3,7 +3,7 @@ package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.cargosummary
 import groovy.transform.CompileStatic
 import org.axonframework.eventhandling.DomainEventMessage
 import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookedEvent
-import org.klokwrk.cargotracker.booking.queryside.rdbms.domain.querymodel.CargoSummaryQueryEntity
+import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.domain.querymodel.CargoSummaryQueryEntity
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.metadata.MetaDataConstant
 
 import static org.klokwrk.lang.groovy.constant.CommonConstants.NOT_AVAILABLE

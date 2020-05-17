@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.booking.queryside.rdbms.domain.querymodel
+package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.domain.querymodel
 
 import org.springframework.data.jpa.repository.JpaRepository
 
