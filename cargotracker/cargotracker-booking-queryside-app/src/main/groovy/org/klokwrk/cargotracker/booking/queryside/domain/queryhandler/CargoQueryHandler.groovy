@@ -2,8 +2,8 @@ package org.klokwrk.cargotracker.booking.queryside.domain.queryhandler
 
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryHandler
-import org.klokwrk.cargotracker.booking.boundary.api.queryside.conversation.CargoSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.boundary.api.queryside.conversation.CargoSummaryQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.cargosummary.boundary.api.conversation.CargoSummaryQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.cargosummary.boundary.api.conversation.CargoSummaryQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.rdbms.domain.querymodel.CargoSummaryQueryEntity
 import org.klokwrk.cargotracker.booking.queryside.rdbms.domain.querymodel.CargoSummaryQueryEntityRepository
 import org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.QueryHandlerTrait

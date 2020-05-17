@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.booking.boundary.api.queryside.conversation
+package org.klokwrk.cargotracker.booking.commandside.cargobook.boundary.api.conversation
 
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
@@ -6,12 +6,11 @@ import groovy.transform.PropertyOptions
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
-@MapConstructor(noArg = true)
+@MapConstructor
 @CompileStatic
-class CargoSummaryQueryResponse {
+class CargoBookResponse {
   String aggregateIdentifier
-  Long aggregateSequenceNumber
 
-  String originLocation
-  String destinationLocation
+  Map<String, ?> originLocation
+  Map<String, ?> destinationLocation
 }

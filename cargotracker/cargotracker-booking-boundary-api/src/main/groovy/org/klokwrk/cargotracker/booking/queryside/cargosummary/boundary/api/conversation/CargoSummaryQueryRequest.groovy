@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.booking.boundary.api.queryside.conversation
+package org.klokwrk.cargotracker.booking.queryside.cargosummary.boundary.api.conversation
 
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
