@@ -1,7 +1,7 @@
 package org.klokwrk.cargotracker.booking.commandside.infrastructure.repository
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.commandside.application.repository.LocationRegistryRepositoryService
+import org.klokwrk.cargotracker.booking.commandside.domain.repository.LocationRegistryRepositoryService
 import org.klokwrk.cargotracker.booking.domain.model.Location
 import org.klokwrk.cargotracker.booking.domain.modelsample.LocationSample
 import org.springframework.stereotype.Service

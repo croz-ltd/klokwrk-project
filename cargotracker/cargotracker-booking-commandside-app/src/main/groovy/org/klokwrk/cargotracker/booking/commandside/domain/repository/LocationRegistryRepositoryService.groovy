@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.booking.commandside.application.repository
+package org.klokwrk.cargotracker.booking.commandside.domain.repository
 
 import org.klokwrk.cargotracker.booking.domain.model.Location
 import org.springframework.stereotype.Service
