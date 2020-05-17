@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.booking.queryside.cargosummary.rdbms.projection.application
+package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.cargosummary.facade
 
 import groovy.transform.CompileStatic
 import org.axonframework.eventhandling.DomainEventMessage
