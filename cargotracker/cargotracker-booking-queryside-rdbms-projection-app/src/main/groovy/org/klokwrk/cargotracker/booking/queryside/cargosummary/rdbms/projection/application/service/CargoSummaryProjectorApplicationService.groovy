@@ -5,7 +5,7 @@ import org.axonframework.eventhandling.DomainEventMessage
 import org.axonframework.eventhandling.EventHandler
 import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.event.CargoBookedEvent
 import org.klokwrk.cargotracker.booking.queryside.rdbms.domain.querymodel.CargoSummaryQueryEntityRepository
-import org.klokwrk.cargotracker.booking.queryside.cargosummary.rdbms.projection.application.factory.CargoSummaryFactoryService
+import org.klokwrk.cargotracker.booking.queryside.cargosummary.rdbms.projection.application.factory.CargoSummaryFactory
 import org.springframework.stereotype.Service
 
 import javax.transaction.Transactional
@@ -13,15 +13,15 @@ import javax.transaction.Transactional
 @Service
 @Transactional
 @CompileStatic
-class CargoSummaryProjectorService {
+class CargoSummaryProjectorApplicationService {
   private final CargoSummaryQueryEntityRepository cargoSummaryQueryEntityRepository
 
-  CargoSummaryProjectorService(CargoSummaryQueryEntityRepository cargoSummaryQueryEntityRepository) {
+  CargoSummaryProjectorApplicationService(CargoSummaryQueryEntityRepository cargoSummaryQueryEntityRepository) {
     this.cargoSummaryQueryEntityRepository = cargoSummaryQueryEntityRepository
   }
 
   @EventHandler
   void onCargoBookedEvent(CargoBookedEvent cargoBookedEvent, DomainEventMessage domainEventMessage) {
-    cargoSummaryQueryEntityRepository.save(CargoSummaryFactoryService.createCargoSummaryQueryEntity(cargoBookedEvent, domainEventMessage))
+    cargoSummaryQueryEntityRepository.save(CargoSummaryFactory.createCargoSummaryQueryEntity(cargoBookedEvent, domainEventMessage))
   }
 }

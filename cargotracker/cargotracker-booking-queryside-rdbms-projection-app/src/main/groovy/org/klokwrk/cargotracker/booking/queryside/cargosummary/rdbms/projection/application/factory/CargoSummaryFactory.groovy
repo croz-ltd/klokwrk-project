@@ -9,7 +9,7 @@ import org.klokwrk.cargotracker.lib.boundary.api.conversation.metadata.MetaDataC
 import static org.klokwrk.lang.groovy.constant.CommonConstants.NOT_AVAILABLE
 
 @CompileStatic
-class CargoSummaryFactoryService {
+class CargoSummaryFactory {
   static CargoSummaryQueryEntity createCargoSummaryQueryEntity(CargoBookedEvent cargoBookedEvent, DomainEventMessage domainEventMessage) {
     // TODO dmurat: automate populating persistent entity
     String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
