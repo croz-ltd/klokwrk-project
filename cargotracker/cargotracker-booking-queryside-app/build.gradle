@@ -12,7 +12,6 @@ springBoot {
 }
 
 dependencies {
-  implementation project(":cargotracker-booking-boundary-api")
   implementation project(":cargotracker-booking-queryside-rdbms-model")
   implementation project(":cargotracker-lib-axon-cqrs")
   implementation project(":cargotracker-lib-axon-logging")
