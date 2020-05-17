@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.event
+package org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor

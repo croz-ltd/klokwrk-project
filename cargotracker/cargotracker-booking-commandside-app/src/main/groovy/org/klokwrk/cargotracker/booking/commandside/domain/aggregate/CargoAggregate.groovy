@@ -7,8 +7,8 @@ import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.messaging.MetaData
 import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.spring.stereotype.Aggregate
-import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.command.CargoBookCommand
-import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.event.CargoBookedEvent
+import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookCommand
+import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookedEvent
 import org.klokwrk.cargotracker.booking.domain.model.Location
 import org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.CommandHandlerTrait
 import org.klokwrk.cargotracker.lib.boundary.api.exceptional.exception.CommandException
