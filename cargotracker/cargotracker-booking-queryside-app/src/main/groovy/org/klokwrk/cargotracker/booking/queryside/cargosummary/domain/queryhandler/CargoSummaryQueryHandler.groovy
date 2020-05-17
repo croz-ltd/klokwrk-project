@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.booking.queryside.domain.queryhandler
+package org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.queryhandler
 
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryHandler
