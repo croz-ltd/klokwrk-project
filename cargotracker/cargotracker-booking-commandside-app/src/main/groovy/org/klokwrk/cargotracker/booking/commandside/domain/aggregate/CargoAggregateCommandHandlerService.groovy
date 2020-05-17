@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.booking.commandside.domain.commandhandler
+package org.klokwrk.cargotracker.booking.commandside.domain.aggregate
 
 import groovy.transform.CompileStatic
 import org.axonframework.commandhandling.CommandHandler
@@ -6,7 +6,6 @@ import org.axonframework.commandhandling.CommandMessage
 import org.axonframework.modelling.command.Aggregate
 import org.axonframework.modelling.command.Repository
 import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookCommand
-import org.klokwrk.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
 import org.springframework.stereotype.Service
 
 @Service
