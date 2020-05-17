@@ -3,8 +3,8 @@ package org.klokwrk.cargotracker.booking.commandside.cargobook.application
 import groovy.transform.CompileStatic
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookCommand
-import org.klokwrk.cargotracker.booking.commandside.cargobook.boundary.api.conversation.CargoBookRequest
-import org.klokwrk.cargotracker.booking.commandside.cargobook.boundary.api.conversation.CargoBookResponse
+import org.klokwrk.cargotracker.booking.commandside.cargobook.boundary.CargoBookRequest
+import org.klokwrk.cargotracker.booking.commandside.cargobook.boundary.CargoBookResponse
 import org.klokwrk.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.lib.axon.cqrs.commandgateway.CommandGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationRequest
