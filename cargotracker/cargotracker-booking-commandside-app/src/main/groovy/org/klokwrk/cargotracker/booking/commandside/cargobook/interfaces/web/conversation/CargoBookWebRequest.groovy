@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.booking.commandside.interfaces.web.conversation
+package org.klokwrk.cargotracker.booking.commandside.cargobook.interfaces.web.conversation
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.commandside.cargobook.boundary.api.conversation.CargoBookRequest

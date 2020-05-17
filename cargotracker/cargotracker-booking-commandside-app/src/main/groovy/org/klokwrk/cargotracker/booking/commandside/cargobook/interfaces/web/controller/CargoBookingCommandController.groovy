@@ -1,10 +1,10 @@
-package org.klokwrk.cargotracker.booking.commandside.interfaces.web.controller
+package org.klokwrk.cargotracker.booking.commandside.cargobook.interfaces.web.controller
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.commandside.cargobook.boundary.api.conversation.CargoBookResponse
-import org.klokwrk.cargotracker.booking.commandside.application.service.CargoBookingApplicationService
-import org.klokwrk.cargotracker.booking.commandside.interfaces.web.assembler.CargoBookingCommandAssembler
-import org.klokwrk.cargotracker.booking.commandside.interfaces.web.conversation.CargoBookWebRequest
+import org.klokwrk.cargotracker.booking.commandside.cargobook.application.service.CargoBookingApplicationService
+import org.klokwrk.cargotracker.booking.commandside.cargobook.interfaces.web.assembler.CargoBookingCommandAssembler
+import org.klokwrk.cargotracker.booking.commandside.cargobook.interfaces.web.conversation.CargoBookWebRequest
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
