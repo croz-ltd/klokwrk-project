@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @SuppressWarnings("DuplicateStringLiteral")
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = ["org.klokwrk.cargotracker.booking.queryside.rdbms.projection.domain.querymodel"])
-@EntityScan(basePackages = ["org.axonframework.eventhandling.tokenstore.jpa", "org.klokwrk.cargotracker.booking.queryside.rdbms.domain.querymodel"])
+@EntityScan(basePackages = ["org.axonframework.eventhandling.tokenstore.jpa", "org.klokwrk.cargotracker.booking.queryside.rdbms.projection.domain.querymodel"])
 @CompileStatic
 class BookingQuerySideRdbmsProjectionApplication {
   static void main(String[] args) {
