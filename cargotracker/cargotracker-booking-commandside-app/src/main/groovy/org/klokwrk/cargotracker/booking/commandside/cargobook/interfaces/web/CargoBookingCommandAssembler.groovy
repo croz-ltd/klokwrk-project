@@ -1,8 +1,7 @@
-package org.klokwrk.cargotracker.booking.commandside.cargobook.interfaces.web.assembler
+package org.klokwrk.cargotracker.booking.commandside.cargobook.interfaces.web
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.commandside.cargobook.boundary.api.conversation.CargoBookRequest
-import org.klokwrk.cargotracker.booking.commandside.cargobook.interfaces.web.conversation.CargoBookWebRequest
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.metadata.MetaDataConstant
 

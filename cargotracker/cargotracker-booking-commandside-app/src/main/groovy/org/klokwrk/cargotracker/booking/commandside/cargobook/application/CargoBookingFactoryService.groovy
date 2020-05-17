@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.booking.commandside.cargobook.application.factory
+package org.klokwrk.cargotracker.booking.commandside.cargobook.application
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.command.CargoBookCommand
