@@ -1,9 +1,9 @@
 package org.klokwrk.cargotracker.booking.queryside.cargosummary.interfaces.web
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.queryside.cargosummary.facade.CargoSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.queryside.cargosummary.facade.CargoSummaryQueryResponse
-import org.klokwrk.cargotracker.booking.queryside.cargosummary.facade.CargoSummaryQueryFacadeService
+import org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.facade.CargoSummaryQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.facade.CargoSummaryQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.facade.CargoSummaryQueryFacadeService
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.metadata.MetaDataConstant

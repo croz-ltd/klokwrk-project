@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.booking.queryside.cargosummary.facade
+package org.klokwrk.cargotracker.booking.commandside.cargobook.domain.facade
 
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
@@ -8,9 +8,8 @@ import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
-class CargoSummaryQueryResponse {
+class CargoBookRequest {
   String aggregateIdentifier
-  Long aggregateSequenceNumber
 
   String originLocation
   String destinationLocation
