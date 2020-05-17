@@ -3,7 +3,7 @@ package org.klokwrk.cargotracker.booking.queryside.cargosummary.interfaces.web
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.queryside.cargosummary.boundary.CargoSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.cargosummary.boundary.CargoSummaryQueryResponse
-import org.klokwrk.cargotracker.booking.queryside.cargosummary.application.CargoSummaryQueryApplicationService
+import org.klokwrk.cargotracker.booking.queryside.cargosummary.application.CargoSummaryQueryFacadeService
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.metadata.MetaDataConstant
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @CompileStatic
 class CargoSummaryQueryController {
-  private final CargoSummaryQueryApplicationService cargoBookingQueryApplicationService
+  private final CargoSummaryQueryFacadeService cargoBookingQueryApplicationService
 
-  CargoSummaryQueryController(CargoSummaryQueryApplicationService cargoBookingQueryApplicationService) {
+  CargoSummaryQueryController(CargoSummaryQueryFacadeService cargoBookingQueryApplicationService) {
     this.cargoBookingQueryApplicationService = cargoBookingQueryApplicationService
   }
 

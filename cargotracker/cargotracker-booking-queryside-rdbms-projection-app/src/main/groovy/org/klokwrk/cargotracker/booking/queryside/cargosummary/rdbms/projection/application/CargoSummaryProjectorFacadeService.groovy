@@ -12,10 +12,10 @@ import javax.transaction.Transactional
 @Service
 @Transactional
 @CompileStatic
-class CargoSummaryProjectorApplicationService {
+class CargoSummaryProjectorFacadeService {
   private final CargoSummaryQueryEntityRepository cargoSummaryQueryEntityRepository
 
-  CargoSummaryProjectorApplicationService(CargoSummaryQueryEntityRepository cargoSummaryQueryEntityRepository) {
+  CargoSummaryProjectorFacadeService(CargoSummaryQueryEntityRepository cargoSummaryQueryEntityRepository) {
     this.cargoSummaryQueryEntityRepository = cargoSummaryQueryEntityRepository
   }
 

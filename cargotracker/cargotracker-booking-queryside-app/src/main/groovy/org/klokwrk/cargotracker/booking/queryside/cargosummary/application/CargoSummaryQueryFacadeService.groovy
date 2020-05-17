@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service
 
 @Service
 @CompileStatic
-class CargoSummaryQueryApplicationService {
+class CargoSummaryQueryFacadeService {
   private final QueryGatewayAdapter queryGatewayAdapter
 
-  CargoSummaryQueryApplicationService(QueryGateway queryGateway) {
+  CargoSummaryQueryFacadeService(QueryGateway queryGateway) {
     this.queryGatewayAdapter = new QueryGatewayAdapter(queryGateway)
   }
 
