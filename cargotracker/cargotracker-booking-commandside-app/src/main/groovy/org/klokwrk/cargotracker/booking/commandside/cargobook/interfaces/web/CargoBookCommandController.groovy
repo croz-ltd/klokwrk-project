@@ -1,8 +1,8 @@
 package org.klokwrk.cargotracker.booking.commandside.cargobook.interfaces.web
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.commandside.cargobook.boundary.CargoBookResponse
-import org.klokwrk.cargotracker.booking.commandside.cargobook.application.CargoBookFacadeService
+import org.klokwrk.cargotracker.booking.commandside.cargobook.facade.CargoBookResponse
+import org.klokwrk.cargotracker.booking.commandside.cargobook.facade.CargoBookFacadeService
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

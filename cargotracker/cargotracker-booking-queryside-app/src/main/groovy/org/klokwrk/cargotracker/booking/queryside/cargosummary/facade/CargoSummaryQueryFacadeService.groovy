@@ -1,9 +1,7 @@
-package org.klokwrk.cargotracker.booking.queryside.cargosummary.application
+package org.klokwrk.cargotracker.booking.queryside.cargosummary.facade
 
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryGateway
-import org.klokwrk.cargotracker.booking.queryside.cargosummary.boundary.CargoSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.queryside.cargosummary.boundary.CargoSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.axon.cqrs.querygateway.QueryGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
