@@ -1,5 +1,5 @@
 ### cargotracker-booking-queryside, cargo-summary-query, success, hr
-POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-booking-query/cargo-summary-query
+POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-summary
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8
@@ -10,7 +10,7 @@ Accept-Language: hr-HR
 }
 
 ### cargotracker-booking-queryside, cargo-summary-query, success, en
-POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-booking-query/cargo-summary-query
+POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-summary
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8
@@ -21,7 +21,7 @@ Accept-Language: en
 }
 
 ### cargotracker-booking-queryside, cargo-summary-query, failure, hr
-POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-booking-query/cargo-summary-query
+POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-summary
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8
@@ -32,7 +32,7 @@ Accept-Language: hr-HR
 }
 
 ### cargotracker-booking-queryside, cargo-summary-query, failure, en
-POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-booking-query/cargo-summary-query
+POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-summary
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8

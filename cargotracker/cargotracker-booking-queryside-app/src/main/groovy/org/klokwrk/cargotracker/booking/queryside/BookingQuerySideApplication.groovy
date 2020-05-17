@@ -11,8 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
  */
 @SuppressWarnings("DuplicateStringLiteral")
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = ["org.klokwrk.cargotracker.booking.queryside.rdbms.domain.querymodel"])
-@EntityScan(basePackages = ["org.klokwrk.cargotracker.booking.queryside.rdbms.domain.querymodel"])
+@EnableJpaRepositories(basePackages = ["org.klokwrk.cargotracker.booking.queryside.rdbms.projection.domain.querymodel"])
+@EntityScan(basePackages = ["org.klokwrk.cargotracker.booking.queryside.rdbms.projection.domain.querymodel"])
 @CompileStatic
 class BookingQuerySideApplication {
   static void main(String[] args) {

@@ -1,5 +1,5 @@
 ### cargotracker-booking-commandside, cargo-book, success, hr
-POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking-command/cargo-book
+POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-book
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8
@@ -16,7 +16,7 @@ client.global.set("receivedAggregateIdentifier", response.body.payload.aggregate
 %}
 
 ### cargotracker-booking-commandside, cargo-book, success, en
-POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking-command/cargo-book
+POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-book
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8
@@ -33,7 +33,7 @@ client.global.set("receivedAggregateIdentifier", response.body.payload.aggregate
 %}
 
 ### cargotracker-booking-commandside, cargo-book, failure, hr
-POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking-command/cargo-book
+POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-book
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8
@@ -45,7 +45,7 @@ Accept-Language: hr-HR
 }
 
 ### cargotracker-booking-commandside, cargo-book, failure, en
-POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking-command/cargo-book
+POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-book
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8
