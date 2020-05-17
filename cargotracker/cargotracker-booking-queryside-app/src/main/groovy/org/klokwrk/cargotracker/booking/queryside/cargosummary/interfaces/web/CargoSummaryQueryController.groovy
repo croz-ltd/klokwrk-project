@@ -9,11 +9,9 @@ import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.metadata.MetaDataConstant
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/cargo-booking-query")
 @CompileStatic
 class CargoSummaryQueryController {
   private final CargoSummaryQueryApplicationService cargoBookingQueryApplicationService
@@ -22,7 +20,7 @@ class CargoSummaryQueryController {
     this.cargoBookingQueryApplicationService = cargoBookingQueryApplicationService
   }
 
-  @PostMapping("/cargo-summary-query")
+  @PostMapping("/cargo-summary")
   OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(@RequestBody CargoSummaryQueryWebRequest webRequest, Locale locale) {
     OperationResponse<CargoSummaryQueryResponse> cargoSummary = cargoBookingQueryApplicationService.queryCargoSummary(createOperationRequest(webRequest, CargoSummaryQueryRequest, locale))
     return cargoSummary
