@@ -2,8 +2,8 @@ package org.klokwrk.cargotracker.booking.commandside.cargobook.domain.facade
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookCommand
-import org.klokwrk.cargotracker.booking.commandside.domain.repository.LocationRegistryRepositoryService
 import org.klokwrk.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
+import org.klokwrk.cargotracker.booking.commandside.domain.repository.LocationRegistryRepositoryService
 import org.klokwrk.cargotracker.booking.domain.model.Location
 import org.springframework.stereotype.Service
 
