@@ -2,7 +2,7 @@ package org.klokwrk.cargotracker.booking.commandside.cargobook.interfaces.web
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.commandside.cargobook.domain.facade.CargoBookRequest
-import org.klokwrk.cargotracker.lib.boundary.api.metadata.MetaDataConstant
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.constant.MetaDataConstant
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 
 import javax.servlet.http.HttpServletRequest

@@ -4,7 +4,7 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.facade.CargoSummaryQueryFacadeService
 import org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.facade.CargoSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.facade.CargoSummaryQueryResponse
-import org.klokwrk.cargotracker.lib.boundary.api.metadata.MetaDataConstant
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.constant.MetaDataConstant
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.springframework.web.bind.annotation.PostMapping
