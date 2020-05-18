@@ -1,7 +1,7 @@
 package org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler
 
 import org.axonframework.commandhandling.CommandExecutionException
-import org.klokwrk.cargotracker.lib.boundary.api.exceptional.exception.CommandException
+import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.exceptional.violation.ViolationCode
 import org.klokwrk.cargotracker.lib.boundary.api.exceptional.violation.ViolationInfo
 import spock.lang.Specification

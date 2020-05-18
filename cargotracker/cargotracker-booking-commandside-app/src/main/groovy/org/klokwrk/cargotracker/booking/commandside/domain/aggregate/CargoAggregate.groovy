@@ -11,7 +11,7 @@ import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBook
 import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookedEvent
 import org.klokwrk.cargotracker.booking.domain.model.Location
 import org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.CommandHandlerTrait
-import org.klokwrk.cargotracker.lib.boundary.api.exceptional.exception.CommandException
+import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.exceptional.violation.ViolationCode
 import org.klokwrk.cargotracker.lib.boundary.api.exceptional.violation.ViolationInfo
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler

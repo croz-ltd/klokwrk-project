@@ -7,7 +7,7 @@ import org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.facade.Car
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.domain.querymodel.CargoSummaryQueryEntity
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.domain.querymodel.CargoSummaryQueryEntityRepository
 import org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.QueryHandlerTrait
-import org.klokwrk.cargotracker.lib.boundary.api.exceptional.exception.QueryException
+import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.exceptional.violation.ViolationInfo
 import org.springframework.stereotype.Service
 

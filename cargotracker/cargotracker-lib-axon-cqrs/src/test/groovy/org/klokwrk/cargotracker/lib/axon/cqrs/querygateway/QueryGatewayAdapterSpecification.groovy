@@ -6,7 +6,7 @@ import org.axonframework.messaging.responsetypes.ResponseType
 import org.axonframework.queryhandling.QueryExecutionException
 import org.axonframework.queryhandling.QueryGateway
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationRequest
-import org.klokwrk.cargotracker.lib.boundary.api.exceptional.exception.QueryException
+import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
 import spock.lang.Specification
 import spock.lang.Unroll
 
