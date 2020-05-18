@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.lib.web.conversation.metadata
+package org.klokwrk.cargotracker.lib.web.metadata.report
 
 import groovy.transform.CompileStatic
 

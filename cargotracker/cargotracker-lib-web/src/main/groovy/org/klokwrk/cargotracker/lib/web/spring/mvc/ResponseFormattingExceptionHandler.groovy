@@ -5,8 +5,8 @@ import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.report.ResponseMetaDataReportViolationPart
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationCode
-import org.klokwrk.cargotracker.lib.web.conversation.metadata.HttpResponseMetaDataReport
-import org.klokwrk.cargotracker.lib.web.conversation.metadata.HttpResponseMetaDataReportPart
+import org.klokwrk.cargotracker.lib.web.metadata.report.HttpResponseMetaDataReport
+import org.klokwrk.cargotracker.lib.web.metadata.report.HttpResponseMetaDataReportPart
 import org.klokwrk.lib.spring.context.MessageSourceResolvableHelper
 import org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification
 import org.springframework.context.MessageSource
