@@ -2,8 +2,8 @@ package org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler
 
 import org.axonframework.commandhandling.CommandExecutionException
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
-import org.klokwrk.cargotracker.lib.boundary.api.exceptional.violation.ViolationCode
-import org.klokwrk.cargotracker.lib.boundary.api.exceptional.violation.ViolationInfo
+import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationCode
+import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
 import spock.lang.Specification
 
 class CommandHandlerTraitSpecification extends Specification {

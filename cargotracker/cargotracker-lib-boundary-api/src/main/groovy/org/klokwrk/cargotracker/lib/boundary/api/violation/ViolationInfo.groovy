@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.lib.boundary.api.exceptional.violation
+package org.klokwrk.cargotracker.lib.boundary.api.violation
 
 import groovy.transform.CompileStatic
 import groovy.transform.Immutable

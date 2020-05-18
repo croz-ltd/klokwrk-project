@@ -4,7 +4,7 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.metadata.ResponseMetaDataReportViolationPart
 import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
-import org.klokwrk.cargotracker.lib.boundary.api.exceptional.violation.ViolationCode
+import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationCode
 import org.klokwrk.cargotracker.lib.web.conversation.metadata.HttpResponseMetaDataReport
 import org.klokwrk.cargotracker.lib.web.conversation.metadata.HttpResponseMetaDataReportPart
 import org.klokwrk.lib.spring.context.MessageSourceResolvableHelper
