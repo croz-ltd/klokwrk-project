@@ -5,7 +5,7 @@ import org.axonframework.queryhandling.QueryGateway
 import org.klokwrk.cargotracker.lib.axon.cqrs.querygateway.QueryGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
-import org.klokwrk.cargotracker.lib.boundary.api.conversation.metadata.ResponseMetaDataReport
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.ResponseMetaDataReport
 import org.springframework.stereotype.Service
 
 @Service

@@ -2,8 +2,8 @@ package org.klokwrk.cargotracker.lib.web.spring.mvc
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
-import org.klokwrk.cargotracker.lib.boundary.api.conversation.metadata.ResponseMetaDataReportViolationPart
 import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.ResponseMetaDataReportViolationPart
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationCode
 import org.klokwrk.cargotracker.lib.web.conversation.metadata.HttpResponseMetaDataReport
 import org.klokwrk.cargotracker.lib.web.conversation.metadata.HttpResponseMetaDataReportPart

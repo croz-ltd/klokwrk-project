@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.lib.boundary.api.conversation.metadata
+package org.klokwrk.cargotracker.lib.boundary.api.metadata
 
 import groovy.transform.CompileStatic
 

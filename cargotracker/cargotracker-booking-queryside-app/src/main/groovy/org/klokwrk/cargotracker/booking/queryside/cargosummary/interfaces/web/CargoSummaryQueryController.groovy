@@ -6,7 +6,7 @@ import org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.facade.Car
 import org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.facade.CargoSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
-import org.klokwrk.cargotracker.lib.boundary.api.conversation.metadata.MetaDataConstant
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.MetaDataConstant
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
