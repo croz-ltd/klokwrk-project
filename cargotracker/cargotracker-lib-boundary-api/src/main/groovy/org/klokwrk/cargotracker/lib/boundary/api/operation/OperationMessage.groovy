@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.lib.boundary.api.conversation
+package org.klokwrk.cargotracker.lib.boundary.api.operation
 
 /**
  * Defines the basic format of messages exchanged over domain facade boundary.

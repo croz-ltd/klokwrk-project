@@ -3,9 +3,9 @@ package org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.facade
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryGateway
 import org.klokwrk.cargotracker.lib.axon.cqrs.querygateway.QueryGatewayAdapter
-import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationRequest
-import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
-import org.klokwrk.cargotracker.lib.boundary.api.conversation.metadata.ResponseMetaDataReport
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.report.ResponseMetaDataReport
+import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
+import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.springframework.stereotype.Service
 
 @Service

@@ -1,12 +1,12 @@
 package org.klokwrk.cargotracker.lib.web.spring.mvc
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
-import org.klokwrk.cargotracker.lib.boundary.api.conversation.metadata.ResponseMetaDataReportViolationPart
-import org.klokwrk.cargotracker.lib.boundary.api.exceptional.exception.DomainException
-import org.klokwrk.cargotracker.lib.boundary.api.exceptional.violation.ViolationCode
-import org.klokwrk.cargotracker.lib.web.conversation.metadata.HttpResponseMetaDataReport
-import org.klokwrk.cargotracker.lib.web.conversation.metadata.HttpResponseMetaDataReportPart
+import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.report.ResponseMetaDataReportViolationPart
+import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
+import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationCode
+import org.klokwrk.cargotracker.lib.web.metadata.report.HttpResponseMetaDataReport
+import org.klokwrk.cargotracker.lib.web.metadata.report.HttpResponseMetaDataReportHttpPart
 import org.klokwrk.lib.spring.context.MessageSourceResolvableHelper
 import org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification
 import org.springframework.context.MessageSource
@@ -133,8 +133,8 @@ class ResponseFormattingExceptionHandler extends ResponseEntityExceptionHandler 
     return responseMetaDataReportViolationPart
   }
 
-  protected HttpResponseMetaDataReportPart createHttpResponseMetaDataReportPart(HttpStatus httpStatus) {
-    HttpResponseMetaDataReportPart httpResponseMetaDataReportPart = new HttpResponseMetaDataReportPart(
+  protected HttpResponseMetaDataReportHttpPart createHttpResponseMetaDataReportPart(HttpStatus httpStatus) {
+    HttpResponseMetaDataReportHttpPart httpResponseMetaDataReportPart = new HttpResponseMetaDataReportHttpPart(
         status: httpStatus.value().toString(),
         message: httpStatus.reasonPhrase
     )

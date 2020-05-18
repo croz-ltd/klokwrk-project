@@ -1,7 +1,7 @@
-package org.klokwrk.cargotracker.lib.boundary.api.exceptional.exception
+package org.klokwrk.cargotracker.lib.boundary.api.exception
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.boundary.api.exceptional.violation.ViolationInfo
+import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
 
 /**
  * Intended to communicate non-fatal domain conditions that prevent successful fulfillment of the requested operation.

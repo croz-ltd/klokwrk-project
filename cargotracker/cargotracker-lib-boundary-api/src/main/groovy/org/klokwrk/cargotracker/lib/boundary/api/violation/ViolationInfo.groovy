@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.lib.boundary.api.exceptional.violation
+package org.klokwrk.cargotracker.lib.boundary.api.violation
 
 import groovy.transform.CompileStatic
 import groovy.transform.Immutable
@@ -16,7 +16,7 @@ import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
  * <p/>
  * It contains the violation's severity and data structure describing the code of the violation. Both members need to be specified at construction time.
  *
- * @see org.klokwrk.cargotracker.lib.boundary.api.exceptional.exception.DomainException
+ * @see org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
  * @see ViolationCode
  * @see Severity
  */

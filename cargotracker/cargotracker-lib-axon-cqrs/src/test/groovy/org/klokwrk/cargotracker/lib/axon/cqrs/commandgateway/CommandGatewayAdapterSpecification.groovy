@@ -4,7 +4,7 @@ import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.CommandMessage
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.MetaData
-import org.klokwrk.cargotracker.lib.boundary.api.exceptional.exception.CommandException
+import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import spock.lang.Specification
 import spock.lang.Unroll
 
