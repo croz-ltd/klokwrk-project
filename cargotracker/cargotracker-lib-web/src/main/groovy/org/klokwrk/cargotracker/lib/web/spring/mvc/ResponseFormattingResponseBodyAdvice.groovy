@@ -1,7 +1,7 @@
 package org.klokwrk.cargotracker.lib.web.spring.mvc
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
+import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import org.klokwrk.cargotracker.lib.web.conversation.metadata.HttpResponseMetaDataReport
 import org.klokwrk.cargotracker.lib.web.conversation.metadata.HttpResponseMetaDataReportPart

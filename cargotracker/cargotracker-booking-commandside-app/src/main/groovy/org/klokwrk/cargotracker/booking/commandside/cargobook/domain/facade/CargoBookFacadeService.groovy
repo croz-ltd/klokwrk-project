@@ -5,8 +5,8 @@ import org.axonframework.commandhandling.gateway.CommandGateway
 import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookCommand
 import org.klokwrk.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.lib.axon.cqrs.commandgateway.CommandGatewayAdapter
-import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationRequest
-import org.klokwrk.cargotracker.lib.boundary.api.conversation.OperationResponse
+import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
+import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.springframework.stereotype.Service
 
 @Service
