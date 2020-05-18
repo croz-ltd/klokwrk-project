@@ -5,5 +5,5 @@ import org.klokwrk.cargotracker.lib.boundary.api.metadata.report.ResponseMetaDat
 
 @CompileStatic
 class HttpResponseMetaDataReport extends ResponseMetaDataReport {
-  HttpResponseMetaDataReportPart http
+  HttpResponseMetaDataReportHttpPart http
 }
