@@ -43,7 +43,7 @@
   <physical-grid-set sep="." version="5.0.15265">
     <grid name="Workspace spec" enforce="true" locked="true" strict="false">
       <row>
-        <cell name="cargotracker-booking" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+        <cell name="cargotracker-booking" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="255,255,204">
           <grid>
             <row>
               <cell name="cargotracker-booking-commandside-app" pattern="cargotracker-booking-commandside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
@@ -61,7 +61,7 @@
         </cell>
       </row>
       <row>
-        <cell name="cargotracker-lib" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+        <cell name="cargotracker-lib" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="255,255,204">
           <grid>
             <row>
               <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
@@ -86,7 +86,7 @@
         </cell>
       </row>
       <row>
-        <cell name="klokwrk-lib" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+        <cell name="klokwrk-lib" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="255,255,204">
           <grid>
             <row>
               <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
@@ -116,7 +116,13 @@
         </cell>
       </row>
       <row>
-        <cell name="klokwrk-lang-groovy" pattern="klokwrk-lang-groovy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+        <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="255,255,204">
+          <grid>
+            <row>
+              <cell name="klokwrk-lang-groovy" pattern="klokwrk-lang-groovy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+          </grid>
+        </cell>
       </row>
       <description>Top-level breakout</description>
     </grid>
