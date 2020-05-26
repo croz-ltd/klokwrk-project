@@ -1,6 +1,6 @@
 # Project Klokwrk
-Project Klokwrk is envisioned as a showcase and blueprint for implementing elaborated distributed systems on JVM. It should also serve as a playground for incubating reusable libraries useful on its
-own.
+Project Klokwrk is envisioned at [CROZ](https://croz.net/) as a showcase and blueprint for implementing elaborated distributed systems on JVM. It should also serve as a playground for incubating
+reusable libraries useful on its own.
 
 The vision behind Klokwrk could be expressed in different ways, but essentially we could put it like this:
 - FOR software architects and teams
