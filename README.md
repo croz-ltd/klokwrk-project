@@ -1,92 +1,35 @@
-## Project information
+# Project Klokwrk
+Project Klokwrk is envisioned at [CROZ](https://croz.net/) as a showcase and blueprint for implementing elaborated distributed systems on JVM. It should also serve as a playground for incubating
+reusable libraries useful on its own.
+
+The vision behind Klokwrk could be expressed in different ways, but essentially we could put it like this:
+- FOR software architects and teams
+- WHO are building microservice systems
+- THE Klokwrk is a showcase and a blueprint
+- THAT demonstrates how to set up the clean technical architecture of a complex system properly
+- UNLIKE many Hello World examples that focus narrowly on just proving the concept
+- OUR PRODUCT represents a holistic foundation/showcase that better addresses real-world challenges by leveraging DDD, Clean Architecture, CQRS & Event Sourcing principles, and relying on the power
+  and expressiveness of Spring Boot, Axon, and Groovy.
+
+Being a showcase, Klokwrk tries to be complete and ready to be used as a starting point in your next project. It brings the initial structures and mechanisms to help you maintain a sustainable design
+from a clean foundation. Klokwrk will strive to demonstrate good practices on non-trivial use cases, accompanying them with appropriate documentation.
+
+At the moment, Klokwrk is in its incubation, and we are still thinking about what would be interesting to include and how. Despite this, we decided to show it to the open-source community. Although
+in its very early stages, we are hoping it might attract some attention and feedback.
+
+A much broader story about Project Klokwrk's vision and roadmap can be found in the following blog posts:
+- [Introducing Project Klokwrk](https://croz.net/news/introducing-project-klokwrk/)
+- [Why Hello World examples are bad for clean architecture?](https://croz.net/news/why-hello-world-examples-are-bad-for-clean-architecture/)
+
+Klokwrk is an open-source project, started by [Damir Murat](https://github.com/dmurat), one of our senior architects, with the active contribution of the broader [team](https://croz.net/) at
+[CROZ](https://github.com/croz-ltd).
+
+## Find out more
+If you are intrigued and want to try it out, take a look at "[Starting up and trying the whole thing](support/docs/startingUp.md)".
+
+For a discussion about principles and ideas behind organizing high-level artifacts of a project, take a look at "[Organizing modules and packages](support/docs/modulesAndPackages.md)".
+
+----------------------
+#### Incubation notice
 Project Klokwrk is in its incubation phase so please note that significant changes are possible during a couple of initial releases. We encourage you to take a look, try it out and give us your
 feedback and ideas for future development. After a couple of first releases we will also enable Issues. Until then, please feel free to send us your feedback directly via email.
-
-## Starting up and trying the whole thing
-Environment:
-- OSX (should work with any desktop Linux distro and with Windows with appropriate bash-shell like git-bash)
-- JDK 11 (should work with JDK 8)
-- Gradle 6.3.0
-- IDEA Ultimate 2020.1.1 (should work with IDEA Community except for http client which is part of the Ultimate edition)
-- Docker
-- httpie
-
-### From the shell
-Open your shell at the project root and execute following commands (shell-1):
-
-    cd support/docker
-    ./dockerComposeUpInfrastructure.sh
-
-Open another shell (shell-2) at the project root and execute following command (generating Groovydoc is skipped to speed things up)
-
-    ./gradlew clean assemble -x groovydocJar
-
-There are three apps that needs to be run, and for each open a new shell at the project root (shell-3, shell-4 and shell-5)
-
-    ./gradlew -p cargotracker/cargotracker-booking-commandside-app bootRun
-    ./gradlew -p cargotracker/cargotracker-booking-queryside-rdbms-projection-app bootRun
-    ./gradlew -p cargotracker/cargotracker-booking-queryside-app bootRun
-
-Going back to shell-2, some HTTP requests can be tried via `httpie`:
-- commandside
-
-      http POST http://localhost:8080/cargotracker-booking-commandside/cargo-booking-command/cargo-book \
-        Content-Type:application/json Accept:application/json Accept-Charset:utf-8 Accept-Language:hr-HR \
-        originLocation=HRRJK \
-        destinationLocation=HRZAG
-
-      http POST http://localhost:8080/cargotracker-booking-commandside/cargo-booking-command/cargo-book \
-        Content-Type:application/json Accept:application/json Accept-Charset:utf-8 Accept-Language:en \
-        originLocation=HRRJK \
-        destinationLocation=HRZAG
-
-- queryside
-
-    To be able to execute queryside request, from the previous commandside output we need to take the value of `aggregateIdentifier` element, and then try some queryside requests. For example:
-
-      http POST http://localhost:8084/cargotracker-booking-queryside/cargo-booking-query/cargo-summary-query \
-        Content-Type:application/json Accept:application/json Accept-Charset:utf-8 Accept-Language:hr-HR \
-        aggregateIdentifier=9e4a13c8-cb74-4a01-9717-f41aaba5428d
-
-      http POST http://localhost:8084/cargotracker-booking-queryside/cargo-booking-query/cargo-summary-query \
-        Content-Type:application/json Accept:application/json Accept-Charset:utf-8 Accept-Language:en \
-        aggregateIdentifier=9e4a13c8-cb74-4a01-9717-f41aaba5428d
-
-
-When finished experimenting, applications can be stopped by `CTRL+C` (shell-3, shell-4, shell-5).
-
-For stopping infrastructural components (shell-1), first we need to stop docker-compose log tailing by `CTRL+C`, and then do some cleanup with `./dockerComposeDownInfrastructure.sh`.
-
-### From IDEA
-Executing HTTP requests from CLI can be cumbersome, and many prefer some more user-friendly tool like Postman. If you develop from IDEA, you can also use IDEA's http client. Although it does not have
-all niceties of Postman it can be really useful for storing series of requests as code artifacts in the project.
-
-First, the project needs to be imported in IDEA as Gradle project. Next, either from the IDEA terminal or from external shell, infrastructural components needs to be started:
-
-    cd support/docker
-    ./dockerComposeUpInfrastructure.sh
-
-Applications can also be started from CLI, but it might be preferable to use UI. Start applications exactly in listed order:
-- Start commandside app by double-clicking on its `bootRun` Gradle task and wait until it is started up:
-
-    ![](./support/docs/images/01-startup-01-commandside-bootRun.jpg)
-
-- Start queryside projection app by double-clicking on its `bootRun` Gradle task and wait until it is started up:
-
-    ![](./support/docs/images/01-startup-02-queryside-projection-bootRun.jpg)
-
-- Start queryside app by double-clicking on its `bootRun` Gradle task and wait until it is started up:
-
-    ![](./support/docs/images/01-startup-03-queryside-bootRun.jpg)
-
-When all applications are started up, we can try executing some requests:
-- Find and open `support/http-request/commandsideRequests.http`.
-- Click on `Run All Requests in File` and select `Run with 'development' environment`.
-
-    ![](./support/docs/images/01-startup-04-commandside-httpClient.jpg)
-
-- Repeat the same with `support/http-request/querysideRequests.http`.
-
-When finished experimenting, applications can be stopped by `CMD+F2` shortcut or via IDEA "Run" tool window.
-
-For stopping infrastructural components, stop docker-compose log tailing with `CTRL+C`, and then do some cleanup with `./dockerComposeDownInfrastructure.sh`.
