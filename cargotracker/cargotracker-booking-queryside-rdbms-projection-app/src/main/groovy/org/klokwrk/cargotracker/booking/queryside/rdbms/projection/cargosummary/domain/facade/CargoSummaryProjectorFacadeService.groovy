@@ -6,8 +6,7 @@ import org.axonframework.eventhandling.EventHandler
 import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookedEvent
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.domain.querymodel.CargoSummaryQueryEntityRepository
 import org.springframework.stereotype.Service
-
-import javax.transaction.Transactional
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
