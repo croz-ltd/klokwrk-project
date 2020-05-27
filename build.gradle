@@ -86,7 +86,7 @@ void createAggregateCodenarcTasks() {
 createAggregateCodenarcTasks()
 
 configure(subprojects) { Project subproject ->
-  group = "ork.klokwrk.project"
+  group = "org.klokwrk.project"
 
   if (["klokwrk-project-platform", "cargotracker", "lib", "lang"].contains(subproject.name)) {
     return
