@@ -241,8 +241,8 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
 
   void "serialization - timestamp types should work as expected"() {
     given:
-    String legacyDateString = "2020-04-04T22:35:35.654+0200"
-    SimpleDateFormat legacySimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", new Locale("hr"))
+    String legacyDateString = "2020-04-04T22:35:35.654+02:00"
+    SimpleDateFormat legacySimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", new Locale("hr"))
     legacySimpleDateFormat.timeZone = TimeZone.getTimeZone("Europe/Zagreb")
     Date legacyDate = legacySimpleDateFormat.parse(legacyDateString)
 
@@ -255,7 +255,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     String serializedString = objectMapper.writeValueAsString(myBeanWithTimeStamps)
 
     then:
-    serializedString.contains(/"legacyDate":"2020-04-04T20:35:35.654+0000"/)
+    serializedString.contains(/"legacyDate":"2020-04-04T20:35:35.654+00:00"/)
     serializedString.contains(/"instant":"2020-04-04T20:35:35.654321Z"/)
     serializedString.contains(/"localDateTime":"2020-04-04T22:35:35.654321"/)
     serializedString.contains(/"offsetDateTime":"2020-04-04T22:35:35.654321+02:00"/)
