@@ -15,6 +15,7 @@ buildscript {
 
 repositories {
   mavenCentral()
+  maven { url 'https://repo.spring.io/milestone' }
 }
 
 apply plugin: "fr.brouillard.oss.gradle.jgitver"
@@ -94,6 +95,7 @@ configure(subprojects) { Project subproject ->
 
   repositories {
     mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
   }
 
   apply plugin: "codenarc"

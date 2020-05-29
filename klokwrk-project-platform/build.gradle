@@ -45,6 +45,8 @@ dependencies {
     api "org.codenarc:CodeNarc:$codeNarcVersion"
   }
 
+  api platform("com.wavefront:wavefront-spring-boot-bom:$wavefrontVersion")
+  api platform("io.opentracing.contrib:opentracing-spring-cloud-starter:$openTracingSpringCloudVersion")
   api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
 }
 
