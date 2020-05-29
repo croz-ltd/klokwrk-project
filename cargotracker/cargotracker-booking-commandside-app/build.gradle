@@ -29,4 +29,7 @@ dependencies {
   implementation "org.codehaus.groovy:groovy"
   implementation "org.springframework.boot:spring-boot-starter-actuator"
   implementation "org.springframework.boot:spring-boot-starter-web"
+
+  runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
+  runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"
 }
