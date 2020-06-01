@@ -33,7 +33,6 @@ class LoggingQueryHandlerEnhancerDefinition implements HandlerEnhancerDefinition
     return selectedMessageHandlingMember
   }
 
-  @SuppressWarnings("Indentation")
   @Slf4j(category = "cargotracker.axon.query-handler-logging")
   static class LoggingQueryHandlingMember<T> extends WrappedMessageHandlingMember<T> {
     MessageHandlingMember<T> messageHandlingMember
