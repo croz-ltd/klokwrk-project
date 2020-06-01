@@ -31,5 +31,8 @@ dependencies {
   implementation "org.springframework.boot:spring-boot-starter-data-jpa"
   implementation "org.springframework.boot:spring-boot-starter-web"
 
+  runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
+  runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"
+  runtimeOnly "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
   runtimeOnly "org.postgresql:postgresql"
 }
