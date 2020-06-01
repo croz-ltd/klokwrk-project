@@ -111,7 +111,7 @@ Before executing any of commands bellow, position your terminal prompt at the pr
 
   Creates a cumulative code coverage report accessible at `klokwrk-project/build/reports/jacoco/aggregate/html/index.html`
 
-- `./gradlew aggregateCodenarcMain`<br/>
+- `./gradlew aggregateCodenarcMain` <br/>
   `./gradlew aggregateCodenarcTest`
 
   These commands create a cumulative CodeNarc reports for `main` and `test` source sets, respectively. Reports can be accessed via `klokwrk-project/build/reports/codenarc/aggregateCodenarcMain.html`
@@ -120,3 +120,17 @@ Before executing any of commands bellow, position your terminal prompt at the pr
 - `./gradlew aggregateGroovydoc`
 
   Creates a cumulative documentation for the whole project accessible at `klokwrk-project/build/docs/aggregate-groovydoc/index.html`.
+
+### Exploring Wavefront integration
+Since the 2.3.0 version, Spring Boot provides out-of-the-box free integration with Wavefront observability service. It offers zero-setup and feature-rich alternative to the standard observability
+solutions like Prometheus (metrics collection), Zipkin (distributed tracing) and Grafana (visualization) combo. Wavefront is very convenient and effortless to use, even from a development environment.
+
+Here is a very brief overview of Wavefront usage for a `klokwrk-project`:
+- Start all applications as described previously. From the output of any application, copy the link to the Wavefront service.
+
+  ![Wavefront link](images/startingUp/01-startup-06-wavefront-link.jpg "Wavefront link")
+
+- Execute a dozen of commandside and queryside requests as described above, to provide some data to the Wavefront.
+- Open previously copied Wavefront link and start exploring. The following resources will get you quickly up to speed: <br/>
+  [Zero Cost, No Sign-up: Introducing Tanzu Observability for Spring Boot Applications](https://tanzu.vmware.com/content/practitioners-blog/zero-cost-no-sign-up-introducing-tanzu-observability-for-spring-boot-applications) <br/>
+  [Wavefront for Spring Boot](https://docs.wavefront.com/wavefront_springboot.html)
