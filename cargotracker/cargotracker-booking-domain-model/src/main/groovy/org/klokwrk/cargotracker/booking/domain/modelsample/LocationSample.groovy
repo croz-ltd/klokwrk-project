@@ -3,9 +3,10 @@ package org.klokwrk.cargotracker.booking.domain.modelsample
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.Location
 
-@SuppressWarnings("DuplicateStringLiteral")
 @CompileStatic
 class LocationSample {
+
+  @SuppressWarnings("DuplicateStringLiteral")
   static final Map<String, Location> LOCATION_SAMPLE_MAP = [
       "HRALJ": Location.create("HRALJ", "Aljmaš", "Hrvatska", "1-3-----"),
       "HRBAK": Location.create("HRBAK", "Bakar", "Hrvatska", "123-----"),

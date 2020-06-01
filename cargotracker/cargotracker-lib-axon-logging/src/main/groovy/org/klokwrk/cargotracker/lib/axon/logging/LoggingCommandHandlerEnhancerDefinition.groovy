@@ -52,7 +52,6 @@ class LoggingCommandHandlerEnhancerDefinition implements HandlerEnhancerDefiniti
       this.messageHandlingMember = messageHandlingMember
     }
 
-    @SuppressWarnings("DuplicateStringLiteral") // TODO dmurat: remove if https://github.com/CodeNarc/CodeNarc/issues/490 gets fixed.
     @Override
     Object handle(Message<?> message, T target) throws Exception {
       if (log.isDebugEnabled()) {
