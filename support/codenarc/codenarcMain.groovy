@@ -153,7 +153,8 @@ ruleset {
   DuplicateMapLiteral
   DuplicateNumberLiteral
   DuplicateStringLiteral {
-    ignoreStrings = ", ,."
+    ignoreStrings = "|.|,|0|1"
+    ignoreStringsDelimiter = "|"
   }
 
   // rulesets/enhanced.xml
