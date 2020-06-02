@@ -193,9 +193,7 @@ ruleset {
   BracesForTryCatchFinally
   ClassEndsWithBlankLine { enabled = false }
   ClassStartsWithBlankLine { enabled = false }
-  ClosureStatementOnOpeningLineOfMultipleLineClosure {
-    enabled = false // see the comment in Main source set rules.
-  }
+  ClosureStatementOnOpeningLineOfMultipleLineClosure
   ConsecutiveBlankLines
   FileEndsWithoutNewline
   Indentation { spacesPerIndentLevel = 2 } // see the comment in Main source set rules.
@@ -210,15 +208,12 @@ ruleset {
   SpaceAfterComma
   SpaceAfterFor
   SpaceAfterIf
-  SpaceAfterOpeningBrace {
-    enabled = false // see the comment in Main source set rules.
-  }
+  SpaceAfterOpeningBrace { enabled = false } // see the comment in Main source set rules.
   SpaceAfterSemicolon
   SpaceAfterSwitch
   SpaceAfterWhile
   SpaceAroundClosureArrow
   SpaceAroundMapEntryColon {
-    enabled = false // see the comment in Main source set rules.
     characterBeforeColonRegex = /\S/
     characterAfterColonRegex = /\s/
   }
