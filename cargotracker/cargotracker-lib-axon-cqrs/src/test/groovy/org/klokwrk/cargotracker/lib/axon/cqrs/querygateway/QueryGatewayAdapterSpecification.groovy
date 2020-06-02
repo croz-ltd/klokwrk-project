@@ -22,7 +22,6 @@ class QueryGatewayAdapterSpecification extends Specification {
     queryGatewayAdapter = new QueryGatewayAdapter(queryGatewayMock)
   }
 
-  @SuppressWarnings("Indentation")
   void "query(operationRequest, responseClass) - should behave same as query(query, metaData, responseClass)"() {
     given:
     def query = "query"
@@ -60,7 +59,6 @@ class QueryGatewayAdapterSpecification extends Specification {
     thrown(AssertionError)
   }
 
-  @SuppressWarnings("Indentation")
   void "query(query, metaData, responseClass) - should work null metaData"() {
     given:
     def query = "query"
@@ -98,7 +96,6 @@ class QueryGatewayAdapterSpecification extends Specification {
     thrown(IllegalArgumentException)
   }
 
-  @SuppressWarnings("Indentation")
   void "query(query, metaData, responseClass) - should delegate to the query gateway"() {
     given:
     def query = "query"

@@ -43,7 +43,6 @@ class LoggingCommandHandlerEnhancerDefinition implements HandlerEnhancerDefiniti
     return selectedMessageHandlingMember
   }
 
-  @SuppressWarnings("Indentation")
   @Slf4j(category = "cargotracker.axon.command-handler-logging")
   static class LoggingCommandHandlingMember<T> extends WrappedMessageHandlingMember<T> {
     MessageHandlingMember<T> messageHandlingMember
@@ -53,7 +52,6 @@ class LoggingCommandHandlerEnhancerDefinition implements HandlerEnhancerDefiniti
       this.messageHandlingMember = messageHandlingMember
     }
 
-    @SuppressWarnings("DuplicateStringLiteral") // TODO dmurat: remove if https://github.com/CodeNarc/CodeNarc/issues/490 gets fixed.
     @Override
     Object handle(Message<?> message, T target) throws Exception {
       if (log.isDebugEnabled()) {

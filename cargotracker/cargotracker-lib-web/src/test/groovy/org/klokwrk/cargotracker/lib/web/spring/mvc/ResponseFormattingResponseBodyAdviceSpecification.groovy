@@ -29,7 +29,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @ContextConfiguration(classes = [WebConfig])
 class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
 
-  @SuppressWarnings("Indentation")
   @RestController
   @RequestMapping("/test")
   static class TestController {
@@ -48,12 +47,10 @@ class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
     }
   }
 
-  @SuppressWarnings("Indentation")
   @ControllerAdvice
   static class ResponseFormattingResponseBodyAdviceControllerAdvice extends ResponseFormattingResponseBodyAdvice {
   }
 
-  @SuppressWarnings("Indentation")
   @EnableWebMvc
   @Configuration
   static class WebConfig implements WebMvcConfigurer {

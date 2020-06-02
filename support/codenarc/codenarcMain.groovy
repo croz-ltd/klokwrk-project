@@ -152,8 +152,9 @@ ruleset {
   DuplicateListLiteral
   DuplicateMapLiteral
   DuplicateNumberLiteral
-  DuplicateStringLiteral {
-    ignoreStrings = ", ,."
+  DuplicateStringLiteral { // TODO dmurat: Check SuppressWarnings in code if https://github.com/CodeNarc/CodeNarc/issues/512 gets fixed.
+    ignoreStrings = "|.|,|0|1"
+    ignoreStringsDelimiter = "|"
   }
 
   // rulesets/enhanced.xml
@@ -195,12 +196,10 @@ ruleset {
   BracesForTryCatchFinally
   ClassEndsWithBlankLine { enabled = false }
   ClassStartsWithBlankLine { enabled = false }
-  ClosureStatementOnOpeningLineOfMultipleLineClosure {
-    enabled = false // TODO dmurat: check when new CodeNarc is release. Currently it is not compatible with Closure Lambda syntax supported by Groovy 3.
-  }
+  ClosureStatementOnOpeningLineOfMultipleLineClosure
   ConsecutiveBlankLines
   FileEndsWithoutNewline
-  Indentation { spacesPerIndentLevel = 2 }  // TODO dmurat: after new CodeNarc release, check SuppressWarnings for this rule. Currently it is not compatible with Closure Lambda syntax supported by Groovy 3.
+  Indentation { spacesPerIndentLevel = 2 }  // TODO dmurat: Check SuppressWarnings in code if https://github.com/CodeNarc/CodeNarc/issues/510 gets fixed.
   LineLength { length = 210 }
   MissingBlankLineAfterImports
   MissingBlankLineAfterPackage
@@ -210,14 +209,13 @@ ruleset {
   SpaceAfterFor
   SpaceAfterIf
   SpaceAfterOpeningBrace {
-    enabled = false // TODO dmurat: check when new CodeNarc is release. Currently it is not compatible with Closure Lambda syntax supported by Groovy 3.
+    enabled = false // TODO dmurat: Reconsider disablement if https://github.com/CodeNarc/CodeNarc/issues/511 gets fixed.
   }
   SpaceAfterSemicolon
   SpaceAfterSwitch
   SpaceAfterWhile
   SpaceAroundClosureArrow
   SpaceAroundMapEntryColon {
-    enabled = false  // TODO dmurat: it looks like this rule does not work correctly with Groovy 3. Didn't tried, but maybe setting up codenarc compile classpath can help.
     characterBeforeColonRegex = /\S/
     characterAfterColonRegex = /\s/
   }

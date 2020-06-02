@@ -83,7 +83,6 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     deserializedMap.aggregateIdentifier == "someIdentifier"
   }
 
-  @SuppressWarnings("Indentation")
   static class MyBean {
     String first
     String last
@@ -106,7 +105,6 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     myBean.last == null
   }
 
-  @SuppressWarnings("Indentation")
   static class MyBeanWithDefaultPropertyValues {
     String first = "someFirst"
     String last = "someLast"
@@ -129,7 +127,6 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     myBeanWithDefaultPropertyValues.last == "someLast"
   }
 
-  @SuppressWarnings("Indentation")
   static class MyBeanWithArray {
     String first
     String last
@@ -156,7 +153,6 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     myBeanWithArray.nameList[0] == "singleNameInList"
   }
 
-  @SuppressWarnings("Indentation")
   static class MyBeanWithTimeStamps {
     Date legacyDate
     Instant instant

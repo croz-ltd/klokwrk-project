@@ -16,6 +16,7 @@ buildscript {
 repositories {
   mavenCentral()
   maven { url 'https://repo.spring.io/milestone' }
+  maven { url 'https://jitpack.io' }
 }
 
 apply plugin: "fr.brouillard.oss.gradle.jgitver"
@@ -89,6 +90,16 @@ createAggregateCodenarcTasks()
 configure(subprojects) { Project subproject ->
   group = "org.klokwrk.project"
 
+  configurations {
+    all {
+      resolutionStrategy {
+        // prevent caching for snapshot dependencies
+        //noinspection GroovyAssignabilityCheck
+        cacheChangingModulesFor(0, "seconds")
+      }
+    }
+  }
+
   if (["klokwrk-project-platform", "cargotracker", "lib", "lang"].contains(subproject.name)) {
     return
   }
@@ -96,6 +107,7 @@ configure(subprojects) { Project subproject ->
   repositories {
     mavenCentral()
     maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://jitpack.io' }
   }
 
   apply plugin: "codenarc"
@@ -177,7 +189,9 @@ configure(subprojects) { Project subproject ->
     implementation platform(project(":klokwrk-project-platform"))
     codenarc platform(project(":klokwrk-project-platform"))
 
-    codenarc "org.codenarc:CodeNarc"
+    codenarc "com.github.codenarc:codenarc"
+// TODO dmurat: return to the normal CodeNarc version once 1.6 is released.
+//    codenarc "org.codenarc:CodeNarc"
     codenarc "org.codehaus.groovy:groovy"
     codenarc "org.codehaus.groovy:groovy-templates"
   }
