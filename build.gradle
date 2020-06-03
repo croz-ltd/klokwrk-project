@@ -123,7 +123,14 @@ configure(subprojects) { Project subproject ->
   }
 
   test {
-    jvmArgs = ["-noverify", "-XX:TieredStopAtLevel=1"]
+    if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
+      // NOTE: "-noverify" option must not be included for JDK 1.8. Otherwise, Spock's "thrown()" method results in IllegalAccessError.
+      jvmArgs = ["-XX:TieredStopAtLevel=1"]
+    }
+    else {
+      jvmArgs = ["-noverify", "-XX:TieredStopAtLevel=1"]
+    }
+
     useJUnitPlatform()
   }
 
