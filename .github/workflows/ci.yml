@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         java: ["8", "11"]
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest]
 
     runs-on: ${{ matrix.os }}
     name: JDK ${{ matrix.java }} on ${{ matrix.os }}
