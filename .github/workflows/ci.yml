@@ -1,0 +1,50 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - master
+      - feature_*
+  pull_request:
+    branches:
+      - master
+      - feature_*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: CI with JDK ${{ matrix.java }}
+    strategy:
+      matrix:
+        java: ["11"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache Gradle caches
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-caches-
+
+      - name: Cache Gradle wrapper
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-wrapper-
+
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+
+      - name: Assemble
+        run: ./gradlew assemble --no-daemon --continue --exclude-task groovydocJar
+
+      - name: Check
+        run: ./gradlew check --no-daemon --parallel --continue --exclude-task codenarcMain --exclude-task codenarcTest
