@@ -15,10 +15,10 @@ jobs:
     strategy:
       matrix:
         java: ["8", "11"]
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
 
     runs-on: ${{ matrix.os }}
-    name: JDK ${{ matrix.java }} on ${{ matrix.os }}
+    name: ${{ matrix.os }} - JDK ${{ matrix.java }}
 
     steps:
       - name: Checkout
@@ -50,7 +50,7 @@ jobs:
         with:
           arguments: assemble --no-daemon --continue --exclude-task groovydocJar
 
-      - name: Check
+      - name: Test
         uses: eskatos/gradle-command-action@v1
         with:
           arguments: check --no-daemon --parallel --continue --exclude-task codenarcMain --exclude-task codenarcTest
