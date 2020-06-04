@@ -14,7 +14,7 @@ jobs:
   build:
     strategy:
       matrix:
-        java: ["8", "11"]
+        java: ["11", "8"]
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     runs-on: ${{ matrix.os }}
@@ -95,13 +95,13 @@ jobs:
           file: build/reports/jacoco/aggregate/jacocoTestReport.xml
 
       - name: Groovydoc
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' && github.ref == 'refs/heads/feature_groovydocPublish' && github.event_name == 'push' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' && github.ref == 'refs/heads/master' && github.event_name == 'push' }}
         uses: eskatos/gradle-command-action@v1
         with:
           arguments: aggregateGroovydoc
 
       - name: Publish Groovydoc on Gihub Pages
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' && github.ref == 'refs/heads/feature_groovydocPublish' && github.event_name == 'push' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' && github.ref == 'refs/heads/master' && github.event_name == 'push' }}
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           BRANCH: gh-pages
