@@ -1,3 +1,7 @@
+[![License](https://img.shields.io/badge/License-Apache%202.0-success.svg)](https://opensource.org/licenses/Apache-2.0)
+![Continuous Integration](https://github.com/croz-ltd/klokwrk-project/workflows/Continuous%20Integration/badge.svg)
+[![codecov](https://codecov.io/gh/croz-ltd/klokwrk-project/branch/master/graph/badge.svg)](https://codecov.io/gh/croz-ltd/klokwrk-project)
+
 # Project Klokwrk
 Project Klokwrk is envisioned at [CROZ](https://croz.net/) as a showcase and blueprint for implementing elaborated distributed systems on JVM. It should also serve as a playground for incubating
 reusable libraries useful on its own.
