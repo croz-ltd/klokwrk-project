@@ -73,3 +73,10 @@ jobs:
         uses: eskatos/gradle-command-action@v1
         with:
           arguments: aggregateCodenarcMain aggregateCodenarcTest --no-daemon --continue
+
+      - name: Publish CodeNarc Reports
+        if: matrix.os == 'ubuntu-latest' && matrix.java == '11' && ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeNarcAllAggregateReports-${{ matrix.os }}-JDK_${{ matrix.java }}
+          path: build/reports/codenarc/*
