@@ -80,3 +80,16 @@ jobs:
         with:
           name: aggregatedCodeNarcReports_${{ matrix.os }}_JDK-${{ matrix.java }}
           path: build/reports/codenarc/*
+
+      - name: JaCoCo Coverage Report
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' }}
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: aggregateJacocoReport --continue
+
+      - name: Publish JaCoCo Coverage Report
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' }}
+        uses: codecov/codecov-action@v1
+        with:
+          name: Aggregated JaCoCo Report
+          file: build/reports/jacoco/aggregate/jacocoTestReport.xml
