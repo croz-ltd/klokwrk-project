@@ -55,6 +55,19 @@ jobs:
         with:
           arguments: check --no-daemon --parallel --continue --exclude-task codenarcMain --exclude-task codenarcTest
 
+      - name: Test Report
+        if: ${{ always() }}
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: aggregateAllTestReports --no-daemon --continue
+
+      - name: Publish Test Report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: aggregate-all-tests-report-${{ runner.os }}-${{ matrix.java }}
+          path: build/reports/aggregate-all-tests/*
+
       - name: CodeNarc
         if: matrix.os == 'ubuntu-latest' && matrix.java == '11'
         uses: eskatos/gradle-command-action@v1
