@@ -54,3 +54,9 @@ jobs:
         uses: eskatos/gradle-command-action@v1
         with:
           arguments: check --no-daemon --parallel --continue --exclude-task codenarcMain --exclude-task codenarcTest
+
+      - name: CodeNarc
+        if: matrix.os == 'ubuntu-latest' && matrix.java == '11'
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: aggregateCodenarcMain aggregateCodenarcTest --no-daemon --continue
