@@ -65,7 +65,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
-          name: aggregate-all-tests-report-${{ runner.os }}-${{ matrix.java }}
+          name: aggregateAllTestReports-${{ matrix.os }}-JDK_${{ matrix.java }}
           path: build/reports/aggregate-all-tests/*
 
       - name: CodeNarc
