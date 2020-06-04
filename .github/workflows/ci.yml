@@ -65,7 +65,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
-          name: aggregateAllTestReports_${{ matrix.os }}-JDK-${{ matrix.java }}
+          name: aggregatedTestReports_${{ matrix.os }}-JDK-${{ matrix.java }}
           path: build/reports/aggregate-all-tests/*
 
       - name: CodeNarc
@@ -74,9 +74,9 @@ jobs:
         with:
           arguments: aggregateCodenarcMain aggregateCodenarcTest --continue
 
-      - name: Publish CodeNarc Reports
+      - name: Publish CodeNarc Report
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' && always() }}
         uses: actions/upload-artifact@v2
         with:
-          name: codeNarcAllAggregateReports_${{ matrix.os }}_JDK-${{ matrix.java }}
+          name: aggregatedCodeNarcReports_${{ matrix.os }}_JDK-${{ matrix.java }}
           path: build/reports/codenarc/*
