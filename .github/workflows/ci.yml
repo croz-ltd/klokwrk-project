@@ -48,18 +48,18 @@ jobs:
       - name: Assemble
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: assemble --no-daemon --continue --exclude-task groovydocJar
+          arguments: assemble --continue --exclude-task groovydocJar
 
       - name: Test
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: check --no-daemon --parallel --continue --exclude-task codenarcMain --exclude-task codenarcTest
+          arguments: check --parallel --continue --exclude-task codenarcMain --exclude-task codenarcTest
 
       - name: Test Report
         if: ${{ always() }}
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: aggregateAllTestReports --no-daemon --continue
+          arguments: aggregateAllTestReports --continue
 
       - name: Publish Test Report
         if: ${{ always() }}
@@ -72,7 +72,7 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' }}
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: aggregateCodenarcMain aggregateCodenarcTest --no-daemon --continue
+          arguments: aggregateCodenarcMain aggregateCodenarcTest --continue
 
       - name: Publish CodeNarc Reports
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' && always() }}
