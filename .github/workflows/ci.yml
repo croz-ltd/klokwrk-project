@@ -59,7 +59,7 @@ jobs:
         if: ${{ always() }}
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: aggregateAllTestReports --continue
+          arguments: aggregateAllTestReports
 
       - name: Publish Test Report
         if: ${{ always() }}
@@ -85,7 +85,7 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' }}
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: aggregateJacocoReport --continue
+          arguments: aggregateJacocoReport
 
       - name: Publish JaCoCo Coverage Report
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' }}
@@ -93,3 +93,18 @@ jobs:
         with:
           name: Aggregated JaCoCo Report
           file: build/reports/jacoco/aggregate/jacocoTestReport.xml
+
+      - name: Groovydoc
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' && github.ref == 'refs/heads/feature_groovydocPublish' && github.event_name == 'push' }}
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: aggregateGroovydoc
+
+      - name: Publish Groovydoc on Gihub Pages
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' && github.ref == 'refs/heads/feature_groovydocPublish' && github.event_name == 'push' }}
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          BRANCH: gh-pages
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FOLDER: build/docs/aggregate-groovydoc
+          TARGET_FOLDER: groovydoc
