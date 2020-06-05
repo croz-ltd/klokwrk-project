@@ -108,3 +108,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FOLDER: build/docs/aggregate-groovydoc
           TARGET_FOLDER: groovydoc
+          CLEAN: true
+          SINGLE_COMMIT: true
