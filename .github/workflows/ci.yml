@@ -1,3 +1,6 @@
+# Main Continuous Integration workflow.
+# Basic job steps (until "Publish Test Report") are run on all OSes and JDK versions. Subsequent steps are only for "ubuntu-latest" and JDK 11.
+
 name: Continuous Integration
 
 on:
