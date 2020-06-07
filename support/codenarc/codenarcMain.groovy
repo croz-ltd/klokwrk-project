@@ -208,9 +208,7 @@ ruleset {
   SpaceAfterComma
   SpaceAfterFor
   SpaceAfterIf
-  SpaceAfterOpeningBrace {
-    enabled = false // TODO dmurat: Reconsider disablement if https://github.com/CodeNarc/CodeNarc/issues/511 gets fixed.
-  }
+  SpaceAfterOpeningBrace
   SpaceAfterSemicolon
   SpaceAfterSwitch
   SpaceAfterWhile

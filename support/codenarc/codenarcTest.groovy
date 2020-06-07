@@ -208,7 +208,7 @@ ruleset {
   SpaceAfterComma
   SpaceAfterFor
   SpaceAfterIf
-  SpaceAfterOpeningBrace { enabled = false } // see the comment in Main source set rules.
+  SpaceAfterOpeningBrace
   SpaceAfterSemicolon
   SpaceAfterSwitch
   SpaceAfterWhile
