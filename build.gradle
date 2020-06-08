@@ -51,13 +51,13 @@ config {
 
 // creates aggregateCodenarcMain and aggregateCodenarcTest tasks
 void createAggregateCodenarcTasks() {
-  List<String> codenarcSourceSetNameList = ["Main", "Test"]
+  List<String> codenarcSourceSetNameList = ["main", "test"]
 
   codenarcSourceSetNameList.each { String codenarcSourceSetName ->
-    tasks.create(name: "aggregateCodenarc${codenarcSourceSetName}", type: CodeNarc) { CodeNarc codenarcTask ->
+    tasks.create(name: "aggregateCodenarc${codenarcSourceSetName.capitalize()}", type: CodeNarc) { CodeNarc codenarcTask ->
 
-      codenarcTask.group = "Other"
-      codenarcTask.description = "Run aggregate CodeNarc analysis on all classes from ${codenarcSourceSetName} source sets."
+      codenarcTask.group = "Quality"
+      codenarcTask.description = "Run aggregate CodeNarc analysis on all classes from '${codenarcSourceSetName}' source set."
 
       afterEvaluate {
         rootProject.pluginManager.apply(CodeNarcPlugin)
@@ -65,7 +65,7 @@ void createAggregateCodenarcTasks() {
         Set<CodeNarc> subProjectCodenarcTaskList = new LinkedHashSet<>()
         rootProject.subprojects.each { Project subproject ->
           subproject.tasks.withType(CodeNarc) { CodeNarc task ->
-            if (task.name == "codenarc${ codenarcSourceSetName }") {
+            if (task.name == "codenarc${ codenarcSourceSetName.capitalize() }") {
               subProjectCodenarcTaskList << task
             }
           }
@@ -77,7 +77,7 @@ void createAggregateCodenarcTasks() {
         codenarcTask.compilationClasspath = rootProject.files(((subProjectCodenarcTaskList*.compilationClasspath).unique()))
         codenarcTask.codenarcClasspath = rootProject.files(((subProjectCodenarcTaskList*.codenarcClasspath).unique()))
 
-        codenarcTask.configFile = rootProject.file("support/codenarc/codenarc${ codenarcSourceSetName }.groovy")
+        codenarcTask.configFile = rootProject.file("support/codenarc/codenarc-${ codenarcSourceSetName }.groovy")
       }
     }
   }
