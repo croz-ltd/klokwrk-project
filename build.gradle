@@ -6,6 +6,7 @@ buildscript {
 
   dependencies {
     classpath "fr.brouillard.oss.gradle:gradle-jgitver-plugin:$gradleJgitverPluginVersion"
+    classpath "org.kordamp.gradle:codenarc-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:groovydoc-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:jacoco-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:testing-gradle-plugin:$gradleKordampPluginVersion"
@@ -28,6 +29,7 @@ jgitver {
   }
 }
 
+apply plugin: "org.kordamp.gradle.codenarc"
 apply plugin: "org.kordamp.gradle.groovydoc"
 apply plugin: "org.kordamp.gradle.jacoco"
 apply plugin: "org.kordamp.gradle.testing"
@@ -45,6 +47,14 @@ config {
         // Links to Java and Groovy APIs are provided by plugin
         link "https://docs.spring.io/spring-framework/docs/current/javadoc-api", "org.aopalliance.", "org.springframework."
       }
+    }
+  }
+
+  quality {
+    codenarc {
+      setEnabled(true)
+      setIgnoreFailures(true)
+      setConfigFile(file("support/codenarc/codenarc.groovy"))
     }
   }
 }
@@ -108,7 +118,6 @@ configure(subprojects) { Project subproject ->
     maven { url 'https://jitpack.io' }
   }
 
-  apply plugin: "codenarc"
   apply plugin: "groovy"
   apply plugin: "maven-publish"
   apply plugin: "idea"
@@ -175,18 +184,6 @@ configure(subprojects) { Project subproject ->
       outputDir = file("build/classes/groovy/main")
       testOutputDir = file("build/classes/groovy/test")
     }
-  }
-
-  codenarc {
-    ignoreFailures = false
-  }
-
-  codenarcMain {
-    configFile = rootProject.file("support/codenarc/codenarcMain.groovy")
-  }
-
-  codenarcTest {
-    configFile = rootProject.file("support/codenarc/codenarcTest.groovy")
   }
 
   dependencies {
