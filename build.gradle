@@ -40,6 +40,7 @@ config {
       // It also very useful to know which tasks exactly are part of task graph during execution. For that use: gw clean assemble -m
       setEnabled(true)
       setReplaceJavadoc(true)
+      setIncludes(["**/*.groovy"] as Set)
 
       options {
         setUse(true)
