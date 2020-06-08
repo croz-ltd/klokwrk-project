@@ -37,6 +37,7 @@ config {
       // If one don't want to execute groovydoc as part of the assemble task, use gradle CLI task exclusion. For example: gw clean assemble -x groovydocJar
       // It also very useful to know which tasks exactly are part of task graph during execution. For that use: gw clean assemble -m
       enabled = true
+      replaceJavadoc = true
 
       options {
         use = true
@@ -44,9 +45,6 @@ config {
         // Links to Java and Groovy APIs are provided by plugin
         link "https://docs.spring.io/spring-framework/docs/current/javadoc-api", "org.aopalliance.", "org.springframework."
       }
-    }
-    javadoc {
-      enabled = false
     }
   }
 }
