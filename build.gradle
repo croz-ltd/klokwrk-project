@@ -6,6 +6,7 @@ buildscript {
 
   dependencies {
     classpath "fr.brouillard.oss.gradle:gradle-jgitver-plugin:$gradleJgitverPluginVersion"
+    classpath "org.kordamp.gradle:codenarc-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:groovydoc-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:jacoco-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:testing-gradle-plugin:$gradleKordampPluginVersion"
@@ -28,6 +29,7 @@ jgitver {
   }
 }
 
+apply plugin: "org.kordamp.gradle.codenarc"
 apply plugin: "org.kordamp.gradle.groovydoc"
 apply plugin: "org.kordamp.gradle.jacoco"
 apply plugin: "org.kordamp.gradle.testing"
@@ -36,30 +38,37 @@ config {
     groovydoc {
       // If one don't want to execute groovydoc as part of the assemble task, use gradle CLI task exclusion. For example: gw clean assemble -x groovydocJar
       // It also very useful to know which tasks exactly are part of task graph during execution. For that use: gw clean assemble -m
-      enabled = true
+      setEnabled(true)
+      setReplaceJavadoc(true)
+      setIncludes(["**/*.groovy"] as Set)
 
       options {
-        use = true
+        setUse(true)
 
         // Links to Java and Groovy APIs are provided by plugin
-        link "https://docs.spring.io/spring-framework/docs/current/javadoc-api", "org.aopalliance.", "org.springframework."
+        link("https://docs.spring.io/spring-framework/docs/current/javadoc-api", "org.aopalliance.", "org.springframework.")
       }
     }
-    javadoc {
-      enabled = false
+  }
+
+  quality {
+    codenarc {
+      setEnabled(true)
+      setIgnoreFailures(true)
+      setConfigFile(file("support/codenarc/codenarc.groovy"))
     }
   }
 }
 
 // creates aggregateCodenarcMain and aggregateCodenarcTest tasks
 void createAggregateCodenarcTasks() {
-  List<String> codenarcSourceSetNameList = ["Main", "Test"]
+  List<String> codenarcSourceSetNameList = ["main", "test"]
 
   codenarcSourceSetNameList.each { String codenarcSourceSetName ->
-    tasks.create(name: "aggregateCodenarc${codenarcSourceSetName}", type: CodeNarc) { CodeNarc codenarcTask ->
+    tasks.create(name: "aggregateCodenarc${codenarcSourceSetName.capitalize()}", type: CodeNarc) { CodeNarc codenarcTask ->
 
-      codenarcTask.group = "Other"
-      codenarcTask.description = "Run aggregate CodeNarc analysis on all classes from ${codenarcSourceSetName} source sets."
+      codenarcTask.group = "Quality"
+      codenarcTask.description = "Run aggregate CodeNarc analysis on all classes from '${codenarcSourceSetName}' source set."
 
       afterEvaluate {
         rootProject.pluginManager.apply(CodeNarcPlugin)
@@ -67,7 +76,7 @@ void createAggregateCodenarcTasks() {
         Set<CodeNarc> subProjectCodenarcTaskList = new LinkedHashSet<>()
         rootProject.subprojects.each { Project subproject ->
           subproject.tasks.withType(CodeNarc) { CodeNarc task ->
-            if (task.name == "codenarc${ codenarcSourceSetName }") {
+            if (task.name == "codenarc${ codenarcSourceSetName.capitalize() }") {
               subProjectCodenarcTaskList << task
             }
           }
@@ -79,7 +88,7 @@ void createAggregateCodenarcTasks() {
         codenarcTask.compilationClasspath = rootProject.files(((subProjectCodenarcTaskList*.compilationClasspath).unique()))
         codenarcTask.codenarcClasspath = rootProject.files(((subProjectCodenarcTaskList*.codenarcClasspath).unique()))
 
-        codenarcTask.configFile = rootProject.file("support/codenarc/codenarc${ codenarcSourceSetName }.groovy")
+        codenarcTask.configFile = rootProject.file("support/codenarc/codenarc-${ codenarcSourceSetName }.groovy")
       }
     }
   }
@@ -110,7 +119,6 @@ configure(subprojects) { Project subproject ->
     maven { url 'https://jitpack.io' }
   }
 
-  apply plugin: "codenarc"
   apply plugin: "groovy"
   apply plugin: "maven-publish"
   apply plugin: "idea"
@@ -177,18 +185,6 @@ configure(subprojects) { Project subproject ->
       outputDir = file("build/classes/groovy/main")
       testOutputDir = file("build/classes/groovy/test")
     }
-  }
-
-  codenarc {
-    ignoreFailures = false
-  }
-
-  codenarcMain {
-    configFile = rootProject.file("support/codenarc/codenarcMain.groovy")
-  }
-
-  codenarcTest {
-    configFile = rootProject.file("support/codenarc/codenarcTest.groovy")
   }
 
   dependencies {

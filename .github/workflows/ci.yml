@@ -51,7 +51,7 @@ jobs:
       - name: Assemble
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: assemble --continue --exclude-task groovydocJar
+          arguments: assemble --continue --exclude-task groovydoc
 
       - name: Test
         uses: eskatos/gradle-command-action@v1
