@@ -41,7 +41,7 @@ class CargoAggregateSpecification extends Specification {
       actualException.cause instanceof MessageHandlerTrait.ThrowAwayRuntimeException
 
       detailsException.violationInfo.violationCode.code == ViolationCode.BAD_REQUEST.code
-      detailsException.violationInfo.violationCode.codeAsText == "destinationLocationCannotAcceptCargo"
+      detailsException.violationInfo.violationCode.codeAsText == CargoAggregate.VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO
     }
   }
 
@@ -64,7 +64,7 @@ class CargoAggregateSpecification extends Specification {
       actualException.cause instanceof MessageHandlerTrait.ThrowAwayRuntimeException
 
       detailsException.violationInfo.violationCode.code == ViolationCode.BAD_REQUEST.code
-      detailsException.violationInfo.violationCode.codeAsText == "destinationLocationCannotAcceptCargo"
+      detailsException.violationInfo.violationCode.codeAsText == CargoAggregate.VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO
     }
   }
 
