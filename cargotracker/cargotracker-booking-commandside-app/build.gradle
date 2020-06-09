@@ -33,4 +33,7 @@ dependencies {
   runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
   runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"
   runtimeOnly "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
+
+  testImplementation "org.axonframework:axon-test"
+  testImplementation "org.spockframework:spock-core"
 }

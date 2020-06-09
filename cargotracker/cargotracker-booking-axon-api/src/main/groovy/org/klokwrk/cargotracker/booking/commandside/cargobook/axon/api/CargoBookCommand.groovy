@@ -11,8 +11,14 @@ import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 @MapConstructor(noArg = true)
 @CompileStatic
 class CargoBookCommand implements BaseCreateCommand {
+  // TODO dmurat: add validation
+
+  // not null, uuid
   String aggregateIdentifier
 
+  // not null
   Location originLocation
+
+  // not null
   Location destinationLocation
 }
