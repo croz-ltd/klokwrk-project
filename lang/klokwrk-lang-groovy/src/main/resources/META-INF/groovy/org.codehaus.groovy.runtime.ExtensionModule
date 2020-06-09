@@ -1,3 +1,5 @@
 moduleName=@extensionModuleName@
 moduleVersion=@extensionModuleVersion@
-extensionClasses=org.klokwrk.lang.groovy.extension.PropertiesExtension
+extensionClasses=\
+  org.klokwrk.lang.groovy.extension.PropertiesExtension,\
+  org.klokwrk.lang.groovy.extension.MapMergeDeepExtension
