@@ -11,14 +11,9 @@ import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 @MapConstructor(noArg = true)
 @CompileStatic
 class CargoBookCommand implements BaseCreateCommand {
-  // TODO dmurat: add validation
+  // TODO dmurat: immutability - commands probably should/can be immutable. Implement immutability and post construction rules for properties.
 
-  // not null, uuid
   String aggregateIdentifier
-
-  // not null
   Location originLocation
-
-  // not null
   Location destinationLocation
 }
