@@ -131,6 +131,7 @@ configure(subprojects) { Project subproject ->
   }
 
   test {
+    // TODO dmurat: remove this check when https://github.com/spockframework/spock/issues/1177 gets fixed.
     if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
       // NOTE: "-noverify" option must not be included for JDK 1.8. Otherwise, Spock's "thrown()" method results in IllegalAccessError.
       jvmArgs = ["-XX:TieredStopAtLevel=1"]
