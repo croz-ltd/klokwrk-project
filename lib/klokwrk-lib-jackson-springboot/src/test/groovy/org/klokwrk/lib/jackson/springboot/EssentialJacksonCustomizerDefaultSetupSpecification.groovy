@@ -19,14 +19,12 @@ import org.klokwrk.lib.jackson.databind.ser.GStringSerializer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.json.JsonTest
 import spock.lang.Specification
-import spock.lang.Unroll
 
 @JsonTest
 class EssentialJacksonCustomizerDefaultSetupSpecification extends Specification {
   @Autowired
   ObjectMapper objectMapper
 
-  @Unroll
   void "objectMapper - should have default deserialization features configured - #deserializationFeature - #isEnabled"() {
     expect:
     objectMapper.deserializationConfig.isEnabled(deserializationFeature) == isEnabled
@@ -37,7 +35,6 @@ class EssentialJacksonCustomizerDefaultSetupSpecification extends Specification 
     DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY | true
   }
 
-  @Unroll
   void "objectMapper - should have default serialization features as defined by Spring Boot configured - #serializationFeature - #isEnabled"() {
     expect:
     objectMapper.serializationConfig.isEnabled(serializationFeature) == isEnabled
@@ -48,7 +45,6 @@ class EssentialJacksonCustomizerDefaultSetupSpecification extends Specification 
     SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS | false
   }
 
-  @Unroll
   void "objectMapper - should have default mapper features configured - #mapperFeature - #isEnabled"() {
     expect:
     objectMapper.isEnabled(mapperFeature) == isEnabled
@@ -58,7 +54,6 @@ class EssentialJacksonCustomizerDefaultSetupSpecification extends Specification 
     MapperFeature.PROPAGATE_TRANSIENT_MARKER | true
   }
 
-  @Unroll
   void "objectMapper - should have default json parser features configured - #jsonParserFeature - #isEnabled"() {
     expect:
     objectMapper.isEnabled(jsonParserFeature) == isEnabled

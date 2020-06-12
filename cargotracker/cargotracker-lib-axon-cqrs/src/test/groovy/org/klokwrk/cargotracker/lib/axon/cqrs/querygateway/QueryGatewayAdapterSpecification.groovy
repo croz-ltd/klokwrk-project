@@ -8,7 +8,6 @@ import org.axonframework.queryhandling.QueryGateway
 import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 import spock.lang.Specification
-import spock.lang.Unroll
 
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CompletionException
@@ -166,7 +165,6 @@ class QueryGatewayAdapterSpecification extends Specification {
     }
   }
 
-  @Unroll
   void "query(query, metaData, responseClass) - should propagate details exception when it is available [details exception class: #exceptionDetailsParam.getClass().simpleName]"() {
     given:
     QueryExecutionException queryExecutionException = new QueryExecutionException("Query execution failed", null, exceptionDetailsParam)

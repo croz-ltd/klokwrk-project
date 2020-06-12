@@ -2,7 +2,6 @@ package org.klokwrk.cargotracker.booking.domain.model
 
 import org.klokwrk.cargotracker.booking.domain.modelsample.LocationSample
 import spock.lang.Specification
-import spock.lang.Unroll
 
 class LocationSpecification extends Specification {
 
@@ -19,7 +18,6 @@ class LocationSpecification extends Specification {
     location.countryName == new InternationalizedName(name: "Hrvatska")
   }
 
-  @Unroll
   void "map constructor should fail for invalid input params: [code: #codeParameter, name: #nameParameter, countryName: #countryNameParameter, function: #functionParameter]"() {
     when:
     new Location(
@@ -48,7 +46,6 @@ class LocationSpecification extends Specification {
     location.countryName == new InternationalizedName(name: "Hrvatska")
   }
 
-  @Unroll
   void "create() factory method should fail for invalid input params: [code: #codeParameter, name: #nameParameter, countryName: #countryNameParameter, function: #functionParameter]"() {
     when:
     Location.create(codeParameter, nameParameter, countryNameParameter, functionParameter)
@@ -64,7 +61,6 @@ class LocationSpecification extends Specification {
     "HRRJK"       | "someName"    | "someCountry"        | null
   }
 
-  @Unroll
   void "destinationLocation.canAcceptCargoFrom() should work as expected: [origin: #originDescription, destination: #destinationDescription]"() {
     when:
     Location originLocation = originLocationInstance

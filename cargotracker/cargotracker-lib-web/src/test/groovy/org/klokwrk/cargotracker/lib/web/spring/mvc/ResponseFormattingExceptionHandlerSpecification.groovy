@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.method.HandlerMethod
 import spock.lang.Specification
-import spock.lang.Unroll
 
 import java.lang.reflect.Field
 import java.lang.reflect.Method
@@ -43,7 +42,6 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
     handlerMethod = new HandlerMethod(testController, testControllerMethod)
   }
 
-  @Unroll
   void "should work as expected for default domain exceptions [exceptionClass: #exceptionParam.getClass().simpleName]"() {
     given:
     DomainException exception = exceptionParam
@@ -87,7 +85,6 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
     return foundField?.name
   }
 
-  @Unroll
   void "should work as expected for existing ViolationInfo constants [violationInfoConstantName: #violationInfoConstantName]"() {
     given:
     assert ViolationInfo.declaredFields.findAll({ it.type == ViolationInfo }).size() == 3

@@ -3,7 +3,6 @@ package org.klokwrk.lang.groovy.constructor.support
 import org.klokwrk.lang.groovy.constructor.support.stub.TestPerson
 import org.klokwrk.lang.groovy.constructor.support.stub.TestStrictPerson
 import spock.lang.Specification
-import spock.lang.Unroll
 
 class PostMapConstructorCheckableSpecification extends Specification {
   void "should not throw for empty constructor by default"() {
@@ -22,7 +21,6 @@ class PostMapConstructorCheckableSpecification extends Specification {
     thrown(IllegalArgumentException)
   }
 
-  @Unroll
   void "should throw for invalid map constructor params [firstName: '#firstNameParam']"() {
     when:
     new TestPerson(firstName: firstNameParam)
