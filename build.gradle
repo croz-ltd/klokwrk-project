@@ -56,6 +56,7 @@ config {
       setEnabled(true)
       setIgnoreFailures(true)
       setConfigFile(file("support/codenarc/codenarc.groovy"))
+      setToolVersion("$codeNarcVersion")
     }
   }
 }
@@ -193,9 +194,7 @@ configure(subprojects) { Project subproject ->
     implementation platform(project(":klokwrk-project-platform"))
     codenarc platform(project(":klokwrk-project-platform"))
 
-    codenarc "com.github.codenarc:codenarc"
-// TODO dmurat: return to the normal CodeNarc version once 1.6 is released.
-//    codenarc "org.codenarc:CodeNarc"
+    codenarc "org.codenarc:CodeNarc"
     codenarc "org.codehaus.groovy:groovy"
     codenarc "org.codehaus.groovy:groovy-templates"
   }
