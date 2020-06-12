@@ -45,8 +45,14 @@ config {
       options {
         setUse(true)
 
-        // Links to Java and Groovy APIs are provided by plugin
+        // Links to Groovy APIs are provided by plugin
+        link(
+            "https://docs.oracle.com/en/java/javase/11/docs/api/java.base",
+            "java.io.", "java.lang.", "java.math.", "java.net.", "java.nio.", "java.security.", "java.text.", "java.time.", "java.util.", "javax.crypto.", "javax.net.", "javax.security."
+        )
+        link("https://docs.spring.io/spring-boot/docs/current/api/", "org.springframework.boot.")
         link("https://docs.spring.io/spring-framework/docs/current/javadoc-api", "org.aopalliance.", "org.springframework.")
+        link("https://apidocs.axoniq.io/4.3/", "org.axonframework.", "io.axoniq.axonserver.grpc.")
       }
     }
   }
