@@ -1,7 +1,6 @@
 package org.klokwrk.lib.spring.context
 
 import spock.lang.Specification
-import spock.lang.Unroll
 
 class MessageSourceResolvableHelperSpecification extends Specification {
   void "should create expected message code list for fully specified MessageSourceResolvableSpecification"() {
@@ -51,7 +50,6 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     }
   }
 
-  @Unroll
   void "should create expected message code list for missing controllerSimpleName [controllerSimpleName: '#controllerSimpleNameParam']"() {
     given:
     MessageSourceResolvableSpecification messageSourceResolvableSpecification = new MessageSourceResolvableSpecification(
@@ -89,7 +87,6 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     "   "                     | _
   }
 
-  @Unroll
   void "should create expected message code list for missing controllerMethodName [controllerMethodName: '#controllerMethodNameParam']"() {
     given:
     MessageSourceResolvableSpecification messageSourceResolvableSpecification = new MessageSourceResolvableSpecification(
@@ -129,7 +126,6 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     "   "                     | _
   }
 
-  @Unroll
   void "should create expected message code list for missing messageCategory [messageCategory: '#messageCategoryParam']"() {
     given:
     MessageSourceResolvableSpecification messageSourceResolvableSpecification = new MessageSourceResolvableSpecification(
@@ -168,7 +164,6 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     "   "                | _
   }
 
-  @Unroll
   void "should create expected message code list for missing messageType [messageType: '#messageTypeParam']"() {
     given:
     MessageSourceResolvableSpecification messageSourceResolvableSpecification = new MessageSourceResolvableSpecification(
@@ -208,7 +203,6 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     "   "            | _
   }
 
-  @Unroll
   void "should create expected message code list for missing messageSubType [messageSubType: '#messageSubTypeParam']"() {
     given:
     MessageSourceResolvableSpecification messageSourceResolvableSpecification = new MessageSourceResolvableSpecification(
@@ -248,7 +242,6 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     "   "               | _
   }
 
-  @Unroll
   void "should create expected message code list for missing severity [severity: '#severityParam']"() {
     given:
     MessageSourceResolvableSpecification messageSourceResolvableSpecification = new MessageSourceResolvableSpecification(
@@ -288,7 +281,6 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     "   "         | _
   }
 
-  @Unroll
   void "should create expected message code list for missing propertyPath [propertyPath: '#propertyPathParam']"() {
     given:
     MessageSourceResolvableSpecification messageSourceResolvableSpecification = new MessageSourceResolvableSpecification(

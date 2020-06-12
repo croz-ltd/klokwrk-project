@@ -1,11 +1,9 @@
 package org.klokwrk.cargotracker.booking.domain.model
 
 import spock.lang.Specification
-import spock.lang.Unroll
 
 class UnLoCodeSpecification extends Specification {
 
-  @Unroll
   void "map constructor should work for correct input params: [code: #codeParameter]"() {
     when:
     UnLoCode unLoCode = new UnLoCode(code: codeParameter)
@@ -20,7 +18,6 @@ class UnLoCodeSpecification extends Specification {
     "HRRJ9"       | _
   }
 
-  @Unroll
   void "map constructor should fail for invalid input params: [code: #codeParameter]"() {
     when:
     new UnLoCode(code: codeParameter)

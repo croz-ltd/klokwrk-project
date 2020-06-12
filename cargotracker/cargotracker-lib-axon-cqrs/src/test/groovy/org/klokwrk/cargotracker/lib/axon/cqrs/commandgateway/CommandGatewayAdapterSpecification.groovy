@@ -6,7 +6,6 @@ import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.MetaData
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import spock.lang.Specification
-import spock.lang.Unroll
 
 class CommandGatewayAdapterSpecification extends Specification {
 
@@ -108,7 +107,6 @@ class CommandGatewayAdapterSpecification extends Specification {
     }
   }
 
-  @Unroll
   void "sendAndWait(command, metaData) - should propagate details exception to the caller when details are available [details exception class: #exceptionDetailsParam.getClass().simpleName]"() {
     given:
     CommandExecutionException commandExecutionException = new CommandExecutionException("Command execution failed", null, exceptionDetailsParam)

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.json.JsonTest
 import spock.lang.Specification
-import spock.lang.Unroll
 
 import java.text.SimpleDateFormat
 import java.time.Clock
@@ -19,7 +18,6 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
   @Autowired
   ObjectMapper objectMapper
 
-  @Unroll
   void "deserialization - should deserialize empty string into null - string value is #aggregateIdentifierStringValue"() {
     given:
     String stringToDeserialize = """

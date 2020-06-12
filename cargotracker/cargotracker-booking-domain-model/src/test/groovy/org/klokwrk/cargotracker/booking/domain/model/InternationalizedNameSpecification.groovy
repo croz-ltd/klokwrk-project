@@ -2,7 +2,6 @@ package org.klokwrk.cargotracker.booking.domain.model
 
 import spock.lang.Shared
 import spock.lang.Specification
-import spock.lang.Unroll
 
 class InternationalizedNameSpecification extends Specification {
 
@@ -14,7 +13,6 @@ class InternationalizedNameSpecification extends Specification {
   @Shared
   String funkyStringInternationalized = "This is a funky String"
 
-  @Unroll
   void "map constructor should work for correct input params: [name: #nameParameter]"() {
     when:
     InternationalizedName internationalizedName = new InternationalizedName(name: nameParameter)
@@ -31,7 +29,6 @@ class InternationalizedNameSpecification extends Specification {
     funkyString   | _
   }
 
-  @Unroll
   void "map constructor should fail for invalid input params: [name: #nameParameter]"() {
     when:
     new InternationalizedName(name: nameParameter)
@@ -46,7 +43,6 @@ class InternationalizedNameSpecification extends Specification {
     "   "         | _
   }
 
-  @Unroll
   void "getNameInternationalized() should return expected value: [name: #nameParameter]"() {
     when:
     InternationalizedName internationalizedName = new InternationalizedName(name: nameParameter)
