@@ -16,7 +16,9 @@ spring.datasource.driverClassName: org.postgresql.Driver
 spring.datasource.username: cargotracker
 spring.datasource.password: cargotracker
 
-spring.jpa.hibernate.ddl-auto: create
+# Needs to be disabled when using flyway. However, it is left in the comment if needed for quick prototyping during development.
+#spring.jpa.hibernate.ddl-auto: create
+
 spring.jpa.open-in-view: false
 spring.jpa.properties.hibernate.dialect: org.klokwrk.lib.hibernate.dialect.PostgreSqlAxonDialect
 
