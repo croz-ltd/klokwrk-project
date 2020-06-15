@@ -120,3 +120,6 @@ ij_groovy_throws_keyword_wrap = normal
 ij_groovy_throws_list_wrap = normal
 ij_groovy_while_brace_force = always
 ij_groovy_while_on_new_line = true
+
+ij_properties_keep_blank_lines = true
+ij_properties_spaces_around_key_value_delimiter = true
