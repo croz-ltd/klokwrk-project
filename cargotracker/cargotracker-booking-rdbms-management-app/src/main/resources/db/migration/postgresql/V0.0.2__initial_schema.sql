@@ -1,0 +1,24 @@
+CREATE TABLE token_entry (
+  processor_name CHARACTER VARYING(255) NOT NULL,
+  segment INTEGER NOT NULL,
+  OWNER CHARACTER VARYING(255),
+  TIMESTAMP CHARACTER VARYING(255) NOT NULL,
+  token BYTEA,
+  token_type CHARACTER VARYING(255),
+
+  PRIMARY KEY (processor_name, segment)
+);
+
+CREATE SEQUENCE cargo_summary_sequence INCREMENT BY 50 MINVALUE 1 MAXVALUE 9223372036854775807 START WITH 1 NO CYCLE;
+
+CREATE TABLE cargo_summary (
+  id BIGINT NOT NULL,
+  aggregate_identifier CHARACTER VARYING(255) NOT NULL,
+  aggregate_sequence_number BIGINT NOT NULL,
+  destination_location CHARACTER VARYING(255) NOT NULL,
+  inbound_channel_name CHARACTER VARYING(255) NOT NULL,
+  inbound_channel_type CHARACTER VARYING(255) NOT NULL,
+  origin_location CHARACTER VARYING(255) NOT NULL,
+
+  PRIMARY KEY (id)
+);
