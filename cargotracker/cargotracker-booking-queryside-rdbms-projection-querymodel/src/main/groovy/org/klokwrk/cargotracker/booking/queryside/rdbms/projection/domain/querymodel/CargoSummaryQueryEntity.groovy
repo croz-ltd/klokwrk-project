@@ -5,6 +5,7 @@ import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -23,12 +24,12 @@ class CargoSummaryQueryEntity {
   @SequenceGenerator(name = "cargoSummarySequenceGenerator", sequenceName = "cargo_summary_sequence", initialValue = 1, allocationSize = 50)
   Long id
 
-  String aggregateIdentifier
-  Long aggregateSequenceNumber
+  @Column(nullable = false, columnDefinition="char(36)") String aggregateIdentifier
+  @Column(nullable = false) Long aggregateSequenceNumber
 
-  String originLocation
-  String destinationLocation
+  @Column(nullable = false) String originLocation
+  @Column(nullable = false) String destinationLocation
 
-  String inboundChannelName
-  String inboundChannelType
+  @Column(nullable = false) String inboundChannelName
+  @Column(nullable = false) String inboundChannelType
 }
