@@ -21,6 +21,7 @@ spring.datasource.password: cargotracker
 
 spring.jpa.open-in-view: false
 spring.jpa.properties.hibernate.dialect: org.klokwrk.lib.hibernate.dialect.PostgreSqlAxonDialect
+spring.jpa.properties.hibernate.check_nullability: true
 
 klokwrk.datasourceproxy.query-logger.filtering-out-regular-expression-list: >
   ^update token_entry.*$
