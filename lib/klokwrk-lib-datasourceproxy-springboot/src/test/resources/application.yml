@@ -1,5 +1,0 @@
-klokwrk.datasourceproxy.query-logger.filtering-out-regular-expression-list: >
-  ^select.*from not_so_interesting_person.*$
-
-logging.level.klokwrk.datasourceproxy.queryLogger: DEBUG
-logging.level.klokwrk.datasourceproxy.slowQueryLogger: WARN
