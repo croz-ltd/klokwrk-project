@@ -52,7 +52,7 @@ class SpringBootConfig {
   @Bean
   TransactionManager axonTransactionManager(PlatformTransactionManager transactionManager) {
     TransactionDefinition transactionDefinition = new DefaultTransactionDefinition()
-    transactionDefinition.setReadOnly(true)
+    transactionDefinition.readOnly = true
 
     return new SpringTransactionManager(transactionManager, transactionDefinition)
   }
