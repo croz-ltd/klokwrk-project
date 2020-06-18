@@ -56,7 +56,7 @@ jobs:
       - name: Test
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: check --parallel --continue --exclude-task codenarcMain --exclude-task codenarcTest
+          arguments: check --parallel --continue --exclude-task codenarcMain --exclude-task codenarcTest --exclude-task codenarcTestIntegration
 
       - name: Test Report
         if: ${{ always() }}
@@ -75,7 +75,7 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' }}
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: aggregateCodenarcMain aggregateCodenarcTest --continue
+          arguments: aggregateCodenarc
 
       - name: Publish CodeNarc Report
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' && always() }}
