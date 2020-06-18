@@ -102,4 +102,10 @@ dependencies {
 
   testImplementation "org.axonframework:axon-test"
   testImplementation "org.spockframework:spock-core"
+
+  testIntegrationImplementation "org.springframework:spring-test"
+  testIntegrationImplementation "org.springframework.boot:spring-boot-test"
+  testIntegrationImplementation "org.testcontainers:testcontainers"
+
+  testIntegrationRuntimeOnly "org.spockframework:spock-spring"
 }
