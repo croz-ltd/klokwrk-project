@@ -97,7 +97,7 @@ class CargoBookFactoryServiceSpecification extends Specification {
     thrown(IllegalArgumentException)
   }
 
-  void "createCargoBookResponse - should create expected reponse"() {
+  void "createCargoBookResponse - should create expected response"() {
     given:
     String myAggregateIdentifier = UUID.randomUUID()
     Location myOriginLocation = inMemoryLocationRegistryRepositoryService.findByUnLoCode("HRRJK")

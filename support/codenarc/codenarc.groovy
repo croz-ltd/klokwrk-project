@@ -1,3 +1,5 @@
+final TEST_FILES = ".*/(test|testIntegration)/.*\\.groovy"
+
 ruleset {
 
   // rulesets/basic.xml
@@ -26,7 +28,9 @@ ruleset {
   EmptyForStatement
   EmptyIfStatement
   EmptyInstanceInitializer
-  EmptyMethod { enabled = false }
+  EmptyMethod {
+    doNotApplyToFilesMatching = TEST_FILES
+  }
   EmptyStaticInitializer
   EmptySwitchStatement
   EmptySynchronizedStatement
@@ -52,7 +56,7 @@ ruleset {
   WhileStatementBraces
 
   // rulesets/comments.xml
-  ClassJavadoc { enabled = false}
+  ClassJavadoc { enabled = false }
   JavadocConsecutiveEmptyLines
   JavadocEmptyAuthorTag
   JavadocEmptyExceptionTag
@@ -97,7 +101,9 @@ ruleset {
   WaitOutsideOfWhileLoop
 
   // rulesets/convention.xml
-  CompileStatic { enabled = false }
+  CompileStatic {
+    doNotApplyToFilesMatching = TEST_FILES
+  }
   ConfusingTernary
   CouldBeElvis
   CouldBeSwitchStatement
@@ -110,7 +116,9 @@ ruleset {
   LongLiteralWithLowerCaseL
   MethodParameterTypeRequired
   MethodReturnTypeRequired
-  NoDef { enabled = false }
+  NoDef {
+    doNotApplyToFilesMatching = TEST_FILES
+  }
   NoDouble
   NoFloat
   NoJavaUtilDate
@@ -121,7 +129,9 @@ ruleset {
   StaticMethodsBeforeInstanceMethods
   TernaryCouldBeElvis
   TrailingComma { enabled = false }
-  VariableTypeRequired { enabled = false }
+  VariableTypeRequired {
+    doNotApplyToFilesMatching = TEST_FILES
+  }
   VectorIsObsolete
 
   // rulesets/design.xml
@@ -129,7 +139,9 @@ ruleset {
   AbstractClassWithoutAbstractMethod
   AssignmentToStaticFieldFromInstanceMethod
   BooleanMethodReturnsNull
-  BuilderMethodWithSideEffects { enabled = false }
+  BuilderMethodWithSideEffects {
+    doNotApplyToFilesMatching = TEST_FILES
+  }
   CloneableWithoutClone
   CloseWithoutCloseable
   CompareToWithoutComparable
@@ -137,7 +149,9 @@ ruleset {
   EmptyMethodInAbstractClass
   FinalClassWithProtectedMember
   ImplementationAsType
-  Instanceof { enabled = false }
+  Instanceof {
+    doNotApplyToFilesMatching = TEST_FILES
+  }
   LocaleSetDefault
   NestedForLoop
   PrivateFieldCouldBeFinal
@@ -149,10 +163,20 @@ ruleset {
   ToStringReturnsNull
 
   // rulesets/dry.xml
-  DuplicateListLiteral { enabled = false }
-  DuplicateMapLiteral { enabled = false }
-  DuplicateNumberLiteral { enabled = false }
-  DuplicateStringLiteral { enabled = false }
+  DuplicateListLiteral {
+    doNotApplyToFilesMatching = TEST_FILES
+  }
+  DuplicateMapLiteral {
+    doNotApplyToFilesMatching = TEST_FILES
+  }
+  DuplicateNumberLiteral {
+    doNotApplyToFilesMatching = TEST_FILES
+  }
+  DuplicateStringLiteral { // TODO dmurat: Check SuppressWarnings in code if https://github.com/CodeNarc/CodeNarc/issues/512 gets fixed.
+    doNotApplyToFilesMatching = TEST_FILES
+    ignoreStrings = "|.|,|0|1"
+    ignoreStringsDelimiter = "|"
+  }
 
   // rulesets/enhanced.xml
   CloneWithoutCloneable { enabled = false }
@@ -196,8 +220,19 @@ ruleset {
   ClosureStatementOnOpeningLineOfMultipleLineClosure
   ConsecutiveBlankLines
   FileEndsWithoutNewline
-  Indentation { spacesPerIndentLevel = 2 } // see the comment in Main source set rules.
+  Indentation { spacesPerIndentLevel = 2 }  // TODO dmurat: Check SuppressWarnings in code if https://github.com/CodeNarc/CodeNarc/issues/510 gets fixed.
   LineLength {
+    name = "LineLength - main"
+    description = "For 'main' source set, checks the maximum length for each line of source code, which is 210 characters. However, 'only' 200 characters should be really used. Extra 10 characters " +
+                  "should be used only for special cases."
+    doNotApplyToFilesMatching = TEST_FILES
+    length = 210
+  }
+  LineLength {
+    name = "LineLength - test"
+    description = "For all 'test*' source sets, checks the maximum length for each line of source code., which is 210 characters. However, 'only' 200 characters should be really used. Extra 10 " +
+                  "characters should be used only for special cases. Besides, expressions used for equality comparison and line comments are ignored and can have any length."
+    applyToFilesMatching = TEST_FILES
     length = 210
     ignoreLineRegex = /^.*(==~?|\/\/).*$/ // ignore for equality comparisons, matches comparisons and line comments in tests
   }
@@ -347,6 +382,16 @@ ruleset {
   InterfaceName
   InterfaceNameSameAsSuperInterface
   MethodName {
+    name = "MethodName - main"
+    description = "For 'main' source set, verifies that the name of each method matches a regular expression. It checks that the method name starts with a lowercase letter and contains only 'word' " +
+                  "characters."
+    doNotApplyToFilesMatching = TEST_FILES
+  }
+  MethodName {
+    name = "MethodName - test"
+    description = "For all 'test*' source sets, verifies that the name of each method matches a regular expression. It checks that the method name starts with a lowercase letter and, beside " +
+                  "'word characters', allows special characters like parenthesis, square brackets, hash sign, colon, white space, comma, dot and dash."
+    applyToFilesMatching = TEST_FILES
     regex = /[a-z]([\w\[\]#:\s(),.-]|\')*/ // Test method names can include various unusual characters like []#:(),.-' . This is especially true for unrolled Spock methods.
   }
   ObjectOverrideMisspelledMethodName
@@ -441,7 +486,9 @@ ruleset {
   // rulesets/unused.xml
   UnusedArray
   UnusedMethodParameter
-  UnusedObject { enabled = false }
+  UnusedObject {
+    doNotApplyToFilesMatching = TEST_FILES
+  }
   UnusedPrivateField
   UnusedPrivateMethod
   UnusedPrivateMethodParameter

@@ -40,7 +40,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     '"    "'                       | _
   }
 
-  @SuppressWarnings(["Indentation", "UnnecessaryTransientModifier"])
+  @SuppressWarnings(["UnnecessaryTransientModifier"])
   static class MyBeanWithTransientProperties {
     transient String first
     String last

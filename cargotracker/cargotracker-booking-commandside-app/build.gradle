@@ -1,5 +1,60 @@
 apply plugin: "org.springframework.boot"
 
+// =================================================
+// configuring "testIntegration" source set -- start
+// -------------------------------------------------
+// TODO dmurat: move testIntegration source set creation into the Gradle plugin.
+sourceSets {
+  testIntegration {
+    compileClasspath += sourceSets.main.output
+    runtimeClasspath += sourceSets.main.output
+
+    java {
+      outputDir = file("build/classes/groovy/testIntegration")
+      srcDirs = [file("src/testIntegration/groovy")]
+    }
+
+    resources {
+      srcDirs = [file("src/testIntegration/resources")]
+    }
+  }
+}
+
+configurations {
+  testIntegrationImplementation.extendsFrom testImplementation
+  testIntegrationRuntimeOnly.extendsFrom testRuntimeOnly
+}
+
+tasks.register("testIntegration", Test) { Test testIntegrationTask ->
+  description = "Runs integration tests."
+  group = "verification"
+
+  testIntegrationTask.useJUnitPlatform()
+
+  testClassesDirs = sourceSets.testIntegration.output.classesDirs
+  classpath = sourceSets.testIntegration.runtimeClasspath
+
+  // TODO dmurat: remove this check when https://github.com/spockframework/spock/issues/1177 gets fixed.
+  if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
+    // NOTE: "-noverify" option must not be included for JDK 1.8. Otherwise, Spock's "thrown()" method results in IllegalAccessError.
+    jvmArgs = ["-XX:TieredStopAtLevel=1"]
+  }
+  else {
+    jvmArgs = ["-noverify", "-XX:TieredStopAtLevel=1"]
+  }
+}
+
+idea {
+  module {
+    // Required for IDEA to mark sources from testIntegration source set as test sources.
+    testSourceDirs += file("src/testIntegration/groovy")
+    testResourceDirs += file("src/testIntegration/resources")
+  }
+}
+// -----------------------------------------------
+// configuring "testIntegration" source set -- end
+// ===============================================
+
 // https://docs.gradle.org/current/userguide/upgrading_version_6.html#publishing_spring_boot_applications
 configurations {
   [apiElements, runtimeElements].each {
@@ -47,4 +102,10 @@ dependencies {
 
   testImplementation "org.axonframework:axon-test"
   testImplementation "org.spockframework:spock-core"
+
+  testIntegrationImplementation "org.springframework:spring-test"
+  testIntegrationImplementation "org.springframework.boot:spring-boot-test"
+  testIntegrationImplementation "org.testcontainers:testcontainers"
+
+  testIntegrationRuntimeOnly "org.spockframework:spock-spring"
 }
