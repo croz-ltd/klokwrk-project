@@ -21,7 +21,7 @@ class CargoBookCommandController {
 
   @PostMapping("/cargo-book")
   OperationResponse<CargoBookResponse> cargoBook(@RequestBody CargoBookWebRequest cargoBookWebRequest, HttpServletRequest httpServletRequest) {
-    OperationResponse<CargoBookResponse> cargoBookResponse = cargoBookingApplicationService.cargoBook(CargoBookCommandAssembler.toCargoBookRequest(cargoBookWebRequest, httpServletRequest))
+    OperationResponse<CargoBookResponse> cargoBookResponse = cargoBookingApplicationService.cargoBook(CargoBookCommandWebAssembler.toCargoBookRequest(cargoBookWebRequest, httpServletRequest))
     return cargoBookResponse
   }
 }

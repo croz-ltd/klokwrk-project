@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest
 
 // Not really needed since implementation is very simple and be easily inlined into controller. However, it demonstrates where web-to-facade assemblers should live and how to operate.
 @CompileStatic
-class CargoBookCommandAssembler {
+class CargoBookCommandWebAssembler {
   static final String WEB_BOOKING_CHANNEL_NAME = "booking"
   static final String WEB_BOOKING_CHANNEL_TYPE = "web"
 

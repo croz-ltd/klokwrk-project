@@ -1,8 +1,7 @@
 package org.klokwrk.cargotracker.booking.commandside.cargobook.domain.facade
 
-import org.klokwrk.cargotracker.booking.commandside.cargobook.interfaces.web.CargoBookCommandAssembler
+import org.klokwrk.cargotracker.booking.commandside.cargobook.interfaces.web.CargoBookCommandWebAssembler
 import org.klokwrk.cargotracker.booking.commandside.cargobook.test.base.AbstractCargoBookIntegrationSpecification
-import org.klokwrk.cargotracker.lib.boundary.api.metadata.constant.MetaDataConstant
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,7 +16,7 @@ class CargoBookFacadeServiceIntegrationSpecification extends AbstractCargoBookIn
     given:
     String myAggregateIdentifier = UUID.randomUUID()
     CargoBookRequest cargoBookRequest = new CargoBookRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
-    Map requestMetadataMap = CargoBookCommandAssembler.createMetaDataMapForWebBookingChannel("127.0.0.1")
+    Map requestMetadataMap = CargoBookCommandWebAssembler.createMetaDataMapForWebBookingChannel("127.0.0.1")
 
     when:
     OperationResponse<CargoBookResponse> cargoBookOperationResponse = cargoBookFacadeService.cargoBook(new OperationRequest<>(payload: cargoBookRequest, metaData: requestMetadataMap))
