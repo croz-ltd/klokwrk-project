@@ -53,23 +53,29 @@ jobs:
         with:
           arguments: assemble --continue --exclude-task groovydoc
 
-      - name: Test
+      - name: Test Unit
         uses: eskatos/gradle-command-action@v1
         with:
           arguments: check --parallel --continue --exclude-task codenarcMain --exclude-task codenarcTest --exclude-task codenarcTestIntegration
 
-      - name: Test Report
+      - name: Test Unit Report
         if: ${{ always() }}
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: aggregateAllTestReports
+          arguments: aggregateTestReports --exclude-task testIntegration
 
-      - name: Publish Test Report
+      - name: Test Unit Report Publish
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
-          name: aggregatedTestReports_${{ matrix.os }}-JDK-${{ matrix.java }}
-          path: build/reports/aggregate-all-tests/*
+          name: aggregatedTestUnitReports_${{ matrix.os }}-JDK-${{ matrix.java }}
+          path: build/reports/aggregate-tests/*
+
+      - name: Test Integration
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: testIntegration --parallel
 
       - name: CodeNarc
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' }}
