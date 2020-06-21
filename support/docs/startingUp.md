@@ -11,7 +11,7 @@ Environment:
 Open your shell at the project root and execute following commands (shell-1):
 
     cd support/docker
-    ./dockerComposeUpInfrastructure.sh
+    ./dockerComposeInfrastructureUp.sh
 
 Open another shell (shell-2) at the project root and execute following command (generating Groovydoc is skipped to speed things up)
 
@@ -54,7 +54,7 @@ Going back to shell-2, some HTTP requests can be tried via `httpie`:
         aggregateIdentifier=9e4a13c8-cb74-4a01-9717-f41aaba5428d
 
 When finished experimenting, applications can be stopped by `CTRL+C` (shell-3, shell-4, shell-5). For stopping infrastructural components (shell-1), first we need to stop docker-compose log tailing
-by `CTRL+C`, and then do some cleanup with `./dockerComposeDownInfrastructure.sh`.
+by `CTRL+C`, and then do some cleanup with `./dockerComposeInfrastructureDown.sh`.
 
 ### Running from IDEA
 Executing HTTP requests from CLI can be cumbersome, and many prefer some more user-friendly tool like Postman. If you develop from IDEA, you can also use IDEA's http client. Although it does not have
@@ -63,7 +63,7 @@ all niceties of Postman it can be really useful for storing series of requests a
 First, the project needs to be imported in IDEA as Gradle project. Next, either from the IDEA terminal or from external shell, infrastructural components needs to be started:
 
     cd support/docker
-    ./dockerComposeUpInfrastructure.sh
+    ./dockerComposeInfrastructureUp.sh
 
 Applications can also be started from CLI, but it might be preferable to use UI.
 
@@ -93,7 +93,7 @@ When all applications are started up, we can try executing some requests:
 - Repeat the same with `support/http-request/querysideRequests.http`.
 
 When finished experimenting, applications can be stopped by `CMD+F2` shortcut or via IDEA "Run" tool window. For stopping infrastructural components, stop docker-compose log tailing with `CTRL+C`,
-and then do some cleanup with `./dockerComposeDownInfrastructure.sh`.
+and then do some cleanup with `./dockerComposeInfrastructureDown.sh`.
 
 ### Supportive Gradle tasks
 While working on a project, a developer often needs access to various pieces of information about the current state of a project. These reports might provide beneficial information about code quality
