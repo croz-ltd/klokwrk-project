@@ -80,6 +80,10 @@ springBoot {
   }
 }
 
+bootBuildImage {
+  enabled = false
+}
+
 dependencies {
   implementation project(":cargotracker-booking-axon-api")
   implementation project(":cargotracker-booking-domain-model")
