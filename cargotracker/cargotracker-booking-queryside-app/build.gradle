@@ -24,6 +24,10 @@ springBoot {
   }
 }
 
+bootBuildImage {
+  enabled = false
+}
+
 dependencies {
   implementation project(":cargotracker-booking-queryside-rdbms-projection-querymodel")
   implementation project(":cargotracker-lib-axon-cqrs")

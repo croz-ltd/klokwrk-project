@@ -25,6 +25,18 @@ springBoot {
   }
 }
 
+bootJar {
+  layered {
+    includeLayerTools = false
+  }
+}
+
+bootBuildImage {
+  enabled = true
+  environment = ["BP_JVM_VERSION" : "11.*"]
+  imageName = "${project.name}:${project.version}"
+}
+
 dependencies {
   implementation "org.codehaus.groovy:groovy"
   implementation "org.flywaydb:flyway-core"
