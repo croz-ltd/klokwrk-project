@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  cargotracker-booking-rdbms-management-app:
+    container_name: cargotracker-booking-rdbms-management-app
+    image: klokwrkprj/cargotracker-booking-rdbms-management-app:0.0.2-SNAPSHOT
+    networks:
+      - klokwrk-project-network
+    environment:
+      - CARGOTRACKER_POSTGRES_HOSTNAME=klokwrk-project-postgres
+      - CARGOTRACKER_POSTGRES_PORT=5432
+      - CARGOTRACKER_POSTGRES_USERNAME=cargotracker
+      - CARGOTRACKER_POSTGRES_PASSWORD=cargotracker
+
+networks:
+  klokwrk-project-network:
+    name: klokwrk-project-network
