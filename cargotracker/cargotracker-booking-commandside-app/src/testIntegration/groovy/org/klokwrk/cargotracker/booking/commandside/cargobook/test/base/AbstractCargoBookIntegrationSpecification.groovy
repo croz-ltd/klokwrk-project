@@ -15,6 +15,7 @@ class AbstractCargoBookIntegrationSpecification extends Specification {
   }
 
   static GenericContainer createAndStartAxonServer() {
+    // TODO dmurat: manage image version externally
     String imageVersion = "4.3.3"
     Integer[] exposedPorts = [8024, 8124]
 
