@@ -6,8 +6,8 @@ import org.axonframework.eventhandling.EventBus
 import org.axonframework.eventhandling.GenericDomainEventMessage
 import org.axonframework.eventhandling.gateway.EventGateway
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataConstant
-import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFactory
 import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookedEvent
+import org.klokwrk.cargotracker.booking.commandside.test.fixtures.WebMetaDataFixtures
 import org.klokwrk.cargotracker.booking.domain.model.Location
 import org.klokwrk.cargotracker.booking.domain.modelsample.LocationSample
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.cargosummary.test.base.AbstractCargoSummaryIntegrationSpecification
@@ -51,10 +51,6 @@ class CargoSummaryProjectorFacadeServiceIntegrationSpecification extends Abstrac
     return cargoBookedEvent
   }
 
-  static Map<String, ?> createMetaDataMapForWebBookingChannel() {
-    return WebMetaDataFactory.createMetaDataMapForWebBookingChannel("127.0.0.1")
-  }
-
   static <T extends BaseEvent> GenericDomainEventMessage createEventMessage(T event, Map<String, ?> metadataMap, Long sequenceNumber = 0) {
     GenericDomainEventMessage<T> eventMessage = new GenericDomainEventMessage<>(event.getClass().simpleName, event.aggregateIdentifier, sequenceNumber, event, metadataMap)
     return eventMessage
@@ -79,7 +75,7 @@ class CargoSummaryProjectorFacadeServiceIntegrationSpecification extends Abstrac
     CargoBookedEvent cargoBookedEvent = createCorrectCargoBookedEvent()
     String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
 
-    GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = createEventMessage(cargoBookedEvent, createMetaDataMapForWebBookingChannel())
+    GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = createEventMessage(cargoBookedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
     eventBus.publish(genericDomainEventMessage)
 
     expect:

@@ -108,6 +108,7 @@ dependencies {
   testImplementation "org.axonframework:axon-test"
   testImplementation "org.spockframework:spock-core"
 
+  testIntegrationImplementation project(":cargotracker-booking-commandside-test-support")
   testIntegrationImplementation "org.springframework:spring-test"
   testIntegrationImplementation "org.springframework.boot:spring-boot-test"
   testIntegrationImplementation "org.testcontainers:testcontainers"

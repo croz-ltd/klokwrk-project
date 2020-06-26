@@ -111,6 +111,7 @@ dependencies {
   runtimeOnly "org.postgresql:postgresql"
 
   testIntegrationImplementation project(":cargotracker-booking-boundary-web")
+  testIntegrationImplementation project(":cargotracker-booking-commandside-test-support")
 
   testIntegrationImplementation "org.codehaus.groovy:groovy-sql"
   testIntegrationImplementation "org.spockframework:spock-core"
