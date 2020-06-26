@@ -105,10 +105,11 @@ dependencies {
   runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"
   runtimeOnly "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
 
+  testImplementation project(":cargotracker-booking-commandside-test-support")
+
   testImplementation "org.axonframework:axon-test"
   testImplementation "org.spockframework:spock-core"
 
-  testIntegrationImplementation project(":cargotracker-booking-commandside-test-support")
   testIntegrationImplementation "org.springframework:spring-test"
   testIntegrationImplementation "org.springframework.boot:spring-boot-test"
   testIntegrationImplementation "org.testcontainers:testcontainers"

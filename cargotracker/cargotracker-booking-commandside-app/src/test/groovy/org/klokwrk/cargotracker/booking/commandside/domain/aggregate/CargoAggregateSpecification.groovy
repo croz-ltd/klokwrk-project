@@ -5,13 +5,12 @@ import org.axonframework.test.aggregate.AggregateTestFixture
 import org.axonframework.test.aggregate.ResultValidator
 import org.axonframework.test.aggregate.TestExecutor
 import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookCommand
-import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookedEvent
+import org.klokwrk.cargotracker.booking.commandside.test.fixtures.cargobook.CargoBookCommandFixtures
+import org.klokwrk.cargotracker.booking.commandside.test.fixtures.cargobook.CargoBookedEventFixtures
 import org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.MessageHandlerTrait
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationCode
 import spock.lang.Specification
-
-import static org.klokwrk.cargotracker.booking.domain.modelsample.LocationSample.LOCATION_SAMPLE_MAP
 
 class CargoAggregateSpecification extends Specification {
 
@@ -24,9 +23,7 @@ class CargoAggregateSpecification extends Specification {
 
   void "should fail for same origin and destination locations"() {
     given:
-    String aggregateIdentifier = UUID.randomUUID()
-    CargoBookCommand cargoBookCommand = new CargoBookCommand(aggregateIdentifier: aggregateIdentifier, originLocation: LOCATION_SAMPLE_MAP.HRRJK, destinationLocation: LOCATION_SAMPLE_MAP.HRRJK)
-
+    CargoBookCommand cargoBookCommand = CargoBookCommandFixtures.commandInvalidWithSameOriginAndLocation()
     TestExecutor<CargoAggregate> cargoAggregateTestExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     when:
@@ -47,9 +44,7 @@ class CargoAggregateSpecification extends Specification {
 
   void "should fail when origin and destination locations can not connect via rail or water"() {
     given:
-    String aggregateIdentifier = UUID.randomUUID()
-    CargoBookCommand cargoBookCommand = new CargoBookCommand(aggregateIdentifier: aggregateIdentifier, originLocation: LOCATION_SAMPLE_MAP.HRZAG, destinationLocation: LOCATION_SAMPLE_MAP.HRKRK)
-
+    CargoBookCommand cargoBookCommand = CargoBookCommandFixtures.commandInvalidWithNotConnectedLocations()
     TestExecutor<CargoAggregate> cargoAggregateTestExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     when:
@@ -70,9 +65,7 @@ class CargoAggregateSpecification extends Specification {
 
   void "should work when origin and destination locations can connect via rail or water"() {
     given:
-    String aggregateIdentifier = UUID.randomUUID()
-    CargoBookCommand cargoBookCommand = new CargoBookCommand(aggregateIdentifier: aggregateIdentifier, originLocation: LOCATION_SAMPLE_MAP.HRRJK, destinationLocation: LOCATION_SAMPLE_MAP.HRZAG)
-
+    CargoBookCommand cargoBookCommand = CargoBookCommandFixtures.commandValidConnectedViaRail()
     TestExecutor<CargoAggregate> cargoAggregateTestExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     when:
@@ -81,6 +74,6 @@ class CargoAggregateSpecification extends Specification {
     then:
     cargoAggregateResultValidator
         .expectSuccessfulHandlerExecution()
-        .expectEvents(new CargoBookedEvent(cargoBookCommand.properties))
+        .expectEvents(CargoBookedEventFixtures.eventValidForCommand(cargoBookCommand))
   }
 }

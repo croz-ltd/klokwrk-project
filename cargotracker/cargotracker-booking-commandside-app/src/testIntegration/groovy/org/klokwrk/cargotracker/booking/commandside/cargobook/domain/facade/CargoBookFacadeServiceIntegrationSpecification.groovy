@@ -1,7 +1,7 @@
 package org.klokwrk.cargotracker.booking.commandside.cargobook.domain.facade
 
 import org.klokwrk.cargotracker.booking.commandside.cargobook.test.base.AbstractCargoBookIntegrationSpecification
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.WebMetaDataFixtures
+import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.springframework.beans.factory.annotation.Autowired

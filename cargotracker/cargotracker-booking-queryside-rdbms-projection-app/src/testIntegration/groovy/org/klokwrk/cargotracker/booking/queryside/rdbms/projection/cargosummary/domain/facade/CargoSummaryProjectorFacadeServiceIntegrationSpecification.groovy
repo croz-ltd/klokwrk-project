@@ -7,9 +7,8 @@ import org.axonframework.eventhandling.GenericDomainEventMessage
 import org.axonframework.eventhandling.gateway.EventGateway
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataConstant
 import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookedEvent
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.WebMetaDataFixtures
-import org.klokwrk.cargotracker.booking.domain.model.Location
-import org.klokwrk.cargotracker.booking.domain.modelsample.LocationSample
+import org.klokwrk.cargotracker.booking.commandside.test.fixtures.cargobook.CargoBookedEventFixtures
+import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.cargosummary.test.base.AbstractCargoSummaryIntegrationSpecification
 import org.klokwrk.cargotracker.lib.axon.api.event.BaseEvent
 import org.klokwrk.lang.groovy.constant.CommonConstants
@@ -42,15 +41,6 @@ class CargoSummaryProjectorFacadeServiceIntegrationSpecification extends Abstrac
     return groovyRowResultList[0]
   }
 
-  static CargoBookedEvent createCorrectCargoBookedEvent() {
-    String aggregateIdentifier = UUID.randomUUID()
-    Location originLocation = LocationSample.findByUnLoCode("HRRJK")
-    Location destinationLocation = LocationSample.findByUnLoCode("HRZAG")
-    CargoBookedEvent cargoBookedEvent = new CargoBookedEvent(aggregateIdentifier: aggregateIdentifier, originLocation: originLocation, destinationLocation: destinationLocation)
-
-    return cargoBookedEvent
-  }
-
   static <T extends BaseEvent> GenericDomainEventMessage createEventMessage(T event, Map<String, ?> metadataMap, Long sequenceNumber = 0) {
     GenericDomainEventMessage<T> eventMessage = new GenericDomainEventMessage<>(event.getClass().simpleName, event.aggregateIdentifier, sequenceNumber, event, metadataMap)
     return eventMessage
@@ -68,11 +58,11 @@ class CargoSummaryProjectorFacadeServiceIntegrationSpecification extends Abstrac
   @Autowired
   Sql groovySql
 
-  void "should work for event with metadata"() {
+  void "should work for event message with metadata"() {
     given:
     Long startingCargoSummaryRecordsCount = selectCurrentCargoSummaryRecordsCount(groovySql)
 
-    CargoBookedEvent cargoBookedEvent = createCorrectCargoBookedEvent()
+    CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidConnectedViaRail()
     String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
 
     GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = createEventMessage(cargoBookedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
@@ -94,11 +84,11 @@ class CargoSummaryProjectorFacadeServiceIntegrationSpecification extends Abstrac
     }
   }
 
-  void "should work for event without metadata"() {
+  void "should work for event message without metadata"() {
     given:
     Long startingCargoSummaryRecordsCount = selectCurrentCargoSummaryRecordsCount(groovySql)
 
-    CargoBookedEvent cargoBookedEvent = createCorrectCargoBookedEvent()
+    CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidConnectedViaRail()
     String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
 
     GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = createEventMessage(cargoBookedEvent, [:])

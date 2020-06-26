@@ -6,8 +6,20 @@ import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.containers.wait.strategy.Wait
 
+/**
+ * Factory for creating and starting Axon Server in Testcontainers.
+ */
 @CompileStatic
 class AxonServerTestcontainersFactory {
+  /**
+   * Creates and start Axon Server in container.
+   * <p/>
+   * <ul>
+   *   <li>Container name prefix: <code>klokwrk-project-axon-server</code>.</li>
+   *   <li>Exposed internal ports: 8024, 8124.</li>
+   *   <li>Container time zone: <code>Europe/Zagreb</code>.</li>
+   * </ul>
+   */
   static GenericContainer createAndStartAxonServer(Network klokwrkNetwork) {
     // TODO dmurat: manage image version externally
     String imageVersion = "4.3.3"
