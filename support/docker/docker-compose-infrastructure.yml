@@ -3,7 +3,7 @@ version: "3.7"
 services:
   klokwrk-project-postgres:
     container_name: klokwrk-project-postgres
-    image: postgres:12.3
+    image: postgres:${postgreSqlDockerImageVersion}
     ports:
       - 5432:5432
     environment:
@@ -19,7 +19,7 @@ services:
 
   klokwrk-project-axon-server:
     container_name: klokwrk-project-axon-server
-    image: axoniq/axonserver:4.3.3
+    image: axoniq/axonserver:${axonServerDockerImageVersion}
     ports:
       - 8024:8024
       - 8124:8124

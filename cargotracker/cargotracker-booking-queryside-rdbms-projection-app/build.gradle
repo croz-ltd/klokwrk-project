@@ -1,5 +1,76 @@
 apply plugin: "org.springframework.boot"
 
+// =================================================
+// configuring "testIntegration" source set -- start
+// -------------------------------------------------
+// TODO dmurat: move testIntegration source set creation into the Gradle plugin.
+sourceSets {
+  testIntegration {
+    compileClasspath += sourceSets.main.output
+    runtimeClasspath += sourceSets.main.output
+
+    java {
+      outputDir = file("build/classes/groovy/testIntegration")
+      srcDirs = [file("src/testIntegration/groovy")]
+    }
+
+    resources {
+      srcDirs = [file("src/testIntegration/resources")]
+    }
+  }
+}
+
+configurations {
+  testIntegrationImplementation.extendsFrom testImplementation
+  testIntegrationRuntimeOnly.extendsFrom testRuntimeOnly
+}
+
+/**
+ * Converts Gradle project properties (i.e. properties specified via gradle.properties file) with 'DockerImageVersion' suffix into Java system properties.
+ * This way all versions with DockerImageVersion suffix can be used by Testcontainers factories that create and start containers.
+ */
+void convertDockerImageVersionsIntoJavaSystemPropertiesForTestTask(Test testTask, Project project) {
+  Map<String, String> dockerImageVersions = project.getRootProject().properties.findAll { String key, Object value ->
+    (value instanceof String) && key.toLowerCase().endsWith("DockerImageVersion".toLowerCase())
+  } as Map<String, String>
+
+  dockerImageVersions.each { String key, String value ->
+    testTask.systemProperty(key, value)
+  }
+}
+
+tasks.register("testIntegration", Test) { Test testIntegrationTask ->
+  description = "Runs integration tests."
+  group = "verification"
+
+  convertDockerImageVersionsIntoJavaSystemPropertiesForTestTask(testIntegrationTask, project)
+  testIntegrationTask.useJUnitPlatform()
+
+  testClassesDirs = sourceSets.testIntegration.output.classesDirs
+  classpath = sourceSets.testIntegration.runtimeClasspath
+
+  // TODO dmurat: remove this check when https://github.com/spockframework/spock/issues/1177 gets fixed.
+  if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
+    // NOTE: "-noverify" option must not be included for JDK 1.8. Otherwise, Spock's "thrown()" method results in IllegalAccessError.
+    jvmArgs = ["-XX:TieredStopAtLevel=1"]
+  }
+  else {
+    jvmArgs = ["-noverify", "-XX:TieredStopAtLevel=1"]
+  }
+}
+
+idea {
+  module {
+    // Required for IDEA to mark sources from testIntegration source set as test sources.
+    testSourceDirs += file("src/testIntegration/groovy")
+    testResourceDirs += file("src/testIntegration/resources")
+  }
+}
+// -----------------------------------------------
+// configuring "testIntegration" source set -- end
+// ===============================================
+
+// https://docs.gradle.org/current/userguide/upgrading_version_6.html#publishing_spring_boot_applications
 configurations {
   [apiElements, runtimeElements].each {
     it.outgoing.artifacts.removeIf { it.buildDependencies.getDependencies(null).contains(jar) }
@@ -32,6 +103,7 @@ dependencies {
   implementation project(":cargotracker-booking-axon-api")
   implementation project(":cargotracker-booking-domain-model")
   implementation project(":cargotracker-booking-queryside-rdbms-projection-querymodel")
+  implementation project(":cargotracker-lib-axon-api")
   implementation project(":cargotracker-lib-axon-logging")
   implementation project(":cargotracker-lib-boundary-api")
   implementation project(":klokwrk-lib-datasourceproxy-springboot")
@@ -52,4 +124,17 @@ dependencies {
   runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"
   runtimeOnly "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
   runtimeOnly "org.postgresql:postgresql"
+
+  testIntegrationImplementation project(":cargotracker-booking-boundary-web")
+  testIntegrationImplementation project(":cargotracker-booking-commandside-test-support")
+  testIntegrationImplementation project(":cargotracker-booking-queryside-test-support")
+
+  testIntegrationImplementation "org.codehaus.groovy:groovy-sql"
+  testIntegrationImplementation "org.spockframework:spock-core"
+  testIntegrationImplementation "org.springframework:spring-test"
+  testIntegrationImplementation "org.springframework.boot:spring-boot-test"
+  testIntegrationImplementation "org.testcontainers:postgresql"
+  testIntegrationImplementation "org.testcontainers:testcontainers"
+
+  testIntegrationRuntimeOnly "org.spockframework:spock-spring"
 }

@@ -1,5 +1,6 @@
 apply plugin: "org.springframework.boot"
 
+// https://docs.gradle.org/current/userguide/upgrading_version_6.html#publishing_spring_boot_applications
 configurations {
   [apiElements, runtimeElements].each {
     it.outgoing.artifacts.removeIf { it.buildDependencies.getDependencies(null).contains(jar) }

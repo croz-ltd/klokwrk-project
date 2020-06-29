@@ -1,0 +1,8 @@
+apply plugin: "java-library"
+
+dependencies {
+  implementation project(":cargotracker-lib-boundary-api")
+  implementation project(":klokwrk-lang-groovy")
+
+  implementation "org.codehaus.groovy:groovy"
+}

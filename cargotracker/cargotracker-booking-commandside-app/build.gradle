@@ -25,10 +25,25 @@ configurations {
   testIntegrationRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
+/**
+ * Converts Gradle project properties (i.e. properties specified via gradle.properties file) with 'DockerImageVersion' suffix into Java system properties.
+ * This way all versions with DockerImageVersion suffix can be used by Testcontainers factories that create and start containers.
+ */
+void convertDockerImageVersionsIntoJavaSystemPropertiesForTestTask(Test testTask, Project project) {
+  Map<String, String> dockerImageVersions = project.getRootProject().properties.findAll { String key, Object value ->
+    (value instanceof String) && key.toLowerCase().endsWith("DockerImageVersion".toLowerCase())
+  } as Map<String, String>
+
+  dockerImageVersions.each { String key, String value ->
+    testTask.systemProperty(key, value)
+  }
+}
+
 tasks.register("testIntegration", Test) { Test testIntegrationTask ->
   description = "Runs integration tests."
   group = "verification"
 
+  convertDockerImageVersionsIntoJavaSystemPropertiesForTestTask(testIntegrationTask, project)
   testIntegrationTask.useJUnitPlatform()
 
   testClassesDirs = sourceSets.testIntegration.output.classesDirs
@@ -86,6 +101,7 @@ bootBuildImage {
 
 dependencies {
   implementation project(":cargotracker-booking-axon-api")
+  implementation project(":cargotracker-booking-boundary-web")
   implementation project(":cargotracker-booking-domain-model")
   implementation project(":cargotracker-lib-axon-api")
   implementation project(":cargotracker-lib-axon-logging")
@@ -103,6 +119,8 @@ dependencies {
   runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
   runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"
   runtimeOnly "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
+
+  testImplementation project(":cargotracker-booking-commandside-test-support")
 
   testImplementation "org.axonframework:axon-test"
   testImplementation "org.spockframework:spock-core"
