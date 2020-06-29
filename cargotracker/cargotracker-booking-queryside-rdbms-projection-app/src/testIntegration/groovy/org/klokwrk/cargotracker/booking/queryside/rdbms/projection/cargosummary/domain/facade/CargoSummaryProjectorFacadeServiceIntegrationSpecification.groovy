@@ -1,6 +1,5 @@
 package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.cargosummary.domain.facade
 
-import groovy.sql.GroovyRowResult
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.axonframework.eventhandling.GenericDomainEventMessage
@@ -10,7 +9,8 @@ import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBook
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.cargobook.CargoBookedEventFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.cargosummary.test.base.AbstractCargoSummaryIntegrationSpecification
-import org.klokwrk.cargotracker.lib.axon.api.event.BaseEvent
+import org.klokwrk.cargotracker.booking.queryside.test.axon.GenericDomainEventMessageFactory
+import org.klokwrk.cargotracker.booking.queryside.test.domain.sql.CargoSummaryQueryHelper
 import org.klokwrk.lang.groovy.constant.CommonConstants
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -31,21 +31,6 @@ class CargoSummaryProjectorFacadeServiceIntegrationSpecification extends Abstrac
     }
   }
 
-  static Long selectCurrentCargoSummaryRecordsCount(Sql groovySql) {
-    GroovyRowResult groovyRowResult = groovySql.firstRow("SELECT count(*) as recordsCount from cargo_summary")
-    return groovyRowResult.recordsCount as Long
-  }
-
-  static Map<String, ?> selectCargoSummaryRecord(Sql groovySql, String aggregateIdentifier) {
-    List<GroovyRowResult> groovyRowResultList = groovySql.rows([aggregateIdentifier: aggregateIdentifier], "SELECT * from cargo_summary where aggregate_identifier = :aggregateIdentifier")
-    return groovyRowResultList[0]
-  }
-
-  static <T extends BaseEvent> GenericDomainEventMessage createEventMessage(T event, Map<String, ?> metadataMap, Long sequenceNumber = 0) {
-    GenericDomainEventMessage<T> eventMessage = new GenericDomainEventMessage<>(event.getClass().simpleName, event.aggregateIdentifier, sequenceNumber, event, metadataMap)
-    return eventMessage
-  }
-
   @Autowired
   DataSource dataSource
 
@@ -60,18 +45,18 @@ class CargoSummaryProjectorFacadeServiceIntegrationSpecification extends Abstrac
 
   void "should work for event message with metadata"() {
     given:
-    Long startingCargoSummaryRecordsCount = selectCurrentCargoSummaryRecordsCount(groovySql)
+    Long startingCargoSummaryRecordsCount = CargoSummaryQueryHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
 
     CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidConnectedViaRail()
     String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
 
-    GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = createEventMessage(cargoBookedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
+    GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(cargoBookedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
     eventBus.publish(genericDomainEventMessage)
 
     expect:
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
-      selectCurrentCargoSummaryRecordsCount(groovySql) == startingCargoSummaryRecordsCount + 1
-      verifyAll(selectCargoSummaryRecord(groovySql, aggregateIdentifier)) {
+      CargoSummaryQueryHelper.selectCurrentCargoSummaryRecordsCount(groovySql) == startingCargoSummaryRecordsCount + 1
+      verifyAll(CargoSummaryQueryHelper.selectCargoSummaryRecord(groovySql, aggregateIdentifier)) {
         size() == 7
         id >= 0
         aggregate_identifier == aggregateIdentifier
@@ -86,18 +71,18 @@ class CargoSummaryProjectorFacadeServiceIntegrationSpecification extends Abstrac
 
   void "should work for event message without metadata"() {
     given:
-    Long startingCargoSummaryRecordsCount = selectCurrentCargoSummaryRecordsCount(groovySql)
+    Long startingCargoSummaryRecordsCount = CargoSummaryQueryHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
 
     CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidConnectedViaRail()
     String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
 
-    GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = createEventMessage(cargoBookedEvent, [:])
+    GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(cargoBookedEvent, [:])
     eventBus.publish(genericDomainEventMessage)
 
     expect:
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
-      selectCurrentCargoSummaryRecordsCount(groovySql) == startingCargoSummaryRecordsCount + 1
-      verifyAll(selectCargoSummaryRecord(groovySql, aggregateIdentifier)) {
+      CargoSummaryQueryHelper.selectCurrentCargoSummaryRecordsCount(groovySql) == startingCargoSummaryRecordsCount + 1
+      verifyAll(CargoSummaryQueryHelper.selectCargoSummaryRecord(groovySql, aggregateIdentifier)) {
         size() == 7
         id >= 0
         aggregate_identifier == aggregateIdentifier

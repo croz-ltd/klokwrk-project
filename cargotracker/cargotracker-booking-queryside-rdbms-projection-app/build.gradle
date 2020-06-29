@@ -112,6 +112,7 @@ dependencies {
 
   testIntegrationImplementation project(":cargotracker-booking-boundary-web")
   testIntegrationImplementation project(":cargotracker-booking-commandside-test-support")
+  testIntegrationImplementation project(":cargotracker-booking-queryside-test-support")
 
   testIntegrationImplementation "org.codehaus.groovy:groovy-sql"
   testIntegrationImplementation "org.spockframework:spock-core"
