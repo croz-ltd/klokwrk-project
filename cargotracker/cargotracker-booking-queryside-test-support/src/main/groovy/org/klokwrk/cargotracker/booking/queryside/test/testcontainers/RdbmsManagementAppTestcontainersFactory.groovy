@@ -10,8 +10,7 @@ import org.testcontainers.containers.wait.strategy.Wait
 @CompileStatic
 class RdbmsManagementAppTestcontainersFactory {
   static GenericContainer createAndStartRdbmsManagementApp(Network klokwrkNetwork, PostgreSQLContainer postgresqlServer) {
-    // TODO dmurat: manage image version externally
-    String imageVersion = "0.0.2-SNAPSHOT"
+    String imageVersion = System.getProperty("cargotrackerBookingRdbmsManagementAppDockerImageVersion")
     String containerName = "cargotracker-booking-rdbms-management-app"
     String containerNameSuffix = UUID.randomUUID()
 

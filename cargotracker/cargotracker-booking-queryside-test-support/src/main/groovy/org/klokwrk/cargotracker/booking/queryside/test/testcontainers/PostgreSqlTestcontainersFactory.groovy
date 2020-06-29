@@ -8,8 +8,7 @@ import org.testcontainers.containers.PostgreSQLContainer
 @CompileStatic
 class PostgreSqlTestcontainersFactory {
   static PostgreSQLContainer createAndStartPostgreSqlServer(Network klokwrkNetwork) {
-    // TODO dmurat: manage image version externally
-    String imageVersion = "12.3"
+    String imageVersion = System.getProperty("postgreSqlDockerImageVersion")
     String containerName = "klokwrk-project-postgres"
     String containerNameSuffix = UUID.randomUUID()
 

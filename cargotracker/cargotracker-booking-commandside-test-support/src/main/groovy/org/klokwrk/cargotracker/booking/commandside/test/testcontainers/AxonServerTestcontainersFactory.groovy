@@ -21,8 +21,7 @@ class AxonServerTestcontainersFactory {
    * </ul>
    */
   static GenericContainer createAndStartAxonServer(Network klokwrkNetwork) {
-    // TODO dmurat: manage image version externally
-    String imageVersion = "4.3.3"
+    String imageVersion = System.getProperty("axonServerDockerImageVersion")
     Integer[] exposedPorts = [8024, 8124]
 
     String containerName = "klokwrk-project-axon-server"
