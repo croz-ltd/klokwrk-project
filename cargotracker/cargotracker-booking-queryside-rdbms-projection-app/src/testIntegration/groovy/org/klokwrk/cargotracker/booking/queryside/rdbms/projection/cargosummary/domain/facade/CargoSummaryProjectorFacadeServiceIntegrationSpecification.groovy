@@ -3,7 +3,6 @@ package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.cargosummary
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.axonframework.eventhandling.GenericDomainEventMessage
-import org.axonframework.eventhandling.gateway.EventGateway
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataConstant
 import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookedEvent
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.cargobook.CargoBookedEventFixtures
@@ -30,12 +29,6 @@ class CargoSummaryProjectorFacadeServiceIntegrationSpecification extends Abstrac
       return new Sql(dataSource)
     }
   }
-
-  @Autowired
-  DataSource dataSource
-
-  @Autowired
-  EventGateway eventGateway
 
   @Autowired
   EventBus eventBus
