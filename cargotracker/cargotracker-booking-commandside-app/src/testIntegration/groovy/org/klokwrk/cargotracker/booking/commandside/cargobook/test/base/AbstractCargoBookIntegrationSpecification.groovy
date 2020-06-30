@@ -7,7 +7,7 @@ import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.Network
 import spock.lang.Specification
 
-class AbstractCargoBookIntegrationSpecification extends Specification {
+abstract class AbstractCargoBookIntegrationSpecification extends Specification {
   static GenericContainer axonServer
   static Network klokwrkNetwork
 
