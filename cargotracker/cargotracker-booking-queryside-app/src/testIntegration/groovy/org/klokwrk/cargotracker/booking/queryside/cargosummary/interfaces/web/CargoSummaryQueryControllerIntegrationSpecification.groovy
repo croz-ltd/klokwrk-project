@@ -1,10 +1,14 @@
-package org.klokwrk.cargotracker.booking.commandside.cargobook.interfaces.web
+package org.klokwrk.cargotracker.booking.queryside.cargosummary.interfaces.web
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.klokwrk.cargotracker.booking.commandside.cargobook.test.base.AbstractCargoBookIntegrationSpecification
+import groovy.sql.Sql
+import org.axonframework.eventhandling.EventBus
+import org.klokwrk.cargotracker.booking.queryside.cargosummary.test.base.AbstractCargoSummaryQuerySideIntegrationSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -12,13 +16,28 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MvcResult
 import org.springframework.web.context.WebApplicationContext
 
+import javax.sql.DataSource
 import java.nio.charset.Charset
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
 @SpringBootTest
-class CargoBookCommandControllerIntegrationSpecification extends AbstractCargoBookIntegrationSpecification {
+class CargoSummaryQueryControllerIntegrationSpecification extends AbstractCargoSummaryQuerySideIntegrationSpecification {
+  @TestConfiguration
+  static class TestSpringBootConfiguration {
+    @Bean
+    Sql groovySql(DataSource dataSource) {
+      return new Sql(dataSource)
+    }
+  }
+
+  @Autowired
+  EventBus eventBus
+
+  @Autowired
+  Sql groovySql
+
   @Autowired
   WebApplicationContext webApplicationContext
 
@@ -33,12 +52,12 @@ class CargoBookCommandControllerIntegrationSpecification extends AbstractCargoBo
 
   void "should work for correct request - [acceptLanguage: #acceptLanguage]"() {
     given:
-    String myAggregateIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK"])
+    String myAggregateIdentifier = publishAndWaitForProjectedCargoBookedEvent(eventBus, groovySql)
+    String webRequestBody = objectMapper.writeValueAsString([aggregateIdentifier: myAggregateIdentifier])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-book")
+        post("/cargo-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -66,32 +85,9 @@ class CargoBookCommandControllerIntegrationSpecification extends AbstractCargoBo
 
     verifyAll(responseContentMap.payload as Map) {
       aggregateIdentifier == myAggregateIdentifier
-      originLocation.name == "Zagreb"
-      destinationLocation.name == "Rijeka"
-    }
-
-    verifyAll(responseContentMap.payload.originLocation as Map) {
-      name == "Zagreb"
-      nameInternationalized == "Zagreb"
-
-      country.name == "Hrvatska"
-      country.nameInternationalized == "Hrvatska"
-
-      unLoCode.code == "HRZAG"
-      unLoCode.countryCode == "HR"
-      unLoCode.locationCode == "ZAG"
-    }
-
-    verifyAll(responseContentMap.payload.destinationLocation as Map) {
-      name == "Rijeka"
-      nameInternationalized == "Rijeka"
-
-      country.name == "Hrvatska"
-      country.nameInternationalized == "Hrvatska"
-
-      unLoCode.code == "HRRJK"
-      unLoCode.countryCode == "HR"
-      unLoCode.locationCode == "RJK"
+      aggregateSequenceNumber == 0
+      originLocation == "HRRJK"
+      destinationLocation == "HRZAG"
     }
 
     where:
@@ -100,14 +96,14 @@ class CargoBookCommandControllerIntegrationSpecification extends AbstractCargoBo
     "en"           | "en"         | "Your request is successfully executed."
   }
 
-  void "should return expected response when request is not valid - [acceptLanguage: #acceptLanguage]"() {
+  void "should return expected response when CargoSummary cannot be found - [acceptLanguage: #acceptLanguage]"() {
     given:
     String myAggregateIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRZAG"])
+    String webRequestBody = objectMapper.writeValueAsString([aggregateIdentifier: myAggregateIdentifier])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-book")
+        post("/cargo-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -118,7 +114,7 @@ class CargoBookCommandControllerIntegrationSpecification extends AbstractCargoBo
     Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
 
     then:
-    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
+    mvcResult.response.status == HttpStatus.NOT_FOUND.value()
 
     verifyAll(responseContentMap.metaData as Map) {
       locale == localeString
@@ -129,12 +125,12 @@ class CargoBookCommandControllerIntegrationSpecification extends AbstractCargoBo
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
-      message == HttpStatus.BAD_REQUEST.reasonPhrase
-      status == HttpStatus.BAD_REQUEST.value().toString()
+      message == HttpStatus.NOT_FOUND.reasonPhrase
+      status == HttpStatus.NOT_FOUND.value().toString()
     }
 
     verifyAll(responseContentMap.metaData.violation as Map) {
-      code == HttpStatus.BAD_REQUEST.value().toString()
+      code == HttpStatus.NOT_FOUND.value().toString()
       codeMessage == myViolationCodeMessage
     }
 
@@ -143,18 +139,8 @@ class CargoBookCommandControllerIntegrationSpecification extends AbstractCargoBo
     }
 
     where:
-    acceptLanguage | localeString | myTitleText
-    "hr-HR"        | "hr_HR"      | "Upozorenje"
-    "en"           | "en"         | "Warning"
-
-    myTitleDetailedText << [
-        "Teret nije prihvaćen jer ga nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije.",
-        "Cargo is not booked since destination location cannot accept cargo from specified origin location."
-    ]
-
-    myViolationCodeMessage << [
-        "Teret nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije.",
-        "Destination location cannot accept cargo from specified origin location."
-    ]
+    acceptLanguage | localeString | myTitleText  | myTitleDetailedText                                 | myViolationCodeMessage
+    "hr-HR"        | "hr_HR"      | "Upozorenje" | "Sumarni izvještaj za željeni teret nije pronađen." | "Traženi podaci nisu pronađeni."
+    "en"           | "en"         | "Warning"    | "Summary report for specified cargo is not found."  | "Requested data are not found."
   }
 }

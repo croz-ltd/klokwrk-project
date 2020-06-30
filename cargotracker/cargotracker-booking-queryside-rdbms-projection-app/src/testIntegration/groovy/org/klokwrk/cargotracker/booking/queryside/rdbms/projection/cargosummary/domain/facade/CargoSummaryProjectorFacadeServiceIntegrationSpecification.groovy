@@ -3,12 +3,11 @@ package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.cargosummary
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.axonframework.eventhandling.GenericDomainEventMessage
-import org.axonframework.eventhandling.gateway.EventGateway
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataConstant
 import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookedEvent
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.cargobook.CargoBookedEventFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
-import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.cargosummary.test.base.AbstractCargoSummaryIntegrationSpecification
+import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.cargosummary.test.base.AbstractCargoSummaryRdbmsProjectionIntegrationSpecification
 import org.klokwrk.cargotracker.booking.queryside.test.axon.GenericDomainEventMessageFactory
 import org.klokwrk.cargotracker.booking.queryside.test.domain.sql.CargoSummaryQueryHelper
 import org.klokwrk.lang.groovy.constant.CommonConstants
@@ -21,7 +20,7 @@ import spock.util.concurrent.PollingConditions
 import javax.sql.DataSource
 
 @SpringBootTest
-class CargoSummaryProjectorFacadeServiceIntegrationSpecification extends AbstractCargoSummaryIntegrationSpecification {
+class CargoSummaryProjectorFacadeServiceIntegrationSpecification extends AbstractCargoSummaryRdbmsProjectionIntegrationSpecification {
 
   @TestConfiguration
   static class TestSpringBootConfiguration {
@@ -30,12 +29,6 @@ class CargoSummaryProjectorFacadeServiceIntegrationSpecification extends Abstrac
       return new Sql(dataSource)
     }
   }
-
-  @Autowired
-  DataSource dataSource
-
-  @Autowired
-  EventGateway eventGateway
 
   @Autowired
   EventBus eventBus
