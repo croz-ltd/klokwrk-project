@@ -95,8 +95,16 @@ springBoot {
   }
 }
 
+bootJar {
+  layered {
+    includeLayerTools = false
+  }
+}
+
 bootBuildImage {
-  enabled = false
+  enabled = true
+  environment = ["BP_JVM_VERSION" : "11.*"]
+  imageName = "${project.name}:${project.version}"
 }
 
 dependencies {
