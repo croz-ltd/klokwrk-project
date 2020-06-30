@@ -1,15 +1,8 @@
 package org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.facade
 
 import groovy.sql.Sql
-import org.awaitility.Awaitility
 import org.axonframework.eventhandling.EventBus
-import org.axonframework.eventhandling.GenericDomainEventMessage
-import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookedEvent
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.cargobook.CargoBookedEventFixtures
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
 import org.klokwrk.cargotracker.booking.queryside.cargosummary.test.base.AbstractCargoSummaryQuerySideIntegrationSpecification
-import org.klokwrk.cargotracker.booking.queryside.test.axon.GenericDomainEventMessageFactory
-import org.klokwrk.cargotracker.booking.queryside.test.domain.sql.CargoSummaryQueryHelper
 import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.constant.MetaDataConstant
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
@@ -22,7 +15,6 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 
 import javax.sql.DataSource
-import java.time.Duration
 
 @SpringBootTest
 class CargoSummaryQueryFacadeServiceIntegrationSpecification extends AbstractCargoSummaryQuerySideIntegrationSpecification {
@@ -42,19 +34,6 @@ class CargoSummaryQueryFacadeServiceIntegrationSpecification extends AbstractCar
 
   @Autowired
   CargoSummaryQueryFacadeService cargoSummaryQueryFacadeService
-
-  static String publishAndWaitForProjectedCargoBookedEvent(EventBus eventBus, Sql groovySql, CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidConnectedViaRail()) {
-    Long startingCargoSummaryRecordsCount = CargoSummaryQueryHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
-    String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
-
-    GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(cargoBookedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
-    eventBus.publish(genericDomainEventMessage)
-
-    // Wait for projection to complete
-    Awaitility.await().atMost(Duration.ofSeconds(10)).until({ CargoSummaryQueryHelper.selectCurrentCargoSummaryRecordsCount(groovySql) == startingCargoSummaryRecordsCount + 1 })
-
-    return aggregateIdentifier
-  }
 
   void "should work for correct request - [locale: #locale]"() {
     given:
