@@ -136,7 +136,9 @@ ruleset {
 
   // rulesets/design.xml
   AbstractClassWithPublicConstructor
-  AbstractClassWithoutAbstractMethod
+  AbstractClassWithoutAbstractMethod {
+    doNotApplyToFilesMatching = TEST_FILES
+  }
   AssignmentToStaticFieldFromInstanceMethod
   BooleanMethodReturnsNull
   BuilderMethodWithSideEffects {
