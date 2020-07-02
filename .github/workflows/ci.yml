@@ -55,7 +55,7 @@ jobs:
       - name: Assemble
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: assemble --continue --exclude-task groovydoc
+          arguments: assemble testClasses testIntegrationClasses --continue --exclude-task groovydoc
 
       - name: Test Unit
         uses: eskatos/gradle-command-action@v1
