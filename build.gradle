@@ -2,6 +2,7 @@ buildscript {
   repositories {
     gradlePluginPortal()
     mavenCentral()
+    maven { url 'https://jitpack.io' }
   }
 
   dependencies {
@@ -62,7 +63,6 @@ config {
       setEnabled(true)
       setIgnoreFailures(true)
       setConfigFile(file("support/codenarc/codenarc.groovy"))
-      setToolVersion("$codeNarcVersion")
     }
   }
 }
@@ -156,7 +156,10 @@ configure(subprojects) { Project subproject ->
     implementation platform(project(":klokwrk-project-platform"))
     codenarc platform(project(":klokwrk-project-platform"))
 
-    codenarc "org.codenarc:CodeNarc"
+    // Return to the normal CodeNarc version when CodeNarc 2.0 is released.
+//    codenarc "org.codenarc:CodeNarc"
+    codenarc "com.github.codenarc:codenarc"
+
     codenarc "org.codehaus.groovy:groovy"
     codenarc "org.codehaus.groovy:groovy-templates"
   }
