@@ -111,6 +111,7 @@ ruleset {
   HashtableIsObsolete
   IfStatementCouldBeTernary { enabled = false }
   ImplicitClosureParameter { enabled = false }
+  ImplicitReturnStatement
   InvertedCondition { enabled = false }
   InvertedIfElse
   LongLiteralWithLowerCaseL
@@ -174,7 +175,7 @@ ruleset {
   DuplicateNumberLiteral {
     doNotApplyToFilesMatching = TEST_FILES
   }
-  DuplicateStringLiteral { // TODO dmurat: Check SuppressWarnings in code if https://github.com/CodeNarc/CodeNarc/issues/512 gets fixed.
+  DuplicateStringLiteral {
     doNotApplyToFilesMatching = TEST_FILES
     ignoreStrings = "|.|,|0|1"
     ignoreStringsDelimiter = "|"
@@ -271,6 +272,7 @@ ruleset {
   StatelessClass
 
   // rulesets/grails.xml
+  GrailsDomainGormMethods { enabled = false }
   GrailsDomainHasEquals { enabled = false }
   GrailsDomainHasToString { enabled = false }
   GrailsDomainReservedSqlKeywordName { enabled = false }
