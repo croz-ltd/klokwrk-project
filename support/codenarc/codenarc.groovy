@@ -272,6 +272,7 @@ ruleset {
   StatelessClass
 
   // rulesets/grails.xml
+  GrailsDomainGormMethods { enabled = false }
   GrailsDomainHasEquals { enabled = false }
   GrailsDomainHasToString { enabled = false }
   GrailsDomainReservedSqlKeywordName { enabled = false }
