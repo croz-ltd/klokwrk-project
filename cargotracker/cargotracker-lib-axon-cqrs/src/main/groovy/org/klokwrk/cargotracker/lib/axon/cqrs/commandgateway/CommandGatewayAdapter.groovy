@@ -27,7 +27,8 @@ class CommandGatewayAdapter {
    */
   @SuppressWarnings("GrUnnecessaryPublicModifier")
   public <R, C> R sendAndWait(C command) {
-    sendAndWait(command, null)
+    R commandResponse = sendAndWait(command, null)
+    return commandResponse
   }
 
   /**
