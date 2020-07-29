@@ -174,7 +174,7 @@ ruleset {
   DuplicateNumberLiteral {
     doNotApplyToFilesMatching = TEST_FILES
   }
-  DuplicateStringLiteral { // TODO dmurat: Check SuppressWarnings in code if https://github.com/CodeNarc/CodeNarc/issues/512 gets fixed.
+  DuplicateStringLiteral {
     doNotApplyToFilesMatching = TEST_FILES
     ignoreStrings = "|.|,|0|1"
     ignoreStringsDelimiter = "|"
