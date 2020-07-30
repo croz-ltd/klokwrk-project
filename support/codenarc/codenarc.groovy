@@ -223,7 +223,7 @@ ruleset {
   ClosureStatementOnOpeningLineOfMultipleLineClosure
   ConsecutiveBlankLines
   FileEndsWithoutNewline
-  Indentation { spacesPerIndentLevel = 2 }  // TODO dmurat: Check SuppressWarnings in code if https://github.com/CodeNarc/CodeNarc/issues/510 gets fixed.
+  Indentation { spacesPerIndentLevel = 2 }
   LineLength {
     name = "LineLength - main"
     description = "For 'main' source set, checks the maximum length for each line of source code, which is 210 characters. However, 'only' 200 characters should be really used. Extra 10 characters " +
