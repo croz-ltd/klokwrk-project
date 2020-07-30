@@ -45,8 +45,10 @@ dependencies {
     api "uk.org.lidalia:slf4j-test:$slf4jTestVersion"
 
     api "org.codenarc:CodeNarc:$codeNarcVersion"
-    // # CodeNarc JitPack version. Remove when CodeNarc 2.0 is released.
+    // CodeNarc JitPack version. Remove when CodeNarc 2.0 is released.
     api "com.github.codenarc:codenarc:$codeNarcJitPackVersion"
+    // My own CodeNarc JitPack version for commit 35e5c66608 at 2020-07-30. Remove if PR is accepted, and update codeNarcJitPackVersion accordingly.
+    api "com.github.dmurat:codenarc:$codeNarcDmuratJitPackVersion"
   }
 
   api platform("com.wavefront:wavefront-spring-boot-bom:$wavefrontVersion")
