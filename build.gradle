@@ -158,10 +158,7 @@ configure(subprojects) { Project subproject ->
 
     // Return to the normal CodeNarc version when CodeNarc 2.0 is released.
 //    codenarc "org.codenarc:CodeNarc"
-//    codenarc "com.github.codenarc:codenarc"
-
-    // My own CodeNarc JitPack version for commit 35e5c66608 at 2020-07-30. Remove if PR is accepted, and update codeNarcJitPackVersion accordingly.
-    codenarc "com.github.dmurat:codenarc"
+    codenarc "com.github.codenarc:codenarc"
 
     codenarc "org.codehaus.groovy:groovy"
     codenarc "org.codehaus.groovy:groovy-templates"
