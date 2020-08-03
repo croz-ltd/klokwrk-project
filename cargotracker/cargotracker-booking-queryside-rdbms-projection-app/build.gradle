@@ -97,7 +97,7 @@ bootJar {
 bootBuildImage {
   enabled = true
   environment = ["BP_JVM_VERSION" : "11.*"]
-  imageName = "${project.name}:${project.version}"
+  imageName = "klokwrkprj/${project.name}:${project.version}"
 }
 
 dependencies {

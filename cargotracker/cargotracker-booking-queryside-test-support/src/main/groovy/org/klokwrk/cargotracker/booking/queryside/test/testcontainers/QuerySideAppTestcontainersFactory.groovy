@@ -8,26 +8,27 @@ import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.containers.wait.strategy.Wait
 
 /**
- * Factory for creating and starting cargotracker-booking-queryside-rdbms-projection-app in Testcontainers.
+ * Factory for creating and starting cargotracker-booking-queryside-app in Testcontainers.
  */
 @CompileStatic
-class RdbmsProjectionAppTestcontainersFactory {
+class QuerySideAppTestcontainersFactory {
   /**
-   * Creates and start cargotracker-booking-queryside-rdbms-projection-app in container.
+   * Creates and start cargotracker-booking-queryside-app in container.
    * <p/>
    * <ul>
-   *   <li>Container name prefix: <code>cargotracker-booking-queryside-rdbms-projection-app</code>.</li>
-   *   <li>Exposed internal ports: 8082.</li>
+   *   <li>Container name prefix: <code>cargotracker-booking-queryside-app</code>.</li>
+   *   <li>Exposed internal ports: 8084.</li>
    *   <li>Container time zone: <code>Europe/Zagreb</code>.</li>
    * </ul>
    */
-  static GenericContainer createAndStartRdbmsProjectionApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
-    String imageVersion = System.getProperty("cargotrackerBookingRdbmsProjectionAppDockerImageVersion")
-    Integer[] exposedPorts = [8082]
-    String containerName = "cargotracker-booking-queryside-rdbms-projection-app"
+  static GenericContainer createAndStartQuerySideApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
+    String imageVersion = System.getProperty("cargotrackerBookingQuerySideAppDockerImageVersion")
+    Integer[] exposedPorts = [8084]
+    String containerName = "cargotracker-booking-queryside-app"
     String containerNameSuffix = UUID.randomUUID()
 
-    GenericContainer rdbmsProjectionApp = new GenericContainer("klokwrkprj/cargotracker-booking-queryside-rdbms-projection-app:${ imageVersion }")
+    //noinspection DuplicatedCode
+    GenericContainer querySideApp = new GenericContainer("klokwrkprj/cargotracker-booking-queryside-app:${ imageVersion }")
         .withExposedPorts(exposedPorts)
         .withCreateContainerCmdModifier({ CreateContainerCmd cmd ->
           cmd.withName("${ containerName }-${ containerNameSuffix }")
@@ -41,10 +42,10 @@ class RdbmsProjectionAppTestcontainersFactory {
             "CARGOTRACKER_POSTGRES_PASSWORD": "cargotracker"
         ])
         .withNetwork(klokwrkNetwork)
-        .waitingFor(Wait.forHttp("/cargotracker-booking-queryside-rdbms-projection/management/health"))
+        .waitingFor(Wait.forHttp("/cargotracker-booking-queryside/management/health"))
 
-    rdbmsProjectionApp.start()
+    querySideApp.start()
 
-    return rdbmsProjectionApp
+    return querySideApp
   }
 }
