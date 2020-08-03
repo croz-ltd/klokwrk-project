@@ -127,13 +127,13 @@ dependencies {
   testIntegrationImplementation project(":cargotracker-booking-queryside-test-support")
   testIntegrationImplementation project(":cargotracker-lib-axon-api")
 
+  testIntegrationImplementation "org.awaitility:awaitility"
   testIntegrationImplementation "org.codehaus.groovy:groovy-sql"
   testIntegrationImplementation "org.spockframework:spock-core"
   testIntegrationImplementation "org.springframework:spring-test"
   testIntegrationImplementation "org.springframework.boot:spring-boot-test"
   testIntegrationImplementation "org.testcontainers:postgresql"
   testIntegrationImplementation "org.testcontainers:testcontainers"
-  testIntegrationImplementation "org.awaitility:awaitility"
 
   testIntegrationRuntimeOnly "org.spockframework:spock-spring"
 }
