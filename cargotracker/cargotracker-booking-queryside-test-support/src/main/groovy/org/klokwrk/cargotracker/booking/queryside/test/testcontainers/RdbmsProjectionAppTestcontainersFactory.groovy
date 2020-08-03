@@ -41,7 +41,7 @@ class RdbmsProjectionAppTestcontainersFactory {
             "CARGOTRACKER_POSTGRES_PASSWORD": "cargotracker"
         ])
         .withNetwork(klokwrkNetwork)
-        .waitingFor(Wait.forHttp("/cargotracker-booking-queryside-rdbms-projection-app/management/health"))
+        .waitingFor(Wait.forHttp("/cargotracker-booking-queryside-rdbms-projection/management/health"))
 
     rdbmsProjectionApp.start()
 
