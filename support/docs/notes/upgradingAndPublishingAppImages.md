@@ -11,13 +11,6 @@
 
           gw bootBuildImage
 
-    - tag images with versions used in integration tests. Replace [image-version] with i.e. 0.0.3-SNAPSHOT
-
-          docker image tag cargotracker-booking-rdbms-management-app:[image-version] klokwrkprj/cargotracker-booking-rdbms-management-app:[image-version]
-          docker image tag cargotracker-booking-commandside-app:[image-version] klokwrkprj/cargotracker-booking-commandside-app:[image-version]
-          docker image tag cargotracker-booking-queryside-rdbms-projection-app:[image-version] klokwrkprj/cargotracker-booking-queryside-rdbms-projection-app:[image-version]
-          docker image tag cargotracker-booking-queryside-app:[image-version] klokwrkprj/cargotracker-booking-queryside-app:[image-version]
-
 - run integration tests
 - test app with infrastructure started via docker-compose
 
