@@ -22,11 +22,11 @@
 
 - publish a local image to Docker Hub
 
-    docker login
-    docker push klokwrkprj/cargotracker-booking-rdbms-management-app
-    docker push klokwrkprj/cargotracker-booking-commandside-app
-    docker push klokwrkprj/cargotracker-booking-queryside-rdbms-projection-app
-    docker push klokwrkprj/cargotracker-booking-queryside-app
+      docker login
+      docker push klokwrkprj/cargotracker-booking-rdbms-management-app
+      docker push klokwrkprj/cargotracker-booking-commandside-app
+      docker push klokwrkprj/cargotracker-booking-queryside-rdbms-projection-app
+      docker push klokwrkprj/cargotracker-booking-queryside-app
 
 - delete local image
 - rerun integration tests
