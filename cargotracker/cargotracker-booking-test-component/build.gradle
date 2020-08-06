@@ -73,9 +73,11 @@ dependencies {
   testIntegrationImplementation "org.awaitility:awaitility"
   testIntegrationImplementation "org.codehaus.groovy:groovy"
   testIntegrationImplementation "org.codehaus.groovy:groovy-json"
+  testIntegrationImplementation "org.codehaus.groovy:groovy-sql"
   testIntegrationImplementation "org.spockframework:spock-core"
   testIntegrationImplementation "org.testcontainers:postgresql"
   testIntegrationImplementation "org.testcontainers:testcontainers"
 
   testIntegrationRuntimeOnly "ch.qos.logback:logback-classic"
+  testIntegrationRuntimeOnly "org.postgresql:postgresql"
 }
