@@ -408,7 +408,9 @@ ruleset {
   // rulesets/security.xml
   FileCreateTempFile
   InsecureRandom
-  JavaIoPackageAccess
+  JavaIoPackageAccess {
+    doNotApplyToFilesMatching = TEST_FILES
+  }
   NonFinalPublicField
   NonFinalSubclassOfSensitiveInterface
   ObjectFinalize
