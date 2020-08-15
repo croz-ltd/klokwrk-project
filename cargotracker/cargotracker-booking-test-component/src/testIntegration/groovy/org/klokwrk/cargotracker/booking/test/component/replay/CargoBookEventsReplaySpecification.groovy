@@ -85,7 +85,7 @@ class CargoBookEventsReplaySpecification extends Specification {
     Integer storedGlobalIndex = -1
 
     Sql.withInstance(postgresqlServer.jdbcUrl, postgresqlServer.username, postgresqlServer.password, postgresqlServer.driverClassName) { Sql groovySql ->
-      GroovyRowResult queryRowResult = groovySql.firstRow("SELECT token as tokenBlob FROM token_entry")
+      GroovyRowResult queryRowResult = groovySql.firstRow("SELECT token as tokenBlob FROM token_entry WHERE processor_name != '__config'")
 
       byte[] tokenBlobByteArray = queryRowResult.tokenBlob
       String tokenBlobAsPrintableString = new String(tokenBlobByteArray, "UTF-8")
