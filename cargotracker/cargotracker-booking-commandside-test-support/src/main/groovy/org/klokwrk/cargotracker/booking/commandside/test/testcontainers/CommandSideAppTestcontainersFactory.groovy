@@ -34,8 +34,9 @@ class CommandSideAppTestcontainersFactory {
         .withEnv([
             "TZ": "Europe/Zagreb",
             "CARGOTRACKER_AXON_SERVER_HOSTNAME": "${ axonServer.containerInfo.config.hostName }".toString(),
-            // TODO dmurat: also disable Axon Tracing Extension when https://github.com/AxonFramework/extension-tracing/issues/53 will be fixed.
-            "MANAGEMENT_METRICS_EXPORT_WAVEFRONT_ENABLED": "false"
+            "MANAGEMENT_METRICS_EXPORT_WAVEFRONT_ENABLED": "false",
+            // TODO dmurat: update Axon tracing turn-off when issue is resolved: https://github.com/AxonFramework/extension-tracing/issues/53
+            "SPRING_AUTOCONFIGURE_EXCLUDE": "org.axonframework.extensions.tracing.autoconfig.TracingAutoConfiguration"
         ])
         .withNetwork(klokwrkNetwork)
         .waitingFor(Wait.forHttp("/cargotracker-booking-commandside/management/health"))

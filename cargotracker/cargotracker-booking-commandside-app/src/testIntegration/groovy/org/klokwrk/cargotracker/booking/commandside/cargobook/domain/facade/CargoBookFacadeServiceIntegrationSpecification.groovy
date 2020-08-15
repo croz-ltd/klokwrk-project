@@ -6,8 +6,10 @@ import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 
 @SpringBootTest
+@ActiveProfiles("testIntegration")
 class CargoBookFacadeServiceIntegrationSpecification extends AbstractCargoBookIntegrationSpecification {
   @Autowired
   CargoBookFacadeService cargoBookFacadeService

@@ -39,8 +39,9 @@ class RdbmsProjectionAppTestcontainersFactory {
             "CARGOTRACKER_POSTGRES_PORT": "5432",
             "CARGOTRACKER_POSTGRES_USERNAME": "cargotracker",
             "CARGOTRACKER_POSTGRES_PASSWORD": "cargotracker",
-            // TODO dmurat: also disable Axon Tracing Extension when https://github.com/AxonFramework/extension-tracing/issues/53 will be fixed.
-            "MANAGEMENT_METRICS_EXPORT_WAVEFRONT_ENABLED": "false"
+            "MANAGEMENT_METRICS_EXPORT_WAVEFRONT_ENABLED": "false",
+            // TODO dmurat: update Axon tracing turn-off when issue is resolved: https://github.com/AxonFramework/extension-tracing/issues/53
+            "SPRING_AUTOCONFIGURE_EXCLUDE": "org.axonframework.extensions.tracing.autoconfig.TracingAutoConfiguration"
         ])
         .withNetwork(klokwrkNetwork)
         .waitingFor(Wait.forHttp("/cargotracker-booking-queryside-rdbms-projection/management/health"))
