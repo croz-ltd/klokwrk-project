@@ -49,7 +49,7 @@ dependencies {
     api "com.github.codenarc:codenarc:$codeNarcJitPackVersion"
   }
 
-  api platform("com.wavefront:wavefront-spring-boot-bom:$wavefrontVersion")
+  api platform("com.wavefront:wavefront-spring-boot-bom:$wavefrontSpringBootVersion")
   api platform("io.opentracing.contrib:opentracing-spring-cloud-starter:$openTracingSpringCloudVersion")
   api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
   api platform("org.testcontainers:testcontainers-bom:$testContainersVersion")

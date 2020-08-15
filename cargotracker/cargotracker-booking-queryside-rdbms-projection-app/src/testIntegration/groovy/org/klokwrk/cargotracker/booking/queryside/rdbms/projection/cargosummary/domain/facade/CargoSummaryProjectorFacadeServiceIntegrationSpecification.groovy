@@ -15,11 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.test.context.ActiveProfiles
 import spock.util.concurrent.PollingConditions
 
 import javax.sql.DataSource
 
 @SpringBootTest
+@ActiveProfiles("testIntegration")
 class CargoSummaryProjectorFacadeServiceIntegrationSpecification extends AbstractCargoSummaryRdbmsProjectionIntegrationSpecification {
 
   @TestConfiguration
