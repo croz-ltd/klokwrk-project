@@ -3,9 +3,12 @@ package org.klokwrk.cargotracker.booking.commandside.domain.aggregate
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
+import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.messaging.MetaData
+import org.axonframework.modelling.command.AggregateCreationPolicy
 import org.axonframework.modelling.command.AggregateIdentifier
+import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
 import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookCommand
 import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookedEvent
@@ -30,6 +33,8 @@ class CargoAggregate implements CommandHandlerTrait {
   Location originLocation
   Location destinationLocation
 
+  @CommandHandler
+  @CreationPolicy(AggregateCreationPolicy.ALWAYS)
   CargoAggregate bookCargo(CargoBookCommand cargoBookCommand, MetaData metaData) {
     if (!cargoBookCommand.destinationLocation.canAcceptCargoFrom(cargoBookCommand.originLocation)) {
       doThrow(new CommandException(ViolationInfo.createForBadRequestWithCustomCodeAsText(VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO)))

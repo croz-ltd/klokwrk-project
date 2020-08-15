@@ -18,7 +18,6 @@ class CargoAggregateSpecification extends Specification {
 
   void setup() {
     aggregateTestFixture = new AggregateTestFixture(CargoAggregate)
-    aggregateTestFixture.registerAnnotatedCommandHandler(new CargoAggregateCommandHandlerService(aggregateTestFixture.repository))
   }
 
   void "should fail for same origin and destination locations"() {
