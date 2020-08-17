@@ -31,12 +31,12 @@ We have three functional apps that needs to be run, and for each open a new shel
 Going back to shell-2, some HTTP requests can be tried via `httpie`:
 - commandside
 
-      http POST http://localhost:8080/cargotracker-booking-commandside/cargo-book \
+      http POST http://localhost:8080/cargotracker-booking-commandside/book-cargo \
         Content-Type:application/json Accept:application/json Accept-Charset:utf-8 Accept-Language:hr-HR \
         originLocation=HRRJK \
         destinationLocation=HRZAG
 
-      http POST http://localhost:8080/cargotracker-booking-commandside/cargo-book \
+      http POST http://localhost:8080/cargotracker-booking-commandside/book-cargo \
         Content-Type:application/json Accept:application/json Accept-Charset:utf-8 Accept-Language:en \
         originLocation=HRRJK \
         destinationLocation=HRZAG

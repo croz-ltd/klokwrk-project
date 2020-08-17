@@ -3,9 +3,9 @@ package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.cargosummary
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.axonframework.eventhandling.GenericDomainEventMessage
+import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.event.CargoBookedEvent
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataConstant
-import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookedEvent
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.cargobook.CargoBookedEventFixtures
+import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.CargoBookedEventFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.cargosummary.test.base.AbstractCargoSummaryRdbmsProjectionIntegrationSpecification
 import org.klokwrk.cargotracker.booking.queryside.test.axon.GenericDomainEventMessageFactory
