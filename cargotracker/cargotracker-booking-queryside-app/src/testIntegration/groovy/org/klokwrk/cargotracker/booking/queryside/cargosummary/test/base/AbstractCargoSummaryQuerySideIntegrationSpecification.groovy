@@ -9,7 +9,7 @@ import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargob
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.AxonServerTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.axon.GenericDomainEventMessageFactory
-import org.klokwrk.cargotracker.booking.queryside.test.domain.sql.CargoSummaryQueryHelper
+import org.klokwrk.cargotracker.booking.queryside.test.feature.cargosummary.sql.CargoSummarySqlHelper
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsProjectionAppTestcontainersFactory
@@ -49,14 +49,14 @@ abstract class AbstractCargoSummaryQuerySideIntegrationSpecification extends Spe
   }
 
   static String publishAndWaitForProjectedCargoBookedEvent(EventBus eventBus, Sql groovySql, CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidConnectedViaRail()) {
-    Long startingCargoSummaryRecordsCount = CargoSummaryQueryHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
+    Long startingCargoSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
     String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
 
     GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(cargoBookedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
     eventBus.publish(genericDomainEventMessage)
 
     // Wait for projection to complete
-    Awaitility.await().atMost(Duration.ofSeconds(10)).until({ CargoSummaryQueryHelper.selectCurrentCargoSummaryRecordsCount(groovySql) == startingCargoSummaryRecordsCount + 1 })
+    Awaitility.await().atMost(Duration.ofSeconds(10)).until({ CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql) == startingCargoSummaryRecordsCount + 1 })
 
     return aggregateIdentifier
   }
