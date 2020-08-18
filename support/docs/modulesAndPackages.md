@@ -65,11 +65,11 @@ Let's take a look at the purpose of each `cargotracker-booking` module. First, w
 CQRS/Event sourcing architectural component, so we ended up with `commandside` (command processing), `queryside` (query processing), and `queryside-rdbms-projection` (translating events into RDBMS
 tables) applications.
 
-Next we have `cargotracker-booking-axon-api` and `cargotracker-booking-queryside-rdbms-projection-querymodel`. Both modules are at a similar abstraction level. They logically belong to the
+Next we have `cargotracker-booking-axon-api` and `cargotracker-booking-queryside-rdbms-projection-model`. Both modules are at a similar abstraction level. They logically belong to the
 subdomain's internal infrastructure and serve as a layer adapting to and using selected concrete technologies, and that requires compile-time access to some 3rd party libraries. Classes from these
 modules are not exposed to the out-of-the-domain world. Module `cargotracker-booking-axon-api` defines commands and events that are data structures supporting Axon's implementation of CQRS/Event
 sourcing. Commands and events are considered the primary internal APIs of CQRS/Event sourcing applications, which explains the name. Although commands and events are very close to the simple objects,
-it is allowed for them to use Axon API at compile-time. Module `cargotracker-booking-queryside-rdbms-projection-querymodel` hosts JPA-related classes responsible for implementing requirements of
+it is allowed for them to use Axon API at compile-time. Module `cargotracker-booking-queryside-rdbms-projection-model` hosts JPA-related classes responsible for implementing requirements of
 abstract and technology-agnostic domain-level queries. Since the `booking` subdomain has selected an RDBMS system for building its primary projections and JPA as a database access technology, this
 module will have a compile-time dependency on the JPA APIs.
 

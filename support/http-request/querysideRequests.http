@@ -1,5 +1,5 @@
-### cargotracker-booking-queryside, cargo-summary-query, success, hr
-POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-summary
+### cargotracker-booking-queryside, cargo-summary/fetch-cargo-summary, success, hr
+POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-summary/fetch-cargo-summary
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8
@@ -9,8 +9,8 @@ Accept-Language: hr-HR
   "aggregateIdentifier": "{{receivedAggregateIdentifier}}"
 }
 
-### cargotracker-booking-queryside, cargo-summary-query, success, en
-POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-summary
+### cargotracker-booking-queryside, cargo-summary/fetch-cargo-summary, success, en
+POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-summary/fetch-cargo-summary
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8
@@ -20,8 +20,8 @@ Accept-Language: en
   "aggregateIdentifier": "{{receivedAggregateIdentifier}}"
 }
 
-### cargotracker-booking-queryside, cargo-summary-query, failure, hr
-POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-summary
+### cargotracker-booking-queryside, cargo-summary/fetch-cargo-summary, failure, hr
+POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-summary/fetch-cargo-summary
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8
@@ -31,8 +31,8 @@ Accept-Language: hr-HR
   "aggregateIdentifier": "{{$uuid}}"
 }
 
-### cargotracker-booking-queryside, cargo-summary-query, failure, en
-POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-summary
+### cargotracker-booking-queryside, cargo-summary/fetch-cargo-summary, failure, en
+POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-summary/fetch-cargo-summary
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8

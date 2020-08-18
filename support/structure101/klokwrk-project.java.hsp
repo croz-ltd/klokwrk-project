@@ -20,7 +20,7 @@
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model/build/classes/groovy/main" module="cargotracker-booking-domain-model" displaymodule="cargotracker-booking-domain-model" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-app/build/classes/groovy/main" module="cargotracker-booking-queryside-app" displaymodule="cargotracker-booking-queryside-app" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-rdbms-projection-app/build/classes/groovy/main" module="cargotracker-booking-queryside-rdbms-projection-app" displaymodule="cargotracker-booking-queryside-rdbms-projection-app" />
-    <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-rdbms-projection-querymodel/build/classes/groovy/main" module="cargotracker-booking-queryside-rdbms-projection-querymodel" displaymodule="cargotracker-booking-queryside-rdbms-projection-querymodel" />
+    <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-rdbms-projection-model/build/classes/groovy/main" module="cargotracker-booking-queryside-rdbms-projection-model" displaymodule="cargotracker-booking-queryside-rdbms-projection-model" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-api/build/classes/groovy/main" module="cargotracker-lib-axon-api" displaymodule="cargotracker-lib-axon-api" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-cqrs/build/classes/groovy/main" module="cargotracker-lib-axon-cqrs" displaymodule="cargotracker-lib-axon-cqrs" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-logging/build/classes/groovy/main" module="cargotracker-lib-axon-logging" displaymodule="cargotracker-lib-axon-logging" />
@@ -52,7 +52,7 @@
             </row>
             <row>
               <cell name="cargotracker-booking-axon-api" pattern="cargotracker-booking-axon-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-              <cell name="cargotracker-booking-queryside-rdbms-projection-querymodel" pattern="cargotracker-booking-queryside-rdbms-projection-querymodel.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="cargotracker-booking-queryside-rdbms-projection-model" pattern="cargotracker-booking-queryside-rdbms-projection-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
             <row>
               <cell name="cargotracker-booking-domain-model" pattern="cargotracker-booking-domain-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />

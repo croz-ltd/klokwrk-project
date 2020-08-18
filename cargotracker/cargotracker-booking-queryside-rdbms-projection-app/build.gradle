@@ -103,7 +103,7 @@ bootBuildImage {
 dependencies {
   implementation project(":cargotracker-booking-axon-api")
   implementation project(":cargotracker-booking-domain-model")
-  implementation project(":cargotracker-booking-queryside-rdbms-projection-querymodel")
+  implementation project(":cargotracker-booking-queryside-rdbms-projection-model")
   implementation project(":cargotracker-lib-axon-api")
   implementation project(":cargotracker-lib-axon-logging")
   implementation project(":cargotracker-lib-boundary-api")

@@ -4,9 +4,9 @@ import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.test.aggregate.AggregateTestFixture
 import org.axonframework.test.aggregate.ResultValidator
 import org.axonframework.test.aggregate.TestExecutor
-import org.klokwrk.cargotracker.booking.commandside.cargobook.axon.api.CargoBookCommand
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.cargobook.CargoBookCommandFixtures
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.cargobook.CargoBookedEventFixtures
+import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.command.BookCargoCommand
+import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.BookCargoCommandFixtures
+import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.CargoBookedEventFixtures
 import org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.MessageHandlerTrait
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationCode
@@ -22,11 +22,11 @@ class CargoAggregateSpecification extends Specification {
 
   void "should fail for same origin and destination locations"() {
     given:
-    CargoBookCommand cargoBookCommand = CargoBookCommandFixtures.commandInvalidWithSameOriginAndLocation()
+    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandInvalidWithSameOriginAndLocation()
     TestExecutor<CargoAggregate> cargoAggregateTestExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     when:
-    ResultValidator<CargoAggregate> cargoAggregateResultValidator = cargoAggregateTestExecutor.when(cargoBookCommand)
+    ResultValidator<CargoAggregate> cargoAggregateResultValidator = cargoAggregateTestExecutor.when(bookCargoCommand)
 
     CommandExecutionException actualException = cargoAggregateResultValidator.actualException
     CommandException detailsException = actualException.details.get() as CommandException
@@ -43,11 +43,11 @@ class CargoAggregateSpecification extends Specification {
 
   void "should fail when origin and destination locations can not connect via rail or water"() {
     given:
-    CargoBookCommand cargoBookCommand = CargoBookCommandFixtures.commandInvalidWithNotConnectedLocations()
+    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandInvalidWithNotConnectedLocations()
     TestExecutor<CargoAggregate> cargoAggregateTestExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     when:
-    ResultValidator<CargoAggregate> cargoAggregateResultValidator = cargoAggregateTestExecutor.when(cargoBookCommand)
+    ResultValidator<CargoAggregate> cargoAggregateResultValidator = cargoAggregateTestExecutor.when(bookCargoCommand)
 
     CommandExecutionException actualException = cargoAggregateResultValidator.actualException
     CommandException detailsException = actualException.details.get() as CommandException
@@ -64,15 +64,15 @@ class CargoAggregateSpecification extends Specification {
 
   void "should work when origin and destination locations can connect via rail or water"() {
     given:
-    CargoBookCommand cargoBookCommand = CargoBookCommandFixtures.commandValidConnectedViaRail()
+    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandValidConnectedViaRail()
     TestExecutor<CargoAggregate> cargoAggregateTestExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     when:
-    ResultValidator<CargoAggregate> cargoAggregateResultValidator = cargoAggregateTestExecutor.when(cargoBookCommand)
+    ResultValidator<CargoAggregate> cargoAggregateResultValidator = cargoAggregateTestExecutor.when(bookCargoCommand)
 
     then:
     cargoAggregateResultValidator
         .expectSuccessfulHandlerExecution()
-        .expectEvents(CargoBookedEventFixtures.eventValidForCommand(cargoBookCommand))
+        .expectEvents(CargoBookedEventFixtures.eventValidForCommand(bookCargoCommand))
   }
 }
