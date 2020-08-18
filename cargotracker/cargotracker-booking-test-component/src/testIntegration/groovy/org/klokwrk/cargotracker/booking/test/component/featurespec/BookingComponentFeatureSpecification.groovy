@@ -47,7 +47,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
   void "should query successfully for booked cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
-    String commandCargoBookUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/book-cargo"
+    String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/book-cargo"
     String commandPostRequestBody = """
         {
           "originLocation": "HRRJK",
@@ -55,7 +55,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
         }
         """
 
-    String queryCargoSummaryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-summary"
+    String fetchCargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/fetch-cargo-summary"
     Closure<String> queryPostRequestBodyClosure = { String commandResponseAggregateIdentifier ->
       """
       {
@@ -64,7 +64,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
       """
     }
 
-    Request commandRequest = Request.Post(commandCargoBookUrl)
+    Request commandRequest = Request.Post(commandBookCargoUrl)
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
@@ -84,7 +84,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
     new PollingConditions(timeout: 5, initialDelay: 0, delay: 0.05).eventually {
       // given
-      Request queryRequest = Request.Post(queryCargoSummaryUrl)
+      Request queryRequest = Request.Post(fetchCargoSummaryQueryUrl)
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
@@ -112,7 +112,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
   void "should not book cargo for invalid command: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
-    String commandCargoBookUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/book-cargo"
+    String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/book-cargo"
     String commandPostRequestBody = """
         {
           "originLocation": "HRKRK",
@@ -120,7 +120,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
         }
         """
 
-    Request commandRequest = Request.Post(commandCargoBookUrl)
+    Request commandRequest = Request.Post(commandBookCargoUrl)
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
@@ -148,14 +148,14 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
   void "should not found non-existing cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
-    String queryCargoSummaryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-summary"
+    String fetchCargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/fetch-cargo-summary"
     String queryPostRequestBody = """
       {
         "aggregateIdentifier": "${ UUID.randomUUID() }"
       }
       """
 
-    Request queryRequest = Request.Post(queryCargoSummaryUrl)
+    Request queryRequest = Request.Post(fetchCargoSummaryQueryUrl)
                                   .addHeader("Content-Type", "application/json")
                                   .addHeader("Accept", "application/json")
                                   .addHeader("Accept-Charset", "utf-8")

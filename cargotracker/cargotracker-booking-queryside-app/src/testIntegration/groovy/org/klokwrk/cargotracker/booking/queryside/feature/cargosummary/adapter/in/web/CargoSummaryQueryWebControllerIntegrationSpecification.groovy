@@ -1,9 +1,9 @@
-package org.klokwrk.cargotracker.booking.queryside.cargosummary.interfaces.web
+package org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.adapter.in.web
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
-import org.klokwrk.cargotracker.booking.queryside.cargosummary.test.base.AbstractCargoSummaryQuerySideIntegrationSpecification
+import org.klokwrk.cargotracker.booking.queryside.test.base.AbstractQuerySideIntegrationSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class CargoSummaryQueryControllerIntegrationSpecification extends AbstractCargoSummaryQuerySideIntegrationSpecification {
+class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
   @TestConfiguration
   static class TestSpringBootConfiguration {
     @Bean
@@ -59,7 +59,7 @@ class CargoSummaryQueryControllerIntegrationSpecification extends AbstractCargoS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-summary")
+        post("/fetch-cargo-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -105,7 +105,7 @@ class CargoSummaryQueryControllerIntegrationSpecification extends AbstractCargoS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-summary")
+        post("/fetch-cargo-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)

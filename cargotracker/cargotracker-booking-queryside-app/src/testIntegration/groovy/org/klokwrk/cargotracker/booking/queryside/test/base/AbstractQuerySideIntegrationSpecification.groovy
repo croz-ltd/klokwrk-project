@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.booking.queryside.cargosummary.test.base
+package org.klokwrk.cargotracker.booking.queryside.test.base
 
 import groovy.sql.Sql
 import org.awaitility.Awaitility
@@ -22,7 +22,7 @@ import spock.lang.Specification
 
 import java.time.Duration
 
-abstract class AbstractCargoSummaryQuerySideIntegrationSpecification extends Specification {
+abstract class AbstractQuerySideIntegrationSpecification extends Specification {
   static GenericContainer axonServer
   static PostgreSQLContainer postgresqlServer
   static Network klokwrkNetwork

@@ -1,9 +1,9 @@
-package org.klokwrk.cargotracker.booking.queryside.cargosummary.interfaces.web
+package org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.adapter.in.web
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.facade.CargoSummaryQueryFacadeService
-import org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.facade.CargoSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.facade.CargoSummaryQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryPortIn
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.constant.MetaDataConstant
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @CompileStatic
-class CargoSummaryQueryController {
-  private final CargoSummaryQueryFacadeService cargoBookingQueryApplicationService
+class CargoSummaryQueryWebController {
+  private final FetchCargoSummaryQueryPortIn fetchCargoSummaryQueryPortIn
 
-  CargoSummaryQueryController(CargoSummaryQueryFacadeService cargoBookingQueryApplicationService) {
-    this.cargoBookingQueryApplicationService = cargoBookingQueryApplicationService
+  CargoSummaryQueryWebController(FetchCargoSummaryQueryPortIn fetchCargoSummaryQueryPortIn) {
+    this.fetchCargoSummaryQueryPortIn = fetchCargoSummaryQueryPortIn
   }
 
-  @PostMapping("/cargo-summary")
-  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(@RequestBody CargoSummaryQueryWebRequest webRequest, Locale locale) {
-    OperationResponse<CargoSummaryQueryResponse> cargoSummary = cargoBookingQueryApplicationService.queryCargoSummary(createOperationRequest(webRequest, CargoSummaryQueryRequest, locale))
+  @PostMapping("/fetch-cargo-summary")
+  OperationResponse<FetchCargoSummaryQueryResponse> fetchCargoSummaryQuery(@RequestBody FetchCargoSummaryQueryWebRequest webRequest, Locale locale) {
+    OperationResponse<FetchCargoSummaryQueryResponse> cargoSummary = fetchCargoSummaryQueryPortIn.fetchCargoSummaryQuery(createOperationRequest(webRequest, FetchCargoSummaryQueryRequest, locale))
     return cargoSummary
   }
 

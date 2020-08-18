@@ -45,11 +45,11 @@ Going back to shell-2, some HTTP requests can be tried via `httpie`:
 
     To be able to execute queryside request, from the previous commandside output we need to take the value of `aggregateIdentifier` element, and then try some queryside requests. For example:
 
-      http POST http://localhost:8084/cargotracker-booking-queryside/cargo-summary \
+      http POST http://localhost:8084/cargotracker-booking-queryside/fetch-cargo-summary \
         Content-Type:application/json Accept:application/json Accept-Charset:utf-8 Accept-Language:hr-HR \
         aggregateIdentifier=9e4a13c8-cb74-4a01-9717-f41aaba5428d
 
-      http POST http://localhost:8084/cargotracker-booking-queryside/cargo-summary \
+      http POST http://localhost:8084/cargotracker-booking-queryside/fetch-cargo-summary \
         Content-Type:application/json Accept:application/json Accept-Charset:utf-8 Accept-Language:en \
         aggregateIdentifier=9e4a13c8-cb74-4a01-9717-f41aaba5428d
 

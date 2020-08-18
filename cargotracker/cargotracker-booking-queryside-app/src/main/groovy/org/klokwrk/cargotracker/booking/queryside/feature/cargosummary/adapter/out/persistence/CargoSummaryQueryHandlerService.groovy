@@ -1,9 +1,9 @@
-package org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.queryhandler
+package org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.adapter.out.persistence
 
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryHandler
-import org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.facade.CargoSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.queryside.cargosummary.domain.facade.CargoSummaryQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.feature.cargosummary.adapter.out.persistence.CargoSummaryJpaEntity
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.feature.cargosummary.adapter.out.persistence.CargoSummaryJpaRepository
 import org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.QueryHandlerTrait
@@ -32,13 +32,13 @@ class CargoSummaryQueryHandlerService implements QueryHandlerTrait {
   }
 
   @QueryHandler
-  CargoSummaryQueryResponse handleCargoSummaryQuery(CargoSummaryQueryRequest cargoSummaryQueryRequest) {
-    CargoSummaryJpaEntity cargoSummaryJpaEntity = cargoSummaryJpaRepository.findByAggregateIdentifier(cargoSummaryQueryRequest.aggregateIdentifier)
+  FetchCargoSummaryQueryResponse handleFetchCargoSummaryQueryRequest(FetchCargoSummaryQueryRequest fetchCargoSummaryQueryRequest) {
+    CargoSummaryJpaEntity cargoSummaryJpaEntity = cargoSummaryJpaRepository.findByAggregateIdentifier(fetchCargoSummaryQueryRequest.aggregateIdentifier)
 
     if (!cargoSummaryJpaEntity) {
       doThrow(new QueryException(ViolationInfo.NOT_FOUND))
     }
 
-    return new CargoSummaryQueryResponse(cargoSummaryJpaEntity.properties)
+    return new FetchCargoSummaryQueryResponse(cargoSummaryJpaEntity.properties)
   }
 }
