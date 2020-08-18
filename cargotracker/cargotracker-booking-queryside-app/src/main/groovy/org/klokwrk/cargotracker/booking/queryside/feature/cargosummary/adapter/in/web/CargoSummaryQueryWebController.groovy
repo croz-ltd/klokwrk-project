@@ -9,10 +9,12 @@ import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RestController
 @CompileStatic
+@RestController
+@RequestMapping("/cargo-summary")
 class CargoSummaryQueryWebController {
   private final FetchCargoSummaryQueryPortIn fetchCargoSummaryQueryPortIn
 
@@ -31,8 +33,7 @@ class CargoSummaryQueryWebController {
    *
    * @param <P> Type of the {@link OperationRequest}'s payload.
    */
-  @SuppressWarnings("GrUnnecessaryPublicModifier")
-  public <P> OperationRequest<P> createOperationRequest(Object webRequest, Class<P> operationRequestPayloadType, Locale locale) {
+  private <P> OperationRequest<P> createOperationRequest(Object webRequest, Class<P> operationRequestPayloadType, Locale locale) {
     OperationRequest<P> operationRequest = new OperationRequest(
         payload: operationRequestPayloadType.newInstance(webRequest.properties),
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): locale]

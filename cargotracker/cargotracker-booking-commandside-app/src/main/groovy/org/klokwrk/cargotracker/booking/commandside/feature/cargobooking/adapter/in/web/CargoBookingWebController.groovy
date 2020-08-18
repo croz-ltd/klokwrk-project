@@ -6,12 +6,14 @@ import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applica
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 import javax.servlet.http.HttpServletRequest
 
-@RestController
 @CompileStatic
+@RestController
+@RequestMapping("/cargo-booking")
 class CargoBookingWebController {
   private final BookCargoPortIn bookCargoPortIn
 

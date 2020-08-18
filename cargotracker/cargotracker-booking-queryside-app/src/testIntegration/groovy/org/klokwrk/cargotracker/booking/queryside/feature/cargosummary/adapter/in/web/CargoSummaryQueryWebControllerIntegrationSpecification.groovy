@@ -59,7 +59,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/fetch-cargo-summary")
+        post("/cargo-summary/fetch-cargo-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -105,7 +105,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/fetch-cargo-summary")
+        post("/cargo-summary/fetch-cargo-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)

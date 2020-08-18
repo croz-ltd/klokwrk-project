@@ -10,7 +10,7 @@ import spock.util.concurrent.PollingConditions
 class BookingComponentFeatureSpecification extends AbstractComponentIntegrationSpecification {
   void "should book cargo for correct command: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
-    String commandCargoBookUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/book-cargo"
+    String commandCargoBookUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
     String commandPostRequestBody = """
         {
           "originLocation": "HRRJK",
@@ -47,7 +47,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
   void "should query successfully for booked cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
-    String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/book-cargo"
+    String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
     String commandPostRequestBody = """
         {
           "originLocation": "HRRJK",
@@ -55,7 +55,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
         }
         """
 
-    String fetchCargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/fetch-cargo-summary"
+    String fetchCargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-summary/fetch-cargo-summary"
     Closure<String> queryPostRequestBodyClosure = { String commandResponseAggregateIdentifier ->
       """
       {
@@ -112,7 +112,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
   void "should not book cargo for invalid command: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
-    String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/book-cargo"
+    String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
     String commandPostRequestBody = """
         {
           "originLocation": "HRKRK",
@@ -148,7 +148,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
   void "should not found non-existing cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
-    String fetchCargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/fetch-cargo-summary"
+    String fetchCargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-summary/fetch-cargo-summary"
     String queryPostRequestBody = """
       {
         "aggregateIdentifier": "${ UUID.randomUUID() }"

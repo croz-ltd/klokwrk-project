@@ -40,7 +40,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/book-cargo")
+        post("/cargo-booking/book-cargo")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -109,7 +109,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/book-cargo")
+        post("/cargo-booking/book-cargo")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
