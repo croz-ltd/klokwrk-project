@@ -122,14 +122,17 @@ dependencies {
   runtimeOnly "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
   runtimeOnly "org.postgresql:postgresql"
 
+  testImplementation project(":cargotracker-booking-commandside-test-support")
+
+  testImplementation "com.tngtech.archunit:archunit-junit5"
+  testImplementation "org.spockframework:spock-core"
+
   testIntegrationImplementation project(":cargotracker-booking-axon-api")
-  testIntegrationImplementation project(":cargotracker-booking-commandside-test-support")
   testIntegrationImplementation project(":cargotracker-booking-queryside-test-support")
   testIntegrationImplementation project(":cargotracker-lib-axon-api")
 
   testIntegrationImplementation "org.awaitility:awaitility"
   testIntegrationImplementation "org.codehaus.groovy:groovy-sql"
-  testIntegrationImplementation "org.spockframework:spock-core"
   testIntegrationImplementation "org.springframework:spring-test"
   testIntegrationImplementation "org.springframework.boot:spring-boot-test"
   testIntegrationImplementation "org.testcontainers:postgresql"
