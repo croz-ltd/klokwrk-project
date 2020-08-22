@@ -14,6 +14,7 @@ import static com.tngtech.archunit.core.domain.JavaClass.Predicates.equivalentTo
 import static com.tngtech.archunit.core.domain.properties.HasName.Predicates.name
 import static java.lang.System.lineSeparator
 
+// TODO dmurat: document this ArchRule.
 @CompileStatic
 class HexagonalCqrsEsArchitecture implements ArchRule {
 
