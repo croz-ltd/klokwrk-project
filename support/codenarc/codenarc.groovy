@@ -396,7 +396,7 @@ ruleset {
     description = "For all 'test*' source sets, verifies that the name of each method matches a regular expression. It checks that the method name starts with a lowercase letter and, beside " +
                   "'word characters', allows special characters like parenthesis, square brackets, hash sign, colon, white space, comma, dot and dash."
     applyToFilesMatching = TEST_FILES
-    regex = /[a-z]([\w\[\]#:\s(),.-]|\')*/ // Test method names can include various unusual characters like []#:(),.-' . This is especially true for unrolled Spock methods.
+    regex = /[a-z]([\w\[\]#:\s(),.-]|\'|\/)*/ // Test method names can include various unusual characters like []#:(),.-' . This is especially true for unrolled Spock methods.
   }
   ObjectOverrideMisspelledMethodName
   PackageName
