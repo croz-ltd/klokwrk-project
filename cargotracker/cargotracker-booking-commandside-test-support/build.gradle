@@ -7,6 +7,7 @@ dependencies {
   implementation project(":cargotracker-lib-axon-api")
   implementation project(":klokwrk-lang-groovy")
 
+  implementation "com.tngtech.archunit:archunit-junit5"
   implementation "org.codehaus.groovy:groovy"
   implementation "org.testcontainers:testcontainers"
 }

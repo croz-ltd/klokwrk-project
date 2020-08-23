@@ -1,6 +1,5 @@
 package org.klokwrk.cargotracker.booking.domain.model
 
-import org.klokwrk.cargotracker.booking.domain.modelsample.LocationSample
 import spock.lang.Specification
 
 class LocationSpecification extends Specification {
@@ -61,6 +60,16 @@ class LocationSpecification extends Specification {
     "HRRJK"       | "someName"    | "someCountry"        | null
   }
 
+  static Map<String, Location> locationSampleMap = [
+      "HRDKO": Location.create("HRDKO", "Đakovo", "Hrvatska", "--3-----"),
+      "HRKRK": Location.create("HRKRK", "Krk", "Hrvatska", "1-3-----"),
+      "HRMVN": Location.create("HRMVN", "Motovun", "Hrvatska", "--3-----"),
+      "HRRJK": Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----"),
+      "HRVZN": Location.create("HRVZN", "Varaždin", "Hrvatska", "-23-----"),
+      "HRZAD": Location.create("HRZAD", "Zadar", "Hrvatska", "1234----"),
+      "HRZAG": Location.create("HRZAG", "Zagreb", "Hrvatska", "-2345---")
+  ]
+
   void "destinationLocation.canAcceptCargoFrom() should work as expected: [origin: #originDescription, destination: #destinationDescription]"() {
     when:
     Location originLocation = originLocationInstance
@@ -70,18 +79,18 @@ class LocationSpecification extends Specification {
     destinationLocation.canAcceptCargoFrom(originLocation) == destinationCanAccept
 
     where:
-    originLocationInstance                 | destinationLocationInstance            | destinationCanAccept | originDescription              | destinationDescription
-    LocationSample.findByUnLoCode("HRRJK") | LocationSample.findByUnLoCode("HRRJK") | false                | "any"                          | "same as origin"
-    null                                   | LocationSample.findByUnLoCode("HRRJK") | false                | "null"                         | "any"
-    LocationSample.findByUnLoCode("HRZAD") | LocationSample.findByUnLoCode("HRRJK") | true                 | "port & rail terminal"         | "port & rail terminal"
-    LocationSample.findByUnLoCode("HRZAD") | LocationSample.findByUnLoCode("HRKRK") | true                 | "port & rail terminal"         | "port"
-    LocationSample.findByUnLoCode("HRKRK") | LocationSample.findByUnLoCode("HRZAD") | true                 | "port"                         | "port & rail terminal"
-    LocationSample.findByUnLoCode("HRZAG") | LocationSample.findByUnLoCode("HRZAD") | true                 | "rail terminal"                | "port & rail terminal"
-    LocationSample.findByUnLoCode("HRZAG") | LocationSample.findByUnLoCode("HRVZN") | true                 | "rail terminal"                | "rail terminal"
-    LocationSample.findByUnLoCode("HRZAG") | LocationSample.findByUnLoCode("HRKRK") | false                | "rail terminal"                | "port"
-    LocationSample.findByUnLoCode("HRKRK") | LocationSample.findByUnLoCode("HRZAG") | false                | "port"                         | "rail terminal"
-    LocationSample.findByUnLoCode("HRDKO") | LocationSample.findByUnLoCode("HRZAG") | false                | "not port & not rail terminal" | "rail terminal"
-    LocationSample.findByUnLoCode("HRZAG") | LocationSample.findByUnLoCode("HRDKO") | false                | "rail terminal"                | "not port & not rail terminal"
-    LocationSample.findByUnLoCode("HRMVN") | LocationSample.findByUnLoCode("HRDKO") | false                | "not port & not rail terminal" | "not port & not rail terminal"
+    originLocationInstance     | destinationLocationInstance | destinationCanAccept | originDescription              | destinationDescription
+    locationSampleMap["HRRJK"] | locationSampleMap["HRRJK"]  | false                | "any"                          | "same as origin"
+    null                       | locationSampleMap["HRRJK"]  | false                | "null"                         | "any"
+    locationSampleMap["HRZAD"] | locationSampleMap["HRRJK"]  | true                 | "port & rail terminal"         | "port & rail terminal"
+    locationSampleMap["HRZAD"] | locationSampleMap["HRKRK"]  | true                 | "port & rail terminal"         | "port"
+    locationSampleMap["HRKRK"] | locationSampleMap["HRZAD"]  | true                 | "port"                         | "port & rail terminal"
+    locationSampleMap["HRZAG"] | locationSampleMap["HRZAD"]  | true                 | "rail terminal"                | "port & rail terminal"
+    locationSampleMap["HRZAG"] | locationSampleMap["HRVZN"]  | true                 | "rail terminal"                | "rail terminal"
+    locationSampleMap["HRZAG"] | locationSampleMap["HRKRK"]  | false                | "rail terminal"                | "port"
+    locationSampleMap["HRKRK"] | locationSampleMap["HRZAG"]  | false                | "port"                         | "rail terminal"
+    locationSampleMap["HRDKO"] | locationSampleMap["HRZAG"]  | false                | "not port & not rail terminal" | "rail terminal"
+    locationSampleMap["HRZAG"] | locationSampleMap["HRDKO"]  | false                | "rail terminal"                | "not port & not rail terminal"
+    locationSampleMap["HRMVN"] | locationSampleMap["HRDKO"]  | false                | "not port & not rail terminal" | "not port & not rail terminal"
   }
 }

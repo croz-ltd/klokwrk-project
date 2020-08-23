@@ -7,6 +7,7 @@ javaPlatform {
 
 dependencies {
   constraints {
+    api "com.tngtech.archunit:archunit-junit5:$archUnitVersion"
     api "net.ttddyy:datasource-proxy:$dataSourceProxyVersion"
     api "org.axonframework:axon-configuration:$axonFrameworkVersion"
     api "org.axonframework:axon-eventsourcing:$axonFrameworkVersion"
