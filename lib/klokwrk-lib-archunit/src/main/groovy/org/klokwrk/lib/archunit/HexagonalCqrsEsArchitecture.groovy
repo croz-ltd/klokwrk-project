@@ -31,6 +31,8 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
   static final String ADAPTER_OUTBOUND_LAYER = "outbound adapter"
   static final String ADAPTER_PROJECTION_LAYER = "projection adapter"
 
+  private static final String QUOTED_SPACED_COMMA_SEPARATOR = "', '"
+
   private final ArchitectureSubType architectureSubType
 
   private String[] domainModelPackageIdentifiers = []
@@ -328,29 +330,49 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
     return layeredArchitectureDelegate().evaluate(classes)
   }
 
-  @SuppressWarnings('DuplicatedCode')
   @Override
   String getDescription() {
     if (overriddenDescription.isPresent()) {
       return overriddenDescription.get()
     }
 
-    List<String> lines = ["Hexagonal architecture (CQRS/ES flavor) consisting of ${ optionalLayers ? " (optional)" : "" }".toString()]
+    List<String> lines = ["Hexagonal architecture (CQRS/ES flavor, subtype ${architectureSubType}) consisting of ${ optionalLayers ? " (optional)" : "" }".toString()]
 
-    domainModelPackageIdentifiers ? lines << "domain models ('${ domainModelPackageIdentifiers.join("', '") }')".toString() : "nop"
-    domainEventPackageIdentifiers ? lines << "domain events ('${ domainModelPackageIdentifiers.join("', '") }')".toString() : "nop"
-    domainCommandPackageIdentifiers ? lines << "domain commands ('${ domainCommandPackageIdentifiers.join("', '") }')".toString() : "nop"
-    domainAggregatePackageIdentifiers ? lines << "domain aggregates ('${ domainAggregatePackageIdentifiers.join("', '") }')".toString() : "nop"
+    lines.with {
+      addAll(describeStandardPackageIdentifiers(domainModelPackageIdentifiers, "domain models"))
+      addAll(describeStandardPackageIdentifiers(domainEventPackageIdentifiers, "domain events"))
+      addAll(describeStandardPackageIdentifiers(domainCommandPackageIdentifiers, "domain commands"))
+      addAll(describeStandardPackageIdentifiers(domainAggregatePackageIdentifiers, "domain aggregates"))
 
-    applicationInboundPortPackageIdentifiers ? lines << "application inbound ports ('${ applicationInboundPortPackageIdentifiers.join("', '") }')".toString() : "nop"
-    applicationOutboundPortPackageIdentifiers ? lines << "application outbound ports ('${ applicationOutboundPortPackageIdentifiers.join("', '") }')".toString() : "nop"
-    applicationServicePackageIdentifiers ? lines << "application services ('${ applicationServicePackageIdentifiers.join("', '") }')".toString() : "nop"
+      addAll(describeStandardPackageIdentifiers(applicationInboundPortPackageIdentifiers, "application inbound ports"))
+      addAll(describeStandardPackageIdentifiers(applicationOutboundPortPackageIdentifiers, "application outbound ports"))
+      addAll(describeStandardPackageIdentifiers(applicationServicePackageIdentifiers, "application services"))
 
-    adapterInboundPackageIdentifiers.each { Map.Entry<String, String[]> mapEntry -> lines << "adapter inbound '${ mapEntry.key }' ('${ mapEntry.value.join("', '") }')".toString() }
-    adapterOutboundPackageIdentifiers.each { Map.Entry<String, String[]> mapEntry -> lines << "adapter outbound '${ mapEntry.key }' ('${ mapEntry.value.join("', '") }')".toString() }
-    adapterProjectionPackageIdentifiers.each { Map.Entry<String, String[]> mapEntry -> lines << "adapter projection '${ mapEntry.key }' ('${ mapEntry.value.join("', '") }')".toString() }
+      addAll(describeAdapterPackageIdentifiers(adapterInboundPackageIdentifiers, "adapter inbound"))
+      addAll(describeAdapterPackageIdentifiers(adapterOutboundPackageIdentifiers, "adapter outbound"))
+      addAll(describeAdapterPackageIdentifiers(adapterProjectionPackageIdentifiers, "adapter projection"))
+    }
 
     return lines.join(lineSeparator())
+  }
+
+  private List<String> describeStandardPackageIdentifiers(String[] packageIdentifiers, String packageIdentifiersName) {
+    List<String> packageIdentifiersDescription = []
+
+    if (packageIdentifiers) {
+      packageIdentifiersDescription << "${packageIdentifiersName} ('${ packageIdentifiers.join(QUOTED_SPACED_COMMA_SEPARATOR) }')".toString()
+    }
+
+    return packageIdentifiersDescription
+  }
+
+  private List<String> describeAdapterPackageIdentifiers(Map<String, String[]> adapterPackageIdentifiers, String adapterPackageIdentifiersName) {
+    List<String> adapterPackageIdentifiersLines = []
+    adapterPackageIdentifiers.each { Map.Entry<String, String[]> mapEntry ->
+      adapterPackageIdentifiersLines << "${adapterPackageIdentifiersName} '${ mapEntry.key }' ('${ mapEntry.value.join(QUOTED_SPACED_COMMA_SEPARATOR) }')".toString()
+    }
+
+    return adapterPackageIdentifiersLines
   }
 
   static enum ArchitectureSubType {
