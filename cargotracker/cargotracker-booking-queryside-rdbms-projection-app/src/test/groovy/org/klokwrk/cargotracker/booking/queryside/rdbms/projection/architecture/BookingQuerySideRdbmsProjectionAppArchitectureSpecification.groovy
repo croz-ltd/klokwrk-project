@@ -38,7 +38,7 @@ class BookingQuerySideRdbmsProjectionAppArchitectureSpecification extends Specif
   /**
    * Verify if application compiles to the projection hexagonal CQRS/ES architecture.
    */
-  void "should be valid hexagonal commandside CQRS/ES architecture"() {
+  void "should be valid hexagonal projection CQRS/ES architecture"() {
     given:
     // @formatter:off
     ArchRule rule = HexagonalCqrsEsArchitecture
