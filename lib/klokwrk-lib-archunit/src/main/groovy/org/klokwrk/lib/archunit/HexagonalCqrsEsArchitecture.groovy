@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.booking.commandside.test.archunit
+package org.klokwrk.lib.archunit
 
 import com.tngtech.archunit.base.DescribedPredicate
 import com.tngtech.archunit.base.Optional
@@ -232,10 +232,12 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
         .layer(DOMAIN_AGGREGATE_LAYER).definedBy(domainAggregatePackageIdentifiers)
 
         .layer(APPLICATION_INBOUND_PORT_LAYER).definedBy(applicationInboundPortPackageIdentifiers)
+        // TODO dmurat: use optional layer
         .layer(APPLICATION_OUTBOUND_PORT_LAYER).definedBy(applicationOutboundPortPackageIdentifiers)
         .layer(APPLICATION_SERVICE_LAYER).definedBy(applicationServicePackageIdentifiers)
 
         .layer(ADAPTER_INBOUND_LAYER).definedBy(adapterInboundPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
+        // TODO dmurat: use optional layer
         .layer(ADAPTER_OUTBOUND_LAYER).definedBy(adapterOutboundPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
 
         // For now, access to DOMAIN_MODEL_LAYER is forbidden for APPLICATION_INBOUND_PORT_LAYER and ADAPTER_INBOUND_LAYER. Will see how this goes.
@@ -259,6 +261,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
   private void specifyArchitectureProjection(LayeredArchitecture layeredArchitecture) {
     // @formatter:off
     layeredArchitecture
+        // TODO dmurat: use optional layer
         .layer(DOMAIN_MODEL_LAYER).definedBy(domainModelPackageIdentifiers)
         .layer(DOMAIN_EVENT_LAYER).definedBy(domainEventPackageIdentifiers)
 
@@ -276,6 +279,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
   private void specifyArchitectureQuerySide(LayeredArchitecture layeredArchitecture) {
     // @formatter:off
     layeredArchitecture
+        // TODO dmurat: use optional layer
         .layer(DOMAIN_MODEL_LAYER).definedBy(domainModelPackageIdentifiers)
 
         .layer(APPLICATION_INBOUND_PORT_LAYER).definedBy(applicationInboundPortPackageIdentifiers)

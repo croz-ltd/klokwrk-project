@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.booking.commandside.test.archunit
+package org.klokwrk.lib.archunit
 
 import com.tngtech.archunit.base.DescribedPredicate
 import com.tngtech.archunit.core.domain.JavaClass

@@ -122,6 +122,7 @@ dependencies {
   runtimeOnly "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
 
   testImplementation project(":cargotracker-booking-commandside-test-support")
+  testImplementation project(":klokwrk-lib-archunit")
 
   testImplementation "com.tngtech.archunit:archunit-junit5"
   testImplementation "org.axonframework:axon-test"

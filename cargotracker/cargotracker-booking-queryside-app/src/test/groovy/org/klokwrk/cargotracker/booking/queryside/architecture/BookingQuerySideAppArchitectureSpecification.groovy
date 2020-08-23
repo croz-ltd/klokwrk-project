@@ -4,9 +4,9 @@ import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition
 import groovy.util.logging.Slf4j
-import org.klokwrk.cargotracker.booking.commandside.test.archunit.ArchUnitUtils
-import org.klokwrk.cargotracker.booking.commandside.test.archunit.HexagonalCqrsEsArchitecture
 import org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.QueryHandlerTrait
+import org.klokwrk.lib.archunit.ArchUnitUtils
+import org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -18,7 +18,7 @@ class BookingQuerySideAppArchitectureSpecification extends Specification {
   void setupSpec() {
     importedClasses = ArchUnitUtils.importJavaClassesFromPackages(
         ["org.klokwrk.cargotracker.booking.queryside", "org.klokwrk.cargotracker.booking.domain.model"],
-        ["org.klokwrk.cargotracker.booking.commandside.test", "org.klokwrk.cargotracker.booking.queryside.rdbms.projection"]
+        ["org.klokwrk.cargotracker.booking.queryside.rdbms.projection"]
     )
   }
 

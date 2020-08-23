@@ -6,8 +6,8 @@ import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition
 import com.tngtech.archunit.library.Architectures
 import groovy.util.logging.Slf4j
-import org.klokwrk.cargotracker.booking.commandside.test.archunit.ArchUnitUtils
-import org.klokwrk.cargotracker.booking.commandside.test.archunit.HexagonalCqrsEsArchitecture
+import org.klokwrk.lib.archunit.ArchUnitUtils
+import org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture
 import spock.lang.Shared
 import spock.lang.Specification
 

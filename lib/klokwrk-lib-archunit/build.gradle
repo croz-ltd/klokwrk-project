@@ -1,0 +1,8 @@
+apply plugin: "java-library"
+
+dependencies {
+  implementation "com.tngtech.archunit:archunit-junit5"
+  implementation "org.codehaus.groovy:groovy"
+
+  testImplementation "org.spockframework:spock-core"
+}
