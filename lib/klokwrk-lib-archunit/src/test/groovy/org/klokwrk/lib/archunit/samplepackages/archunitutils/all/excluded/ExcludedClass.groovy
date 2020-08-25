@@ -1,4 +1,4 @@
-package org.klokwrk.lib.archunit.testpackages.archunitutils.all.excluded
+package org.klokwrk.lib.archunit.samplepackages.archunitutils.all.excluded
 
 import groovy.transform.CompileStatic
 

@@ -1,0 +1,402 @@
+package org.klokwrk.lib.archunit
+
+import com.tngtech.archunit.base.DescribedPredicate
+import com.tngtech.archunit.core.domain.Dependency
+import com.tngtech.archunit.core.domain.JavaClass
+import com.tngtech.archunit.core.domain.JavaClasses
+import com.tngtech.archunit.lang.ArchRule
+import com.tngtech.archunit.lang.EvaluationResult
+import groovy.util.logging.Slf4j
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.adapter.projection.AdapterProjectionClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.event.DomainEventClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.DomainModelClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.adapter.in.AdapterInViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.adapter.out.AdapterOutViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.adapter.projection.AdapterProjectionViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.application.port.in.ApplicationPortInViolationInterface
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.application.port.out.ApplicationPortOutViolationInterface
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.application.service.ApplicationServiceViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.aggregate.DomainAggregateViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.command.DomainCommandViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.event.DomainEventViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.DomainModelViolationClass
+import spock.lang.Shared
+import spock.lang.Specification
+
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAnyPackage
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideOutsideOfPackages
+import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.ADAPTER_INBOUND_LAYER
+import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.ADAPTER_OUTBOUND_LAYER
+import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.ADAPTER_PROJECTION_LAYER
+import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.APPLICATION_INBOUND_PORT_LAYER
+import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.APPLICATION_OUTBOUND_PORT_LAYER
+import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.APPLICATION_SERVICE_LAYER
+import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.DOMAIN_AGGREGATE_LAYER
+import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.DOMAIN_COMMAND_LAYER
+import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.DOMAIN_EVENT_LAYER
+import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.DOMAIN_MODEL_LAYER
+
+@Slf4j
+class HexagonalCqrsEsArchitectureSpecification extends Specification {
+
+  @Shared
+  JavaClasses importedValidClasses
+
+  @Shared
+  JavaClasses importedViolationClasses
+
+  @Shared
+  List<Class<?>> generalArchitectureAllViolatingSources = [
+      DomainModelViolationClass, DomainEventViolationClass, DomainCommandViolationClass, DomainAggregateViolationClass, ApplicationPortInViolationInterface, ApplicationPortOutViolationInterface,
+      ApplicationServiceViolationClass, AdapterInViolationClass, AdapterOutViolationClass, AdapterProjectionViolationClass
+  ]
+
+  @Shared
+  List<Class<?>> projectionArchitectureAllViolatingSources = [DomainModelViolationClass, DomainEventViolationClass, AdapterProjectionViolationClass]
+
+  void setupSpec() {
+    importedValidClasses = ArchUnitUtils.importJavaClassesFromPackages(["org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid"], [], [])
+    importedViolationClasses = ArchUnitUtils.importJavaClassesFromPackages(["org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation"], [], [])
+  }
+
+  void "should not take into account ignored dependencies"() {
+    given:
+    HexagonalCqrsEsArchitecture hexagonalCqrsEsArchitectureRule = HexagonalCqrsEsArchitecture.architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
+    hexagonalCqrsEsArchitectureRule
+        .domainModels("..domain.model..")
+        .domainEvents("..domain.event..")
+        .domainCommands("..domain.command..")
+        .domainAggregates("..domain.aggregate..")
+
+        .applicationInboundPorts("..application.port.in..")
+        .applicationOutboundPorts("..application.port.out..")
+        .applicationServices("..application.service..")
+
+        .adapterInbound("in", "..adapter.in..")
+        .adapterOutbound("out", "..adapter.out..")
+
+        .withOptionalLayers(false)
+
+    hexagonalCqrsEsArchitectureRule
+        .ignoreDependency(resideInAnyPackage(["..adapter.projection.."] as String[]), resideInAnyPackage(["..domain.command..", "domain.aggregate", "..application..", "..adapter.."] as String[]))
+        .ignoreDependency(AdapterProjectionClass, DomainModelClass)
+        .ignoreDependency(AdapterProjectionClass.name, DomainEventClass.name)
+
+    when:
+    EvaluationResult evaluationResult = hexagonalCqrsEsArchitectureRule.evaluate(importedValidClasses)
+
+    then:
+    //noinspection GroovyPointlessBoolean
+    evaluationResult.hasViolation() == false
+  }
+
+  void "should be able to override description"() {
+    given:
+    HexagonalCqrsEsArchitecture hexagonalCqrsEsArchitecture = HexagonalCqrsEsArchitecture.architecture().as("Overridden description.")
+
+    expect:
+    hexagonalCqrsEsArchitecture.description == "Overridden description."
+  }
+
+  void "should be able to specify architectural reason"() {
+    given:
+    HexagonalCqrsEsArchitecture hexagonalCqrsEsArchitecture = HexagonalCqrsEsArchitecture.architecture().because("We like it!")
+
+    expect:
+    hexagonalCqrsEsArchitecture.description.endsWith("We like it!")
+  }
+
+  private ArchRule fetchArchitectureRule(HexagonalCqrsEsArchitecture.ArchitectureSubType architectureSubType = HexagonalCqrsEsArchitecture.ArchitectureSubType.NONE) {
+    HexagonalCqrsEsArchitecture hexagonalCqrsEsArchitectureRule = HexagonalCqrsEsArchitecture.architecture(architectureSubType)
+
+    switch (architectureSubType) {
+      case HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE:
+        hexagonalCqrsEsArchitectureRule
+            .domainModels("..domain.model..")
+            .domainEvents("..domain.event..")
+            .domainCommands("..domain.command..")
+            .domainAggregates("..domain.aggregate..")
+
+            .applicationInboundPorts("..application.port.in..")
+            .applicationOutboundPorts("..application.port.out..")
+            .applicationServices("..application.service..")
+
+            .adapterInbound("in", "..adapter.in..")
+            .adapterOutbound("out", "..adapter.out..")
+
+            .withOptionalLayers(false)
+            .ignoreDependency(resideInAnyPackage(["..adapter.projection.."] as String[]), DescribedPredicate.alwaysTrue())
+        break
+
+      case HexagonalCqrsEsArchitecture.ArchitectureSubType.PROJECTION:
+        hexagonalCqrsEsArchitectureRule
+            .domainModels("..domain.model..")
+            .domainEvents("..domain.event..")
+
+            .adapterProjection("projection", "..adapter.projection..")
+
+            .withOptionalLayers(false)
+            .ignoreDependency(resideOutsideOfPackages(["..domain.model..", "..domain.event..", "..adapter.projection.."] as String[]), DescribedPredicate.alwaysTrue())
+        break
+
+      case HexagonalCqrsEsArchitecture.ArchitectureSubType.QUERYSIDE:
+        hexagonalCqrsEsArchitectureRule
+            .domainModels("..domain.model..")
+
+            .applicationInboundPorts("..application.port.in..")
+            .applicationOutboundPorts("..application.port.out..")
+            .applicationServices("..application.service..")
+
+            .adapterInbound("in", "..adapter.in..")
+            .adapterOutbound("out", "..adapter.out..")
+
+            .withOptionalLayers(false)
+            .ignoreDependency(resideInAnyPackage(["..domain.event..", "..domain.command..", "..domain.aggregate..", "..adapter.projection.."] as String[]), DescribedPredicate.alwaysTrue())
+        break
+
+      default:
+        hexagonalCqrsEsArchitectureRule
+            .domainModels("..domain.model..")
+            .domainEvents("..domain.event..")
+            .domainCommands("..domain.command..")
+            .domainAggregates("..domain.aggregate..")
+
+            .applicationInboundPorts("..application.port.in..")
+            .applicationOutboundPorts("..application.port.out..")
+            .applicationServices("..application.service..")
+
+            .adapterInbound("in", "..adapter.in..")
+            .adapterOutbound("out", "..adapter.out..")
+            .adapterProjection("projection", "..adapter.projection..")
+
+            .withOptionalLayers(true)
+        break
+    }
+
+    log.debug "----- Architecture description"
+    hexagonalCqrsEsArchitectureRule.description.eachLine { String line -> log.debug line }
+    log.debug "------------------------------"
+
+    return hexagonalCqrsEsArchitectureRule
+  }
+
+  void "should be valid general hexagonal CQRS/ES architecture"() {
+    given:
+    ArchRule rule = fetchArchitectureRule()
+
+    expect:
+    rule.check(importedValidClasses)
+  }
+
+  void "should not allow forbidden access with general hexagonal CQRS/ES architecture - [#description]"() {
+    given:
+    log.debug "----- description: ${ description }"
+    log.debug "----- violatingSources: ${ violatingSources*.simpleName }"
+    log.debug "----- disallowedTarget: ${ disallowedTarget.simpleName }"
+
+    ArchRule rule = fetchArchitectureRule()
+
+    when:
+    EvaluationResult evaluationResultForDisallowedTargetOnly = evaluateAndDiscardIrrelevantViolations(rule, importedViolationClasses, disallowedTarget)
+
+    then:
+    assertIfDependencyExistsBetweenViolatingSourceAndDisallowedTarget(violatingSources as List<Class<?>>, disallowedTarget)
+    doesFailureReportContainsInvalidDependency(evaluationResultForDisallowedTargetOnly, violatingSources as List<Class<?>>)
+
+    where:
+    allowedSources                                                                              | disallowedTarget                     | description
+    [DomainEventViolationClass, DomainCommandViolationClass, DomainAggregateViolationClass,
+     ApplicationPortOutViolationInterface, ApplicationServiceViolationClass,
+     AdapterOutViolationClass, AdapterProjectionViolationClass]                                 | DomainModelViolationClass            | "* -> ${ DOMAIN_MODEL_LAYER }"
+    [DomainAggregateViolationClass, AdapterProjectionViolationClass]                            | DomainEventViolationClass            | "* -> ${ DOMAIN_EVENT_LAYER }"
+    [DomainAggregateViolationClass, ApplicationServiceViolationClass]                           | DomainCommandViolationClass          | "* -> ${ DOMAIN_COMMAND_LAYER }"
+    [ApplicationServiceViolationClass]                                                          | DomainAggregateViolationClass        | "* -> ${ DOMAIN_AGGREGATE_LAYER }"
+    [ApplicationServiceViolationClass, AdapterInViolationClass]                                 | ApplicationPortInViolationInterface  | "* -> ${ APPLICATION_INBOUND_PORT_LAYER }"
+    [ApplicationServiceViolationClass, DomainAggregateViolationClass, AdapterOutViolationClass] | ApplicationPortOutViolationInterface | "* -> ${ APPLICATION_OUTBOUND_PORT_LAYER }"
+    []                                                                                          | ApplicationServiceViolationClass     | "* -> ${ APPLICATION_SERVICE_LAYER }"
+    []                                                                                          | AdapterInViolationClass              | "* -> ${ ADAPTER_INBOUND_LAYER }"
+    []                                                                                          | AdapterOutViolationClass             | "* -> ${ ADAPTER_OUTBOUND_LAYER }"
+    []                                                                                          | AdapterProjectionViolationClass      | "* -> ${ ADAPTER_PROJECTION_LAYER }"
+
+    violatingSources = fetchViolatingSourcesGeneral(disallowedTarget, allowedSources)
+  }
+
+  private List<Class<?>> fetchViolatingSourcesGeneral(Class<?> disallowedTarget, List<Class<?>> allowedSources) {
+    return fetchViolatingSources(generalArchitectureAllViolatingSources, disallowedTarget, allowedSources)
+  }
+
+  /**
+   * Little helper that provides more obvious way for specifying violating sources whn looking into the implementation at <code>HexagonalCqrsEsArchitecture</code>.
+   */
+  private List<Class<?>> fetchViolatingSources(List<Class<?>> allViolatingSources, Class<?> disallowedTarget, List<Class<?>> allowedSources) {
+    List<Class<?>> violatingSources = allViolatingSources - allowedSources
+    violatingSources = violatingSources - disallowedTarget
+    return violatingSources
+  }
+
+  /**
+   * Creates <code>EvaluationResult</code> with discarded all violations that are not related to the given <code>disallowedTarget</code>.
+   */
+  private EvaluationResult evaluateAndDiscardIrrelevantViolations(ArchRule rule, JavaClasses importedViolationClasses, Class<?> disallowedTarget) {
+    EvaluationResult evaluationResultForDisallowedTargetOnly = rule.evaluate(importedViolationClasses).filterDescriptionsMatching({ String violationTextualDescription ->
+      violationTextualDescription.contains(" <${ disallowedTarget.name }> in ")
+    })
+
+    return evaluationResultForDisallowedTargetOnly
+  }
+
+  /**
+   * Asserts if a dependency between violatingSources and disallowedTarget actually exists in the source code.
+   * <p/>
+   * If not, it should be added in violating source for test to have sense (with meany example test classes, it is very easy to miss one).
+   */
+  private void assertIfDependencyExistsBetweenViolatingSourceAndDisallowedTarget(List<Class<?>> violatingSources, Class<?> disallowedTarget) {
+    violatingSources.each { Class<?> violatingSource ->
+      JavaClass violatingSourceJavaClass = importedViolationClasses.get(violatingSource)
+      JavaClass disallowedTargetJavaClass = importedViolationClasses.get(disallowedTarget)
+
+      Set<Dependency> allDependenciesFromViolatingSource = violatingSourceJavaClass.directDependenciesFromSelf
+      Set<Dependency> dependenciesFromViolatingSourceToDisallowedTarget = allDependenciesFromViolatingSource.findAll { Dependency dependency ->
+        dependency.targetClass == disallowedTargetJavaClass
+      } as Set<Dependency>
+
+      assert dependenciesFromViolatingSourceToDisallowedTarget, "There is no dependency from violatingSource to disallowedTarget: ${ violatingSource.simpleName } -> ${ disallowedTarget.simpleName }"
+    }
+  }
+
+  /**
+   * For a failure report (it contains multiple text lines) make sure there is a line describing dependency between each violating source and disallowed target.
+   */
+  private Boolean doesFailureReportContainsInvalidDependency(EvaluationResult evaluationResultForDisallowedTargetOnly, List<Class<?>> violatingSources) {
+    Boolean result = evaluationResultForDisallowedTargetOnly.failureReport.details.every { String failureMessage ->
+      violatingSources.any { Class<?> source ->
+        failureMessage.contains("${ source.name }")
+      }
+    }
+
+    return result
+  }
+
+  void "should be valid commandside hexagonal CQRS/ES architecture"() {
+    given:
+    ArchRule rule = fetchArchitectureRule(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
+
+    expect:
+    rule.check(importedValidClasses)
+  }
+
+  void "should not allow forbidden access with commandside hexagonal CQRS/ES architecture - [#description]"() {
+    given:
+    log.debug "----- description: ${ description }"
+    log.debug "----- violatingSources: ${ violatingSources*.simpleName }"
+    log.debug "----- disallowedTarget: ${ disallowedTarget.simpleName }"
+
+    ArchRule rule = fetchArchitectureRule(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
+
+    when:
+    EvaluationResult evaluationResultForDisallowedTargetOnly = evaluateAndDiscardIrrelevantViolations(rule, importedViolationClasses, disallowedTarget)
+
+    then:
+    assertIfDependencyExistsBetweenViolatingSourceAndDisallowedTarget(violatingSources as List<Class<?>>, disallowedTarget)
+    doesFailureReportContainsInvalidDependency(evaluationResultForDisallowedTargetOnly, violatingSources as List<Class<?>>)
+
+    where:
+    allowedSources                                                                                     | disallowedTarget                     | description
+    [DomainEventViolationClass, DomainCommandViolationClass, DomainAggregateViolationClass,
+     ApplicationServiceViolationClass, ApplicationPortOutViolationInterface, AdapterOutViolationClass] | DomainModelViolationClass            | "* -> ${ DOMAIN_MODEL_LAYER }"
+    [DomainAggregateViolationClass]                                                                    | DomainEventViolationClass            | "* -> ${ DOMAIN_EVENT_LAYER }"
+    [DomainAggregateViolationClass, ApplicationServiceViolationClass]                                  | DomainCommandViolationClass          | "* -> ${ DOMAIN_COMMAND_LAYER }"
+    [ApplicationServiceViolationClass]                                                                 | DomainAggregateViolationClass        | "* -> ${ DOMAIN_AGGREGATE_LAYER }"
+    [ApplicationServiceViolationClass, AdapterInViolationClass]                                        | ApplicationPortInViolationInterface  | "* -> ${ APPLICATION_INBOUND_PORT_LAYER }"
+    [ApplicationServiceViolationClass, DomainAggregateViolationClass, AdapterOutViolationClass]        | ApplicationPortOutViolationInterface | "* -> ${ APPLICATION_OUTBOUND_PORT_LAYER }"
+    []                                                                                                 | ApplicationServiceViolationClass     | "* -> ${ APPLICATION_SERVICE_LAYER }"
+    []                                                                                                 | AdapterInViolationClass              | "* -> ${ ADAPTER_INBOUND_LAYER }"
+    []                                                                                                 | AdapterOutViolationClass             | "* -> ${ ADAPTER_OUTBOUND_LAYER }"
+
+    violatingSources = fetchViolatingSourcesCommandside(disallowedTarget, allowedSources)
+  }
+
+  private List<Class<?>> fetchViolatingSourcesCommandside(Class<?> disallowedTarget, List<Class<?>> allowedSources) {
+    List<Class<?>> commandSideArchitectureAllViolatingSources = generalArchitectureAllViolatingSources - [AdapterProjectionViolationClass]
+    return fetchViolatingSources(commandSideArchitectureAllViolatingSources, disallowedTarget, allowedSources)
+  }
+
+  void "should be valid projection hexagonal CQRS/ES architecture"() {
+    given:
+    ArchRule rule = fetchArchitectureRule(HexagonalCqrsEsArchitecture.ArchitectureSubType.PROJECTION)
+
+    expect:
+    rule.check(importedValidClasses)
+  }
+
+  void "should not allow forbidden access with projection hexagonal CQRS/ES architecture - [#description]"() {
+    given:
+    log.debug "----- description: ${ description }"
+    log.debug "----- violatingSources: ${ violatingSources*.simpleName }"
+    log.debug "----- disallowedTarget: ${ disallowedTarget.simpleName }"
+
+    ArchRule rule = fetchArchitectureRule(HexagonalCqrsEsArchitecture.ArchitectureSubType.PROJECTION)
+
+    when:
+    EvaluationResult evaluationResultForDisallowedTargetOnly = evaluateAndDiscardIrrelevantViolations(rule, importedViolationClasses, disallowedTarget)
+
+    then:
+    assertIfDependencyExistsBetweenViolatingSourceAndDisallowedTarget(violatingSources as List<Class<?>>, disallowedTarget)
+    doesFailureReportContainsInvalidDependency(evaluationResultForDisallowedTargetOnly, violatingSources as List<Class<?>>)
+
+    where:
+    allowedSources                                               | disallowedTarget                | description
+    [DomainEventViolationClass, AdapterProjectionViolationClass] | DomainModelViolationClass       | "* -> ${ DOMAIN_MODEL_LAYER }"
+    [AdapterProjectionViolationClass]                            | DomainEventViolationClass       | "* -> ${ DOMAIN_EVENT_LAYER }"
+    []                                                           | AdapterOutViolationClass        | "* -> ${ ADAPTER_OUTBOUND_LAYER }"
+    []                                                           | AdapterProjectionViolationClass | "* -> ${ ADAPTER_PROJECTION_LAYER }"
+
+    violatingSources = fetchViolatingSourcesProjection(disallowedTarget, allowedSources)
+  }
+
+  private List<Class<?>> fetchViolatingSourcesProjection(Class<?> disallowedTarget, List<Class<?>> allowedSources) {
+    return fetchViolatingSources(projectionArchitectureAllViolatingSources, disallowedTarget, allowedSources)
+  }
+
+  void "should be valid queryside hexagonal CQRS/ES architecture"() {
+    given:
+    ArchRule rule = fetchArchitectureRule(HexagonalCqrsEsArchitecture.ArchitectureSubType.QUERYSIDE)
+
+    expect:
+    rule.check(importedValidClasses)
+  }
+
+  void "should not allow forbidden access with queryside hexagonal CQRS/ES architecture - [#description]"() {
+    given:
+    log.debug "----- description: ${ description }"
+    log.debug "----- violatingSources: ${ violatingSources*.simpleName }"
+    log.debug "----- disallowedTarget: ${ disallowedTarget.simpleName }"
+
+    ArchRule rule = fetchArchitectureRule(HexagonalCqrsEsArchitecture.ArchitectureSubType.QUERYSIDE)
+
+    when:
+    EvaluationResult evaluationResultForDisallowedTargetOnly = evaluateAndDiscardIrrelevantViolations(rule, importedViolationClasses, disallowedTarget)
+
+    then:
+    assertIfDependencyExistsBetweenViolatingSourceAndDisallowedTarget(violatingSources as List<Class<?>>, disallowedTarget)
+    doesFailureReportContainsInvalidDependency(evaluationResultForDisallowedTargetOnly, violatingSources as List<Class<?>>)
+
+    where:
+    allowedSources                                                                                     | disallowedTarget                     | description
+    [ApplicationServiceViolationClass, ApplicationPortOutViolationInterface, AdapterOutViolationClass] | DomainModelViolationClass            | "* -> ${ DOMAIN_MODEL_LAYER }"
+    [ApplicationServiceViolationClass, AdapterInViolationClass, AdapterOutViolationClass]              | ApplicationPortInViolationInterface  | "* -> ${ APPLICATION_INBOUND_PORT_LAYER }"
+    [ApplicationServiceViolationClass, AdapterOutViolationClass]                                       | ApplicationPortOutViolationInterface | "* -> ${ APPLICATION_OUTBOUND_PORT_LAYER }"
+    []                                                                                                 | ApplicationServiceViolationClass     | "* -> ${ APPLICATION_SERVICE_LAYER }"
+    []                                                                                                 | AdapterInViolationClass              | "* -> ${ ADAPTER_INBOUND_LAYER }"
+    []                                                                                                 | AdapterOutViolationClass             | "* -> ${ ADAPTER_OUTBOUND_LAYER }"
+
+    violatingSources = fetchViolatingSourcesQuerySide(disallowedTarget, allowedSources)
+  }
+
+  private List<Class<?>> fetchViolatingSourcesQuerySide(Class<?> disallowedTarget, List<Class<?>> allowedSources) {
+    List<Class<?>> querySideArchitectureAllViolatingSources =
+        generalArchitectureAllViolatingSources - [DomainEventViolationClass, DomainCommandViolationClass, DomainAggregateViolationClass, AdapterProjectionViolationClass]
+
+    return fetchViolatingSources(querySideArchitectureAllViolatingSources, disallowedTarget, allowedSources)
+  }
+}

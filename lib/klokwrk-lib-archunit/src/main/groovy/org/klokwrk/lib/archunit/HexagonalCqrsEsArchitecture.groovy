@@ -130,7 +130,6 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
     return this
   }
 
-  @SuppressWarnings('unused')
   HexagonalCqrsEsArchitecture adapterProjection(String name, String... packageIdentifiers) {
     adapterProjectionPackageIdentifiers[name] = packageIdentifiers
     return this
@@ -141,12 +140,10 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
     return this
   }
 
-  @SuppressWarnings('unused')
   HexagonalCqrsEsArchitecture ignoreDependency(Class<?> origin, Class<?> target) {
     return ignoreDependency(equivalentTo(origin), equivalentTo(target))
   }
 
-  @SuppressWarnings('unused')
   HexagonalCqrsEsArchitecture ignoreDependency(String origin, String target) {
     return ignoreDependency(name(origin), name(target))
   }
@@ -205,7 +202,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
         // For now, access to DOMAIN_MODEL_LAYER is forbidden for APPLICATION_INBOUND_PORT_LAYER and ADAPTER_INBOUND_LAYER. Will see how this goes.
         .whereLayer(DOMAIN_MODEL_LAYER)
             .mayOnlyBeAccessedByLayers(
-                DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER,
+                DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_AGGREGATE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER, APPLICATION_SERVICE_LAYER,
                 ADAPTER_OUTBOUND_LAYER, ADAPTER_PROJECTION_LAYER
             )
         .whereLayer(DOMAIN_EVENT_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER, ADAPTER_PROJECTION_LAYER)
@@ -242,7 +239,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
 
         // For now, access to DOMAIN_MODEL_LAYER is forbidden for APPLICATION_INBOUND_PORT_LAYER and ADAPTER_INBOUND_LAYER. Will see how this goes.
         .whereLayer(DOMAIN_MODEL_LAYER)
-            .mayOnlyBeAccessedByLayers( DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER, ADAPTER_OUTBOUND_LAYER)
+            .mayOnlyBeAccessedByLayers(DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER, ADAPTER_OUTBOUND_LAYER)
         .whereLayer(DOMAIN_EVENT_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER)
         .whereLayer(DOMAIN_COMMAND_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER)
         .whereLayer(DOMAIN_AGGREGATE_LAYER).mayOnlyBeAccessedByLayers(APPLICATION_SERVICE_LAYER)
@@ -316,12 +313,12 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
   }
 
   @Override
-  ArchRule because(String reason) {
-    return Factory.withBecause(this, reason)
+  HexagonalCqrsEsArchitecture because(String reason) {
+    return Factory.withBecause(this, reason) as HexagonalCqrsEsArchitecture
   }
 
   @Override
-  ArchRule "as"(String newDescription) {
+  HexagonalCqrsEsArchitecture "as"(String newDescription) {
     return copyWith(Optional.of(newDescription))
   }
 
