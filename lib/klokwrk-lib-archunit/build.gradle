@@ -4,5 +4,6 @@ dependencies {
   implementation "com.tngtech.archunit:archunit-junit5"
   implementation "org.codehaus.groovy:groovy"
 
+  testImplementation "ch.qos.logback:logback-classic"
   testImplementation "org.spockframework:spock-core"
 }

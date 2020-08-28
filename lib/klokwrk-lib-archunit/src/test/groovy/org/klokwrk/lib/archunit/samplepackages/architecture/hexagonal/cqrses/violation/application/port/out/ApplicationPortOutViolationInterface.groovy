@@ -1,0 +1,26 @@
+package org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.application.port.out
+
+import groovy.transform.CompileStatic
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.adapter.in.AdapterInViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.adapter.out.AdapterOutViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.adapter.projection.AdapterProjectionViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.application.port.in.ApplicationPortInViolationInterface
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.application.service.ApplicationServiceViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.aggregate.DomainAggregateViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.command.DomainCommandViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.event.DomainEventViolationClass
+
+@SuppressWarnings('unused')
+@CompileStatic
+interface ApplicationPortOutViolationInterface {
+  void accessDomainEventClass(DomainEventViolationClass domainEventViolationClass)
+  void accessDomainCommandClass(DomainCommandViolationClass domainCommandViolationClass)
+  void accessDomainAggregateClass(DomainAggregateViolationClass domainAggregateViolationClass)
+
+  void accessApplicationPortIn(ApplicationPortInViolationInterface applicationPortInViolationInterface)
+  void accessApplicationService(ApplicationServiceViolationClass applicationServiceViolationClass)
+
+  void accessAdapterIn(AdapterInViolationClass adapterInViolationClass)
+  void accessAdapterOut(AdapterOutViolationClass adapterOutViolationClass)
+  void accessAdapterProjection(AdapterProjectionViolationClass adapterProjectionViolationClass)
+}

@@ -1,6 +1,5 @@
 package org.klokwrk.cargotracker.booking.commandside.architecture
 
-import com.tngtech.archunit.core.domain.JavaClass
 import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition
@@ -80,7 +79,6 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         )
         .adapter("in.web", "..cargotracker.booking.commandside.feature.*.adapter.in.web..") // adapterInbound
         .adapter("out.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..") // adapterOutbound
-        .ignoreDependency(JavaClass.Predicates.resideInAPackage("org.klokwrk.cargotracker.booking.commandside.test.."), JavaClass.Predicates.resideInAPackage("org.klokwrk.cargotracker.booking.."))
         .withOptionalLayers(true)
     // @formatter:on
 
@@ -110,7 +108,6 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .adapterInbound("in.web", "..cargotracker.booking.commandside.feature.*.adapter.in.web..")
         .adapterOutbound("out.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..")
 
-        .ignoreDependency(JavaClass.Predicates.resideInAPackage("org.klokwrk.cargotracker.booking.commandside.test.."), JavaClass.Predicates.resideInAPackage("org.klokwrk.cargotracker.booking.."))
         .withOptionalLayers(true)
     // @formatter:on
 
@@ -142,7 +139,6 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .adapterInbound("in.web", "..cargotracker.booking.commandside.feature.*.adapter.in.web..")
         .adapterOutbound("out.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..")
 
-        .ignoreDependency(JavaClass.Predicates.resideInAPackage("org.klokwrk.cargotracker.booking.commandside.test.."), JavaClass.Predicates.resideInAPackage("org.klokwrk.cargotracker.booking.."))
         .withOptionalLayers(false)
     // @formatter:on
 
