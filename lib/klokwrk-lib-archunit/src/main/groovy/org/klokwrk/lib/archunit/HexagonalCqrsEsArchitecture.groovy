@@ -14,7 +14,71 @@ import static com.tngtech.archunit.core.domain.JavaClass.Predicates.equivalentTo
 import static com.tngtech.archunit.core.domain.properties.HasName.Predicates.name
 import static java.lang.System.lineSeparator
 
-// TODO dmurat: document this ArchRule.
+/**
+ * Implementation of ArchUnit's <code>ArchRule</code> for asserting CQRS/ES flavored hexagonal architecture used in <code>klokwrk</code>.
+ * <p/>
+ * It supports 4 variants of CQRS/ES flavored hexagonal architecture: general (without specific architecture subtype), commandSide, querySide and projection. It is inspired by ArchUnit's
+ * implementation for asserting onion architecture and follows very similar usages patterns.
+ * <p/>
+ * Usage example for asserting commandSide subtype of CQRS/ES flavored hexagonal architecture (from klokwrk's code):
+ * <p/>
+ * <pre>
+ * ArchRule rule = HexagonalCqrsEsArchitecture
+ *     .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
+ *     .domainModels("..cargotracker.booking.domain.model..")
+ *     .domainEvents("..cargotracker.booking.axon.api.feature.*.event..")
+ *     .domainCommands("..cargotracker.booking.axon.api.feature.*.command..")
+ *     .domainAggregates("..cargotracker.booking.commandside.domain.aggregate..")
+ *
+ *     .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
+ *     .applicationOutboundPorts("..cargotracker.booking.commandside.feature.*.application.port.out..")
+ *     .applicationServices("..cargotracker.booking.commandside.feature.*.application.service..")
+ *
+ *     .adapterInbound("in.web", "..cargotracker.booking.commandside.feature.*.adapter.in.web..")
+ *     .adapterOutbound("out.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..")
+ *
+ *     .withOptionalLayers(false)
+ *
+ * rule.check(importedClasses)
+ * </pre>
+ * <p/>
+ * Usage example for asserting projection subtype of CQRS/ES flavored hexagonal architecture (from klokwrk's code):
+ * <p/>
+ * <pre>
+ * ArchRule rule = HexagonalCqrsEsArchitecture
+ *     .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.PROJECTION)
+ *     .domainModels("..cargotracker.booking.domain.model..")
+ *     .domainEvents("..cargotracker.booking.axon.api.feature.*.event..")
+ *
+ *     .adapterProjection("out.persistence", "..cargotracker.booking.queryside.rdbms.projection.feature.*.adapter.out..")
+ *
+ *     // We are ignoring dependencies originating from command classes. Command classes should not be used in projections. Only events can be used. Since command and events are not split it their
+ *     // own modules, we need to ignore commands here. Illegal access to commands is verified in other test.
+ *     .ignoreDependency(JavaClass.Predicates.resideInAPackage("org.klokwrk.cargotracker.booking.axon.api.feature.*.command.."), JavaClass.Predicates.resideInAPackage("org.klokwrk.cargotracker.."))
+ *     .withOptionalLayers(false)
+ *
+ * rule.check(importedClasses)
+ * </pre>
+ * <p/>
+ * Usage example for asserting querySide subtype of CQRS/ES flavored hexagonal architecture (from klokwrk's code):
+ * <p/>
+ * <pre>
+ * ArchRule rule = HexagonalCqrsEsArchitecture
+ *     .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.QUERYSIDE)
+ *     .domainModels("..cargotracker.booking.domain.model..")
+ *
+ *     .applicationInboundPorts("..cargotracker.booking.queryside.feature.*.application.port.in..")
+ *     .applicationOutboundPorts("..cargotracker.booking.queryside.feature.*.application.port.out..")
+ *     .applicationServices("..cargotracker.booking.queryside.feature.*.application.service..")
+ *
+ *     .adapterInbound("in.web", "..cargotracker.booking.queryside.feature.*.adapter.in.web..")
+ *     .adapterOutbound("out.persistence", "..cargotracker.booking.queryside.feature.*.adapter.out.persistence..")
+ *
+ *     .withOptionalLayers(false)
+ *
+ * rule.check(importedClasses)
+ * </pre>
+ */
 @CompileStatic
 class HexagonalCqrsEsArchitecture implements ArchRule {
 
