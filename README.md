@@ -33,8 +33,3 @@ Klokwrk is an open-source project, started by [Damir Murat](https://github.com/d
 If you are intrigued and want to try it out, take a look at "[Starting up and trying the whole thing](support/docs/startingUp.md)".
 
 For a discussion about principles and ideas behind organizing high-level artifacts of a project, take a look at "[Organizing modules and packages](support/docs/modulesAndPackages.md)".
-
-----------------------
-#### Incubation notice
-Project Klokwrk is in its incubation phase so please note that significant changes are possible during a couple of initial releases. We encourage you to take a look, try it out and give us your
-feedback and ideas for future development. After a couple of first releases we will also enable Issues. Until then, please feel free to send us your feedback directly via email.
