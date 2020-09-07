@@ -1,25 +1,30 @@
 # Organizing modules and packages
 
 ## Introduction
-It is not hard to find literature and references describing how to design and structure applications or even whole systems. For example, there are numerous books and articles describing decomposition
-in domains and subdomains with domain-driven-design (DDD) or the ways to organize interaction between implementation artifacts with onion or clean architecture.
+In this article, we'll explore and describe one specific way of organizing and structuring artifacts of the larger project. As a concrete example, we'll use
+[Project Klokwrk](https://github.com/croz-ltd/klokwrk-project).
 
-When it comes to mapping these concepts into more concrete artifacts in your source tree, it seems there is not so much guidance. It looks like many dilemmas are left unanswered. "How do I organize
-my packages without disturbing the growth potential of my application?" or "How to organize application or system modules in a meaningful way that can lead to controlled management of dependencies
-between modules and dependencies of each module towards 3rd party libraries?". However, articles and books about related topics do exist. We just need to be willing to dig deeper and beyond current
-technical hypes, often ending up reading literature written a long time ago. Sometimes we cannot apply that venerable knowledge directly and need to draw our own conclusions that are hopefully
-suitable for contemporary tech stacks.
+For organizing high-level project artifacts, Klokwrk uses strategic DDD concepts like domains and subdomains. Besides other things, a meaningful organization can help manage dependencies between
+modules and dependencies between modules and 3rd party libraries. It can also bring significant improvements in orientation and navigation at this level.
 
-It is not unusual concerns like these pop-up late in the development cycle, often after several releases are already in production. Even when they come to focus, it is typically tough to resolve
-them since they might require dramatic refactoring of applications or the whole system. It might be easier if we have in place some suitable project structure from the start. It shouldn't disturb
-development in the early phases and should be flexible enough to support the system's growth beyond initial expectations. The structure presented here is a conscious attempt trying to deal with some
-hard issues that frequently occur in larger projects. With recent industry move towards microservices, organizing high-level development artifacts consciously has even more importance.
+Going one step deeper at the **application** package level, Klokwrk mainly follows hexagonal architecture ideas. It also introduces some CQRS/ES (Command Query Responsibility Segregation/Event
+Sourcing) flavor to the architecture when appropriate.
+
+When combined, we believe that strategic DDD and hexagonal architecture provide suitable organizational constructs with exact placeholders for tactical DDD artifacts like aggregates, entities,
+value objects, etc.
+
+It is not unusual concerns like these pop-up late in the development cycle, often after several releases are already in production. Even when they come to focus, it is typically hard to resolve them
+since they might require dramatic refactoring of applications. It might be easier if we have a suitable structure in place from the start. It shouldn't excessively disturb development in the early
+phases, and it should be flexible enough to support the system's growth.
+
+With the recent industry move towards microservices, carefully organizing high-level development artifacts has even more importance.
 
 ### Main goals
-So, the **main goals** for our structure are:
-- Provide means for organizing modules that will support future application and system growth and will enable controlled management of dependencies between modules and dependencies on 3rd party
-  libraries.
-- Provide a way for organizing packages that is flexible enough to support future development and feature expansion smoothly.
+After the brief discussion above, we can try to enumerate the **main goals** of our targeted project structure:
+
+- Provide means for organizing modules that will support future system growth and enable controlled management of dependencies between modules and dependencies on 3rd party libraries.
+- Provide a way for organizing **application** and **library** packages that are flexible enough to support future development and feature expansion smoothly.
+- Organization of **application** packages should adhere to the sound application architecture principles like those promoted by hexagonal, onion, or clean architectures.
 
 ## Organizing modules
 Let's start with modules of `klokwrk-project` that were available at the time of this writing (May 2020). Here is how they look in an IDE:
