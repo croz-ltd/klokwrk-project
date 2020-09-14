@@ -161,29 +161,33 @@ In the group of language extensions, we have a `klokwrk-lang-groovy` module. It 
 infrastructure helping with relaxing requirements of Groovy map constructor. The last two features can help create immutable objects and support simple mapping of data from one object into another.
 Quite often, this is more than enough for data mapping purposes without requiring any additional library.
 
-## Organizing packages
-In the domain of separating **applications into packages**, several popular strategies are often mentioned. In most cases, we can hear about "packaging by layers" and "packaging by features" where
-packaging by features usually dominates (at least on paper). Also, there is an approach that combines these two - "packaging by layered features" [1]. What about **packages in standalone libraries**?
-There are no features or layers to offer at least some guidance. We have to turn our attention to different abstractions like "components" or "toolboxes" and even sometimes apply packaging by "kind"
-in a very narrow scope, despite its lousy reputation [2].
+## Basic package organization principles
+In the domain of separating **applications into packages**, several strategies are often mentioned. In most cases, we can hear about "packaging by layers" and "packaging by features" where
+packaging by features usually dominates (at least on paper). Also, there is an approach that combines these two - "packaging by layered features" [1]. Also, if an application tries to follow a
+well-defined architecture (like hexagonal architecture, for example), there will be more guidelines and rules to follow.
+
+What about **packages in standalone libraries**? There are no features, layers, or architecture to offer at least some guidance. We have to turn our attention to different abstractions like
+"components" or "toolboxes" and even sometimes apply packaging by "kind" in a very narrow scope, despite its lousy reputation [2].
 
 The main principles are striving for a reasonable level of cohesion inside a package, trying to minimize accidental and unnecessary dependencies between packages, and avoiding cyclic dependencies at
 all costs (tools like [Sonargraph](https://www.hello2morrow.com/products/sonargraph/explorer) and [Structure 101](https://structure101.com) can be of great help here). Sometimes it is an easy and
-natural thing to do but often is not. Learning from others' experiences and being familiar with some formalized guidance can help [3][4]. However, you will commonly end up with your best judgment,
+natural thing to do, but often is not. Learning from others' experiences and being familiar with some formalized guidance can help [3][4]. However, you will commonly end up with your best judgment,
 and if something does not feel right, it should probably be changed somehow.
 
 When you are dealing with numerous modules, each containing a dozen of packages, applying some consistency rules can be a lifesaver. For example, in the `klokwrk-project`, each module's root package
-name tries to use a hierarchy derived from a module name. With consistent and organized module naming in place, we can end up with root packages that do not collide between themself in the entire
-system. For future maintenance and refactorings, this characteristic might be essential. Also, this is an excellent start for further packaging inside each module.
+name tries to use a hierarchy derived from a module name. With consistent and organized module naming in place, we can end up with root packages that do not collide across the entire system. For
+future maintenance and refactorings, this characteristic might be essential. Also, this is an excellent start for further packaging inside each module.
 
 Let's look at how all this works in `klokwrk-project` on a few examples. We will start with packaging for libraries.
 
-### Packaging for libraries
-When organizing packages for libraries, `klokwrk-project` modules try to adhere to the principle of keeping high cohesion inside of packages while any circular dependency is strictly forbidden. At
-the module level, cohesion is not that important as on package level, so we might have modules addressing different things. Yet these things still need to be close enough, allowing a module to have
-a meaningful and concrete name (avoid modules containing words like "common", "misc", "utilities", etc.), and that required 3rd party libraries are not entirely heterogeneous. Since we are extending
-or customizing features of concrete libraries, monitoring required 3rd party dependencies for a module is quite important. If they are disparate, we might need more fine-grained modules. On the other
-hand, if we target specific higher-level consumers, we might want to include more heterogeneous features to avoid needless fine-grained modules that no one uses.
+## Packaging for libraries
+When organizing packages for libraries, the `klokwrk-project` tries to adhere to the principle of keeping high cohesion inside of module's packages while any circular dependencies are strictly
+forbidden. At the module level, cohesion is not that important as on the package level, so we might have modules addressing different things. Yet these things still need to be close enough,
+allowing a module to have a meaningful and concrete name (avoid modules containing words like "common", "misc", "utilities", etc.), and that required 3rd party libraries are not entirely
+heterogeneous.
+
+Since we are extending or customizing features of concrete libraries, it is quite important to monitor required 3rd party dependencies. If they are disparate, we might need more fine-grained modules.
+On the other hand, if we target specific higher-level consumers, we might want to include more heterogeneous features to avoid too fine-grained modules that no one will use in isolation.
 
 The first example (Image 5) shows the packaging of `cargotracker-lib-axon-cqrs` and `cargotracker-lib-axon-logging` modules dealing with different aspects of the Axon framework.
 
@@ -199,16 +203,16 @@ cohesion, problematic naming, and different consumers are not enough, taking int
 existence of separate library modules.
 
 Next, we have two low-level libraries supporting extension, customization, and configurability of 3rd party "datasource-proxy" library. Module `klokwrk-lib-datasourceproxy` provides extension itself,
-while `klokwrk-lib-datasourceproxy-springboot` implements support and configurability for Spring Boot environment.
+while `klokwrk-lib-datasourceproxy-springboot` implements support and configurability for the Spring Boot environment.
 
 ![Image 6 - datasourceproxy library packaging comparison](images/modulesAndPackages/06-datasourceproxy-library-packaging-comparison.jpg "Image 6 - datasourceproxy library packaging comparison") <br/>
 *Image 6 - datasourceproxy library packaging comparison*
 
 After glancing over packages, one might think there is an error in `klokwrk-lib-datasourceproxy` since there are no subpackages. It's true. This is an error unless you take a less strict approach.
-We have only a single class and no intention to add some more in the foreseeable future, so there is no real need for a subpackage. But if you don't feel being that loose, go ahead and add it.
+We have only a single class and no intention to add some more in the foreseeable future, so there is no real need for a subpackage. But it can be added if you really want it.
 
 If you only target Spring Boot apps, both modules can be combined. But with separate modules, you are allowing for core functionality to be used outside of the Spring Boot environment. Although for
-slightly different reasons, approach with separate modules is usually taken from Spring Boot auto-configurable libraries, so we can justify our decision.
+different reasons, approach with separate modules is usually taken from Spring Boot auto-configurable libraries, so we can justify our decision.
 
 The last example is very similar, but now it's about the Jackson library.
 
@@ -218,7 +222,7 @@ The last example is very similar, but now it's about the Jackson library.
 This time, in the core `klokwrk-lib-jackson` library, we need separated subpackages for splitting different functions. It is worth noting the names of subpackages. They are the same as for
 corresponding packages in the Jackson library. This is standard practice when you are extending existing libraries, which aids in understanding and maintenance.
 
-### Packaging for applications
+## Packaging for applications
 So far, we were exploring mainly infrastructural concerns of our system. There was no real business logic involved. What happens when we try to add it? How should we organize it into packages? Is
 there a way to logically and conveniently separate infrastructure from the domain?
 
