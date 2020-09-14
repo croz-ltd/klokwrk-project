@@ -33,100 +33,113 @@ Let's start with modules of `klokwrk-project` that were available at the time of
 *Image 1 - Modules layout in an IDE*
 
 ### System
-At the top is a **system artifact** (you can also call it "a platform" or "problem space") that represents a system being built. It maps to the whole problem space of our solution. In the early
-stages, we will have only the parts of the whole, but as we add more pieces, they should have a proper place to be put-in. In our case system is named `klokwrk-project`, and all related artifacts
-are placed under the system's directory.
+At the top is a **system artifact** `klokwrk-project` that represents a system being built. It maps to the whole problem space of our solution. As long as we have a single project for the entire
+solution, all related artifacts are placed under the system directory.
 
 ### Domain
-The `cargotracker` is the name of our core domain (or just domain in this context). The corresponding directory does not represent an artifact by itself. Instead, it just groups all artifacts
-belonging to that domain. As system implementation grows, additional domain grouping directories might be added. Added domains might address important and distinguishing business features, or be more
-supportive, or non-functional in nature (i.e., security-related).
+The `cargotracker` is the name of our domain. The corresponding directory does not represent an artifact by itself. Instead, it just groups all artifacts belonging to that domain. As system
+implementation grows, additional domain grouping directories might be added. They can address essential and distinguishing business features, or be more supportive or non-functional in nature.
 
-#### Implementation note
-Gradle build system does not directly support artifact-less directories that might be used for grouping. By its conventions, every directory known to the Gradle does produce some artifact (jar, war,
-etc.). Fortunately, Gradle is flexible enough to support the described layout by some custom scripting in `settings.gradle`. The more elegant solution is to employ
-[kordamp-gradle-plugins](https://github.com/kordamp/kordamp-gradle-plugins), the excellent portfolio of Gradle plugins with out-of-the-box support for our desired layout of the project (kordamp also
-delivers support for some other project layouts).
+##### Implementation note
+The Gradle build system does not support artifact-less directories out of the box. By default conventions, every directory known to the Gradle should produce some artifact (jar, war, etc.).
+Fortunately, Gradle is flexible enough to support the described layout by some custom scripting in `settings.gradle`. The more elegant solution is to employ
+[kordamp-gradle-plugins](https://github.com/kordamp/kordamp-gradle-plugins), the excellent portfolio of Gradle plugins with direct support for our desired project layout.
 
 ### Subdomain
-As explained in DDD, each business domain can be divided into subdomains. When modeling a solution for it, the business-level "subdomain" concept is mapped into a modeling-level "bounded context"
-concept. In our example, the name of implementation artifact corresponding to the bounded context is prefixed with the domain name. Therefore, for `booking` subdomain of `cargotracker` domain, we
-get `cargotracker-booking-*` modules.
+As explained in DDD, each business domain can be divided into subdomains. When modeling a solution for it, the business-level "subdomain" concept is mapped into a modeling-level "bounded context".
+In our example, names of implementation artifacts belonging to the bounded context are prefixed with the domain name followed by subdomain name. Therefore, for the `booking` subdomain of
+`cargotracker` domain, we get `cargotracker-booking-*` modules.
 
-There are multiple `cargotracker-booking` modules, but they are not all at the same level of abstraction. Modules with the `app` suffix are highest-level modules, representing runnable artifacts
-([Spring Boot](https://spring.io/projects/spring-boot) microservice applications in this case). The products of other `cargotracker-booking` modules are non-runnable jar archives that are used as
-dependencies by runnable modules. Although producing jars, these non-runnable modules do not have reusability potential outside of the `booking` subdomain. In other words, they are strictly specific
-to the `booking` subdomain of the `cargotracker` domain, which is reflected in their naming.
+If you want, you may also organize subdomains into grouping directories, in the same way we did for domains. However, even if you do this, it is recommended to keep the same naming convention.
+That way, all potential naming conflicts at the level of concrete JAR files can be avoided.
 
-Abstraction level and direction of compile-time dependencies is more clearly shown in the following image (partial `klokwrk-project` model from
-[Structure101 Studio for Java](https://structure101.com)):
+There are multiple `cargotracker-booking` modules, but they are not all at the same abstraction level. Modules with the `app` suffix are highest-level modules, representing runnable artifacts
+([Spring Boot](https://spring.io/projects/spring-boot) applications). The products of other `cargotracker-booking` modules are non-runnable jar archives that are used as dependencies by runnable
+modules. Although producing jars, these non-runnable modules do not have reusability potential outside of the `booking` subdomain. They are specific to the `booking` subdomain.
+
+With an increasing number of artifacts, it is quite important to control and monitor dependencies between them. If you don't, you might end up with undesired dependencies, or even with dependency
+cycles in the worst case. This can be done in several ways. You can use specialized tools like [Structure 101](https://structure101.com) or
+[Sonargraph](https://www.hello2morrow.com/products/sonargraph/explorer), or even better, write appropriate tests, for example, with the help of [ArchUnit](https://www.archunit.org/) library.
+
+The abstraction level and direction of compile-time dependencies (directed blue arrows) for our `booking` subdomain are clearly shown in the following image (partial `klokwrk-project` model from
+Structure101 Studio for Java):
 
 ![Image 2 - Abstraction level and dependencies of booking subdomain modules](images/modulesAndPackages/02-cargotracker-booking-partial-dependencies-S101.png "Image 2 - Abstraction level and dependencies of booking subdomain modules") <br/>
 *Image 2 - Abstraction level and dependencies of booking subdomain modules*
 
-#### Subdomain modules details
 Let's take a look at the purpose of each `cargotracker-booking` module. First, we have `*-app` modules that utilize CQRS and event sourcing via
 [Axon framework](https://github.com/AxonFramework/AxonFramework) and [related infrastructure](https://axoniq.io/product-overview/axon-server). Each of these apps implements a single high-level
 CQRS/Event sourcing architectural component, so we ended up with `commandside` (command processing), `queryside` (query processing), and `queryside-rdbms-projection` (translating events into RDBMS
 tables) applications.
 
 Next we have `cargotracker-booking-axon-api` and `cargotracker-booking-queryside-rdbms-projection-model`. Both modules are at a similar abstraction level. They logically belong to the
-subdomain's internal infrastructure and serve as a layer adapting to and using selected concrete technologies, and that requires compile-time access to some 3rd party libraries. Classes from these
-modules are not exposed to the out-of-the-domain world. Module `cargotracker-booking-axon-api` defines commands and events that are data structures supporting Axon's implementation of CQRS/Event
-sourcing. Commands and events are considered the primary internal APIs of CQRS/Event sourcing applications, which explains the name. Although commands and events are very close to the simple objects,
-it is allowed for them to use Axon API at compile-time. Module `cargotracker-booking-queryside-rdbms-projection-model` hosts JPA-related classes responsible for implementing requirements of
-abstract and technology-agnostic domain-level queries. Since the `booking` subdomain has selected an RDBMS system for building its primary projections and JPA as a database access technology, this
-module will have a compile-time dependency on the JPA APIs.
+**subdomain's** internal infrastructure and serve as a layer adapting to and using selected concrete technologies, and that requires compile-time access to some 3rd party libraries (not shown in the
+picture).
 
-Module `cargotracker-booking-domain-model` contains subdomain's value objects. It might look unusual we are mentioning only the value objects here. Where are aggregates and entities? In CQRS
-applications, aggregates and entities are artifacts belonging to the commandside part of the application where they model their state and control consistency and invariants of inbound commands. Once
-invariants are satisfied, commands are processed, the state of aggregates is updated, and events are emitted to the rest of the system. Where are the value objects then? In one part, domain value
-objects model internal pieces of the aggregate state. But they are also used by events to convey these pieces to the listeners. Therefore, they are needed for both commandside and projections (even
-queries might use them). Consequently, value objects are extracted into a sharable standalone module - `cargotracker-booking-domain-model`.
+Classes from these modules are not exposed to the world outside of the subdomain. Module `cargotracker-booking-axon-api` defines commands and events that are data structures supporting Axon's
+implementation of CQRS/ES. Commands and events are considered the primary internal APIs of Axon CQRS/ES applications, which explains the name. Although commands and events are very close to the
+simple data structure objects, it is allowed for them to use Axon API at compile-time. Module `cargotracker-booking-axon-api` is used by the command side application (commands and events) and
+projection application (events only).
+
+Module `cargotracker-booking-queryside-rdbms-projection-model` hosts JPA-related classes responsible for implementing requirements of subdomain queries. Since the `booking` subdomain has selected
+an RDBMS system for building its primary projections and JPA as a database access technology, the module will have a compile-time dependency on the JPA APIs. This module can be used from the
+projection application and queryside application.
+
+Therefore, both modules require quite different 3rd party libraries (Axon or JPA) and are used by different modules. Even if you think that both modules can be combined into one, significant
+differences in the usage and differences in 3rd party libraries should convince you otherwise.
+
+Module `cargotracker-booking-domain-model` contains subdomain's value objects. Contrary to what you might expect from the name, it contains only domain value objects. There are no aggregates or
+entities or anything else from the domain. Just value objects. Why is that?
+
+In CQRS applications, aggregates and entities belong only to the command side. They cannot be used either from projections or query side. But domain value objects can be shared among all of these.
+In one part, value objects are used for expressing the internal state of aggregates. They are also used as building blocks for modeling events. Query side can also use domain value objects while
+describing query requirements.
+
+That broad reusability potential across subdomain is the main reason for extracting domain value objects into a standalone module.
 
 ### Domain libraries
-Expanded compile-time dependency graph, including `cargotracker` domain libraries, is shown in the next picture.
+The expanded compile-time dependency graph containing `cargotracker` domain libraries is shown in the next picture.
 
 ![Image 3 - cargotracker domain libraries dependencies](images/modulesAndPackages/03-cargotracker-domain-libraries-dependencies-S101.png "Image 3 - cargotracker domain libraries dependencies") <br/>
-*Image 3 - `cargotracker` domain libraries dependencies*
+*Image 3 - `cargotracker` domain libraries and dependencies*
 
-Modules belonging to the group of domain libraries contain infrastructural code at the lower abstraction level then subdomain libraries. That code is reusable across the whole `cargotracker` domain
-and is not specific to a particular subdomain. However, being infrastructural modules, they are related to the specific technology choices made for the domain in question. That can be seen in their
-names to some extent, and in the selection of 3rd party libraries used by each module.
+Modules belonging to domain libraries contain infrastructural code at the lower abstraction level then subdomain libraries. That code is reusable across the whole `cargotracker` domain.
+As infrastructural modules, they are related to the specific technology choices made for the domain in question. That can be seen in their names to some extent, and the selection of 3rd party
+libraries used by each module (not shown in the picture).
 
-If we have multiple domains using the same tech stack, domain libraries should be pulled out into generic and reusable libraries group to make them more available. Besides, domain libraries can also
-contain "incubating" libraries that are destined to be generic and widely reusable. But for various reasons, it is more convenient to keep them at the domain level temporarily.
+If we have multiple domains using the same tech stack, domain libraries can be pulled out into the generic libraries layer to make them more available. Besides, domain libraries can also contain
+"incubating" libraries that are destined to be generic and widely reusable at the end. But for various reasons, it is more convenient to keep them at the domain level temporarily.
 
 Let's look quickly at what each of these modules contains. `cargotracker-lib-axon-cqrs` includes helpers that ease some aspects of working with Axon APIs. Module `cargotracker-lib-axon-logging`
 provides logging infrastructure that gives more insight into the inner working of various Axon components. `cargotracker-lib-axon-api` brings in base classes and interfaces for working with commands
-and events. Some may wonder why so many Axon related library modules? As we decided to have microservices for each significant runnable component in CQRS/Event sourcing application, it might be
-expected for them to use different Axon dependencies (Axon framework is not delivered as a single jar, but rather contains multiple modules addressing different concerns). Beside high cohesion and
-low coupling, differences in 3rd party dependencies are usually a significant hint for creating independent modules, even when high cohesion and low coupling attributes are not yet clearly visible
-and apparent.
+and events.
 
-We have two modules left. `cargotracker-lib-web` contains classes related to the handling of HTTP requests and responses. In particular (at this stage of `klokwrk-project` development), these classes
-deal with the formatting and localization of successful and exceptional JSON responses. Module `cargotracker-lib-boundary-api` formalizes general structures of domain boundary API that all inbound
-channels (web, messaging, etc.) must follow to be able to speak with domain facades.
+You may wonder why so many Axon related library modules? As we decided to have microservices for each significant runnable component in CQRS/Event sourcing application, it might be expected for them
+to use different Axon dependencies (Axon framework is not delivered as a single jar, but instead contains multiple modules addressing different concerns). Beside high cohesion and low coupling,
+differences in 3rd party dependencies are usually a significant hint for creating independent modules, even when high cohesion and low coupling attributes are not yet clearly visible and apparent.
 
-Boundary API refers to classes defining the data structures and exceptions that are part of the contract between the outside world interfaces (i.e., web, messaging) and domain hidden behind domain
-facades. In general, boundary data structures and exceptions are allowed to be shared between domain and outside world interfaces. Domain facade will usually handle all boundary requests by
-converting them into appropriate commands or queries. On the other side, deep domain artifacts like aggregates are allowed to throw boundary exceptions understood by the outside world when the
-facade-level translation is not needed.
+We have two modules left. `cargotracker-lib-web` contains classes related to the handling of HTTP requests and responses. For example, here we deal with the formatting and localization of successful
+and exceptional JSON responses. Module `cargotracker-lib-boundary-api` formalizes general structures of domain boundary API that all inbound adapters (web, messaging, etc.) must follow to be able to
+speak with domain application services (a.k.a. domain facades).
 
-### Reusable generic libraries and language extensions
-Going further down the abstraction ladder, we will find generic reusable libraries and language extensions. The reusability potential of these modules is high and is not tied to any domain. Here we
-can discover supportive additions for various commonly used 3rd party libraries and helpers that expand SDK features of programming languages used in our system.
+Boundary API refers to classes defining the data structures and exceptions that are part of the contract between the outside world and domain hidden behind domain application services. They are
+allowed to be shared between them. Domain facade handles all boundary requests by converting them into appropriate internal commands or queries. On the other side, deep domain artifacts like
+aggregates are allowed to throw boundary exceptions understood by the outside world without any facade-level translation necessary.
+
+### Generic libraries and language extensions
+Going further down the abstraction ladder, we will find generic reusable libraries and, even further down, language extensions. The reusability potential of these modules is high and is not tied to
+any domain. Here we can discover supportive additions for various commonly used 3rd party libraries and language-level helpers that expand features of programming languages used in our system.
 
 ![Image 4 - klokwrk reusable libraries and language extensions](images/modulesAndPackages/04-klokwrk-reusable-libraries-and-language-extensions-S101.png "Image 4 - klokwrk reusable libraries and language extensions") <br/>
-*Image 4 - `klokwrk` reusable libraries and language extensions*
+*Image 4 - `klokwrk` generic libraries and language extensions*
 
-The majority of these modules are used as direct compile-time dependencies from higher levels (blue arrows depict only compile-time dependencies). Still, we can also have runtime-only modules that
-need to be available in the classpath but are not directly referenced from higher-level code (`klokwrk-lib-hibernate` is an example).
+These modules are used as direct compile-time dependencies from higher levels. Still, we can also have runtime-only modules that need to be available in the classpath but are not directly referenced
+from higher-level code (`klokwrk-lib-hibernate` is an example).
 
-As the reusability of modules is high, and the abstraction level rather low, it is common for infrastructural code to reference these modules. In contrast, it is not expected that business-level
-domain classes (i.e., aggregates, entities, and value objects) use them. However, language extensions are the exception. As they expand the capabilities of the programming language, the same language
-in which domain classes are written, then it is allowed for domain classes to use these language extensions. In fact, some language extensions might be designed purposely to support the more
-straightforward implementation of domain classes.
+As the reusability of generic libraries is high and the abstraction level relatively low, it is standard for infrastructural code at the higher abstraction level to reference these modules.
+In contrast, it is not expected that business-level domain classes (i.e., aggregates, entities, and value objects) use them. However, language extensions are different. As they expand the
+capabilities of the programming language, the same language in which domain classes are written, then it is allowed for domain classes to use these language extensions. In fact, some language
+extensions might be designed purposely to support the more straightforward implementation of domain classes.
 
 Another aspect worth keeping in mind is the potential number of dependencies that higher-level code might have on these modules. Successful reusable libraries can be used all over the place. Thus,
 it is desirable to achieve the right level of implementation stability as soon as possible. In general, this will be easier to accomplish with modules narrower in their scope. A high level of code
@@ -134,14 +147,19 @@ coverage, proper and meaningful documentation, and several concrete usage scenar
 
 There are several modules in the group of reusable libraries. `klokwrk-lib-jackson` provides some custom serializers and deserializers not available in the
 [Jackson](https://github.com/FasterXML/jackson) distribution. `klokwrk-lib-jackson-springboot` brings an opinionated way of setting Jackson's defaults and means for configuring them, if needed, from
-the Spring Boot environment. Another pair of related modules deals with the excellent [datasource-proxy](https://github.com/ttddyy/datasource-proxy) library. `klokwrk-lib-datasourceproxy` introduces
-useful extensions to the library, while `klokwrk-lib-datasourceproxy-springboot` provides support for setting up and configuring the library in Spring Boot context. Module `klokwrk-lib-spring-context`
-contains customized extensions to the classes from the [Spring framework's](https://spring.io/projects/spring-framework) `spring-context` module. Currently, here we have support for creating a list
-of message codes for resolving localized messages from resource bundles. Finally, `klokwrk-lib-hibernate` deals with some peculiarities of internal workings of
-[Hibernate ORM](https://hibernate.org/orm/).
+the Spring Boot environment. Opinionated selection of Jackson defaults tries to provide Jackson configuration suitable for avoiding usage of Jackson annotations as much as possible.
+
+Another pair of related modules deal with the excellent [datasource-proxy](https://github.com/ttddyy/datasource-proxy) library. `klokwrk-lib-datasourceproxy` introduces useful extensions to the
+library like the implementation of a logging suppression filter that can ignore not-interesting queries (i.e. Axon's token store polling). `klokwrk-lib-datasourceproxy-springboot` provides support
+for setting up and configuring the library in the Spring Boot context.
+
+Module `klokwrk-lib-spring-context` contains customized extensions to the classes from the [Spring framework's](https://spring.io/projects/spring-framework) `spring-context` module. Currently, there
+is support for creating a list of message codes used when resolving localized messages from resource bundles. Finally, `klokwrk-lib-hibernate` deals with some peculiarities of the internal workings
+of [Hibernate ORM](https://hibernate.org/orm/).
 
 In the group of language extensions, we have a `klokwrk-lang-groovy` module. It contains some general-purpose constants, utility methods for convenient fetching of object's properties, and some
-infrastructure helping with relaxing requirements of Groovy map constructor.
+infrastructure helping with relaxing requirements of Groovy map constructor. The last two features can help create immutable objects and support simple mapping of data from one object into another.
+Quite often, this is more than enough for data mapping purposes without requiring any additional library.
 
 ## Organizing packages
 In the domain of separating **applications into packages**, several popular strategies are often mentioned. In most cases, we can hear about "packaging by layers" and "packaging by features" where
