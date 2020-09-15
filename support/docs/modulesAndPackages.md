@@ -226,33 +226,166 @@ corresponding packages in the Jackson library. This is standard practice when yo
 So far, we were exploring mainly infrastructural concerns of our system. There was no real business logic involved. What happens when we try to add it? How should we organize it into packages? Is
 there a way to logically and conveniently separate infrastructure from the domain?
 
-For simpler systems, we can try organizing packages by architectural layers. And it might work just fine. But if our application is successful, stakeholders will likely ask for more features.
-Suddenly what was working in our simple picture of the world becomes harder to maintain. Then we might attempt to improve the situation with organizing packages by features. A fresh perspective and
-improved structure can quickly bring many benefits and ease the maintenance and addition of new functionalities. While cramming all feature-related classes into a single feature-package will work
-for some, we might be desperately missing additional structures for categorizing our things. Besides being somewhat easier to the eye, it can be a real necessity for bringing in support for new
-inbound channels and integrations with unexpected external systems. Therefore, why not try to combine features and layers? We just might come up with a flexible and extensible structure that
-satisfies the needs of a complex system - "**package by layered feature**" [1]. With such packaging, features are a primary organizational mechanism, while layers are secondary.
+We can try organizing packages by architectural layers in the traditional "web-domain-persistence" style for simpler systems. And it might work just fine. But if our application is successful,
+stakeholders will likely ask for more features. Suddenly what was working in our simple picture of the world becomes harder to maintain.
+
+Then we might attempt to improve the situation with organizing packages by features. A fresh perspective and improved structure can quickly bring many benefits and ease the maintenance and addition
+of new functionalities. While cramming all feature-related classes into a single feature-package will work for some, we might be desperately missing additional structures for categorizing our things.
+Besides being somewhat easier to the eye, it can be a real necessity for bringing in support for new inbound channels and integrations with unexpected external systems.
+
+Therefore, why not try to combine features and layers? We just might come up with a flexible and extensible structure that satisfies the needs of a complex system -
+"**package by layered feature**" [1]. With such packaging, features are a primary organizational mechanism, while layers are secondary.
 
 Although packaging by features is attractive for implementing use cases, it should not influence central domain classes (aggregates, entities, value objects, etc.). In the organizational view,
 essential domain classes stand on its own. They are in their isolated universe and do not depend on their surroundings. All dependencies always point toward central domain classes, and never in the
-opposite direction. That way, primary domain classes are isolated from technical challenges in outer circles. No matter what happens with technical choices for inbound channels and integration
-layers, business logic implemented in the domain should not change [5].
+opposite direction. That way, primary domain classes are isolated from technical challenges in outer circles as much as possible. No matter what happens with technical choices for inbound channels
+and integration layers, business logic implemented in the domain should not change [5].
 
-In should be noted that feature-ignorance does not necessarily apply to the non-primary domain classes closer to the outer circles, like domain facades. It makes sense to organize them by features.
-Domain facades are a first-line defense from technological influences but are also domain coordinators that directly support implementations of particular use cases.
+In should be noted that feature-ignorance does not necessarily apply to the non-primary domain classes closer to the outer circles, like domain application services (a.k.a. domain facades). It makes
+sense to organize them by features. Application services are the first-line defense from technological influences but are also domain coordinators that directly support implementations of particular
+use cases.
 
-Let look at how all this looks in apps of the `klokwrk-project` system.
+### Introducing hexagonal architecture
+Implementing our custom scheme for application layers can be very fun and rewording since you can learn a lot. But sooner than later, various problems might emerge. You might find there are missing
+features, or something is not entirely thought through. And for sure, there will be problems with passing intentions and ideas to fellow workers.
 
-> While we are exploring `klokwrk-project` artifacts, keep in mind that you are looking at very early development stages. Many things might change, especially related to the layered-feature packaging
-> as there are several related variants.
+Anyone familiar with hexagonal, onion, or clean architectures, can easily find similarities with our desired characteristics of application packaging, as described in previous sections. Therefore,
+it makes sense to embrace already existing well-known architecture.
 
-![Image 8 - commandside app packaging](images/modulesAndPackages/08-commandside-app-packaging.jpg "Image 8 - commandside app packaging") <br/>
-*Image 8 - commandside app packaging*
+Project Klokwrk uses hexagonal architecture as we find it to offer very concrete guidelines when it comes to translating into code-level artifacts. If you are not familiar with hexagonal architecture,
+we can look at the picture taken from the article ["Hexagonal Architecture with Java and Spring"](https://reflectoring.io/spring-hexagonal/) by Tom Hombergs.
 
-Package `cargobook` denotes the feature in charge of creating a booking for a cargo. In terms of layers, this feature is divided between the part related to domain facade - `domain.facade`, and the
-part responsible for web requests handling - `interfaces.web`. Besides being confined in the `cargobook` package, feature-related classes are also prefixed with the feature name. While this is not
-necessary (and sometimes can be cumbersome), it can significantly simplify searching for related artifacts in large codebases. As previously discussed, there are no features in the `domain` and
-`infrastructure` packages.
+![Image 8 - hexagonal architecture](images/modulesAndPackages/08-hexagonal-architecture.png "Image 8 - hexagonal architecture") <br/>
+*Image 8 - hexagonal architecture (by Tom Hombergs)*
+
+At the center, we have our domain code. It is isolated from its surroundings as much as possible. We are using inbound and outbound ports and adapters for that purpose.
+
+Ports are just simple interfaces that are used by inbound adapters or implemented by outbound adapters. Typical inbound or driving adapters are web controllers or messaging handlers. Outbound, or
+driven adapters, commonly implement concerns like remoting or persistence. Details of these concrete implementations should never be visible in their outbound port contracts as it should remain
+hidden from the domain.
+
+The most important characteristic of the architecture is that all dependencies always point inward, to the domain in the center.
+
+If you want to know more, you can read the book ["Get your hands dirty on Clean Architecture"](https://reflectoring.io/book/) by Tom Hombergs. It is not written for CQRS/ES applications, but rather
+for classical ones. However, in straightforward and very concrete terms, it explains hexagonal architecture very well.
+
+### Applying hexagonal architecture
+#### Structure
+Let's take a look at how Project Klokwrk uses hexagonal architecture. We'll briefly explore structural manifestations at the level of packages and classes for commandside, queryside, and projection
+applications.
+
+The next image shows expanded packages of command side application. To make different nesting levels more apparent, packages and classes are displayed in colors.
+
+![Image 9 - command side hexagonal architecture](images/modulesAndPackages/09-commandside-hexagonal-architecture.jpg "Image 9 - command side hexagonal architecture") <br/>
+*Image 9 - command side hexagonal architecture*
+
+Top-level packages are `domain`, `feature`, and `infrastructure`. Package `infrastructure` contains glue-code with various responsibilities. As it is not subject to hexagonal architecture, we will
+not explore it further.
+
+In the case of the command side application, the `domain` package will contain aggregates and entities. If we have some domain services closely related to the aggregates in question, we can also put
+them here. On the other hand, more general domain services with wider reusability should be pulled out into subdomain or domain libraries.
+
+The package `feature` is a placeholder for all features of our command side application. You can think of a "feature" as a more coarse-grained concept than the use-case. All closely related use-cases
+are contained in a single feature. In our case, we have a feature with the name `cargobooking`.
+
+Under the `cargobooking` feature package, we can find packages and classes related to the hexagonal architecture - `adapter` and `application`. Package `application` contains inbound and outbound
+port interfaces, together with corresponding data structure classes if those are necessary (i.e., `BookCargoRequest` and `BookCargoResponse`). Under the `service` package, we can find domain
+application services (i.e., `CargoBookingApplicationService`) that implement inbound port interfaces.
+
+Adapters live in the `adapter` package. There are inbound and outbound adapters. We can see here `CargoBookingWebController` as an example of a **driving inbound** adapter. It depends on and calls
+the `BookCargoPortIn` inbound port, which is implemented by the application service `CargoBookingApplicationService`. As an example of an **outbound**, or **driven**, adapter, here we have
+`InMemoryLocationRegistryService`. It implements `FindLocationPortOut` outbound port, which is called by application service `CargoBookingApplicationService`.
+
+For comparison, the following picture shows the structure of projection and query side applications.
+
+![Image 10 - projection and query side hexagonal architecture](images/modulesAndPackages/10-projection-and-queryside-hexagonal-architecture.jpg "Image 10 - projection and query side hexagonal architecture") <br/>
+*Image 10 - projection and query side hexagonal architecture*
+
+Besides obvious simplification over the command side application, we can also observe some CQRS/ES specifics applied to hexagonal architecture. For example, the projection application contains only
+an outbound adapter responsible for persisting events. It even does not implement any outbound port since it is called indirectly by Axon Server.
+
+On the other hand, the query side application is slightly more elaborate, but, for example, it does not do anything related to the core domain in the DDD sense. There are no domain aggregates or
+domain entities on the query side.
+
+#### Behavior and architectural testing
+Using hexagonal architecture might be an attractive idea as it looks like every significant component has a well-defined placeholder in the project structure. However, besides the structure,
+any software architecture also imposes behavioral rules, and hexagonal architecture is not the exception. When you add additional CQRS/ES flavor, there are even more rules to follow.
+
+What are these rules, and what they enforce? Basically, in the application that follows some architecture, it is not allowed that a class or an interface accesses anything that it wants. Rules impose
+constraints on dependencies that are permitted between code-level artifacts. For example, they regulate who can be called by some class can call or which interface a class should implement.
+
+That leads us to the essential question. How can we control whether all rules are honored or not? How can we ensure that developers learning about CQRS/ES and hexagonal architecture can comfortably
+work without breaking it? This is the point where architectural testing steps in the picture.
+
+It would help if you had in place tests that verify all architectural invariants. Project Klokwrk uses the [ArchUnit](https://www.archunit.org/) library for this purpose. Building on top of the
+ArchUnit, Klokwrk provides DSL for specifying hexagonal architecture layers for CQRS/ES applications. There is support for several subtypes of CQRS/ES flavored hexagonal architecture corresponding
+to the command side, projections, and query side aspects.
+
+To better understand how this works, we can look at the test fragment for command side application (taken from `BookingCommandSideAppArchitectureSpecification` class).
+
+```
+  void "should be valid hexagonal commandside CQRS/ES architecture"() {
+    given:
+    ArchRule rule = HexagonalCqrsEsArchitecture
+        .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
+        .domainModels("..cargotracker.booking.domain.model..")
+        .domainEvents("..cargotracker.booking.axon.api.feature.*.event..")
+        .domainCommands("..cargotracker.booking.axon.api.feature.*.command..")
+        .domainAggregates("..cargotracker.booking.commandside.domain.aggregate..")
+
+        .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
+        .applicationOutboundPorts("..cargotracker.booking.commandside.feature.*.application.port.out..")
+        .applicationServices("..cargotracker.booking.commandside.feature.*.application.service..")
+
+        .adapterInbound("in.web", "..cargotracker.booking.commandside.feature.*.adapter.in.web..")
+        .adapterOutbound("out.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..")
+
+        .withOptionalLayers(false)
+
+    expect:
+    rule.check(importedClasses)
+  }
+```
+
+The test is relatively simple as we only need to specify packages that belong to each layer of the CQRS/ES flavored hexagonal architecture. The DSL does the rest, meaning it checks all the rules.
+To really get a grasp on this, we should look at the DSL implementation. The following listing displays a DSL fragment responsible for specifying rules intended for command side applications (taken
+from `HexagonalCqrsEsArchitecture` class).
+
+```
+  private void specifyArchitectureCommandSide(LayeredArchitecture layeredArchitecture) {
+    layeredArchitecture
+        .layer(DOMAIN_MODEL_LAYER).definedBy(domainModelPackageIdentifiers)
+        .layer(DOMAIN_EVENT_LAYER).definedBy(domainEventPackageIdentifiers)
+        .layer(DOMAIN_COMMAND_LAYER).definedBy(domainCommandPackageIdentifiers)
+        .layer(DOMAIN_AGGREGATE_LAYER).definedBy(domainAggregatePackageIdentifiers)
+
+        .layer(APPLICATION_INBOUND_PORT_LAYER).definedBy(applicationInboundPortPackageIdentifiers)
+        .optionalLayer(APPLICATION_OUTBOUND_PORT_LAYER).definedBy(applicationOutboundPortPackageIdentifiers)
+        .layer(APPLICATION_SERVICE_LAYER).definedBy(applicationServicePackageIdentifiers)
+
+        .layer(ADAPTER_INBOUND_LAYER).definedBy(adapterInboundPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
+        .optionalLayer(ADAPTER_OUTBOUND_LAYER).definedBy(adapterOutboundPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
+
+        .whereLayer(DOMAIN_MODEL_LAYER)
+            .mayOnlyBeAccessedByLayers(DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER, ADAPTER_OUTBOUND_LAYER)
+        .whereLayer(DOMAIN_EVENT_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER)
+        .whereLayer(DOMAIN_COMMAND_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER)
+        .whereLayer(DOMAIN_AGGREGATE_LAYER).mayOnlyBeAccessedByLayers(APPLICATION_SERVICE_LAYER)
+
+        .whereLayer(APPLICATION_INBOUND_PORT_LAYER).mayOnlyBeAccessedByLayers(APPLICATION_SERVICE_LAYER, ADAPTER_INBOUND_LAYER)
+        .whereLayer(APPLICATION_OUTBOUND_PORT_LAYER).mayOnlyBeAccessedByLayers(APPLICATION_SERVICE_LAYER, DOMAIN_AGGREGATE_LAYER, ADAPTER_OUTBOUND_LAYER)
+
+        .whereLayer(APPLICATION_SERVICE_LAYER).mayNotBeAccessedByAnyLayer()
+
+    adapterMayNotBeAccessedByAnyLayer(layeredArchitecture, adapterInboundPackageIdentifiers, ADAPTER_INBOUND_LAYER)
+    adapterMayNotBeAccessedByAnyLayer(layeredArchitecture, adapterOutboundPackageIdentifiers, ADAPTER_OUTBOUND_LAYER)
+  }
+```
+
+First, it defines all relevant layers, and then it defines rules for these layers. For example, if we look at the rules for events (`whereLayer(DOMAIN_EVENT_LAYER)`), we can see that only aggregates
+can use them in command side applications. Then, commands (`whereLayer(DOMAIN_COMMAND_LAYER)`) can be used by aggregates and application services. And so forth.
+
+By implementing appropriate architectural tests for each CQRS/ES application type, we can be sure that architectural invariants will hold.
 
 ## References
 [1] [Package by type, -by layer, -by feature vs Package by layered features](https://proandroiddev.com/package-by-type-by-layer-by-feature-vs-package-by-layered-feature-e59921a4dffa) <br/>
