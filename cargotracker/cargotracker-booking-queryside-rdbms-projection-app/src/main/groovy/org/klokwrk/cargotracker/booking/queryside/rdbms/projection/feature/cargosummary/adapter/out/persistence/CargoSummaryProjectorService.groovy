@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import org.axonframework.eventhandling.DomainEventMessage
 import org.axonframework.eventhandling.EventHandler
 import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.event.CargoBookedEvent
+import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.CargoSummaryJpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
