@@ -5,7 +5,6 @@ import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition
 import com.tngtech.archunit.library.dependencies.SliceRule
 import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition
-import org.klokwrk.cargotracker.booking.queryside.BookingQuerySideApplication
 import org.klokwrk.lib.archunit.ArchUnitUtils
 import spock.lang.Shared
 import spock.lang.Specification
