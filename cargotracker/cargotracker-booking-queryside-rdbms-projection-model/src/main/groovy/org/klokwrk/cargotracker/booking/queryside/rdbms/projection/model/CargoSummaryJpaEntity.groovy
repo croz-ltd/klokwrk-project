@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.feature.cargosummary.adapter.out.persistence
+package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
