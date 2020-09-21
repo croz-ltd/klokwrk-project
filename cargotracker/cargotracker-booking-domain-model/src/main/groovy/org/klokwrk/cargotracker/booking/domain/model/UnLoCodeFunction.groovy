@@ -1,14 +1,8 @@
 package org.klokwrk.cargotracker.booking.domain.model
 
 import groovy.transform.CompileStatic
-import groovy.transform.Immutable
-import groovy.transform.MapConstructor
-import groovy.transform.PropertyOptions
-import groovy.transform.TupleConstructor
-import groovy.transform.VisibilityOptions
-import groovy.transform.options.Visibility
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
-import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
 import java.util.regex.Pattern
 
@@ -16,11 +10,7 @@ import java.util.regex.Pattern
  * Represents an 8-character function classifier code for the UN/LOCODE location.
  */
 @SuppressWarnings(["DuplicateNumberLiteral"])
-@Immutable
-@PropertyOptions(propertyHandler = RelaxedPropertyHandler)
-@TupleConstructor(visibilityId = "privateVisibility", pre = { throw new IllegalArgumentException("Calling a private constructor is not allowed") })
-@VisibilityOptions(id = "privateVisibility", value = Visibility.PRIVATE)
-@MapConstructor(post = { postMapConstructorCheckProtocol(args as Map) })
+@KwrkImmutable(post = { postMapConstructorCheckProtocol(args as Map) })
 @CompileStatic
 class UnLoCodeFunction implements PostMapConstructorCheckable {
   static final Pattern CODE_PATTERN = Pattern.compile(/^(?=.*[0-7B].*)[01-][2-][3-][4-][5-][6-][7-][B-]$/)
