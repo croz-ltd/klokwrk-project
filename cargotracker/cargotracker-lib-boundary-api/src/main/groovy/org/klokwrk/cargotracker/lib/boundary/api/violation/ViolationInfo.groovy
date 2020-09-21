@@ -1,15 +1,9 @@
 package org.klokwrk.cargotracker.lib.boundary.api.violation
 
 import groovy.transform.CompileStatic
-import groovy.transform.Immutable
-import groovy.transform.MapConstructor
-import groovy.transform.PropertyOptions
-import groovy.transform.TupleConstructor
-import groovy.transform.VisibilityOptions
-import groovy.transform.options.Visibility
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
-import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
 /**
  * Defines an immutable data structure that describes the reason for the <code>DomainException</code> exception.
@@ -20,11 +14,7 @@ import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
  * @see ViolationCode
  * @see Severity
  */
-@Immutable
-@PropertyOptions(propertyHandler = RelaxedPropertyHandler)
-@TupleConstructor(visibilityId = "privateVisibility", pre = { throw new IllegalArgumentException("Calling a private constructor is not allowed") })
-@VisibilityOptions(id = "privateVisibility", value = Visibility.PRIVATE)
-@MapConstructor(post = { postMapConstructorCheckProtocol(args as Map) })
+@KwrkImmutable(post = { postMapConstructorCheckProtocol(args as Map) })
 @CompileStatic
 class ViolationInfo implements PostMapConstructorCheckable {
   static final ViolationInfo UNKNOWN = new ViolationInfo(severity: Severity.ERROR, violationCode: ViolationCode.UNKNOWN)
