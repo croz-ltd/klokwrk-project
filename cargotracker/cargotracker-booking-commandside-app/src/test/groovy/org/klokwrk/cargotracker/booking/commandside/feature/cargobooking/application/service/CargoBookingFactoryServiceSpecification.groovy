@@ -19,21 +19,12 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     cargoBookingFactoryService = new CargoBookingFactoryService(findLocationPortOut)
   }
 
-  @SuppressWarnings('GroovyResultOfObjectAllocationIgnored')
-  void "should throw for nulls in constructor"() {
-    when:
-    new CargoBookingFactoryService(null)
-
-    then:
-    thrown(IllegalArgumentException)
-  }
-
   void "createBookCargoCommand - should throw for passed null"() {
     when:
     cargoBookingFactoryService.createBookCargoCommand(null)
 
     then:
-    thrown(IllegalArgumentException)
+    thrown(AssertionError)
   }
 
   void "createBookCargoCommand - should fail for invalid originLocation"() {
@@ -98,6 +89,14 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
     then:
     thrown(IllegalArgumentException)
+  }
+
+  void "createBookCargoResponse - should throw for passed null"() {
+    when:
+    cargoBookingFactoryService.createBookCargoResponse(null)
+
+    then:
+    thrown(AssertionError)
   }
 
   void "createBookCargoResponse - should create expected response"() {

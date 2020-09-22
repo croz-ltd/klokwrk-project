@@ -4,6 +4,8 @@ import groovy.transform.CompileStatic
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
+import static org.assertj.core.api.Assertions.assertThat
+
 /**
  * Immutable data structure describing violation's code and the corresponding non-localized code's message.
  * <p/>
@@ -46,13 +48,8 @@ class ViolationCode implements PostMapConstructorCheckable {
   @SuppressWarnings("GroovyPointlessBoolean")
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
-    assert code
-    assert code.isBlank() == false
-
-    assert codeAsText
-    assert codeAsText.isBlank() == false
-
-    assert codeMessage
-    assert codeMessage.isBlank() == false
+    assertThat(code).as("code").isNotBlank()
+    assertThat(codeAsText).as("codeAsText").isNotBlank()
+    assertThat(codeMessage).as("codeMessage").isNotBlank()
   }
 }

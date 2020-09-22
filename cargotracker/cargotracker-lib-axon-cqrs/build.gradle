@@ -4,6 +4,7 @@ dependencies {
   implementation project(":cargotracker-lib-boundary-api")
   implementation project(":klokwrk-lang-groovy")
 
+  implementation "org.assertj:assertj-core"
   implementation "org.axonframework:axon-messaging"
   implementation "org.codehaus.groovy:groovy"
 

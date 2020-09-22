@@ -2,6 +2,7 @@ apply plugin: "java-library"
 
 dependencies {
   implementation "net.ttddyy:datasource-proxy"
+  implementation "org.assertj:assertj-core"
   implementation "org.codehaus.groovy:groovy"
   implementation "org.slf4j:slf4j-api"
 

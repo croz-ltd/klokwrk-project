@@ -4,6 +4,8 @@ import groovy.transform.CompileStatic
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
+import static org.assertj.core.api.Assertions.assertThat
+
 /**
  * Represents a location data as specified by UN/LOCODE standard.
  * <p/>
@@ -61,10 +63,10 @@ class Location implements PostMapConstructorCheckable {
 
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
-    assert unLoCode
-    assert name
-    assert countryName
-    assert unLoCodeFunction
+    assertThat(unLoCode).as("UnLoCode").isNotNull()
+    assertThat(name).as("name").isNotNull()
+    assertThat(countryName).as("countryName").isNotNull()
+    assertThat(unLoCodeFunction).as("unLoCodeFunction").isNotNull()
   }
 
   Boolean canAcceptCargoFrom(Location originLocation) {

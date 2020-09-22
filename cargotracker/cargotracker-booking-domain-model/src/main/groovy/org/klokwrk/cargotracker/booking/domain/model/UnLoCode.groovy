@@ -6,6 +6,8 @@ import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
 import java.util.regex.Pattern
 
+import static org.assertj.core.api.Assertions.assertThat
+
 /**
  * Code conforming to the UN/LOCODE standard.
  * <p/>
@@ -33,9 +35,7 @@ class UnLoCode implements PostMapConstructorCheckable {
   @SuppressWarnings("GroovyPointlessBoolean")
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
-    assert code
-    assert code.isBlank() == false
-    assert CODE_PATTERN.matcher(code).matches()
+    assertThat(code).as("code").isNotBlank().matches(CODE_PATTERN)
   }
 
   /**

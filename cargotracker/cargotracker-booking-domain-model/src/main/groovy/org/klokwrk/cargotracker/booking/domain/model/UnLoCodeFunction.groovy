@@ -6,6 +6,8 @@ import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
 import java.util.regex.Pattern
 
+import static org.assertj.core.api.Assertions.assertThat
+
 /**
  * Represents an 8-character function classifier code for the UN/LOCODE location.
  */
@@ -37,9 +39,7 @@ class UnLoCodeFunction implements PostMapConstructorCheckable {
   @SuppressWarnings("GroovyPointlessBoolean")
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
-    assert functionEncoded
-    assert functionEncoded.isBlank() == false
-    assert CODE_PATTERN.matcher(functionEncoded).matches()
+    assertThat(functionEncoded).as("functionEncoded").isNotBlank().matches(CODE_PATTERN)
   }
 
   Boolean isSpecified() {

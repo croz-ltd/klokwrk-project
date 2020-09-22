@@ -7,6 +7,8 @@ import org.klokwrk.lang.groovy.transform.KwrkImmutable
 import java.text.Normalizer
 import java.util.regex.Pattern
 
+import static org.assertj.core.api.Assertions.assertThat
+
 /**
  * Represents an Unicode name capable to produce internationalized name.
  * </p>
@@ -45,8 +47,7 @@ class InternationalizedName implements PostMapConstructorCheckable {
   @SuppressWarnings("GroovyPointlessBoolean")
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
-    assert name
-    assert name.isBlank() == false
+    assertThat(name).as("name").isNotBlank()
   }
 
   String getNameInternationalized() {

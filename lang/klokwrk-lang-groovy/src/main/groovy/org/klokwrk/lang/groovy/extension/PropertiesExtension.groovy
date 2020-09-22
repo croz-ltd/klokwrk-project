@@ -1,6 +1,7 @@
 package org.klokwrk.lang.groovy.extension
 
 import groovy.transform.CompileStatic
+import org.assertj.core.api.Assertions
 
 /**
  * Groovy extension for <code>Object</code> that fetches properties without commonly unwanted properties like "<code>class</code>".
@@ -27,7 +28,7 @@ class PropertiesExtension {
    * Returns a map of all properties except those whose names are specified on the <code>filterOutPropertyNameList</code> param.
    */
   static Map<String, ?> getPropertiesFiltered(Object self, List<String> filterOutPropertyNameList) {
-    assert filterOutPropertyNameList != null
+    Assertions.assertThat(filterOutPropertyNameList).as("filterOutPropertyNameList").isNotNull()
 
     Map<String, ?> filteredProperties = self.properties.findAll { it.key as String !in filterOutPropertyNameList }
     return filteredProperties
