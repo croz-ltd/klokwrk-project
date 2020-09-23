@@ -43,6 +43,7 @@ dependencies {
     api "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion"
     api "org.spockframework:spock-core:$spockVersion"
     api "org.spockframework:spock-spring:$spockVersion"
+    api "org.valid4j:valid4j:$valid4jVersion"
     api "uk.org.lidalia:slf4j-test:$slf4jTestVersion"
 
     api "org.codenarc:CodeNarc:$codeNarcVersion"
