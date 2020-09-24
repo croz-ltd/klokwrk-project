@@ -6,6 +6,9 @@ dependencies {
 
   implementation "org.axonframework:axon-messaging"
   implementation "org.codehaus.groovy:groovy"
+  implementation "org.hamcrest:hamcrest"
+  implementation "org.valid4j:valid4j"
 
+  testImplementation "ch.qos.logback:logback-classic"
   testImplementation "org.spockframework:spock-core"
 }

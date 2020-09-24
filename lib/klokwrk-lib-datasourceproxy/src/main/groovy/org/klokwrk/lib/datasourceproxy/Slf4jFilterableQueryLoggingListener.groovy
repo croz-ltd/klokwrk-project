@@ -9,6 +9,8 @@ import net.ttddyy.dsproxy.support.SLF4JLogUtils
 
 import java.util.regex.Pattern
 
+import static org.valid4j.Assertive.require
+
 /**
  * Extends DataSourceProxy's {@link SLF4JQueryLoggingListener} by adding capability of filtering out queries based on regular expression match.
  * <p/>
@@ -24,7 +26,7 @@ class Slf4jFilterableQueryLoggingListener extends SLF4JQueryLoggingListener {
 
   Slf4jFilterableQueryLoggingListener(List<String> filteringOutPatternStringList = []) {
     super()
-    assert filteringOutPatternStringList != null
+    require(filteringOutPatternStringList != null, "Require violation detected - boolean expression evaluates to false: [expression: filteringOutPatternStringList != null]")
     this.filteringOutPatternList = filteringOutPatternStringList.collect({ String patternString -> Pattern.compile(patternString) })
   }
 

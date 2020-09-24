@@ -4,6 +4,8 @@ dependencies {
   implementation project(":klokwrk-lang-groovy")
 
   implementation "org.codehaus.groovy:groovy"
+  implementation "org.hamcrest:hamcrest"
+  implementation "org.valid4j:valid4j"
 
   testImplementation "org.spockframework:spock-core"
 }

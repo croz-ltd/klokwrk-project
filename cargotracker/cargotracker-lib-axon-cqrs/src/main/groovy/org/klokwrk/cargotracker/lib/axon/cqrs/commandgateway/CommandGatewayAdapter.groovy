@@ -5,6 +5,9 @@ import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.GenericCommandMessage
 import org.axonframework.commandhandling.gateway.CommandGateway
 
+import static org.hamcrest.Matchers.notNullValue
+import static org.valid4j.Assertive.require
+
 /**
  * Simplifies the API usage and exception handling of Axon <code>CommandGateway</code>.
  */
@@ -46,7 +49,7 @@ class CommandGatewayAdapter {
    */
   @SuppressWarnings("GrUnnecessaryPublicModifier")
   public <R, C> R sendAndWait(C command, Map metaData) {
-    assert command != null
+    require(command, notNullValue())
 
     GenericCommandMessage<C> cargoBookCommandMessage = new GenericCommandMessage(command, metaData)
 

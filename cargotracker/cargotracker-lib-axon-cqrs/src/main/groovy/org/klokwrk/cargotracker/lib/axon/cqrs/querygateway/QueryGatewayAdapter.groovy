@@ -9,6 +9,9 @@ import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 
 import java.util.concurrent.CompletionException
 
+import static org.hamcrest.Matchers.notNullValue
+import static org.valid4j.Assertive.require
+
 /**
  * Simplifies the API usage and exception handling of Axon <code>QueryGateway</code>.
  */
@@ -48,7 +51,7 @@ class QueryGatewayAdapter {
    */
   @SuppressWarnings("GrUnnecessaryPublicModifier")
   public <R, Q> R query(Q query, Map<String, ?> metaData, Class<R> queryResponseClass) {
-    assert query != null
+    require(query, notNullValue())
 
     GenericMessage queryMessage = new GenericMessage(query, metaData)
 

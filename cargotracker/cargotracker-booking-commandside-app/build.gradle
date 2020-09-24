@@ -114,8 +114,10 @@ dependencies {
 
   implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.codehaus.groovy:groovy"
+  implementation "org.hamcrest:hamcrest"
   implementation "org.springframework.boot:spring-boot-starter-actuator"
   implementation "org.springframework.boot:spring-boot-starter-web"
+  implementation "org.valid4j:valid4j"
 
   runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
   runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"

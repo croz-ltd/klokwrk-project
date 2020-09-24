@@ -6,6 +6,11 @@ import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
 import java.util.regex.Pattern
 
+import static org.hamcrest.Matchers.blankOrNullString
+import static org.hamcrest.Matchers.matchesPattern
+import static org.hamcrest.Matchers.not
+import static org.valid4j.Assertive.require
+
 /**
  * Code conforming to the UN/LOCODE standard.
  * <p/>
@@ -33,9 +38,8 @@ class UnLoCode implements PostMapConstructorCheckable {
   @SuppressWarnings("GroovyPointlessBoolean")
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
-    assert code
-    assert code.isBlank() == false
-    assert CODE_PATTERN.matcher(code).matches()
+    require(code, not(blankOrNullString()))
+    require(code, matchesPattern(CODE_PATTERN))
   }
 
   /**

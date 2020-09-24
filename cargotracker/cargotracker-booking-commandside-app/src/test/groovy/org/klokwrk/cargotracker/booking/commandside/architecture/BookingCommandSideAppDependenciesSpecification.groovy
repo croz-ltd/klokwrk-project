@@ -38,7 +38,9 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         "javax.servlet",
 
         "org.axonframework.modelling.command..",
-        "org.springframework.."
+        "org.hamcrest",
+        "org.springframework..",
+        "org.valid4j"
     ]
 
     String[] cargotrackerBookingCommandsideAppAllPackages = ["org.klokwrk.cargotracker.booking.commandside.."]
