@@ -7,6 +7,9 @@ import org.klokwrk.lang.groovy.transform.KwrkImmutable
 import java.text.Normalizer
 import java.util.regex.Pattern
 
+import static org.hamcrest.Matchers.not
+import static org.hamcrest.Matchers.blankOrNullString
+
 /**
  * Represents an Unicode name capable to produce internationalized name.
  * </p>
@@ -45,8 +48,7 @@ class InternationalizedName implements PostMapConstructorCheckable {
   @SuppressWarnings("GroovyPointlessBoolean")
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
-    assert name
-    assert name.isBlank() == false
+    requireMatch(name, not(blankOrNullString()))
   }
 
   String getNameInternationalized() {

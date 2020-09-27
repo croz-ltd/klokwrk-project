@@ -3,9 +3,13 @@ apply plugin: "java-library"
 dependencies {
   implementation project(":cargotracker-lib-boundary-api")
   implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lang-groovy-contracts-match")
+  implementation project(":klokwrk-lang-groovy-contracts-simple")
 
   implementation "org.axonframework:axon-messaging"
   implementation "org.codehaus.groovy:groovy"
+  implementation "org.codehaus.groovy:groovy-macro"
+  implementation "org.hamcrest:hamcrest"
 
   testImplementation "org.spockframework:spock-core"
 }

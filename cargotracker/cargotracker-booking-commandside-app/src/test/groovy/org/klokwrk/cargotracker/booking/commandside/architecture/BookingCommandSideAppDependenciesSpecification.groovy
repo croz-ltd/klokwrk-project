@@ -38,6 +38,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         "javax.servlet",
 
         "org.axonframework.modelling.command..",
+        "org.hamcrest",
         "org.springframework.."
     ]
 
@@ -53,6 +54,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     String[] cargotrackerLibWebAllPackages = ["org.klokwrk.cargotracker.lib.web.."]
 
     String[] klokwrkLibJacksonAllPackages = ["org.klokwrk.lib.jackson.."]
+    String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lang.groovy.."]
 
     // @formatter:off
     ArchRule rule = ArchRuleDefinition
@@ -70,6 +72,8 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
             cargotrackerLibWebAllPackages +
 
             klokwrkLibJacksonAllPackages +
+
+            klokwrkLangGroovyAllPackages +
 
             thirdPartyDependencyAllPackages as String[]
         )
