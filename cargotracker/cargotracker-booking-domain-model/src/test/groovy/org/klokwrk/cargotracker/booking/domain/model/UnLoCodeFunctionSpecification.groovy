@@ -3,7 +3,7 @@ package org.klokwrk.cargotracker.booking.domain.model
 import spock.lang.Specification
 
 class UnLoCodeFunctionSpecification extends Specification {
-  void "map constructor should work for correct input params: [functionEncoded: #functionParameter]"() {
+  void "map constructor should work for correct input params"() {
     when:
     UnLoCodeFunction unLoCodeFunction = new UnLoCodeFunction(functionEncoded: functionParameter)
 
@@ -18,12 +18,12 @@ class UnLoCodeFunctionSpecification extends Specification {
     "-------B"        | _
   }
 
-  void "map constructor should fail for invalid input params: [functionEncoded: #functionParameter]"() {
+  void "map constructor should fail for invalid input params"() {
     when:
     new UnLoCodeFunction(functionEncoded: functionParameter)
 
     then:
-    thrown(IllegalArgumentException)
+    thrown(AssertionError)
 
     where:
     functionParameter | _
@@ -74,7 +74,7 @@ class UnLoCodeFunctionSpecification extends Specification {
     unLoCodeFunctionOriginal === unLoCodeFunctionCopy
   }
 
-  void "isSpecified() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
+  void "isSpecified() should work as expected"() {
     given:
     UnLoCodeFunction unLoCodeFunction = new UnLoCodeFunction(functionEncoded: functionParameter)
 
@@ -90,7 +90,7 @@ class UnLoCodeFunctionSpecification extends Specification {
     "-------B"        | true
   }
 
-  void "isPort() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
+  void "isPort() should work as expected"() {
     given:
     UnLoCodeFunction unLoCodeFunction = new UnLoCodeFunction(functionEncoded: functionParameter)
 
@@ -106,7 +106,7 @@ class UnLoCodeFunctionSpecification extends Specification {
     "-------B"        | false
   }
 
-  void "isRailTerminal() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
+  void "isRailTerminal() should work as expected"() {
     given:
     UnLoCodeFunction unLoCodeFunction = new UnLoCodeFunction(functionEncoded: functionParameter)
 
@@ -122,7 +122,7 @@ class UnLoCodeFunctionSpecification extends Specification {
     "-------B"        | false
   }
 
-  void "isRoadTerminal() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
+  void "isRoadTerminal() should work as expected"() {
     given:
     UnLoCodeFunction unLoCodeFunction = new UnLoCodeFunction(functionEncoded: functionParameter)
 
@@ -139,7 +139,7 @@ class UnLoCodeFunctionSpecification extends Specification {
     "-------B"        | false
   }
 
-  void "isAirport() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
+  void "isAirport() should work as expected"() {
     given:
     UnLoCodeFunction unLoCodeFunction = new UnLoCodeFunction(functionEncoded: functionParameter)
 
@@ -157,7 +157,7 @@ class UnLoCodeFunctionSpecification extends Specification {
     "-------B"        | false
   }
 
-  void "isPostalExchangeOffice() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
+  void "isPostalExchangeOffice() should work as expected"() {
     given:
     UnLoCodeFunction unLoCodeFunction = new UnLoCodeFunction(functionEncoded: functionParameter)
 
@@ -175,7 +175,7 @@ class UnLoCodeFunctionSpecification extends Specification {
     "-------B"        | false
   }
 
-  void "isBorderCrossing() should work as expected: [functionEncoded: #functionParameter, result: #result]"() {
+  void "isBorderCrossing() should work as expected"() {
     given:
     UnLoCodeFunction unLoCodeFunction = new UnLoCodeFunction(functionEncoded: functionParameter)
 
