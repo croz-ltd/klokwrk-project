@@ -47,39 +47,39 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
     this.essentialJacksonCustomizerConfigurationProperties = essentialJacksonCustomizerConfigurationProperties
   }
 
+  @SuppressWarnings("GroovyPointlessBoolean")
   @Override
   void customize(Jackson2ObjectMapperBuilder jacksonObjectMapperBuilder) {
-    //noinspection GroovyPointlessBoolean
     if (essentialJacksonCustomizerConfigurationProperties.enabled == false) {
       return
     }
 
     List<JsonDeserializer> myDeserializerList = []
-    if (essentialJacksonCustomizerConfigurationProperties.deserialization.stringSanitizingDeserializer.enabled) {
+    if (essentialJacksonCustomizerConfigurationProperties.deserialization.stringSanitizingDeserializer.enabled == true) {
       myDeserializerList << new StringSanitizingDeserializer()
     }
 
     List<JsonSerializer> mySerializerList = []
-    if (essentialJacksonCustomizerConfigurationProperties.serialization.gStringSerializer.enabled) {
+    if (essentialJacksonCustomizerConfigurationProperties.serialization.gStringSerializer.enabled == true) {
       mySerializerList << new GStringSerializer()
     }
 
     List<Object> myFeatureToEnableList = []
 
-    if (essentialJacksonCustomizerConfigurationProperties.mapper.ignoreTransient) {
+    if (essentialJacksonCustomizerConfigurationProperties.mapper.ignoreTransient == true) {
       myFeatureToEnableList << MapperFeature.PROPAGATE_TRANSIENT_MARKER
     }
 
-    if (essentialJacksonCustomizerConfigurationProperties.deserialization.allowJsonComments) {
+    if (essentialJacksonCustomizerConfigurationProperties.deserialization.allowJsonComments == true) {
       myFeatureToEnableList << JsonParser.Feature.ALLOW_COMMENTS
     }
 
-    if (essentialJacksonCustomizerConfigurationProperties.deserialization.acceptSingleValueAsArray) {
+    if (essentialJacksonCustomizerConfigurationProperties.deserialization.acceptSingleValueAsArray == true) {
       myFeatureToEnableList << DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY
     }
 
     List<Object> myFeatureToDisableList = []
-    if (essentialJacksonCustomizerConfigurationProperties.deserialization.failOnUnknownProperties) {
+    if (essentialJacksonCustomizerConfigurationProperties.deserialization.failOnUnknownProperties == true) {
       myFeatureToEnableList << DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES
     }
     else {
@@ -92,7 +92,7 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
         .featuresToEnable(myFeatureToEnableList as Object[])
         .featuresToDisable(myFeatureToDisableList as Object[])
 
-    if (essentialJacksonCustomizerConfigurationProperties.serialization.skipNullValues) {
+    if (essentialJacksonCustomizerConfigurationProperties.serialization.skipNullValues == true) {
       jacksonObjectMapperBuilder.serializationInclusion(JsonInclude.Include.NON_NULL)
     }
   }
@@ -100,7 +100,7 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
   /**
    * For default Spring Boot's {@link ObjectMapper} bean, configures properties that are not exposed via builder customization.
    */
-  @SuppressWarnings("Instanceof")
+  @SuppressWarnings(["Instanceof", "GroovyPointlessBoolean"])
   @Override
   Object postProcessAfterInitialization(Object bean, String beanName) {
     //noinspection GroovyPointlessBoolean
@@ -109,7 +109,7 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
     }
 
     if (bean instanceof ObjectMapper && beanName == DEFAULT_SPRING_BOOT_OBJECT_MAPPER_BEAN_NAME) {
-      if (essentialJacksonCustomizerConfigurationProperties.deserialization.skipNullValues) {
+      if (essentialJacksonCustomizerConfigurationProperties.deserialization.skipNullValues == true) {
         bean.defaultSetterInfo = JsonSetter.Value.forValueNulls(Nulls.SKIP)
       }
     }

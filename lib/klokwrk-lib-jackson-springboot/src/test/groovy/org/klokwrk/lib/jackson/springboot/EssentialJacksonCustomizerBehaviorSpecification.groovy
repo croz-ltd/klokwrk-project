@@ -1,5 +1,7 @@
 package org.klokwrk.lib.jackson.springboot
 
+import com.fasterxml.jackson.annotation.JsonSetter
+import com.fasterxml.jackson.annotation.Nulls
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.json.JsonTest
@@ -108,7 +110,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     String last = "someLast"
   }
 
-  void "deserialization - null should not deserialize null values"() {
+  void "deserialization - should not deserialize null values"() {
     given:
     String stringToDeserialize = """
       {
@@ -123,6 +125,17 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     then:
     myBeanWithDefaultPropertyValues.first == "someFirst"
     myBeanWithDefaultPropertyValues.last == "someLast"
+  }
+
+  void "deserialization - should configure skipNullValues only for default Spring Boot object mapper"() {
+    given:
+    EssentialJacksonCustomizer essentialJacksonCustomizer = new EssentialJacksonCustomizer(new EssentialJacksonCustomizerConfigurationProperties())
+
+    when:
+    ObjectMapper objectMapper = essentialJacksonCustomizer.postProcessAfterInitialization(new ObjectMapper(), "nonDefaultSpringBootNameForObjectMapperBean") as ObjectMapper
+
+    then:
+    objectMapper.deserializationConfig.defaultSetterInfo != JsonSetter.Value.forValueNulls(Nulls.SKIP)
   }
 
   static class MyBeanWithArray {
