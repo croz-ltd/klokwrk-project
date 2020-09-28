@@ -6,8 +6,11 @@ import net.ttddyy.dsproxy.QueryInfo
 import net.ttddyy.dsproxy.listener.logging.SLF4JLogLevel
 import net.ttddyy.dsproxy.listener.logging.SLF4JQueryLoggingListener
 import net.ttddyy.dsproxy.support.SLF4JLogUtils
+import org.klokwrk.lang.groovy.contracts.base.ContractsBase
 
 import java.util.regex.Pattern
+
+import static org.klokwrk.lang.groovy.contracts.base.ContractsBase.requireTrueBase
 
 /**
  * Extends DataSourceProxy's {@link SLF4JQueryLoggingListener} by adding capability of filtering out queries based on regular expression match.
@@ -24,7 +27,8 @@ class Slf4jFilterableQueryLoggingListener extends SLF4JQueryLoggingListener {
 
   Slf4jFilterableQueryLoggingListener(List<String> filteringOutPatternStringList = []) {
     super()
-    assert filteringOutPatternStringList != null
+    requireTrueBase(filteringOutPatternStringList != null, "$ContractsBase.REQUIRE_TRUE_MESSAGE_DEFAULT - [condition: filteringOutPatternStringList != null]")
+
     this.filteringOutPatternList = filteringOutPatternStringList.collect({ String patternString -> Pattern.compile(patternString) })
   }
 

@@ -111,9 +111,13 @@ dependencies {
   implementation project(":cargotracker-lib-web")
   implementation project(":klokwrk-lib-jackson-springboot")
   implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lang-groovy-contracts-match")
+  implementation project(":klokwrk-lang-groovy-contracts-simple")
 
   implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.codehaus.groovy:groovy"
+  implementation "org.codehaus.groovy:groovy-macro"
+  implementation "org.hamcrest:hamcrest"
   implementation "org.springframework.boot:spring-boot-starter-actuator"
   implementation "org.springframework.boot:spring-boot-starter-web"
 

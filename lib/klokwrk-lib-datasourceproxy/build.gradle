@@ -1,6 +1,8 @@
 apply plugin: "java-library"
 
 dependencies {
+  implementation project(":klokwrk-lang-groovy")
+
   implementation "net.ttddyy:datasource-proxy"
   implementation "org.codehaus.groovy:groovy"
   implementation "org.slf4j:slf4j-api"

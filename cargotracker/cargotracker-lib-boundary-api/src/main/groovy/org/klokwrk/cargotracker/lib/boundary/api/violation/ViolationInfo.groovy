@@ -5,6 +5,8 @@ import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
+import static org.hamcrest.Matchers.notNullValue
+
 /**
  * Defines an immutable data structure that describes the reason for the <code>DomainException</code> exception.
  * <p/>
@@ -31,7 +33,7 @@ class ViolationInfo implements PostMapConstructorCheckable {
 
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
-    assert severity
-    assert violationCode
+    requireMatch(severity, notNullValue())
+    requireMatch(violationCode, notNullValue())
   }
 }

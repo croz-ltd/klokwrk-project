@@ -17,7 +17,7 @@ class LocationSpecification extends Specification {
     location.countryName == new InternationalizedName(name: "Hrvatska")
   }
 
-  void "map constructor should fail for invalid input params: [code: #codeParameter, name: #nameParameter, countryName: #countryNameParameter, function: #functionParameter]"() {
+  void "map constructor should fail for invalid input params"() {
     when:
     new Location(
         code: new UnLoCode(code: codeParameter), name: new InternationalizedName(name: nameParameter), countryName: new InternationalizedName(name: countryNameParameter),
@@ -25,7 +25,7 @@ class LocationSpecification extends Specification {
     )
 
     then:
-    thrown(IllegalArgumentException)
+    thrown(AssertionError)
 
     where:
     codeParameter | nameParameter | countryNameParameter | functionParameter
@@ -45,12 +45,12 @@ class LocationSpecification extends Specification {
     location.countryName == new InternationalizedName(name: "Hrvatska")
   }
 
-  void "create() factory method should fail for invalid input params: [code: #codeParameter, name: #nameParameter, countryName: #countryNameParameter, function: #functionParameter]"() {
+  void "create() factory method should fail for invalid input params"() {
     when:
     Location.create(codeParameter, nameParameter, countryNameParameter, functionParameter)
 
     then:
-    thrown(IllegalArgumentException)
+    thrown(AssertionError)
 
     where:
     codeParameter | nameParameter | countryNameParameter | functionParameter
@@ -70,7 +70,7 @@ class LocationSpecification extends Specification {
       "HRZAG": Location.create("HRZAG", "Zagreb", "Hrvatska", "-2345---")
   ]
 
-  void "destinationLocation.canAcceptCargoFrom() should work as expected: [origin: #originDescription, destination: #destinationDescription]"() {
+  void "destinationLocation.canAcceptCargoFrom() should work as expected"() {
     when:
     Location originLocation = originLocationInstance
     Location destinationLocation = destinationLocationInstance

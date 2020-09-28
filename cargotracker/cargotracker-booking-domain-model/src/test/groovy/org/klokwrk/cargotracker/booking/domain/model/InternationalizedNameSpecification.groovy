@@ -13,7 +13,7 @@ class InternationalizedNameSpecification extends Specification {
   @Shared
   String funkyStringInternationalized = "This is a funky String"
 
-  void "map constructor should work for correct input params: [name: #nameParameter]"() {
+  void "map constructor should work for correct input params"() {
     when:
     InternationalizedName internationalizedName = new InternationalizedName(name: nameParameter)
 
@@ -29,12 +29,12 @@ class InternationalizedNameSpecification extends Specification {
     funkyString   | _
   }
 
-  void "map constructor should fail for invalid input params: [name: #nameParameter]"() {
+  void "map constructor should fail for invalid input params"() {
     when:
     new InternationalizedName(name: nameParameter)
 
     then:
-    thrown(IllegalArgumentException)
+    thrown(AssertionError)
 
     where:
     nameParameter | _
@@ -43,7 +43,7 @@ class InternationalizedNameSpecification extends Specification {
     "   "         | _
   }
 
-  void "getNameInternationalized() should return expected value: [name: #nameParameter]"() {
+  void "getNameInternationalized() should return expected value"() {
     when:
     InternationalizedName internationalizedName = new InternationalizedName(name: nameParameter)
 

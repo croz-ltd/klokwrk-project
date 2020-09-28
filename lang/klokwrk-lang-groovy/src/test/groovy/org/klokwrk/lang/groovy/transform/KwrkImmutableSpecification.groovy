@@ -41,7 +41,7 @@ class KwrkImmutableSpecification extends Specification {
     new Person(firstName: "First Name")
 
     then:
-    thrown(IllegalArgumentException)
+    thrown(AssertionError)
   }
 
   void "should throw for map constructor with non-existing properties when existing properties are not used"() {
@@ -49,7 +49,7 @@ class KwrkImmutableSpecification extends Specification {
     new Person(myAddress: "My Address")
 
     then:
-    thrown(IllegalArgumentException)
+    thrown(AssertionError)
   }
 
   void "should work for map constructor with non-existing properties"() {

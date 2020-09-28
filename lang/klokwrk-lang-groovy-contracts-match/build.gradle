@@ -1,0 +1,25 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin: "java-library"
+
+processResources {
+  filteringCharset = "UTF-8"
+
+  // Processes META-INF/groovy/org.codehaus.groovy.runtime.ExtensionModule and replaces tokens with actual module's values.
+  filter(ReplaceTokens, tokens: [extensionModuleName: project.name, extensionModuleVersion: project.version])
+}
+
+compileGroovy {
+  dependsOn(processResources)
+}
+
+dependencies {
+  implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lang-groovy-contracts-simple")
+
+  implementation "org.codehaus.groovy:groovy"
+  implementation "org.codehaus.groovy:groovy-macro"
+  implementation "org.hamcrest:hamcrest"
+
+  testImplementation "org.spockframework:spock-core"
+}

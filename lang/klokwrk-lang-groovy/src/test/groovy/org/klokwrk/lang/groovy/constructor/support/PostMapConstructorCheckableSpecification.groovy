@@ -18,15 +18,15 @@ class PostMapConstructorCheckableSpecification extends Specification {
     new TestStrictPerson()
 
     then:
-    thrown(IllegalArgumentException)
+    thrown(AssertionError)
   }
 
-  void "should throw for invalid map constructor params [firstName: '#firstNameParam']"() {
+  void "should throw for invalid map constructor params"() {
     when:
     new TestPerson(firstName: firstNameParam)
 
     then:
-    thrown(IllegalArgumentException)
+    thrown(AssertionError)
 
     where:
     firstNameParam | _

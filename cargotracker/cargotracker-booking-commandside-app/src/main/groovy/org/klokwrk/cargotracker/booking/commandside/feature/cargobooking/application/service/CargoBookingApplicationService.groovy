@@ -1,7 +1,6 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.service
 
 import groovy.transform.CompileStatic
-import groovy.transform.NullCheck
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
@@ -13,9 +12,10 @@ import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.springframework.stereotype.Service
 
+import static org.hamcrest.Matchers.notNullValue
+
 @Service
 @CompileStatic
-@NullCheck
 class CargoBookingApplicationService implements BookCargoPortIn {
   private final CargoBookingFactoryService cargoBookingFactoryService
   private final CommandGatewayAdapter commandGatewayAdapter
@@ -27,6 +27,8 @@ class CargoBookingApplicationService implements BookCargoPortIn {
 
   @Override
   OperationResponse<BookCargoResponse> bookCargo(OperationRequest<BookCargoRequest> bookCargoOperationRequest) {
+    requireMatch(bookCargoOperationRequest, notNullValue())
+
     // TODO dmurat: validation - implement validation of BookCargoRequest here.
 
     BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoOperationRequest.payload)

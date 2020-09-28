@@ -1,6 +1,9 @@
 package org.klokwrk.lang.groovy.extension
 
 import groovy.transform.CompileStatic
+import org.klokwrk.lang.groovy.contracts.base.ContractsBase
+
+import static org.klokwrk.lang.groovy.contracts.base.ContractsBase.requireTrueBase
 
 /**
  * Groovy extension for <code>Object</code> that fetches properties without commonly unwanted properties like "<code>class</code>".
@@ -27,7 +30,7 @@ class PropertiesExtension {
    * Returns a map of all properties except those whose names are specified on the <code>filterOutPropertyNameList</code> param.
    */
   static Map<String, ?> getPropertiesFiltered(Object self, List<String> filterOutPropertyNameList) {
-    assert filterOutPropertyNameList != null
+    requireTrueBase(filterOutPropertyNameList != null, "${ ContractsBase.REQUIRE_TRUE_MESSAGE_DEFAULT } - [condition: (filterOutPropertyNameList != null)]")
 
     Map<String, ?> filteredProperties = self.properties.findAll { it.key as String !in filterOutPropertyNameList }
     return filteredProperties

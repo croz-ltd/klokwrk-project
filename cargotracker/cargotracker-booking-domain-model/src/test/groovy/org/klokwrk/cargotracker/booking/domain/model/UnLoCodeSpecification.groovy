@@ -4,7 +4,7 @@ import spock.lang.Specification
 
 class UnLoCodeSpecification extends Specification {
 
-  void "map constructor should work for correct input params: [code: #codeParameter]"() {
+  void "map constructor should work for correct input params"() {
     when:
     UnLoCode unLoCode = new UnLoCode(code: codeParameter)
 
@@ -18,12 +18,12 @@ class UnLoCodeSpecification extends Specification {
     "HRRJ9"       | _
   }
 
-  void "map constructor should fail for invalid input params: [code: #codeParameter]"() {
+  void "map constructor should fail for invalid input params"() {
     when:
     new UnLoCode(code: codeParameter)
 
     then:
-    thrown(IllegalArgumentException)
+    thrown(AssertionError)
 
     where:
     codeParameter | _

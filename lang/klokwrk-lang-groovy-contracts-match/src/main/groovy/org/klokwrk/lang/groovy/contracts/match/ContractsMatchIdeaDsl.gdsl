@@ -1,0 +1,20 @@
+package org.klokwrk.lang.groovy.contracts.match
+
+/**
+ * Provides IDEA specific type definitions and auto-complete for macro methods defined in ContractsMatch class.
+ */
+def ctx = context(ctype: "java.lang.Object")
+
+contributor([ctx], {
+  method(
+      name: "requireMatch", params: [item: "java.lang.Object", matcher: "org.hamcrest.Matcher"], type: "void",
+      doc: """<p/>
+        DBC precondition check based on hamcrest matcher.
+        <p/>
+        It adds convenient item description message containing textual representation of actually used item. It also provides actual matcher expression as a description of a matcher.
+        <p/>
+        At the implementation level, when this Groovy macro method is expanded and replaced, we end up with the method call to
+        <code>ContractsMatch.requireMatchBase(java.lang.Object, org.hamcrest.Matcher, java.lang.String, java.lang.String)</code>.
+      """
+  )
+})
