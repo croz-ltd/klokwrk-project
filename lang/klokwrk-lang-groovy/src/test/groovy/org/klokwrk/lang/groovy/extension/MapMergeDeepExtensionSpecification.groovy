@@ -11,6 +11,7 @@ class MapMergeDeepExtensionSpecification extends Specification {
     expect:
     myMap.mergeDeep() === myMap
     myMap.mergeDeep(null) === myMap
+    myMap.mergeDeep(null, null) === myMap
     myMap.mergeDeep([] as Map[]) === myMap
   }
 
@@ -43,6 +44,38 @@ class MapMergeDeepExtensionSpecification extends Specification {
     mergedMap == expectedMerge
   }
 
+  void "should work on empty map with multiple overrides including null overrides"() {
+    given:
+    Map myMap = [:]
+    Map override1 = [a: 1, b: [b1: 1, b2: 1], c: [:], d: 3, g: 1]
+    Map override2 = [a: 2, b: [b1: [b11: 1], b2: 2], c: "q", d: null, e: 6, f: [f1: 1]]
+
+    Map expectedMerge = [a: 2, b: [b1: [b11: 1], b2: 2], c: "q", d: null, e: 6, f: [f1: 1], g: 1]
+
+    when:
+    Map mergedMap = myMap.mergeDeep(override1, null, override2)
+
+    then:
+    mergedMap === myMap
+    mergedMap == expectedMerge
+  }
+
+  void "should work on empty map with multiple overrides including empty overrides"() {
+    given:
+    Map myMap = [:]
+    Map override1 = [a: 1, b: [b1: 1, b2: 1], c: [:], d: 3, g: 1]
+    Map override2 = [a: 2, b: [b1: [b11: 1], b2: 2], c: "q", d: null, e: 6, f: [f1: 1]]
+
+    Map expectedMerge = [a: 2, b: [b1: [b11: 1], b2: 2], c: "q", d: null, e: 6, f: [f1: 1], g: 1]
+
+    when:
+    Map mergedMap = myMap.mergeDeep(override1, [:], override2)
+
+    then:
+    mergedMap === myMap
+    mergedMap == expectedMerge
+  }
+
   void "should work on populated map with single override"() {
     given:
     Map myMap = [a: 1, b: [b1: 1, b2: 1], c: [:], d: 3, g: 1]
@@ -68,6 +101,38 @@ class MapMergeDeepExtensionSpecification extends Specification {
 
     when:
     Map mergedMap = myMap.mergeDeep(override1, override2)
+
+    then:
+    mergedMap === myMap
+    mergedMap == expectedMerge
+  }
+
+  void "should work on populated map with multiple overrides including null override"() {
+    given:
+    Map myMap = [a: 1, b: [b1: 1, b2: 1], c: [:], d: 3, g: 1]
+    Map override1 = [a: 2, b: [b1: [b11: 1], b2: 2], c: 'q', d: null, e: 6, f: [f1: 1]]
+    Map override2 = [a: 3, b: [b1: [b11: 3]]]
+
+    Map expectedMerge = [a: 3, b: [b1: [b11: 3], b2: 2], c: 'q', d: null, g: 1, e: 6, f: [f1: 1]]
+
+    when:
+    Map mergedMap = myMap.mergeDeep(override1, null, override2)
+
+    then:
+    mergedMap === myMap
+    mergedMap == expectedMerge
+  }
+
+  void "should work on populated map with multiple overrides including empty override"() {
+    given:
+    Map myMap = [a: 1, b: [b1: 1, b2: 1], c: [:], d: 3, g: 1]
+    Map override1 = [a: 2, b: [b1: [b11: 1], b2: 2], c: 'q', d: null, e: 6, f: [f1: 1]]
+    Map override2 = [a: 3, b: [b1: [b11: 3]]]
+
+    Map expectedMerge = [a: 3, b: [b1: [b11: 3], b2: 2], c: 'q', d: null, g: 1, e: 6, f: [f1: 1]]
+
+    when:
+    Map mergedMap = myMap.mergeDeep(override1, [:], override2)
 
     then:
     mergedMap === myMap
