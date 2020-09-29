@@ -56,13 +56,15 @@ class LoggingCommandHandlerEnhancerDefinition implements HandlerEnhancerDefiniti
     Object handle(Message<?> message, T target) throws Exception {
       if (log.isDebugEnabled()) {
         // Logging for a method annotated with @CommandHandler
-        messageHandlingMember.unwrap(Method).ifPresent((Method method) -> {
+        messageHandlingMember.unwrap(Method).ifPresent({ Method method ->
           Object command = message.payload
           String commandAggregateIdentifier = command.hasProperty(AGGREGATE_IDENTIFIER) ? command[AGGREGATE_IDENTIFIER] : NOT_AVAILABLE
           String commandSequenceNumber = command.hasProperty(SEQUENCE_NUMBER) ? command[SEQUENCE_NUMBER] : NOT_AVAILABLE
           String commandOutput = "${ command.getClass().simpleName }(aggregateIdentifier: ${ commandAggregateIdentifier }, sequenceNumber: ${ commandSequenceNumber })"
 
-          log.debug("Executing CommandHandler method [${ method.declaringClass.simpleName }.${ method.name }(${ method.parameterTypes*.simpleName?.join(",") })] with command [$commandOutput]")
+          String debugMessage =
+              "Executing CommandHandler method [${ method.declaringClass.simpleName }.${ method.name }(${ method.parameterTypes*.simpleName.join(",") })] with command [$commandOutput]"
+          log.debug(debugMessage)
         })
 
         // Logging for a constructor annotated with @CommandHandler
@@ -71,7 +73,8 @@ class LoggingCommandHandlerEnhancerDefinition implements HandlerEnhancerDefiniti
           String commandAggregateIdentifier = command.hasProperty(AGGREGATE_IDENTIFIER) ? command[AGGREGATE_IDENTIFIER] : NOT_AVAILABLE
           String commandOutput = "${ command.getClass().simpleName }(aggregateIdentifier: ${ commandAggregateIdentifier })"
 
-          log.debug("Executing CommandHandler constructor [${ executable.declaringClass.simpleName }(${ executable.parameterTypes*.simpleName?.join(",") })] with command [$commandOutput]")
+          String debugMessage = "Executing CommandHandler constructor [${ executable.declaringClass.simpleName }(${ executable.parameterTypes*.simpleName.join(",") })] with command [$commandOutput]"
+          log.debug(debugMessage)
         })
       }
 

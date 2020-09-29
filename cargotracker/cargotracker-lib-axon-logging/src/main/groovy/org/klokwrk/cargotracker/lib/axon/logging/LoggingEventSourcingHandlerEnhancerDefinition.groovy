@@ -50,15 +50,13 @@ class LoggingEventSourcingHandlerEnhancerDefinition implements HandlerEnhancerDe
     @Override
     Object handle(Message<?> message, T target) throws Exception {
       if (log.isDebugEnabled()) {
-        messageHandlingMember.unwrap(Method).ifPresent((Method method) -> {
-          Object event = message.payload
-
+        messageHandlingMember.unwrap(Method).ifPresent({ Method method ->
           String eventAggregateIdentifier = AxonMessageHelper.fetchAggregateIdentifierIfPossible(message)
           String eventSequenceNumber = AxonMessageHelper.fetchSequenceNumberAsStringIfPossible(message)
+          String eventOutput = "eventId: ${message.identifier}, ${message.payloadType.simpleName}(aggregateIdentifier: ${eventAggregateIdentifier}, sequenceNumber: ${eventSequenceNumber})"
 
-          String eventOutput = "eventId: ${message.identifier}, ${event?.getClass()?.simpleName}(aggregateIdentifier: ${eventAggregateIdentifier}, sequenceNumber: ${eventSequenceNumber})"
-
-          log.debug("Executing EventSourcingHandler method [${method.declaringClass.simpleName}.${method.name}(${method.parameterTypes*.simpleName?.join(",")})] with event [$eventOutput]")
+          String debugMessage = "Executing EventSourcingHandler method [${method.declaringClass.simpleName}.${method.name}(${method.parameterTypes*.simpleName.join(",")})] with event [$eventOutput]"
+          log.debug(debugMessage)
         })
       }
 
