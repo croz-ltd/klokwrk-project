@@ -1,7 +1,9 @@
 package org.klokwrk.lib.datasourceproxy.springboot
 
 import com.google.common.collect.ImmutableList
+import net.ttddyy.dsproxy.support.ProxyDataSource
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
 import org.springframework.context.ApplicationContext
 import org.springframework.jdbc.core.ColumnMapRowMapper
@@ -11,6 +13,8 @@ import uk.org.lidalia.slf4jext.Level
 import uk.org.lidalia.slf4jtest.LoggingEvent
 import uk.org.lidalia.slf4jtest.TestLogger
 import uk.org.lidalia.slf4jtest.TestLoggerFactory
+
+import javax.sql.DataSource
 
 @JdbcTest
 class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specification {
@@ -30,6 +34,18 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
     testLogger.enabledLevelsForAllThreads = selectedLevels
   }
 
+  DataSource createPlainDataSource() {
+    DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create()
+
+    dataSourceBuilder
+        .driverClassName("org.h2.Driver")
+        .url("jdbc:h2:mem:test")
+        .username("SA")
+        .password("")
+
+    return dataSourceBuilder.build()
+  }
+
   void setup() {
     TestLoggerFactory.clearAll()
 //    TestLoggerFactory.instance.printLevel = Level.DEBUG // uncomment if you want to see logging output during the test
@@ -41,6 +57,30 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
     expect:
     //noinspection GroovyAssignabilityCheck,GrUnresolvedAccess
     applicationContext.getBean("dataSource").properties.advisors[0].advice.getClass() == DataSourceProxyInterceptor
+  }
+
+  void "should configure proxying of plain data source for direct call"() {
+    given:
+    DataSourceProxyBeanPostProcessor dataSourceProxyBeanPostProcessor = new DataSourceProxyBeanPostProcessor(new DataSourceProxyConfigurationProperties())
+
+    when:
+    DataSource plainDataSource = dataSourceProxyBeanPostProcessor.postProcessAfterInitialization(createPlainDataSource(), "plainDataSource") as DataSource
+
+    then:
+    //noinspection GroovyAssignabilityCheck,GrUnresolvedAccess
+    plainDataSource.properties.advisors[0].advice.getClass() == DataSourceProxyInterceptor
+  }
+
+  void "should not configure anything for ProxyDataSource"() {
+    given:
+    DataSourceProxyBeanPostProcessor dataSourceProxyBeanPostProcessor = new DataSourceProxyBeanPostProcessor(new DataSourceProxyConfigurationProperties())
+    ProxyDataSource proxyDataSource = new ProxyDataSource(createPlainDataSource())
+
+    when:
+    DataSource plainDataSource = dataSourceProxyBeanPostProcessor.postProcessAfterInitialization(proxyDataSource, "proxyDataSource") as DataSource
+
+    then:
+    plainDataSource.properties.advisors == null
   }
 
   @SuppressWarnings("SqlResolve")
