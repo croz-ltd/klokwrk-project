@@ -45,9 +45,10 @@ class LoggingQueryHandlerEnhancerDefinition implements HandlerEnhancerDefinition
     @Override
     Object handle(Message<?> message, T target) throws Exception {
       if (log.isDebugEnabled()) {
-        messageHandlingMember.unwrap(Method).ifPresent((Method method) -> {
+        messageHandlingMember.unwrap(Method).ifPresent({ Method method ->
           Map payloadProperties = message.payload.propertiesFiltered
-          log.debug("Executing QueryHandler method [${method.declaringClass.simpleName}.${method.name}(${method.parameterTypes*.simpleName?.join(",")})] with payload ${payloadProperties}")
+          String debugMessage = "Executing QueryHandler method [${method.declaringClass.simpleName}.${method.name}(${method.parameterTypes*.simpleName.join(",")})] with payload ${payloadProperties}"
+          log.debug(debugMessage)
         })
       }
 

@@ -59,18 +59,17 @@ class LoggingEventHandlerEnhancerDefinition implements HandlerEnhancerDefinition
       if (log.isDebugEnabled()) {
         messageHandlingMember
             .unwrap(Method)
-            .ifPresent((Method method) -> {
-              Object event = message.payload
-
+            .ifPresent({ Method method ->
               String eventGlobalIndexString = AxonMessageHelper.fetchGlobalIndexAsStringIfPossible(message)
               String eventAggregateIdentifier = AxonMessageHelper.fetchAggregateIdentifierIfPossible(message)
               String eventSequenceNumber = AxonMessageHelper.fetchSequenceNumberAsStringIfPossible(message)
 
-              String eventOutput = "eventGlobalIndex: ${eventGlobalIndexString}, eventId: ${message.identifier}, ${event?.getClass()?.simpleName}" +
+              String eventOutput = "eventGlobalIndex: ${eventGlobalIndexString}, eventId: ${message.identifier}, ${message.payloadType.simpleName}" +
                                    "(aggregateIdentifier: ${eventAggregateIdentifier}, " +
                                    "sequenceNumber: ${eventSequenceNumber})"
 
-              log.debug("Executing EventHandler method [${method.declaringClass.simpleName}.${method.name}(${method.parameterTypes*.simpleName?.join(",")})] with event [$eventOutput]")
+              String debugMessage = "Executing EventHandler method [${method.declaringClass.simpleName}.${method.name}(${method.parameterTypes*.simpleName.join(",")})] with event [$eventOutput]"
+              log.debug(debugMessage)
             })
       }
 
