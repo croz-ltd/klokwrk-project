@@ -119,9 +119,7 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     )
 
     HandlerMethod handlerMethod = fetchHandlerMethod(httpServletRequest)
-    if (handlerMethod) {
-      httpResponseMetaDataReport = localizeHttpResponseMetaDataReport(httpResponseMetaDataReport, handlerMethod, httpServletRequest.locale)
-    }
+    httpResponseMetaDataReport = localizeHttpResponseMetaDataReport(httpResponseMetaDataReport, handlerMethod, httpServletRequest.locale)
 
     return httpResponseMetaDataReport
   }
@@ -139,13 +137,8 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     Collection<HandlerMapping> handlerMappingCollection = applicationContext.getBeansOfType(HandlerMapping).values()
     HandlerMapping handlerMapping = handlerMappingCollection.find({ HandlerMapping handlerMapping -> handlerMapping.getHandler(httpServletRequest) })
     HandlerExecutionChain handlerExecutionChain = handlerMapping.getHandler(httpServletRequest)
-    Object handler = handlerExecutionChain.handler
+    HandlerMethod handlerMethod = handlerExecutionChain.handler as HandlerMethod
 
-    if (handler !instanceof HandlerMethod) {
-      return null
-    }
-
-    HandlerMethod handlerMethod = handler
     return handlerMethod
   }
 
