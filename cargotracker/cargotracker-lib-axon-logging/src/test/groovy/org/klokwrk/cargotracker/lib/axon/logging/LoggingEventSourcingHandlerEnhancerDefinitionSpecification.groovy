@@ -46,7 +46,6 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
     axonCommandGateway = axonConfiguration.commandGateway()
   }
 
-  @SuppressWarnings("unused")
   void cleanup() {
     TestLoggerFactory.clearAll()
 
