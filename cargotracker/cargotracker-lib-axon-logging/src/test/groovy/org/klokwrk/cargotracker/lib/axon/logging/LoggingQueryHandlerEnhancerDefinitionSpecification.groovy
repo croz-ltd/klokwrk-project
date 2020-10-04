@@ -45,7 +45,6 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
     axonQueryGateway = axonConfiguration.queryGateway()
   }
 
-  @SuppressWarnings("unused")
   void cleanup() {
     TestLoggerFactory.clearAll()
 

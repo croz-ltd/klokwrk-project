@@ -156,10 +156,7 @@ configure(subprojects) { Project subproject ->
     implementation platform(project(":klokwrk-project-platform"))
     codenarc platform(project(":klokwrk-project-platform"))
 
-    // Return to the normal CodeNarc version when CodeNarc 2.0 is released.
-//    codenarc "org.codenarc:CodeNarc"
-    codenarc "com.github.codenarc:codenarc"
-
+    codenarc "org.codenarc:CodeNarc"
     codenarc "org.codehaus.groovy:groovy"
     codenarc "org.codehaus.groovy:groovy-templates"
   }

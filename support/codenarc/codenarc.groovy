@@ -157,6 +157,9 @@ ruleset {
   }
   LocaleSetDefault
   NestedForLoop
+  OptionalCollectionReturnType
+  OptionalField
+  OptionalMethodParameter
   PrivateFieldCouldBeFinal
   PublicInstanceField
   ReturnsNullInsteadOfEmptyArray

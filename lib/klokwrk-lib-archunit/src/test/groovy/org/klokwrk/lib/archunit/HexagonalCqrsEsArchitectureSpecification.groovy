@@ -98,6 +98,21 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
     hexagonalCqrsEsArchitecture.description == "Overridden description."
   }
 
+  void "should fail overriding description with invalid argument"() {
+    when:
+    HexagonalCqrsEsArchitecture.architecture().as(overridenDescription)
+
+    then:
+    AssertionError assertionError = thrown()
+    assertionError.message.startsWith("Require violation detected - matcher does not match - [item: newDescription, expected: not(blankOrNullString())")
+
+    where:
+    overridenDescription | _
+    null                 | _
+    ""                   | _
+    "  "                 | _
+  }
+
   void "should be able to specify architectural reason"() {
     given:
     HexagonalCqrsEsArchitecture hexagonalCqrsEsArchitecture = HexagonalCqrsEsArchitecture.architecture().because("We like it!")

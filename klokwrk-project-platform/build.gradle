@@ -46,8 +46,6 @@ dependencies {
     api "uk.org.lidalia:slf4j-test:$slf4jTestVersion"
 
     api "org.codenarc:CodeNarc:$codeNarcVersion"
-    // CodeNarc JitPack version. Remove when CodeNarc 2.0 is released.
-    api "com.github.codenarc:codenarc:$codeNarcJitPackVersion"
   }
 
   api platform("com.wavefront:wavefront-spring-boot-bom:$wavefrontSpringBootVersion")
