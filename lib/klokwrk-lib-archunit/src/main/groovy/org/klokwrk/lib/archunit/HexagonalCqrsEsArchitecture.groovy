@@ -1,7 +1,6 @@
 package org.klokwrk.lib.archunit
 
 import com.tngtech.archunit.base.DescribedPredicate
-import com.tngtech.archunit.base.Optional
 import com.tngtech.archunit.core.domain.JavaClass
 import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.lang.ArchRule
@@ -112,16 +111,16 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
   private final Map<String, String[]> adapterOutboundPackageIdentifiers
   private final Map<String, String[]> adapterProjectionPackageIdentifiers
 
-  private final Optional<String> overriddenDescription
+  private final String overriddenDescription
 
   private boolean optionalLayers = false
   private final List<IgnoredDependency> ignoredDependencies
 
   static HexagonalCqrsEsArchitecture architecture(ArchitectureSubType architectureSubType = ArchitectureSubType.NONE) {
-    return new HexagonalCqrsEsArchitecture(Optional.absent() as Optional<String>, architectureSubType)
+    return new HexagonalCqrsEsArchitecture(architectureSubType)
   }
 
-  private HexagonalCqrsEsArchitecture(Optional<String> overriddenDescription, ArchitectureSubType architectureSubType) {
+  private HexagonalCqrsEsArchitecture(ArchitectureSubType architectureSubType, String overriddenDescription = null) {
     this.adapterInboundPackageIdentifiers = [:]
     this.adapterOutboundPackageIdentifiers = [:]
     this.adapterProjectionPackageIdentifiers = [:]
@@ -131,8 +130,8 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
     this.architectureSubType = architectureSubType
   }
 
-  private HexagonalCqrsEsArchitecture copyWith(Optional<String> overriddenDescription) {
-    HexagonalCqrsEsArchitecture newHexagonalCqrsEsArchitecture = new HexagonalCqrsEsArchitecture(overriddenDescription, architectureSubType)
+  private HexagonalCqrsEsArchitecture copyWith(String overriddenDescription) {
+    HexagonalCqrsEsArchitecture newHexagonalCqrsEsArchitecture = new HexagonalCqrsEsArchitecture(architectureSubType, overriddenDescription)
         .domainModels(domainModelPackageIdentifiers)
         .domainEvents(domainEventPackageIdentifiers)
         .domainCommands(domainCommandPackageIdentifiers)
@@ -393,8 +392,8 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
 
   @Override
   String getDescription() {
-    if (overriddenDescription.isPresent()) {
-      return overriddenDescription.get()
+    if (overriddenDescription) {
+      return overriddenDescription
     }
 
     List<String> lines = ["Hexagonal architecture (CQRS/ES flavor, subtype ${architectureSubType}) consisting of ${ optionalLayers ? " (optional)" : "" }".toString()]
