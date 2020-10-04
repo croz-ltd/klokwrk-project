@@ -2,7 +2,6 @@ buildscript {
   repositories {
     gradlePluginPortal()
     mavenCentral()
-    maven { url 'https://jitpack.io' }
   }
 
   dependencies {
@@ -17,8 +16,6 @@ buildscript {
 
 repositories {
   mavenCentral()
-  maven { url 'https://repo.spring.io/milestone' }
-  maven { url 'https://jitpack.io' }
 }
 
 apply plugin: "fr.brouillard.oss.gradle.jgitver"
@@ -86,8 +83,6 @@ configure(subprojects) { Project subproject ->
 
   repositories {
     mavenCentral()
-    maven { url 'https://repo.spring.io/milestone' }
-    maven { url 'https://jitpack.io' }
   }
 
   apply plugin: "groovy"
