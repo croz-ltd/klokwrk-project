@@ -12,6 +12,8 @@ import groovy.transform.CompileStatic
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.equivalentTo
 import static com.tngtech.archunit.core.domain.properties.HasName.Predicates.name
 import static java.lang.System.lineSeparator
+import static org.hamcrest.Matchers.blankOrNullString
+import static org.hamcrest.Matchers.not
 
 /**
  * Implementation of ArchUnit's <code>ArchRule</code> for asserting CQRS/ES flavored hexagonal architecture used in <code>klokwrk</code>.
@@ -382,7 +384,8 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
 
   @Override
   HexagonalCqrsEsArchitecture "as"(String newDescription) {
-    return copyWith(Optional.of(newDescription))
+    requireMatch(newDescription, not(blankOrNullString()))
+    return copyWith(newDescription)
   }
 
   @Override
