@@ -32,6 +32,13 @@ apply plugin: "org.kordamp.gradle.groovydoc"
 apply plugin: "org.kordamp.gradle.jacoco"
 apply plugin: "org.kordamp.gradle.testing"
 config {
+  coverage {
+    jacoco {
+      setEnabled(true)
+      setToolVersion("$jacocoVersion")
+    }
+  }
+
   docs {
     groovydoc {
       // If one don't want to execute groovydoc as part of the assemble task, use gradle CLI task exclusion. For example: gw clean assemble -x groovydocJar
