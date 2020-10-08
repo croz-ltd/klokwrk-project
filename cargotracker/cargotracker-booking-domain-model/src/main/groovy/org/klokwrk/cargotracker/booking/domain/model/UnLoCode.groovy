@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.not
  * <p/>
  * Useful reference: https://service.unece.org/trade/locode/Service/LocodeColumn.htm
  */
-@KwrkImmutable(post = { postMapConstructorCheckProtocol(args as Map) })
+@KwrkImmutable
 @CompileStatic
 class UnLoCode implements PostMapConstructorCheckable {
 

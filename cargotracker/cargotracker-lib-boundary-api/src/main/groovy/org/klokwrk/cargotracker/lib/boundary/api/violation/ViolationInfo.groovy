@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.notNullValue
  * @see ViolationCode
  * @see Severity
  */
-@KwrkImmutable(post = { postMapConstructorCheckProtocol(args as Map) })
+@KwrkImmutable
 @CompileStatic
 class ViolationInfo implements PostMapConstructorCheckable {
   static final ViolationInfo UNKNOWN = new ViolationInfo(severity: Severity.ERROR, violationCode: ViolationCode.UNKNOWN)

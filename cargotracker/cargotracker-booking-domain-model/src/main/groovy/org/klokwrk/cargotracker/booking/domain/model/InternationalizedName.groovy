@@ -30,7 +30,7 @@ import static org.hamcrest.Matchers.blankOrNullString
  *   <li>https://memorynotfound.com/remove-accents-diacritics-from-string</li>
  * </ul>
  */
-@KwrkImmutable(post = { postMapConstructorCheckProtocol(args as Map) })
+@KwrkImmutable
 @CompileStatic
 class InternationalizedName implements PostMapConstructorCheckable {
   static final InternationalizedName UNKNOWN_INTERNATIONALIZED_NAME = new InternationalizedName(name: "UNKNOWN")

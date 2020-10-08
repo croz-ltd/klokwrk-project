@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.not
  * <p/>
  * All three members must be specified at construction time.
  */
-@KwrkImmutable(post = { postMapConstructorCheckProtocol(args as Map) })
+@KwrkImmutable
 @CompileStatic
 class ViolationCode implements PostMapConstructorCheckable {
   static final ViolationCode UNKNOWN = new ViolationCode(code: "500", codeAsText: "internalServerError", codeMessage: "Internal Server Error")
