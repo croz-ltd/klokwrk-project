@@ -4,7 +4,7 @@ import groovy.transform.CompileStatic
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
-@KwrkImmutable(post = { postMapConstructorCheckProtocol(args as Map) })
+@KwrkImmutable
 @CompileStatic
 class Person implements PostMapConstructorCheckable {
   String firstName
