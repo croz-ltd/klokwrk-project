@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.not
  * Represents an 8-character function classifier code for the UN/LOCODE location.
  */
 @SuppressWarnings(["DuplicateNumberLiteral"])
-@KwrkImmutable(post = { postMapConstructorCheckProtocol(args as Map) })
+@KwrkImmutable
 @CompileStatic
 class UnLoCodeFunction implements PostMapConstructorCheckable {
   static final Pattern CODE_PATTERN = Pattern.compile(/^(?=.*[0-7B].*)[01-][2-][3-][4-][5-][6-][7-][B-]$/)

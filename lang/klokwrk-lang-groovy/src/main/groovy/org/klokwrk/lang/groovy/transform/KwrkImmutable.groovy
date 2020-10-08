@@ -28,6 +28,7 @@ import java.lang.annotation.Target
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true, includeSuperProperties = true, includeFields = true)
 @KnownImmutable
+@KwrkMapConstructorDefaultPostCheck
 @AnnotationCollector(mode = AnnotationCollectorMode.PREFER_EXPLICIT_MERGED)
 @Retention(RetentionPolicy.RUNTIME)
 @Target([ElementType.TYPE])

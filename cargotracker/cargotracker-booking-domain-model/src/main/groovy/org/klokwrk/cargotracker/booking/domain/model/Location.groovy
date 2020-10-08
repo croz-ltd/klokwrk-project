@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.notNullValue
  *   <li>http://tfig.unece.org/contents/recommendation-16.htm</li>
  * </ul>
  */
-@KwrkImmutable(post = { postMapConstructorCheckProtocol(args as Map) })
+@KwrkImmutable
 @CompileStatic
 class Location implements PostMapConstructorCheckable {
 
