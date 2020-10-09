@@ -17,7 +17,9 @@ import java.lang.annotation.RetentionPolicy
 import java.lang.annotation.Target
 
 /**
- * Variation of Groovy {@code Immutable} annotation that removes tuple constructor and uses {@link RelaxedPropertyHandler} instead of Groovy default {@code ImmutablePropertyHandler}.
+ * Variation of Groovy {@code Immutable} meta-annotation that removes tuple constructor and uses {@link RelaxedPropertyHandler} instead of Groovy default {@code ImmutablePropertyHandler}.
+ * <p/>
+ * In addition, it includes {@link KwrkMapConstructorNoArgHideable} and {@link KwrkMapConstructorDefaultPostCheck} annotations.
  * <p/>
  * All other options are same as in Groovy {@code Immutable}.
  */
@@ -29,6 +31,7 @@ import java.lang.annotation.Target
 @MapConstructor(noArg = true, includeSuperProperties = true, includeFields = true)
 @KnownImmutable
 @KwrkMapConstructorDefaultPostCheck
+@KwrkMapConstructorNoArgHideable
 @AnnotationCollector(mode = AnnotationCollectorMode.PREFER_EXPLICIT_MERGED)
 @Retention(RetentionPolicy.RUNTIME)
 @Target([ElementType.TYPE])
