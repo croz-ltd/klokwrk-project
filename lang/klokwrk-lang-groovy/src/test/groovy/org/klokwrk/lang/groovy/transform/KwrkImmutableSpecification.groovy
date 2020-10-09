@@ -1,19 +1,40 @@
 package org.klokwrk.lang.groovy.transform
 
+import groovyjarjarasm.asm.Opcodes
+import org.codehaus.groovy.control.CompilationFailedException
 import org.klokwrk.lang.groovy.transform.stub.Person
 import spock.lang.Specification
 
 import java.lang.reflect.Constructor
 
 class KwrkImmutableSpecification extends Specification {
-  void "should work for no-arg constructor"() {
-    given:
-    Person person = new Person()
+  void "should not statically compile for no-arg constructor since it is private"() {
+    when:
+    // NOTE: when used from dynamic code, Groovy will convert a call of new Person() into new Person(null) if explicit new Person() is not available. That later call, new Person(null) actually calls
+    //       generated map constructor. For this reason, having private no-arg constructor does not have expected effect of compiler error when called from dynamic environment. We can only get
+    //       compiler error from statically compiled environment.
+    //       Reference: https://stackoverflow.com/a/31498804/4983601
+    new GroovyShell().evaluate("""
+        import groovy.transform.CompileStatic
+        import org.klokwrk.lang.groovy.transform.stub.Person
 
+        @CompileStatic
+        class PersonFactory {
+          static Person createWithNoArgConstructor() {
+            return new Person()
+          }
+        }
+    """)
+
+    then:
+    CompilationFailedException compilationFailedException = thrown()
+    compilationFailedException.message.contains("Cannot find matching method org.klokwrk.lang.groovy.transform.stub.Person#<init>()")
+  }
+
+  void "should have private no-arg constructor"() {
     expect:
-    person
-    person.firstName == null
-    person.lastName == null
+    Person.declaredConstructors.size() == 2
+    Person.declaredConstructors.find({ Constructor constructor -> constructor.parameters.size() == 0 }).modifiers == Opcodes.ACC_PRIVATE
   }
 
   void "should work for empty map constructor"() {
