@@ -1,16 +1,11 @@
 # [short title related to decision (format: ADR-NNNN - title, when possible should be the same as ADR filename without dashes)]
 
-[Include main info about ADR like status, dates, authors, liked issues etc. Separate different sections by a 2 blank lines like bellow (2 consecutive blank lines will render into a single blank
-line). Mark status with bold font. ]
+[Include main info about ADR like status, dates, authors, liked issues etc. Mark status with bold font. ]
 * **Status**: [draft | proposed | rejected | accepted | deprecated | (any other useful status) | superseded by [link to ADR]]
 * Dates: proposed - [YYYY-MM-DD], last updated - [YYYY-MM-DD]
-
-
-* Authors: [list of authors] (full name and email)
+* Authors: [list of authors] (full name and email where email can be scrambled a bit like in `firstname.lastname at gmail.com` )
 * Reviewers: [None | list of reviewers] (full name and email)
 * Deciders: [None | list of reviewers] (optional, full name and email, everyone involved in the decision when different from the author and reviewers)
-
-
 * Technical story: [ticket/issue URL] (optional)
 
 ## Context
