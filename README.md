@@ -30,6 +30,6 @@ Klokwrk is an open-source project, started by [Damir Murat](https://github.com/d
 [CROZ](https://github.com/croz-ltd).
 
 ## Find out more
-If you are intrigued and want to try it out, take a look at "[Starting up and trying the whole thing](support/docs/article/startingUp.md)".
+If you are intrigued and want to try it out, take a look at "[Starting up and trying the whole thing](support/documentation/article/startingUp.md)".
 
-For a discussion about principles and ideas behind organizing high-level artifacts of a project, take a look at "[Organizing modules and packages](support/docs/article/modulesAndPackages.md)".
+For a discussion about principles and ideas behind organizing high-level artifacts of a project, take a look at "[Organizing modules and packages](support/documentation/article/modulesAndPackages.md)".
