@@ -12,10 +12,10 @@ tools to help with documentation consistency.
 * System (`klokwrk-project`)
 
 ## Decision
-We will use the **architecture decision log** expressed as a time-ordered collection of **Architecture Decision Records** (ADRs). **Architecture decision log** is nothing more than a simple index of
-all available ADRs.
+**We will use the architecture decision log expressed as a time-ordered collection of Architecture Decision Records (ADRs).** Architecture decision log is nothing more than a simple index of all
+available ADRs.
 
-We will use [custom ADR template](../template/template.md). It includes parts of following *"standard"* ADR templates:
+**We will use [custom ADR template](../template/template.md).** It includes parts of following *"standard"* ADR templates:
 * [Michael Nygard's template](https://github.com/joelparkerhenderson/architecture_decision_record/blob/master/adr_template_by_michael_nygard.md)
 * [MADR template](https://adr.github.io/madr/)
 * [Ken Power's template](https://youtu.be/LFiTwqblqsk?t=1295)
