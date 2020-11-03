@@ -84,6 +84,12 @@ This is a list of all issues that are NOT reported by `klokwrk-project` team mem
 
 When particular issue is resolved, it can be removed from this list when there is no value to monitor it further.
 
+### Github
+* [GitHub IS 1017 - Support semi-linear merge option for pull requests](https://github.com/isaacs/github/issues/1017)
+  * related to [ADR 0007 - ADR-0007 - Git Workflow with Linear History](../adr/content/0007-git-workflow-with-linear-history.md)
+* [GitHub IS 1143 - Rebase and merge pull request option should add a merge commit](https://github.com/isaacs/github/issues/1143)
+  * related to [ADR 0007 - ADR-0007 - Git Workflow with Linear History](../adr/content/0007-git-workflow-with-linear-history.md)
+
 ### Groovy
 * [Groovy IS 9373 - ASM: rework line numbers...](https://issues.apache.org/jira/browse/GROOVY-9373)
 

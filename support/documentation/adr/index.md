@@ -1,5 +1,8 @@
 # Architectural Decision Log
 
+## Writing new log entries
+Log entries are written in the form of Architecture Decision Records (ADR). For writing new ADR, please use our [custom template](template/template.md).
+
 ## `klokwkr-project` architectural decision log
 This log lists the architectural decisions for `klokwrk-project`:
 * [ADR-0001 - Architectural Decision Records](content/0001-architectural-decision-records.md)
@@ -8,6 +11,4 @@ This log lists the architectural decisions for `klokwrk-project`:
 * [ADR-0004 - Hexagonal Architecture for Applications](content/0004-hexagonal-architecture-for-applications.md)
 * [ADR-0005 - Using Groovy](content/0005-using-groovy.md)
 * [ADR-0006 - Contributing Back to Open Source](content/0006-contirbuting-back-to-open-source.md)
-
-## Writing new log entries
-Log entries are written in the form of Architecture Decision Records (ADR). For writing new ADR, please use our [custom template](template/template.md).
+* [ADR-0007 - Git Workflow with Linear History](content/0007-git-workflow-with-linear-history.md)
