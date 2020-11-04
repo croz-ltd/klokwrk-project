@@ -31,6 +31,8 @@
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-boundary-api/build/classes/groovy/main" module="cargotracker-lib-boundary-api" displaymodule="cargotracker-lib-boundary-api" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-web/build/classes/groovy/main" module="cargotracker-lib-web" displaymodule="cargotracker-lib-web" />
     <classpathentry kind="lib" path="../../lang/klokwrk-lang-groovy/build/classes/groovy/main" module="klokwrk-lang-groovy" displaymodule="klokwrk-lang-groovy" />
+    <classpathentry kind="lib" path="../../lang/klokwrk-lang-groovy-contracts-match/build/classes/groovy/main" module="klokwrk-lang-groovy-contracts-match" displaymodule="klokwrk-lang-groovy-contracts-match" />
+    <classpathentry kind="lib" path="../../lang/klokwrk-lang-groovy-contracts-simple/build/classes/groovy/main" module="klokwkr-lang-groovy-contracts-simple" displaymodule="klokwkr-lang-groovy-contracts-simple" />
     <classpathentry kind="lib" path="../../lib/klokwrk-lib-archunit/build/classes/groovy/main" module="klokwrk-lib-archunit" displaymodule="klokwrk-lib-archunit" />
     <classpathentry kind="lib" path="../../lib/klokwrk-lib-datasourceproxy/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy" displaymodule="klokwrk-lib-datasourceproxy" />
     <classpathentry kind="lib" path="../../lib/klokwrk-lib-datasourceproxy-springboot/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy-springboot" displaymodule="klokwrk-lib-datasourceproxy-springboot" />
@@ -129,6 +131,10 @@
       <row>
         <cell name="lang (language extensions)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
+            <row>
+              <cell name="klokwkr-lang-groovy-contracts-simple" pattern="klokwkr-lang-groovy-contracts-simple.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="klokwrk-lang-groovy-contracts-match" pattern="klokwrk-lang-groovy-contracts-match.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
             <row>
               <cell name="klokwrk-lang-groovy" pattern="klokwrk-lang-groovy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
@@ -231,6 +237,10 @@
       <row>
         <cell name="lang" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="255,255,204">
           <grid>
+            <row>
+              <cell name="klokwkr-lang-groovy-contracts-simple" pattern="klokwkr-lang-groovy-contracts-simple.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="klokwrk-lang-groovy-contracts-match" pattern="klokwrk-lang-groovy-contracts-match.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
             <row>
               <cell name="klokwrk-lang-groovy" pattern="klokwrk-lang-groovy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
