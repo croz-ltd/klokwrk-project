@@ -12,3 +12,4 @@ This log lists the architectural decisions for `klokwrk-project`:
 * [ADR-0005 - Using Groovy](content/0005-using-groovy.md)
 * [ADR-0006 - Contributing Back to Open Source](content/0006-contirbuting-back-to-open-source.md)
 * [ADR-0007 - Git Workflow with Linear History](content/0007-git-workflow-with-linear-history.md)
+* [ADR-0008 - Testing Architecture](content/0008-testing-architecture.md)
