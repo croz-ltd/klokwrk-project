@@ -14,3 +14,4 @@ This log lists the architectural decisions for `klokwrk-project`:
 * [ADR-0007 - Git Workflow with Linear History](content/0007-git-workflow-with-linear-history.md)
 * [ADR-0008 - Testing Architecture](content/0008-testing-architecture.md)
 * [ADR-0009 - Testing Inter-Module Dependencies](content/0009-testing-inter-module-dependencies.md)
+* [ADR-0010 - Integration Testing with Containerized Infrastructure](content/0010-integration-testing-with-containerized-infrastructure.md)
