@@ -34,8 +34,17 @@ Klokwrk is an open-source project, started by [Damir Murat](https://github.com/d
 There are several articles describing some `klokwrk-project` features in more details:
 * [Starting up and trying the whole thing](support/documentation/article/startingUp.md)<br/>
   Step-by-step tutorial describing how one can run and try `klokwrk-project`.
+
 * [Organizing modules and packages](support/documentation/article/modulesAndPackages.md)<br/>
   Discussion about principles and ideas behind organizing high-level artifacts of a project and using hexagonal architecture in CQRS/ES context.
+
+### Videos
+* [Turning lessons learned of using Axon in a legacy environment to OSS Project Klokwrk](https://www.youtube.com/watch?v=shl847FRVMI) <br/>
+  Turning lessons learned from using Axon Framework in a complex legacy environment to an open-source Project Klokwrk.
+
+* [Project Klokwrk: how it helps define software architecture and solves integration and component testing](https://www.youtube.com/watch?v=35oUxjXWNYU) <br/>
+  In this workshop, we will dive deep into technical details of two interesting Klokwrk features: how it helps in defining software architecture, and how it solves integration and component
+  testing (with event replay).
 
 ### Architecture decision log
 `klokwkr-project` maintains a log of architecturally significant decisions by leveraging architecture decision records (ADRs). You can [explore it here](support/documentation/adr/index.md).
