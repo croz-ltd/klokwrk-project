@@ -2,6 +2,7 @@ buildscript {
   repositories {
     gradlePluginPortal()
     mavenCentral()
+    jcenter()
   }
 
   dependencies {
@@ -16,6 +17,7 @@ buildscript {
 
 repositories {
   mavenCentral()
+  jcenter()
 }
 
 apply plugin: "fr.brouillard.oss.gradle.jgitver"
@@ -90,6 +92,7 @@ configure(subprojects) { Project subproject ->
 
   repositories {
     mavenCentral()
+    jcenter()
   }
 
   apply plugin: "groovy"
