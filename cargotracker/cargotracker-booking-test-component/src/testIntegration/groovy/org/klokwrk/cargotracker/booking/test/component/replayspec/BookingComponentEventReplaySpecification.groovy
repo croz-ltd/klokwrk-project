@@ -1,5 +1,6 @@
 package org.klokwrk.cargotracker.booking.test.component.replayspec
 
+import com.github.dockerjava.api.command.CreateNetworkCmd
 import groovy.json.JsonSlurper
 import groovy.sql.GroovyRowResult
 import groovy.sql.Sql
@@ -24,7 +25,7 @@ class BookingComponentEventReplaySpecification extends Specification {
   static Network klokwrkNetwork
 
   static {
-    klokwrkNetwork = Network.builder().id("klokwrk-network-${ UUID.randomUUID() }").build()
+    klokwrkNetwork = Network.builder().createNetworkCmdModifier({ CreateNetworkCmd createNetworkCmd -> createNetworkCmd.withName("klokwrk-network-${ UUID.randomUUID() }") }).build()
 
     postgresqlServer = PostgreSqlTestcontainersFactory.createAndStartPostgreSqlServer(klokwrkNetwork)
     RdbmsManagementAppTestcontainersFactory.createAndStartRdbmsManagementApp(klokwrkNetwork, postgresqlServer)

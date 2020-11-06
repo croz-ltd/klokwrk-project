@@ -1,5 +1,6 @@
 package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.test.base
 
+import com.github.dockerjava.api.command.CreateNetworkCmd
 import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.AxonServerTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
@@ -16,7 +17,7 @@ abstract class AbstractRdbmsProjectionIntegrationSpecification extends Specifica
   static Network klokwrkNetwork
 
   static {
-    klokwrkNetwork = Network.builder().id("klokwrk-network-${ UUID.randomUUID() }").build()
+    klokwrkNetwork = Network.builder().createNetworkCmdModifier({ CreateNetworkCmd createNetworkCmd -> createNetworkCmd.withName("klokwrk-network-${ UUID.randomUUID() }") }).build()
 
     postgresqlServer = PostgreSqlTestcontainersFactory.createAndStartPostgreSqlServer(klokwrkNetwork)
     RdbmsManagementAppTestcontainersFactory.createAndStartRdbmsManagementApp(klokwrkNetwork, postgresqlServer)

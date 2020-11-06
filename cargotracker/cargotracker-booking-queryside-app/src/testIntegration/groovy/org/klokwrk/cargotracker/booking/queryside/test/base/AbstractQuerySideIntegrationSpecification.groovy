@@ -1,5 +1,6 @@
 package org.klokwrk.cargotracker.booking.queryside.test.base
 
+import com.github.dockerjava.api.command.CreateNetworkCmd
 import groovy.sql.Sql
 import org.awaitility.Awaitility
 import org.axonframework.eventhandling.EventBus
@@ -28,7 +29,7 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
   static Network klokwrkNetwork
 
   static {
-    klokwrkNetwork = Network.builder().id("klokwrk-network-${ UUID.randomUUID() }").build()
+    klokwrkNetwork = Network.builder().createNetworkCmdModifier({ CreateNetworkCmd createNetworkCmd -> createNetworkCmd.withName("klokwrk-network-${ UUID.randomUUID() }") }).build()
 
     postgresqlServer = PostgreSqlTestcontainersFactory.createAndStartPostgreSqlServer(klokwrkNetwork)
     RdbmsManagementAppTestcontainersFactory.createAndStartRdbmsManagementApp(klokwrkNetwork, postgresqlServer)
