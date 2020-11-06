@@ -26,7 +26,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (in Axon Framework 4.4.1) - https://github.com/AxonIQ/axon-server-se/issues/148
 
 ### Axon Tracing Extension
-* FIXED (4.4) - https://github.com/AxonFramework/extension-tracing/issues/53
+* VERIFIED (4.4) - https://github.com/AxonFramework/extension-tracing/issues/53
 
 ### CodeNarc
 * VERIFIED (1.6) - https://github.com/CodeNarc/CodeNarc/issues/490
