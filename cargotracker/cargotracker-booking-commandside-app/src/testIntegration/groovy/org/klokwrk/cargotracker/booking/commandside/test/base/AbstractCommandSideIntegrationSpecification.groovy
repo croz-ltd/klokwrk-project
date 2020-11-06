@@ -1,5 +1,6 @@
 package org.klokwrk.cargotracker.booking.commandside.test.base
 
+import com.github.dockerjava.api.command.CreateNetworkCmd
 import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.AxonServerTestcontainersFactory
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
@@ -12,7 +13,7 @@ abstract class AbstractCommandSideIntegrationSpecification extends Specification
   static Network klokwrkNetwork
 
   static {
-    klokwrkNetwork = Network.builder().id("klokwrk-network-${ UUID.randomUUID() }").build()
+    klokwrkNetwork = Network.builder().createNetworkCmdModifier({ CreateNetworkCmd createNetworkCmd -> createNetworkCmd.withName("klokwrk-network-${ UUID.randomUUID() }") }).build()
     axonServer = AxonServerTestcontainersFactory.createAndStartAxonServer(klokwrkNetwork)
   }
 
