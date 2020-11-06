@@ -23,6 +23,9 @@ section is value-neutral. It is simply describing facts.]
 [This section describes our response to forces from Context. It is stated in full sentences, with active voice. "We will …". Here we can also include links to external sources, but in that case
 external sources should also be listed in References section]
 
+### Decision details (optional)
+[When 2-3 sentences are not enough to explain decision, "Decision details" can be used for detailed, but still short enough, elaboration.]
+
 ## Consequences
 [This section describes the resulting context, after applying the decision. All consequences should be listed here, not just the "positive" ones. A particular decision may have positive, negative,
 and neutral consequences, but all of them affect the team and project in the future.]

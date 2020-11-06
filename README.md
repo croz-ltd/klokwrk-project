@@ -39,3 +39,6 @@ There are several articles describing some `klokwrk-project` features in more de
 
 ### Architecture decision log
 `klokwkr-project` maintains a log of architecturally significant decisions by leveraging architecture decision records (ADRs). You can [explore it here](support/documentation/adr/index.md).
+
+### Misc
+* [Lists of 3rd party software issues related to `klokwkr-project`](support/documentation/misc/klokwrkRelatedIssuesInTheWild.md)
