@@ -9,6 +9,7 @@ buildscript {
     classpath "fr.brouillard.oss.gradle:gradle-jgitver-plugin:$gradleJgitverPluginVersion"
     classpath "org.kordamp.gradle:groovy-project-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:jacoco-gradle-plugin:$gradleKordampPluginVersion"
+    classpath "org.kordamp.gradle:publishing-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:testing-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
   }
@@ -137,8 +138,8 @@ configure(subprojects) { Project subproject ->
   }
 
   apply plugin: "groovy"
-  apply plugin: "maven-publish"
   apply plugin: "idea"
+  apply plugin: "org.kordamp.gradle.publishing"
 
   java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -174,6 +175,17 @@ configure(subprojects) { Project subproject ->
 
   groovydoc {
     groovyClasspath = createGroovyDocGroovyClasspath(subproject) + subproject.configurations.groovydocExtendedClasspath
+  }
+
+  config {
+    info {
+      setName(subproject.name)
+      setDescription(subproject.description == rootProject.description ? subproject.name : subproject.description)
+    }
+
+    publishing {
+      setPublications(["myLibrary"])
+    }
   }
 
   publishing {
