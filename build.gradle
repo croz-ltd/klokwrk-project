@@ -7,8 +7,7 @@ buildscript {
 
   dependencies {
     classpath "fr.brouillard.oss.gradle:gradle-jgitver-plugin:$gradleJgitverPluginVersion"
-    classpath "org.kordamp.gradle:codenarc-gradle-plugin:$gradleKordampPluginVersion"
-    classpath "org.kordamp.gradle:groovydoc-gradle-plugin:$gradleKordampPluginVersion"
+    classpath "org.kordamp.gradle:groovy-project-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:jacoco-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:testing-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
@@ -30,13 +29,56 @@ jgitver {
 }
 
 apply plugin: "org.kordamp.gradle.codenarc"
-apply plugin: "org.kordamp.gradle.groovydoc"
+apply plugin: "org.kordamp.gradle.groovy-project"
 apply plugin: "org.kordamp.gradle.jacoco"
 apply plugin: "org.kordamp.gradle.testing"
+
 config {
+  setRelease(true)
+
+  info {
+    setName(rootProject.name)
+    setDescription("Showcase and blueprint for implementing elaborated distributed systems on JVM.")
+    setInceptionYear("2020")
+
+    links {
+      setWebsite("https://github.com/croz-ltd/klokwrk-project")
+      setScm("https://github.com/croz-ltd/klokwrk-project")
+      setIssueTracker("https://github.com/croz-ltd/klokwrk-project/issues")
+    }
+
+    organization {
+      setName("CROZ d.o.o.")
+      setUrl("https://croz.net/")
+    }
+
+    people {
+      person {
+        setId("dmurat")
+        setName("Damir Murat")
+      }
+    }
+  }
+
+  licensing {
+    setEnabled(false) // Disable licensing checks, but still use metadata in generated POMs.
+
+    licenses {
+      license {
+        setId("Apache-2.0")
+        setPrimary(true)
+        setName("Apache License, Version 2.0")
+        setUrl("https://opensource.org/licenses/Apache-2.0")
+      }
+    }
+  }
+
+  buildInfo {
+    setSkipBuildTime(true) // To avoid re-executing gradle tasks on each run
+  }
+
   coverage {
     jacoco {
-      setEnabled(true)
       setToolVersion("$jacocoVersion")
     }
   }
@@ -45,7 +87,7 @@ config {
     groovydoc {
       // If one don't want to execute groovydoc as part of the assemble task, use gradle CLI task exclusion. For example: gw clean assemble -x groovydocJar
       // It also very useful to know which tasks exactly are part of task graph during execution. For that use: gw clean assemble -m
-      setEnabled(true)
+
       setReplaceJavadoc(true)
       setIncludes(["**/*.groovy"] as Set)
 
@@ -66,7 +108,6 @@ config {
 
   quality {
     codenarc {
-      setEnabled(true)
       setIgnoreFailures(true)
       setConfigFile(file("support/codenarc/codenarc.groovy"))
     }
@@ -102,8 +143,6 @@ configure(subprojects) { Project subproject ->
   java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
-
-    withSourcesJar()
   }
 
   test {
