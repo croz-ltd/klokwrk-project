@@ -12,6 +12,7 @@ Here we maintain list of issues in 3rd party software that are discovered during
 | VERIFICATION FAILED | After release, we did try it and it does not work for `klokwrk-project`. |
 | WON'T FIX           | Issue is declined by a maintainer. |
 | INVALID             | Issue is reported, but is resolved as invalid. |
+| RESOLVED            | Issue is reported, and can be resolved without any fix. Similar to question. |
 
 ## List of reported issues
 This is a list of all issues, categorized per 3rd party software, that are reported by `klokwrk-project` team members.
@@ -69,7 +70,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * IN PROGRESS - https://github.com/kordamp/kordamp-gradle-plugins/issues/345
 * RELEASED (0.41.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/381
 * INVALID - https://github.com/kordamp/kordamp-gradle-plugins/issues/382
-* REPORTED - https://github.com/kordamp/kordamp-gradle-plugins/issues/415
+* RESOLVED - https://github.com/kordamp/kordamp-gradle-plugins/issues/415
 
 ### Spock Framework
 * VERIFIED (in GROOVY-9643) - https://github.com/spockframework/spock/issues/1177
@@ -97,3 +98,7 @@ When particular issue is resolved, it can be removed from this list when there i
 ### JaCoCo
 * [JaCoCo PR 321 - Exceptions cause missed branches in previous lines](https://github.com/jacoco/jacoco/pull/321)
 * [JaCoCo IS 884 - Groovy 2.5.5 unreachable line in byte code](https://github.com/jacoco/jacoco/issues/884)
+
+### license-gradle-plugin (https://github.com/hierynomus/license-gradle-plugin)
+* [Gradle 6 compatibility - missing task annotations #179](https://github.com/hierynomus/license-gradle-plugin/issues/179)
+  * When resolved, licensing in main build.gradle can be turned on.
