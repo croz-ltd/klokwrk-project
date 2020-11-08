@@ -5,10 +5,12 @@ buildscript {
   }
 
   dependencies {
+    classpath "org.kordamp.gradle:insight-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:settings-gradle-plugin:$gradleKordampPluginVersion"
   }
 }
 
+apply plugin: 'org.kordamp.gradle.insight'
 apply plugin: 'org.kordamp.gradle.settings'
 
 rootProject.name = "klokwrk-project"
@@ -20,4 +22,13 @@ include (
 projects {
   directories = ["cargotracker", "lang", "lib"]
   enforceNamingConvention = false
+}
+
+//noinspection GrUnresolvedAccess
+insight {
+  //noinspection GrUnresolvedAccess
+  report(org.kordamp.gradle.plugin.insight.reports.SummaryBuildReport) {
+    format = "long"
+    maxProjectPathSize = 60
+  }
 }
