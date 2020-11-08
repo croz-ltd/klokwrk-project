@@ -1,6 +1,24 @@
-##########
-### At the moment, this is only a sample of 10 events of the same type. In more realistic test, here we will have all relevant events produced during typical usages of the app.
-##########
+====
+    SPDX-License-Identifier: Apache-2.0
+
+    Copyright 2020 CROZ d.o.o, the original author or authors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+====
+
+====
+At the moment, this is only a sample of 10 events of the same type. In more realistic test, here we will have all relevant events produced during typical usages of the app.
+====
 
 id:1
 data:{"messageIdentifier":"c74d17cd-5022-4f78-bf79-531382bd121d","aggregateIdentifier":"560abd2d-4703-43cb-9979-bd9aca1d11e4","aggregateSequenceNumber":0,"aggregateType":"CargoAggregate","payload":{"type":"org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.event.CargoBookedEvent","data":"{\"aggregateIdentifier\":\"560abd2d-4703-43cb-9979-bd9aca1d11e4\",\"originLocation\":{\"unLoCode\":{\"code\":\"HRRJK\",\"countryCode\":\"HR\",\"locationCode\":\"RJK\"},\"name\":{\"name\":\"Rijeka\",\"nameInternationalized\":\"Rijeka\"},\"countryName\":{\"name\":\"Hrvatska\",\"nameInternationalized\":\"Hrvatska\"},\"unLoCodeFunction\":{\"functionEncoded\":\"1234----\",\"specified\":true,\"roadTerminal\":true,\"airport\":true,\"postalExchangeOffice\":false,\"borderCrossing\":false,\"port\":true,\"railTerminal\":true}},\"destinationLocation\":{\"unLoCode\":{\"code\":\"HRZAG\",\"countryCode\":\"HR\",\"locationCode\":\"ZAG\"},\"name\":{\"name\":\"Zagreb\",\"nameInternationalized\":\"Zagreb\"},\"countryName\":{\"name\":\"Hrvatska\",\"nameInternationalized\":\"Hrvatska\"},\"unLoCodeFunction\":{\"functionEncoded\":\"-2345---\",\"specified\":true,\"roadTerminal\":true,\"airport\":true,\"postalExchangeOffice\":true,\"borderCrossing\":false,\"port\":false,\"railTerminal\":true}}}","revision":""},"timestamp":1596716578285,"metaData":{"wf-ot-spanid":"4e13702d-7562-46ed-b055-d1e325436f7e","wf-ot-sample":"true","wf-ot-traceid":"600571b3-76a4-45d9-9cd6-17dd24ce093d","INBOUND_CHANNEL_TYPE":"web","INBOUND_CHANNEL_REQUEST_IDENTIFIER":"127.0.0.1","INBOUND_CHANNEL_NAME":"booking"}}
