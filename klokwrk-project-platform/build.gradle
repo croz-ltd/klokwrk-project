@@ -1,8 +1,34 @@
 apply plugin: "java-platform"
-apply plugin: "maven-publish"
+apply plugin: "org.kordamp.gradle.publishing"
+
+description = "Dependencies platform for all modules under klokwrk-project."
 
 javaPlatform {
   allowDependencies()
+}
+
+config {
+  info {
+    setName(project.name)
+    setDescription(project.description)
+  }
+
+  publishing {
+    setPublications(["myPlatform"])
+    pom {
+      setPackaging("pom")
+    }
+  }
+}
+
+publishing {
+  publications {
+    //noinspection GroovyAssignabilityCheck
+    myPlatform(MavenPublication) {
+      //noinspection GroovyAssignabilityCheck
+      from components.javaPlatform
+    }
+  }
 }
 
 dependencies {
@@ -52,14 +78,4 @@ dependencies {
   api platform("io.opentracing.contrib:opentracing-spring-cloud-starter:$openTracingSpringCloudVersion")
   api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
   api platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
-}
-
-publishing {
-  publications {
-    //noinspection GroovyAssignabilityCheck
-    myPlatform(MavenPublication) {
-      //noinspection GroovyAssignabilityCheck
-      from components.javaPlatform
-    }
-  }
 }
