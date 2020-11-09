@@ -96,7 +96,9 @@ config {
   }
 
   buildInfo {
-    setSkipBuildTime(true) // To avoid re-executing gradle tasks on each run
+    // To enable reproducible builds, and avoid re-executing gradle tasks on each run because of changes in JAR manifests.
+    setSkipBuildTime(true)
+    setSkipBuildDate(true)
   }
 
   coverage {
