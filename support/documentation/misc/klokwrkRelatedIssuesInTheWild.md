@@ -52,12 +52,12 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (3.0.5) - https://issues.apache.org/jira/browse/GROOVY-9577
 * VERIFIED (3.0.5) - https://issues.apache.org/jira/browse/GROOVY-9643
 * FIXED (3.0.7) - https://issues.apache.org/jira/browse/GROOVY-9770
-* REPORTED - https://issues.apache.org/jira/browse/GROOVY-9772
+* IN PROGRESS (3.0.7) - https://issues.apache.org/jira/browse/GROOVY-9772
 
 ### IDEA
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-216308
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-239626
-* FIXED (2020.3) - https://youtrack.jetbrains.com/issue/IDEA-239966
+* VERIFIED (2020.3) - https://youtrack.jetbrains.com/issue/IDEA-239966
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-243620
 
 ### Kordamp Gradle Plugins
@@ -68,12 +68,12 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (0.37.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/328
 * IN PROGRESS - https://github.com/kordamp/kordamp-gradle-plugins/issues/341
 * IN PROGRESS - https://github.com/kordamp/kordamp-gradle-plugins/issues/345
-* RELEASED (0.41.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/381
+* VERIFIED (0.41.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/381
 * INVALID - https://github.com/kordamp/kordamp-gradle-plugins/issues/382
 * RESOLVED - https://github.com/kordamp/kordamp-gradle-plugins/issues/415
-* IN PROGRESS (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/417
-* IN PROGRESS (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/420
-* IN PROGRESS (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/421
+* FIXED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/417
+* FIXED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/420
+* FIXED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/421
 
 ### Spock Framework
 * VERIFIED (in GROOVY-9643) - https://github.com/spockframework/spock/issues/1177
