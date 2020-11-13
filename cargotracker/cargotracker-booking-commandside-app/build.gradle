@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 apply plugin: "org.springframework.boot"
+apply plugin: "org.gradle.test-retry"
 
 // =================================================
 // configuring "testIntegration" source set -- start
@@ -67,6 +68,11 @@ tasks.register("testIntegration", Test) { Test testIntegrationTask ->
   classpath = sourceSets.testIntegration.runtimeClasspath
 
   jvmArgs = ["-noverify", "-XX:TieredStopAtLevel=1"]
+
+  // Docker based tests in CI environments (like GitHub Actions) may be flaky. Therefore, we will retry 2 times (3 test execution in total) before giving up.
+  retry {
+    maxRetries = 2
+  }
 }
 
 idea {
