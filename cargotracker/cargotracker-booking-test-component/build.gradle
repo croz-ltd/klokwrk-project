@@ -18,6 +18,8 @@
 // =================================================
 // configuring "testIntegration" source set -- start
 // -------------------------------------------------
+apply plugin: "org.gradle.test-retry"
+
 // TODO dmurat: move testIntegration source set creation into the Gradle plugin.
 sourceSets {
   testIntegration {
@@ -65,6 +67,11 @@ tasks.register("testIntegration", Test) { Test testIntegrationTask ->
   classpath = sourceSets.testIntegration.runtimeClasspath
 
   jvmArgs = ["-noverify", "-XX:TieredStopAtLevel=1"]
+
+  // Docker based tests in CI environments (like GitHub Actions) may be flaky. Therefore, we will retry 2 times (3 test execution in total) before giving up.
+  retry {
+    maxRetries = 2
+  }
 }
 
 idea {
