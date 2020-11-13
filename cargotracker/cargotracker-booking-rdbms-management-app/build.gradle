@@ -42,12 +42,6 @@ springBoot {
   }
 }
 
-bootJar {
-  layered {
-    includeLayerTools = false
-  }
-}
-
 bootBuildImage {
   enabled = true
   environment = ["BP_JVM_VERSION" : "11.*"]
