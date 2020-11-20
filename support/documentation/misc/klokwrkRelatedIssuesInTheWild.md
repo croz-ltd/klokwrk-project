@@ -52,13 +52,14 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (3.0.5) - https://issues.apache.org/jira/browse/GROOVY-9577
 * VERIFIED (3.0.5) - https://issues.apache.org/jira/browse/GROOVY-9643
 * FIXED (3.0.7) - https://issues.apache.org/jira/browse/GROOVY-9770
-* IN PROGRESS (3.0.7) - https://issues.apache.org/jira/browse/GROOVY-9772
+* FIXED (3.0.7) - https://issues.apache.org/jira/browse/GROOVY-9772
 
 ### IDEA
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-216308
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-239626
 * VERIFIED (2020.3) - https://youtrack.jetbrains.com/issue/IDEA-239966
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-243620
+* IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-255422
 
 ### Kordamp Gradle Plugins
 * VERIFIED (0.36.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/291
