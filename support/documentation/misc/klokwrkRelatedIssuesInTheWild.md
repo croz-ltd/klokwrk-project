@@ -72,9 +72,9 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (0.41.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/381
 * INVALID - https://github.com/kordamp/kordamp-gradle-plugins/issues/382
 * RESOLVED - https://github.com/kordamp/kordamp-gradle-plugins/issues/415
-* FIXED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/417
-* FIXED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/420
-* FIXED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/421
+* VERIFIED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/417
+* VERIFIED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/420
+* VERIFIED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/421
 
 ### Spock Framework
 * VERIFIED (in GROOVY-9643) - https://github.com/spockframework/spock/issues/1177
