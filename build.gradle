@@ -155,7 +155,7 @@ configure(subprojects) { Project subproject ->
     }
   }
 
-  if (["klokwrk-project-platform", "cargotracker", "lib", "lang"].contains(subproject.name)) {
+  if (["platform", "cargotracker", "lib", "lang"].contains(subproject.name) || subproject.projectDir.parent.endsWith("platform")) {
     return
   }
 
