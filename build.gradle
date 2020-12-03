@@ -235,9 +235,9 @@ configure(subprojects) { Project subproject ->
   }
 
   dependencies {
-    annotationProcessor platform(project(":klokwrk-project-platform"))
-    implementation platform(project(":klokwrk-project-platform"))
-    codenarc platform(project(":klokwrk-project-platform"))
+    annotationProcessor platform(project(":klokwrk-platform-base"))
+    implementation platform(project(":klokwrk-platform-base"))
+    codenarc platform(project(":klokwrk-platform-base"))
 
     codenarc "org.codenarc:CodeNarc"
     codenarc "org.codehaus.groovy:groovy"
