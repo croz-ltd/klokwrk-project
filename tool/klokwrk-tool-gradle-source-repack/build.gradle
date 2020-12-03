@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 apply plugin: "io.micronaut.application"
 apply plugin: "com.github.johnrengelman.shadow"
 
@@ -14,8 +16,18 @@ application {
   mainClass.set("org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand")
 }
 
+// Processes resources/version.properties and replaces tokens with provided values.
+processResources {
+  filteringCharset = "UTF-8"
+  filter(ReplaceTokens, tokens: [moduleName: project.name, moduleVersion: project.version])
+}
+
 dependencies {
   implementation platform(project(":klokwrk-platform-micronaut"))
 
+  implementation "info.picocli:picocli"
+  implementation "io.micronaut.picocli:micronaut-picocli"
   implementation "org.codehaus.groovy:groovy"
+
+  runtimeOnly "ch.qos.logback:logback-classic"
 }
