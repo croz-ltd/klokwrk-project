@@ -31,6 +31,8 @@ compileGroovy {
 }
 
 dependencies {
+  implementation platform(project(":klokwrk-platform-base"))
+
   implementation "org.codehaus.groovy:groovy"
 
   testImplementation "org.spockframework:spock-core"

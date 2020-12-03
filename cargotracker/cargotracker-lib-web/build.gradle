@@ -18,6 +18,8 @@
 apply plugin: "java-library"
 
 dependencies {
+  implementation platform(project(":klokwrk-platform-spring-boot"))
+
   implementation project(":cargotracker-lib-boundary-api")
   implementation project(":klokwrk-lib-spring-context")
   implementation project(":klokwrk-lang-groovy")

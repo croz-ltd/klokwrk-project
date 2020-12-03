@@ -18,6 +18,8 @@
 apply plugin: "java-library"
 
 dependencies {
+  implementation platform(project(":klokwrk-platform-base"))
+
   implementation project(":cargotracker-booking-domain-model")
   implementation project(":cargotracker-lib-axon-api")
   implementation project(":klokwrk-lang-groovy")

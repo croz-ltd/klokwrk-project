@@ -31,6 +31,8 @@ compileGroovy {
 }
 
 dependencies {
+  implementation platform(project(":klokwrk-platform-base"))
+
   implementation project(":klokwrk-lang-groovy")
 
   implementation "org.codehaus.groovy:groovy"

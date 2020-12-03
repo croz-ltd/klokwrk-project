@@ -31,6 +31,8 @@ compileGroovy {
 }
 
 dependencies {
+  implementation platform(project(":klokwrk-platform-spring-boot"))
+
   implementation project(":klokwrk-lang-groovy")
   implementation project(":klokwrk-lang-groovy-contracts-simple")
 

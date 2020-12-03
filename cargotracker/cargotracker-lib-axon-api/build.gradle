@@ -18,6 +18,8 @@
 apply plugin: "java-library"
 
 dependencies {
+  implementation platform(project(":klokwrk-platform-base"))
+
   implementation("org.axonframework:axon-modelling") { transitive(false) }
   implementation "org.codehaus.groovy:groovy"
 }
