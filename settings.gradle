@@ -35,7 +35,7 @@ rootProject.name = "klokwrk-project"
 
 projects {
   cache = false
-  directories = ["platform", "cargotracker", "lang", "lib"]
+  directories = ["platform", "cargotracker", "lang", "lib", "tool"]
   enforceNamingConvention = false
 }
 

@@ -23,7 +23,9 @@ buildscript {
   }
 
   dependencies {
+    classpath "com.github.jengelman.gradle.plugins:shadow:$gradleShadowPlugin"
     classpath "fr.brouillard.oss.gradle:gradle-jgitver-plugin:$gradleJgitverPluginVersion"
+    classpath "io.micronaut.gradle:micronaut-gradle-plugin:$gradleMicronautPlugin"
     classpath "org.kordamp.gradle:groovy-project-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:jacoco-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:publishing-gradle-plugin:$gradleKordampPluginVersion"
@@ -155,7 +157,7 @@ configure(subprojects) { Project subproject ->
     }
   }
 
-  if (["platform", "cargotracker", "lib", "lang"].contains(subproject.name) || subproject.projectDir.parent.endsWith("platform")) {
+  if (["platform", "cargotracker", "lib", "lang", "tool"].contains(subproject.name) || subproject.projectDir.parent.endsWith("platform")) {
     return
   }
 

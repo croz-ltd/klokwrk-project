@@ -1,0 +1,21 @@
+apply plugin: "io.micronaut.application"
+apply plugin: "com.github.johnrengelman.shadow"
+
+micronaut {
+  testRuntime("spock2")
+  enableNativeImage(false)
+  processing {
+    incremental(true)
+    annotations("org.klokwrk.tool.gradle.source.repack.*")
+  }
+}
+
+application {
+  mainClass.set("org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand")
+}
+
+dependencies {
+  implementation platform(project(":klokwrk-platform-micronaut"))
+
+  implementation "org.codehaus.groovy:groovy"
+}
