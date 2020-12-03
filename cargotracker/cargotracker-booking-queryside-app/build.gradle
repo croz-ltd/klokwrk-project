@@ -118,6 +118,9 @@ bootBuildImage {
 }
 
 dependencies {
+  implementation platform(project(":klokwrk-platform-spring-boot"))
+  testIntegrationImplementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
+
   implementation project(":cargotracker-booking-queryside-rdbms-projection-model")
   implementation project(":cargotracker-lib-axon-cqrs")
   implementation project(":cargotracker-lib-axon-logging")

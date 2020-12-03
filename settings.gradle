@@ -33,12 +33,9 @@ apply plugin: 'org.kordamp.gradle.settings'
 
 rootProject.name = "klokwrk-project"
 
-include (
-    "klokwrk-project-platform"
-)
-
 projects {
-  directories = ["cargotracker", "lang", "lib"]
+  cache = false
+  directories = ["platform", "cargotracker", "lang", "lib"]
   enforceNamingConvention = false
 }
 

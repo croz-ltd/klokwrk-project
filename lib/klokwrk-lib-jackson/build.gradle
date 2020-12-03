@@ -18,6 +18,8 @@
 apply plugin: "java-library"
 
 dependencies {
+  implementation platform(project(":klokwrk-platform-spring-boot"))
+
   implementation "com.fasterxml.jackson.core:jackson-core"
   implementation "com.fasterxml.jackson.core:jackson-databind"
   implementation "org.codehaus.groovy:groovy"

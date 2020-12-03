@@ -155,7 +155,7 @@ configure(subprojects) { Project subproject ->
     }
   }
 
-  if (["klokwrk-project-platform", "cargotracker", "lib", "lang"].contains(subproject.name)) {
+  if (["platform", "cargotracker", "lib", "lang"].contains(subproject.name) || subproject.projectDir.parent.endsWith("platform")) {
     return
   }
 
@@ -235,9 +235,7 @@ configure(subprojects) { Project subproject ->
   }
 
   dependencies {
-    annotationProcessor platform(project(":klokwrk-project-platform"))
-    implementation platform(project(":klokwrk-project-platform"))
-    codenarc platform(project(":klokwrk-project-platform"))
+    codenarc platform(project(":klokwrk-platform-base"))
 
     codenarc "org.codenarc:CodeNarc"
     codenarc "org.codehaus.groovy:groovy"

@@ -18,6 +18,8 @@
 apply plugin: "java-library"
 
 dependencies {
+  implementation platform(project(":klokwrk-platform-spring-boot"))
+
   implementation project(":klokwrk-lang-groovy-contracts-match")
 
   implementation "com.tngtech.archunit:archunit-junit5"

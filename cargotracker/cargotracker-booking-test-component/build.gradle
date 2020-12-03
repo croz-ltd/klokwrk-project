@@ -86,6 +86,9 @@ idea {
 // ===============================================
 
 dependencies {
+  implementation platform(project(":klokwrk-platform-spring-boot"))
+  testIntegrationImplementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
+
   // Need to have Groovy as implementation dependency (instead as only testIntegrationImplementation dependency) as otherwise groovydoc task fails.
   implementation "org.codehaus.groovy:groovy"
 
