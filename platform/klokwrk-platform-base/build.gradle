@@ -50,6 +50,7 @@ publishing {
 
 dependencies {
   constraints {
+    api "com.github.tomakehurst:wiremock-jre8:$wireMockVersion"
     api "com.tngtech.archunit:archunit-junit5:$archUnitVersion"
     api "net.ttddyy:datasource-proxy:$dataSourceProxyVersion"
     api "org.axonframework:axon-configuration:$axonFrameworkVersion"

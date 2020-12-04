@@ -2,6 +2,8 @@ package org.klokwrk.tool.gradle.source.repack
 
 import groovy.transform.CompileStatic
 import groovy.transform.ToString
+import org.klokwrk.tool.gradle.source.repack.constant.Constant
+import org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloaderInfo
 
 /**
  * Encapsulates supported CLI options.
@@ -20,8 +22,40 @@ class GradleSourceRepackCliArguments {
    */
   Boolean performCleanup
 
+  /**
+   * Gradle distribution type to use.
+   * <p/>
+   * Used for calculating Gradle distribution archive name for download. It defaults to {@link Constant#GRADLE_DISTRIBUTION_TYPE_DEFAULT}.
+   */
+  String gradleDistributionType
+
+  /**
+   * Extension of downloadable Gradle distribution archive name.
+   * <p/>
+   * It defaults to {@link Constant#GRADLE_DISTRIBUTION_FILE_EXTENSION_DEFAULT}.
+   */
+  String gradleDistributionFileExtension
+
+  /**
+   * URL of the site where downloadable Gradle distribution archive resides.
+   * <p/>
+   * It defaults to {@link Constant#GRADLE_DISTRIBUTION_SITE_URL_DEFAULT}
+   */
+  String gradleDistributionSiteUrl
+
+  /**
+   * Directory into which Gradle distribution archive will be downloaded.
+   * <p/>
+   * It defaults to current working directory, meaning a directory from which command is started.
+   */
+  String downloadTargetDir
+
   GradleSourceRepackCliArguments(String gradleVersion) {
     this.gradleVersion = gradleVersion
+    this.gradleDistributionType = Constant.GRADLE_DISTRIBUTION_TYPE_DEFAULT
+    this.gradleDistributionFileExtension = Constant.GRADLE_DISTRIBUTION_FILE_EXTENSION_DEFAULT
+    this.gradleDistributionSiteUrl = Constant.GRADLE_DISTRIBUTION_SITE_URL_DEFAULT
+    this.downloadTargetDir = System.getProperty("user.dir")
 
     this.performCleanup = true
   }
@@ -31,5 +65,12 @@ class GradleSourceRepackCliArguments {
    */
   String getGradleVersion() {
     return gradleVersion
+  }
+
+  /**
+   * Factory method for creating {@code GradleDownloaderInfo} for main Gradle distribution ZIP file.
+   */
+  GradleDownloaderInfo toGradleDownloaderInfoForDistributionZip() {
+    return new GradleDownloaderInfo(gradleVersion, gradleDistributionType, gradleDistributionFileExtension, gradleDistributionSiteUrl, downloadTargetDir)
   }
 }
