@@ -68,6 +68,7 @@ class GradleSourceRepackCommand implements Runnable {
     log.debug("cliArguments: {}", cliArguments)
 
     File gradleDistributionZipFile = fetchGradleDistributionZipFile(cliArguments, gradleDownloader)
+    File gradleDistributionZipSha256File = fetchGradleDistributionZipSha256File(cliArguments, gradleDownloader)
 
     log.debug("Finished.")
   }
@@ -85,5 +86,20 @@ class GradleSourceRepackCommand implements Runnable {
     }
 
     return gradleDistributionZipFile
+  }
+
+  private File fetchGradleDistributionZipSha256File(GradleSourceRepackCliArguments cliArguments, GradleDownloader gradleDownloader) {
+    GradleDownloaderInfo gradleDownloaderZipSha256Info = cliArguments.toGradleDownloaderInfoForDistributionZipSha256File()
+
+    File gradleDistributionZipSha256File = new File(gradleDownloaderZipSha256Info.downloadTargetFileAbsolutePath)
+    if (gradleDistributionZipSha256File.exists()) {
+      log.debug("Using already existing Gradle distribution's SHA-256 file '{}'.", gradleDistributionZipSha256File.absolutePath)
+    }
+    else {
+      log.debug("Starting download of Gradle distribution's SHA-256 file.")
+      gradleDistributionZipSha256File = gradleDownloader.download(gradleDownloaderZipSha256Info)
+    }
+
+    return gradleDistributionZipSha256File
   }
 }

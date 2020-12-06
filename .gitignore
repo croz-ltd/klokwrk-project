@@ -19,6 +19,7 @@ out/
 *.ipr
 *.log
 *.zip
+*.sha256
 
 ### NetBeans ###
 nbproject/private/

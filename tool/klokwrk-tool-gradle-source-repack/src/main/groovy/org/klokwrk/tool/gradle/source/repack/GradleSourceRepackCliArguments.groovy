@@ -73,4 +73,11 @@ class GradleSourceRepackCliArguments {
   GradleDownloaderInfo toGradleDownloaderInfoForDistributionZip() {
     return new GradleDownloaderInfo(gradleVersion, gradleDistributionType, gradleDistributionFileExtension, gradleDistributionSiteUrl, downloadTargetDir)
   }
+
+  /**
+   * Factory method for creating {@code GradleDownloaderInfo} for supportive SHA-256 file of corresponding Gradle distribution ZIP file.
+   */
+  GradleDownloaderInfo toGradleDownloaderInfoForDistributionZipSha256File() {
+    return new GradleDownloaderInfo(gradleVersion, gradleDistributionType, "${ gradleDistributionFileExtension }.sha256", gradleDistributionSiteUrl, downloadTargetDir)
+  }
 }
