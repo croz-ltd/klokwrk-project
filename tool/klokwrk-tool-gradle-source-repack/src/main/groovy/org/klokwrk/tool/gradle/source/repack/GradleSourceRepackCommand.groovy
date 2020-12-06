@@ -70,6 +70,10 @@ class GradleSourceRepackCommand implements Runnable {
     File gradleDistributionZipFile = fetchGradleDistributionZipFile(cliArguments, gradleDownloader)
     File gradleDistributionZipSha256File = fetchGradleDistributionZipSha256File(cliArguments, gradleDownloader)
 
+    if (cliArguments.performCleanup) {
+      cleanDownloadedFiles([gradleDistributionZipFile, gradleDistributionZipSha256File])
+    }
+
     log.debug("Finished.")
   }
 
@@ -101,5 +105,10 @@ class GradleSourceRepackCommand implements Runnable {
     }
 
     return gradleDistributionZipSha256File
+  }
+
+  private void cleanDownloadedFiles(List<File> fileListToDelete) {
+    log.debug("Deleting downloaded files: {}", fileListToDelete)
+    fileListToDelete.each (File file) -> file.delete()
   }
 }
