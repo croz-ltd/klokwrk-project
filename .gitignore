@@ -29,3 +29,4 @@ nbdist/
 **/bin
 
 !tool/klokwrk-tool-gradle-source-repack/src/test/resources/testFiles/slim-gradle-6.7.1-all.zip
+!tool/klokwrk-tool-gradle-source-repack/src/test/resources/testFiles/slim-gradle-6.7.1-all.zip.sha256
