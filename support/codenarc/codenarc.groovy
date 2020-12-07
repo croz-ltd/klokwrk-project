@@ -181,7 +181,7 @@ ruleset {
   }
   DuplicateStringLiteral {
     doNotApplyToFilesMatching = TEST_FILES
-    ignoreStrings = "|.|,|0|1|-1"
+    ignoreStrings = "|.|,|0|1|-1|/"
     ignoreStringsDelimiter = "|"
   }
 

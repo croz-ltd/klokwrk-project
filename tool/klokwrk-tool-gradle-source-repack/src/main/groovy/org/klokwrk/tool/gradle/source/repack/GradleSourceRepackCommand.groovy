@@ -7,6 +7,7 @@ import org.klokwrk.tool.gradle.source.repack.checksum.GradleSha256Checker
 import org.klokwrk.tool.gradle.source.repack.cli.PropertiesVersionProvider
 import org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloader
 import org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloaderInfo
+import org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import picocli.CommandLine.Command
@@ -58,22 +59,31 @@ class GradleSourceRepackCommand implements Runnable {
   @Option(names = ["-c", "--cleanup"], description = "Removing downloaded files after successful execution.", showDefaultValue = Visibility.ALWAYS, arity = "1", paramLabel = "<true|false>")
   Boolean cliOptionCleanup = true
 
+  @Option(names = ["--gradle-distribution-dir-url"], description = "URL to the directory where Gradle distribution resides.", hidden = true)
+  String gradleDistributionDirUrl
+
+  @Option(names = ["--download-dir"], description = "Path to the directory where Gradle distribution with sources will be downloaded.", hidden = true)
+  String downloadDir
+
+  @Option(names = ["--repack-dir"], description = "Path to the directory where Gradle distribution with sources will be repacked.", hidden = true)
+  String repackDir
+
   @Inject
   GradleDownloader gradleDownloader
 
+  @SuppressWarnings('GroovyPointlessBoolean')
   @Override
   void run() {
     log.debug("Started.")
 
-    GradleSourceRepackCliArguments cliArguments = new GradleSourceRepackCliArguments(cliParameterGradleVersion)
-    cliArguments.performCleanup = cliOptionCleanup
+    GradleSourceRepackCliArguments cliArguments = createGradleSourceRepackCliArguments()
     log.debug("cliArguments: {}", cliArguments)
 
     File gradleDistributionZipFile = fetchGradleDistributionZipFile(cliArguments, gradleDownloader)
     File gradleDistributionZipSha256File = fetchGradleDistributionZipSha256File(cliArguments, gradleDownloader)
 
     GradleSha256CheckInfo gradleSha256CheckInfo = GradleSha256Checker.checkSha256(gradleDistributionZipSha256File, gradleDistributionZipFile)
-    if (gradleSha256CheckInfo.isMatch()) {
+    if (gradleSha256CheckInfo.isMatch() == true) {
       printlnOnConsole "SHA-256 checksum OK."
     }
     else {
@@ -81,11 +91,33 @@ class GradleSourceRepackCommand implements Runnable {
       throw new IllegalStateException(message)
     }
 
-    if (cliArguments.performCleanup) {
+    GradleSourceRepackager.repackGradleSource(cliArguments.toGradleSourceRepackagerInfo(gradleDistributionZipFile.absolutePath))
+
+    if (cliArguments.performCleanup == true) {
       cleanDownloadedFiles([gradleDistributionZipFile, gradleDistributionZipSha256File])
     }
 
     log.debug("Finished.")
+  }
+
+  GradleSourceRepackCliArguments createGradleSourceRepackCliArguments() {
+    GradleSourceRepackCliArguments cliArguments = new GradleSourceRepackCliArguments(cliParameterGradleVersion.trim())
+    cliArguments.performCleanup = cliOptionCleanup
+
+    if (gradleDistributionDirUrl) {
+      cliArguments.gradleDistributionSiteUrl = gradleDistributionDirUrl.trim()
+      cliArguments.gradleDistributionSiteUrl = cliArguments.gradleDistributionSiteUrl.endsWith("/") ? cliArguments.gradleDistributionSiteUrl : cliArguments.gradleDistributionSiteUrl + "/"
+    }
+
+    if (downloadDir) {
+      cliArguments.downloadTargetDir = new File(downloadDir.trim()).absolutePath
+    }
+
+    if (repackDir) {
+      cliArguments.gradleApiDirName = new File(repackDir.trim()).absolutePath
+    }
+
+    return cliArguments
   }
 
   private File fetchGradleDistributionZipFile(GradleSourceRepackCliArguments cliArguments, GradleDownloader gradleDownloader) {

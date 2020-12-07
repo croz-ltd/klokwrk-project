@@ -4,6 +4,10 @@ import groovy.transform.CompileStatic
 import groovy.transform.ToString
 import org.klokwrk.tool.gradle.source.repack.constant.Constant
 import org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloaderInfo
+import org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackagerInfo
+
+import java.nio.file.Files
+import java.nio.file.Path
 
 /**
  * Encapsulates supported CLI options.
@@ -50,12 +54,37 @@ class GradleSourceRepackCliArguments {
    */
   String downloadTargetDir
 
+  /**
+   * The file name of the archive into which Gradle sources will be repacked.
+   * <p/>
+   * It defaults to {@code gradle-api-${ this.gradleVersion }-sources.jar }
+   */
+  String gradleApiSourcesFileName
+
+  /**
+   * The directory where repacked archive will be placed.
+   * <p/>
+   * If directory {@code ~/.gradle/caches/${ this.gradleVersion }/generated-gradle-jars} exists, it will be used. Otherwise, {@code downloadTargetDir} is used.
+   */
+  String gradleApiDirName
+
   GradleSourceRepackCliArguments(String gradleVersion) {
     this.gradleVersion = gradleVersion
     this.gradleDistributionType = Constant.GRADLE_DISTRIBUTION_TYPE_DEFAULT
     this.gradleDistributionFileExtension = Constant.GRADLE_DISTRIBUTION_FILE_EXTENSION_DEFAULT
     this.gradleDistributionSiteUrl = Constant.GRADLE_DISTRIBUTION_SITE_URL_DEFAULT
     this.downloadTargetDir = System.getProperty("user.dir")
+
+    this.gradleApiSourcesFileName = "gradle-api-${ this.gradleVersion }-sources.jar"
+
+    // If default target directory for repacking does not exist, repack into a directory where gradle distribution was downloaded.
+    String gradleApiDirNameToCheck = "${ System.getProperty("user.home") }/.gradle/caches/${ this.gradleVersion }/generated-gradle-jars"
+    if (Files.exists(Path.of(gradleApiDirNameToCheck))) {
+      this.gradleApiDirName = gradleApiDirNameToCheck
+    }
+    else {
+      this.gradleApiDirName = downloadTargetDir
+    }
 
     this.performCleanup = true
   }
@@ -65,6 +94,10 @@ class GradleSourceRepackCliArguments {
    */
   String getGradleVersion() {
     return gradleVersion
+  }
+
+  String getGradleApiSourcesFilePath() {
+    return getGradleApiDirName() + "/" + getGradleApiSourcesFileName()
   }
 
   /**
@@ -79,5 +112,12 @@ class GradleSourceRepackCliArguments {
    */
   GradleDownloaderInfo toGradleDownloaderInfoForDistributionZipSha256File() {
     return new GradleDownloaderInfo(gradleVersion, gradleDistributionType, "${ gradleDistributionFileExtension }.sha256", gradleDistributionSiteUrl, downloadTargetDir)
+  }
+
+  /**
+   * Factory method for creating {@code GradleSourceRepackagerInfo}.
+   */
+  GradleSourceRepackagerInfo toGradleSourceRepackagerInfo(String gradleDistributionZipFilePath) {
+    return new GradleSourceRepackagerInfo(gradleDistributionZipFilePath, gradleVersion, gradleApiSourcesFilePath, gradleApiDirName)
   }
 }
