@@ -2,6 +2,8 @@ package org.klokwrk.tool.gradle.source.repack
 
 import groovy.transform.CompileStatic
 import io.micronaut.configuration.picocli.PicocliRunner
+import io.micronaut.logging.LogLevel
+import io.micronaut.logging.LoggingSystem
 import org.klokwrk.tool.gradle.source.repack.checksum.GradleSha256CheckInfo
 import org.klokwrk.tool.gradle.source.repack.checksum.GradleSha256Checker
 import org.klokwrk.tool.gradle.source.repack.cli.PropertiesVersionProvider
@@ -59,6 +61,13 @@ class GradleSourceRepackCommand implements Runnable {
   @Option(names = ["-c", "--cleanup"], description = "Removing downloaded files after successful execution.", showDefaultValue = Visibility.ALWAYS, arity = "1", paramLabel = "<true|false>")
   Boolean cliOptionCleanup = true
 
+  @Option(
+      names = ["-l", "--loggingLevels"], showDefaultValue = Visibility.ALWAYS, split = ",",
+      description = "Comma separated list of logger levels configurations. Changing log levels is effective only after a command starts running. All preceding logging is not affected.",
+      paramLabel = "ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG,io.micronaut.http.client=DEBUG,etc..."
+  )
+  List<String> loggingLevelConfigList
+
   @Option(names = ["--gradle-distribution-dir-url"], description = "URL to the directory where Gradle distribution resides.", hidden = true)
   String gradleDistributionDirUrl
 
@@ -71,9 +80,13 @@ class GradleSourceRepackCommand implements Runnable {
   @Inject
   GradleDownloader gradleDownloader
 
+  @Inject
+  LoggingSystem loggingSystem
+
   @SuppressWarnings('GroovyPointlessBoolean')
   @Override
   void run() {
+    configureCustomLoggingLevels()
     log.debug("Started.")
 
     GradleSourceRepackCliArguments cliArguments = createGradleSourceRepackCliArguments()
@@ -98,6 +111,21 @@ class GradleSourceRepackCommand implements Runnable {
     }
 
     log.debug("Finished.")
+  }
+
+  void configureCustomLoggingLevels() {
+    if (loggingLevelConfigList) {
+      loggingLevelConfigList.each { String loggingLevelConfig ->
+        List<String> loggingLevelConfigTokenList = loggingLevelConfig.tokenize("=")
+        if (loggingLevelConfigTokenList.size() != 2) {
+          throw new IllegalArgumentException("--loggingLevels option contains invalid configuration: '$loggingLevelConfig'. Cannot continue.")
+        }
+
+        String logger = loggingLevelConfigTokenList[0]
+        String level = loggingLevelConfigTokenList[1].toUpperCase()
+        loggingSystem.setLogLevel(logger, LogLevel.valueOf(level))
+      }
+    }
   }
 
   GradleSourceRepackCliArguments createGradleSourceRepackCliArguments() {

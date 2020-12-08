@@ -100,6 +100,58 @@ class GradleSourceRepackCommandSpecification extends Specification {
     "6.7.a"       | _
   }
 
+  void "should fail for invalid loggingLevels option"() {
+    given:
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()
+    System.err = new PrintStream(byteArrayOutputStream)
+
+    String[] args = ["--loggingLevels=${ loggingLevels }", "6.7.1"] as String[]
+
+    when:
+    PicocliRunner.run(GradleSourceRepackCommand, applicationContext, args)
+    String outputString = byteArrayOutputStream
+
+    then:
+    outputString.contains("--loggingLevels option contains invalid configuration:")
+
+    where:
+    loggingLevels | _
+    "ROOT=INFO,org.klokwrk.tool.gradle.source.repack-DEBUG"   | _
+    "ROOT=INFO;org.klokwrk.tool.gradle.source.repack=DEBUG"   | _
+    "ROOT=INFO-org.klokwrk.tool.gradle.source.repack=DEBUG"   | _
+  }
+
+  void "should work as expected for valid loggingLevels option"() {
+    given:
+    File downloadDir = new File(System.getProperty("java.io.tmpdir"))
+    File downloadedGradleDistributionFile = new File("${ downloadDir }/gradle-6.7.1-all.zip")
+    downloadedGradleDistributionFile.delete()
+    File downloadedGradleDistributionSha256File = new File("${ downloadDir }/gradle-6.7.1-all.zip.sha256")
+    downloadedGradleDistributionSha256File.delete()
+
+    WireMockUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip", "gradle-6.7.1-all.zip")
+    WireMockUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip.sha256", "gradle-6.7.1-all.zip.sha256")
+
+    File repackDir = new File(System.getProperty("java.io.tmpdir"))
+    File repackedSourceArchiveFile = new File("${ repackDir }/gradle-api-6.7.1-sources.jar")
+    repackedSourceArchiveFile.delete()
+
+    String[] args = [
+        "--loggingLevels=org.klokwrk.tool.gradle.source.repack=DEBUG", "--cleanup=true", "--gradle-distribution-dir-url=${ wireMockServer.baseUrl() }", "--download-dir=${ downloadDir.absolutePath }",
+        "--repack-dir=${ repackDir.absolutePath }", "6.7.1"
+    ] as String[]
+
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()
+    System.out = new PrintStream(byteArrayOutputStream)
+
+    when:
+    PicocliRunner.run(GradleSourceRepackCommand, applicationContext, args)
+    String outputString = byteArrayOutputStream
+
+    then:
+    outputString.readLines()[0] ==~ /.*DEBUG.*o.k.t.g.s.r.GradleSourceRepackCommand.*-.*Started.*/
+  }
+
   void "should work as expected with cleanup"() {
     given:
     File downloadDir = new File(System.getProperty("java.io.tmpdir"))
