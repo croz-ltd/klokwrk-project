@@ -76,6 +76,13 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/420
 * VERIFIED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/421
 
+### micronaut-core
+* IN PROGRESS (2.3.0) - https://github.com/micronaut-projects/micronaut-core/issues/4622
+
+### micronaut-gradle-plugin
+* REPORTED - https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/92
+* REPORTED - https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/93
+
 ### Spock Framework
 * VERIFIED (in GROOVY-9643) - https://github.com/spockframework/spock/issues/1177
 
