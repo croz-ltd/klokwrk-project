@@ -25,6 +25,10 @@ processResources {
 dependencies {
   implementation platform(project(":klokwrk-platform-micronaut"))
 
+  compileOnly "info.picocli:picocli-codegen"
+  compileOnly "io.github.classgraph:classgraph"
+  compileOnly "org.graalvm.nativeimage:svm"
+
   implementation "info.picocli:picocli"
   implementation "io.micronaut:micronaut-core"
   implementation "io.micronaut:micronaut-http-client"

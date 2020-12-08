@@ -89,5 +89,8 @@ dependencies {
     api "uk.org.lidalia:slf4j-test:$slf4jTestVersion"
 
     api "org.codenarc:CodeNarc:$codeNarcVersion"
+
+    api "io.github.classgraph:classgraph:$classGraphVersion"
+    api "info.picocli:picocli-codegen:$picocliCodegenVersion"
   }
 }
