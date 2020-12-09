@@ -6,8 +6,8 @@ import org.klokwrk.tool.gradle.source.repack.constant.Constant
 import org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloaderInfo
 import org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackagerInfo
 
+import java.nio.file.FileSystems
 import java.nio.file.Files
-import java.nio.file.Path
 
 /**
  * Encapsulates supported CLI options.
@@ -79,7 +79,7 @@ class GradleSourceRepackCliArguments {
 
     // If default target directory for repacking does not exist, repack into a directory where gradle distribution was downloaded.
     String gradleApiDirNameToCheck = "${ System.getProperty("user.home") }/.gradle/caches/${ this.gradleVersion }/generated-gradle-jars"
-    if (Files.exists(Path.of(gradleApiDirNameToCheck))) {
+    if (Files.exists(FileSystems.default.getPath(gradleApiDirNameToCheck))) {
       this.gradleApiDirName = gradleApiDirNameToCheck
     }
     else {
