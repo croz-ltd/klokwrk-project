@@ -4,7 +4,9 @@ import groovy.transform.CompileStatic
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import java.util.concurrent.atomic.AtomicLong
+import java.util.function.Consumer
+import java.util.function.Function
+import java.util.function.Predicate
 import java.util.zip.ZipEntry
 import java.util.zip.ZipException
 import java.util.zip.ZipFile
@@ -40,12 +42,12 @@ class GradleSourceRepackager {
   }
 
   private static Long calculateCountOfTargetZipEntries(GradleSourceRepackagerInfo repackagerInfo) {
-    Long countOfTargetZipEntries
-    try (ZipFile zipFile = new ZipFile(repackagerInfo.gradleDistributionZipFilePath)) {
+    Long countOfTargetZipEntries = null
+    new ZipFile(repackagerInfo.gradleDistributionZipFilePath).withCloseable { ZipFile zipFile ->
       countOfTargetZipEntries = zipFile
           .stream()
-          .filter((ZipEntry zipEntry) -> !zipEntry.isDirectory() && zipEntry.name.startsWith(repackagerInfo.gradleDistributionSrcDirPath))
-          .map((ZipEntry zipEntry) -> calculateTargetZipEntryName(repackagerInfo.gradleDistributionSrcDirPath, zipEntry))
+          .filter({ ZipEntry zipEntry -> !zipEntry.isDirectory() && zipEntry.name.startsWith(repackagerInfo.gradleDistributionSrcDirPath) } as Predicate)
+          .map({ ZipEntry zipEntry -> calculateTargetZipEntryName(repackagerInfo.gradleDistributionSrcDirPath, zipEntry) } as Function)
           .distinct() // skipping duplicate target entries (e.g. package-info.java)
           .count()
     }
@@ -62,22 +64,22 @@ class GradleSourceRepackager {
   }
 
   private static void repackageZipFile(GradleSourceRepackagerInfo repackagerInfo, Long countOfTargetZipEntries) {
-    try (ZipOutputStream targetZipOutputStream = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(repackagerInfo.gradleApiSourcesFilePath)))) {
-      try (ZipFile originalZipFile = new ZipFile(repackagerInfo.gradleDistributionZipFilePath)) {
-        AtomicLong zipEntriesProcessedCount = new AtomicLong(0)
+    new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(repackagerInfo.gradleApiSourcesFilePath))).withCloseable { ZipOutputStream targetZipOutputStream ->
+      new ZipFile(repackagerInfo.gradleDistributionZipFilePath).withCloseable { ZipFile originalZipFile ->
+        Long zipEntriesProcessedCount = new Long(0)
         originalZipFile
             .stream()
-            .filter((ZipEntry zipEntry) -> !zipEntry.isDirectory() && zipEntry.name.startsWith(repackagerInfo.gradleDistributionSrcDirPath))
-            .forEach((ZipEntry originalZipEntry) -> {
+            .filter({ ZipEntry zipEntry -> !zipEntry.isDirectory() && zipEntry.name.startsWith(repackagerInfo.gradleDistributionSrcDirPath) } as Predicate)
+            .forEach({ ZipEntry originalZipEntry ->
               String targetZipEntryName = calculateTargetZipEntryName(repackagerInfo.gradleDistributionSrcDirPath, originalZipEntry)
               String skippedMessage = repackageZipEntry(originalZipFile, originalZipEntry, targetZipOutputStream, targetZipEntryName)
 
               if (!skippedMessage) {
-                zipEntriesProcessedCount.accumulateAndGet(1, Long::sum)
+                zipEntriesProcessedCount++
               }
 
-              Integer percentage = zipEntriesProcessedCount.get() * 100 / countOfTargetZipEntries as Integer
-              Boolean isLastEntry = countOfTargetZipEntries == zipEntriesProcessedCount.get()
+              Integer percentage = zipEntriesProcessedCount * 100 / countOfTargetZipEntries as Integer
+              Boolean isLastEntry = countOfTargetZipEntries == zipEntriesProcessedCount
               String newLineIfNecessary = (isLastEntry || (skippedMessage && log.debugEnabled) || log.traceEnabled) ? "\n" : ""
               printRepackagingProgressOnConsole(repackagerInfo.gradleApiSourcesFilePath, percentage, newLineIfNecessary)
 
@@ -87,14 +89,17 @@ class GradleSourceRepackager {
               else {
                 log.trace("Repacked Gradle source file: {} -> {}", originalZipEntry.name, targetZipEntryName)
               }
-            })
+
+              //noinspection GroovyUnnecessaryReturn
+              return // Note: this return is here just to make JaCoCo report more reliable.
+            } as Consumer)
       }
     }
   }
 
   private static String repackageZipEntry(ZipFile originalZipFile, ZipEntry originalZipEntry, ZipOutputStream targetZipOutputStream, String targetZipEntryName) {
     String skippedMessage = null
-    try (InputStream inputStream = originalZipFile.getInputStream(originalZipEntry)) {
+    originalZipFile.getInputStream(originalZipEntry).withCloseable { InputStream inputStream ->
       try {
         targetZipOutputStream.putNextEntry(new ZipEntry(targetZipEntryName))
 

@@ -11,6 +11,9 @@ import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.RxStreamingHttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.client.exceptions.HttpClientResponseException
+import io.reactivex.functions.Action
+import io.reactivex.functions.Consumer
+import io.reactivex.functions.Function
 import io.reactivex.internal.functions.Functions
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -43,6 +46,8 @@ class GradleDownloader {
   /**
    * Downloads Gradle distribution files (typically *.zip or *.zip.sha256) based on provided {@link GradleDownloaderInfo} specification.
    */
+  // TODO dmurat: revise Indentation warning suppression after analysis and potential bug report to CodeNarc.
+  @SuppressWarnings("Indentation")
   File download(GradleDownloaderInfo gradleDownloaderInfo) {
     log.debug("Starting download with following gradleDownloaderInfo: {}", gradleDownloaderInfo)
 
@@ -53,17 +58,21 @@ class GradleDownloader {
     log.info("Downloading: '{}' ==> '{}'.", realDownloadUrl, gradleDownloaderInfo.downloadTargetFileAbsolutePath)
     log.debug("Content-Length for '{}': {} ({} MiB).", realDownloadUrl, contentLength, contentLength as Long / (1024 * 1024))
 
-    try (BufferedOutputStream fileOutputStream = new BufferedOutputStream(new FileOutputStream(gradleDownloaderInfo.downloadTargetFileAbsolutePath), 1024 * 1024)) {
+    new BufferedOutputStream(new FileOutputStream(gradleDownloaderInfo.downloadTargetFileAbsolutePath), 1024 * 1024).withCloseable { BufferedOutputStream fileOutputStream ->
       Long downloadedBytesCount = 0
       streamingHttpClient.exchangeStream(HttpRequest.GET(realDownloadUrl).accept(MediaType.APPLICATION_OCTET_STREAM_TYPE))
-                         .map((HttpResponse<ByteBuffer<?>> byteBufferHttpResponse) -> {
+                         .map({ HttpResponse<ByteBuffer<?>> byteBufferHttpResponse ->
                            byte[] byteArray = byteBufferHttpResponse.body.orElseThrow().toByteArray()
                            downloadedBytesCount += byteArray.length
                            printOutDownloadProgress(realDownloadUrl, downloadedBytesCount, contentLength)
 
                            return byteArray
-                         })
-                         .blockingSubscribe((byte[] byteArray) -> fileOutputStream.write(byteArray), Functions.ON_ERROR_MISSING, () -> printlnOutNewline())
+                         } as Function)
+                         .blockingSubscribe(
+                             { byte[] byteArray -> fileOutputStream.write(byteArray) } as Consumer,
+                             Functions.ON_ERROR_MISSING,
+                             { printlnOutNewline() } as Action
+                         )
     }
 
     return new File(gradleDownloaderInfo.downloadTargetFileAbsolutePath)
