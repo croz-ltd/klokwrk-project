@@ -10,6 +10,9 @@ import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
+import java.nio.file.Files
+import java.nio.file.Paths
+
 class GradleSourceRepackCommandSpecification extends Specification {
 
   @Shared
@@ -123,7 +126,10 @@ class GradleSourceRepackCommandSpecification extends Specification {
 
   void "should work as expected for valid loggingLevels option"() {
     given:
-    File downloadDir = new File(System.getProperty("java.io.tmpdir"))
+    String downloadDirPath = "${ System.getProperty("user.dir") }/build/_testrun/${ UUID.randomUUID() }/"
+    Files.createDirectories(Paths.get(downloadDirPath))
+    File downloadDir = new File(downloadDirPath)
+
     File downloadedGradleDistributionFile = new File("${ downloadDir }/gradle-6.7.1-all.zip")
     downloadedGradleDistributionFile.delete()
     File downloadedGradleDistributionSha256File = new File("${ downloadDir }/gradle-6.7.1-all.zip.sha256")
@@ -132,7 +138,7 @@ class GradleSourceRepackCommandSpecification extends Specification {
     WireMockUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip", "gradle-6.7.1-all.zip")
     WireMockUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip.sha256", "gradle-6.7.1-all.zip.sha256")
 
-    File repackDir = new File(System.getProperty("java.io.tmpdir"))
+    File repackDir = new File(downloadDirPath)
     File repackedSourceArchiveFile = new File("${ repackDir }/gradle-api-6.7.1-sources.jar")
     repackedSourceArchiveFile.delete()
 
@@ -150,11 +156,18 @@ class GradleSourceRepackCommandSpecification extends Specification {
 
     then:
     outputString.readLines()[0] ==~ /.*DEBUG.*o.k.t.g.s.r.GradleSourceRepackCommand.*-.*Started.*/
+
+    cleanup:
+    repackedSourceArchiveFile.delete()
+    downloadDir.delete()
   }
 
   void "should work as expected with cleanup"() {
     given:
-    File downloadDir = new File(System.getProperty("java.io.tmpdir"))
+    String downloadDirPath = "${ System.getProperty("user.dir") }/build/_testrun/${ UUID.randomUUID() }/"
+    Files.createDirectories(Paths.get(downloadDirPath))
+    File downloadDir = new File(downloadDirPath)
+
     File downloadedGradleDistributionFile = new File("${ downloadDir }/gradle-6.7.1-all.zip")
     downloadedGradleDistributionFile.delete()
     File downloadedGradleDistributionSha256File = new File("${ downloadDir }/gradle-6.7.1-all.zip.sha256")
@@ -163,7 +176,7 @@ class GradleSourceRepackCommandSpecification extends Specification {
     WireMockUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip", "gradle-6.7.1-all.zip")
     WireMockUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip.sha256", "gradle-6.7.1-all.zip.sha256")
 
-    File repackDir = new File(System.getProperty("java.io.tmpdir"))
+    File repackDir = new File(downloadDirPath)
     File repackedSourceArchiveFile = new File("${ repackDir }/gradle-api-6.7.1-sources.jar")
     repackedSourceArchiveFile.delete()
 
@@ -177,16 +190,20 @@ class GradleSourceRepackCommandSpecification extends Specification {
     then:
     repackedSourceArchiveFile.exists()
     repackedSourceArchiveFile.size() > 0
+    !downloadedGradleDistributionFile.exists()
+    !downloadedGradleDistributionSha256File.exists()
 
     cleanup:
     repackedSourceArchiveFile.delete()
-    !downloadedGradleDistributionFile.exists()
-    !downloadedGradleDistributionSha256File.exists()
+    downloadDir.delete()
   }
 
   void "should work as expected without cleanup"() {
     given:
-    File downloadDir = new File(System.getProperty("java.io.tmpdir"))
+    String downloadDirPath = "${ System.getProperty("user.dir") }/build/_testrun/${ UUID.randomUUID() }/"
+    Files.createDirectories(Paths.get(downloadDirPath))
+    File downloadDir = new File(downloadDirPath)
+
     File downloadedGradleDistributionFile = new File("${ downloadDir }/gradle-6.7.1-all.zip")
     downloadedGradleDistributionFile.delete()
     File downloadedGradleDistributionSha256File = new File("${ downloadDir }/gradle-6.7.1-all.zip.sha256")
@@ -195,7 +212,7 @@ class GradleSourceRepackCommandSpecification extends Specification {
     WireMockUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip", "gradle-6.7.1-all.zip")
     WireMockUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip.sha256", "gradle-6.7.1-all.zip.sha256")
 
-    File repackDir = new File(System.getProperty("java.io.tmpdir"))
+    File repackDir = new File(downloadDirPath)
     File repackedSourceArchiveFile = new File("${ repackDir }/gradle-api-6.7.1-sources.jar")
     repackedSourceArchiveFile.delete()
 
@@ -214,11 +231,17 @@ class GradleSourceRepackCommandSpecification extends Specification {
 
     cleanup:
     repackedSourceArchiveFile.delete()
+    downloadedGradleDistributionFile.delete()
+    downloadedGradleDistributionSha256File.delete()
+    downloadDir.delete()
   }
 
   void "should work with already exiting downloaded files"() {
     given:
-    File downloadDir = new File(System.getProperty("java.io.tmpdir"))
+    String downloadDirPath = "${ System.getProperty("user.dir") }/build/_testrun/${ UUID.randomUUID() }/"
+    Files.createDirectories(Paths.get(downloadDirPath))
+    File downloadDir = new File(downloadDirPath)
+
     File downloadedGradleDistributionFile = new File("${ downloadDir }/gradle-6.7.1-all.zip")
     downloadedGradleDistributionFile.delete()
     File downloadedGradleDistributionSha256File = new File("${ downloadDir }/gradle-6.7.1-all.zip.sha256")
@@ -227,7 +250,7 @@ class GradleSourceRepackCommandSpecification extends Specification {
     WireMockUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip", "gradle-6.7.1-all.zip")
     WireMockUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip.sha256", "gradle-6.7.1-all.zip.sha256")
 
-    File repackDir = new File(System.getProperty("java.io.tmpdir"))
+    File repackDir = new File(downloadDirPath)
     File repackedSourceArchiveFile = new File("${ repackDir }/gradle-api-6.7.1-sources.jar")
     repackedSourceArchiveFile.delete()
 
@@ -251,11 +274,15 @@ class GradleSourceRepackCommandSpecification extends Specification {
 
     cleanup:
     repackedSourceArchiveFile.delete()
+    downloadDir.delete()
   }
 
   void "should fail when SHA-256 does not match"() {
     given:
-    File downloadDir = new File(System.getProperty("java.io.tmpdir"))
+    String downloadDirPath = "${ System.getProperty("user.dir") }/build/_testrun/${ UUID.randomUUID() }/"
+    Files.createDirectories(Paths.get(downloadDirPath))
+    File downloadDir = new File(downloadDirPath)
+
     File downloadedGradleDistributionFile = new File("${ downloadDir }/gradle-6.7.1-all.zip")
     downloadedGradleDistributionFile.delete()
     File downloadedGradleDistributionSha256File = new File("${ downloadDir }/gradle-6.7.1-all.zip.sha256")
@@ -264,7 +291,7 @@ class GradleSourceRepackCommandSpecification extends Specification {
     WireMockUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip", "gradle-6.7.1-all.zip")
     WireMockUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip.sha256-invalid", "gradle-6.7.1-all.zip.sha256")
 
-    File repackDir = new File(System.getProperty("java.io.tmpdir"))
+    File repackDir = new File(downloadDirPath)
     File repackedSourceArchiveFile = new File("${ repackDir }/gradle-api-6.7.1-sources.jar")
     repackedSourceArchiveFile.delete()
 
@@ -281,5 +308,10 @@ class GradleSourceRepackCommandSpecification extends Specification {
 
     then:
     errorOutputString.contains("java.lang.IllegalStateException: SHA-256 does not match")
+
+    cleanup:
+    downloadedGradleDistributionFile.delete()
+    downloadedGradleDistributionSha256File.delete()
+    downloadDir.delete()
   }
 }

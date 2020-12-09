@@ -12,6 +12,9 @@ import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
+import java.nio.file.Files
+import java.nio.file.Paths
+
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import static com.github.tomakehurst.wiremock.client.WireMock.get
 import static com.github.tomakehurst.wiremock.client.WireMock.head
@@ -231,9 +234,12 @@ class GradleDownloaderSpecification extends Specification {
         )
     )
 
+    String downloadTargetDir = "${ System.getProperty("user.dir") }/build/_testrun/${ UUID.randomUUID() }/"
+    Files.createDirectories(Paths.get(downloadTargetDir))
+
     GradleDownloader gradleDownloader = applicationContext.getBean(GradleDownloader)
     GradleDownloaderInfo gradleDownloaderInfo = new GradleDownloaderInfo(
-        "6.7.1", Constant.GRADLE_DISTRIBUTION_TYPE_DEFAULT, Constant.GRADLE_DISTRIBUTION_FILE_EXTENSION_DEFAULT, "${ wireMockServer.baseUrl() }/", System.getProperty("java.io.tmpdir")
+        "6.7.1", Constant.GRADLE_DISTRIBUTION_TYPE_DEFAULT, Constant.GRADLE_DISTRIBUTION_FILE_EXTENSION_DEFAULT, "${ wireMockServer.baseUrl() }/", downloadTargetDir
     )
 
     when:
@@ -243,6 +249,10 @@ class GradleDownloaderSpecification extends Specification {
     gradleDistributionDownloadFile.exists()
     gradleDistributionDownloadFile.name == "gradle-6.7.1-all.zip"
     gradleDistributionDownloadFile.size() == testSlimGradleDistributionFileSizeInBytes
+
+    cleanup:
+    gradleDistributionDownloadFile.delete()
+    new File(downloadTargetDir).delete()
   }
 
   void "should work with HTTP redirect"() {
@@ -279,9 +289,12 @@ class GradleDownloaderSpecification extends Specification {
         )
     )
 
+    String downloadTargetDir = "${ System.getProperty("user.dir") }/build/_testrun/${ UUID.randomUUID() }/"
+    Files.createDirectories(Paths.get(downloadTargetDir))
+
     GradleDownloader gradleDownloader = applicationContext.getBean(GradleDownloader)
     GradleDownloaderInfo gradleDownloaderInfo = new GradleDownloaderInfo(
-        "6.7.1", Constant.GRADLE_DISTRIBUTION_TYPE_DEFAULT, Constant.GRADLE_DISTRIBUTION_FILE_EXTENSION_DEFAULT, "${ wireMockServer.baseUrl() }/", System.getProperty("java.io.tmpdir")
+        "6.7.1", Constant.GRADLE_DISTRIBUTION_TYPE_DEFAULT, Constant.GRADLE_DISTRIBUTION_FILE_EXTENSION_DEFAULT, "${ wireMockServer.baseUrl() }/", downloadTargetDir
     )
 
     when:
@@ -291,5 +304,9 @@ class GradleDownloaderSpecification extends Specification {
     gradleDistributionDownloadFile.exists()
     gradleDistributionDownloadFile.name == "gradle-6.7.1-all.zip"
     gradleDistributionDownloadFile.size() == testSlimGradleDistributionFileSizeInBytes
+
+    cleanup:
+    gradleDistributionDownloadFile.delete()
+    new File(downloadTargetDir).delete()
   }
 }
