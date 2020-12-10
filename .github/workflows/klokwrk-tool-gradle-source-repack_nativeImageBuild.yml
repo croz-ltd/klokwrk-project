@@ -61,4 +61,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: klokwrk-tool-gradle-source-repack_${{ matrix.os }}
-          path: build/native-image/klokwrk-tool-gradle-source-repack*
+          path: tool/klokwrk-tool-gradle-source-repack/build/native-image/klokwrk-tool-gradle-source-repack*
