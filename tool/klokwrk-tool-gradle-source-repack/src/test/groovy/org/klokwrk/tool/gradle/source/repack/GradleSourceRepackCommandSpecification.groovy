@@ -162,10 +162,10 @@ class GradleSourceRepackCommandSpecification extends Specification {
     PicocliRunner.run(GradleSourceRepackCommand, applicationContext, args)
 
     then:
-    testDirectoriesAndFiles.repackedSourceArchiveFile.exists()
+    testDirectoriesAndFiles.repackedSourceArchiveFile.absoluteFile.exists()
     testDirectoriesAndFiles.repackedSourceArchiveFile.size() > 0
-    !testDirectoriesAndFiles.downloadedGradleDistributionFile.exists()
-    !testDirectoriesAndFiles.downloadedGradleDistributionSha256File.exists()
+    !testDirectoriesAndFiles.downloadedGradleDistributionFile.absoluteFile.exists()
+    !testDirectoriesAndFiles.downloadedGradleDistributionSha256File.absoluteFile.exists()
 
     cleanup:
     FileTestUtil.cleanupDirectoriesAndFiles(testDirectoriesAndFiles)
@@ -186,10 +186,10 @@ class GradleSourceRepackCommandSpecification extends Specification {
     PicocliRunner.run(GradleSourceRepackCommand, applicationContext, args)
 
     then:
-    testDirectoriesAndFiles.repackedSourceArchiveFile.exists()
+    testDirectoriesAndFiles.repackedSourceArchiveFile.absoluteFile.exists()
     testDirectoriesAndFiles.repackedSourceArchiveFile.size() > 0
-    testDirectoriesAndFiles.downloadedGradleDistributionFile.exists()
-    testDirectoriesAndFiles.downloadedGradleDistributionSha256File.exists()
+    testDirectoriesAndFiles.downloadedGradleDistributionFile.absoluteFile.exists()
+    testDirectoriesAndFiles.downloadedGradleDistributionSha256File.absoluteFile.exists()
 
     cleanup:
     FileTestUtil.cleanupDirectoriesAndFiles(testDirectoriesAndFiles)
@@ -218,7 +218,7 @@ class GradleSourceRepackCommandSpecification extends Specification {
     PicocliRunner.run(GradleSourceRepackCommand, applicationContext, secondRunArgs)
 
     then:
-    testDirectoriesAndFiles.repackedSourceArchiveFile.exists()
+    testDirectoriesAndFiles.repackedSourceArchiveFile.absoluteFile.exists()
     testDirectoriesAndFiles.repackedSourceArchiveFile.size() > 0
 
     cleanup:
