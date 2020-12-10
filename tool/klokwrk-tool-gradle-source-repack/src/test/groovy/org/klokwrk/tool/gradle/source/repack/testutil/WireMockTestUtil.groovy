@@ -11,7 +11,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.head
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching
 
 @CompileStatic
-class WireMockUtil {
+class WireMockTestUtil {
   static void configureWireMockForGradleDistributionFile(WireMockServer wireMockServer, String realResourceFileName, String downloadFileName) {
     ClassPathResourceLoader loader = new ResourceResolver().getLoader(ClassPathResourceLoader).get()
     File testGradleDistributionFile = new File(loader.getResource("classpath:testFiles/${ realResourceFileName }").get().file)
