@@ -52,6 +52,12 @@ jobs:
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue check
 
+      - name: Jar upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: klokwrk-tool-gradle-source-repack_java
+          path: tool/klokwrk-tool-gradle-source-repack/build/libs/*-all.jar
+
       - name: Build GraalVM native image
         uses: eskatos/gradle-command-action@v1
         with:
