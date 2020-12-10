@@ -13,3 +13,4 @@ gradlew text eol=lf
 *.jks binary
 *.jar binary
 *.db binary
+*.zip binary

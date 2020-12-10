@@ -50,6 +50,7 @@ publishing {
 
 dependencies {
   constraints {
+    api "com.github.tomakehurst:wiremock-jre8:$wireMockVersion"
     api "com.tngtech.archunit:archunit-junit5:$archUnitVersion"
     api "net.ttddyy:datasource-proxy:$dataSourceProxyVersion"
     api "org.axonframework:axon-configuration:$axonFrameworkVersion"
@@ -88,5 +89,8 @@ dependencies {
     api "uk.org.lidalia:slf4j-test:$slf4jTestVersion"
 
     api "org.codenarc:CodeNarc:$codeNarcVersion"
+
+    api "io.github.classgraph:classgraph:$classGraphVersion"
+    api "info.picocli:picocli-codegen:$picocliCodegenVersion"
   }
 }

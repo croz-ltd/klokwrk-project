@@ -19,6 +19,7 @@ out/
 *.ipr
 *.log
 *.zip
+*.sha256
 
 ### NetBeans ###
 nbproject/private/
@@ -26,3 +27,6 @@ nbbuild/
 nbdist/
 .nb-gradle/
 **/bin
+
+!tool/klokwrk-tool-gradle-source-repack/src/test/resources/testFiles/*.zip
+!tool/klokwrk-tool-gradle-source-repack/src/test/resources/testFiles/*.sha256
