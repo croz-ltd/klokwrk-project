@@ -7,6 +7,11 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, macos-latest ]
+        include:
+          - os: 'ubuntu-latest'
+            label: 'linux'
+          - os: 'macos-latest'
+            label: 'mac'
 
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os }} - GraalVM native image build
@@ -68,5 +73,5 @@ jobs:
       - name: GraalVM native image upload
         uses: actions/upload-artifact@v2
         with:
-          name: klokwrk-tool-gradle-source-repack_${{ matrix.os }}
-          path: tool/klokwrk-tool-gradle-source-repack/build/native-image/klokwrk-tool-gradle-source-repack*
+          name: klokwrk-tool-gradle-source-repack_${{ matrix.label }}
+          path: tool/klokwrk-tool-gradle-source-repack/build/native-image/klokwrk-tool-gradle-source-repack
