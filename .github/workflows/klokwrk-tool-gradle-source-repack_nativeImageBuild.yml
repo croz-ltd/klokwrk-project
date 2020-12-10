@@ -1,0 +1,60 @@
+name: klokwrk-tool-gradle-source-repack GraalVM native image builder
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.os }} - GraalVM native image build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache Gradle caches
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ matrix.os }}-gradle-caches-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ matrix.os }}-gradle-caches-
+
+      - name: Cache Gradle wrapper
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ matrix.os }}-gradle-wrapper-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ matrix.os }}-gradle-wrapper-
+
+      - name: Set up GraalVM
+        uses: ayltai/setup-graalvm@v1
+        with:
+          java-version: 11
+          graalvm-version: 20.3.0
+          native-image: true
+
+      - name: Assemble
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue --exclude-task groovydoc clean assemble testClasses
+
+      - name: Test Unit
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue check
+
+      - name: Build GraalVM native image
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
+
+      - name: GraalVM native image upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: klokwrk-tool-gradle-source-repack_${{ matrix.os }}
+          path: build/native-image/klokwrk-tool-gradle-source-repack*
