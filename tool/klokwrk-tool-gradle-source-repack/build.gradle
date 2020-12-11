@@ -58,6 +58,16 @@ dependencies {
   runtimeOnly "ch.qos.logback:logback-classic"
 }
 
+Boolean isGraal11() {
+  String javaVendorUrl = System.getProperty("java.vendor.url").toLowerCase()
+  Integer javaSpecificationVersion = System.getProperty("java.specification.version").toBigDecimal().toInteger()
+  return javaVendorUrl.contains("graal") && (javaSpecificationVersion >= 11)
+}
+
+Boolean isWindows() {
+  return System.getProperty("os.name").toLowerCase().contains("windows")
+}
+
 // Simple custom graal image builder task used because of some bugs/missing features in Micronaut task.
 // Can be replaced by the Micronaut's one when at least the first of the following bugs is fixed:
 // - https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/92
@@ -66,10 +76,10 @@ dependencies {
 // In addition there is also an issue with missing resources in Micronaut task that causes native image build failing in the presence of both java and groovy source sets. Didn't reported that yet,
 // but I guess it will not get much attention since native image for Groovy is not supported.
 tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
-  String javaVendorUrl = System.getProperty("java.vendor.url").toLowerCase()
-  Integer javaSpecificationVersion = System.getProperty("java.specification.version").toBigDecimal().toInteger()
-  if (!javaVendorUrl.contains("graal") || (javaSpecificationVersion < 11)) {
-    throw new GradleException("For native image compiling you need to use GraalVM for Java 11 (or newer). Cannot continue.")
+  doFirst {
+    if (!isGraal11()) {
+      throw new GradleException("For native image compiling you need to use GraalVM for Java 11 (or newer). Cannot continue.")
+    }
   }
 
   String nativeImageBuilderClasspath = null
@@ -112,7 +122,8 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
 
   File mainGraalSourceSetDir = new File(project.projectDir, "src/main/graal")
 
-  thisExecTask.setExecutable("native-image")
+  String executable = isWindows() ? "native-image.cmd" : "native-image"
+  thisExecTask.setExecutable(executable)
   thisExecTask.setWorkingDir(workingDir)
   thisExecTask.setArgs([
       "--verbose",
