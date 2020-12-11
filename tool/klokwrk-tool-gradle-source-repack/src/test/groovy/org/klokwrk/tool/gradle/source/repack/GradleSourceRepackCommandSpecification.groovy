@@ -44,7 +44,7 @@ class GradleSourceRepackCommandSpecification extends Specification {
     String outputString = byteArrayOutputStream
 
     expect:
-    outputString.contains("Usage: klokwrk-tool-gradle-source-repack")
+    outputString.contains("Usage:")
     outputString.contains("Downloads Gradle source distribution")
     outputString.trim().endsWith("Print version information and exit.")
   }
