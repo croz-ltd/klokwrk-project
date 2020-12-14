@@ -6,12 +6,14 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest ]
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
         include:
           - os: 'ubuntu-latest'
             label: 'linux'
           - os: 'macos-latest'
             label: 'mac'
+          - os: 'windows-latest'
+            label: 'win'
 
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os }} - GraalVM native image build
@@ -65,13 +67,34 @@ jobs:
           name: klokwrk-tool-gradle-source-repack_java
           path: tool/klokwrk-tool-gradle-source-repack/build/libs/*-all.jar
 
-      - name: Build GraalVM native image
+      - name: Build GraalVM native image for mac or linux
+        if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'}}
         uses: eskatos/gradle-command-action@v1
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
 
-      - name: GraalVM native image upload
+      - name: GraalVM native image upload for mac or linux
+        if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'}}
         uses: actions/upload-artifact@v2
         with:
           name: klokwrk-tool-gradle-source-repack_${{ matrix.label }}
           path: tool/klokwrk-tool-gradle-source-repack/build/native-image/klokwrk-tool-gradle-source-repack
+
+      - name: Set up Windows - Install Visual C++ Build Tools Workload for Visual Studio 2017 Build Tools
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          choco install visualstudio2017-workload-vctools -y
+
+      - name: Build GraalVM native image for windows
+        if: ${{ matrix.os == 'windows-latest' }}
+        shell: cmd
+        run: |
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\Vc\Auxiliary\Build\vcvars64.bat"
+          ./gradlew.bat --project-dir tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
+
+      - name: GraalVM native image upload for windows
+        if: ${{ matrix.os == 'windows-latest' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: klokwrk-tool-gradle-source-repack_${{ matrix.label }}
+          path: tool/klokwrk-tool-gradle-source-repack/build/native-image/klokwrk-tool-gradle-source-repack.exe
