@@ -10,10 +10,13 @@ jobs:
         include:
           - os: 'ubuntu-latest'
             label: 'linux'
+            native-image-name: 'klokwrk-tool-gradle-source-repack'
           - os: 'macos-latest'
             label: 'mac'
+            native-image-name: 'klokwrk-tool-gradle-source-repack'
           - os: 'windows-latest'
             label: 'win'
+            native-image-name: 'klokwrk-tool-gradle-source-repack.exe'
 
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os }} - GraalVM native image build
@@ -73,13 +76,6 @@ jobs:
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
 
-      - name: GraalVM native image upload for mac or linux
-        if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'}}
-        uses: actions/upload-artifact@v2
-        with:
-          name: klokwrk-tool-gradle-source-repack_${{ matrix.label }}
-          path: tool/klokwrk-tool-gradle-source-repack/build/native-image/klokwrk-tool-gradle-source-repack
-
       - name: Set up Windows - Install Visual C++ Build Tools Workload for Visual Studio 2017 Build Tools
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
@@ -92,9 +88,8 @@ jobs:
           call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\Vc\Auxiliary\Build\vcvars64.bat"
           ./gradlew.bat --project-dir tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
 
-      - name: GraalVM native image upload for windows
-        if: ${{ matrix.os == 'windows-latest' }}
+      - name: GraalVM native image upload
         uses: actions/upload-artifact@v2
         with:
           name: klokwrk-tool-gradle-source-repack_${{ matrix.label }}
-          path: tool/klokwrk-tool-gradle-source-repack/build/native-image/klokwrk-tool-gradle-source-repack.exe
+          path: tool/klokwrk-tool-gradle-source-repack/build/native-image/${{ matrix.native-image-name }}
