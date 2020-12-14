@@ -32,11 +32,22 @@ class FileTestUtil {
     return testDirectoriesAndFiles
   }
 
-  static void cleanupDirectoriesAndFiles(Map<String, File> testDirectoriesAndFiles) {
-    testDirectoriesAndFiles.downloadedGradleDistributionFile.delete()
-    testDirectoriesAndFiles.downloadedGradleDistributionSha256File.delete()
-    testDirectoriesAndFiles.repackedSourceArchiveFile.delete()
-    testDirectoriesAndFiles.repackDir.delete()
-    testDirectoriesAndFiles.downloadDir.delete()
+  /**
+   * Recursively deletes specified directory, or just delete a file when not directory.
+   */
+  static void delete(File fileToDelete) {
+    if (fileToDelete.directory) {
+      File[] childFileList = fileToDelete.listFiles()
+      if (childFileList?.size() > 0) {
+        childFileList.each { File file ->
+          delete(file)
+        }
+      }
+
+      fileToDelete.delete()
+    }
+    else {
+      fileToDelete.delete()
+    }
   }
 }

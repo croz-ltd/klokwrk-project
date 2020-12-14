@@ -8,7 +8,6 @@ import io.micronaut.context.env.Environment
 import org.klokwrk.tool.gradle.source.repack.testutil.FileTestUtil
 import org.klokwrk.tool.gradle.source.repack.testutil.WireMockTestUtil
 import spock.lang.AutoCleanup
-import spock.lang.IgnoreIf
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -29,6 +28,8 @@ class GradleSourceRepackCommandSpecification extends Specification {
   void cleanupSpec() {
     wireMockServer.resetAll()
     wireMockServer.stop()
+
+    FileTestUtil.delete(new File("${ System.getProperty("user.dir") }/build/_testrun/"))
   }
 
   void setup() {
@@ -143,15 +144,13 @@ class GradleSourceRepackCommandSpecification extends Specification {
 
     then:
     outputString.readLines()[0] ==~ /.*DEBUG.*o.k.t.g.s.r.GradleSourceRepackCommand.*-.*Started.*/
-
-    cleanup:
-    FileTestUtil.cleanupDirectoriesAndFiles(testDirectoriesAndFiles)
   }
 
-  // Ignored for windows since I could not make file.exists() to work reliably on GitHub Actions build
-  @IgnoreIf({ os.windows })
   void "should work as expected with cleanup"() {
     given:
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()
+    System.out = new PrintStream(byteArrayOutputStream)
+
     Map<String, File> testDirectoriesAndFiles = FileTestUtil.prepareDirectoriesAndFiles()
     WireMockTestUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip", "gradle-6.7.1-all.zip")
     WireMockTestUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip.sha256", "gradle-6.7.1-all.zip.sha256")
@@ -163,21 +162,17 @@ class GradleSourceRepackCommandSpecification extends Specification {
 
     when:
     PicocliRunner.run(GradleSourceRepackCommand, applicationContext, args)
+    String outputString = byteArrayOutputStream
 
     then:
-    testDirectoriesAndFiles.repackedSourceArchiveFile.exists()
-    testDirectoriesAndFiles.repackedSourceArchiveFile.size() > 0
-    !testDirectoriesAndFiles.downloadedGradleDistributionFile.exists()
-    !testDirectoriesAndFiles.downloadedGradleDistributionSha256File.exists()
-
-    cleanup:
-    FileTestUtil.cleanupDirectoriesAndFiles(testDirectoriesAndFiles)
+    outputString.contains("gradle-api-6.7.1-sources.jar: 100%")
   }
 
-  // Ignored for windows since I could not make file.exists() to work reliably on GitHub Actions build
-  @IgnoreIf({ os.windows })
   void "should work as expected without cleanup"() {
     given:
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()
+    System.out = new PrintStream(byteArrayOutputStream)
+
     Map<String, File> testDirectoriesAndFiles = FileTestUtil.prepareDirectoriesAndFiles()
     WireMockTestUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip", "gradle-6.7.1-all.zip")
     WireMockTestUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip.sha256", "gradle-6.7.1-all.zip.sha256")
@@ -189,19 +184,12 @@ class GradleSourceRepackCommandSpecification extends Specification {
 
     when:
     PicocliRunner.run(GradleSourceRepackCommand, applicationContext, args)
+    String outputString = byteArrayOutputStream
 
     then:
-    testDirectoriesAndFiles.repackedSourceArchiveFile.exists()
-    testDirectoriesAndFiles.repackedSourceArchiveFile.size() > 0
-    testDirectoriesAndFiles.downloadedGradleDistributionFile.exists()
-    testDirectoriesAndFiles.downloadedGradleDistributionSha256File.exists()
-
-    cleanup:
-    FileTestUtil.cleanupDirectoriesAndFiles(testDirectoriesAndFiles)
+    outputString.contains("gradle-api-6.7.1-sources.jar: 100%")
   }
 
-  // Ignored for windows since I could not make file.exists() to work reliably on GitHub Actions build
-  @IgnoreIf({ os.windows })
   void "should work with already exiting downloaded files"() {
     given:
     Map<String, File> testDirectoriesAndFiles = FileTestUtil.prepareDirectoriesAndFiles()
@@ -215,6 +203,9 @@ class GradleSourceRepackCommandSpecification extends Specification {
     ] as String[]
     PicocliRunner.run(GradleSourceRepackCommand, applicationContext, firstRunArgs)
 
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()
+    System.out = new PrintStream(byteArrayOutputStream)
+
     // Second run works on already existing files
     String[] secondRunArgs = [
         "--cleanup=true", "--gradle-distribution-dir-url=${ wireMockServer.baseUrl() }",
@@ -223,13 +214,10 @@ class GradleSourceRepackCommandSpecification extends Specification {
 
     when:
     PicocliRunner.run(GradleSourceRepackCommand, applicationContext, secondRunArgs)
+    String outputString = byteArrayOutputStream
 
     then:
-    testDirectoriesAndFiles.repackedSourceArchiveFile.exists()
-    testDirectoriesAndFiles.repackedSourceArchiveFile.size() > 0
-
-    cleanup:
-    FileTestUtil.cleanupDirectoriesAndFiles(testDirectoriesAndFiles)
+    outputString.contains("gradle-api-6.7.1-sources.jar: 100%")
   }
 
   void "should fail when SHA-256 does not match"() {
@@ -252,8 +240,5 @@ class GradleSourceRepackCommandSpecification extends Specification {
 
     then:
     errorOutputString.contains("java.lang.IllegalStateException: SHA-256 does not match")
-
-    cleanup:
-    FileTestUtil.cleanupDirectoriesAndFiles(testDirectoriesAndFiles)
   }
 }
