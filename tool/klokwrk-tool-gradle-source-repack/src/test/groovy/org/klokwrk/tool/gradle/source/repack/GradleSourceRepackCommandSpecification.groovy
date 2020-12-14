@@ -144,6 +144,7 @@ class GradleSourceRepackCommandSpecification extends Specification {
 
     then:
     outputString.readLines()[0] ==~ /.*DEBUG.*o.k.t.g.s.r.GradleSourceRepackCommand.*-.*Started.*/
+    testDirectoriesAndFiles.repackedSourceArchiveFile.exists()
   }
 
   void "should work as expected with cleanup"() {
@@ -166,6 +167,9 @@ class GradleSourceRepackCommandSpecification extends Specification {
 
     then:
     outputString.contains("gradle-api-6.7.1-sources.jar: 100%")
+    testDirectoriesAndFiles.repackedSourceArchiveFile.exists()
+    !testDirectoriesAndFiles.downloadedGradleDistributionFile.exists()
+    !testDirectoriesAndFiles.downloadedGradleDistributionSha256File.exists()
   }
 
   void "should work as expected without cleanup"() {
@@ -188,6 +192,9 @@ class GradleSourceRepackCommandSpecification extends Specification {
 
     then:
     outputString.contains("gradle-api-6.7.1-sources.jar: 100%")
+    testDirectoriesAndFiles.repackedSourceArchiveFile.exists()
+    testDirectoriesAndFiles.downloadedGradleDistributionFile.exists()
+    testDirectoriesAndFiles.downloadedGradleDistributionSha256File.exists()
   }
 
   void "should work with already exiting downloaded files"() {
@@ -218,6 +225,9 @@ class GradleSourceRepackCommandSpecification extends Specification {
 
     then:
     outputString.contains("gradle-api-6.7.1-sources.jar: 100%")
+    testDirectoriesAndFiles.repackedSourceArchiveFile.exists()
+    !testDirectoriesAndFiles.downloadedGradleDistributionFile.exists()
+    !testDirectoriesAndFiles.downloadedGradleDistributionSha256File.exists()
   }
 
   void "should fail when SHA-256 does not match"() {
@@ -240,5 +250,6 @@ class GradleSourceRepackCommandSpecification extends Specification {
 
     then:
     errorOutputString.contains("java.lang.IllegalStateException: SHA-256 does not match")
+    !testDirectoriesAndFiles.repackedSourceArchiveFile.exists()
   }
 }
