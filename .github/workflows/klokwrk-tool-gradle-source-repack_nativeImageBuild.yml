@@ -64,10 +64,16 @@ jobs:
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue check
 
+      - name: Get upload version
+        shell: bash
+        run: |
+          echo "UPLOAD_VERSION=$(./gradlew --quiet --project-dir tool/klokwrk-tool-gradle-source-repack properties | grep "^version:." | awk '{print $2}')" >> $GITHUB_ENV
+
       - name: Jar upload
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: actions/upload-artifact@v2
         with:
-          name: klokwrk-tool-gradle-source-repack_java
+          name: klokwrk-tool-gradle-source-repack_${{ env.UPLOAD_VERSION }}-jar
           path: tool/klokwrk-tool-gradle-source-repack/build/libs/*-all.jar
 
       - name: Build GraalVM native image for mac or linux
@@ -91,5 +97,5 @@ jobs:
       - name: GraalVM native image upload
         uses: actions/upload-artifact@v2
         with:
-          name: klokwrk-tool-gradle-source-repack_${{ matrix.label }}
+          name: klokwrk-tool-gradle-source-repack_${{ env.UPLOAD_VERSION }}-${{ matrix.label }}
           path: tool/klokwrk-tool-gradle-source-repack/build/native-image/${{ matrix.native-image-name }}
