@@ -6,7 +6,17 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest ]
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        include:
+          - os: 'ubuntu-latest'
+            label: 'linux'
+            native-image-name: 'klokwrk-tool-gradle-source-repack'
+          - os: 'macos-latest'
+            label: 'mac'
+            native-image-name: 'klokwrk-tool-gradle-source-repack'
+          - os: 'windows-latest'
+            label: 'win'
+            native-image-name: 'klokwrk-tool-gradle-source-repack.exe'
 
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os }} - GraalVM native image build
@@ -18,6 +28,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Cache Gradle caches
         uses: actions/cache@v2
@@ -52,13 +64,38 @@ jobs:
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue check
 
-      - name: Build GraalVM native image
+      - name: Get upload version
+        shell: bash
+        run: |
+          echo "UPLOAD_VERSION=$(./gradlew --quiet --project-dir tool/klokwrk-tool-gradle-source-repack properties | grep "^version:." | awk '{print $2}')" >> $GITHUB_ENV
+
+      - name: Jar upload
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: klokwrk-tool-gradle-source-repack_${{ env.UPLOAD_VERSION }}-jar
+          path: tool/klokwrk-tool-gradle-source-repack/build/libs/*-all.jar
+
+      - name: Build GraalVM native image for mac or linux
+        if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'}}
         uses: eskatos/gradle-command-action@v1
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
 
+      - name: Set up Windows - Install Visual C++ Build Tools Workload for Visual Studio 2017 Build Tools
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          choco install visualstudio2017-workload-vctools -y
+
+      - name: Build GraalVM native image for windows
+        if: ${{ matrix.os == 'windows-latest' }}
+        shell: cmd
+        run: |
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\Vc\Auxiliary\Build\vcvars64.bat"
+          ./gradlew.bat --project-dir tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
+
       - name: GraalVM native image upload
         uses: actions/upload-artifact@v2
         with:
-          name: klokwrk-tool-gradle-source-repack_${{ matrix.os }}
-          path: tool/klokwrk-tool-gradle-source-repack/build/native-image/klokwrk-tool-gradle-source-repack*
+          name: klokwrk-tool-gradle-source-repack_${{ env.UPLOAD_VERSION }}-${{ matrix.label }}
+          path: tool/klokwrk-tool-gradle-source-repack/build/native-image/${{ matrix.native-image-name }}
