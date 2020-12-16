@@ -53,6 +53,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (3.0.5) - https://issues.apache.org/jira/browse/GROOVY-9643
 * VERIFIED (3.0.7) - https://issues.apache.org/jira/browse/GROOVY-9770
 * VERIFIED (3.0.7) - https://issues.apache.org/jira/browse/GROOVY-9772
+* REPORTED - https://issues.apache.org/jira/browse/GROOVY-9858
 
 ### IDEA
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-216308
