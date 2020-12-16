@@ -50,17 +50,6 @@ publishing {
 
 dependencies {
   constraints {
-    api "com.github.tomakehurst:wiremock-jre8:$wireMockVersion"
-    api "com.tngtech.archunit:archunit-junit5:$archUnitVersion"
-    api "net.ttddyy:datasource-proxy:$dataSourceProxyVersion"
-    api "org.axonframework:axon-configuration:$axonFrameworkVersion"
-    api "org.axonframework:axon-eventsourcing:$axonFrameworkVersion"
-    api "org.axonframework:axon-messaging:$axonFrameworkVersion"
-    api "org.axonframework:axon-modelling:$axonFrameworkVersion"
-    api "org.axonframework:axon-spring-boot-starter:$axonFrameworkVersion"
-    api "org.axonframework:axon-test:$axonFrameworkVersion"
-    api "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter:$axonTracingExtensionVersion"
-
     api "org.codehaus.groovy:groovy:$groovyVersion"
     api "org.codehaus.groovy:groovy-ant:$groovyVersion"
     api "org.codehaus.groovy:groovy-astbuilder:$groovyVersion"
@@ -84,13 +73,22 @@ dependencies {
     api "org.codehaus.groovy:groovy-testng:$groovyVersion"
     api "org.codehaus.groovy:groovy-xml:$groovyVersion"
 
+    api "com.github.tomakehurst:wiremock-jre8:$wireMockVersion"
+    api "com.tngtech.archunit:archunit-junit5:$archUnitVersion"
+    api "info.picocli:picocli-codegen:$picocliCodegenVersion"
+    api "io.github.classgraph:classgraph:$classGraphVersion"
+    api "net.ttddyy:datasource-proxy:$dataSourceProxyVersion"
+    api "org.axonframework:axon-configuration:$axonFrameworkVersion"
+    api "org.axonframework:axon-eventsourcing:$axonFrameworkVersion"
+    api "org.axonframework:axon-messaging:$axonFrameworkVersion"
+    api "org.axonframework:axon-modelling:$axonFrameworkVersion"
+    api "org.axonframework:axon-spring-boot-starter:$axonFrameworkVersion"
+    api "org.axonframework:axon-test:$axonFrameworkVersion"
+    api "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter:$axonTracingExtensionVersion"
     api "org.spockframework:spock-core:$spockVersion"
     api "org.spockframework:spock-spring:$spockVersion"
     api "uk.org.lidalia:slf4j-test:$slf4jTestVersion"
 
     api "org.codenarc:CodeNarc:$codeNarcVersion"
-
-    api "io.github.classgraph:classgraph:$classGraphVersion"
-    api "info.picocli:picocli-codegen:$picocliCodegenVersion"
   }
 }
