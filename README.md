@@ -50,4 +50,10 @@ There are several articles describing some `klokwrk-project` features in more de
 `klokwkr-project` maintains a log of architecturally significant decisions by leveraging architecture decision records (ADRs). You can [explore it here](support/documentation/adr/index.md).
 
 ### Misc
+* [klokwrk-tool-gradle-source-repack](tool/klokwrk-tool-gradle-source-repack/README.md) utility
+
+  The tool for repackaging Gradle source files into an archive suitable to be used as a repository of sources when debugging Gradle internals from IDEA. It is also interesting that the tool is
+  created in Groovy and compiled into GraalVM native image without any reflection related GraalVM configuration.
+
+
 * [Lists of 3rd party software issues related to `klokwkr-project`](support/documentation/misc/klokwrkRelatedIssuesInTheWild.md)

@@ -37,6 +37,10 @@ class GradleSourceRepackCommand implements Runnable {
   private static final String GRADLE_VERSION_REGEX_FORMAT = /([2-9]\d*){1}(\.\d+){1}(\.\d+)?(-([a-zA-Z1-9]+))?/
   private static final Pattern GRADLE_VERSION_REGEX_PATTERN = ~GRADLE_VERSION_REGEX_FORMAT
 
+  private static final String OPTION_LOGGING_LEVEL_CONFIG_LIST_DESCRIPTION = """\
+Optional comma separated list of logger levels configurations. Changing log levels is effective only after a command starts running. All preceding logging is not affected. \
+Example: ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG,io.micronaut.http.client=DEBUG,etc..."""
+
   static void main(String[] args) throws Exception {
     PicocliRunner.run(GradleSourceRepackCommand, args)
   }
@@ -62,9 +66,9 @@ class GradleSourceRepackCommand implements Runnable {
   Boolean cliOptionCleanup = true
 
   @Option(
-      names = ["-l", "--loggingLevels"], showDefaultValue = Visibility.ALWAYS, split = ",",
-      description = "Comma separated list of logger levels configurations. Changing log levels is effective only after a command starts running. All preceding logging is not affected.",
-      paramLabel = "ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG,io.micronaut.http.client=DEBUG,etc..."
+      names = ["-l", "--loggingLevels"], showDefaultValue = Visibility.ON_DEMAND, split = ",",
+      description = OPTION_LOGGING_LEVEL_CONFIG_LIST_DESCRIPTION,
+      paramLabel = "loggerName=loggingLevel"
   )
   List<String> loggingLevelConfigList
 
