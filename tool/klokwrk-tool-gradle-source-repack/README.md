@@ -65,10 +65,10 @@ for debugging Gradle internals in IDEA.
 
 ### Hidden options
 Several hidden options are not displayed in the help message. These options should not be used in normal circumstances but are helpful for testing and debugging. None of these options does have a
-short option variant.
+short variant.
 
 - `--gradle-distribution-dir-url` - URL to the directory where Gradle distribution resides. Default is `"https://services.gradle.org/distributions/"`.
-- `--download-dir` - Directory where downloaded files are placed. Default is a current directory, a directory from where the tool was started.
+- `--download-dir` - Directory where downloaded files are placed. Default is a current directory (a directory from where the tool was started).
 - `--repackDir` - Directory where the archive with repacked sources will be placed. It defaults to `~/.gradle/caches/${ this.gradleVersion }/generated-gradle-jars` if that directory exists, or to
   the current working directory otherwise.
 
@@ -102,7 +102,7 @@ To create and run the executable jar:
 
 ```
 cd <klokwrk-project-dir>/tool/klokwrk-tool-gradle-source-repack
-./gradlew clean assemble
+../../gradlew clean assemble
 java -jar ./build/libs/klokwrk-tool-gradle-source-repack-<tool-version>-all.jar <Gradle-version>
 ```
 
@@ -125,8 +125,8 @@ Now, the native image for `klokwrk-tool-gradle-source-repack` can be created wit
 
 ```
 cd <klokwrk-project-dir>/tool/klokwrk-tool-gradle-source-repack
-./gradlew clean assemble
-./gradlew kwrkNativeImage
+../../gradlew clean assemble
+../../gradlew kwrkNativeImage
 ```
 
 When the native image build finishes, the tool can be used as follows:
