@@ -25,12 +25,12 @@ feature set grows, and the domain becomes more complicated. We want architecture
 ## Decision
 **We will use hexagonal architecture as a primary choice of architecture for designing applications.**
 
-**We will provide concrete guidance for creating structure and concrete artifacts** (see ["Packaging for applications"](../../article/modulesAndPackages.md#packaging-for-applications) for more
+**We will provide concrete guidance for creating structure and concrete artifacts** (see ["Packaging for applications"](../../article/modules-and-packages/modulesAndPackages.md#packaging-for-applications) for more
 details).
 
 **We will adapt hexagonal architecture for efficient use with CQRS/ES component architecture** (see
-["Applying hexagonal architecture"](../../article/modulesAndPackages.md#applying-hexagonal-architecture) for more details). This includes adding support for enforcing and testing the structure and
-behavior of the architecture (see ["Behavior and architectural testing"](../../article/modulesAndPackages.md#behavior-and-architectural-testing) for more details).
+["Applying hexagonal architecture"](../../article/modules-and-packages/modulesAndPackages.md#applying-hexagonal-architecture) for more details). This includes adding support for enforcing and testing the structure and
+behavior of the architecture (see ["Behavior and architectural testing"](../../article/modules-and-packages/modulesAndPackages.md#behavior-and-architectural-testing) for more details).
 
 ## Consequences
 ### Positive
@@ -48,8 +48,8 @@ behavior of the architecture (see ["Behavior and architectural testing"](../../a
   * Those are very similar to hexagonal architecture, but hexagonal architecture offers more concrete implementation guidance.
 
 ## References
-* [Organizing modules and packages, section "Packaging for applications"](../../article/modulesAndPackages.md#packaging-for-applications)
-* [Organizing modules and packages, section "Applying hexagonal architecture"](../../article/modulesAndPackages.md#applying-hexagonal-architecture)
-* [Organizing modules and packages, section "Behavior and architectural testing"](../../article/modulesAndPackages.md#behavior-and-architectural-testing)
+* [Organizing modules and packages, section "Packaging for applications"](../../article/modules-and-packages/modulesAndPackages.md#packaging-for-applications)
+* [Organizing modules and packages, section "Applying hexagonal architecture"](../../article/modules-and-packages/modulesAndPackages.md#applying-hexagonal-architecture)
+* [Organizing modules and packages, section "Behavior and architectural testing"](../../article/modules-and-packages/modulesAndPackages.md#behavior-and-architectural-testing)
 * ["Hexagonal Architecture with Java and Spring"](https://reflectoring.io/spring-hexagonal/) by Tom Hombergs
 * ["Get your hands dirty on Clean Architecture"](https://reflectoring.io/book/) by Tom Hombergs

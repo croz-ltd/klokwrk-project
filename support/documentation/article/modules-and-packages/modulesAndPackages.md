@@ -29,7 +29,7 @@ After the brief discussion above, we can try to enumerate the **main goals** of 
 ## Organizing modules
 Let's start with modules of `klokwrk-project` that were available at the time of this writing (May 2020). Here is how they look in an IDE:
 
-![Image 1 - Modules layout in an IDE](images/modulesAndPackages/01-modules-in-ide.jpg "Image 1 - Modules layout in an IDE") <br/>
+![Image 1 - Modules layout in an IDE](images/01-modules-in-ide.jpg "Image 1 - Modules layout in an IDE") <br/>
 *Image 1 - Modules layout in an IDE*
 
 ### System
@@ -64,7 +64,7 @@ cycles in the worst case. This can be done in several ways. You can use speciali
 The abstraction level and direction of compile-time dependencies (directed blue arrows) for our `booking` subdomain are clearly shown in the following image (partial `klokwrk-project` model from
 Structure101 Studio for Java):
 
-![Image 2 - Abstraction level and dependencies of booking subdomain modules](images/modulesAndPackages/02-cargotracker-booking-partial-dependencies-S101.png "Image 2 - Abstraction level and dependencies of booking subdomain modules") <br/>
+![Image 2 - Abstraction level and dependencies of booking subdomain modules](images/02-cargotracker-booking-partial-dependencies-S101.png "Image 2 - Abstraction level and dependencies of booking subdomain modules") <br/>
 *Image 2 - Abstraction level and dependencies of booking subdomain modules*
 
 Let's take a look at the purpose of each `cargotracker-booking` module. First, we have `*-app` modules that utilize CQRS and event sourcing via
@@ -100,7 +100,7 @@ That broad reusability potential across subdomain is the main reason for extract
 ### Domain libraries
 The expanded compile-time dependency graph containing `cargotracker` domain libraries is shown in the next picture.
 
-![Image 3 - cargotracker domain libraries dependencies](images/modulesAndPackages/03-cargotracker-domain-libraries-dependencies-S101.png "Image 3 - cargotracker domain libraries dependencies") <br/>
+![Image 3 - cargotracker domain libraries dependencies](images/03-cargotracker-domain-libraries-dependencies-S101.png "Image 3 - cargotracker domain libraries dependencies") <br/>
 *Image 3 - `cargotracker` domain libraries and dependencies*
 
 Modules belonging to domain libraries contain infrastructural code at the lower abstraction level then subdomain libraries. That code is reusable across the whole `cargotracker` domain.
@@ -130,7 +130,7 @@ aggregates are allowed to throw boundary exceptions understood by the outside wo
 Going further down the abstraction ladder, we will find generic reusable libraries and, even further down, language extensions. The reusability potential of these modules is high and is not tied to
 any domain. Here we can discover supportive additions for various commonly used 3rd party libraries and language-level helpers that expand features of programming languages used in our system.
 
-![Image 4 - klokwrk reusable libraries and language extensions](images/modulesAndPackages/04-klokwrk-reusable-libraries-and-language-extensions-S101.png "Image 4 - klokwrk reusable libraries and language extensions") <br/>
+![Image 4 - klokwrk reusable libraries and language extensions](images/04-klokwrk-reusable-libraries-and-language-extensions-S101.png "Image 4 - klokwrk reusable libraries and language extensions") <br/>
 *Image 4 - `klokwrk` generic libraries and language extensions*
 
 These modules are used as direct compile-time dependencies from higher levels. Still, we can also have runtime-only modules that need to be available in the classpath but are not directly referenced
@@ -191,7 +191,7 @@ On the other hand, if we target specific higher-level consumers, we might want t
 
 The first example (Image 5) shows the packaging of `cargotracker-lib-axon-cqrs` and `cargotracker-lib-axon-logging` modules dealing with different aspects of the Axon framework.
 
-![Image 5 - general example of library packaging comparison](images/modulesAndPackages/05-general-example-of-library-packaging-comparison.jpg "Image 5 - general example of library packaging comparison") <br/>
+![Image 5 - general example of library packaging comparison](images/05-general-example-of-library-packaging-comparison.jpg "Image 5 - general example of library packaging comparison") <br/>
 *Image 5 - general example of library packaging comparison*
 
 Without exploring Axon's internal workings, packages seem to be understandable and coherent, keeping the right level of cohesion. After all, it is hard to fail with cohesion for that small number of
@@ -205,7 +205,7 @@ existence of separate library modules.
 Next, we have two low-level libraries supporting extension, customization, and configurability of 3rd party "datasource-proxy" library. Module `klokwrk-lib-datasourceproxy` provides extension itself,
 while `klokwrk-lib-datasourceproxy-springboot` implements support and configurability for the Spring Boot environment.
 
-![Image 6 - datasourceproxy library packaging comparison](images/modulesAndPackages/06-datasourceproxy-library-packaging-comparison.jpg "Image 6 - datasourceproxy library packaging comparison") <br/>
+![Image 6 - datasourceproxy library packaging comparison](images/06-datasourceproxy-library-packaging-comparison.jpg "Image 6 - datasourceproxy library packaging comparison") <br/>
 *Image 6 - datasourceproxy library packaging comparison*
 
 After glancing over packages, one might think there is an error in `klokwrk-lib-datasourceproxy` since there are no subpackages. It's true. This is an error unless you take a less strict approach.
@@ -216,7 +216,7 @@ different reasons, approach with separate modules is usually taken from Spring B
 
 The last example is very similar, but now it's about the Jackson library.
 
-![Image 7 - jackson library packaging comparison](images/modulesAndPackages/07-jackson-library-packaging-comparison.jpg "Image 7 - jackson library packaging comparison") <br/>
+![Image 7 - jackson library packaging comparison](images/07-jackson-library-packaging-comparison.jpg "Image 7 - jackson library packaging comparison") <br/>
 *Image 7 - jackson library packaging comparison*
 
 This time, in the core `klokwrk-lib-jackson` library, we need separated subpackages for splitting different functions. It is worth noting the names of subpackages. They are the same as for
@@ -255,7 +255,7 @@ it makes sense to embrace already existing well-known architecture.
 Project Klokwrk uses hexagonal architecture as we find it to offer very concrete guidelines when it comes to translating into code-level artifacts. If you are not familiar with hexagonal architecture,
 we can look at the picture taken from the article ["Hexagonal Architecture with Java and Spring"](https://reflectoring.io/spring-hexagonal/) by Tom Hombergs.
 
-![Image 8 - hexagonal architecture](images/modulesAndPackages/08-hexagonal-architecture.png "Image 8 - hexagonal architecture") <br/>
+![Image 8 - hexagonal architecture](images/08-hexagonal-architecture.png "Image 8 - hexagonal architecture") <br/>
 *Image 8 - hexagonal architecture (by Tom Hombergs)*
 
 At the center, we have our domain code. It is isolated from its surroundings as much as possible. We are using inbound and outbound ports and adapters for that purpose.
@@ -276,14 +276,14 @@ applications.
 
 The next image shows expanded packages of command side application. To make different nesting levels more apparent, packages and classes are displayed in colors.
 
-![Image 9 - command side hexagonal architecture](images/modulesAndPackages/09-commandside-hexagonal-architecture.jpg "Image 9 - command side hexagonal architecture") <br/>
+![Image 9 - command side hexagonal architecture](images/09-commandside-hexagonal-architecture.jpg "Image 9 - command side hexagonal architecture") <br/>
 *Image 9 - command side hexagonal architecture*
 
 Top-level packages are `domain`, `feature`, and `infrastructure`. Package `infrastructure` contains glue-code with various responsibilities. As it is not subject to hexagonal architecture, we will
 not explore it further.
 
 In the case of the command side application, the `domain` package will contain aggregates and entities. If we have some domain services closely related to the aggregates in question, we can also put
-them here. On the other hand, more general domain services with wider reusability should be pulled out into subdomain or domain libraries.
+them here. On the other hand, more general domain services with wider reusability should be pulled out into the subdomain or domain libraries.
 
 The package `feature` is a placeholder for all features of our command side application. You can think of a "feature" as a more coarse-grained concept than the use-case. All closely related use-cases
 are contained in a single feature. In our case, we have a feature with the name `cargobooking`.
@@ -298,7 +298,7 @@ the `BookCargoPortIn` inbound port, which is implemented by the application serv
 
 For comparison, the following picture shows the structure of projection and query side applications.
 
-![Image 10 - projection and query side hexagonal architecture](images/modulesAndPackages/10-projection-and-queryside-hexagonal-architecture.jpg "Image 10 - projection and query side hexagonal architecture") <br/>
+![Image 10 - projection and query side hexagonal architecture](images/10-projection-and-queryside-hexagonal-architecture.jpg "Image 10 - projection and query side hexagonal architecture") <br/>
 *Image 10 - projection and query side hexagonal architecture*
 
 Besides obvious simplification over the command side application, we can also observe some CQRS/ES specifics applied to hexagonal architecture. For example, the projection application contains only

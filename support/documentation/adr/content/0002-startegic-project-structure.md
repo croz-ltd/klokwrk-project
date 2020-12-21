@@ -45,7 +45,7 @@ called - `lib`. It is placed directly under the project root. We can use generic
 Language extension modules contain code that extends the feature set of programming language or its SDK library. The organizational directory of language extensions is - `lang`. We can use generic
 reusable modules across the whole system.
 
-Much more details about is available in "[Organizing modules and packages](../../article/modulesAndPackages.md)".
+Much more details about is available in "[Organizing modules and packages](../../article/modules-and-packages/modulesAndPackages.md)".
 
 ## Consequences
 ### Positive
@@ -69,5 +69,5 @@ Much more details about is available in "[Organizing modules and packages](../..
 * Traditional flat project structure.
 
 ## References
-* [Organizing modules and packages](../../article/modulesAndPackages.md)
+* [Organizing modules and packages](../../article/modules-and-packages/modulesAndPackages.md)
 * [kordamp-gradle-plugins](https://github.com/kordamp/kordamp-gradle-plugins)

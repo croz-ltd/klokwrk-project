@@ -27,7 +27,7 @@ have in place tests that verify all architectural invariants.
 Building on top of the [ArchUnit](https://www.archunit.org/) library, Klokwrk provides DSL for specifying hexagonal architecture layers for CQRS/ES applications. There is support for several subtypes
 of CQRS/ES flavored hexagonal architecture corresponding to the commandside, projections, and queryside aspects.
 
-For more insight and details, take a look at ["Behavior and architectural testing"](../../article/modulesAndPackages.md#behavior-and-architectural-testing). There is also a video
+For more insight and details, take a look at ["Behavior and architectural testing"](../../article/modules-and-packages/modulesAndPackages.md#behavior-and-architectural-testing). There is also a video
 ["Project Klokwrk: how it helps defining software architecture and solves integration"](https://www.youtube.com/watch?v=35oUxjXWNYU) that, besides other things, talks about architectural testing in
 `klokwrk-project`.
 
@@ -46,6 +46,6 @@ For more insight and details, take a look at ["Behavior and architectural testin
 ## References
 * [ADR-0003 - CQRS and Event Sourcing (ES) for Applications](0003-cqrs-and-event-sourcing-for-applications.md)
 * [ADR-0004 - Hexagonal Architecture for Applications](0004-hexagonal-architecture-for-applications.md)
-* [Behavior and architectural testing](../../article/modulesAndPackages.md#behavior-and-architectural-testing)
+* [Behavior and architectural testing](../../article/modules-and-packages/modulesAndPackages.md#behavior-and-architectural-testing)
 * [ArchUnit library](https://www.archunit.org/)
 * [Project Klokwrk: how it helps defining software architecture and solves integration](https://www.youtube.com/watch?v=35oUxjXWNYU)
