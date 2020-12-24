@@ -38,6 +38,10 @@ There are several articles describing some `klokwrk-project` features in more de
 * [Organizing modules and packages](support/documentation/article/modules-and-packages/modulesAndPackages.md)<br/>
   Discussion about principles and ideas behind organizing high-level artifacts of a project and using hexagonal architecture in CQRS/ES context.
 
+While not tightly related to `klokwrk-project` features, the following articles describe some specific challenges that we encountered:
+* [Debugging Gradle internals from IntelliJ IDEA](support/documentation/article/debugging-gradle-from-idea/debugging-gradle-from-idea.md)<br/>
+  Describes how to effectively debug Gradle 3rd party plugins and Gradle internal classes from IntelliJ IDEA.
+
 ### Videos
 * [Turning lessons learned of using Axon in a legacy environment to OSS Project Klokwrk](https://www.youtube.com/watch?v=shl847FRVMI) <br/>
   Turning lessons learned from using Axon Framework in a complex legacy environment to an open-source Project Klokwrk.
