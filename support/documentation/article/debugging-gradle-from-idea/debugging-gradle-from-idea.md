@@ -13,7 +13,7 @@ If you are in a hurry and don't need all the details, feel free to skip to the [
 
 ## Introduction
 Here at [CROZ](https://croz.net/), we recently started working on [Project Klokwrk](https://github.com/croz-ltd/klokwrk-project). One of many premises that we are trying to follow is returning as
-often as possible to the open-source community. An essential part of this is [issue reporting](https://github.com/croz-ltd/klokwrk-project/blob/master/support/documentation/misc/klokwrkRelatedIssuesInTheWild.md)
+often as possible to the open-source community. An essential part of this is [issue reporting](../../misc/klokwrkRelatedIssuesInTheWild.md)
 for tools and libraries that we use.
 
 As Klokwrk uses Gradle as a build tool, exploratory debugging of Gradle build scripts, 3rd party plugins, and internal classes is a prerequisite for any issue report related to Gradle or its plugins.
@@ -32,7 +32,7 @@ With basic setup behind us, let's quickly see how debugging custom Gradle build 
 ### Debugging Gradle scripts
 Debugging your own Gradle scripts is seamless. Put a breakpoint in the script, and run the desired Gradle task in debug mode.
 
-In the following picture, we are using the main [build.gradle](https://github.com/croz-ltd/klokwrk-project/blob/master/build.gradle) script from Klokwrk. We have a breakpoint in the `repositories`
+In the following picture, we are using the main [build.gradle](../../../../build.gradle) script from Klokwrk. We have a breakpoint in the `repositories`
 configuration section. As configuration sections execute during Gradle's configuration phase, we can run any Gradle task to stop at the breakpoint. For starting a task, right-click on it from IDEA's
 `"Gradle tool window"` and select `"Debug"` action.
 
@@ -127,13 +127,13 @@ internal modules, and manually repacking all of them is not something that you w
 [quite often](https://gradle.org/releases/).
 
 It is possible to create an involved shell script that will do all the necessary work. Alternatively, you can try
-[klokwrk-tool-gradle-source-repack](https://github.com/croz-ltd/klokwrk-project/blob/feature_gradleDebuggingArticle/tool/klokwrk-tool-gradle-source-repack/README.md). Despite its complicated name,
+[klokwrk-tool-gradle-source-repack](../../../../tool/klokwrk-tool-gradle-source-repack/README.md). Despite its complicated name,
 this little tool is straightforward to use. All you need to provide is a Gradle version for which you want to create a JAR archive with repacked Gradle sources.
 
 > As a side note, it is worth mentioning that `klokwrk-tool-gradle-source-repack` served another useful purpose. It was a playground for exploring possible usage of GraalVM native images with
 > non-trivial Groovy applications, with particular emphasis on minimal or non-existing reflection configuration. This should be another article's subject. Meanwhile, nothing stops you from exploring
 > the source if you are interested in the topic. You can find some starting tips in the
-> [README.md](https://github.com/croz-ltd/klokwrk-project/blob/feature_gradleDebuggingArticle/tool/klokwrk-tool-gradle-source-repack/README.md) file.
+> [README.md](../../../../tool/klokwrk-tool-gradle-source-repack/README.md) file.
 
 With the correct Gradle version supplied, `klokwrk-tool-gradle-source-repack` will:
 - download Gradle `all` distribution corresponding to the supplied Gradle version
@@ -181,7 +181,7 @@ Now you can go ahead by adding your breakpoints and start debugging Gradle inter
   }
   ```
 - Reload Gradle project in IDEA.
-- Use [klokwrk-tool-gradle-source-repack](https://github.com/croz-ltd/klokwrk-project/blob/feature_gradleDebuggingArticle/tool/klokwrk-tool-gradle-source-repack/README.md) for creating an archive
+- Use [klokwrk-tool-gradle-source-repack](../../../../tool/klokwrk-tool-gradle-source-repack/README.md) for creating an archive
   with repacked Gradle sources under a single source root.
 - Attach the repacked archive as a source to Gradle internal classes.
 - Put breakpoints in the Gradle internal classes, and run the desired Gradle task in debug mode.
