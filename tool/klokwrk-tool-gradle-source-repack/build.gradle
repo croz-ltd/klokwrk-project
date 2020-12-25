@@ -150,20 +150,55 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
   thisExecTask.setExecutable(executable)
   thisExecTask.setWorkingDir(workingDir)
   thisExecTask.setArgs([
+      // Enables verbose output that display full configuration used for creating a native image.
       "--verbose",
+
+      // A separated list of directories, JAR archives, and ZIP archives to search for class files.
       "--class-path=$nativeImageBuilderClasspath",
-      "--allow-incomplete-classpath",
+
+//      // Allow image building with an incomplete class path. Report type resolution errors at runtime when they are accessed the first time, instead of during image building.
+//      // It looks like this option can be turned off when compiling Groovy apps.
+//      "--allow-incomplete-classpath",
+
+      // Report usage of unsupported methods and fields at runtime when they are accessed the first time, instead of as an error during image building.
+      // Necessary for compiling Groovy apps. Based on native-image tool exception, ot looks like Groovy at runtime determines actual Java version to be used
+      // (see org.codehaus.groovy.vmplugin.VMPluginFactory). Therefore, some call paths are not available at compile time depending on Java runtime used during compilation.
       "--report-unsupported-elements-at-runtime",
+
+      // A comma-separated list of packages and classes (and implicitly all of their superclasses) that are initialized during image generation. An empty string designates all packages.
       "--initialize-at-build-time",
+
+      // A comma-separated list of packages and classes (and implicitly all of their subclasses) that must be initialized at runtime and not during image building. An empty string is currently not supported.
       "--initialize-at-run-time=org.codehaus.groovy.control.XStreamUtils,groovy.grape.GrapeIvy",
+
+      // Do not fallback on plain JVM when AOT compilation fails.
       "--no-fallback",
+
+      // Build a native image without starting background compilation server as a daemon.
       "--no-server",
+
+      // Comma separated list of directories containing configuration files that are not part of the classpath.
       "-H:ConfigurationFileDirectories=${ mainGraalSourceSetDir.absolutePath }",
+
+      // Comma separated list of resources for specifying a list of interfaces that dynamic proxy classes (generated at native image build time) implement.
       "-H:DynamicProxyConfigurationFiles=${ mainGraalSourceSetDir.absolutePath }/dynamicProxy-config.json",
-//      "-H:+PrintAnalysisCallTree", // Uncomment when detailed reports about GraalVM code analysis are needed.
+
+//      // Enables creation of detailed reports about GraalVM code analysis.
+//      "-H:+PrintAnalysisCallTree",
+//
+//      // Enables creation of detailed report about objects included in the native image heap.
+//      "-H:+PrintImageObjectTree",
+
+      // Print stacktrace of underlying exceptions.
       "-H:+ReportExceptionStackTraces",
+
+      // The directory where the generated executable is placed.
       "-H:Path=${ workingDir.absolutePath }",
+
+      // The class containing the default entry point method.
       "-H:Class=${ mainClass }",
-      "-H:Name=${ project.name }"]
-  )
+
+      // The name of the executable file that is generated.
+      "-H:Name=${ project.name }"
+  ])
 }
