@@ -26,6 +26,8 @@ import org.graalvm.nativeimage.hosted.Feature;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -50,15 +52,38 @@ public class GroovyApplicationRegistrationFeature implements Feature {
    */
   public static void registerGeneratedClosureClasses(ScanResult scanResult) {
     ClassInfoList generatedGroovyClosureClassInfoList = scanResult.getClassesImplementing("org.codehaus.groovy.runtime.GeneratedClosure");
+
+    RegistrationFeatureUtils.printClassInfoList("registerGeneratedClosureClasses", generatedGroovyClosureClassInfoList);
     RegistrationFeatureUtils.registerClasses(generatedGroovyClosureClassInfoList);
   }
 
   /**
-   * Registers all classes that Groovy enhances with generated methods.
+   * Registers all application classes to ensure that callbacks from generated closure classes work as expected.
+   * <p/>
+   * Generated closure classes are excluded from this registration.
+   * <p/>
+   * This might be implemented in some other way if we discover how to find application classes that closure generated classes calls back.
    */
-  public static void registerClassesWithGeneratedMethods(ScanResult scanResult) {
-    ClassInfoList generatedGroovyClosureClassInfoList = scanResult.getClassesWithMethodAnnotation("groovy.transform.Generated");
-    RegistrationFeatureUtils.registerClasses(generatedGroovyClosureClassInfoList);
+  public static void registerAllApplicationClasses(ScanResult scanResult) {
+    ClassInfoList generatedGroovyClosureClassInfoList = scanResult.getClassesImplementing("org.codehaus.groovy.runtime.GeneratedClosure");
+    ClassInfoList allApplicationClasses = scanResult.getClassesImplementing("groovy.lang.GroovyObject");
+
+    allApplicationClasses = allApplicationClasses.filter(classInfo -> {
+      List<String> excludedClasses = Arrays.asList("groovy.lang.Closure", "groovy.lang.GroovyObjectSupport");
+      if (excludedClasses.contains(classInfo.getName())) {
+        return false;
+      }
+
+      //noinspection RedundantIfStatement
+      if (generatedGroovyClosureClassInfoList.contains(classInfo)) {
+        return false;
+      }
+
+      return true;
+    });
+
+    RegistrationFeatureUtils.printClassInfoList("registerAllApplicationClasses", allApplicationClasses);
+    RegistrationFeatureUtils.registerClasses(allApplicationClasses);
   }
 
   @Override
@@ -77,7 +102,7 @@ public class GroovyApplicationRegistrationFeature implements Feature {
 
     try (ScanResult scanResult = gradleSourceRepackClassGraph.scan()) {
       registerGeneratedClosureClasses(scanResult);
-      registerClassesWithGeneratedMethods(scanResult);
+      registerAllApplicationClasses(scanResult);
     }
   }
 
