@@ -35,42 +35,12 @@ import java.util.Properties;
  * <ul>
  *   <li>{@code kwrk-graal.classgraph-app-scan.packages}: comma separated list of root packages which will be considered by ClassGraph.</li>
  *   <li>{@code kwrk-graal.classgraph-app-scan.verbose}: boolean flag for turning on/off ClassGraph verbose output</li>
- *   <li>{@code kwrk-graal.classgraph-app-scan.ignored-jars-additional}: comma separated list of additional jars that will bi ignored by ClassGraph.</li>
- *   <li>
- *     {@code kwrk-graal.classgraph-app-scan.ignored-jars-default}: comma separated list of default jars that will bi ignored by ClassGraph. It corresponds to the value of
- *     {@link #CLASS_GRAPH_APP_SCAN_IGNORED_JARS_DEFAULT} constant. Usually not configured, but can be useful if one wants to reset default completely.
- *   </li>
  * <p/>
  * This class is used during compilation of GraalVM native image. It is auto-discovered by native image compiler. Needs to be written in Java.
  */
 @SuppressWarnings("unused")
 @AutomaticFeature
 public class GroovyApplicationRegistrationFeature implements Feature {
-  public static final String[] CLASS_GRAPH_APP_SCAN_IGNORED_JARS_DEFAULT = new String[] {
-      "classgraph*.jar",
-      "groovy*.jar",
-      "jackson*.jar",
-      "javax*.jar",
-      "jsr*.jar",
-      "logback*.jar",
-      "*llvm*.jar",
-      "micronaut*.jar",
-      "netty*.jar",
-      "picocli*.jar",
-      "reactive*.jar",
-      "rxjava*.jar",
-      "slf4j*.jar",
-      "snakeyaml*.jar",
-      "spotbugs*.jar",
-      "validation*.jar",
-
-      // graal related jars
-      "library-support.jar",
-      "javacpp-shadowed.jar",
-      "pointsto.jar",
-      "objectfile.jar",
-      "svm*.jar"
-  };
 
   /**
    * Registers generated Groovy closure classes with Graal native image compiler.
@@ -99,8 +69,7 @@ public class GroovyApplicationRegistrationFeature implements Feature {
         .enableClassInfo()
         .enableMethodInfo()
         .enableAnnotationInfo()
-        .acceptPackages(classGraphAppScanConfiguration.getClassGraphAppScanPackages())
-        .rejectJars(classGraphAppScanConfiguration.getClassGraphAppScanIgnoredJars());
+        .acceptPackages(classGraphAppScanConfiguration.getClassGraphAppScanPackages());
 
     if (classGraphAppScanConfiguration.isClassGraphScanVerbose()) {
       gradleSourceRepackClassGraph.verbose();
@@ -115,8 +84,6 @@ public class GroovyApplicationRegistrationFeature implements Feature {
   private ClassGraphAppScanConfiguration calculateClassGraphAppScanConfiguration(ClassLoader classLoader) {
     boolean isClassGraphScanVerbose = false;
     String[] classGraphAppScanPackages = new String[] {};
-    String[] classGraphAppScanIgnoredJarsDefault = CLASS_GRAPH_APP_SCAN_IGNORED_JARS_DEFAULT;
-    String[] classGraphAppScanIgnoredJarsAdditional = new String[0];
 
     URL kwrkConfigUrl = classLoader.getResource("kwrk-graal.properties");
     if (kwrkConfigUrl != null) {
@@ -133,22 +100,8 @@ public class GroovyApplicationRegistrationFeature implements Feature {
       if ("".equals(classGraphAppScanPackages[0].trim())) {
         classGraphAppScanPackages = new String[0];
       }
-
-      classGraphAppScanIgnoredJarsDefault = kwrkConfig.getProperty("kwrk-graal.classgraph-app-scan.ignored-jars-default", String.join(",", classGraphAppScanIgnoredJarsDefault)).split(",");
-      if ("".equals(classGraphAppScanIgnoredJarsDefault[0].trim())) {
-        classGraphAppScanIgnoredJarsDefault = new String[0];
-      }
-
-      classGraphAppScanIgnoredJarsAdditional = kwrkConfig.getProperty("kwrk-graal.classgraph-app-scan.ignored-jars-additional", "").split(",");
-      if ("".equals(classGraphAppScanIgnoredJarsAdditional[0].trim())) {
-        classGraphAppScanIgnoredJarsAdditional = new String[0];
-      }
     }
 
-    String[] classGraphAppScanIgnoredJarsFinal = new String[classGraphAppScanIgnoredJarsDefault.length + classGraphAppScanIgnoredJarsAdditional.length];
-    System.arraycopy(classGraphAppScanIgnoredJarsDefault, 0, classGraphAppScanIgnoredJarsFinal, 0, classGraphAppScanIgnoredJarsDefault.length);
-    System.arraycopy(classGraphAppScanIgnoredJarsAdditional, 0, classGraphAppScanIgnoredJarsFinal, classGraphAppScanIgnoredJarsDefault.length, classGraphAppScanIgnoredJarsAdditional.length);
-
-    return new ClassGraphAppScanConfiguration(isClassGraphScanVerbose, classGraphAppScanPackages, classGraphAppScanIgnoredJarsFinal);
+    return new ClassGraphAppScanConfiguration(isClassGraphScanVerbose, classGraphAppScanPackages);
   }
 }
