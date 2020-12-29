@@ -27,13 +27,18 @@ import org.graalvm.nativeimage.hosted.Feature;
 /**
  * Programmatically registers default Groovy methods (accessed by reflection) and {@code groovy.lang.Closure} extending classes from {@code org.codehaus.groovy.runtime} package with Graal native
  * image compiler.
+ *
+ * Programmatically registers default Groovy methods classes from {@code org.codehaus.groovy.runtime} package with Graal native image compiler.
  * <p/>
- * Default groovy method classes are {@code org.codehaus.groovy.runtime.dgm$number.class}.
+ * Default groovy method classes are all {@code org.codehaus.groovy.runtime.dgm$number.class} classes.
+ * <p/>
+ * In addition, all {@code groovy.lang.Closure} extending classes from {@code org.codehaus.groovy.runtime} are also registered as some of them are required and accessed from
+ * {@code org.codehaus.groovy.runtime.DefaultGroovyMethods} class and other similar classes (see {@code org.codehaus.groovy.runtime.DefaultGroovyMethods.DGM_LIKE_CLASSES} constant).
  * <p/>
  * This class is used during compilation of GraalVM native image. It is auto-discovered by native image compiler. Needs to be written in Java.
  */
 @AutomaticFeature
-public class GroovyDefaultMethodsClassesRegistrationFeature implements Feature {
+public class GroovyDgmClassesRegistrationFeature implements Feature {
   @Override
   public void beforeAnalysis(BeforeAnalysisAccess beforeAnalysisAccess) {
     String groovyRuntimePackage = "org.codehaus.groovy.runtime";
