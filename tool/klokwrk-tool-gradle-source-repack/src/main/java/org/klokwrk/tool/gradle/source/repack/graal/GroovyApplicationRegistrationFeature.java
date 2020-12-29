@@ -41,52 +41,6 @@ import java.util.Properties;
 @AutomaticFeature
 public class GroovyApplicationRegistrationFeature implements Feature {
 
-  /**
-   * Registers generated Groovy closure classes with Graal native image compiler.
-   * <p/>
-   * For some well known Groovy methods that take closures as parameters (i.e. each), Groovy generates helper classes in the fly next to the class that uses these methods with closure parameters.
-   * For closures calls to work correctly, Groovy generated helper classes needs to be registered with GraalVM native image compiler.
-   */
-  public static void registerGeneratedClosureClasses(ScanResult scanResult, boolean isVerboseOutputEnabled) {
-    ClassInfoList generatedGroovyClosureClassInfoList = scanResult.getClassesImplementing("org.codehaus.groovy.runtime.GeneratedClosure");
-
-    if (isVerboseOutputEnabled) {
-      RegistrationFeatureUtils.printClassInfoList("registerGeneratedClosureClasses", generatedGroovyClosureClassInfoList);
-    }
-    RegistrationFeatureUtils.registerClasses(generatedGroovyClosureClassInfoList);
-  }
-
-  /**
-   * Registers all application classes to ensure that callbacks from generated closure classes work as expected.
-   * <p/>
-   * Generated closure classes are excluded from this registration.
-   * <p/>
-   * This might be implemented in some other way if we discover how to find application classes that closure generated classes calls back.
-   */
-  public static void registerAllApplicationClasses(ScanResult scanResult, boolean isVerboseOutputEnabled) {
-    ClassInfoList generatedGroovyClosureClassInfoList = scanResult.getClassesImplementing("org.codehaus.groovy.runtime.GeneratedClosure");
-    ClassInfoList allApplicationClasses = scanResult.getClassesImplementing("groovy.lang.GroovyObject");
-
-    allApplicationClasses = allApplicationClasses.filter(classInfo -> {
-      List<String> excludedClasses = Arrays.asList("groovy.lang.Closure", "groovy.lang.GroovyObjectSupport");
-      if (excludedClasses.contains(classInfo.getName())) {
-        return false;
-      }
-
-      //noinspection RedundantIfStatement
-      if (generatedGroovyClosureClassInfoList.contains(classInfo)) {
-        return false;
-      }
-
-      return true;
-    });
-
-    if (isVerboseOutputEnabled) {
-      RegistrationFeatureUtils.printClassInfoList("registerAllApplicationClasses", allApplicationClasses);
-    }
-    RegistrationFeatureUtils.registerClasses(allApplicationClasses);
-  }
-
   @Override
   public void beforeAnalysis(BeforeAnalysisAccess beforeAnalysisAccess) {
     GroovyApplicationRegistrationFeatureConfiguration configuration = calculateConfiguration(beforeAnalysisAccess.getApplicationClassLoader());
@@ -150,5 +104,51 @@ public class GroovyApplicationRegistrationFeature implements Feature {
     }
 
     return new GroovyApplicationRegistrationFeatureConfiguration(isEnabled, isScanVerboseClassGraph, isScanVerboseFeature, classGraphAppScanPackages);
+  }
+
+  /**
+   * Registers generated Groovy closure classes with Graal native image compiler.
+   * <p/>
+   * For some well known Groovy methods that take closures as parameters (i.e. each), Groovy generates helper classes in the fly next to the class that uses these methods with closure parameters.
+   * For closures calls to work correctly, Groovy generated helper classes needs to be registered with GraalVM native image compiler.
+   */
+  private static void registerGeneratedClosureClasses(ScanResult scanResult, boolean isVerboseOutputEnabled) {
+    ClassInfoList generatedGroovyClosureClassInfoList = scanResult.getClassesImplementing("org.codehaus.groovy.runtime.GeneratedClosure");
+
+    if (isVerboseOutputEnabled) {
+      RegistrationFeatureUtils.printClassInfoList("registerGeneratedClosureClasses", generatedGroovyClosureClassInfoList);
+    }
+    RegistrationFeatureUtils.registerClasses(generatedGroovyClosureClassInfoList);
+  }
+
+  /**
+   * Registers all application classes to ensure that callbacks from generated closure classes work as expected.
+   * <p/>
+   * Generated closure classes are excluded from this registration.
+   * <p/>
+   * This might be implemented in some other way if we discover how to find application classes that closure generated classes calls back.
+   */
+  private static void registerAllApplicationClasses(ScanResult scanResult, boolean isVerboseOutputEnabled) {
+    ClassInfoList generatedGroovyClosureClassInfoList = scanResult.getClassesImplementing("org.codehaus.groovy.runtime.GeneratedClosure");
+    ClassInfoList allApplicationClasses = scanResult.getClassesImplementing("groovy.lang.GroovyObject");
+
+    allApplicationClasses = allApplicationClasses.filter(classInfo -> {
+      List<String> excludedClasses = Arrays.asList("groovy.lang.Closure", "groovy.lang.GroovyObjectSupport");
+      if (excludedClasses.contains(classInfo.getName())) {
+        return false;
+      }
+
+      //noinspection RedundantIfStatement
+      if (generatedGroovyClosureClassInfoList.contains(classInfo)) {
+        return false;
+      }
+
+      return true;
+    });
+
+    if (isVerboseOutputEnabled) {
+      RegistrationFeatureUtils.printClassInfoList("registerAllApplicationClasses", allApplicationClasses);
+    }
+    RegistrationFeatureUtils.registerClasses(allApplicationClasses);
   }
 }
