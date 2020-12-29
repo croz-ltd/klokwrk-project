@@ -40,4 +40,22 @@ public class RegistrationFeatureUtils {
           }
         });
   }
+
+  /**
+   * Prints out (on err output stream) all elements of provided ClassInfoList.
+   * <p/>
+   * Intention is to use this method for diagnostic printouts. This is the reason why standard error output stream is used as ClassGraph also uses is for printing out diagnostic information in
+   * verbose mode. This way outputs of ClassGraph and our own custom diagnostic does not mix and interfere.
+   */
+  public static void printClassInfoList(String classInfoListName, ClassInfoList classInfoList) {
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append("---------- ").append(classInfoListName).append("- start\n");
+
+    for (ClassInfo classInfo : classInfoList) {
+      stringBuilder.append(classInfo.toString()).append("\n");
+    }
+
+    stringBuilder.append("---------- ").append(classInfoListName).append(" - end\n");
+    System.err.println(stringBuilder.toString());
+  }
 }
