@@ -88,15 +88,15 @@ public class GroovyApplicationRegistrationFeature implements Feature {
 
   @Override
   public void beforeAnalysis(BeforeAnalysisAccess beforeAnalysisAccess) {
-    ClassGraphAppScanConfiguration classGraphAppScanConfiguration = calculateClassGraphAppScanConfiguration(beforeAnalysisAccess.getApplicationClassLoader());
+    GroovyApplicationRegistrationFeatureConfiguration groovyApplicationRegistrationFeatureConfiguration = calculateConfiguration(beforeAnalysisAccess.getApplicationClassLoader());
 
     ClassGraph gradleSourceRepackClassGraph = new ClassGraph()
         .enableClassInfo()
         .enableMethodInfo()
         .enableAnnotationInfo()
-        .acceptPackages(classGraphAppScanConfiguration.getClassGraphAppScanPackages());
+        .acceptPackages(groovyApplicationRegistrationFeatureConfiguration.getClassGraphAppScanPackages());
 
-    if (classGraphAppScanConfiguration.isClassGraphScanVerbose()) {
+    if (groovyApplicationRegistrationFeatureConfiguration.isClassGraphScanVerbose()) {
       gradleSourceRepackClassGraph.verbose();
     }
 
@@ -106,7 +106,7 @@ public class GroovyApplicationRegistrationFeature implements Feature {
     }
   }
 
-  private ClassGraphAppScanConfiguration calculateClassGraphAppScanConfiguration(ClassLoader classLoader) {
+  private GroovyApplicationRegistrationFeatureConfiguration calculateConfiguration(ClassLoader classLoader) {
     boolean isClassGraphScanVerbose = false;
     String[] classGraphAppScanPackages = new String[] {};
 
@@ -127,6 +127,6 @@ public class GroovyApplicationRegistrationFeature implements Feature {
       }
     }
 
-    return new ClassGraphAppScanConfiguration(isClassGraphScanVerbose, classGraphAppScanPackages);
+    return new GroovyApplicationRegistrationFeatureConfiguration(isClassGraphScanVerbose, classGraphAppScanPackages);
   }
 }

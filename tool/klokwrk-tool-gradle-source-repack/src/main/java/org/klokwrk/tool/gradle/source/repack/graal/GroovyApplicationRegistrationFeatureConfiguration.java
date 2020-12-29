@@ -17,11 +17,11 @@
  */
 package org.klokwrk.tool.gradle.source.repack.graal;
 
-public class ClassGraphAppScanConfiguration {
+public class GroovyApplicationRegistrationFeatureConfiguration {
   private final boolean isClassGraphScanVerbose;
   private final String[] classGraphAppScanPackages;
 
-  public ClassGraphAppScanConfiguration(boolean isClassGraphScanVerbose, String[] classGraphAppScanPackages) {
+  public GroovyApplicationRegistrationFeatureConfiguration(boolean isClassGraphScanVerbose, String[] classGraphAppScanPackages) {
     this.isClassGraphScanVerbose = isClassGraphScanVerbose;
     this.classGraphAppScanPackages = classGraphAppScanPackages;
   }
