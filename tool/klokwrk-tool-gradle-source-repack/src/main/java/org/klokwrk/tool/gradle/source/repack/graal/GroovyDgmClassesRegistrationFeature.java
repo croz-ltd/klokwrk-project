@@ -24,6 +24,8 @@ import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
 import org.graalvm.nativeimage.hosted.Feature;
 
+import java.util.Properties;
+
 /**
  * Programmatically registers default Groovy methods (accessed by reflection) and {@code groovy.lang.Closure} extending classes from {@code org.codehaus.groovy.runtime} package with Graal native
  * image compiler.
@@ -41,29 +43,81 @@ import org.graalvm.nativeimage.hosted.Feature;
 public class GroovyDgmClassesRegistrationFeature implements Feature {
   @Override
   public void beforeAnalysis(BeforeAnalysisAccess beforeAnalysisAccess) {
+    GroovyDgmClassesRegistrationFeatureConfiguration configuration = calculateConfiguration(beforeAnalysisAccess.getApplicationClassLoader());
+    if (!configuration.isEnabled()) {
+      return;
+    }
+
     String groovyRuntimePackage = "org.codehaus.groovy.runtime";
 
     ClassGraph groovyRuntimeClassGraph = new ClassGraph()
         .enableClassInfo()
         .acceptPackages(groovyRuntimePackage);
 
+    if (configuration.isScanVerboseClassGraph()) {
+      groovyRuntimeClassGraph.verbose();
+    }
+
     try (ScanResult scanResult = groovyRuntimeClassGraph.scan()) {
-      registerDefaultGroovyMethods(scanResult);
-      registerClosureExtendingClasses(scanResult);
+      registerDefaultGroovyMethods(scanResult, configuration.isScanVerboseFeature());
+      registerClosureExtendingClasses(scanResult, configuration.isScanVerboseFeature());
     }
   }
 
-  protected void registerDefaultGroovyMethods(ScanResult scanResult) {
+  private GroovyDgmClassesRegistrationFeatureConfiguration calculateConfiguration(ClassLoader classLoader) {
+    boolean isEnabled = true;
+
+    String scanVerbose;
+    boolean isScanVerboseClassGraph = false;
+    boolean isScanVerboseFeature = false;
+
+    Properties kwrkGraalConfig = RegistrationFeatureUtils.loadKwrkGraalProperties(classLoader);
+    if (kwrkGraalConfig != null) {
+      isEnabled = Boolean.parseBoolean(kwrkGraalConfig.getProperty("kwrk-graal.registration-feature.dgm-classes.enabled", "true").toLowerCase());
+
+      scanVerbose = kwrkGraalConfig.getProperty("kwrk-graal.registration-feature.dgm-classes.scan.verbose", "none").trim().toLowerCase();
+      //noinspection DuplicatedCode
+      switch (scanVerbose) {
+        case "all":
+          isScanVerboseClassGraph = true;
+          isScanVerboseFeature = true;
+          break;
+        case "feature":
+          isScanVerboseClassGraph = false;
+          isScanVerboseFeature = true;
+          break;
+        case "classgraph":
+          isScanVerboseClassGraph = true;
+          isScanVerboseFeature = false;
+          break;
+        default:
+          isScanVerboseClassGraph = false;
+          isScanVerboseFeature = false;
+          break;
+      }
+    }
+
+    return new GroovyDgmClassesRegistrationFeatureConfiguration(isEnabled, isScanVerboseClassGraph, isScanVerboseFeature);
+  }
+
+  protected void registerDefaultGroovyMethods(ScanResult scanResult, boolean isScanVerboseFeature) {
     ClassInfoList defaultGroovyMethodClassInfoCandidateList = scanResult.getSubclasses("org.codehaus.groovy.reflection.GeneratedMetaMethod");
     ClassInfoList defaultGroovyMethodClassInfoFilteredList =
         defaultGroovyMethodClassInfoCandidateList
             .filter((ClassInfo defaultGroovyMethodClassInfoCandidate) -> defaultGroovyMethodClassInfoCandidate.getName().matches("^org.codehaus.groovy.runtime.dgm\\$[0-9]+$"));
 
+    if (isScanVerboseFeature) {
+      RegistrationFeatureUtils.printClassInfoList("dgm-registerDefaultGroovyMethods", defaultGroovyMethodClassInfoFilteredList);
+    }
     RegistrationFeatureUtils.registerClasses(defaultGroovyMethodClassInfoFilteredList);
   }
 
-  protected void registerClosureExtendingClasses(ScanResult scanResult) {
+  protected void registerClosureExtendingClasses(ScanResult scanResult, boolean isScanVerboseFeature) {
     ClassInfoList groovyRuntimeClosureExtendingClassList = scanResult.getSubclasses("groovy.lang.Closure");
+
+    if (isScanVerboseFeature) {
+      RegistrationFeatureUtils.printClassInfoList("dgm-registerClosureExtendingClasses", groovyRuntimeClosureExtendingClassList);
+    }
     RegistrationFeatureUtils.registerClasses(groovyRuntimeClosureExtendingClassList);
   }
 }

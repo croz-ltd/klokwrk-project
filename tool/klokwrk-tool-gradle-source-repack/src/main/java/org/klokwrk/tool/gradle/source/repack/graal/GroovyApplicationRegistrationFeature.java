@@ -78,6 +78,7 @@ public class GroovyApplicationRegistrationFeature implements Feature {
       isEnabled = Boolean.parseBoolean(kwrkGraalConfig.getProperty("kwrk-graal.registration-feature.application.enabled", "true").toLowerCase());
 
       scanVerbose = kwrkGraalConfig.getProperty("kwrk-graal.registration-feature.application.scan.verbose", "none").trim().toLowerCase();
+      //noinspection DuplicatedCode
       switch (scanVerbose) {
         case "all":
           isScanVerboseClassGraph = true;
@@ -116,7 +117,7 @@ public class GroovyApplicationRegistrationFeature implements Feature {
     ClassInfoList generatedGroovyClosureClassInfoList = scanResult.getClassesImplementing("org.codehaus.groovy.runtime.GeneratedClosure");
 
     if (isVerboseOutputEnabled) {
-      RegistrationFeatureUtils.printClassInfoList("registerGeneratedClosureClasses", generatedGroovyClosureClassInfoList);
+      RegistrationFeatureUtils.printClassInfoList("application-registerGeneratedClosureClasses", generatedGroovyClosureClassInfoList);
     }
     RegistrationFeatureUtils.registerClasses(generatedGroovyClosureClassInfoList);
   }
@@ -147,7 +148,7 @@ public class GroovyApplicationRegistrationFeature implements Feature {
     });
 
     if (isVerboseOutputEnabled) {
-      RegistrationFeatureUtils.printClassInfoList("registerAllApplicationClasses", allApplicationClasses);
+      RegistrationFeatureUtils.printClassInfoList("application-registerAllApplicationClasses", allApplicationClasses);
     }
     RegistrationFeatureUtils.registerClasses(allApplicationClasses);
   }
