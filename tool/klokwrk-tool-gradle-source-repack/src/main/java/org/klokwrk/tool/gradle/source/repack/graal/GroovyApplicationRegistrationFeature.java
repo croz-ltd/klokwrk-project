@@ -23,9 +23,6 @@ import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
 import org.graalvm.nativeimage.hosted.Feature;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -110,18 +107,10 @@ public class GroovyApplicationRegistrationFeature implements Feature {
     boolean isClassGraphScanVerbose = false;
     String[] classGraphAppScanPackages = new String[] {};
 
-    URL kwrkConfigUrl = classLoader.getResource("kwrk-graal.properties");
-    if (kwrkConfigUrl != null) {
-      Properties kwrkConfig = new Properties();
-      try (InputStream inputStream = kwrkConfigUrl.openStream()) {
-        kwrkConfig.load(inputStream);
-      }
-      catch (IOException ioe) {
-        throw new RuntimeException(ioe);
-      }
-
-      isClassGraphScanVerbose = Boolean.parseBoolean(kwrkConfig.getProperty("kwrk-graal.classgraph-app-scan.verbose", "false").toLowerCase());
-      classGraphAppScanPackages = kwrkConfig.getProperty("kwrk-graal.classgraph-app-scan.packages", "").split(",");
+    Properties kwrkGraalConfig = RegistrationFeatureUtils.loadKwrkGraalProperties(classLoader);
+    if (kwrkGraalConfig != null) {
+      isClassGraphScanVerbose = Boolean.parseBoolean(kwrkGraalConfig.getProperty("kwrk-graal.classgraph-app-scan.verbose", "false").toLowerCase());
+      classGraphAppScanPackages = kwrkGraalConfig.getProperty("kwrk-graal.classgraph-app-scan.packages", "").split(",");
       if ("".equals(classGraphAppScanPackages[0].trim())) {
         classGraphAppScanPackages = new String[0];
       }

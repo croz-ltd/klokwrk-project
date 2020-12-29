@@ -21,6 +21,11 @@ import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
 import org.graalvm.nativeimage.hosted.RuntimeReflection;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Properties;
+
 public class RegistrationFeatureUtils {
   /**
    * Registers all supplied classes for runtime reflection.
@@ -57,5 +62,31 @@ public class RegistrationFeatureUtils {
 
     stringBuilder.append("---------- ").append(classInfoListName).append(" - end\n");
     System.err.println(stringBuilder.toString());
+  }
+
+  /**
+   * Loads and returns configuration properties.
+   * <p/>
+   * Returns null if properties file cannot be found or when properties are empty.
+   */
+  public static Properties loadKwrkGraalProperties(ClassLoader classLoader) {
+    URL kwrkGraalPropertiesUrl = classLoader.getResource("kwrk-graal.properties");
+    if (kwrkGraalPropertiesUrl == null) {
+      return null;
+    }
+
+    Properties kwrkGraalConfig = new Properties();
+    try (InputStream inputStream = kwrkGraalPropertiesUrl.openStream()) {
+      kwrkGraalConfig.load(inputStream);
+    }
+    catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+
+    if (kwrkGraalConfig.isEmpty()) {
+      return null;
+    }
+
+    return  kwrkGraalConfig;
   }
 }
