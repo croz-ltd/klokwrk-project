@@ -18,16 +18,32 @@
 package org.klokwrk.tool.gradle.source.repack.graal;
 
 public class GroovyApplicationRegistrationFeatureConfiguration {
-  private final boolean isClassGraphScanVerbose;
+  private final boolean isEnabled;
+
+  private final boolean isScanVerboseClassGraph;
+  private final boolean isScanVerboseFeature;
+
   private final String[] classGraphAppScanPackages;
 
-  public GroovyApplicationRegistrationFeatureConfiguration(boolean isClassGraphScanVerbose, String[] classGraphAppScanPackages) {
-    this.isClassGraphScanVerbose = isClassGraphScanVerbose;
+  public GroovyApplicationRegistrationFeatureConfiguration(boolean isEnabled, boolean isScanVerboseClassGraph, boolean isScanVerboseFeature, String[] classGraphAppScanPackages) {
+    this.isEnabled = isEnabled;
+
+    this.isScanVerboseClassGraph = isScanVerboseClassGraph;
+    this.isScanVerboseFeature = isScanVerboseFeature;
+
     this.classGraphAppScanPackages = classGraphAppScanPackages;
   }
 
-  public boolean isClassGraphScanVerbose() {
-    return isClassGraphScanVerbose;
+  public boolean isEnabled() {
+    return isEnabled;
+  }
+
+  public boolean isScanVerboseClassGraph() {
+    return isScanVerboseClassGraph;
+  }
+
+  public boolean isScanVerboseFeature() {
+    return isScanVerboseFeature;
   }
 
   public String[] getClassGraphAppScanPackages() {

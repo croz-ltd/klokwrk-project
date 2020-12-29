@@ -47,10 +47,12 @@ public class GroovyApplicationRegistrationFeature implements Feature {
    * For some well known Groovy methods that take closures as parameters (i.e. each), Groovy generates helper classes in the fly next to the class that uses these methods with closure parameters.
    * For closures calls to work correctly, Groovy generated helper classes needs to be registered with GraalVM native image compiler.
    */
-  public static void registerGeneratedClosureClasses(ScanResult scanResult) {
+  public static void registerGeneratedClosureClasses(ScanResult scanResult, boolean isVerboseOutputEnabled) {
     ClassInfoList generatedGroovyClosureClassInfoList = scanResult.getClassesImplementing("org.codehaus.groovy.runtime.GeneratedClosure");
 
-    RegistrationFeatureUtils.printClassInfoList("registerGeneratedClosureClasses", generatedGroovyClosureClassInfoList);
+    if (isVerboseOutputEnabled) {
+      RegistrationFeatureUtils.printClassInfoList("registerGeneratedClosureClasses", generatedGroovyClosureClassInfoList);
+    }
     RegistrationFeatureUtils.registerClasses(generatedGroovyClosureClassInfoList);
   }
 
@@ -61,7 +63,7 @@ public class GroovyApplicationRegistrationFeature implements Feature {
    * <p/>
    * This might be implemented in some other way if we discover how to find application classes that closure generated classes calls back.
    */
-  public static void registerAllApplicationClasses(ScanResult scanResult) {
+  public static void registerAllApplicationClasses(ScanResult scanResult, boolean isVerboseOutputEnabled) {
     ClassInfoList generatedGroovyClosureClassInfoList = scanResult.getClassesImplementing("org.codehaus.groovy.runtime.GeneratedClosure");
     ClassInfoList allApplicationClasses = scanResult.getClassesImplementing("groovy.lang.GroovyObject");
 
@@ -79,43 +81,74 @@ public class GroovyApplicationRegistrationFeature implements Feature {
       return true;
     });
 
-    RegistrationFeatureUtils.printClassInfoList("registerAllApplicationClasses", allApplicationClasses);
+    if (isVerboseOutputEnabled) {
+      RegistrationFeatureUtils.printClassInfoList("registerAllApplicationClasses", allApplicationClasses);
+    }
     RegistrationFeatureUtils.registerClasses(allApplicationClasses);
   }
 
   @Override
   public void beforeAnalysis(BeforeAnalysisAccess beforeAnalysisAccess) {
-    GroovyApplicationRegistrationFeatureConfiguration groovyApplicationRegistrationFeatureConfiguration = calculateConfiguration(beforeAnalysisAccess.getApplicationClassLoader());
+    GroovyApplicationRegistrationFeatureConfiguration configuration = calculateConfiguration(beforeAnalysisAccess.getApplicationClassLoader());
+    if (!configuration.isEnabled()) {
+      return;
+    }
 
     ClassGraph gradleSourceRepackClassGraph = new ClassGraph()
         .enableClassInfo()
         .enableMethodInfo()
         .enableAnnotationInfo()
-        .acceptPackages(groovyApplicationRegistrationFeatureConfiguration.getClassGraphAppScanPackages());
+        .acceptPackages(configuration.getClassGraphAppScanPackages());
 
-    if (groovyApplicationRegistrationFeatureConfiguration.isClassGraphScanVerbose()) {
+    if (configuration.isScanVerboseClassGraph()) {
       gradleSourceRepackClassGraph.verbose();
     }
 
     try (ScanResult scanResult = gradleSourceRepackClassGraph.scan()) {
-      registerGeneratedClosureClasses(scanResult);
-      registerAllApplicationClasses(scanResult);
+      registerGeneratedClosureClasses(scanResult, configuration.isScanVerboseFeature());
+      registerAllApplicationClasses(scanResult, configuration.isScanVerboseFeature());
     }
   }
 
   private GroovyApplicationRegistrationFeatureConfiguration calculateConfiguration(ClassLoader classLoader) {
-    boolean isClassGraphScanVerbose = false;
+    boolean isEnabled = true;
+
+    String scanVerbose;
+    boolean isScanVerboseClassGraph = false;
+    boolean isScanVerboseFeature = false;
+
     String[] classGraphAppScanPackages = new String[] {};
 
     Properties kwrkGraalConfig = RegistrationFeatureUtils.loadKwrkGraalProperties(classLoader);
     if (kwrkGraalConfig != null) {
-      isClassGraphScanVerbose = Boolean.parseBoolean(kwrkGraalConfig.getProperty("kwrk-graal.classgraph-app-scan.verbose", "false").toLowerCase());
-      classGraphAppScanPackages = kwrkGraalConfig.getProperty("kwrk-graal.classgraph-app-scan.packages", "").split(",");
+      isEnabled = Boolean.parseBoolean(kwrkGraalConfig.getProperty("kwrk-graal.registration-feature.application.enabled", "true").toLowerCase());
+
+      scanVerbose = kwrkGraalConfig.getProperty("kwrk-graal.registration-feature.application.scan.verbose", "none").trim().toLowerCase();
+      switch (scanVerbose) {
+        case "all":
+          isScanVerboseClassGraph = true;
+          isScanVerboseFeature = true;
+          break;
+        case "feature":
+          isScanVerboseClassGraph = false;
+          isScanVerboseFeature = true;
+          break;
+        case "classgraph":
+          isScanVerboseClassGraph = true;
+          isScanVerboseFeature = false;
+          break;
+        default:
+          isScanVerboseClassGraph = false;
+          isScanVerboseFeature = false;
+          break;
+      }
+
+      classGraphAppScanPackages = kwrkGraalConfig.getProperty("kwrk-graal.registration-feature.application.scan.packages", "").trim().split(",");
       if ("".equals(classGraphAppScanPackages[0].trim())) {
         classGraphAppScanPackages = new String[0];
       }
     }
 
-    return new GroovyApplicationRegistrationFeatureConfiguration(isClassGraphScanVerbose, classGraphAppScanPackages);
+    return new GroovyApplicationRegistrationFeatureConfiguration(isEnabled, isScanVerboseClassGraph, isScanVerboseFeature, classGraphAppScanPackages);
   }
 }
