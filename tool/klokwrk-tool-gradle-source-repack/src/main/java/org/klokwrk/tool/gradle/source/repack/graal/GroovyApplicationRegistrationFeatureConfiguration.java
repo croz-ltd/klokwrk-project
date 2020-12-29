@@ -17,26 +17,36 @@
  */
 package org.klokwrk.tool.gradle.source.repack.graal;
 
-public class ClassGraphAppScanConfiguration {
-  private final boolean isClassGraphScanVerbose;
-  private final String[] classGraphAppScanPackages;
-  private final String[] classGraphAppScanIgnoredJars;
+public class GroovyApplicationRegistrationFeatureConfiguration {
+  private final boolean isEnabled;
 
-  public ClassGraphAppScanConfiguration(boolean isClassGraphScanVerbose, String[] classGraphAppScanPackages, String[] classGraphAppScanIgnoredJars) {
-    this.isClassGraphScanVerbose = isClassGraphScanVerbose;
+  private final boolean isScanVerboseClassGraph;
+  private final boolean isScanVerboseFeature;
+
+  private final String[] classGraphAppScanPackages;
+
+  public GroovyApplicationRegistrationFeatureConfiguration(boolean isEnabled, boolean isScanVerboseClassGraph, boolean isScanVerboseFeature, String[] classGraphAppScanPackages) {
+    this.isEnabled = isEnabled;
+
+    this.isScanVerboseClassGraph = isScanVerboseClassGraph;
+    this.isScanVerboseFeature = isScanVerboseFeature;
+
     this.classGraphAppScanPackages = classGraphAppScanPackages;
-    this.classGraphAppScanIgnoredJars = classGraphAppScanIgnoredJars;
   }
 
-  public boolean isClassGraphScanVerbose() {
-    return isClassGraphScanVerbose;
+  public boolean isEnabled() {
+    return isEnabled;
+  }
+
+  public boolean isScanVerboseClassGraph() {
+    return isScanVerboseClassGraph;
+  }
+
+  public boolean isScanVerboseFeature() {
+    return isScanVerboseFeature;
   }
 
   public String[] getClassGraphAppScanPackages() {
     return classGraphAppScanPackages;
-  }
-
-  public String[] getClassGraphAppScanIgnoredJars() {
-    return classGraphAppScanIgnoredJars;
   }
 }

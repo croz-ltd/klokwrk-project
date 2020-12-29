@@ -23,9 +23,8 @@ import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
 import org.graalvm.nativeimage.hosted.Feature;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -35,42 +34,78 @@ import java.util.Properties;
  * <ul>
  *   <li>{@code kwrk-graal.classgraph-app-scan.packages}: comma separated list of root packages which will be considered by ClassGraph.</li>
  *   <li>{@code kwrk-graal.classgraph-app-scan.verbose}: boolean flag for turning on/off ClassGraph verbose output</li>
- *   <li>{@code kwrk-graal.classgraph-app-scan.ignored-jars-additional}: comma separated list of additional jars that will bi ignored by ClassGraph.</li>
- *   <li>
- *     {@code kwrk-graal.classgraph-app-scan.ignored-jars-default}: comma separated list of default jars that will bi ignored by ClassGraph. It corresponds to the value of
- *     {@link #CLASS_GRAPH_APP_SCAN_IGNORED_JARS_DEFAULT} constant. Usually not configured, but can be useful if one wants to reset default completely.
- *   </li>
  * <p/>
  * This class is used during compilation of GraalVM native image. It is auto-discovered by native image compiler. Needs to be written in Java.
  */
 @SuppressWarnings("unused")
 @AutomaticFeature
 public class GroovyApplicationRegistrationFeature implements Feature {
-  public static final String[] CLASS_GRAPH_APP_SCAN_IGNORED_JARS_DEFAULT = new String[] {
-      "classgraph*.jar",
-      "groovy*.jar",
-      "jackson*.jar",
-      "javax*.jar",
-      "jsr*.jar",
-      "logback*.jar",
-      "*llvm*.jar",
-      "micronaut*.jar",
-      "netty*.jar",
-      "picocli*.jar",
-      "reactive*.jar",
-      "rxjava*.jar",
-      "slf4j*.jar",
-      "snakeyaml*.jar",
-      "spotbugs*.jar",
-      "validation*.jar",
 
-      // graal related jars
-      "library-support.jar",
-      "javacpp-shadowed.jar",
-      "pointsto.jar",
-      "objectfile.jar",
-      "svm*.jar"
-  };
+  @Override
+  public void beforeAnalysis(BeforeAnalysisAccess beforeAnalysisAccess) {
+    GroovyApplicationRegistrationFeatureConfiguration configuration = calculateConfiguration(beforeAnalysisAccess.getApplicationClassLoader());
+    if (!configuration.isEnabled()) {
+      return;
+    }
+
+    ClassGraph gradleSourceRepackClassGraph = new ClassGraph()
+        .enableClassInfo()
+        .enableMethodInfo()
+        .enableAnnotationInfo()
+        .acceptPackages(configuration.getClassGraphAppScanPackages());
+
+    if (configuration.isScanVerboseClassGraph()) {
+      gradleSourceRepackClassGraph.verbose();
+    }
+
+    try (ScanResult scanResult = gradleSourceRepackClassGraph.scan()) {
+      registerGeneratedClosureClasses(scanResult, configuration.isScanVerboseFeature());
+      registerAllApplicationClasses(scanResult, configuration.isScanVerboseFeature());
+    }
+  }
+
+  private GroovyApplicationRegistrationFeatureConfiguration calculateConfiguration(ClassLoader classLoader) {
+    boolean isEnabled = true;
+
+    String scanVerbose;
+    boolean isScanVerboseClassGraph = false;
+    boolean isScanVerboseFeature = false;
+
+    String[] classGraphAppScanPackages = new String[] {};
+
+    Properties kwrkGraalConfig = RegistrationFeatureUtils.loadKwrkGraalProperties(classLoader);
+    if (kwrkGraalConfig != null) {
+      isEnabled = Boolean.parseBoolean(kwrkGraalConfig.getProperty("kwrk-graal.registration-feature.application.enabled", "true").toLowerCase());
+
+      scanVerbose = kwrkGraalConfig.getProperty("kwrk-graal.registration-feature.application.scan.verbose", "none").trim().toLowerCase();
+      //noinspection DuplicatedCode
+      switch (scanVerbose) {
+        case "all":
+          isScanVerboseClassGraph = true;
+          isScanVerboseFeature = true;
+          break;
+        case "feature":
+          isScanVerboseClassGraph = false;
+          isScanVerboseFeature = true;
+          break;
+        case "classgraph":
+          isScanVerboseClassGraph = true;
+          isScanVerboseFeature = false;
+          break;
+        default:
+          isScanVerboseClassGraph = false;
+          isScanVerboseFeature = false;
+          break;
+      }
+
+      classGraphAppScanPackages = kwrkGraalConfig.getProperty("kwrk-graal.registration-feature.application.scan.packages", "").trim().split(",");
+      if ("".equals(classGraphAppScanPackages[0].trim())) {
+        classGraphAppScanPackages = new String[0];
+      }
+    }
+
+    return new GroovyApplicationRegistrationFeatureConfiguration(isEnabled, isScanVerboseClassGraph, isScanVerboseFeature, classGraphAppScanPackages);
+  }
 
   /**
    * Registers generated Groovy closure classes with Graal native image compiler.
@@ -78,77 +113,43 @@ public class GroovyApplicationRegistrationFeature implements Feature {
    * For some well known Groovy methods that take closures as parameters (i.e. each), Groovy generates helper classes in the fly next to the class that uses these methods with closure parameters.
    * For closures calls to work correctly, Groovy generated helper classes needs to be registered with GraalVM native image compiler.
    */
-  public static void registerGeneratedClosureClasses(ScanResult scanResult) {
+  private static void registerGeneratedClosureClasses(ScanResult scanResult, boolean isVerboseOutputEnabled) {
     ClassInfoList generatedGroovyClosureClassInfoList = scanResult.getClassesImplementing("org.codehaus.groovy.runtime.GeneratedClosure");
+
+    if (isVerboseOutputEnabled) {
+      RegistrationFeatureUtils.printClassInfoList("application-registerGeneratedClosureClasses", generatedGroovyClosureClassInfoList);
+    }
     RegistrationFeatureUtils.registerClasses(generatedGroovyClosureClassInfoList);
   }
 
   /**
-   * Registers all classes that Groovy enhances with generated methods.
+   * Registers all application classes to ensure that callbacks from generated closure classes work as expected.
+   * <p/>
+   * Generated closure classes are excluded from this registration.
+   * <p/>
+   * This might be implemented in some other way if we discover how to find application classes that closure generated classes calls back.
    */
-  public static void registerClassesWithGeneratedMethods(ScanResult scanResult) {
-    ClassInfoList generatedGroovyClosureClassInfoList = scanResult.getClassesWithMethodAnnotation("groovy.transform.Generated");
-    RegistrationFeatureUtils.registerClasses(generatedGroovyClosureClassInfoList);
-  }
+  private static void registerAllApplicationClasses(ScanResult scanResult, boolean isVerboseOutputEnabled) {
+    ClassInfoList generatedGroovyClosureClassInfoList = scanResult.getClassesImplementing("org.codehaus.groovy.runtime.GeneratedClosure");
+    ClassInfoList allApplicationClasses = scanResult.getClassesImplementing("groovy.lang.GroovyObject");
 
-  @Override
-  public void beforeAnalysis(BeforeAnalysisAccess beforeAnalysisAccess) {
-    ClassGraphAppScanConfiguration classGraphAppScanConfiguration = calculateClassGraphAppScanConfiguration(beforeAnalysisAccess.getApplicationClassLoader());
+    allApplicationClasses = allApplicationClasses.filter(classInfo -> {
+      List<String> excludedClasses = Arrays.asList("groovy.lang.Closure", "groovy.lang.GroovyObjectSupport");
+      if (excludedClasses.contains(classInfo.getName())) {
+        return false;
+      }
 
-    ClassGraph gradleSourceRepackClassGraph = new ClassGraph()
-        .enableClassInfo()
-        .enableMethodInfo()
-        .enableAnnotationInfo()
-        .acceptPackages(classGraphAppScanConfiguration.getClassGraphAppScanPackages())
-        .rejectJars(classGraphAppScanConfiguration.getClassGraphAppScanIgnoredJars());
+      //noinspection RedundantIfStatement
+      if (generatedGroovyClosureClassInfoList.contains(classInfo)) {
+        return false;
+      }
 
-    if (classGraphAppScanConfiguration.isClassGraphScanVerbose()) {
-      gradleSourceRepackClassGraph.verbose();
+      return true;
+    });
+
+    if (isVerboseOutputEnabled) {
+      RegistrationFeatureUtils.printClassInfoList("application-registerAllApplicationClasses", allApplicationClasses);
     }
-
-    try (ScanResult scanResult = gradleSourceRepackClassGraph.scan()) {
-      registerGeneratedClosureClasses(scanResult);
-      registerClassesWithGeneratedMethods(scanResult);
-    }
-  }
-
-  private ClassGraphAppScanConfiguration calculateClassGraphAppScanConfiguration(ClassLoader classLoader) {
-    boolean isClassGraphScanVerbose = false;
-    String[] classGraphAppScanPackages = new String[] {};
-    String[] classGraphAppScanIgnoredJarsDefault = CLASS_GRAPH_APP_SCAN_IGNORED_JARS_DEFAULT;
-    String[] classGraphAppScanIgnoredJarsAdditional = new String[0];
-
-    URL kwrkConfigUrl = classLoader.getResource("kwrk-graal.properties");
-    if (kwrkConfigUrl != null) {
-      Properties kwrkConfig = new Properties();
-      try (InputStream inputStream = kwrkConfigUrl.openStream()) {
-        kwrkConfig.load(inputStream);
-      }
-      catch (IOException ioe) {
-        throw new RuntimeException(ioe);
-      }
-
-      isClassGraphScanVerbose = Boolean.parseBoolean(kwrkConfig.getProperty("kwrk-graal.classgraph-app-scan.verbose", "false").toLowerCase());
-      classGraphAppScanPackages = kwrkConfig.getProperty("kwrk-graal.classgraph-app-scan.packages", "").split(",");
-      if ("".equals(classGraphAppScanPackages[0].trim())) {
-        classGraphAppScanPackages = new String[0];
-      }
-
-      classGraphAppScanIgnoredJarsDefault = kwrkConfig.getProperty("kwrk-graal.classgraph-app-scan.ignored-jars-default", String.join(",", classGraphAppScanIgnoredJarsDefault)).split(",");
-      if ("".equals(classGraphAppScanIgnoredJarsDefault[0].trim())) {
-        classGraphAppScanIgnoredJarsDefault = new String[0];
-      }
-
-      classGraphAppScanIgnoredJarsAdditional = kwrkConfig.getProperty("kwrk-graal.classgraph-app-scan.ignored-jars-additional", "").split(",");
-      if ("".equals(classGraphAppScanIgnoredJarsAdditional[0].trim())) {
-        classGraphAppScanIgnoredJarsAdditional = new String[0];
-      }
-    }
-
-    String[] classGraphAppScanIgnoredJarsFinal = new String[classGraphAppScanIgnoredJarsDefault.length + classGraphAppScanIgnoredJarsAdditional.length];
-    System.arraycopy(classGraphAppScanIgnoredJarsDefault, 0, classGraphAppScanIgnoredJarsFinal, 0, classGraphAppScanIgnoredJarsDefault.length);
-    System.arraycopy(classGraphAppScanIgnoredJarsAdditional, 0, classGraphAppScanIgnoredJarsFinal, classGraphAppScanIgnoredJarsDefault.length, classGraphAppScanIgnoredJarsAdditional.length);
-
-    return new ClassGraphAppScanConfiguration(isClassGraphScanVerbose, classGraphAppScanPackages, classGraphAppScanIgnoredJarsFinal);
+    RegistrationFeatureUtils.registerClasses(allApplicationClasses);
   }
 }
