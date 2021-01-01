@@ -156,9 +156,15 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
       // A separated list of directories, JAR archives, and ZIP archives to search for class files.
       "--class-path=$nativeImageBuilderClasspath",
 
-//      // Allow image building with an incomplete class path. Report type resolution errors at runtime when they are accessed the first time, instead of during image building.
-//      // It looks like this option can be turned off when compiling Groovy apps.
-//      "--allow-incomplete-classpath",
+      // Allow image building with an incomplete class path. Report type resolution errors at runtime when they are accessed the first time, instead of during image building.
+      //
+      // Some parts of Groovy core (exposed through groovy-*.jar) are designed to be initialized when accessed at runtime for the first time. At the same time, those Groovy parts expects that
+      // corresponding dependencies are available at classpath.
+      // These core Groovy parts are reachable during GraalVM static analysis, and static analysis recognises missing dependencies when they are not used. Therefore, we need to allow for incomplete
+      // classpath if we do not want native image compilation to fail and stop.
+      //
+      // To prevent warnings from GraalVM static analysis, incriminating Groovy core classes needs to be added under "initialize-at-run-time" option.
+      "--allow-incomplete-classpath",
 
       // Report usage of unsupported methods and fields at runtime when they are accessed the first time, instead of as an error during image building.
       // Necessary for compiling Groovy apps. Based on native-image tool exception, ot looks like Groovy at runtime determines actual Java version to be used
@@ -171,7 +177,7 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
       // A comma-separated list of packages and classes (and implicitly all of their subclasses) that must be initialized at runtime and not during image building. An empty string is currently not supported.
       "--initialize-at-run-time=org.codehaus.groovy.control.XStreamUtils,groovy.grape.GrapeIvy",
 
-      // Do not fallback on plain JVM when AOT compilation fails.
+      // Do not fallback on plain JVM when AOT native image compilation fails.
       "--no-fallback",
 
       // Build a native image without starting background compilation server as a daemon.
