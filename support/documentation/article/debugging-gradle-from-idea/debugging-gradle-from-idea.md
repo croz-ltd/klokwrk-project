@@ -1,4 +1,6 @@
 # Debugging Gradle internals from IntelliJ IDEA
+* **Author:** Damir Murat
+* **Created:** 24.12.2020.
 
 Debugging is an essential developer's tool, especially when exploring and exercising an unknown codebase. With powerful IDE like IntelliJ IDEA, it commonly boils down to a few clicks.
 
@@ -13,8 +15,7 @@ If you are in a hurry and don't need all the details, feel free to skip to the [
 
 ## Introduction
 Here at [CROZ](https://croz.net/), we recently started working on [Project Klokwrk](https://github.com/croz-ltd/klokwrk-project). One of many premises that we are trying to follow is returning as
-often as possible to the open-source community. An essential part of this is [issue reporting](../../misc/klokwrkRelatedIssuesInTheWild.md)
-for tools and libraries that we use.
+often as possible to the open-source community. An essential part of this is [issue reporting](../../misc/klokwrkRelatedIssuesInTheWild.md) for tools and libraries that we use.
 
 As Klokwrk uses Gradle as a build tool, exploratory debugging of Gradle build scripts, 3rd party plugins, and internal classes is a prerequisite for any issue report related to Gradle or its plugins.
 
