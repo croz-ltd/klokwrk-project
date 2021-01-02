@@ -82,12 +82,6 @@ dependencies {
   runtimeOnly "ch.qos.logback:logback-classic"
 }
 
-Boolean isGraal11() {
-  String javaVendorUrl = System.getProperty("java.vendor.url").toLowerCase()
-  Integer javaSpecificationVersion = System.getProperty("java.specification.version").toBigDecimal().toInteger()
-  return javaVendorUrl.contains("graal") && (javaSpecificationVersion >= 11)
-}
-
 Boolean isWindows() {
   return System.getProperty("os.name").toLowerCase().contains("windows")
 }
@@ -100,12 +94,6 @@ Boolean isWindows() {
 // In addition there is also an issue with missing resources in Micronaut task that causes native image build failing in the presence of both java and groovy source sets. Didn't reported that yet,
 // but I guess it will not get much attention since native image for Groovy is not supported.
 tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
-  doFirst {
-    if (!isGraal11()) {
-      throw new GradleException("For native image compiling you need to use GraalVM for Java 11 (or newer). Cannot continue.")
-    }
-  }
-
   String nativeImageBuilderClasspath = null
   project.configurations { ConfigurationContainer configurationContainer ->
     Set<Configuration> filteredConfigurations = configurationContainer
@@ -158,26 +146,30 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
 
       // Allow image building with an incomplete class path. Report type resolution errors at runtime when they are accessed the first time, instead of during image building.
       //
-      // Some parts of Groovy core (exposed through groovy-*.jar) are designed to be initialized when accessed at runtime for the first time. At the same time, those Groovy parts expects that
+      // Some parts of Groovy core (inside groovy-*.jar) are designed to be initialized when accessed at runtime for the first time. At the same time, those Groovy parts expects that
       // corresponding dependencies are available at classpath.
-      // These core Groovy parts are reachable during GraalVM static analysis, and static analysis recognises missing dependencies when they are not used. Therefore, we need to allow for incomplete
-      // classpath if we do not want native image compilation to fail and stop.
+      // Even if these core Groovy parts are not used from application, they are still reachable during GraalVM static analysis and it complains about missing dependencies. Therefore, we need to
+      // allow for incomplete classpath if we do not want native image compilation to fail and stop.
       //
-      // To prevent warnings from GraalVM static analysis, incriminating Groovy core classes needs to be added under "initialize-at-run-time" option.
+      // Further, when encountering missing dependencies, GraalVM static analysis will complain with warnings. To eliminate warnings, incriminating Groovy classes needs to be added under
+      // "initialize-at-run-time" option.
       "--allow-incomplete-classpath",
 
       // Report usage of unsupported methods and fields at runtime when they are accessed the first time, instead of as an error during image building.
-      // Necessary for compiling Groovy apps. Based on native-image tool exception, ot looks like Groovy at runtime determines actual Java version to be used
-      // (see org.codehaus.groovy.vmplugin.VMPluginFactory). Therefore, some call paths are not available at compile time depending on Java runtime used during compilation.
+      //
+      // Necessary for compiling Groovy apps since Groovy core, even when statically compiled, still exposes many code paths used only with dynamic Groovy. Even if they are not used with statically
+      // compiled Groovy, they are still reachable by GraalVM native image analysis. In some cases GraalVM native image compiler cannot reduce those multiple code paths to a single method call which
+      // results with GraalVM UnsupportedFeatureException during native image compilation.
       "--report-unsupported-elements-at-runtime",
 
       // A comma-separated list of packages and classes (and implicitly all of their superclasses) that are initialized during image generation. An empty string designates all packages.
       "--initialize-at-build-time",
 
-      // A comma-separated list of packages and classes (and implicitly all of their subclasses) that must be initialized at runtime and not during image building. An empty string is currently not supported.
+      // A comma-separated list of packages and classes (and implicitly all of their subclasses) that must be initialized at runtime and not during image building. An empty string is currently not
+      // supported.
       "--initialize-at-run-time=org.codehaus.groovy.control.XStreamUtils,groovy.grape.GrapeIvy",
 
-      // Do not fallback on plain JVM when AOT native image compilation fails.
+      // Do not fallback on plain JVM when AOT native image compilation fails. Throw an error instead.
       "--no-fallback",
 
       // Build a native image without starting background compilation server as a daemon.
