@@ -1,0 +1,24 @@
+{
+  "rules": [
+    { "excludeClasses": "org.codehaus.groovy.reflection.**" },
+    { "includeClasses": "org.codehaus.groovy.reflection.CachedClass$1" },
+    { "includeClasses": "org.codehaus.groovy.reflection.CachedClass$2" },
+    { "includeClasses": "org.codehaus.groovy.reflection.CachedClass$3" },
+    { "includeClasses": "org.codehaus.groovy.reflection.GeneratedMetaMethod$Proxy" },
+    { "includeClasses": "org.codehaus.groovy.reflection.stdclasses.CachedSAMClass" },
+
+    { "excludeClasses": "org.codehaus.groovy.runtime.**" },
+    { "includeClasses": "org.codehaus.groovy.runtime.DefaultGroovyMethods" },
+
+    { "excludeClasses": "org.codehaus.groovy.vmplugin.**" },
+
+    { "excludeClasses": "ch.qos.logback.**" },
+    { "excludeClasses": "io.micronaut.**" },
+    { "excludeClasses": "io.netty.**" },
+    { "excludeClasses": "java.security.**" },
+    { "excludeClasses": "javax.xml.**" },
+    { "excludeClasses": "picocli.**" },
+    { "excludeClasses": "sun.management.**" },
+    { "excludeClasses": "sun.security.**" }
+  ]
+}

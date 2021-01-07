@@ -1,0 +1,23 @@
+{
+  "rules": [
+    { "excludeClasses": "groovy.lang.**" },
+    { "excludeClasses": "org.codehaus.groovy.runtime.DefaultGroovyMethodsSupport" },
+    { "excludeClasses": "org.codehaus.groovy.runtime.DefaultGroovyStaticMethods" },
+    { "excludeClasses": "org.codehaus.groovy.runtime.GStringImpl" },
+    { "excludeClasses": "org.codehaus.groovy.runtime.GeneratedClosure" },
+    { "excludeClasses": "org.codehaus.groovy.runtime.callsite.**" },
+    { "excludeClasses": "org.codehaus.groovy.vmplugin.**" },
+
+    { "excludeClasses": "io.micronaut.**" },
+    { "excludeClasses": "picocli.**" },
+
+    { "excludeClasses": "java.beans.**" },
+    { "excludeClasses": "java.io.**" },
+    { "excludeClasses": "java.lang.**" },
+    { "excludeClasses": "java.net.**" },
+    { "excludeClasses": "java.nio.**" },
+
+    { "excludeClasses": "java.util.**" },
+    { "includeClasses": "java.util.function.**" }
+  ]
+}

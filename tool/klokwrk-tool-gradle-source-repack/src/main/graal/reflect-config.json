@@ -1,2 +1,239 @@
 [
+{
+  "name":"io.reactivex.functions.Action",
+  "allPublicMethods":true
+},
+{
+  "name":"io.reactivex.functions.Function",
+  "allPublicMethods":true
+},
+{
+  "name":"java.util.function.Consumer",
+  "allPublicMethods":true
+},
+{
+  "name":"java.util.function.DoubleFunction",
+  "allPublicMethods":true
+},
+{
+  "name":"java.util.function.DoublePredicate",
+  "allPublicMethods":true
+},
+{
+  "name":"java.util.function.Function",
+  "allPublicMethods":true
+},
+{
+  "name":"java.util.function.IntFunction",
+  "allPublicMethods":true
+},
+{
+  "name":"java.util.function.IntPredicate",
+  "allPublicMethods":true
+},
+{
+  "name":"java.util.function.LongFunction",
+  "allPublicMethods":true
+},
+{
+  "name":"java.util.function.LongPredicate",
+  "allPublicMethods":true
+},
+{
+  "name":"java.util.function.Predicate",
+  "allPublicMethods":true
+},
+{
+  "name":"java.util.function.Supplier",
+  "allPublicMethods":true
+},
+{
+  "name":"java.util.function.ToDoubleFunction",
+  "allPublicMethods":true
+},
+{
+  "name":"java.util.function.ToIntFunction",
+  "allPublicMethods":true
+},
+{
+  "name":"java.util.function.ToLongFunction",
+  "allPublicMethods":true
+},
+{
+  "name":"java.util.function.UnaryOperator",
+  "allPublicMethods":true
+},
+{
+  "name":"org.codehaus.groovy.runtime.IteratorClosureAdapter",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.codehaus.groovy.runtime.dgm$1125",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","org.codehaus.groovy.reflection.CachedClass","java.lang.Class","java.lang.Class[]"] }]
+},
+{
+  "name":"org.codehaus.groovy.runtime.dgm$32",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","org.codehaus.groovy.reflection.CachedClass","java.lang.Class","java.lang.Class[]"] }]
+},
+{
+  "name":"org.codehaus.groovy.runtime.dgm$33",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","org.codehaus.groovy.reflection.CachedClass","java.lang.Class","java.lang.Class[]"] }]
+},
+{
+  "name":"org.codehaus.groovy.runtime.dgm$432",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","org.codehaus.groovy.reflection.CachedClass","java.lang.Class","java.lang.Class[]"] }]
+},
+{
+  "name":"org.codehaus.groovy.runtime.dgm$53",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","org.codehaus.groovy.reflection.CachedClass","java.lang.Class","java.lang.Class[]"] }]
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCliArguments",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand$_cleanDownloadedFiles_closure2",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand$_configureCustomLoggingLevels_closure1",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.checksum.ChecksumCalculator$_calculateAsBytes_closure1",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.checksum.ChecksumCalculator$_calculateAsBytes_closure1$_closure2",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.checksum.GradleSha256CheckInfo",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.cli.PropertiesVersionProvider",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.cli.PropertiesVersionProvider$_getVersion_closure1",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloader",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloader$_download_closure1",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloader$_download_closure1$_closure3",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloader$_download_closure1$_closure3$_closure6",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloader$_download_closure1$_closure4",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloader$_download_closure1$_closure5",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloaderInfo",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_calculateCountOfTargetZipEntries_closure1",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_calculateCountOfTargetZipEntries_closure1$_closure4",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_calculateCountOfTargetZipEntries_closure1$_closure5",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_repackageZipEntry_closure3",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_repackageZipFile_closure2",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_repackageZipFile_closure2$_closure6",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_repackageZipFile_closure2$_closure6$_closure7",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_repackageZipFile_closure2$_closure6$_closure8",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackagerInfo",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true
+}
 ]
