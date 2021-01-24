@@ -21,8 +21,6 @@ import groovy.transform.CompileStatic
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import java.util.function.Consumer
-import java.util.function.Function
 import java.util.function.Predicate
 import java.util.zip.ZipEntry
 import java.util.zip.ZipException
@@ -63,8 +61,8 @@ class GradleSourceRepackager {
     new ZipFile(repackagerInfo.gradleDistributionZipFilePath).withCloseable { ZipFile zipFile ->
       countOfTargetZipEntries = zipFile
           .stream()
-          .filter({ ZipEntry zipEntry -> !zipEntry.isDirectory() && zipEntry.name.startsWith(repackagerInfo.gradleDistributionSrcDirPath) } as Predicate)
-          .map({ ZipEntry zipEntry -> calculateTargetZipEntryName(repackagerInfo.gradleDistributionSrcDirPath, zipEntry) } as Function)
+          .filter({ ZipEntry zipEntry -> !zipEntry.isDirectory() && zipEntry.name.startsWith(repackagerInfo.gradleDistributionSrcDirPath) })
+          .map({ ZipEntry zipEntry -> calculateTargetZipEntryName(repackagerInfo.gradleDistributionSrcDirPath, zipEntry) })
           .distinct() // skipping duplicate target entries (e.g. package-info.java)
           .count()
     }
@@ -95,7 +93,7 @@ class GradleSourceRepackager {
                 zipEntriesProcessedCount++
               }
 
-              Integer percentage = zipEntriesProcessedCount * 100 / countOfTargetZipEntries as Integer
+              Integer percentage = (zipEntriesProcessedCount * 100 / countOfTargetZipEntries).toInteger()
               Boolean isLastEntry = countOfTargetZipEntries == zipEntriesProcessedCount
               String newLineIfNecessary = (isLastEntry || (skippedMessage && log.debugEnabled) || log.traceEnabled) ? "\n" : ""
               printRepackagingProgressOnConsole(repackagerInfo.gradleApiSourcesFilePath, percentage, newLineIfNecessary)
@@ -109,7 +107,7 @@ class GradleSourceRepackager {
 
               //noinspection GroovyUnnecessaryReturn
               return // Note: this return is here just to make JaCoCo report more reliable.
-            } as Consumer)
+            })
       }
     }
   }

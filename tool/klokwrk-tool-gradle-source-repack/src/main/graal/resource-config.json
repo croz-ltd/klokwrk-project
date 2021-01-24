@@ -1,9 +1,9 @@
 {
-  "resources": [
-    { "pattern": "\\Qapplication.properties\\E" },
-    { "pattern": "\\Qversion.properties\\E" },
-    { "pattern": "\\Qlogback.xml\\E" },
-    { "pattern": "\\Qkwrk-graal.properties\\E" }
-  ],
-  "bundles": []
+  "resources":{
+  "includes":[
+    {"pattern":"\\Qapplication.properties\\E"},
+    {"pattern":"\\Qlogback.xml\\E"},
+    {"pattern":"\\Qversion.properties\\E"}
+  ]},
+  "bundles":[]
 }

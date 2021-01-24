@@ -34,18 +34,18 @@ Klokwrk is an open-source project, started by [Damir Murat](https://github.com/d
 There are several articles describing some `klokwrk-project` features in more details:
 * [Starting up and trying the whole thing](support/documentation/article/starting-up/startingUp.md)<br/>
   Step-by-step tutorial describing how one can run and try `klokwrk-project`.
-
 * [Organizing modules and packages](support/documentation/article/modules-and-packages/modulesAndPackages.md)<br/>
   Discussion about principles and ideas behind organizing high-level artifacts of a project and using hexagonal architecture in CQRS/ES context.
 
 While not tightly related to `klokwrk-project` features, the following articles describe some specific challenges that we encountered:
 * [Debugging Gradle internals from IntelliJ IDEA](support/documentation/article/debugging-gradle-from-idea/debugging-gradle-from-idea.md)<br/>
-  Describes how to effectively debug Gradle 3rd party plugins and Gradle internal classes from IntelliJ IDEA.
+  Describes how to effectively debug Gradle 3rd party plugins and Gradle internal classes from IntelliJ IDEA
+* [Taking a Groovy on GraalVM native image journey](support/documentation/article/groovy-graalvm-native-image/groovy-graalvm-native-image.md)<br/>
+  Deep dive in the process of creating GraalVM native image for Groovy/Micronaut/picocli application.
 
 ### Videos
 * [Turning lessons learned of using Axon in a legacy environment to OSS Project Klokwrk](https://www.youtube.com/watch?v=shl847FRVMI) <br/>
   Turning lessons learned from using Axon Framework in a complex legacy environment to an open-source Project Klokwrk.
-
 * [Project Klokwrk: how it helps define software architecture and solves integration and component testing](https://www.youtube.com/watch?v=35oUxjXWNYU) <br/>
   In this workshop, we will dive deep into technical details of two interesting Klokwrk features: how it helps in defining software architecture, and how it solves integration and component
   testing (with event replay).
@@ -54,10 +54,7 @@ While not tightly related to `klokwrk-project` features, the following articles 
 `klokwkr-project` maintains a log of architecturally significant decisions by leveraging architecture decision records (ADRs). You can [explore it here](support/documentation/adr/index.md).
 
 ### Misc
-* [klokwrk-tool-gradle-source-repack](tool/klokwrk-tool-gradle-source-repack/README.md) utility
-
+* [klokwrk-tool-gradle-source-repack](tool/klokwrk-tool-gradle-source-repack/README.md) utility <br/>
   The tool for repackaging Gradle source files into an archive suitable to be used as a repository of sources when debugging Gradle internals from IDEA. It is also interesting that the tool is
   created in Groovy and compiled into GraalVM native image without any reflection related GraalVM configuration.
-
-
 * [Lists of 3rd party software issues related to `klokwkr-project`](support/documentation/misc/klokwrkRelatedIssuesInTheWild.md)
