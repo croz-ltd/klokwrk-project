@@ -19,12 +19,20 @@ buildscript {
   repositories {
     gradlePluginPortal()
     mavenCentral()
+    jcenter()
   }
 
   dependencies {
     classpath "org.kordamp.gradle:insight-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:settings-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.gradle:test-retry-gradle-plugin:$gradleTestRetryPluginVersion"
+  }
+}
+
+dependencyResolutionManagement {
+  repositories {
+    mavenCentral()
+    jcenter()
   }
 }
 
