@@ -34,11 +34,6 @@ buildscript {
   }
 }
 
-repositories {
-  mavenCentral()
-  jcenter()
-}
-
 apply plugin: "fr.brouillard.oss.gradle.jgitver"
 jgitver {
   mavenLike true
@@ -159,11 +154,6 @@ configure(subprojects) { Project subproject ->
 
   if (["platform", "cargotracker", "lib", "lang", "tool"].contains(subproject.name) || subproject.projectDir.parent.endsWith("platform")) {
     return
-  }
-
-  repositories {
-    mavenCentral()
-    jcenter()
   }
 
   apply plugin: "groovy"
