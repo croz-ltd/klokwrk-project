@@ -1,6 +1,7 @@
 # Taking a Groovy on GraalVM native image journey
 * **Author:** Damir Murat
 * **Created:** 24.01.2021.
+* **Updated:** 26.01.2021.
 
 [GraalVM](https://www.graalvm.org/) is a fascinating [open-source project](https://github.com/oracle/graal). It started as an effort to provide a
 [high-performance polyglot](https://www.youtube.com/watch?v=9oHpAhgkNAY) virtual machine. However, in the JVM ecosystem, it looks like most of the community interest comes from GraalVM ability to
@@ -37,7 +38,7 @@ its `native-image` tool. The easiest way for installing GraalVM is using [SDKMAN
 ["GraalVM native-image - from 2.1s to 0.013s startup time | Groovy Tutorial"](https://www.youtube.com/watch?v=RPdugI8eZgo) video.
 
 For this article we are using the following setup and assumptions:
-- GraalVM Community 20.3.0 for OpenJDK 11 (SDKMAN identifier - `20.3.0.r11-grl`). GraalVM 20.3.0 OpenJDK 8 variant should also work.
+- GraalVM Community 21.0.0 for OpenJDK 11 (SDKMAN identifier - `21.0.0.r11-grl`). GraalVM 21.0.0 OpenJDK 8 variant should also work.
 - [gdub](https://github.com/gdubw/gdub) utility for easier working with Gradle wrapper via `gw` command.
 - macOS Catalina version 10.15.7.
 - All demonstrated commands are executed from `klokwrk-project/tool/klokwrk-tool-gradle-source-repack` directory.
@@ -85,19 +86,19 @@ mkdir build/native-image-agent
 
 java -agentlib:native-image-agent=config-output-dir=build/native-image-agent \
 -jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar \
---loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+--loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 ```
 
-Here we are running `klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar` with corresponding application parameters (`--loggingLevels`, `--cleanup`, and `6.7.1` for Gradle version).
+Here we are running `klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar` with corresponding application parameters (`--loggingLevels`, `--cleanup`, and `6.8.1` for Gradle version).
 Simultaneously, we use `native-image-agent` with the `config-output-dir` parameter that specifies the directory where configuration files will be written. After running, in the `build/native-image-agent`
-directory, we'll get a set of configuration files: `jni-config.json`, `proxy-config.json`, `reflect-config.json`, and `resource-config.json`.
+directory, we'll get a set of configuration files: `jni-config.json`, `proxy-config.json`, `reflect-config.json`, `resource-config.json`, and `serialization-config.json`.
 
 To get the complete content of configuration files, we have to run our application with additional supported parameters and merge the configuration files' content. For this purpose,
 `native-image-agent` supports `config-merge-dir` parameter (additional application parameter is `--version`):
 ```
 java -agentlib:native-image-agent=config-merge-dir=build/native-image-agent \
 -jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar \
---version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+--version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 ```
 
 It is important to realize that `native-image-agent` and static analysis of the native image builder use completely different mechanisms. Thus, generated configuration files will contain many entries
@@ -124,7 +125,7 @@ configuration entry mentioning `groovy.grape.GrapeIvy` class. We'll later explor
 After the building, the native image can be executed with a command similar to the following:
 ```
 ./build/native-image/klokwrk-tool-gradle-source-repack -Dmicronaut.cloud.platform=BARE_METAL \
---loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+--loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 ```
 Micronaut specific system property `micronaut.cloud.platform=BARE_METAL` squeezes several additional milliseconds from execution time at the startup.
 
@@ -134,8 +135,8 @@ want to bother with further details, you can stop right here.
 
 At this point, it is worth noting the size of the created native image. As a base, we will use the invalid image created without any configuration files. It does not work but can be useful for size
 measurement:
-* Size of the invalid base image created without any configuration files: 71 481 056 B (68,170 MB)
-* Size of the image created with `native-image-agent` generated configuration files: 85 585 320 B (81,620 MB)
+* Size of the invalid base image created without any configuration files: 72 792 392 B (69,420 MB)
+* Size of the image created with `native-image-agent` generated configuration files: 85 683 664 B (81,714 MB)
 
 For further exploration, it is also useful to enumerate the pros and cons that we currently have:
 
@@ -182,26 +183,28 @@ gw kwrkNativeImage
 After generating a new image, we can run it as we did previously. We'll get an exception originating from `picocli` library:
 ```
 ./build/native-image/klokwrk-tool-gradle-source-repack -Dmicronaut.cloud.platform=BARE_METAL \
---loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+--loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
+...
 Exception in thread "main" picocli.CommandLine$InitializationException: Cannot instantiate org.klokwrk.tool.gradle.source.repack.cli.PropertiesVersionProvider: the class has no constructor
-  at picocli.CommandLine$DefaultFactory.create(CommandLine.java:5199)
-  at picocli.CommandLine$DefaultFactory.createVersionProvider(CommandLine.java:5185)
-  at picocli.CommandLine$Model$CommandSpec.updateVersionProvider(CommandLine.java:6812)
-  at picocli.CommandLine$Model$CommandSpec.updateCommandAttributes(CommandLine.java:6787)
-  at picocli.CommandLine$Model$CommandReflection.extractCommandSpec(CommandLine.java:10743)
-  at picocli.CommandLine$Model$CommandSpec.forAnnotatedObject(CommandLine.java:5879)
-  at picocli.CommandLine.<init>(CommandLine.java:223)
+  at picocli.CommandLine$DefaultFactory.create(CommandLine.java:5514)
+  at picocli.CommandLine$DefaultFactory.createVersionProvider(CommandLine.java:5500)
+  at picocli.CommandLine$Model$CommandSpec.updateVersionProvider(CommandLine.java:7251)
+  at picocli.CommandLine$Model$CommandSpec.updateCommandAttributes(CommandLine.java:7217)
+  at picocli.CommandLine$Model$CommandReflection.extractCommandSpec(CommandLine.java:11392)
+  at picocli.CommandLine$Model$CommandSpec.forAnnotatedObject(CommandLine.java:6202)
+  at picocli.CommandLine.<init>(CommandLine.java:227)
+  at picocli.CommandLine.<init>(CommandLine.java:221)
   at io.micronaut.configuration.picocli.PicocliRunner.run(PicocliRunner.java:136)
   at io.micronaut.configuration.picocli.PicocliRunner.run(PicocliRunner.java:114)
   at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.main(GradleSourceRepackCommand.groovy:62)
 Caused by: java.lang.NoSuchMethodException: org.klokwrk.tool.gradle.source.repack.cli.PropertiesVersionProvider.<init>()
   at java.lang.Class.getConstructor0(DynamicHub.java:3349)
   at java.lang.Class.getDeclaredConstructor(DynamicHub.java:2553)
-  at picocli.CommandLine$DefaultFactory.create(CommandLine.java:5174)
+  at picocli.CommandLine$DefaultFactory.create(CommandLine.java:5489)
   at io.micronaut.configuration.picocli.MicronautFactory.create(MicronautFactory.java:74)
-  at picocli.CommandLine$DefaultFactory.create(CommandLine.java:5197)
-  ... 9 more
+  at picocli.CommandLine$DefaultFactory.create(CommandLine.java:5512)
+  ... 10 more
 ```
 
 To support all of its rich functionalities, `picocli` library uses reflection to inspect annotations on our custom `org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand` command. Since
@@ -246,12 +249,11 @@ It is important to realize that up to this point, we've added only our custom **
 After we iterate again and build and run the native image, we'll get another runtime exception:
 ```
 ./build/native-image/klokwrk-tool-gradle-source-repack -Dmicronaut.cloud.platform=BARE_METAL \
---loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+--loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
-...
 java.lang.ClassNotFoundException: org.codehaus.groovy.runtime.dgm$33
   at com.oracle.svm.core.hub.ClassForNameSupport.forName(ClassForNameSupport.java:60)
-  at java.lang.ClassLoader.loadClass(ClassLoader.java:275)
+  at java.lang.ClassLoader.loadClass(ClassLoader.java:281)
   at org.codehaus.groovy.reflection.GeneratedMetaMethod$Proxy.createProxy(GeneratedMetaMethod.java:101)
   at org.codehaus.groovy.reflection.GeneratedMetaMethod$Proxy.proxy(GeneratedMetaMethod.java:93)
   at org.codehaus.groovy.reflection.GeneratedMetaMethod$Proxy.isValidMethod(GeneratedMetaMethod.java:78)
@@ -268,16 +270,17 @@ java.lang.ClassNotFoundException: org.codehaus.groovy.runtime.dgm$33
   at org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation.booleanUnbox(DefaultTypeTransformation.java:86)
   at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.configureCustomLoggingLevels(GradleSourceRepackCommand.groovy:138)
   at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.run(GradleSourceRepackCommand.groovy:110)
-  at picocli.CommandLine.executeUserObject(CommandLine.java:1919)
-  at picocli.CommandLine.access$1200(CommandLine.java:145)
-  at picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2332)
-  at picocli.CommandLine$RunLast.handle(CommandLine.java:2326)
-  at picocli.CommandLine$RunLast.handle(CommandLine.java:2291)
-  at picocli.CommandLine$AbstractParseResultHandler.execute(CommandLine.java:2159)
-  at picocli.CommandLine.execute(CommandLine.java:2058)
+  at picocli.CommandLine.executeUserObject(CommandLine.java:1939)
+  at picocli.CommandLine.access$1300(CommandLine.java:145)
+  at picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2352)
+  at picocli.CommandLine$RunLast.handle(CommandLine.java:2346)
+  at picocli.CommandLine$RunLast.handle(CommandLine.java:2311)
+  at picocli.CommandLine$AbstractParseResultHandler.execute(CommandLine.java:2179)
+  at picocli.CommandLine.execute(CommandLine.java:2078)
   at io.micronaut.configuration.picocli.PicocliRunner.run(PicocliRunner.java:137)
   at io.micronaut.configuration.picocli.PicocliRunner.run(PicocliRunner.java:114)
   at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.main(GradleSourceRepackCommand.groovy:62)
+  ...
 ```
 This time it is about default Groovy methods (DGM). DGMs, or GDK as they are better known in the Groovy community, is a means through which Groovy enhances and expands the functionality of existing
 standard JDK classes.
@@ -318,9 +321,8 @@ related to the default Groovy methods.
 The next execution of the native image will greet us with the exception shown below. This time our native image executable cannot find the generated `doCall()` method of a Groovy closure.
 ```
 ./build/native-image/klokwrk-tool-gradle-source-repack -Dmicronaut.cloud.platform=BARE_METAL \
---loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+--loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
-...
 groovy.lang.MissingMethodException: No signature of method: org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand$_configureCustomLoggingLevels_closure1.doCall() is applicable for argument types: (String) values: [ROOT=INFO]
 Possible solutions: findAll(), findAll(), isCase(java.lang.Object), isCase(java.lang.Object)
   at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:255)
@@ -332,13 +334,13 @@ Possible solutions: findAll(), findAll(), isCase(java.lang.Object), isCase(java.
   at org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2344)
   at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.configureCustomLoggingLevels(GradleSourceRepackCommand.groovy:139)
   at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.run(GradleSourceRepackCommand.groovy:110)
-  at picocli.CommandLine.executeUserObject(CommandLine.java:1919)
-  at picocli.CommandLine.access$1200(CommandLine.java:145)
-  at picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2332)
-  at picocli.CommandLine$RunLast.handle(CommandLine.java:2326)
-  at picocli.CommandLine$RunLast.handle(CommandLine.java:2291)
-  at picocli.CommandLine$AbstractParseResultHandler.execute(CommandLine.java:2159)
-  at picocli.CommandLine.execute(CommandLine.java:2058)
+  at picocli.CommandLine.executeUserObject(CommandLine.java:1939)
+  at picocli.CommandLine.access$1300(CommandLine.java:145)
+  at picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2352)
+  at picocli.CommandLine$RunLast.handle(CommandLine.java:2346)
+  at picocli.CommandLine$RunLast.handle(CommandLine.java:2311)
+  at picocli.CommandLine$AbstractParseResultHandler.execute(CommandLine.java:2179)
+  at picocli.CommandLine.execute(CommandLine.java:2078)
   at io.micronaut.configuration.picocli.PicocliRunner.run(PicocliRunner.java:137)
   at io.micronaut.configuration.picocli.PicocliRunner.run(PicocliRunner.java:114)
   at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.main(GradleSourceRepackCommand.groovy:62)
@@ -423,10 +425,10 @@ gw kwrkNativeImage
 The next execution will end up with the following exception:
 ```
 ./build/native-image/klokwrk-tool-gradle-source-repack -Dmicronaut.cloud.platform=BARE_METAL \
---loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+--loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
 ...
-org.codehaus.groovy.runtime.typehandling.GroovyCastException: Cannot cast object 'org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloader$_download_closure1$_closure3@75da7f4b' with class 'org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloader$_download_closure1$_closure3' to class 'io.reactivex.functions.Function'
+org.codehaus.groovy.runtime.typehandling.GroovyCastException: Cannot cast object 'org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloader$_download_closure1$_closure3@676d24b3' with class 'org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloader$_download_closure1$_closure3' to class 'io.reactivex.functions.Function'
   at org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation.continueCastOnSAM(DefaultTypeTransformation.java:415)
   at org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation.continueCastOnNumber(DefaultTypeTransformation.java:329)
   at org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation.castToType(DefaultTypeTransformation.java:243)
@@ -441,15 +443,15 @@ org.codehaus.groovy.runtime.typehandling.GroovyCastException: Cannot cast object
   at groovy.lang.Closure.call(Closure.java:428)
   at org.codehaus.groovy.runtime.IOGroovyMethods.withCloseable(IOGroovyMethods.java:1607)
   at org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloader.download(GradleDownloader.groovy:76)
-  at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.fetchGradleDistributionZipSha256File(GradleSourceRepackCommand.groovy:196)
-  at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.run(GradleSourceRepackCommand.groovy:117)
-  at picocli.CommandLine.executeUserObject(CommandLine.java:1919)
-  at picocli.CommandLine.access$1200(CommandLine.java:145)
-  at picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2332)
-  at picocli.CommandLine$RunLast.handle(CommandLine.java:2326)
-  at picocli.CommandLine$RunLast.handle(CommandLine.java:2291)
-  at picocli.CommandLine$AbstractParseResultHandler.execute(CommandLine.java:2159)
-  at picocli.CommandLine.execute(CommandLine.java:2058)
+  at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.fetchGradleDistributionZipFile(GradleSourceRepackCommand.groovy:181)
+  at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.run(GradleSourceRepackCommand.groovy:116)
+  at picocli.CommandLine.executeUserObject(CommandLine.java:1939)
+  at picocli.CommandLine.access$1300(CommandLine.java:145)
+  at picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2352)
+  at picocli.CommandLine$RunLast.handle(CommandLine.java:2346)
+  at picocli.CommandLine$RunLast.handle(CommandLine.java:2311)
+  at picocli.CommandLine$AbstractParseResultHandler.execute(CommandLine.java:2179)
+  at picocli.CommandLine.execute(CommandLine.java:2078)
   at io.micronaut.configuration.picocli.PicocliRunner.run(PicocliRunner.java:137)
   at io.micronaut.configuration.picocli.PicocliRunner.run(PicocliRunner.java:114)
   at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.main(GradleSourceRepackCommand.groovy:62)
@@ -465,13 +467,13 @@ Since the exception message mentions `io.reactivex.functions.Function` class, le
 ]
 ```
 
-> When running the native image at this stage, you might get the exception saying something like `"SHA-256 does not match ... Cannot continue."`. In that case, just delete `gradle-6.7.1-all.*` files
+> When running the native image at this stage, you might get the exception saying something like `"SHA-256 does not match ... Cannot continue."`. In that case, just delete `gradle-6.8.1-all.*` files
 > from your working directory, and try again.
 
 After regenerating and executing the native image, we'll end up with the following:
 ```
 ./build/native-image/klokwrk-tool-gradle-source-repack -Dmicronaut.cloud.platform=BARE_METAL \
---loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+--loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
 ...
 Exception in thread "main" com.oracle.svm.core.jdk.UnsupportedFeatureError: Proxy class defined by interfaces [interface io.reactivex.functions.Function] not found. Generating proxy classes at runtime is not supported. Proxy classes need to be defined at image build time by specifying the list of interfaces that they implement. To define proxy classes use -H:DynamicProxyConfigurationFiles=<comma-separated-config-files> and -H:DynamicProxyConfigurationResources=<comma-separated-config-resources> options.
@@ -495,15 +497,15 @@ Exception in thread "main" com.oracle.svm.core.jdk.UnsupportedFeatureError: Prox
   at groovy.lang.Closure.call(Closure.java:428)
   at org.codehaus.groovy.runtime.IOGroovyMethods.withCloseable(IOGroovyMethods.java:1607)
   at org.klokwrk.tool.gradle.source.repack.downloader.GradleDownloader.download(GradleDownloader.groovy:76)
-  at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.fetchGradleDistributionZipFile(GradleSourceRepackCommand.groovy:181)
-  at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.run(GradleSourceRepackCommand.groovy:116)
-  at picocli.CommandLine.executeUserObject(CommandLine.java:1919)
-  at picocli.CommandLine.access$1200(CommandLine.java:145)
-  at picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2332)
-  at picocli.CommandLine$RunLast.handle(CommandLine.java:2326)
-  at picocli.CommandLine$RunLast.handle(CommandLine.java:2291)
-  at picocli.CommandLine$AbstractParseResultHandler.execute(CommandLine.java:2159)
-  at picocli.CommandLine.execute(CommandLine.java:2058)
+  at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.fetchGradleDistributionZipSha256File(GradleSourceRepackCommand.groovy:196)
+  at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.run(GradleSourceRepackCommand.groovy:117)
+  at picocli.CommandLine.executeUserObject(CommandLine.java:1939)
+  at picocli.CommandLine.access$1300(CommandLine.java:145)
+  at picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2352)
+  at picocli.CommandLine$RunLast.handle(CommandLine.java:2346)
+  at picocli.CommandLine$RunLast.handle(CommandLine.java:2311)
+  at picocli.CommandLine$AbstractParseResultHandler.execute(CommandLine.java:2179)
+  at picocli.CommandLine.execute(CommandLine.java:2078)
   at io.micronaut.configuration.picocli.PicocliRunner.run(PicocliRunner.java:137)
   at io.micronaut.configuration.picocli.PicocliRunner.run(PicocliRunner.java:114)
   at org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand.main(GradleSourceRepackCommand.groovy:62)
@@ -612,6 +614,7 @@ proxy/SAM related content of corresponding `reflect-config.json` since we can ju
 We just passed through pretty excessive exercise. It was demanding, but we've learned a great deal about the requirements for creating a GraalVM native image for the Groovy CLI application.
 Let's summarize things a bit.
 
+#### Our gained "knowledge-bullet-list"
 If we start with empty configuration files, we'll get an invalid native image. To make it functional, we must include following things:
 - Necessary parts of `$dgm*` helper classes that correspond to the default Groovy methods (DGM) used in the application.
 - Necessary parts of generated closure classes corresponding to the Groovy closures used in the application.
@@ -636,7 +639,7 @@ gw clean assemble
 mkdir build/native-image-agent
 
 java -agentlib:native-image-agent=trace-output=build/native-image-agent/agent-trace-file.json \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 ```
 
 Created `build/native-image-agent/agent-trace-file.json` is pretty big (around 13 MB for our case), and you might want to use the editor that can efficiently work with and search through large text
@@ -704,11 +707,11 @@ mkdir build/native-image-agent
 
 # creating trace file
 java -agentlib:native-image-agent=trace-output=build/native-image-agent/agent-trace-file.json \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
 # creating native image builder configuration files
 java -agentlib:native-image-agent=access-filter-file=build/resources/main/graal-agent-access-filter.json,caller-filter-file=build/resources/main/graal-agent-caller-filter.json,config-output-dir=build/native-image-agent \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 ```
 
 ### Iterating over caller-based filtering configuration
@@ -749,11 +752,11 @@ gw assemble
 
 # regenerating native image builder configuration files
 java -agentlib:native-image-agent=access-filter-file=build/resources/main/graal-agent-access-filter.json,caller-filter-file=build/resources/main/graal-agent-caller-filter.json,config-output-dir=build/native-image-agent \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
 # merging configuration files for additional application options
 java -agentlib:native-image-agent=access-filter-file=build/resources/main/graal-agent-access-filter.json,caller-filter-file=build/resources/main/graal-agent-caller-filter.json,config-merge-dir=build/native-image-agent \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 ```
 
 After examination, we can see that the generated `reflect-config.json` is reduced from around 2200 lines to less than 1000 lines. This is a very good start. At this point you might want to assure
@@ -761,18 +764,18 @@ yourself that native image is still fully functional. First, we need to copy the
 run the commands bellow.
 
 > If you are working on the Mac with GraalVM 20.3.0, the following commands might produce an error during the linking of the native image. The workaround is to remove the `java.lang.ClassLoader`
-> entry from the `src/main/graal/reflect-config.json` file.
+> entry from the `src/main/graal/reflect-config.json` file. The error doesn't occur with GraalVM 21.0.0.
 
 ```
 gw kwrkNativeImage
 
 # "normal" execution
 ./build/native-image/klokwrk-tool-gradle-source-repack -Dmicronaut.cloud.platform=BARE_METAL \
---loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+--loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
 # execution with additional options
 ./build/native-image/klokwrk-tool-gradle-source-repack -Dmicronaut.cloud.platform=BARE_METAL \
---version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+--version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 ```
 
 At this point, we are at the most challenging phase. We have to conclude which classes from the Groovy runtime can be ignored and which cannot. We have to keep an eye on our "knowledge-bullet-list",
@@ -867,11 +870,11 @@ gw assemble
 
 # regenerating native image builder configuration files
 java -agentlib:native-image-agent=access-filter-file=build/resources/main/graal-agent-access-filter.json,caller-filter-file=build/resources/main/graal-agent-caller-filter.json,config-output-dir=build/native-image-agent \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
 # merging configuration files for additional application options
 java -agentlib:native-image-agent=access-filter-file=build/resources/main/graal-agent-access-filter.json,caller-filter-file=build/resources/main/graal-agent-caller-filter.json,config-merge-dir=build/native-image-agent \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 ```
 
 Now, we can easily spot that `reflect-config.json` contains many unnecessary entries from `java.util` subpackages. However, we cannot exclude all `java.util` subpackages since this will also exclude
@@ -898,11 +901,11 @@ access-based filtering rules:
 {
   "rules": [
     { "excludeClasses": "groovy.lang.**" },
-    { "excludeClasses": "org.codehaus.groovy.runtime.callsite.**" },
     { "excludeClasses": "org.codehaus.groovy.runtime.DefaultGroovyMethodsSupport" },
     { "excludeClasses": "org.codehaus.groovy.runtime.DefaultGroovyStaticMethods" },
     { "excludeClasses": "org.codehaus.groovy.runtime.GStringImpl" },
     { "excludeClasses": "org.codehaus.groovy.runtime.GeneratedClosure" },
+    { "excludeClasses": "org.codehaus.groovy.runtime.callsite.**" },
     { "excludeClasses": "org.codehaus.groovy.vmplugin.**" },
 
     { "excludeClasses": "io.micronaut.**" },
@@ -921,8 +924,8 @@ access-based filtering rules:
 ```
 
 We now have all ingredients for creating the final version of the native image. Caller-based and access-based `native-image-agent` configurations are finalized and ready for generating native image
-builder configuration files `reflect-config.json`, `proxy-config.json` and `jni-config.json.` Generated `resource-config.json` still includes many unnecessary entries that can be reduced manually
-only to the ones we actually use. In our case, we'll use a ready-made version from the `src/main/graal` directory.
+builder configuration files `reflect-config.json`, `proxy-config.json`, `jni-config.json` and `serialization-config.json`. Generated `resource-config.json` still includes many unnecessary entries
+that can be reduced manually only to the ones we actually use. In our case, we'll use a ready-made version from the `src/main/graal` directory.
 
 For reference, here is a list of all commands for creating and testing the generated native image with optimal size:
 ```
@@ -932,14 +935,15 @@ mkdir build/native-image-agent
 
 # Generating native image builder configuration files.
 java -agentlib:native-image-agent=access-filter-file=build/resources/main/graal-agent-access-filter.json,caller-filter-file=build/resources/main/graal-agent-caller-filter.json,config-output-dir=build/native-image-agent \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
 # Generating and merging native image builder configuration files for additional application options.
 java -agentlib:native-image-agent=access-filter-file=build/resources/main/graal-agent-access-filter.json,caller-filter-file=build/resources/main/graal-agent-caller-filter.json,config-merge-dir=build/native-image-agent \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
 # Copy generated configuration file for native image builder
 cp build/native-image-agent/jni-config.json src/main/graal
+cp build/native-image-agent/serialization-config.json src/main/graal
 cp build/native-image-agent/proxy-config.json src/main/graal
 cp build/native-image-agent/reflect-config.json src/main/graal
 
@@ -948,17 +952,17 @@ gw kwrkNativeImage
 
 # Native image "normal" execution.
 ./build/native-image/klokwrk-tool-gradle-source-repack -Dmicronaut.cloud.platform=BARE_METAL \
---loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+--loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
 # Native image execution with additional options.
 ./build/native-image/klokwrk-tool-gradle-source-repack -Dmicronaut.cloud.platform=BARE_METAL \
---version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+--version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 ```
 
 ### What we've achieved
 We've managed to create an optimally sized GraalVM native image for the Groovy CLI application. If you look at the `build/native-image` directory, you can find that the image's size is
-73760616 B (70,344 MB). It is useful to compare this size to the size of the invalid base image (68,170 MB) and the size of the image created without filtering configuration files (81,620 MB). We can
-see that we got a fully functional image with only a 2 MB increase in native image size and that the size of our latest image is 11 MB smaller than the image we got without filtering.
+74907872 B (71,438 MB). It is useful to compare this size to the size of the invalid base image (69,420 MB) and the size of the image created without filtering configuration files (81,714 MB). We can
+see that we got a fully functional image with only a 2 MB increase in native image size and that the size of our latest image is 10 MB smaller than the image we got without filtering.
 
 Once we came up with the final versions of filtering configuration files for the `native-image-agent`, the process of creating the native image remains simple and straightforward.
 
