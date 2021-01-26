@@ -1,6 +1,7 @@
 # Debugging Gradle internals from IntelliJ IDEA
 * **Author:** Damir Murat
 * **Created:** 24.12.2020.
+* **Updated:** 26.01.2021.
 
 Debugging is an essential developer's tool, especially when exploring and exercising an unknown codebase. With powerful IDE like IntelliJ IDEA, it commonly boils down to a few clicks.
 
@@ -17,7 +18,8 @@ If you are in a hurry and don't need all the details, feel free to skip to the [
 Here at [CROZ](https://croz.net/), we recently started working on [Project Klokwrk](https://github.com/croz-ltd/klokwrk-project). One of many premises that we are trying to follow is returning as
 often as possible to the open-source community. An essential part of this is [issue reporting](../../misc/klokwrkRelatedIssuesInTheWild.md) for tools and libraries that we use.
 
-As Klokwrk uses Gradle as a build tool, exploratory debugging of Gradle build scripts, 3rd party plugins, and internal classes is a prerequisite for any issue report related to Gradle or its plugins.
+As Klokwrk uses Gradle as a build tool, exploratory debugging of Gradle build scripts, 3rd party plugins, and internal Gradle classes is a prerequisite for any issue report related to the Gradle or
+its plugins.
 
 ## Debugging Gradle in IDEA
 ### Basic setup
@@ -33,9 +35,8 @@ With basic setup behind us, let's quickly see how debugging custom Gradle build 
 ### Debugging Gradle scripts
 Debugging your own Gradle scripts is seamless. Put a breakpoint in the script, and run the desired Gradle task in debug mode.
 
-In the following picture, we are using the main [build.gradle](../../../../build.gradle) script from Klokwrk. We have a breakpoint in the `repositories`
-configuration section. As configuration sections execute during Gradle's configuration phase, we can run any Gradle task to stop at the breakpoint. For starting a task, right-click on it from IDEA's
-`"Gradle tool window"` and select `"Debug"` action.
+In the following picture, we are using the main [build.gradle](../../../../build.gradle) script from Klokwrk. As our breakpoint will be hit during Gradle's configuration phase, we can run any Gradle
+task to stop at that concrete breakpoint. For starting a task, right-click on it from IDEA's `"Gradle tool window"` and select `"Debug"` action.
 
 ![Image 2 - Debugging custom Gradle scripts](images/02-debugging-custom-gradle-scripts.jpg "Image 2 - Debugging custom Gradle scripts") <br/>
 *Image 2 - Debugging custom Gradle scripts*
@@ -45,11 +46,11 @@ To debug the 3rd party Gradle plugin, you'll have to know something about the pl
 there. Besides knowing the plugin's internals, there are also a few required preparation steps.
 
 First, we need to configure [Gradle plugin portal](https://plugins.gradle.org/) as a repository of a module that will be a context under which you run and debug the 3rd party Gradle plugin. To do
-this, just add `gradlePluginPortal()` in the relevant `repositories` configuration block:
+this, just add `gradlePluginPortal()` in the relevant `repositories` configuration block. Make sure it is configured as a first repository in the list:
 ```
 repositories {
-  ...
   gradlePluginPortal()
+  ...
 }
 ```
 
@@ -118,8 +119,8 @@ carefully at the previous picture, IDEA is aware of that `all` distribution (loo
 IDEA can not work with source files organized in multiple source roots as Gradle sources are (take a look at `~/.gradle/wrapper/dists/gradle-6.7.1-all/[hash]/gradle-6.7.1/src`). IDEA expects a single
 source root for any dependency present in the classpath.
 
-There were several attempts by the Gradle team to [resolve](https://github.com/gradle/gradle/issues/1003) [those](https://github.com/gradle/gradle/pull/11751)
-[issues](https://github.com/gradle/gradle/pull/11772). Unfortunately, they were not ended up in official Gradle releases. Hopefully, this will change in the future, and the debugging of Gradle
+There were several attempts by the Gradle team to [[resolve]](https://github.com/gradle/gradle/issues/1003) [[those]](https://github.com/gradle/gradle/pull/11751)
+[[issues]](https://github.com/gradle/gradle/pull/11772). Unfortunately, they were not ended up in official Gradle releases. Hopefully, this will change in the future, and the debugging of Gradle
 internals will work out-of-the-box. In the meantime, you can use the solution presented below.
 
 #### Solution
@@ -132,9 +133,8 @@ It is possible to create an involved shell script that will do all the necessary
 this little tool is straightforward to use. All you need to provide is a Gradle version for which you want to create a JAR archive with repacked Gradle sources.
 
 > As a side note, it is worth mentioning that `klokwrk-tool-gradle-source-repack` served another useful purpose. It was a playground for exploring possible usage of GraalVM native images with
-> non-trivial Groovy applications, with particular emphasis on minimal or non-existing reflection configuration. This should be another article's subject. Meanwhile, nothing stops you from exploring
-> the source if you are interested in the topic. You can find some starting tips in the
-> [README.md](../../../../tool/klokwrk-tool-gradle-source-repack/README.md) file.
+> non-trivial Groovy applications, with particular emphasis on minimal reflection configuration. However, this is a subject of [another article](../groovy-graalvm-native-image/groovy-graalvm-native-image.md).
+> You can find some starting tips in `klokwrk-tool-gradle-source-repack`'s [README.md](../../../../tool/klokwrk-tool-gradle-source-repack/README.md).
 
 With the correct Gradle version supplied, `klokwrk-tool-gradle-source-repack` will:
 - download Gradle `all` distribution corresponding to the supplied Gradle version
@@ -144,8 +144,8 @@ With the correct Gradle version supplied, `klokwrk-tool-gradle-source-repack` wi
   otherwise.
 
 Once we have repacked Gradle sources, we can supply them to the IDEA. More concretely, open that decompiled `DefaultProject` class we have used previously, click on the `"Choose Sources..."` action
-in the top right corner and supply repacked archive. If IDEA prompts you with the `"Choose libraries to attach sources to"` popup, select `"All"` from the list. Wait a few moments, and the
-`DefaultProject.class` file should be replaced with the `DefaultPoject.java` file (note the extensions).
+in the top right corner and supply repacked archive. If IDEA prompts you with the `"Choose libraries to attach sources to"` popup, select `"All"` from the list. Wait a few moments while IDEA finishes
+indexing new sources, and the `DefaultProject.class` file should be replaced with the `DefaultPoject.java` file (note the extensions).
 
 Now you can go ahead by adding your breakpoints and start debugging Gradle internals with real sources.
 
@@ -156,11 +156,11 @@ Now you can go ahead by adding your breakpoints and start debugging Gradle inter
 - Put a breakpoint in the script, and run the desired Gradle task in debug mode.
 
 ### Debugging 3rd party Gradle plugins
-- Configure the Gradle plugin portal as a repository of the module.
+- Configure the Gradle plugin portal as a first repository of the module.
   ```
   repositories {
-    ...
     gradlePluginPortal()
+    ...
   }
   ```
 - Add the plugin as a `runtimeOnly` dependency of the module.
