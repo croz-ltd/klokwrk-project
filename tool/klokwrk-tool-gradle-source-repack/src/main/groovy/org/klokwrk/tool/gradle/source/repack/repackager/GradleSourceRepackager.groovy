@@ -30,8 +30,7 @@ import java.util.zip.ZipOutputStream
 /**
  * Repackages Gradle sources into a sources archive understood by IDEA.
  */
-// TODO dmurat: revise Indentation warning suppression after analysis and potential bug report to CodeNarc.
-@SuppressWarnings(["JavaIoPackageAccess", "Indentation"])
+@SuppressWarnings("JavaIoPackageAccess")
 @CompileStatic
 class GradleSourceRepackager {
   private static final Logger log = LoggerFactory.getLogger(GradleSourceRepackager)
@@ -78,6 +77,7 @@ class GradleSourceRepackager {
     return targetZipEntryName
   }
 
+  @SuppressWarnings("Indentation")
   private static void repackageZipFile(GradleSourceRepackagerInfo repackagerInfo, Long countOfTargetZipEntries) {
     new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(repackagerInfo.gradleApiSourcesFilePath))).withCloseable { ZipOutputStream targetZipOutputStream ->
       new ZipFile(repackagerInfo.gradleDistributionZipFilePath).withCloseable { ZipFile originalZipFile ->

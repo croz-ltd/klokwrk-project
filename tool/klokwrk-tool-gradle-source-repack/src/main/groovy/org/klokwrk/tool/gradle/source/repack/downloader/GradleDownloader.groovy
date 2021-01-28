@@ -61,8 +61,6 @@ class GradleDownloader {
   /**
    * Downloads Gradle distribution files (typically *.zip or *.zip.sha256) based on provided {@link GradleDownloaderInfo} specification.
    */
-  // TODO dmurat: revise Indentation warning suppression after analysis and potential bug report to CodeNarc.
-  @SuppressWarnings("Indentation")
   File download(GradleDownloaderInfo gradleDownloaderInfo) {
     log.debug("Starting download with following gradleDownloaderInfo: {}", gradleDownloaderInfo)
 
