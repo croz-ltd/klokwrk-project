@@ -44,6 +44,7 @@ class RdbmsProjectionAppTestcontainersFactory {
     String containerName = "cargotracker-booking-queryside-rdbms-projection-app"
     String containerNameSuffix = UUID.randomUUID()
 
+    //noinspection DuplicatedCode
     GenericContainer rdbmsProjectionApp = new GenericContainer("klokwrkprj/cargotracker-booking-queryside-rdbms-projection-app:${ imageVersion }")
         .withExposedPorts(exposedPorts)
         .withCreateContainerCmdModifier({ CreateContainerCmd cmd ->
@@ -57,8 +58,7 @@ class RdbmsProjectionAppTestcontainersFactory {
             "CARGOTRACKER_POSTGRES_USERNAME": "cargotracker",
             "CARGOTRACKER_POSTGRES_PASSWORD": "cargotracker",
             "MANAGEMENT_METRICS_EXPORT_WAVEFRONT_ENABLED": "false",
-            // TODO dmurat: update Axon tracing turn-off when issue is resolved: https://github.com/AxonFramework/extension-tracing/issues/53
-            "SPRING_AUTOCONFIGURE_EXCLUDE": "org.axonframework.extensions.tracing.autoconfig.TracingAutoConfiguration"
+            "AXON.EXTENSION.TRACING.ENABLED": "false"
         ])
         .withNetwork(klokwrkNetwork)
         .waitingFor(Wait.forHttp("/cargotracker-booking-queryside-rdbms-projection/management/health"))
