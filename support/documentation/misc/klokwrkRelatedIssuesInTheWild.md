@@ -44,7 +44,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * IN PROGRESS - https://github.com/eskatos/gradle-command-action/issues/22
 
 ### Gradle Dependency Analyze
-* IN PROGRESS - https://github.com/wfhartford/gradle-dependency-analyze/issues/108
+* IN PROGRESS - https://github.com/gradle-dependency-analyze/gradle-dependency-analyze/issues/108
 
 ### Groovy
 * VERIFIED (3.0.4) - https://issues.apache.org/jira/browse/GROOVY-9546
@@ -53,7 +53,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (3.0.5) - https://issues.apache.org/jira/browse/GROOVY-9643
 * VERIFIED (3.0.7) - https://issues.apache.org/jira/browse/GROOVY-9770
 * VERIFIED (3.0.7) - https://issues.apache.org/jira/browse/GROOVY-9772
-* IN PROGRESS - https://issues.apache.org/jira/browse/GROOVY-9858
+* FIXED (3.0.8) - https://issues.apache.org/jira/browse/GROOVY-9858
   * https://groovy.markmail.org/thread/gmcivt4ywcntszwx
   * https://github.com/apache/groovy/pull/1448
 
@@ -81,7 +81,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/421
 
 ### micronaut-core
-* IN PROGRESS (2.3.0) - https://github.com/micronaut-projects/micronaut-core/issues/4622
+* IN PROGRESS (2.4.0) - https://github.com/micronaut-projects/micronaut-core/issues/4622
 
 ### micronaut-gradle-plugin
 * REPORTED - https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/92
