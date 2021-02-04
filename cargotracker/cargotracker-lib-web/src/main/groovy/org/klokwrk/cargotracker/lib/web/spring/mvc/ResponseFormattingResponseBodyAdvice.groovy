@@ -62,7 +62,7 @@ import java.time.Instant
  *     "severity": "INFO",
  *     "locale": "en_GB",
  *     "titleText": "Info",
- *     "timestamp": "2020-04-27T06:13:09.225Z",
+ *     "timestamp": "2020-04-27T06:13:09.225221Z",
  *     "titleDetailedText": "Your request is successfully executed."
  *   },
  *   "payload": {

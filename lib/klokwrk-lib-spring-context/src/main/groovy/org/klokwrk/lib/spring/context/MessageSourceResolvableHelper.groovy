@@ -60,10 +60,12 @@ class MessageSourceResolvableHelper {
    *     "default${ severity }${ propertyPath }".toString(),
    *     "default${ severity }".toString()
    * ]
-   * <pre/>
-   * For example, when a given {@link MessageSourceResolvableSpecification} instance contains following properties:
+   * </pre>
+   *
+   * For example, in case of error we might use {@link MessageSourceResolvableSpecification} instance with the following properties:<br/><br/>
+   *
    * <pre>
-   * MessageSourceResolvableSpecification {
+   * new MessageSourceResolvableSpecification(
    *   controllerSimpleName: "testController",
    *   controllerMethodName: "testControllerMethod",
    *   messageCategory: "failure",
@@ -71,9 +73,11 @@ class MessageSourceResolvableHelper {
    *   messageSubType: "",
    *   severity: "error",
    *   propertyPath: "report.titleText"
-   * }
+   * )
    * </pre>
-   * created message code list looks like this:
+   *
+   * For the failure specification above, created message code list looks like this:<br/><br/>
+   *
    * <pre>
    * [
    *   "testController.testControllerMethod.failure.internalServerError.error.report.titleText",
@@ -82,14 +86,41 @@ class MessageSourceResolvableHelper {
    *   "testController.testControllerMethod.failure.report.titleText",
    *   "testControllerMethod.failure.error.report.titleText",
    *   "testControllerMethod.failure.report.titleText",
-   *   "testControllerMethod.failure.report.titleText",
+   *   "default.failure.internalServerError.error.report.titleText",
    *   "default.failure.internalServerError.report.titleText",
    *   "default.failure.error.report.titleText",
    *   "default.failure.report.titleText",
    *   "default.error.report.titleText",
    *   "default.error"
    * ]
+   * </pre>
+   *
+   * In case of success, {@link MessageSourceResolvableSpecification} instance might look like the following example:<br/><br/>
    * <pre>
+   * new MessageSourceResolvableSpecification(
+   *   controllerSimpleName: "testController",
+   *   controllerMethodName: "testControllerMethod",
+   *   messageCategory: "success",
+   *   messageType: "",
+   *   messageSubType: "",
+   *   severity: "info",
+   *   propertyPath: "report.titleText"
+   * )
+   * </pre>
+   *
+   * Corresponding message code list is:<br/><br/>
+   * <pre>
+   * [
+   *   "testController.testControllerMethod.success.info.report.titleText"
+   *   "testController.testControllerMethod.success.report.titleText"
+   *   "testControllerMethod.success.info.report.titleText"
+   *   "testControllerMethod.success.report.titleText"
+   *   "default.success.info.report.titleText"
+   *   "default.success.report.titleText"
+   *   "default.info.report.titleText"
+   *   "default.info"
+   * ]
+   * </pre>
    */
   @SuppressWarnings("CyclomaticComplexity")
   static List<String> createMessageCodeList(MessageSourceResolvableSpecification specification) {
