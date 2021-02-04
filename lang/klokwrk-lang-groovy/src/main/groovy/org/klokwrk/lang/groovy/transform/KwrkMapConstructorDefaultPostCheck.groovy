@@ -37,7 +37,7 @@ import java.lang.annotation.Target
  * Commonly it is not used standalone, but rather as a part of {@code KwrkImmutable} meta-annotation.
  */
 @GroovyASTTransformationClass("org.klokwrk.lang.groovy.transform.KwrkMapConstructorDefaultPostCheckAstTransformation")
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @Target([ElementType.TYPE])
 @interface KwrkMapConstructorDefaultPostCheck {
 }

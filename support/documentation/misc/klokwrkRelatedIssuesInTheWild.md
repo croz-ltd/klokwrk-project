@@ -63,6 +63,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (2020.3) - https://youtrack.jetbrains.com/issue/IDEA-239966
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-243620
 * IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-255422
+* REPORTED - https://youtrack.jetbrains.com/issue/IDEA-261239
 
 ### Kordamp Gradle Plugins
 * VERIFIED (0.36.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/291
