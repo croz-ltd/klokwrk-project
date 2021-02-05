@@ -33,7 +33,7 @@ import spock.lang.Specification
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
-class ResponseFormattingExceptionHandlerSpecification extends Specification {
+class ResponseFormattingDomainExceptionHandlerSpecification extends Specification {
   static class TestController {
     @SuppressWarnings("unused")
     OperationResponse<Map> testControllerMethod() {
@@ -42,7 +42,7 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
   }
 
   Locale locale
-  ResponseFormattingExceptionHandler responseFormattingExceptionHandler
+  ResponseFormattingDomainExceptionHandler responseFormattingDomainExceptionHandler
   HandlerMethod handlerMethod
 
   void setup() {
@@ -51,8 +51,8 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
     messageSource.defaultEncoding = "UTF-8"
     messageSource.setBasenames("responseFormattingDefaultMessages", "responseFormattingTestMessages")
 
-    responseFormattingExceptionHandler = new ResponseFormattingExceptionHandler()
-    responseFormattingExceptionHandler.messageSource = messageSource
+    responseFormattingDomainExceptionHandler = new ResponseFormattingDomainExceptionHandler()
+    responseFormattingDomainExceptionHandler.messageSource = messageSource
 
     TestController testController = new TestController()
     Method testControllerMethod = TestController.declaredMethods.find({ Method method -> method.name == "testControllerMethod" })
@@ -64,7 +64,7 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
     DomainException exception = exceptionParam
 
     when:
-    ResponseEntity responseEntity = responseFormattingExceptionHandler.handleDomainException(exception, handlerMethod, locale)
+    ResponseEntity responseEntity = responseFormattingDomainExceptionHandler.handleDomainException(exception, handlerMethod, locale)
 
     OperationResponse<Map> body = responseEntity.body as OperationResponse<Map>
     Map metadata = body.metaData
@@ -109,7 +109,7 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
     DomainException exception = exceptionParam
 
     when:
-    ResponseEntity responseEntity = responseFormattingExceptionHandler.handleDomainException(exception, handlerMethod, locale)
+    ResponseEntity responseEntity = responseFormattingDomainExceptionHandler.handleDomainException(exception, handlerMethod, locale)
 
     OperationResponse<Map> body = responseEntity.body as OperationResponse<Map>
     Map metadata = body.metaData
@@ -152,7 +152,7 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
     DomainException exception = new DomainException(violationInfo)
 
     when:
-    ResponseEntity responseEntity = responseFormattingExceptionHandler.handleDomainException(exception, handlerMethod, locale)
+    ResponseEntity responseEntity = responseFormattingDomainExceptionHandler.handleDomainException(exception, handlerMethod, locale)
 
     OperationResponse<Map> body = responseEntity.body as OperationResponse<Map>
     Map metadata = body.metaData

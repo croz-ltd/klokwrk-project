@@ -40,8 +40,8 @@ import java.time.Instant
 /**
  * Handles shaping and internationalization of the body in HTTP responses when execution of controller results in throwing a {@link DomainException}.
  * <p/>
- * Produced HTTP response body is an instance of {@link OperationResponse} containing resolved "<code>metaData</code>" and empty "<code>payload</code>". When serialized into JSON it looks something
- * like following example:
+ * Produced HTTP response body is a JSON serialized from {@link OperationResponse} instance containing populated "<code>metaData</code>" and empty "<code>payload</code>" properties. Here is an
+ * example:
  * <pre>
  * {
  *   "metaData": {
@@ -64,18 +64,10 @@ import java.time.Instant
  * </pre>
  * Here, internationalized "<code>metaData</code>" entries are "<code>violation.codeMessage</code>", "<code>titleText</code>" and "<code>titleDetailedText</code>".
  * <p/>
- * When used from Spring Boot application, the easiest is to create controller advice and register it with the spring context:
+ * When used from Spring Boot application, the easiest is to create a controller advice that is eligible for component scanning (&#64;ControllerAdvice is annotated with &#64;Component):
  * <pre>
  * &#64;ControllerAdvice
- * class ResponseFormattingExceptionHandlerControllerAdvice extends ResponseFormattingExceptionHandler {
- * }
- *
- * &#64;Configuration
- * class SpringBootConfig {
- *   &#64;Bean
- *   ResponseFormattingExceptionHandlerControllerAdvice responseFormattingExceptionHandlerControllerAdvice() {
- *     return new ResponseFormattingExceptionHandlerControllerAdvice()
- *   }
+ * class ResponseFormattingDomainExceptionHandlerControllerAdvice extends ResponseFormattingDomainExceptionHandler {
  * }
  * </pre>
  * For internationalization of default messages, we are defining a resource bundle with base name "<code>responseFormattingDefaultMessages</code>". In Spring Boot application, that resource bundle
@@ -90,7 +82,7 @@ import java.time.Instant
  * @see MessageSourceResolvableHelper
  */
 @CompileStatic
-class ResponseFormattingExceptionHandler extends ResponseEntityExceptionHandler implements MessageSourceAware {
+class ResponseFormattingDomainExceptionHandler extends ResponseEntityExceptionHandler implements MessageSourceAware {
   private MessageSource messageSource
 
   @Override
