@@ -29,7 +29,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
         messageType: "messageType",
         messageSubType: "messageSubType",
         severity: "severity",
-        propertyPath: "propertyPath"
+        propertyPath: "some.property.path"
     )
 
     when:
@@ -38,17 +38,17 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     then:
     verifyAll {
       messageCodeList.size() == 12
-      messageCodeList[0] == "controllerSimpleName.controllerMethodName.messageCategory.messageType.messageSubType.severity.propertyPath"
-      messageCodeList[1] == "controllerSimpleName.controllerMethodName.messageCategory.messageType.messageSubType.propertyPath"
-      messageCodeList[2] == "controllerSimpleName.controllerMethodName.messageCategory.severity.propertyPath"
-      messageCodeList[3] == "controllerSimpleName.controllerMethodName.messageCategory.propertyPath"
-      messageCodeList[4] == "controllerMethodName.messageCategory.severity.propertyPath"
-      messageCodeList[5] == "controllerMethodName.messageCategory.propertyPath"
-      messageCodeList[6] == "default.messageCategory.messageType.messageSubType.severity.propertyPath"
-      messageCodeList[7] == "default.messageCategory.messageType.messageSubType.propertyPath"
-      messageCodeList[8] == "default.messageCategory.severity.propertyPath"
-      messageCodeList[9] == "default.messageCategory.propertyPath"
-      messageCodeList[10] == "default.severity.propertyPath"
+      messageCodeList[0] == "controllerSimpleName.controllerMethodName.messageCategory.messageType.messageSubType.severity.some.property.path"
+      messageCodeList[1] == "controllerSimpleName.controllerMethodName.messageCategory.messageType.messageSubType.some.property.path"
+      messageCodeList[2] == "controllerSimpleName.controllerMethodName.messageCategory.severity.some.property.path"
+      messageCodeList[3] == "controllerSimpleName.controllerMethodName.messageCategory.some.property.path"
+      messageCodeList[4] == "controllerMethodName.messageCategory.severity.some.property.path"
+      messageCodeList[5] == "controllerMethodName.messageCategory.some.property.path"
+      messageCodeList[6] == "default.messageCategory.messageType.messageSubType.severity.some.property.path"
+      messageCodeList[7] == "default.messageCategory.messageType.messageSubType.some.property.path"
+      messageCodeList[8] == "default.messageCategory.severity.some.property.path"
+      messageCodeList[9] == "default.messageCategory.some.property.path"
+      messageCodeList[10] == "default.severity.some.property.path"
       messageCodeList[11] == "default.severity"
     }
   }
@@ -76,7 +76,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
         messageType: "messageType",
         messageSubType: "messageSubType",
         severity: "severity",
-        propertyPath: "propertyPath"
+        propertyPath: "some.property.path"
     )
 
     when:
@@ -85,15 +85,15 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     then:
     verifyAll {
       messageCodeList.size() == 10
-      messageCodeList[0] == "controllerMethodName.messageCategory.messageType.messageSubType.severity.propertyPath"
-      messageCodeList[1] == "controllerMethodName.messageCategory.messageType.messageSubType.propertyPath"
-      messageCodeList[2] == "controllerMethodName.messageCategory.severity.propertyPath"
-      messageCodeList[3] == "controllerMethodName.messageCategory.propertyPath"
-      messageCodeList[4] == "default.messageCategory.messageType.messageSubType.severity.propertyPath"
-      messageCodeList[5] == "default.messageCategory.messageType.messageSubType.propertyPath"
-      messageCodeList[6] == "default.messageCategory.severity.propertyPath"
-      messageCodeList[7] == "default.messageCategory.propertyPath"
-      messageCodeList[8] == "default.severity.propertyPath"
+      messageCodeList[0] == "controllerMethodName.messageCategory.messageType.messageSubType.severity.some.property.path"
+      messageCodeList[1] == "controllerMethodName.messageCategory.messageType.messageSubType.some.property.path"
+      messageCodeList[2] == "controllerMethodName.messageCategory.severity.some.property.path"
+      messageCodeList[3] == "controllerMethodName.messageCategory.some.property.path"
+      messageCodeList[4] == "default.messageCategory.messageType.messageSubType.severity.some.property.path"
+      messageCodeList[5] == "default.messageCategory.messageType.messageSubType.some.property.path"
+      messageCodeList[6] == "default.messageCategory.severity.some.property.path"
+      messageCodeList[7] == "default.messageCategory.some.property.path"
+      messageCodeList[8] == "default.severity.some.property.path"
       messageCodeList[9] == "default.severity"
     }
 
@@ -113,7 +113,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
         messageType: "messageType",
         messageSubType: "messageSubType",
         severity: "severity",
-        propertyPath: "propertyPath"
+        propertyPath: "some.property.path"
     )
 
     when:
@@ -122,17 +122,17 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     then:
     verifyAll {
       messageCodeList.size() == 12
-      messageCodeList[0] == "controllerSimpleName.messageCategory.messageType.messageSubType.severity.propertyPath"
-      messageCodeList[1] == "controllerSimpleName.messageCategory.messageType.messageSubType.propertyPath"
-      messageCodeList[2] == "controllerSimpleName.messageCategory.severity.propertyPath"
-      messageCodeList[3] == "controllerSimpleName.messageCategory.propertyPath"
-      messageCodeList[4] == "messageCategory.severity.propertyPath"
-      messageCodeList[5] == "messageCategory.propertyPath"
-      messageCodeList[6] == "default.messageCategory.messageType.messageSubType.severity.propertyPath"
-      messageCodeList[7] == "default.messageCategory.messageType.messageSubType.propertyPath"
-      messageCodeList[8] == "default.messageCategory.severity.propertyPath"
-      messageCodeList[9] == "default.messageCategory.propertyPath"
-      messageCodeList[10] == "default.severity.propertyPath"
+      messageCodeList[0] == "controllerSimpleName.messageCategory.messageType.messageSubType.severity.some.property.path"
+      messageCodeList[1] == "controllerSimpleName.messageCategory.messageType.messageSubType.some.property.path"
+      messageCodeList[2] == "controllerSimpleName.messageCategory.severity.some.property.path"
+      messageCodeList[3] == "controllerSimpleName.messageCategory.some.property.path"
+      messageCodeList[4] == "messageCategory.severity.some.property.path"
+      messageCodeList[5] == "messageCategory.some.property.path"
+      messageCodeList[6] == "default.messageCategory.messageType.messageSubType.severity.some.property.path"
+      messageCodeList[7] == "default.messageCategory.messageType.messageSubType.some.property.path"
+      messageCodeList[8] == "default.messageCategory.severity.some.property.path"
+      messageCodeList[9] == "default.messageCategory.some.property.path"
+      messageCodeList[10] == "default.severity.some.property.path"
       messageCodeList[11] == "default.severity"
     }
 
@@ -152,7 +152,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
         messageType: "messageType",
         messageSubType: "messageSubType",
         severity: "severity",
-        propertyPath: "propertyPath"
+        propertyPath: "some.property.path"
     )
 
     when:
@@ -161,16 +161,16 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     then:
     verifyAll {
       messageCodeList.size() == 11
-      messageCodeList[0] == "controllerSimpleName.controllerMethodName.messageType.messageSubType.severity.propertyPath"
-      messageCodeList[1] == "controllerSimpleName.controllerMethodName.messageType.messageSubType.propertyPath"
-      messageCodeList[2] == "controllerSimpleName.controllerMethodName.severity.propertyPath"
-      messageCodeList[3] == "controllerSimpleName.controllerMethodName.propertyPath"
-      messageCodeList[4] == "controllerMethodName.severity.propertyPath"
-      messageCodeList[5] == "controllerMethodName.propertyPath"
-      messageCodeList[6] == "default.messageType.messageSubType.severity.propertyPath"
-      messageCodeList[7] == "default.messageType.messageSubType.propertyPath"
-      messageCodeList[8] == "default.severity.propertyPath"
-      messageCodeList[9] == "default.propertyPath"
+      messageCodeList[0] == "controllerSimpleName.controllerMethodName.messageType.messageSubType.severity.some.property.path"
+      messageCodeList[1] == "controllerSimpleName.controllerMethodName.messageType.messageSubType.some.property.path"
+      messageCodeList[2] == "controllerSimpleName.controllerMethodName.severity.some.property.path"
+      messageCodeList[3] == "controllerSimpleName.controllerMethodName.some.property.path"
+      messageCodeList[4] == "controllerMethodName.severity.some.property.path"
+      messageCodeList[5] == "controllerMethodName.some.property.path"
+      messageCodeList[6] == "default.messageType.messageSubType.severity.some.property.path"
+      messageCodeList[7] == "default.messageType.messageSubType.some.property.path"
+      messageCodeList[8] == "default.severity.some.property.path"
+      messageCodeList[9] == "default.some.property.path"
       messageCodeList[10] == "default.severity"
     }
 
@@ -190,7 +190,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
         messageType: messageTypeParam,
         messageSubType: "messageSubType",
         severity: "severity",
-        propertyPath: "propertyPath"
+        propertyPath: "some.property.path"
     )
 
     when:
@@ -199,17 +199,17 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     then:
     verifyAll {
       messageCodeList.size() == 12
-      messageCodeList[0] == "controllerSimpleName.controllerMethodName.messageCategory.messageSubType.severity.propertyPath"
-      messageCodeList[1] == "controllerSimpleName.controllerMethodName.messageCategory.messageSubType.propertyPath"
-      messageCodeList[2] == "controllerSimpleName.controllerMethodName.messageCategory.severity.propertyPath"
-      messageCodeList[3] == "controllerSimpleName.controllerMethodName.messageCategory.propertyPath"
-      messageCodeList[4] == "controllerMethodName.messageCategory.severity.propertyPath"
-      messageCodeList[5] == "controllerMethodName.messageCategory.propertyPath"
-      messageCodeList[6] == "default.messageCategory.messageSubType.severity.propertyPath"
-      messageCodeList[7] == "default.messageCategory.messageSubType.propertyPath"
-      messageCodeList[8] == "default.messageCategory.severity.propertyPath"
-      messageCodeList[9] == "default.messageCategory.propertyPath"
-      messageCodeList[10] == "default.severity.propertyPath"
+      messageCodeList[0] == "controllerSimpleName.controllerMethodName.messageCategory.messageSubType.severity.some.property.path"
+      messageCodeList[1] == "controllerSimpleName.controllerMethodName.messageCategory.messageSubType.some.property.path"
+      messageCodeList[2] == "controllerSimpleName.controllerMethodName.messageCategory.severity.some.property.path"
+      messageCodeList[3] == "controllerSimpleName.controllerMethodName.messageCategory.some.property.path"
+      messageCodeList[4] == "controllerMethodName.messageCategory.severity.some.property.path"
+      messageCodeList[5] == "controllerMethodName.messageCategory.some.property.path"
+      messageCodeList[6] == "default.messageCategory.messageSubType.severity.some.property.path"
+      messageCodeList[7] == "default.messageCategory.messageSubType.some.property.path"
+      messageCodeList[8] == "default.messageCategory.severity.some.property.path"
+      messageCodeList[9] == "default.messageCategory.some.property.path"
+      messageCodeList[10] == "default.severity.some.property.path"
       messageCodeList[11] == "default.severity"
     }
 
@@ -229,7 +229,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
         messageType: "messageType",
         messageSubType: messageSubTypeParam,
         severity: "severity",
-        propertyPath: "propertyPath"
+        propertyPath: "some.property.path"
     )
 
     when:
@@ -238,17 +238,17 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     then:
     verifyAll {
       messageCodeList.size() == 12
-      messageCodeList[0] == "controllerSimpleName.controllerMethodName.messageCategory.messageType.severity.propertyPath"
-      messageCodeList[1] == "controllerSimpleName.controllerMethodName.messageCategory.messageType.propertyPath"
-      messageCodeList[2] == "controllerSimpleName.controllerMethodName.messageCategory.severity.propertyPath"
-      messageCodeList[3] == "controllerSimpleName.controllerMethodName.messageCategory.propertyPath"
-      messageCodeList[4] == "controllerMethodName.messageCategory.severity.propertyPath"
-      messageCodeList[5] == "controllerMethodName.messageCategory.propertyPath"
-      messageCodeList[6] == "default.messageCategory.messageType.severity.propertyPath"
-      messageCodeList[7] == "default.messageCategory.messageType.propertyPath"
-      messageCodeList[8] == "default.messageCategory.severity.propertyPath"
-      messageCodeList[9] == "default.messageCategory.propertyPath"
-      messageCodeList[10] == "default.severity.propertyPath"
+      messageCodeList[0] == "controllerSimpleName.controllerMethodName.messageCategory.messageType.severity.some.property.path"
+      messageCodeList[1] == "controllerSimpleName.controllerMethodName.messageCategory.messageType.some.property.path"
+      messageCodeList[2] == "controllerSimpleName.controllerMethodName.messageCategory.severity.some.property.path"
+      messageCodeList[3] == "controllerSimpleName.controllerMethodName.messageCategory.some.property.path"
+      messageCodeList[4] == "controllerMethodName.messageCategory.severity.some.property.path"
+      messageCodeList[5] == "controllerMethodName.messageCategory.some.property.path"
+      messageCodeList[6] == "default.messageCategory.messageType.severity.some.property.path"
+      messageCodeList[7] == "default.messageCategory.messageType.some.property.path"
+      messageCodeList[8] == "default.messageCategory.severity.some.property.path"
+      messageCodeList[9] == "default.messageCategory.some.property.path"
+      messageCodeList[10] == "default.severity.some.property.path"
       messageCodeList[11] == "default.severity"
     }
 
@@ -268,7 +268,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
         messageType: "messageType",
         messageSubType: "messageSubType",
         severity: severityParam,
-        propertyPath: "propertyPath"
+        propertyPath: "some.property.path"
     )
 
     when:
@@ -277,17 +277,17 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     then:
     verifyAll {
       messageCodeList.size() == 12
-      messageCodeList[0] == "controllerSimpleName.controllerMethodName.messageCategory.messageType.messageSubType.warning.propertyPath"
-      messageCodeList[1] == "controllerSimpleName.controllerMethodName.messageCategory.messageType.messageSubType.propertyPath"
-      messageCodeList[2] == "controllerSimpleName.controllerMethodName.messageCategory.warning.propertyPath"
-      messageCodeList[3] == "controllerSimpleName.controllerMethodName.messageCategory.propertyPath"
-      messageCodeList[4] == "controllerMethodName.messageCategory.warning.propertyPath"
-      messageCodeList[5] == "controllerMethodName.messageCategory.propertyPath"
-      messageCodeList[6] == "default.messageCategory.messageType.messageSubType.warning.propertyPath"
-      messageCodeList[7] == "default.messageCategory.messageType.messageSubType.propertyPath"
-      messageCodeList[8] == "default.messageCategory.warning.propertyPath"
-      messageCodeList[9] == "default.messageCategory.propertyPath"
-      messageCodeList[10] == "default.warning.propertyPath"
+      messageCodeList[0] == "controllerSimpleName.controllerMethodName.messageCategory.messageType.messageSubType.warning.some.property.path"
+      messageCodeList[1] == "controllerSimpleName.controllerMethodName.messageCategory.messageType.messageSubType.some.property.path"
+      messageCodeList[2] == "controllerSimpleName.controllerMethodName.messageCategory.warning.some.property.path"
+      messageCodeList[3] == "controllerSimpleName.controllerMethodName.messageCategory.some.property.path"
+      messageCodeList[4] == "controllerMethodName.messageCategory.warning.some.property.path"
+      messageCodeList[5] == "controllerMethodName.messageCategory.some.property.path"
+      messageCodeList[6] == "default.messageCategory.messageType.messageSubType.warning.some.property.path"
+      messageCodeList[7] == "default.messageCategory.messageType.messageSubType.some.property.path"
+      messageCodeList[8] == "default.messageCategory.warning.some.property.path"
+      messageCodeList[9] == "default.messageCategory.some.property.path"
+      messageCodeList[10] == "default.warning.some.property.path"
       messageCodeList[11] == "default.warning"
     }
 
