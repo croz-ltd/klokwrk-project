@@ -22,12 +22,9 @@ import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import org.klokwrk.cargotracker.lib.web.metadata.report.HttpResponseMetaDataReport
 import org.klokwrk.cargotracker.lib.web.metadata.report.HttpResponseMetaDataReportHttpPart
-import org.klokwrk.lib.spring.context.MessageSourceResolvableHelper
-import org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification
 import org.springframework.beans.BeansException
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
-import org.springframework.context.MessageSource
 import org.springframework.core.MethodParameter
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -36,9 +33,6 @@ import org.springframework.http.server.ServerHttpRequest
 import org.springframework.http.server.ServerHttpResponse
 import org.springframework.http.server.ServletServerHttpRequest
 import org.springframework.http.server.ServletServerHttpResponse
-import org.springframework.web.method.HandlerMethod
-import org.springframework.web.servlet.HandlerExecutionChain
-import org.springframework.web.servlet.HandlerMapping
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
 
 import javax.servlet.http.HttpServletRequest
@@ -61,17 +55,13 @@ import java.time.Instant
  *     },
  *     "severity": "INFO",
  *     "locale": "en_GB",
- *     "titleText": "Info",
- *     "timestamp": "2020-04-27T06:13:09.225221Z",
- *     "titleDetailedText": "Your request is successfully executed."
+ *     "timestamp": "2020-04-27T06:13:09.225221Z"
  *   },
  *   "payload": {
  *     ...
  *   }
  * }
  * </pre>
- * Here, internationalized "<code>metaData</code>" entries are "<code>titleText</code>" and "<code>titleDetailedText</code>".
- * <p/>
  * When used from Spring Boot application, the easiest is to create controller advice and register it with the spring context:
  * <pre>
  * &#64;ControllerAdvice
@@ -86,16 +76,6 @@ import java.time.Instant
  *   }
  * }
  * </pre>
- * For internationalization of default messages, we are defining a resource bundle with base name "<code>responseFormattingDefaultMessages</code>". In Spring Boot application, that resource bundle
- * needs to be configured, for example, in <code>application.yml</code>:
- * <pre>
- * ...
- * spring.messages.basename: messages,responseFormattingDefaultMessages
- * ...
- * </pre>
- * The list of message codes which will be tried against the resource bundle is created by {@link MessageSourceResolvableHelper}.
- *
- * @see MessageSourceResolvableHelper
  */
 @CompileStatic
 class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<OperationResponse<?>>, ApplicationContextAware {
@@ -135,9 +115,6 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
         http: createHttpResponseMetaDataReportPart(httpStatus)
     )
 
-    HandlerMethod handlerMethod = fetchHandlerMethod(httpServletRequest)
-    httpResponseMetaDataReport = localizeHttpResponseMetaDataReport(httpResponseMetaDataReport, handlerMethod, httpServletRequest.locale)
-
     return httpResponseMetaDataReport
   }
 
@@ -148,35 +125,5 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     )
 
     return httpResponseMetaDataReportPart
-  }
-
-  protected HandlerMethod fetchHandlerMethod(HttpServletRequest httpServletRequest) {
-    Collection<HandlerMapping> handlerMappingCollection = applicationContext.getBeansOfType(HandlerMapping).values()
-    HandlerMapping handlerMapping = handlerMappingCollection.find({ HandlerMapping handlerMapping -> handlerMapping.getHandler(httpServletRequest) })
-    HandlerExecutionChain handlerExecutionChain = handlerMapping.getHandler(httpServletRequest)
-    HandlerMethod handlerMethod = handlerExecutionChain.handler as HandlerMethod
-
-    return handlerMethod
-  }
-
-  protected HttpResponseMetaDataReport localizeHttpResponseMetaDataReport(HttpResponseMetaDataReport httpResponseMetaDataReport, HandlerMethod handlerMethod, Locale locale) {
-    MessageSourceResolvableSpecification resolvableMessageSpecification = new MessageSourceResolvableSpecification(
-        controllerSimpleName: handlerMethod.beanType.simpleName.uncapitalize(),
-        controllerMethodName: handlerMethod.method.name,
-        messageCategory: "success",
-        messageType: "",
-        messageSubType: "",
-        severity: Severity.INFO.name().toLowerCase(),
-        propertyPath: "report.titleText"
-    )
-
-    MessageSource messageSource = applicationContext
-    httpResponseMetaDataReport.titleText = MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
-
-    resolvableMessageSpecification.propertyPath = "report.titleDetailedText"
-    httpResponseMetaDataReport.titleDetailedText =
-        MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
-
-    return httpResponseMetaDataReport
   }
 }

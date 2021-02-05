@@ -74,8 +74,6 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
       locale == localeString
       severity == Severity.INFO.name()
       timestamp
-      titleText == "Info"
-      titleDetailedText == myTitleDetailedText
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
@@ -114,9 +112,9 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     where:
-    acceptLanguage | localeString | myTitleDetailedText
-    "hr-HR"        | "hr_HR"      | "Vaš je zahtjev uspješno izvršen."
-    "en"           | "en"         | "Your request is successfully executed."
+    acceptLanguage | localeString
+    "hr-HR"        | "hr_HR"
+    "en"           | "en"
   }
 
   void "should return expected response when request is not valid - [acceptLanguage: #acceptLanguage]"() {
@@ -143,8 +141,6 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
       locale == localeString
       severity == Severity.WARNING.name()
       timestamp
-      titleText == myTitleText
-      titleDetailedText == myTitleDetailedText
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
@@ -162,18 +158,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     where:
-    acceptLanguage | localeString | myTitleText
-    "hr-HR"        | "hr_HR"      | "Upozorenje"
-    "en"           | "en"         | "Warning"
-
-    myTitleDetailedText << [
-        "Teret nije prihvaćen jer ga nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije.",
-        "Cargo is not booked since destination location cannot accept cargo from specified origin location."
-    ]
-
-    myViolationCodeMessage << [
-        "Teret nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije.",
-        "Destination location cannot accept cargo from specified origin location."
-    ]
+    acceptLanguage | localeString | myViolationCodeMessage
+    "hr-HR"        | "hr_HR"      | "Teret nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije."
+    "en"           | "en"         | "Destination location cannot accept cargo from specified origin location."
   }
 }

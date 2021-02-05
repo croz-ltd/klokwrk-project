@@ -55,14 +55,12 @@ import java.time.Instant
  *       "codeMessage": "Destination location cannot accept cargo from specified origin location."
  *     },
  *     "locale": "en_GB",
- *     "titleText": "Warning",
- *     "timestamp": "2020-04-26T09:41:04.917666Z",
- *     "titleDetailedText": "Cargo is not booked since destination location cannot accept cargo from specified origin location."
+ *     "timestamp": "2020-04-26T09:41:04.917666Z"
  *   },
  *   "payload": {}
  * }
  * </pre>
- * Here, internationalized "<code>metaData</code>" entries are "<code>violation.codeMessage</code>", "<code>titleText</code>" and "<code>titleDetailedText</code>".
+ * Here, "<code>violation.codeMessage</code>" entry is internationalized.
  * <p/>
  * When used from Spring Boot application, the easiest is to create a controller advice that is eligible for component scanning (&#64;ControllerAdvice is annotated with &#64;Component):
  * <pre>
@@ -77,7 +75,9 @@ import java.time.Instant
  * spring.messages.basename: messages,responseFormattingDefaultMessages
  * ...
  * </pre>
- * The list of message codes which will be tried against the resource bundle is created by {@link MessageSourceResolvableHelper}.
+ * The list of message codes which will be tried against the resource bundle is created by {@link MessageSourceResolvableHelper}. For resolving messages we are using <code>report.</code> prefix for
+ * <code>propertyPath</code> property of <code>MessageSourceResolvableSpecification</code>. This is to avoid potential future conflicts in resource bundle keys if we'll need message resolving over
+ * some other <code>propertyPath</code>.
  *
  * @see MessageSourceResolvableHelper
  */
@@ -160,16 +160,8 @@ class ResponseFormattingDomainExceptionHandler extends ResponseEntityExceptionHa
         messageCategory: "failure",
         messageType: domainException.violationInfo.violationCode.codeAsText,
         messageSubType: "",
-        severity: domainException.violationInfo.severity.toString().toLowerCase(),
-        propertyPath: "report.titleText"
+        severity: domainException.violationInfo.severity.toString().toLowerCase()
     )
-
-    httpResponseMetaDataReport.titleText =
-        MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
-
-    resolvableMessageSpecification.propertyPath = "report.titleDetailedText"
-    httpResponseMetaDataReport.titleDetailedText =
-        MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
 
     resolvableMessageSpecification.propertyPath = "report.violation.codeMessage"
     httpResponseMetaDataReport.violation.codeMessage =

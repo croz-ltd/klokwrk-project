@@ -33,9 +33,7 @@ import java.time.Instant
  *     "metaData": {
  *         "severity": "INFO",
  *         "locale": "en_GB",
- *         "titleText": "Info",
  *         "timestamp": "2020-04-30T15:37:24.999722Z",
- *         "titleDetailedText": "Your request is successfully executed."
  *     },
  *     "payload": {
  *       ...
@@ -54,24 +52,6 @@ class ResponseMetaDataReport {
    * Severity of the response.
    */
   Severity severity
-
-  /**
-   * Localized and short description of the response.
-   * <p/>
-   * Can contain very brief, ideally single word, description of the response. Some examples might be "<code>Info</code>", "<code>Warning</code>" or "<code>Error</code>". It should be suitable for
-   * presenting as a title of a notification displayed to the user.
-   */
-  String titleText
-
-  /**
-   * Localized and more detailed, but still short, description of the response.
-   * <p/>
-   * Ideally, it should be in the form of a single complete sentence. For example, something like "<code>Your request is successfully executed.</code>" or "<code>Your request is not accepted since
-   * provided data are not valid.</code>". It should be suitable for presenting as a leading, more detailed description of a notification displayed to the user.
-   * <p/>
-   * Do note that in the case of validation errors, a full list of violated data rules is not part of this message. These should be specified as part of <code>violation</code>.
-   */
-  String titleDetailedText
 
   /**
    * Locale used for rendering response message.

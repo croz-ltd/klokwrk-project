@@ -34,9 +34,7 @@ import groovy.transform.CompileStatic
  *             "codeMessage": "Destination location cannot accept cargo from specified origin location."
  *         },
  *         "locale": "en_GB",
- *         "titleText": "Warning",
- *         "timestamp": "2020-04-30T16:03:48.795816Z",
- *         "titleDetailedText": "Cargo is not booked since destination location cannot accept cargo from specified origin location."
+ *         "timestamp": "2020-04-30T16:03:48.795816Z"
  *     },
  *     "payload": {}
  * }

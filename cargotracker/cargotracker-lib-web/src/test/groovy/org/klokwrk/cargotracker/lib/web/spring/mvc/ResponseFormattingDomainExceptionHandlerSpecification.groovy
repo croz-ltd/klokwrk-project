@@ -77,8 +77,6 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
       metadata.timestamp
       metadata.severity == Severity.ERROR
       metadata.locale == new Locale("en")
-      metadata.titleText == "Error"
-      metadata.titleDetailedText == "Error"
       metadata.violation.code == "500"
       metadata.violation.codeMessage == "Error"
       metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
@@ -122,25 +120,23 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
       metadata.timestamp
       metadata.severity == severityParam
       metadata.locale == new Locale("en")
-      metadata.titleText == titleParam
-      metadata.titleDetailedText == titleParam
       metadata.violation.code == violationCodeParam
-      metadata.violation.codeMessage == titleParam
+      metadata.violation.codeMessage == codeMessageParam
       metadata.http.status == httpStatusParam
       metadata.http.message == httpMessageParam
     }
 
     where:
-    violationInfoParam        | exceptionParam                           | severityParam    | titleParam | violationCodeParam | httpStatusParam | httpMessageParam
-    ViolationInfo.UNKNOWN     | new DomainException(violationInfoParam)  | Severity.ERROR   | "Error"    | "500"              | "500"           | "Internal Server Error"
-    ViolationInfo.UNKNOWN     | new CommandException(violationInfoParam) | Severity.ERROR   | "Error"    | "500"              | "500"           | "Internal Server Error"
-    ViolationInfo.UNKNOWN     | new QueryException(violationInfoParam)   | Severity.ERROR   | "Error"    | "500"              | "500"           | "Internal Server Error"
-    ViolationInfo.BAD_REQUEST | new DomainException(violationInfoParam)  | Severity.WARNING | "Warning"  | "400"              | "400"           | "Bad Request"
-    ViolationInfo.BAD_REQUEST | new CommandException(violationInfoParam) | Severity.WARNING | "Warning"  | "400"              | "400"           | "Bad Request"
-    ViolationInfo.BAD_REQUEST | new QueryException(violationInfoParam)   | Severity.WARNING | "Warning"  | "400"              | "400"           | "Bad Request"
-    ViolationInfo.NOT_FOUND   | new DomainException(violationInfoParam)  | Severity.WARNING | "Warning"  | "404"              | "404"           | "Not Found"
-    ViolationInfo.NOT_FOUND   | new CommandException(violationInfoParam) | Severity.WARNING | "Warning"  | "404"              | "404"           | "Not Found"
-    ViolationInfo.NOT_FOUND   | new QueryException(violationInfoParam)   | Severity.WARNING | "Warning"  | "404"              | "404"           | "Not Found"
+    violationInfoParam        | exceptionParam                           | severityParam    | codeMessageParam | violationCodeParam | httpStatusParam | httpMessageParam
+    ViolationInfo.UNKNOWN     | new DomainException(violationInfoParam)  | Severity.ERROR   | "Error"          | "500"              | "500"           | "Internal Server Error"
+    ViolationInfo.UNKNOWN     | new CommandException(violationInfoParam) | Severity.ERROR   | "Error"          | "500"              | "500"           | "Internal Server Error"
+    ViolationInfo.UNKNOWN     | new QueryException(violationInfoParam)   | Severity.ERROR   | "Error"          | "500"              | "500"           | "Internal Server Error"
+    ViolationInfo.BAD_REQUEST | new DomainException(violationInfoParam)  | Severity.WARNING | "Warning"        | "400"              | "400"           | "Bad Request"
+    ViolationInfo.BAD_REQUEST | new CommandException(violationInfoParam) | Severity.WARNING | "Warning"        | "400"              | "400"           | "Bad Request"
+    ViolationInfo.BAD_REQUEST | new QueryException(violationInfoParam)   | Severity.WARNING | "Warning"        | "400"              | "400"           | "Bad Request"
+    ViolationInfo.NOT_FOUND   | new DomainException(violationInfoParam)  | Severity.WARNING | "Warning"        | "404"              | "404"           | "Not Found"
+    ViolationInfo.NOT_FOUND   | new CommandException(violationInfoParam) | Severity.WARNING | "Warning"        | "404"              | "404"           | "Not Found"
+    ViolationInfo.NOT_FOUND   | new QueryException(violationInfoParam)   | Severity.WARNING | "Warning"        | "404"              | "404"           | "Not Found"
 
     violationInfoConstantName = findViolationInfoConstantName(violationInfoParam)
   }
@@ -165,10 +161,8 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
       metadata.timestamp
       metadata.severity == Severity.WARNING
       metadata.locale == new Locale("en")
-      metadata.titleText == "My warning report title text"
-      metadata.titleDetailedText == "My warning report title detailed text."
       metadata.violation.code == "12345"
-      metadata.violation.codeMessage == "Warning"
+      metadata.violation.codeMessage == "My violation code message"
       metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
       metadata.http.message == HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase
     }

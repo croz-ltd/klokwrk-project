@@ -52,14 +52,11 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     then:
     commandResponseStatusCode == 200
     commandResponseAggregateIdentifier
-    commandResponseJson.metaData.titleDetailedText == titleDetailedTextContent
 
     where:
-    acceptLanguageHeader | titleDetailedTextContent
-    "hr-HR"              | "Vaš je zahtjev uspješno izvršen."
-    "en"                 | "Your request is successfully executed."
-    "hr-HR"              | "Vaš je zahtjev uspješno izvršen."
-    "en"                 | "Your request is successfully executed."
+    acceptLanguageHeader | _
+    "hr-HR"              | _
+    "en"                 | _
   }
 
   void "should query successfully for booked cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
@@ -116,15 +113,12 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
       // then:
       queryResponseStatusCode == 200
       queryResponseJson.payload.aggregateIdentifier == commandResponseAggregateIdentifier
-      queryResponseJson.metaData.titleDetailedText == titleDetailedTextContent
     }
 
     where:
-    acceptLanguageHeader | titleDetailedTextContent
-    "hr-HR"              | "Vaš je zahtjev uspješno izvršen."
-    "en"                 | "Your request is successfully executed."
-    "hr-HR"              | "Vaš je zahtjev uspješno izvršen."
-    "en"                 | "Your request is successfully executed."
+    acceptLanguageHeader | _
+    "hr-HR"              | _
+    "en"                 | _
   }
 
   void "should not book cargo for invalid command: [acceptLanguageHeader: #acceptLanguageHeader]"() {
@@ -152,15 +146,13 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
     then:
     commandResponseStatusCode == 400
-    commandResponseJson.metaData.titleDetailedText == titleDetailedTextContent
+    commandResponseJson.metaData.violation.codeMessage == violationMessageParam
     commandResponseJson.payload.isEmpty()
 
     where:
-    acceptLanguageHeader | titleDetailedTextContent
-    "hr-HR"              | "Teret nije prihvaćen jer ga nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije."
-    "en"                 | "Cargo is not booked since destination location cannot accept cargo from specified origin location."
-    "hr-HR"              | "Teret nije prihvaćen jer ga nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije."
-    "en"                 | "Cargo is not booked since destination location cannot accept cargo from specified origin location."
+    acceptLanguageHeader | violationMessageParam
+    "hr-HR"              | "Teret nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije."
+    "en"                 | "Destination location cannot accept cargo from specified origin location."
   }
 
   void "should not found non-existing cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
@@ -187,12 +179,10 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     then:
     queryResponseStatusCode == 404
     queryResponseJson.payload.isEmpty()
-    queryResponseJson.metaData.titleDetailedText == titleDetailedTextContent
+    queryResponseJson.metaData.violation.codeMessage == violationMessageParam
 
     where:
-    acceptLanguageHeader | titleDetailedTextContent
-    "hr-HR"              | "Sumarni izvještaj za željeni teret nije pronađen."
-    "en"                 | "Summary report for specified cargo is not found."
+    acceptLanguageHeader | violationMessageParam
     "hr-HR"              | "Sumarni izvještaj za željeni teret nije pronađen."
     "en"                 | "Summary report for specified cargo is not found."
   }

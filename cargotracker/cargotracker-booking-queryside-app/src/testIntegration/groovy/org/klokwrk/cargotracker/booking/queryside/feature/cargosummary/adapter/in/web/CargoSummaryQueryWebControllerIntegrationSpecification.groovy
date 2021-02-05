@@ -93,8 +93,6 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
       locale == localeString
       severity == Severity.INFO.name()
       timestamp
-      titleText == "Info"
-      titleDetailedText == myTitleDetailedText
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
@@ -110,9 +108,9 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     }
 
     where:
-    acceptLanguage | localeString | myTitleDetailedText
-    "hr-HR"        | "hr_HR"      | "Vaš je zahtjev uspješno izvršen."
-    "en"           | "en"         | "Your request is successfully executed."
+    acceptLanguage | localeString
+    "hr-HR"        | "hr_HR"
+    "en"           | "en"
   }
 
   void "should return expected response when CargoSummary cannot be found - [acceptLanguage: #acceptLanguage]"() {
@@ -139,8 +137,6 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
       locale == localeString
       severity == Severity.WARNING.name()
       timestamp
-      titleText == myTitleText
-      titleDetailedText == myTitleDetailedText
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
@@ -158,8 +154,8 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     }
 
     where:
-    acceptLanguage | localeString | myTitleText  | myTitleDetailedText                                 | myViolationCodeMessage
-    "hr-HR"        | "hr_HR"      | "Upozorenje" | "Sumarni izvještaj za željeni teret nije pronađen." | "Traženi podaci nisu pronađeni."
-    "en"           | "en"         | "Warning"    | "Summary report for specified cargo is not found."  | "Requested data are not found."
+    acceptLanguage | localeString | myViolationCodeMessage
+    "hr-HR"        | "hr_HR"      | "Sumarni izvještaj za željeni teret nije pronađen."
+    "en"           | "en"         | "Summary report for specified cargo is not found."
   }
 }

@@ -126,8 +126,6 @@ class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
       bodyMap.metaData.timestamp
       bodyMap.metaData.severity == "INFO"
       bodyMap.metaData.locale == "en"
-      bodyMap.metaData.titleText == "Info"
-      bodyMap.metaData.titleDetailedText == "Your request is successfully executed."
     }
   }
 
