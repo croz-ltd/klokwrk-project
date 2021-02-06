@@ -28,13 +28,15 @@ import groovy.transform.CompileStatic
  * <pre>
  * {
  *     "metaData": {
- *         "severity": "WARNING",
+ *         "general": {
+ *             "severity": "WARNING",
+ *             "locale": "en_GB",
+ *             "timestamp": "2020-04-30T16:03:48.795816Z"
+ *         },
  *         "violation": {
  *             "code": "400",
  *             "codeMessage": "Destination location cannot accept cargo from specified origin location."
- *         },
- *         "locale": "en_GB",
- *         "timestamp": "2020-04-30T16:03:48.795816Z"
+ *         }
  *     },
  *     "payload": {}
  * }

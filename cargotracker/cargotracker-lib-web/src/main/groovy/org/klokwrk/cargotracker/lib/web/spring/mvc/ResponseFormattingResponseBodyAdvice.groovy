@@ -18,6 +18,7 @@
 package org.klokwrk.cargotracker.lib.web.spring.mvc
 
 import groovy.transform.CompileStatic
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.report.ResponseMetaDataReportGeneralPart
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import org.klokwrk.cargotracker.lib.web.metadata.report.HttpResponseMetaDataReport
@@ -49,13 +50,15 @@ import java.time.Instant
  * <pre>
  * {
  *   "metaData": {
+ *     "general": {
+ *       "severity": "INFO",
+ *       "locale": "en_GB",
+ *       "timestamp": "2020-04-27T06:13:09.225221Z"
+ *     },
  *     "http": {
  *       "status": "200",
  *       "message": "OK"
- *     },
- *     "severity": "INFO",
- *     "locale": "en_GB",
- *     "timestamp": "2020-04-27T06:13:09.225221Z"
+ *     }
  *   },
  *   "payload": {
  *     ...
@@ -109,9 +112,7 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     HttpStatus httpStatus = HttpStatus.resolve(httpServletResponse.status)
 
     HttpResponseMetaDataReport httpResponseMetaDataReport = new HttpResponseMetaDataReport(
-        timestamp: Instant.now(),
-        severity: Severity.INFO,
-        locale: httpServletRequest.locale,
+        general: new ResponseMetaDataReportGeneralPart(timestamp: Instant.now(), severity: Severity.INFO, locale: httpServletRequest.locale),
         http: createHttpResponseMetaDataReportPart(httpStatus)
     )
 

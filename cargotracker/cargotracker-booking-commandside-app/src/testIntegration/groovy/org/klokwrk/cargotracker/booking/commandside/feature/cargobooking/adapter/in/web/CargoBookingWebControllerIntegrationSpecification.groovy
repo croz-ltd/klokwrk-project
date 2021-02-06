@@ -70,7 +70,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     then:
     mvcResult.response.status == HttpStatus.OK.value()
 
-    verifyAll(responseContentMap.metaData as Map) {
+    verifyAll(responseContentMap.metaData.general as Map) {
       locale == localeString
       severity == Severity.INFO.name()
       timestamp
@@ -137,7 +137,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     then:
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
 
-    verifyAll(responseContentMap.metaData as Map) {
+    verifyAll(responseContentMap.metaData.general as Map) {
       locale == localeString
       severity == Severity.WARNING.name()
       timestamp

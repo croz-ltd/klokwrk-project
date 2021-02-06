@@ -31,9 +31,11 @@ import java.time.Instant
  * <pre>
  * {
  *     "metaData": {
- *         "severity": "INFO",
- *         "locale": "en_GB",
- *         "timestamp": "2020-04-30T15:37:24.999722Z",
+ *         "general": {
+ *             "severity": "INFO",
+ *             "locale": "en_GB",
+ *             "timestamp": "2020-04-30T15:37:24.999722Z"
+ *         }
  *     },
  *     "payload": {
  *       ...
@@ -44,21 +46,13 @@ import java.time.Instant
 @CompileStatic
 class ResponseMetaDataReport {
   /**
-   * The UTC timestamp of the response.
-   */
-  Instant timestamp
-
-  /**
-   * Severity of the response.
-   */
-  Severity severity
-
-  /**
-   * Locale used for rendering response message.
+   * Sub-structure containing general parts of the response.
    * <p/>
-   * Usually, it corresponds to the locale of the current request.
+   * Present and rendered for all kind of responses, successful and erroneous.
+   *
+   * @see ResponseMetaDataReportGeneralPart
    */
-  Locale locale
+  ResponseMetaDataReportGeneralPart general
 
   /**
    * Sub-structure that describes current violation when the processing of the request ends up in some error.
@@ -70,12 +64,12 @@ class ResponseMetaDataReport {
   ResponseMetaDataReportViolationPart violation
 
   /**
-   * Creates basic ResponseMetaDataReport that contains only a timestamp and <code>INFO</code> severity.
+   * Creates basic ResponseMetaDataReport that contains only a general part with the timestamp and <code>INFO</code> severity.
    *
    * @see Severity
    */
   static ResponseMetaDataReport createBasicInfoMetaDataReport() {
-    ResponseMetaDataReport responseMetadataReport = new ResponseMetaDataReport(timestamp: Instant.now(), severity: Severity.INFO)
+    ResponseMetaDataReport responseMetadataReport = new ResponseMetaDataReport(general: new ResponseMetaDataReportGeneralPart(timestamp: Instant.now(), severity: Severity.INFO))
     return responseMetadataReport
   }
 }

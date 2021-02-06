@@ -123,9 +123,9 @@ class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
       bodyMap.metaData.http.message == "OK"
 
       bodyMap.metaData.violation == null
-      bodyMap.metaData.timestamp
-      bodyMap.metaData.severity == "INFO"
-      bodyMap.metaData.locale == "en"
+      bodyMap.metaData.general.timestamp
+      bodyMap.metaData.general.severity == "INFO"
+      bodyMap.metaData.general.locale == "en"
     }
   }
 

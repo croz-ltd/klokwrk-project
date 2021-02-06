@@ -74,9 +74,9 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
     verifyAll {
       body
       payload.size() == 0
-      metadata.timestamp
-      metadata.severity == Severity.ERROR
-      metadata.locale == new Locale("en")
+      metadata.general.timestamp
+      metadata.general.severity == Severity.ERROR
+      metadata.general.locale == new Locale("en")
       metadata.violation.code == "500"
       metadata.violation.codeMessage == "Error"
       metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
@@ -117,9 +117,9 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
     verifyAll {
       body
       payload.size() == 0
-      metadata.timestamp
-      metadata.severity == severityParam
-      metadata.locale == new Locale("en")
+      metadata.general.timestamp
+      metadata.general.severity == severityParam
+      metadata.general.locale == new Locale("en")
       metadata.violation.code == violationCodeParam
       metadata.violation.codeMessage == codeMessageParam
       metadata.http.status == httpStatusParam
@@ -158,9 +158,9 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
     verifyAll {
       body
       payload.size() == 0
-      metadata.timestamp
-      metadata.severity == Severity.WARNING
-      metadata.locale == new Locale("en")
+      metadata.general.timestamp
+      metadata.general.severity == Severity.WARNING
+      metadata.general.locale == new Locale("en")
       metadata.violation.code == "12345"
       metadata.violation.codeMessage == "My violation code message"
       metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()

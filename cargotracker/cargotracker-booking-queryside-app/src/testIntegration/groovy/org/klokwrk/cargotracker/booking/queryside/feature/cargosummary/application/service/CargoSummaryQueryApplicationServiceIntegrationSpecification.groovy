@@ -79,10 +79,10 @@ class CargoSummaryQueryApplicationServiceIntegrationSpecification extends Abstra
     }
 
     verifyAll(operationResponse.metaData) {
-      timestamp
-      severity == Severity.INFO
+      general.timestamp
+      general.severity == Severity.INFO
+      general.locale == null
       violation == null
-      locale == null
     }
 
     where:

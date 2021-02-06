@@ -19,6 +19,7 @@ package org.klokwrk.cargotracker.lib.web.spring.mvc
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.report.ResponseMetaDataReportGeneralPart
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.report.ResponseMetaDataReportViolationPart
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationCode
@@ -45,17 +46,19 @@ import java.time.Instant
  * <pre>
  * {
  *   "metaData": {
+ *     "general": {
+ *       "severity": "WARNING",
+ *       "locale": "en_GB",
+ *       "timestamp": "2020-04-26T09:41:04.917666Z"
+ *     },
  *     "http": {
  *       "status": "400",
  *       "message": "Bad Request"
  *     },
- *     "severity": "WARNING",
  *     "violation": {
  *       "code": "400",
  *       "codeMessage": "Destination location cannot accept cargo from specified origin location."
- *     },
- *     "locale": "en_GB",
- *     "timestamp": "2020-04-26T09:41:04.917666Z"
+ *     }
  *   },
  *   "payload": {}
  * }
@@ -104,9 +107,7 @@ class ResponseFormattingDomainExceptionHandler extends ResponseEntityExceptionHa
     HttpStatus httpStatus = mapDomainExceptionToHttpStatus(domainException)
 
     HttpResponseMetaDataReport httpResponseMetaDataReport = new HttpResponseMetaDataReport(
-        timestamp: Instant.now(),
-        severity: domainException.violationInfo.severity,
-        locale: locale,
+        general: new ResponseMetaDataReportGeneralPart(timestamp: Instant.now(), severity: domainException.violationInfo.severity, locale: locale),
         violation: createResponseMetaDataReportViolationPart(domainException),
         http: createHttpResponseMetaDataReportPart(httpStatus)
     )

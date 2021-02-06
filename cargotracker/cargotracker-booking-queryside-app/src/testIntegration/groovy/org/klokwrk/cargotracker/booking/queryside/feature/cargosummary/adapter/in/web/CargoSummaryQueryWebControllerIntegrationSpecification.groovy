@@ -89,7 +89,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     then:
     mvcResult.response.status == HttpStatus.OK.value()
 
-    verifyAll(responseContentMap.metaData as Map) {
+    verifyAll(responseContentMap.metaData.general as Map) {
       locale == localeString
       severity == Severity.INFO.name()
       timestamp
@@ -133,7 +133,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     then:
     mvcResult.response.status == HttpStatus.NOT_FOUND.value()
 
-    verifyAll(responseContentMap.metaData as Map) {
+    verifyAll(responseContentMap.metaData.general as Map) {
       locale == localeString
       severity == Severity.WARNING.name()
       timestamp

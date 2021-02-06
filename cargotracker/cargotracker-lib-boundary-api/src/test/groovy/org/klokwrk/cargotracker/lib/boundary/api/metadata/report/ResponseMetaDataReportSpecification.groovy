@@ -26,9 +26,9 @@ class ResponseMetaDataReportSpecification extends Specification {
     ResponseMetaDataReport responseMetaDataReport = ResponseMetaDataReport.createBasicInfoMetaDataReport()
 
     expect:
-    verifyAll {
-      responseMetaDataReport.timestamp
-      responseMetaDataReport.severity == Severity.INFO
+    verifyAll(responseMetaDataReport.general) {
+      timestamp
+      severity == Severity.INFO
     }
   }
 }
