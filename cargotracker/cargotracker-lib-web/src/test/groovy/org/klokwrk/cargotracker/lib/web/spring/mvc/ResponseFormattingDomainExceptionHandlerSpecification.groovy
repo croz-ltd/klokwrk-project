@@ -74,11 +74,16 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
     verifyAll {
       body
       payload.size() == 0
+      metadata.general.propertiesFiltered.size() == 3
       metadata.general.timestamp
       metadata.general.severity == Severity.ERROR
       metadata.general.locale == new Locale("en")
+
+      metadata.violation.propertiesFiltered.size() == 2
       metadata.violation.code == "500"
       metadata.violation.codeMessage == "Error"
+
+      metadata.http.propertiesFiltered.size() == 2
       metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
       metadata.http.message == HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase
     }
@@ -117,11 +122,17 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
     verifyAll {
       body
       payload.size() == 0
+
+      metadata.general.propertiesFiltered.size() == 3
       metadata.general.timestamp
       metadata.general.severity == severityParam
       metadata.general.locale == new Locale("en")
+
+      metadata.violation.propertiesFiltered.size() == 2
       metadata.violation.code == violationCodeParam
       metadata.violation.codeMessage == codeMessageParam
+
+      metadata.http.propertiesFiltered.size() == 2
       metadata.http.status == httpStatusParam
       metadata.http.message == httpMessageParam
     }
@@ -158,11 +169,17 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
     verifyAll {
       body
       payload.size() == 0
+
+      metadata.general.propertiesFiltered.size() == 3
       metadata.general.timestamp
       metadata.general.severity == Severity.WARNING
       metadata.general.locale == new Locale("en")
+
+      metadata.violation.propertiesFiltered.size() == 2
       metadata.violation.code == "12345"
       metadata.violation.codeMessage == "My violation code message"
+
+      metadata.http.propertiesFiltered.size() == 2
       metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
       metadata.http.message == HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase
     }

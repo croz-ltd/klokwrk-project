@@ -118,14 +118,16 @@ class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
 
       bodyMap.payload.data == "Some testing data"
 
-      bodyMap.metaData.http
-      bodyMap.metaData.http.status == "200"
-      bodyMap.metaData.http.message == "OK"
-
-      bodyMap.metaData.violation == null
+      bodyMap.metaData.general.size() == 3
       bodyMap.metaData.general.timestamp
       bodyMap.metaData.general.severity == "INFO"
       bodyMap.metaData.general.locale == "en"
+
+      bodyMap.metaData.violation == null
+
+      bodyMap.metaData.http.size() == 2
+      bodyMap.metaData.http.status == "200"
+      bodyMap.metaData.http.message == "OK"
     }
   }
 
