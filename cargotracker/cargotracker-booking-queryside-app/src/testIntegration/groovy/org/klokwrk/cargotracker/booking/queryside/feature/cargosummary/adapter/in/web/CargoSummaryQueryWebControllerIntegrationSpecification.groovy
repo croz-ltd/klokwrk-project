@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracker.booking.queryside.test.base.AbstractQuerySideIntegrationSpecification
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -90,12 +91,14 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     mvcResult.response.status == HttpStatus.OK.value()
 
     verifyAll(responseContentMap.metaData.general as Map) {
+      it.size() == 3
       locale == localeString
       severity == Severity.INFO.name()
       timestamp
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
+      it.size() == 2
       message == HttpStatus.OK.reasonPhrase
       status == HttpStatus.OK.value().toString()
     }
@@ -134,19 +137,23 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     mvcResult.response.status == HttpStatus.NOT_FOUND.value()
 
     verifyAll(responseContentMap.metaData.general as Map) {
+      it.size() == 3
       locale == localeString
       severity == Severity.WARNING.name()
       timestamp
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
+      it.size() == 2
       message == HttpStatus.NOT_FOUND.reasonPhrase
       status == HttpStatus.NOT_FOUND.value().toString()
     }
 
     verifyAll(responseContentMap.metaData.violation as Map) {
+      it.size() == 3
       code == HttpStatus.NOT_FOUND.value().toString()
       codeMessage == myViolationCodeMessage
+      type == ViolationType.DOMAIN.toString()
     }
 
     verifyAll(responseContentMap.payload as Map) {

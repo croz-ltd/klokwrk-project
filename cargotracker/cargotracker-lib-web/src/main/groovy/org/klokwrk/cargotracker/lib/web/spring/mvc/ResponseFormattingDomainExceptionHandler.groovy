@@ -21,6 +21,7 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ResponseMetaDataGeneralPart
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ResponseMetaDataViolationPart
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationCode
 import org.klokwrk.cargotracker.lib.web.metadata.response.HttpResponseMetaData
@@ -57,7 +58,8 @@ import java.time.Instant
  *     },
  *     "violation": {
  *       "code": "400",
- *       "codeMessage": "Destination location cannot accept cargo from specified origin location."
+ *       "codeMessage": "Destination location cannot accept cargo from specified origin location.",
+ *       "type": "DOMAIN"
  *     }
  *   },
  *   "payload": {}
@@ -137,7 +139,8 @@ class ResponseFormattingDomainExceptionHandler extends ResponseEntityExceptionHa
   protected ResponseMetaDataViolationPart createResponseMetaDataViolationPart(DomainException domainException) {
     ResponseMetaDataViolationPart responseMetaDataViolationPart = new ResponseMetaDataViolationPart(
         code: domainException.violationInfo.violationCode.code,
-        codeMessage: domainException.violationInfo.violationCode.codeMessage
+        codeMessage: domainException.violationInfo.violationCode.codeMessage,
+        type: ViolationType.DOMAIN
     )
 
     return responseMetaDataViolationPart

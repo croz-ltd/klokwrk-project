@@ -35,7 +35,8 @@ import groovy.transform.CompileStatic
  *         },
  *         "violation": {
  *             "code": "400",
- *             "codeMessage": "Destination location cannot accept cargo from specified origin location."
+ *             "codeMessage": "Destination location cannot accept cargo from specified origin location.",
+ *             "type": "DOMAIN"
  *         }
  *     },
  *     "payload": {}
@@ -58,4 +59,11 @@ class ResponseMetaDataViolationPart {
    * A localized human-readable message describing the main category of the violation or error.
    */
   String codeMessage
+
+  /**
+   * Type of violation.
+   * <p/>
+   * This information may be valuable for the client when deciding how to handle violation. Violations of different types may add additional violation data.
+   */
+  ViolationType type
 }

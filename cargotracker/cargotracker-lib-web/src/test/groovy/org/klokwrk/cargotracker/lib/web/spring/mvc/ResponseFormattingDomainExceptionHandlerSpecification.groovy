@@ -20,6 +20,7 @@ package org.klokwrk.cargotracker.lib.web.spring.mvc
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationCode
@@ -79,9 +80,10 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
       metadata.general.severity == Severity.ERROR
       metadata.general.locale == new Locale("en")
 
-      metadata.violation.propertiesFiltered.size() == 2
+      metadata.violation.propertiesFiltered.size() == 3
       metadata.violation.code == "500"
       metadata.violation.codeMessage == "Error"
+      metadata.violation.type == ViolationType.DOMAIN
 
       metadata.http.propertiesFiltered.size() == 2
       metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
@@ -105,6 +107,7 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
     return foundField?.name
   }
 
+  @SuppressWarnings("AbcMetric")
   void "should work as expected for existing ViolationInfo constants [violationInfoConstantName: #violationInfoConstantName]"() {
     given:
     assert ViolationInfo.declaredFields.findAll({ it.type == ViolationInfo }).size() == 3
@@ -128,9 +131,10 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
       metadata.general.severity == severityParam
       metadata.general.locale == new Locale("en")
 
-      metadata.violation.propertiesFiltered.size() == 2
+      metadata.violation.propertiesFiltered.size() == 3
       metadata.violation.code == violationCodeParam
       metadata.violation.codeMessage == codeMessageParam
+      metadata.violation.type == ViolationType.DOMAIN
 
       metadata.http.propertiesFiltered.size() == 2
       metadata.http.status == httpStatusParam
@@ -175,9 +179,10 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
       metadata.general.severity == Severity.WARNING
       metadata.general.locale == new Locale("en")
 
-      metadata.violation.propertiesFiltered.size() == 2
+      metadata.violation.propertiesFiltered.size() == 3
       metadata.violation.code == "12345"
       metadata.violation.codeMessage == "My violation code message"
+      metadata.violation.type == ViolationType.DOMAIN
 
       metadata.http.propertiesFiltered.size() == 2
       metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()

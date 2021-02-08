@@ -17,7 +17,6 @@
  */
 package org.klokwrk.cargotracker.lib.boundary.api.metadata.response
 
-
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import spock.lang.Specification
 
