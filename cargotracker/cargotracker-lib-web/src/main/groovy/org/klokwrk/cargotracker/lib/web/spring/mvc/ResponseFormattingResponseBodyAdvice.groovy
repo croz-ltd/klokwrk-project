@@ -18,11 +18,11 @@
 package org.klokwrk.cargotracker.lib.web.spring.mvc
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.boundary.api.metadata.report.ResponseMetaDataReportGeneralPart
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ResponseMetaDataGeneralPart
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
-import org.klokwrk.cargotracker.lib.web.metadata.report.HttpResponseMetaDataReport
-import org.klokwrk.cargotracker.lib.web.metadata.report.HttpResponseMetaDataReportHttpPart
+import org.klokwrk.cargotracker.lib.web.metadata.response.HttpResponseMetaData
+import org.klokwrk.cargotracker.lib.web.metadata.response.HttpResponseMetaDataHttpPart
 import org.springframework.beans.BeansException
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -44,7 +44,7 @@ import java.time.Instant
  * Handles shaping and internationalization of the body in HTTP JSON responses when successful result of controller execution is {@link OperationResponse} instance.
  * <p/>
  * Produced HTTP response body is a modified instance of {@link OperationResponse} where modifications only affect "<code>metaData</code>", while "<code>payload</code>" is left unchanged.
- * "<code>metaData</code>" is affected by adding {@link HttpResponseMetaDataReport} into it.
+ * "<code>metaData</code>" is affected by adding {@link HttpResponseMetaData} into it.
  * <p/>
  * When serialized into JSON it looks something like following example ("<code>payload</code>" is left out since it is not affected):
  * <pre>
@@ -102,29 +102,25 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     HttpServletRequest httpServletRequest = (serverHttpRequest as ServletServerHttpRequest).servletRequest
     HttpServletResponse httpServletResponse = (serverHttpResponse as ServletServerHttpResponse).servletResponse
 
-    HttpResponseMetaDataReport httpResponseMetaDataReport = createHttpResponseMetaDataReport(httpServletResponse, httpServletRequest)
-    operationResponseBody.metaData = httpResponseMetaDataReport.propertiesFiltered
+    HttpResponseMetaData httpResponseMetaData = createHttpResponseMetaData(httpServletResponse, httpServletRequest)
+    operationResponseBody.metaData = httpResponseMetaData.propertiesFiltered
 
     return operationResponseBody
   }
 
-  protected HttpResponseMetaDataReport createHttpResponseMetaDataReport(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) {
+  protected HttpResponseMetaData createHttpResponseMetaData(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) {
     HttpStatus httpStatus = HttpStatus.resolve(httpServletResponse.status)
 
-    HttpResponseMetaDataReport httpResponseMetaDataReport = new HttpResponseMetaDataReport(
-        general: new ResponseMetaDataReportGeneralPart(timestamp: Instant.now(), severity: Severity.INFO, locale: httpServletRequest.locale),
-        http: createHttpResponseMetaDataReportPart(httpStatus)
+    HttpResponseMetaData httpResponseMetaData = new HttpResponseMetaData(
+        general: new ResponseMetaDataGeneralPart(timestamp: Instant.now(), severity: Severity.INFO, locale: httpServletRequest.locale),
+        http: createHttpResponseMetaDataPart(httpStatus)
     )
 
-    return httpResponseMetaDataReport
+    return httpResponseMetaData
   }
 
-  protected HttpResponseMetaDataReportHttpPart createHttpResponseMetaDataReportPart(HttpStatus httpStatus) {
-    HttpResponseMetaDataReportHttpPart httpResponseMetaDataReportPart = new HttpResponseMetaDataReportHttpPart(
-        status: httpStatus.value().toString(),
-        message: httpStatus.reasonPhrase
-    )
-
-    return httpResponseMetaDataReportPart
+  protected HttpResponseMetaDataHttpPart createHttpResponseMetaDataPart(HttpStatus httpStatus) {
+    HttpResponseMetaDataHttpPart httpResponseMetaDataPart = new HttpResponseMetaDataHttpPart(status: httpStatus.value().toString(), message: httpStatus.reasonPhrase)
+    return httpResponseMetaDataPart
   }
 }

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.boundary.api.metadata.report
+package org.klokwrk.cargotracker.lib.boundary.api.metadata.response
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
@@ -25,7 +25,7 @@ import java.time.Instant
 /**
  * Defines the basic structure of response metadata.
  * <p/>
- * It can be extended by input channel/interface with more data specific to the concrete channel. For example, take a look at <code>HttpResponseMetaDataReport</code>.
+ * It can be extended by input channel/interface with more data specific to the concrete channel. For example, take a look at <code>HttpResponseMetaData</code>.
  * <p/>
  * All of the data presented here will probably be serialized to the end-user in the appropriate form. For example, when rendered as JSON, metadata can look something like the following example:
  * <pre>
@@ -44,32 +44,32 @@ import java.time.Instant
  * </pre>
  */
 @CompileStatic
-class ResponseMetaDataReport {
+class ResponseMetaData {
   /**
    * Sub-structure containing general parts of the response.
    * <p/>
    * Present and rendered for all kind of responses, successful and erroneous.
    *
-   * @see ResponseMetaDataReportGeneralPart
+   * @see ResponseMetaDataGeneralPart
    */
-  ResponseMetaDataReportGeneralPart general
+  ResponseMetaDataGeneralPart general
 
   /**
    * Sub-structure that describes current violation when the processing of the request ends up in some error.
    * <p/>
    * For successful responses, the violation part should not be rendered.
    *
-   * @see ResponseMetaDataReportViolationPart
+   * @see ResponseMetaDataViolationPart
    */
-  ResponseMetaDataReportViolationPart violation
+  ResponseMetaDataViolationPart violation
 
   /**
-   * Creates basic ResponseMetaDataReport that contains only a general part with the timestamp and <code>INFO</code> severity.
+   * Creates basic ResponseMetaData that contains only a general part with the timestamp and <code>INFO</code> severity.
    *
    * @see Severity
    */
-  static ResponseMetaDataReport createBasicInfoMetaDataReport() {
-    ResponseMetaDataReport responseMetadataReport = new ResponseMetaDataReport(general: new ResponseMetaDataReportGeneralPart(timestamp: Instant.now(), severity: Severity.INFO))
-    return responseMetadataReport
+  static ResponseMetaData createBasicInfoResponseMetaData() {
+    ResponseMetaData responseMetadata = new ResponseMetaData(general: new ResponseMetaDataGeneralPart(timestamp: Instant.now(), severity: Severity.INFO))
+    return responseMetadata
   }
 }

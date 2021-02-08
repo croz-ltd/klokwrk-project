@@ -72,7 +72,7 @@ class MessageSourceResolvableHelper {
    *   messageType: "internalServerError",
    *   messageSubType: "",
    *   severity: "error",
-   *   propertyPath: "report.message"
+   *   propertyPath: "somePath.message"
    * )
    * </pre>
    *
@@ -80,17 +80,17 @@ class MessageSourceResolvableHelper {
    *
    * <pre>
    * [
-   *   "testController.testControllerMethod.failure.internalServerError.error.report.message",
-   *   "testController.testControllerMethod.failure.internalServerError.report.message",
-   *   "testController.testControllerMethod.failure.error.report.message",
-   *   "testController.testControllerMethod.failure.report.message",
-   *   "testControllerMethod.failure.error.report.message",
-   *   "testControllerMethod.failure.report.message",
-   *   "default.failure.internalServerError.error.report.message",
-   *   "default.failure.internalServerError.report.message",
-   *   "default.failure.error.report.message",
-   *   "default.failure.report.message",
-   *   "default.error.report.message",
+   *   "testController.testControllerMethod.failure.internalServerError.error.somePath.message",
+   *   "testController.testControllerMethod.failure.internalServerError.somePath.message",
+   *   "testController.testControllerMethod.failure.error.somePath.message",
+   *   "testController.testControllerMethod.failure.somePath.message",
+   *   "testControllerMethod.failure.error.somePath.message",
+   *   "testControllerMethod.failure.somePath.message",
+   *   "default.failure.internalServerError.error.somePath.message",
+   *   "default.failure.internalServerError.somePath.message",
+   *   "default.failure.error.somePath.message",
+   *   "default.failure.somePath.message",
+   *   "default.error.somePath.message",
    *   "default.error"
    * ]
    * </pre>
@@ -104,20 +104,20 @@ class MessageSourceResolvableHelper {
    *   messageType: "",
    *   messageSubType: "",
    *   severity: "info",
-   *   propertyPath: "report.message"
+   *   propertyPath: "somePath.message"
    * )
    * </pre>
    *
    * Corresponding message code list is:<br/><br/>
    * <pre>
    * [
-   *   "testController.testControllerMethod.success.info.report.message"
-   *   "testController.testControllerMethod.success.report.message"
-   *   "testControllerMethod.success.info.report.message"
-   *   "testControllerMethod.success.report.message"
-   *   "default.success.info.report.message"
-   *   "default.success.report.message"
-   *   "default.info.report.message"
+   *   "testController.testControllerMethod.success.info.somePath.message"
+   *   "testController.testControllerMethod.success.somePath.message"
+   *   "testControllerMethod.success.info.somePath.message"
+   *   "testControllerMethod.success.somePath.message"
+   *   "default.success.info.somePath.message"
+   *   "default.success.somePath.message"
+   *   "default.info.somePath.message"
    *   "default.info"
    * ]
    * </pre>

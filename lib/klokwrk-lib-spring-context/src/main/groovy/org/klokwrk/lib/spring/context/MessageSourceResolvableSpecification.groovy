@@ -77,8 +77,8 @@ class MessageSourceResolvableSpecification {
   /**
    * When message codes are created for some specific object and its properties, <code>propertyPath</code> might contain the path of relevant property.
    * <p/>
-   * For example, if we are trying to resolve messages for an object that contains property <code>report</code>, and that <code>report</code> contains a nested property <code>message</code>,
-   * the value of <code>propertyPath</code> should be <code>report.message</code>.
+   * For example, if we are trying to resolve messages for an object that contains property <code>somePath</code>, and that <code>somePath</code> contains a nested property <code>message</code>,
+   * the value of <code>propertyPath</code> should be <code>somePath.message</code>.
    */
   String propertyPath
 }

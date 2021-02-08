@@ -23,7 +23,7 @@ import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.applicati
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.axon.cqrs.querygateway.QueryGatewayAdapter
-import org.klokwrk.cargotracker.lib.boundary.api.metadata.report.ResponseMetaDataReport
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ResponseMetaData
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.springframework.stereotype.Service
@@ -44,7 +44,7 @@ class CargoSummaryQueryApplicationService implements FetchCargoSummaryQueryPortI
   }
 
   protected OperationResponse<FetchCargoSummaryQueryResponse> fetchCargoSummaryQueryOperationResponseFromFetchCargoSummaryQueryResponse(FetchCargoSummaryQueryResponse fetchCargoSummaryQueryResponse) {
-    ResponseMetaDataReport responseMetaDataReport = ResponseMetaDataReport.createBasicInfoMetaDataReport()
-    return new OperationResponse<FetchCargoSummaryQueryResponse>(payload: fetchCargoSummaryQueryResponse, metaData: responseMetaDataReport.propertiesFiltered)
+    ResponseMetaData responseMetaData = ResponseMetaData.createBasicInfoResponseMetaData()
+    return new OperationResponse<FetchCargoSummaryQueryResponse>(payload: fetchCargoSummaryQueryResponse, metaData: responseMetaData.propertiesFiltered)
   }
 }

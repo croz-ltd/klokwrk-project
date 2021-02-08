@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.boundary.api.metadata.report
+package org.klokwrk.cargotracker.lib.boundary.api.metadata.response
 
 import groovy.transform.CompileStatic
 
@@ -43,14 +43,14 @@ import groovy.transform.CompileStatic
  * </pre>
  */
 @CompileStatic
-class ResponseMetaDataReportViolationPart {
+class ResponseMetaDataViolationPart {
   /**
    * The primary code describing the main category of the violation or error.
    * </p>
    * In general, it does not have to be designed to be human-readable, but rather it should be in the form of some violation/error identifier. For example, the categorization of HTTP response
    * statuses (200, 400, 404, 500, etc.), or database error code categorizations, are good examples of the kind of information that should go in here.
    * <p/>
-   * Usually, this code is originating from domain exceptions and only copied in this metadata report.
+   * Usually, this code is originating from domain exceptions and only copied in this metadata response.
    */
   String code
 

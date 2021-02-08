@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.lib.boundary.api.metadata.report
+package org.klokwrk.cargotracker.lib.boundary.api.metadata.response
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
@@ -28,7 +28,7 @@ import java.time.Instant
  * </pre>
  */
 @CompileStatic
-class ResponseMetaDataReportGeneralPart {
+class ResponseMetaDataGeneralPart {
   /**
    * The UTC timestamp of the response.
    */

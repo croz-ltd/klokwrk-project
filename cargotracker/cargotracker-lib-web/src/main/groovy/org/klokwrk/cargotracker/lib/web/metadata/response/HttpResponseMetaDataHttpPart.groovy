@@ -15,20 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.boundary.api.metadata.report
+package org.klokwrk.cargotracker.lib.web.metadata.response
 
-import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
-import spock.lang.Specification
+import groovy.transform.CompileStatic
 
-class ResponseMetaDataReportSpecification extends Specification {
-  void "createBasicInfoMetaDataReport - should create expected report"() {
-    given:
-    ResponseMetaDataReport responseMetaDataReport = ResponseMetaDataReport.createBasicInfoMetaDataReport()
-
-    expect:
-    verifyAll(responseMetaDataReport.general) {
-      timestamp
-      severity == Severity.INFO
-    }
-  }
+@CompileStatic
+class HttpResponseMetaDataHttpPart {
+  String status
+  String message
 }
