@@ -158,8 +158,8 @@ class ResponseFormattingDomainExceptionHandler extends ResponseEntityExceptionHa
         controllerSimpleName: handlerMethod.beanType.simpleName.uncapitalize(),
         controllerMethodName: handlerMethod.method.name,
         messageCategory: "failure",
-        messageType: domainException.violationInfo.violationCode.codeAsText,
-        messageSubType: "",
+        messageType: "domain",
+        messageSubType: domainException.violationInfo.violationCode.codeAsText,
         severity: domainException.violationInfo.severity.toString().toLowerCase()
     )
 
