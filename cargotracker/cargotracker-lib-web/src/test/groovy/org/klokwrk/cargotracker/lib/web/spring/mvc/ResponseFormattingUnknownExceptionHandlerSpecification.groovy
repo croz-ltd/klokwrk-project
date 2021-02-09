@@ -17,7 +17,7 @@ import java.lang.reflect.Method
 
 class ResponseFormattingUnknownExceptionHandlerSpecification extends Specification {
   static class TestController {
-    @SuppressWarnings("unused")
+    @SuppressWarnings(["unused", "ThrowRuntimeException"])
     OperationResponse<Map> testControllerMethod() {
       throw new RuntimeException("Runtime exception message.")
     }
@@ -93,7 +93,7 @@ class ResponseFormattingUnknownExceptionHandlerSpecification extends Specificati
 
     when:
     responseFormattingUnknownExceptionHandler.handleUnknownException(unknownException, handlerMethod, locale)
-    List<LoggingEvent> loggingEventList = logger.getLoggingEvents().findAll { it.creatingLogger.name == ResponseFormattingUnknownExceptionHandler.name && it.level == Level.ERROR }
+    List<LoggingEvent> loggingEventList = logger.loggingEvents.findAll { it.creatingLogger.name == ResponseFormattingUnknownExceptionHandler.name && it.level == Level.ERROR }
     LoggingEvent unknownExceptionLoggingEvent = loggingEventList[0]
 
     then:

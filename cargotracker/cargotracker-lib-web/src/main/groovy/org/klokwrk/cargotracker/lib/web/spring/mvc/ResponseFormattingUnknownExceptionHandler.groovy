@@ -94,7 +94,7 @@ class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
 
   @ExceptionHandler
   ResponseEntity handleUnknownException(Throwable unknownException, HandlerMethod handlerMethod, Locale locale) {
-    String logUuid = UUID.randomUUID().toString()
+    String logUuid = UUID.randomUUID()
     log.error("Unknown exception occured [uuid: ${ logUuid }, unknownExceptionClass: ${ unknownException.getClass().name }]", unknownException)
 
     HttpResponseMetaData httpResponseMetaData = createHttpResponseMetaData(unknownException, handlerMethod, locale, logUuid)
@@ -129,7 +129,7 @@ class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
         controllerMethodName: handlerMethod.method.name,
         messageCategory: "failure",
         messageType: "unknown",
-        messageSubType: unknownException.getClass().getSimpleName().uncapitalize(),
+        messageSubType: unknownException.getClass().simpleName.uncapitalize(),
         severity: Severity.ERROR.toString().toLowerCase(),
         propertyPath: "httpResponseMetaData.violation.codeMessage"
     )

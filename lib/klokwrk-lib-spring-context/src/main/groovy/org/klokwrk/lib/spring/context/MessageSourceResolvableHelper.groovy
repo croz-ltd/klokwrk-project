@@ -174,7 +174,7 @@ class MessageSourceResolvableHelper {
    * ]
    * </pre>
    */
-  @SuppressWarnings("CyclomaticComplexity")
+  @SuppressWarnings(["CyclomaticComplexity", "AbcMetric"])
   static List<String> createMessageCodeList(MessageSourceResolvableSpecification specification) {
     String controllerSimpleName = specification.controllerSimpleName?.trim() ?: ""
     String controllerMethodName = specification.controllerMethodName?.trim() ?: ""
