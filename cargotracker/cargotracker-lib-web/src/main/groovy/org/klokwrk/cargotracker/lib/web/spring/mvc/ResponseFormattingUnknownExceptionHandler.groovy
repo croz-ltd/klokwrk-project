@@ -22,6 +22,64 @@ import org.springframework.web.method.HandlerMethod
 
 import java.time.Instant
 
+/**
+ * Handles shaping and internationalization of the body in HTTP responses when execution of controller results in throwing unpredicted exception.
+ * <p/>
+ * Produced HTTP response body is a JSON serialized from {@link OperationResponse} instance containing populated "<code>metaData</code>" and empty "<code>payload</code>" properties. Here is an
+ * example:
+ * <pre>
+ * {
+ *   "metaData": {
+ *     "general": {
+ *       "severity": "ERROR",
+ *       "locale": "en_GB",
+ *       "timestamp": "2021-02-09T10:09:36.354151Z"
+ *     },
+ *     "http": {
+ *       "status": "500",
+ *       "message": "Internal Server Error"
+ *     },
+ *     "violation": {
+ *       "code": "500",
+ *       "codeMessage": "Internal server error.",
+ *       "type": "UNKNOWN"
+ *     }
+ *   },
+ *   "payload": {}
+ * }
+ * </pre>
+ * Here, "<code>violation.codeMessage</code>" entry is internationalized.
+ * <p/>
+ * When used from Spring Boot application, the easiest is to create a controller advice that is eligible for component scanning (&#64;ControllerAdvice is annotated with &#64;Component):
+ * <pre>
+ * &#64;ControllerAdvice
+ * class ResponseFormattingUnknownExceptionHandlerControllerAdvice extends ResponseFormattingUnknownExceptionHandler {
+ * }
+ * </pre>
+ * For internationalization of default messages, we are defining a resource bundle with base name "<code>responseFormattingDefaultMessages</code>". In Spring Boot application, that resource bundle
+ * needs to be configured, for example, in <code>application.yml</code>:
+ * <pre>
+ * ...
+ * spring.messages.basename: messages,responseFormattingDefaultMessages
+ * ...
+ * </pre>
+ * The list of message codes which will be tried against the resource bundle is created by {@link MessageSourceResolvableHelper}. For resolving messages we are using
+ * <code>httpResponseMetaData.violation.codeMessage</code> for <code>propertyPath</code> property of <code>MessageSourceResolvableSpecification</code>. This is to avoid potential future conflicts in
+ * resource bundle keys if we'll need message resolving over some other <code>propertyPath</code>.
+ * <p/>
+ * Here is a list of <code>MessageSourceResolvableSpecification</code> property values used for resolving internationalized messages:
+ * <ul>
+ *   <li>controllerSimpleName: simple class name (without package) of a controller that was executing when an exception occurred</li>
+ *   <li>controllerMethodName: method name of a controller that was executing when an exception occurred</li>
+ *   <li>messageCategory: <code>failure</code></li>
+ *   <li>messageType: <code>unknown</code></li>
+ *   <li>messageSubType: simple class name (without package) of exception</li>
+ *   <li>severity: <code>error</code></li>
+ *   <li>propertyPath: <code>httpResponseMetaData.violation.codeMessage</code></li>
+ * </ul>
+ *
+ * @see MessageSourceResolvableHelper
+ */
 @CompileStatic
 class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
   static private final Logger log = LoggerFactory.getLogger(ResponseFormattingUnknownExceptionHandler)
