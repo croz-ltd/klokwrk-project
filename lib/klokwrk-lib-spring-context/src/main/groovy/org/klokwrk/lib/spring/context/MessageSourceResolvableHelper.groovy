@@ -40,25 +40,46 @@ class MessageSourceResolvableHelper {
    * The order of list elements is significant, and in general should go from most specific message code first, then ending with more general elements. Spring's {@link MessageSource} machinery will
    * try to resolve message codes in given order, from first to last.
    * <p/>
-   * Message code list is constructed from properties of provided {@link MessageSourceResolvableSpecification} parameter in (roughly), following way:
+   * Message code list is constructed from properties of provided {@link MessageSourceResolvableSpecification} parameter in the following way:
    * <pre>
    * List<String> messageCodeList = [
-   *     "${ controllerSimpleName }${ controllerMethodName }${ messageCategory }${ messageType }${ messageSubType }${ severity }${ propertyPath }".toString(),
-   *     "${ controllerSimpleName }${ controllerMethodName }${ messageCategory }${ messageType }${ messageSubType }${ propertyPath }".toString(),
+   *   "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerSeverity }${ innerPropertyPath }".toString(),
+   *   "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerPropertyPath }".toString(),
+   *   "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerSeverity }".toString(),
+   *   "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }".toString(),
    *
-   *     "${ controllerSimpleName }${ controllerMethodName }${ messageCategory }${ severity }${ propertyPath }".toString(),
-   *     "${ controllerSimpleName }${ controllerMethodName }${ messageCategory }${ propertyPath }".toString(),
+   *   "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerSeverity }${ innerPropertyPath }".toString(),
+   *   "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerPropertyPath }".toString(),
+   *   "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerSeverity }".toString(),
+   *   "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }".toString(),
    *
-   *     "${ controllerMethodName }${ messageCategory }${ severity }${ propertyPath }".toString(),
-   *     "${ controllerMethodName }${ messageCategory }${ propertyPath }".toString(),
+   *   "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerSeverity }${ innerPropertyPath }".toString(),
+   *   "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerPropertyPath }".toString(),
+   *   "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerSeverity }".toString(),
+   *   "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }".toString(),
    *
-   *     "default${ messageCategory }${ messageType }${ messageSubType }${ severity }${ propertyPath }".toString(),
-   *     "default${ messageCategory }${ messageType }${ messageSubType }${ propertyPath }".toString(),
+   *   "${ controllerMethodName }${ innerMessageCategory }${ innerSeverity }${ innerPropertyPath }".toString(),
+   *   "${ controllerMethodName }${ innerMessageCategory }${ innerPropertyPath }".toString(),
+   *   "${ controllerMethodName }${ innerMessageCategory }${ innerSeverity }".toString(),
+   *   "${ controllerMethodName }${ innerMessageCategory }".toString(),
    *
-   *     "default${ messageCategory }${ severity }${ propertyPath }".toString(),
-   *     "default${ messageCategory }${ propertyPath }".toString(),
-   *     "default${ severity }${ propertyPath }".toString(),
-   *     "default${ severity }".toString()
+   *   "default${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerSeverity }${ innerPropertyPath }".toString(),
+   *   "default${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerPropertyPath }".toString(),
+   *   "default${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerSeverity }".toString(),
+   *   "default${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }".toString(),
+   *
+   *   "default${ innerMessageCategory }${ innerMessageType }${ innerSeverity }${ innerPropertyPath }".toString(),
+   *   "default${ innerMessageCategory }${ innerMessageType }${ innerPropertyPath }".toString(),
+   *   "default${ innerMessageCategory }${ innerMessageType }${ innerSeverity }".toString(),
+   *   "default${ innerMessageCategory }${ innerMessageType }".toString(),
+   *
+   *   "default${ innerMessageCategory }${ innerSeverity }${ innerPropertyPath }".toString(),
+   *   "default${ innerMessageCategory }${ innerPropertyPath }".toString(),
+   *   "default${ innerMessageCategory }${ innerSeverity }".toString(),
+   *   "default${ innerMessageCategory }".toString(),
+   *
+   *   "default${ innerSeverity }${ innerPropertyPath }".toString(),
+   *   "default${ innerSeverity }".toString()
    * ]
    * </pre>
    *
@@ -69,8 +90,8 @@ class MessageSourceResolvableHelper {
    *   controllerSimpleName: "testController",
    *   controllerMethodName: "testControllerMethod",
    *   messageCategory: "failure",
-   *   messageType: "internalServerError",
-   *   messageSubType: "",
+   *   messageType: "unknown",
+   *   messageSubType: "internalServerError",
    *   severity: "error",
    *   propertyPath: "somePath.message"
    * )
@@ -80,18 +101,43 @@ class MessageSourceResolvableHelper {
    *
    * <pre>
    * [
-   *   "testController.testControllerMethod.failure.internalServerError.error.somePath.message",
-   *   "testController.testControllerMethod.failure.internalServerError.somePath.message",
-   *   "testController.testControllerMethod.failure.error.somePath.message",
-   *   "testController.testControllerMethod.failure.somePath.message",
-   *   "testControllerMethod.failure.error.somePath.message",
-   *   "testControllerMethod.failure.somePath.message",
-   *   "default.failure.internalServerError.error.somePath.message",
-   *   "default.failure.internalServerError.somePath.message",
-   *   "default.failure.error.somePath.message",
-   *   "default.failure.somePath.message",
-   *   "default.error.somePath.message",
-   *   "default.error"
+   *    "testController.testControllerMethod.failure.unknown.internalServerError.error.somePath.message",
+   *    "testController.testControllerMethod.failure.unknown.internalServerError.somePath.message",
+   *    "testController.testControllerMethod.failure.unknown.internalServerError.error",
+   *    "testController.testControllerMethod.failure.unknown.internalServerError",
+   *
+   *    "testController.testControllerMethod.failure.unknown.error.somePath.message",
+   *    "testController.testControllerMethod.failure.unknown.somePath.message",
+   *    "testController.testControllerMethod.failure.unknown.error",
+   *    "testController.testControllerMethod.failure.unknown",
+   *
+   *    "testController.testControllerMethod.failure.error.somePath.message",
+   *    "testController.testControllerMethod.failure.somePath.message",
+   *    "testController.testControllerMethod.failure",
+   *    "testController.testControllerMethod.failure.error",
+   *
+   *    "testControllerMethod.failure.error.somePath.message",
+   *    "testControllerMethod.failure.somePath.message",
+   *    "testControllerMethod.failure.error",
+   *    "testControllerMethod.failure",
+   *
+   *    "default.failure.unknown.internalServerError.error.somePath.message",
+   *    "default.failure.unknown.internalServerError.somePath.message",
+   *    "default.failure.unknown.internalServerError.error",
+   *    "default.failure.unknown.internalServerError",
+   *
+   *    "default.failure.unknown.error.somePath.message",
+   *    "default.failure.unknown.somePath.message",
+   *    "default.failure.unknown.error",
+   *    "default.failure.unknown",
+   *
+   *    "default.failure.error.somePath.message",
+   *    "default.failure.somePath.message",
+   *    "default.failure.error",
+   *    "default.failure",
+   *
+   *    "default.error.somePath.message",
+   *    "default.error"
    * ]
    * </pre>
    *
@@ -111,13 +157,19 @@ class MessageSourceResolvableHelper {
    * Corresponding message code list is:<br/><br/>
    * <pre>
    * [
-   *   "testController.testControllerMethod.success.info.somePath.message"
-   *   "testController.testControllerMethod.success.somePath.message"
-   *   "testControllerMethod.success.info.somePath.message"
-   *   "testControllerMethod.success.somePath.message"
-   *   "default.success.info.somePath.message"
-   *   "default.success.somePath.message"
-   *   "default.info.somePath.message"
+   *   "testController.testControllerMethod.success.info.somePath.message",
+   *   "testController.testControllerMethod.success.somePath.message",
+   *   "testController.testControllerMethod.success.info",
+   *   "testController.testControllerMethod.success",
+   *   "testControllerMethod.success.info.somePath.message",
+   *   "testControllerMethod.success.somePath.message",
+   *   "testControllerMethod.success.info",
+   *   "testControllerMethod.success",
+   *   "default.success.info.somePath,.message",
+   *   "default.success.somePath.message",
+   *   "default.success.info",
+   *   "default.success",
+   *   "default.info.somePath.message",
    *   "default.info"
    * ]
    * </pre>
@@ -142,18 +194,39 @@ class MessageSourceResolvableHelper {
     List<String> messageCodeList = [
         "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerSeverity }${ innerPropertyPath }".toString(),
         "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerPropertyPath }".toString(),
+        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerSeverity }".toString(),
+        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }".toString(),
+
+        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerSeverity }${ innerPropertyPath }".toString(),
+        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerPropertyPath }".toString(),
+        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerSeverity }".toString(),
+        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }".toString(),
 
         "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerSeverity }${ innerPropertyPath }".toString(),
         "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerPropertyPath }".toString(),
+        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerSeverity }".toString(),
+        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }".toString(),
 
         "${ controllerMethodName }${ innerMessageCategory }${ innerSeverity }${ innerPropertyPath }".toString(),
         "${ controllerMethodName }${ innerMessageCategory }${ innerPropertyPath }".toString(),
+        "${ controllerMethodName }${ innerMessageCategory }${ innerSeverity }".toString(),
+        "${ controllerMethodName }${ innerMessageCategory }".toString(),
 
         "default${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerSeverity }${ innerPropertyPath }".toString(),
         "default${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerPropertyPath }".toString(),
+        "default${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerSeverity }".toString(),
+        "default${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }".toString(),
+
+        "default${ innerMessageCategory }${ innerMessageType }${ innerSeverity }${ innerPropertyPath }".toString(),
+        "default${ innerMessageCategory }${ innerMessageType }${ innerPropertyPath }".toString(),
+        "default${ innerMessageCategory }${ innerMessageType }${ innerSeverity }".toString(),
+        "default${ innerMessageCategory }${ innerMessageType }".toString(),
 
         "default${ innerMessageCategory }${ innerSeverity }${ innerPropertyPath }".toString(),
         "default${ innerMessageCategory }${ innerPropertyPath }".toString(),
+        "default${ innerMessageCategory }${ innerSeverity }".toString(),
+        "default${ innerMessageCategory }".toString(),
+
         "default${ innerSeverity }${ innerPropertyPath }".toString(),
         "default${ innerSeverity }".toString()
     ]
