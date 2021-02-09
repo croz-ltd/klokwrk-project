@@ -66,4 +66,16 @@ class ResponseMetaDataViolationPart {
    * This information may be valuable for the client when deciding how to handle violation. Violations of different types may add additional violation data.
    */
   ViolationType type
+
+  /**
+   * UUID contained in the log message of logged exception.
+   * <p/>
+   * We cannot recover from some violations. A typical example is a <code>NullPointerException</code> raised during the execution of server side code. The usual method for handling such exceptions is
+   * to log them on the server and report them as generic exceptions to the client (without passing the stack trace). However, to enable the client to report the issue, there is a need to reference
+   * the concrete exception. This logUuid is that kind of reference. The client can use it while reporting the problem, and maintainers can then correlate it with the stack trace in the log.
+   * <p/>
+   * Property <code>logUuid</code> should occur in the response only if the exception stack trace is written in the log on the server-side. This should always happen for violations with ERROR
+   * severity. For other severities, it may or may not occur, and usually will not.
+   */
+  String logUuid
 }

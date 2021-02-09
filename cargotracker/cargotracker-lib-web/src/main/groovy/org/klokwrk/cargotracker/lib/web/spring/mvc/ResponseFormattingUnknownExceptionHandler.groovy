@@ -42,7 +42,8 @@ import java.time.Instant
  *     "violation": {
  *       "code": "500",
  *       "codeMessage": "Internal server error.",
- *       "type": "UNKNOWN"
+ *       "type": "UNKNOWN",
+ *       "logUuid": "116be9a6-9f38-4954-8b8f-e57e781655d0"
  *     }
  *   },
  *   "payload": {}
@@ -93,22 +94,21 @@ class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
 
   @ExceptionHandler
   ResponseEntity handleUnknownException(Throwable unknownException, HandlerMethod handlerMethod, Locale locale) {
-    String uuid = UUID.randomUUID().toString()
-    log.error("Unknown exception occured [uuid: ${ uuid }, unknownExceptionClass: ${ unknownException.getClass().name }]", unknownException)
+    String logUuid = UUID.randomUUID().toString()
+    log.error("Unknown exception occured [uuid: ${ logUuid }, unknownExceptionClass: ${ unknownException.getClass().name }]", unknownException)
 
-    HttpResponseMetaData httpResponseMetaData = createHttpResponseMetaData(unknownException, handlerMethod, locale)
+    HttpResponseMetaData httpResponseMetaData = createHttpResponseMetaData(unknownException, handlerMethod, locale, logUuid)
     OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseMetaData.propertiesFiltered)
     ResponseEntity responseEntity = new ResponseEntity(operationResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR)
 
     return responseEntity
   }
 
-  protected HttpResponseMetaData createHttpResponseMetaData(Throwable unknownException, HandlerMethod handlerMethod, Locale locale) {
+  protected HttpResponseMetaData createHttpResponseMetaData(Throwable unknownException, HandlerMethod handlerMethod, Locale locale, String logUuid) {
     HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
 
-    // TODO dmurat: add logUuid property
     ResponseMetaDataViolationPart responseMetaDataReportViolationPart =
-        new ResponseMetaDataViolationPart(code: httpStatus.value().toString(), codeMessage: httpStatus.reasonPhrase, type: ViolationType.UNKNOWN)
+        new ResponseMetaDataViolationPart(code: httpStatus.value().toString(), codeMessage: httpStatus.reasonPhrase, type: ViolationType.UNKNOWN, logUuid: logUuid)
 
     HttpResponseMetaDataHttpPart httpResponseMetaDataHttpPart = new HttpResponseMetaDataHttpPart(status: httpStatus.value().toString(), message: httpStatus.reasonPhrase)
 

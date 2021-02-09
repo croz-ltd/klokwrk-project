@@ -68,10 +68,11 @@ class ResponseFormattingUnknownExceptionHandlerSpecification extends Specificati
       metadata.general.severity == Severity.ERROR
       metadata.general.locale == new Locale("en")
 
-      metadata.violation.propertiesFiltered.size() == 3
+      metadata.violation.propertiesFiltered.size() == 4
       metadata.violation.code == "500"
       metadata.violation.codeMessage == "Internal server error."
       metadata.violation.type == ViolationType.UNKNOWN
+      metadata.violation.logUuid.size() == "116be9a6-9f38-4954-8b8f-e57e781655d0".size()
 
       metadata.http.propertiesFiltered.size() == 2
       metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
