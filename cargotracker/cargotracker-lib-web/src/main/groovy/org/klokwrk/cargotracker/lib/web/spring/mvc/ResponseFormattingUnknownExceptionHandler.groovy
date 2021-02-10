@@ -123,7 +123,7 @@ class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
     return httpResponseMetaData
   }
 
-  protected HttpResponseMetaData localizeHttpResponseMetaData(HttpResponseMetaData httpResponseMetaDataReport, HandlerMethod handlerMethod, Locale locale, Throwable unknownException) {
+  protected HttpResponseMetaData localizeHttpResponseMetaData(HttpResponseMetaData httpResponseMetaData, HandlerMethod handlerMethod, Locale locale, Throwable unknownException) {
     MessageSourceResolvableSpecification resolvableMessageSpecification = new MessageSourceResolvableSpecification(
         controllerSimpleName: handlerMethod.beanType.simpleName.uncapitalize(),
         controllerMethodName: handlerMethod.method.name,
@@ -134,9 +134,9 @@ class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
         propertyPath: "httpResponseMetaData.violation.codeMessage"
     )
 
-    httpResponseMetaDataReport.violation.codeMessage =
+    httpResponseMetaData.violation.codeMessage =
         MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
 
-    return httpResponseMetaDataReport
+    return httpResponseMetaData
   }
 }
