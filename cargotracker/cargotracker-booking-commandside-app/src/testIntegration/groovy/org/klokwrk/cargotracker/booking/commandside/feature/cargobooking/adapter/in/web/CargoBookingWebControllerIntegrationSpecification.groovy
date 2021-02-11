@@ -19,6 +19,7 @@ package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapte
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -50,6 +51,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     mockMvc ?= webAppContextSetup(webApplicationContext).build()
   }
 
+  @SuppressWarnings("AbcMetric")
   void "should work for correct request - [acceptLanguage: #acceptLanguage]"() {
     given:
     String myAggregateIdentifier = UUID.randomUUID()
@@ -70,15 +72,15 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     then:
     mvcResult.response.status == HttpStatus.OK.value()
 
-    verifyAll(responseContentMap.metaData as Map) {
+    verifyAll(responseContentMap.metaData.general as Map) {
+      it.size() == 3
       locale == localeString
       severity == Severity.INFO.name()
       timestamp
-      titleText == "Info"
-      titleDetailedText == myTitleDetailedText
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
+      it.size() == 2
       message == HttpStatus.OK.reasonPhrase
       status == HttpStatus.OK.value().toString()
     }
@@ -114,9 +116,9 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     where:
-    acceptLanguage | localeString | myTitleDetailedText
-    "hr-HR"        | "hr_HR"      | "Vaš je zahtjev uspješno izvršen."
-    "en"           | "en"         | "Your request is successfully executed."
+    acceptLanguage | localeString
+    "hr-HR"        | "hr_HR"
+    "en"           | "en"
   }
 
   void "should return expected response when request is not valid - [acceptLanguage: #acceptLanguage]"() {
@@ -139,22 +141,24 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     then:
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
 
-    verifyAll(responseContentMap.metaData as Map) {
+    verifyAll(responseContentMap.metaData.general as Map) {
+      it.size() == 3
       locale == localeString
       severity == Severity.WARNING.name()
       timestamp
-      titleText == myTitleText
-      titleDetailedText == myTitleDetailedText
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
+      it.size() == 2
       message == HttpStatus.BAD_REQUEST.reasonPhrase
       status == HttpStatus.BAD_REQUEST.value().toString()
     }
 
     verifyAll(responseContentMap.metaData.violation as Map) {
+      it.size() == 3
       code == HttpStatus.BAD_REQUEST.value().toString()
       codeMessage == myViolationCodeMessage
+      type == ViolationType.DOMAIN.toString()
     }
 
     verifyAll(responseContentMap.payload as Map) {
@@ -162,18 +166,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     where:
-    acceptLanguage | localeString | myTitleText
-    "hr-HR"        | "hr_HR"      | "Upozorenje"
-    "en"           | "en"         | "Warning"
-
-    myTitleDetailedText << [
-        "Teret nije prihvaćen jer ga nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije.",
-        "Cargo is not booked since destination location cannot accept cargo from specified origin location."
-    ]
-
-    myViolationCodeMessage << [
-        "Teret nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije.",
-        "Destination location cannot accept cargo from specified origin location."
-    ]
+    acceptLanguage | localeString | myViolationCodeMessage
+    "hr-HR"        | "hr_HR"      | "Teret nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije."
+    "en"           | "en"         | "Destination location cannot accept cargo from specified origin location."
   }
 }

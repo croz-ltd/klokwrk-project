@@ -60,36 +60,67 @@ class MessageSourceResolvableHelper {
    *     "default${ severity }${ propertyPath }".toString(),
    *     "default${ severity }".toString()
    * ]
-   * <pre/>
-   * For example, when a given {@link MessageSourceResolvableSpecification} instance contains following properties:
+   * </pre>
+   *
+   * For example, in case of error we might use {@link MessageSourceResolvableSpecification} instance with the following properties:<br/><br/>
+   *
    * <pre>
-   * MessageSourceResolvableSpecification {
+   * new MessageSourceResolvableSpecification(
    *   controllerSimpleName: "testController",
    *   controllerMethodName: "testControllerMethod",
    *   messageCategory: "failure",
    *   messageType: "internalServerError",
    *   messageSubType: "",
    *   severity: "error",
-   *   propertyPath: "report.titleText"
-   * }
+   *   propertyPath: "somePath.message"
+   * )
    * </pre>
-   * created message code list looks like this:
+   *
+   * For the failure specification above, created message code list looks like this:<br/><br/>
+   *
    * <pre>
    * [
-   *   "testController.testControllerMethod.failure.internalServerError.error.report.titleText",
-   *   "testController.testControllerMethod.failure.internalServerError.report.titleText",
-   *   "testController.testControllerMethod.failure.error.report.titleText",
-   *   "testController.testControllerMethod.failure.report.titleText",
-   *   "testControllerMethod.failure.error.report.titleText",
-   *   "testControllerMethod.failure.report.titleText",
-   *   "testControllerMethod.failure.report.titleText",
-   *   "default.failure.internalServerError.report.titleText",
-   *   "default.failure.error.report.titleText",
-   *   "default.failure.report.titleText",
-   *   "default.error.report.titleText",
+   *   "testController.testControllerMethod.failure.internalServerError.error.somePath.message",
+   *   "testController.testControllerMethod.failure.internalServerError.somePath.message",
+   *   "testController.testControllerMethod.failure.error.somePath.message",
+   *   "testController.testControllerMethod.failure.somePath.message",
+   *   "testControllerMethod.failure.error.somePath.message",
+   *   "testControllerMethod.failure.somePath.message",
+   *   "default.failure.internalServerError.error.somePath.message",
+   *   "default.failure.internalServerError.somePath.message",
+   *   "default.failure.error.somePath.message",
+   *   "default.failure.somePath.message",
+   *   "default.error.somePath.message",
    *   "default.error"
    * ]
+   * </pre>
+   *
+   * In case of success, {@link MessageSourceResolvableSpecification} instance might look like the following example:<br/><br/>
    * <pre>
+   * new MessageSourceResolvableSpecification(
+   *   controllerSimpleName: "testController",
+   *   controllerMethodName: "testControllerMethod",
+   *   messageCategory: "success",
+   *   messageType: "",
+   *   messageSubType: "",
+   *   severity: "info",
+   *   propertyPath: "somePath.message"
+   * )
+   * </pre>
+   *
+   * Corresponding message code list is:<br/><br/>
+   * <pre>
+   * [
+   *   "testController.testControllerMethod.success.info.somePath.message"
+   *   "testController.testControllerMethod.success.somePath.message"
+   *   "testControllerMethod.success.info.somePath.message"
+   *   "testControllerMethod.success.somePath.message"
+   *   "default.success.info.somePath.message"
+   *   "default.success.somePath.message"
+   *   "default.info.somePath.message"
+   *   "default.info"
+   * ]
+   * </pre>
    */
   @SuppressWarnings("CyclomaticComplexity")
   static List<String> createMessageCodeList(MessageSourceResolvableSpecification specification) {

@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracker.booking.queryside.test.base.AbstractQuerySideIntegrationSpecification
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -89,15 +90,15 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     then:
     mvcResult.response.status == HttpStatus.OK.value()
 
-    verifyAll(responseContentMap.metaData as Map) {
+    verifyAll(responseContentMap.metaData.general as Map) {
+      it.size() == 3
       locale == localeString
       severity == Severity.INFO.name()
       timestamp
-      titleText == "Info"
-      titleDetailedText == myTitleDetailedText
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
+      it.size() == 2
       message == HttpStatus.OK.reasonPhrase
       status == HttpStatus.OK.value().toString()
     }
@@ -110,9 +111,9 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     }
 
     where:
-    acceptLanguage | localeString | myTitleDetailedText
-    "hr-HR"        | "hr_HR"      | "Vaš je zahtjev uspješno izvršen."
-    "en"           | "en"         | "Your request is successfully executed."
+    acceptLanguage | localeString
+    "hr-HR"        | "hr_HR"
+    "en"           | "en"
   }
 
   void "should return expected response when CargoSummary cannot be found - [acceptLanguage: #acceptLanguage]"() {
@@ -135,22 +136,24 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     then:
     mvcResult.response.status == HttpStatus.NOT_FOUND.value()
 
-    verifyAll(responseContentMap.metaData as Map) {
+    verifyAll(responseContentMap.metaData.general as Map) {
+      it.size() == 3
       locale == localeString
       severity == Severity.WARNING.name()
       timestamp
-      titleText == myTitleText
-      titleDetailedText == myTitleDetailedText
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
+      it.size() == 2
       message == HttpStatus.NOT_FOUND.reasonPhrase
       status == HttpStatus.NOT_FOUND.value().toString()
     }
 
     verifyAll(responseContentMap.metaData.violation as Map) {
+      it.size() == 3
       code == HttpStatus.NOT_FOUND.value().toString()
       codeMessage == myViolationCodeMessage
+      type == ViolationType.DOMAIN.toString()
     }
 
     verifyAll(responseContentMap.payload as Map) {
@@ -158,8 +161,8 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     }
 
     where:
-    acceptLanguage | localeString | myTitleText  | myTitleDetailedText                                 | myViolationCodeMessage
-    "hr-HR"        | "hr_HR"      | "Upozorenje" | "Sumarni izvještaj za željeni teret nije pronađen." | "Traženi podaci nisu pronađeni."
-    "en"           | "en"         | "Warning"    | "Summary report for specified cargo is not found."  | "Requested data are not found."
+    acceptLanguage | localeString | myViolationCodeMessage
+    "hr-HR"        | "hr_HR"      | "Sumarni izvještaj za željeni teret nije pronađen."
+    "en"           | "en"         | "Summary report for specified cargo is not found."
   }
 }

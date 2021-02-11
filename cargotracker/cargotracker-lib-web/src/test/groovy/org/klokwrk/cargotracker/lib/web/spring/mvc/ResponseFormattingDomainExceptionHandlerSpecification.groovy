@@ -20,6 +20,7 @@ package org.klokwrk.cargotracker.lib.web.spring.mvc
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
+import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationCode
@@ -33,7 +34,7 @@ import spock.lang.Specification
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
-class ResponseFormattingExceptionHandlerSpecification extends Specification {
+class ResponseFormattingDomainExceptionHandlerSpecification extends Specification {
   static class TestController {
     @SuppressWarnings("unused")
     OperationResponse<Map> testControllerMethod() {
@@ -42,7 +43,7 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
   }
 
   Locale locale
-  ResponseFormattingExceptionHandler responseFormattingExceptionHandler
+  ResponseFormattingDomainExceptionHandler responseFormattingDomainExceptionHandler
   HandlerMethod handlerMethod
 
   void setup() {
@@ -51,8 +52,8 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
     messageSource.defaultEncoding = "UTF-8"
     messageSource.setBasenames("responseFormattingDefaultMessages", "responseFormattingTestMessages")
 
-    responseFormattingExceptionHandler = new ResponseFormattingExceptionHandler()
-    responseFormattingExceptionHandler.messageSource = messageSource
+    responseFormattingDomainExceptionHandler = new ResponseFormattingDomainExceptionHandler()
+    responseFormattingDomainExceptionHandler.messageSource = messageSource
 
     TestController testController = new TestController()
     Method testControllerMethod = TestController.declaredMethods.find({ Method method -> method.name == "testControllerMethod" })
@@ -64,7 +65,7 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
     DomainException exception = exceptionParam
 
     when:
-    ResponseEntity responseEntity = responseFormattingExceptionHandler.handleDomainException(exception, handlerMethod, locale)
+    ResponseEntity responseEntity = responseFormattingDomainExceptionHandler.handleDomainException(exception, handlerMethod, locale)
 
     OperationResponse<Map> body = responseEntity.body as OperationResponse<Map>
     Map metadata = body.metaData
@@ -74,13 +75,17 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
     verifyAll {
       body
       payload.size() == 0
-      metadata.timestamp
-      metadata.severity == Severity.ERROR
-      metadata.locale == new Locale("en")
-      metadata.titleText == "Error"
-      metadata.titleDetailedText == "Error"
+      metadata.general.propertiesFiltered.size() == 3
+      metadata.general.timestamp
+      metadata.general.severity == Severity.ERROR
+      metadata.general.locale == new Locale("en")
+
+      metadata.violation.propertiesFiltered.size() == 3
       metadata.violation.code == "500"
       metadata.violation.codeMessage == "Error"
+      metadata.violation.type == ViolationType.DOMAIN
+
+      metadata.http.propertiesFiltered.size() == 2
       metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
       metadata.http.message == HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase
     }
@@ -102,6 +107,7 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
     return foundField?.name
   }
 
+  @SuppressWarnings("AbcMetric")
   void "should work as expected for existing ViolationInfo constants [violationInfoConstantName: #violationInfoConstantName]"() {
     given:
     assert ViolationInfo.declaredFields.findAll({ it.type == ViolationInfo }).size() == 3
@@ -109,7 +115,7 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
     DomainException exception = exceptionParam
 
     when:
-    ResponseEntity responseEntity = responseFormattingExceptionHandler.handleDomainException(exception, handlerMethod, locale)
+    ResponseEntity responseEntity = responseFormattingDomainExceptionHandler.handleDomainException(exception, handlerMethod, locale)
 
     OperationResponse<Map> body = responseEntity.body as OperationResponse<Map>
     Map metadata = body.metaData
@@ -119,28 +125,33 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
     verifyAll {
       body
       payload.size() == 0
-      metadata.timestamp
-      metadata.severity == severityParam
-      metadata.locale == new Locale("en")
-      metadata.titleText == titleParam
-      metadata.titleDetailedText == titleParam
+
+      metadata.general.propertiesFiltered.size() == 3
+      metadata.general.timestamp
+      metadata.general.severity == severityParam
+      metadata.general.locale == new Locale("en")
+
+      metadata.violation.propertiesFiltered.size() == 3
       metadata.violation.code == violationCodeParam
-      metadata.violation.codeMessage == titleParam
+      metadata.violation.codeMessage == codeMessageParam
+      metadata.violation.type == ViolationType.DOMAIN
+
+      metadata.http.propertiesFiltered.size() == 2
       metadata.http.status == httpStatusParam
       metadata.http.message == httpMessageParam
     }
 
     where:
-    violationInfoParam        | exceptionParam                           | severityParam    | titleParam | violationCodeParam | httpStatusParam | httpMessageParam
-    ViolationInfo.UNKNOWN     | new DomainException(violationInfoParam)  | Severity.ERROR   | "Error"    | "500"              | "500"           | "Internal Server Error"
-    ViolationInfo.UNKNOWN     | new CommandException(violationInfoParam) | Severity.ERROR   | "Error"    | "500"              | "500"           | "Internal Server Error"
-    ViolationInfo.UNKNOWN     | new QueryException(violationInfoParam)   | Severity.ERROR   | "Error"    | "500"              | "500"           | "Internal Server Error"
-    ViolationInfo.BAD_REQUEST | new DomainException(violationInfoParam)  | Severity.WARNING | "Warning"  | "400"              | "400"           | "Bad Request"
-    ViolationInfo.BAD_REQUEST | new CommandException(violationInfoParam) | Severity.WARNING | "Warning"  | "400"              | "400"           | "Bad Request"
-    ViolationInfo.BAD_REQUEST | new QueryException(violationInfoParam)   | Severity.WARNING | "Warning"  | "400"              | "400"           | "Bad Request"
-    ViolationInfo.NOT_FOUND   | new DomainException(violationInfoParam)  | Severity.WARNING | "Warning"  | "404"              | "404"           | "Not Found"
-    ViolationInfo.NOT_FOUND   | new CommandException(violationInfoParam) | Severity.WARNING | "Warning"  | "404"              | "404"           | "Not Found"
-    ViolationInfo.NOT_FOUND   | new QueryException(violationInfoParam)   | Severity.WARNING | "Warning"  | "404"              | "404"           | "Not Found"
+    violationInfoParam        | exceptionParam                           | severityParam    | codeMessageParam | violationCodeParam | httpStatusParam | httpMessageParam
+    ViolationInfo.UNKNOWN     | new DomainException(violationInfoParam)  | Severity.ERROR   | "Error"          | "500"              | "500"           | "Internal Server Error"
+    ViolationInfo.UNKNOWN     | new CommandException(violationInfoParam) | Severity.ERROR   | "Error"          | "500"              | "500"           | "Internal Server Error"
+    ViolationInfo.UNKNOWN     | new QueryException(violationInfoParam)   | Severity.ERROR   | "Error"          | "500"              | "500"           | "Internal Server Error"
+    ViolationInfo.BAD_REQUEST | new DomainException(violationInfoParam)  | Severity.WARNING | "Warning"        | "400"              | "400"           | "Bad Request"
+    ViolationInfo.BAD_REQUEST | new CommandException(violationInfoParam) | Severity.WARNING | "Warning"        | "400"              | "400"           | "Bad Request"
+    ViolationInfo.BAD_REQUEST | new QueryException(violationInfoParam)   | Severity.WARNING | "Warning"        | "400"              | "400"           | "Bad Request"
+    ViolationInfo.NOT_FOUND   | new DomainException(violationInfoParam)  | Severity.WARNING | "Warning"        | "404"              | "404"           | "Not Found"
+    ViolationInfo.NOT_FOUND   | new CommandException(violationInfoParam) | Severity.WARNING | "Warning"        | "404"              | "404"           | "Not Found"
+    ViolationInfo.NOT_FOUND   | new QueryException(violationInfoParam)   | Severity.WARNING | "Warning"        | "404"              | "404"           | "Not Found"
 
     violationInfoConstantName = findViolationInfoConstantName(violationInfoParam)
   }
@@ -152,7 +163,7 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
     DomainException exception = new DomainException(violationInfo)
 
     when:
-    ResponseEntity responseEntity = responseFormattingExceptionHandler.handleDomainException(exception, handlerMethod, locale)
+    ResponseEntity responseEntity = responseFormattingDomainExceptionHandler.handleDomainException(exception, handlerMethod, locale)
 
     OperationResponse<Map> body = responseEntity.body as OperationResponse<Map>
     Map metadata = body.metaData
@@ -162,13 +173,18 @@ class ResponseFormattingExceptionHandlerSpecification extends Specification {
     verifyAll {
       body
       payload.size() == 0
-      metadata.timestamp
-      metadata.severity == Severity.WARNING
-      metadata.locale == new Locale("en")
-      metadata.titleText == "My warning report title text"
-      metadata.titleDetailedText == "My warning report title detailed text."
+
+      metadata.general.propertiesFiltered.size() == 3
+      metadata.general.timestamp
+      metadata.general.severity == Severity.WARNING
+      metadata.general.locale == new Locale("en")
+
+      metadata.violation.propertiesFiltered.size() == 3
       metadata.violation.code == "12345"
-      metadata.violation.codeMessage == "Warning"
+      metadata.violation.codeMessage == "My violation code message"
+      metadata.violation.type == ViolationType.DOMAIN
+
+      metadata.http.propertiesFiltered.size() == 2
       metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
       metadata.http.message == HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase
     }

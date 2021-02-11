@@ -57,14 +57,14 @@ class CargoSummaryQueryApplicationServiceIntegrationSpecification extends Abstra
   @Autowired
   FetchCargoSummaryQueryPortIn fetchCargoSummaryQueryPortIn
 
-  void "should work for correct request - [locale: #locale]"() {
+  void "should work for correct request - [locale: #localeParam]"() {
     given:
     String myAggregateIdentifier = publishAndWaitForProjectedCargoBookedEvent(eventBus, groovySql)
 
     FetchCargoSummaryQueryRequest fetchCargoSummaryQueryRequest = new FetchCargoSummaryQueryRequest(aggregateIdentifier: myAggregateIdentifier)
     OperationRequest<FetchCargoSummaryQueryRequest> operationRequest = new OperationRequest(
         payload: fetchCargoSummaryQueryRequest,
-        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): locale]
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): localeParam]
     )
 
     when:
@@ -79,16 +79,14 @@ class CargoSummaryQueryApplicationServiceIntegrationSpecification extends Abstra
     }
 
     verifyAll(operationResponse.metaData) {
-      timestamp
-      severity == Severity.INFO
+      general.timestamp
+      general.severity == Severity.INFO
+      general.locale == null
       violation == null
-      location == null
-      titleText == null
-      titleDetailedText == null
     }
 
     where:
-    locale                         | _
+    localeParam                    | _
     Locale.forLanguageTag("hr-HR") | _
     Locale.forLanguageTag("en")    | _
   }

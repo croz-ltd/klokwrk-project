@@ -15,13 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.commandside.infrastructure.spring.web.mvc
+package org.klokwrk.cargotracker.lib.boundary.api.metadata.response
 
-import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.web.spring.mvc.ResponseFormattingExceptionHandler
-import org.springframework.web.bind.annotation.ControllerAdvice
+import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
+import spock.lang.Specification
 
-@ControllerAdvice
-@CompileStatic
-class ResponseFormattingExceptionHandlerControllerAdvice extends ResponseFormattingExceptionHandler {
+class ResponseMetaDataSpecification extends Specification {
+  void "createBasicInfoResponseMetaData - should create expected meta data"() {
+    given:
+    ResponseMetaData responseMetaData = ResponseMetaData.createBasicInfoResponseMetaData()
+
+    expect:
+    verifyAll(responseMetaData.general) {
+      timestamp
+      severity == Severity.INFO
+    }
+  }
 }
