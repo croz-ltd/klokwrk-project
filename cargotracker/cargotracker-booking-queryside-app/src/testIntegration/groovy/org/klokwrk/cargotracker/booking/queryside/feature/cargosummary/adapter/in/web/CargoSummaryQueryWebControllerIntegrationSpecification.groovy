@@ -39,6 +39,7 @@ import javax.sql.DataSource
 import java.nio.charset.Charset
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
 @SpringBootTest
@@ -164,5 +165,55 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     acceptLanguage | localeString | myViolationCodeMessage
     "hr-HR"        | "hr_HR"      | "Sumarni izvještaj za željeni teret nije pronađen."
     "en"           | "en"         | "Summary report for specified cargo is not found."
+  }
+
+  void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguage]"() {
+    given:
+    String myAggregateIdentifier = UUID.randomUUID()
+    String webRequestBody = objectMapper.writeValueAsString([aggregateIdentifier: myAggregateIdentifier])
+
+    when:
+    MvcResult mvcResult = mockMvc.perform(
+        put("/cargo-summary/fetch-cargo-summary")
+            .content(webRequestBody)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+    ).andReturn()
+
+    Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
+
+    then:
+    mvcResult.response.status == HttpStatus.METHOD_NOT_ALLOWED.value()
+
+    verifyAll(responseContentMap.metaData.general as Map) {
+      it.size() == 3
+      locale == localeString
+      severity == Severity.WARNING.name()
+      timestamp
+    }
+
+    verifyAll(responseContentMap.metaData.http as Map) {
+      it.size() == 2
+      message == HttpStatus.METHOD_NOT_ALLOWED.reasonPhrase
+      status == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
+    }
+
+    verifyAll(responseContentMap.metaData.violation as Map) {
+      it.size() == 3
+      code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
+      codeMessage == myViolationCodeMessage
+      type == ViolationType.OTHER.toString()
+    }
+
+    verifyAll(responseContentMap.payload as Map) {
+      size() == 0
+    }
+
+    where:
+    acceptLanguage | localeString | myViolationCodeMessage
+    "hr-HR"        | "hr_HR"      | "Zahtjev nije ispravan."
+    "en"           | "en"         | "Request is not valid."
   }
 }
