@@ -19,6 +19,7 @@ package org.klokwrk.cargotracker.booking.commandside.infrastructure.spring.web.m
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.lib.web.spring.mvc.ResponseFormattingDomainExceptionHandler
+import org.springframework.core.annotation.Order
 import org.springframework.web.bind.annotation.ControllerAdvice
 
 /**
@@ -29,7 +30,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice
  * handling from {@link ResponseFormattingDomainExceptionHandler}.
  * <p/>
  * In our case, <code>ResponseFormattingDomainExceptionHandlerControllerAdvice</code> is picked-up by auto-scanning from <code>BookingCommandSideApplication</code>.
+ * <p/>
+ * Order of this advice is <code>100</code>.
  */
+@Order(100)
 @ControllerAdvice
 @CompileStatic
 class ResponseFormattingDomainExceptionHandlerControllerAdvice extends ResponseFormattingDomainExceptionHandler {

@@ -80,9 +80,20 @@ import java.time.Instant
  * spring.messages.basename: messages,responseFormattingDefaultMessages
  * ...
  * </pre>
- * The list of message codes which will be tried against the resource bundle is created by {@link MessageSourceResolvableHelper}. For resolving messages we are using <code>httpResponseMetaData.</code>
- * prefix for <code>propertyPath</code> property of <code>MessageSourceResolvableSpecification</code>. This is to avoid potential future conflicts in resource bundle keys if we'll need message
- * resolving over some other <code>propertyPath</code>.
+ * The list of message codes which will be tried against the resource bundle is created by {@link MessageSourceResolvableHelper}. For resolving messages we are using
+ * <code>httpResponseMetaData.violation.codeMessage</code> prefix for <code>propertyPath</code> property of <code>MessageSourceResolvableSpecification</code>. This is to avoid potential future
+ * conflicts in resource bundle keys if we'll need message resolving over some other <code>propertyPath</code>.
+ * <p/>
+ * Here is a list of <code>MessageSourceResolvableSpecification</code> property values used for resolving internationalized messages:
+ * <ul>
+ *   <li>controllerSimpleName: simple class name (without package) of a controller that was executing when an exception occurred</li>
+ *   <li>controllerMethodName: method name of a controller that was executing when an exception occurred</li>
+ *   <li>messageCategory: <code>failure</code></li>
+ *   <li>messageType: <code>domain</code></li>
+ *   <li>messageSubType: value of <code>domainException.violationInfo.violationCode.codeAsText</code></li>
+ *   <li>severity: value of <code>domainException.violationInfo.severity</code></li>
+ *   <li>propertyPath: <code>httpResponseMetaData.violation.codeMessage</code></li>
+ * </ul>
  *
  * @see MessageSourceResolvableHelper
  */
