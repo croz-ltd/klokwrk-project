@@ -184,6 +184,14 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
 //
 //      // Enables creation of detailed report about objects included in the native image heap.
 //      "-H:+PrintImageObjectTree",
+//
+//      // Defines the path for GraalVM Dashboard (https://www.graalvm.org/docs/tools/dashboard/) dump file
+//      "-H:DashboardDump=${ workingDir.absolutePath }/dashboard-dump",
+//
+//      // Three options bellow dump all available data in GraalVM Dashboard dump file.
+////      "-H:+DashboardHeap", // This one causes error at the moment in my environment. If this is also your case, comment it out.
+//      "-H:+DashboardCode",
+//      "-H:+DashboardPointsTo",
 
       // Print stacktrace of underlying exceptions.
       "-H:+ReportExceptionStackTraces",
