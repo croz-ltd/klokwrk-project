@@ -94,7 +94,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     verifyAll(responseContentMap.metaData.general as Map) {
       it.size() == 3
       locale == localeString
-      severity == Severity.INFO.name()
+      severity == Severity.INFO.name().toLowerCase()
       timestamp
     }
 
@@ -140,7 +140,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     verifyAll(responseContentMap.metaData.general as Map) {
       it.size() == 3
       locale == localeString
-      severity == Severity.WARNING.name()
+      severity == Severity.WARNING.name().toLowerCase()
       timestamp
     }
 
@@ -154,7 +154,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
       it.size() == 3
       code == HttpStatus.NOT_FOUND.value().toString()
       codeMessage == myViolationCodeMessage
-      type == ViolationType.DOMAIN.toString()
+      type == ViolationType.DOMAIN.name().toLowerCase()
     }
 
     verifyAll(responseContentMap.payload as Map) {
@@ -190,7 +190,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     verifyAll(responseContentMap.metaData.general as Map) {
       it.size() == 3
       locale == localeString
-      severity == Severity.WARNING.name()
+      severity == Severity.WARNING.name().toLowerCase()
       timestamp
     }
 
@@ -204,7 +204,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
       it.size() == 3
       code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
       codeMessage == myViolationCodeMessage
-      type == ViolationType.OTHER.toString()
+      type == ViolationType.OTHER.name().toLowerCase()
     }
 
     verifyAll(responseContentMap.payload as Map) {

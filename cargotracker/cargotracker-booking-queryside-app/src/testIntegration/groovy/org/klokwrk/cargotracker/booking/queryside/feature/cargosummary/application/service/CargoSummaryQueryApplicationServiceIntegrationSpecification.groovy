@@ -80,7 +80,7 @@ class CargoSummaryQueryApplicationServiceIntegrationSpecification extends Abstra
 
     verifyAll(operationResponse.metaData) {
       general.timestamp
-      general.severity == Severity.INFO
+      general.severity == Severity.INFO.name().toLowerCase()
       general.locale == null
       violation == null
     }

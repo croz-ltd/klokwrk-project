@@ -123,7 +123,7 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
     verifyAll(metadataMap.general as Map) {
       it.size() == 3
       timestamp
-      severity == Severity.WARNING.name()
+      severity == Severity.WARNING.name().toLowerCase()
       locale == new Locale("en").toString()
     }
 
@@ -138,10 +138,11 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
       logUuid == null
       code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
       codeMessage == "Request is not valid."
-      type == ViolationType.OTHER.name()
+      type == ViolationType.OTHER.name().toLowerCase()
     }
   }
 
+  @SuppressWarnings("AbcMetric")
   void "should work and be logged for error caused by MissingPathVariableException"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger(ResponseFormattingSpringMvcExceptionHandler)
@@ -170,7 +171,7 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
     verifyAll(metadataMap.general as Map) {
       it.size() == 3
       timestamp
-      severity == Severity.ERROR.name()
+      severity == Severity.ERROR.name().toLowerCase()
       locale == new Locale("en").toString()
     }
 
@@ -185,7 +186,7 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
       logUuid
       code == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
       codeMessage == "Internal server error."
-      type == ViolationType.OTHER.name()
+      type == ViolationType.OTHER.name().toLowerCase()
     }
   }
 }

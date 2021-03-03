@@ -51,8 +51,10 @@ class ViolationCode implements PostMapConstructorCheckable {
    * <p/>
    * In this context, human-readable does not mean full sentences but rather some textual encoded value that is easily recognizable by developers. The intention is that <code>codeAsText</code> is
    * used as an alias of primary code property that is more appealing for writing localized resource bundles at the inbound channel level. For example, when maintaining resource bundles, it should be
-   * easier for developers to deduct the meaning of <code>cargoSummaryQueryWebController.fetchCargoSummaryQuery.failure.badRequest</code> resource bundle key instead the meaning of
-   * <code>cargoSummaryQueryWebController.fetchCargoSummaryQuery.failure.400</code> key. And this is exactly the intention behind this property.
+   * easier for developers to deduct the meaning of <code>cargoSummaryQueryWebController.fetchCargoSummaryQuery.failure.other.badRequest</code> resource bundle key instead the meaning of
+   * <code>cargoSummaryQueryWebController.fetchCargoSummaryQuery.failure.other.400</code> key. And this is exactly the intention behind this property.
+   * <p/>
+   * If we need some kind of categorization inside <code>codeAsText</code>, it is recommended to use dot character. For example, <code>notFound.personSummary</code>.
    */
   String codeAsText
 

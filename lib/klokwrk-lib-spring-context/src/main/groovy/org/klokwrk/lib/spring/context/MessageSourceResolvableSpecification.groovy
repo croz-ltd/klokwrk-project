@@ -20,65 +20,79 @@ package org.klokwrk.lib.spring.context
 import groovy.transform.CompileStatic
 
 /**
- * Data structure (a record) that defines specification for creating message codes suitable for resolving a message against resource bundle.
+ * Data structure (a record) that defines the specification for creating message codes suitable for resolving messages against resource bundle.
+ * <p/>
+ * At this moment, properties in this class, and corresponding implementations of message code resolvers from {@code org.klokwrk.lib.spring.context.MessageSourceResolvableHelper}, are highly
+ * specialized to localize parts of JSON responses whose structure is defined by {@code ResponseFormatting*} interceptors from {@code org.klokwrk.cargotracker.lib.web.spring.mvc} package.
+ * <p/>
+ * Be aware that actual implementations of message resolvers can choose to ignore any property from this specification.
  */
 @CompileStatic
 class MessageSourceResolvableSpecification {
   /**
    * The uncapitalized simple name of a controller that is handling the current request.
    * <p/>
-   * Typically, this is the uncapitalized name of the controller class name without the package. For example, if we have <code>org.example.MyController</code> controller class, controller's
-   * uncapitalized simple name will be <code>myController</code>.
+   * Typically, this is the uncapitalized name of the controller class name without the package. For example, if we have {@code org.example.MyWebController} web controller class, controller's
+   * uncapitalized simple name will be {@code myWebController}.
    * <p/>
-   * The controller does not have to be HTTP/REST controller, but rather any controller type accepting requests from the client.
+   * The controller does not have to be an HTTP/REST controller, but rather any type of controller accepting the client's requests. For example, it can be a simple class name of the message handler
+   * in messaging scenarios.
    */
   String controllerSimpleName
 
   /**
-   * The method (or action) of the controller that is handling the current request.
+   * The method of the controller that is handling the current request.
    * <p/>
-   * For example, if we have <code>org.example.MyController.myMethod()</code> controller method that is handling the current request, <code>controllerMethodName</code> will be <code>myMethod</code>.
+   * For example, if we have {@code org.example.MyWebController.myMethod()} web controller method that is handling the current HTTP request, {@code controllerMethodName} will be
+   * {@code myMethod}.
    * <p/>
-   * The controller does not have to be HTTP/REST controller, but rather any controller type accepting requests from the client.
+   * The controller does not have to be an HTTP/REST controller, but rather any type of controller accepting the client's requests. If used in messaging scenarios, {@code controllerMethodName} might
+   * be a simple class name of handled message or event.
    */
   String controllerMethodName
 
   /**
-   * Category of a message.
+   * High-level category of a message.
    * <p/>
-   * Usually, it describes the type of outcome of current request handling. For example, in case of errors, it is generally specified as <code>failure</code>. In case of validation failure, it might
-   * be <code>validation</code> or <code>validationFailure</code>. If not specified, successful outcome might be implied. If there is a need to distinguish between various kinds of successful outcomes
-   * it might contain some kind of success outcome categorisation.
+   * Usually, it describes the type of outcome of current request handling. For our purposes, in case of errors, this property's value is specified as {@code failure}. If we need message
+   * resolving for successful responses, this property's value should be {@code success}.
    */
   String messageCategory
 
   /**
-   * Inside of a message category, <code>messageType</code> determines more specific type of the outcome.
+   * Inside of a message category, this property determines a more specific type of outcome.
    * <p/>
-   * For example, in HTTP/REST environment it might correspond to the string-message-encoded HTTP status. If we have status 500, <code>messageType</code> might be <code>internalServerError</code>.
-   * For status 200, it might be just <code>ok</code>. It is not recommended to use numerical types since they are not easily recognisable when used as keys in resource bundle files.
+   * For our purposes, in case of responses communicating some kind of error, {@code messageType} will contain a string which categorizes the failure type. For this purpose we are using lowercase
+   * values of {@code org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType} enum ({@code domain}, {@code validation}, etc.).
    */
   String messageType
 
   /**
-   * The sub-type of a message that is used when further categorisation of message types is needed.
+   * The sub-type of a message that is used when further categorization of message types is needed.
    * <p/>
-   * For example, say that we have some query controller that is trying to find and return <code>PersonSummary</code> entities based on some criteria. When controller cannot find the result,
-   * corresponding <code>messageType</code> might be <code>notFound</code>. If this is not enough to get appropriate message, additional <code>messageSubType</code> might be defined with the value of
-   * <code>personSummary</code>.
+   * For example, in HTTP/REST environment it might correspond to the string-message-encoded HTTP status. If we have status 500, {@code messageType} will be {@code unknown} (indicating
+   * unexpected/unknown error), while {@code messageSubType} might be {@code internalServerError}. It is not recommended to use numerical values here (i.e. 500) since they are harder to
+   * comprehend when reading keys in resource bundle files.
+   * <p/>
+   * Let's look at another example. If we have some query controller trying to find and return entities based on some criteria. When the controller cannot find the result, the corresponding
+   * {@code messageType} will be {@code domain} since we qualify that failure as a domain issue. But we still do not say anything more specific about the problem. This is where {@code messageSubType}
+   * comes in, as it will contain {@code notFound} value.
    */
   String messageSubType
 
   /**
-   * Defines the severity of a message and should have <code>error</code>, <code>warning</code> or <code>info</code> values.
+   * Details of message sub-type used for further and deeper categorization of message sub-types in {@code messageSubType}.
+   * <p/>
+   * If we need further categorization of {@code messageSubType}, we might use {@code messageSubTypeDetails}. For example, when localizing domain failure messages we might have {@code notFound}
+   * {@code messageSubType} and {@code personSummary} {@code messageSubTypeDetails}. In resource bundle this will end up with {@code notFound.personSummary} sequence.
+   */
+  String messageSubTypeDetails
+
+  /**
+   * Specifies the severity of a message.
+   * <p/>
+   * The value of this property corresponds to the lowercase values of {@code org.klokwrk.cargotracker.lib.boundary.api.severity.Severity} enum ({@code error}, {@code warning}, and {@code info}).
    */
   String severity
 
-  /**
-   * When message codes are created for some specific object and its properties, <code>propertyPath</code> might contain the path of relevant property.
-   * <p/>
-   * For example, if we are trying to resolve messages for an object that contains property <code>somePath</code>, and that <code>somePath</code> contains a nested property <code>message</code>,
-   * the value of <code>propertyPath</code> should be <code>somePath.message</code>.
-   */
-  String propertyPath
 }

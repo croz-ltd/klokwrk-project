@@ -29,14 +29,14 @@ import groovy.transform.CompileStatic
  * {
  *     "metaData": {
  *         "general": {
- *             "severity": "WARNING",
+ *             "severity": "warning",
  *             "locale": "en_GB",
  *             "timestamp": "2020-04-30T16:03:48.795816Z"
  *         },
  *         "violation": {
  *             "code": "400",
  *             "codeMessage": "Destination location cannot accept cargo from specified origin location.",
- *             "type": "DOMAIN"
+ *             "type": "domain"
  *         }
  *     },
  *     "payload": {}
@@ -61,11 +61,11 @@ class ResponseMetaDataViolationPart {
   String codeMessage
 
   /**
-   * Type of violation.
+   * Type of violation as a lowercase string corresponding to the values of {@link org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType} enum.
    * <p/>
    * This information may be valuable for the client when deciding how to handle violation. Violations of different types may add additional violation data.
    */
-  ViolationType type
+  String type
 
   /**
    * UUID contained in the log message of logged exception.

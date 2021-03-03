@@ -28,7 +28,7 @@ class ResponseMetaDataSpecification extends Specification {
     expect:
     verifyAll(responseMetaData.general) {
       timestamp
-      severity == Severity.INFO
+      severity == Severity.INFO.name().toLowerCase()
     }
   }
 }

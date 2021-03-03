@@ -82,13 +82,13 @@ class ResponseFormattingUnknownExceptionHandlerSpecification extends Specificati
       payload.size() == 0
       metadata.general.propertiesFiltered.size() == 3
       metadata.general.timestamp
-      metadata.general.severity == Severity.ERROR
+      metadata.general.severity == Severity.ERROR.name().toLowerCase()
       metadata.general.locale == new Locale("en")
 
       metadata.violation.propertiesFiltered.size() == 4
       metadata.violation.code == "500"
       metadata.violation.codeMessage == "Internal server error."
-      metadata.violation.type == ViolationType.UNKNOWN
+      metadata.violation.type == ViolationType.UNKNOWN.name().toLowerCase()
       metadata.violation.logUuid.size() == "116be9a6-9f38-4954-8b8f-e57e781655d0".size()
 
       metadata.http.propertiesFiltered.size() == 2

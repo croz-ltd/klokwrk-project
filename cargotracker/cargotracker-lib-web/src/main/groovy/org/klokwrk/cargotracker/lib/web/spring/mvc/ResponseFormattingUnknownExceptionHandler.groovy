@@ -40,15 +40,14 @@ import org.springframework.web.method.HandlerMethod
 import java.time.Instant
 
 /**
- * Handles shaping and internationalization of the body in HTTP responses when execution of controller results in throwing unpredicted exception.
+ * Handles shaping and internationalizing the body in HTTP responses when the execution of request results in throwing non-anticipated exception.
  * <p/>
- * Produced HTTP response body is a JSON serialized from {@link OperationResponse} instance containing populated "<code>metaData</code>" and empty "<code>payload</code>" properties. Here is an
- * example:
+ * Produced HTTP response body is a JSON serialized from {@link OperationResponse} instance containing populated {@code metaData} and empty {@code payload} properties. Here is an example:
  * <pre>
  * {
  *   "metaData": {
  *     "general": {
- *       "severity": "ERROR",
+ *       "severity": "error",
  *       "locale": "en_GB",
  *       "timestamp": "2021-02-09T10:09:36.354151Z"
  *     },
@@ -59,44 +58,34 @@ import java.time.Instant
  *     "violation": {
  *       "code": "500",
  *       "codeMessage": "Internal server error.",
- *       "type": "UNKNOWN",
+ *       "type": "unknown",
  *       "logUuid": "116be9a6-9f38-4954-8b8f-e57e781655d0"
  *     }
  *   },
  *   "payload": {}
  * }
  * </pre>
- * Here, "<code>violation.codeMessage</code>" entry is internationalized.
+ * Property {@code metaData.violation.codeMessage} needs to be localized.
  * <p/>
- * When used from Spring Boot application, the easiest is to create a controller advice that is eligible for component scanning (&#64;ControllerAdvice is annotated with &#64;Component):
+ * When used from the Spring Boot application, the easiest is to create controller advice that is eligible for component scanning (&#64;ControllerAdvice annotation is annotated with &#64;Component):
  * <pre>
  * &#64;ControllerAdvice
  * class ResponseFormattingUnknownExceptionHandlerControllerAdvice extends ResponseFormattingUnknownExceptionHandler {
  * }
  * </pre>
- * For internationalization of default messages, we are defining a resource bundle with base name "<code>responseFormattingDefaultMessages</code>". In Spring Boot application, that resource bundle
- * needs to be configured, for example, in <code>application.yml</code>:
+ * For localization purposes, we are defining {@code responseFormattingDefaultMessages} resource bundle containing default messages. In the Spring Boot application, that resource bundle needs to be
+ * configured, for example, in {@code application.yml} file:
  * <pre>
  * ...
  * spring.messages.basename: messages,responseFormattingDefaultMessages
  * ...
  * </pre>
- * The list of message codes which will be tried against the resource bundle is created by {@link MessageSourceResolvableHelper}. For resolving messages we are using
- * <code>httpResponseMetaData.violation.codeMessage</code> for <code>propertyPath</code> property of <code>MessageSourceResolvableSpecification</code>. This is to avoid potential future conflicts in
- * resource bundle keys if we'll need message resolving over some other <code>propertyPath</code>.
- * <p/>
- * Here is a list of <code>MessageSourceResolvableSpecification</code> property values used for resolving internationalized messages:
- * <ul>
- *   <li>controllerSimpleName: simple class name (without package) of a controller that was executing when an exception occurred</li>
- *   <li>controllerMethodName: method name of a controller that was executing when an exception occurred</li>
- *   <li>messageCategory: <code>failure</code></li>
- *   <li>messageType: <code>unknown</code></li>
- *   <li>messageSubType: simple class name (without package) of exception</li>
- *   <li>severity: <code>error</code></li>
- *   <li>propertyPath: <code>httpResponseMetaData.violation.codeMessage</code></li>
- * </ul>
+ * Localization message codes for {@code metaData.violation.codeMessage} property is created with
+ * {@link MessageSourceResolvableHelper#createMessageCodeListForViolationCodeMessageOfUnknownFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
+ * for further details.
  *
  * @see MessageSourceResolvableHelper
+ * @see MessageSourceResolvableHelper#createMessageCodeListForViolationCodeMessageOfUnknownFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
  */
 @CompileStatic
 class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
@@ -125,12 +114,12 @@ class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
     HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
 
     ResponseMetaDataViolationPart responseMetaDataReportViolationPart =
-        new ResponseMetaDataViolationPart(code: httpStatus.value().toString(), codeMessage: httpStatus.reasonPhrase, type: ViolationType.UNKNOWN, logUuid: logUuid)
+        new ResponseMetaDataViolationPart(code: httpStatus.value().toString(), codeMessage: httpStatus.reasonPhrase, type: ViolationType.UNKNOWN.name().toLowerCase(), logUuid: logUuid)
 
     HttpResponseMetaDataHttpPart httpResponseMetaDataHttpPart = new HttpResponseMetaDataHttpPart(status: httpStatus.value().toString(), message: httpStatus.reasonPhrase)
 
     HttpResponseMetaData httpResponseMetaData = new HttpResponseMetaData(
-        general: new ResponseMetaDataGeneralPart(timestamp: Instant.now(), severity: Severity.ERROR, locale: locale),
+        general: new ResponseMetaDataGeneralPart(timestamp: Instant.now(), severity: Severity.ERROR.name().toLowerCase(), locale: locale),
         violation: responseMetaDataReportViolationPart,
         http: httpResponseMetaDataHttpPart
     )
@@ -145,14 +134,14 @@ class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
         controllerSimpleName: handlerMethod.beanType.simpleName.uncapitalize(),
         controllerMethodName: handlerMethod.method.name,
         messageCategory: "failure",
-        messageType: "unknown",
+        messageType: ViolationType.UNKNOWN.name().toLowerCase(),
         messageSubType: unknownException.getClass().simpleName.uncapitalize(),
-        severity: Severity.ERROR.toString().toLowerCase(),
-        propertyPath: "httpResponseMetaData.violation.codeMessage"
+        severity: Severity.ERROR.name().toLowerCase()
     )
 
-    httpResponseMetaData.violation.codeMessage =
-        MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
+    httpResponseMetaData.violation.codeMessage = MessageSourceResolvableHelper.resolveMessageCodeList(
+        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfUnknownFailure(resolvableMessageSpecification), locale
+    )
 
     return httpResponseMetaData
   }
