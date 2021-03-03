@@ -95,4 +95,13 @@ class MessageSourceResolvableSpecification {
    */
   String severity
 
+  /**
+   * Specifies a property path whose value causes constraint violation in case of validation failures.
+   */
+  String constraintViolationPropertyPath
+
+  /**
+   * Specifies a constraint violation type in case of validation failures.
+   */
+  String constraintViolationType
 }

@@ -51,6 +51,16 @@ import org.springframework.context.support.DefaultMessageSourceResolvable
  *       "logUuid": "123", // Created only for 'unknown' violations
  *
  *       "type": "validation|domain|other|unknown",
+ *       "validationReport": {  // Created only for validation violations
+ *         root: {
+ *           type: "myRequest"
+ *           message: "..."
+ *         }
+ *         constraintViolations: [
+ *           { type: "notNull|notBlank|...", scope: "property|object", path: "...", message: "...", invalidPropertyValue: "..." },
+ *           { type: "notNull|notBlank|...", scope: "property|object", path: "...", message: "...", invalidPropertyValue: "..." },
+ *           ...
+ *         ]
  *       }
  *     }
  *   },
@@ -62,6 +72,10 @@ import org.springframework.context.support.DefaultMessageSourceResolvable
  * <p/>
  * Therefore, in case of validation failure, message codes for {@code metaData.violation.codeMessage} are created via {@code createMessageCodeListForViolationCodeMessageOfValidationFailure()} method.
  * Similarly, if we have a domain failure, we will use {@code createMessageCodeListForViolationCodeMessageOfDomainFailure()} method.
+ * <p/>
+ * Following the same naming principles, in case of validation failures, message codes for {@code metaData.violation.validationReport.root.message} will be created with
+ * {@code createMessageCodeListForRootBeanMessageOfValidationFailure()}, while message codes for {@code metaData.violation.validationReport.constraintViolations[].message} will be created with
+ * {@code createMessageCodeListForConstraintViolationMessageOfValidationFailure()}.
  * <p/>
  * Do note that the order of created message codes is significant and should go from the most specific message code first, then ending with more general elements. Spring's {@link MessageSource}
  * machinery will resolve messages trying codes in the given order, from first to last (the first match wins).
@@ -311,137 +325,188 @@ class MessageSourceResolvableHelper {
 
     return messageCodeList.unique()
   }
+
+  /**
+   * For {@code validation} category of failures, creates a list of message codes for resolving {@code metaData.violation.codeMessage} part of JSON response.
+   * <p/>
+   * Regarding {@link MessageSourceResolvableSpecification} properties, implementation fixes {@code messageCategory} to {@code failure}, {@code messageType} to {@code validation}, and
+   * {@code severity} to {@code warning}. Beside {@code controllerSimpleName} and {@code controllerMethodName} there are no other significant and distinguishing properties. Accordingly,
+   * {@code metaData.violation.codeMessage} part of JSON response just signifies that we have some kind of validation failure.
+   * <p/>
+   * Further details about validation failure are given in other parts of JSON response, namely {@code metaData.violation.validationReport.root.message} and
+   * {@code metaData.violation.validationReport.constraintViolations[].message}. These parts are localized with the help of other methods of this class.
+   * <p/>
+   * Example of message codes:
    * <pre>
-   * [
-   *    "testController.testControllerMethod.failure.unknown.internalServerError.error.somePath.message",
-   *    "testController.testControllerMethod.failure.unknown.internalServerError.somePath.message",
-   *    "testController.testControllerMethod.failure.unknown.internalServerError.error",
-   *    "testController.testControllerMethod.failure.unknown.internalServerError",
+   *   "testController.testControllerMethod.failure.validation"
    *
-   *    "testController.testControllerMethod.failure.unknown.error.somePath.message",
-   *    "testController.testControllerMethod.failure.unknown.somePath.message",
-   *    "testController.testControllerMethod.failure.unknown.error",
-   *    "testController.testControllerMethod.failure.unknown",
+   *   "testControllerMethod.failure.validation"
    *
-   *    "testController.testControllerMethod.failure.error.somePath.message",
-   *    "testController.testControllerMethod.failure.somePath.message",
-   *    "testController.testControllerMethod.failure",
-   *    "testController.testControllerMethod.failure.error",
-   *
-   *    "testControllerMethod.failure.error.somePath.message",
-   *    "testControllerMethod.failure.somePath.message",
-   *    "testControllerMethod.failure.error",
-   *    "testControllerMethod.failure",
-   *
-   *    "default.failure.unknown.internalServerError.error.somePath.message",
-   *    "default.failure.unknown.internalServerError.somePath.message",
-   *    "default.failure.unknown.internalServerError.error",
-   *    "default.failure.unknown.internalServerError",
-   *
-   *    "default.failure.unknown.error.somePath.message",
-   *    "default.failure.unknown.somePath.message",
-   *    "default.failure.unknown.error",
-   *    "default.failure.unknown",
-   *
-   *    "default.failure.error.somePath.message",
-   *    "default.failure.somePath.message",
-   *    "default.failure.error",
-   *    "default.failure",
-   *
-   *    "default.error.somePath.message",
-   *    "default.error"
-   * ]
-   * </pre>
-   *
-   * In case of success, {@link MessageSourceResolvableSpecification} instance might look like the following example:<br/><br/>
-   * <pre>
-   * new MessageSourceResolvableSpecification(
-   *   controllerSimpleName: "testController",
-   *   controllerMethodName: "testControllerMethod",
-   *   messageCategory: "success",
-   *   messageType: "",
-   *   messageSubType: "",
-   *   severity: "info",
-   *   propertyPath: "somePath.message"
-   * )
-   * </pre>
-   *
-   * Corresponding message code list is:<br/><br/>
-   * <pre>
-   * [
-   *   "testController.testControllerMethod.success.info.somePath.message",
-   *   "testController.testControllerMethod.success.somePath.message",
-   *   "testController.testControllerMethod.success.info",
-   *   "testController.testControllerMethod.success",
-   *   "testControllerMethod.success.info.somePath.message",
-   *   "testControllerMethod.success.somePath.message",
-   *   "testControllerMethod.success.info",
-   *   "testControllerMethod.success",
-   *   "default.success.info.somePath,.message",
-   *   "default.success.somePath.message",
-   *   "default.success.info",
-   *   "default.success",
-   *   "default.info.somePath.message",
-   *   "default.info"
-   * ]
+   *   "default.failure.validation"
+   *   "default.failure.warning"
+   *   "default.warning"
    * </pre>
    */
-  @SuppressWarnings(["CyclomaticComplexity", "AbcMetric"])
-  static List<String> createMessageCodeList(MessageSourceResolvableSpecification specification) {
-    String controllerSimpleName = specification.controllerSimpleName?.trim() ?: ""
-    String controllerMethodName = specification.controllerMethodName?.trim() ?: ""
-    String messageCategory = specification.messageCategory?.trim() ?: ""
-    String messageType = specification.messageType?.trim() ?: ""
-    String messageSubType = specification.messageSubType?.trim() ?: ""
-    String severity = specification.severity?.trim() ?: "warning"
-    String propertyPath = specification.propertyPath?.trim() ?: ""
+  @SuppressWarnings("DuplicateStringLiteral")
+  static List<String> createMessageCodeListForViolationCodeMessageOfValidationFailure(MessageSourceResolvableSpecification specification) {
+    String controllerSimpleName = replaceWithDefaultIfEmpty(specification.controllerSimpleName)
+    String controllerMethodName = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.controllerMethodName))
 
-    String innerControllerMethodName = controllerMethodName ? ".${ controllerMethodName }" : controllerMethodName
-    String innerMessageCategory = messageCategory ? ".${ messageCategory }" : messageCategory
-    String innerMessageType = messageType ? ".${ messageType }" : messageType
-    String innerMessageSubType = messageSubType ? ".${ messageSubType }" : messageSubType
-    String innerSeverity = ".${ severity }"
-    String innerPropertyPath = propertyPath ? ".${ propertyPath }" : propertyPath
+    String failureMessageCategory = ".failure"
+    String validationMessageType = ".validation"
+    String warningSeverity = ".warning"
 
     List<String> messageCodeList = [
-        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerSeverity }${ innerPropertyPath }".toString(),
-        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerPropertyPath }".toString(),
-        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerSeverity }".toString(),
-        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }".toString(),
-
-        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerSeverity }${ innerPropertyPath }".toString(),
-        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerPropertyPath }".toString(),
-        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }${ innerSeverity }".toString(),
-        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerMessageType }".toString(),
-
-        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerSeverity }${ innerPropertyPath }".toString(),
-        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerPropertyPath }".toString(),
-        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }${ innerSeverity }".toString(),
-        "${ controllerSimpleName }${ innerControllerMethodName }${ innerMessageCategory }".toString(),
-
-        "${ controllerMethodName }${ innerMessageCategory }${ innerSeverity }${ innerPropertyPath }".toString(),
-        "${ controllerMethodName }${ innerMessageCategory }${ innerPropertyPath }".toString(),
-        "${ controllerMethodName }${ innerMessageCategory }${ innerSeverity }".toString(),
-        "${ controllerMethodName }${ innerMessageCategory }".toString(),
-
-        "default${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerSeverity }${ innerPropertyPath }".toString(),
-        "default${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerPropertyPath }".toString(),
-        "default${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }${ innerSeverity }".toString(),
-        "default${ innerMessageCategory }${ innerMessageType }${ innerMessageSubType }".toString(),
-
-        "default${ innerMessageCategory }${ innerMessageType }${ innerSeverity }${ innerPropertyPath }".toString(),
-        "default${ innerMessageCategory }${ innerMessageType }${ innerPropertyPath }".toString(),
-        "default${ innerMessageCategory }${ innerMessageType }${ innerSeverity }".toString(),
-        "default${ innerMessageCategory }${ innerMessageType }".toString(),
-
-        "default${ innerMessageCategory }${ innerSeverity }${ innerPropertyPath }".toString(),
-        "default${ innerMessageCategory }${ innerPropertyPath }".toString(),
-        "default${ innerMessageCategory }${ innerSeverity }".toString(),
-        "default${ innerMessageCategory }".toString(),
-
-        "default${ innerSeverity }${ innerPropertyPath }".toString(),
-        "default${ innerSeverity }".toString()
+        "${ controllerSimpleName }${ controllerMethodName }${ failureMessageCategory }${ validationMessageType }".toString(),
+        "${ controllerMethodName }${ failureMessageCategory }${ validationMessageType }".toString(),
+        "default${ failureMessageCategory }${ validationMessageType }".toString(),
+        "default${ failureMessageCategory }${ warningSeverity }".toString(),
+        "default${ warningSeverity }".toString()
     ]
+
+    messageCodeList = removeLeadingDot(messageCodeList)
+    messageCodeList = removeStandaloneStrings(messageCodeList)
+
+    return messageCodeList.unique()
+  }
+
+  /**
+   * For {@code validation} category of failures, creates a list of message codes for resolving {@code metaData.violation.validationReport.root.message} part of JSON response.
+   * <p/>
+   * Regarding {@link MessageSourceResolvableSpecification} properties, implementation fixes {@code messageCategory} to {@code failure}, {@code messageType} to {@code validation}, and
+   * {@code severity} to {@code warning}. Significant and distinguishing {@link MessageSourceResolvableSpecification} property is only {@code messageSubType}. This means that the value of that
+   * property (beside {@code controllerSimpleName} and {@code controllerMethodName}) is used for creating message code permutations (ordered combinations).
+   * <p/>
+   * Response JSON part {@code  metaData.violation.validationReport.root.message} is intended to hold a message giving high-level overview of validation failure related to the {@code messageSubType},
+   * where {@code messageSubType} contains uncapitalized simple class name of a root object whose properties caused validation failure. When additional high-level description is not needed, it is
+   * common that JSON response parts {@code  metaData.violation.validationReport.root.message} and {@code metaData.violation.codeMessage} contain the same value.
+   * <p/>
+   * Example of message codes for {@code messageSubType = requestDao}:
+   * <pre>
+   *   "testController.testControllerMethod.failure.validation.requestDao",
+   *
+   *   "testControllerMethod.failure.validation.requestDao",
+   *
+   *   "default.failure.validation.requestDao",
+   *   "default.failure.validation",
+   *   "default.failure.warning",
+   *   "default.warning"
+   * </pre>
+   */
+  @SuppressWarnings("DuplicateStringLiteral")
+  static List<String> createMessageCodeListForRootBeanMessageOfValidationFailure(MessageSourceResolvableSpecification specification) {
+    String controllerSimpleName = replaceWithDefaultIfEmpty(specification.controllerSimpleName)
+    String controllerMethodName = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.controllerMethodName))
+    String messageSubType = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.messageSubType))
+
+    String failureMessageCategory = ".failure"
+    String validationMessageType = ".validation"
+    String warningSeverity = ".warning"
+
+    List<String> messageCodeList = [
+        "${ controllerSimpleName }${ controllerMethodName }${ failureMessageCategory }${ validationMessageType }${ messageSubType }".toString(),
+        "${ controllerMethodName }${ failureMessageCategory }${ validationMessageType }${ messageSubType }".toString(),
+        "default${ failureMessageCategory }${ validationMessageType }${ messageSubType }".toString(),
+        "default${ failureMessageCategory }${ validationMessageType }".toString(),
+        "default${ failureMessageCategory }${ warningSeverity }".toString(),
+        "default${ warningSeverity }".toString()
+    ]
+
+    messageCodeList = removeLeadingDot(messageCodeList)
+    messageCodeList = removeStandaloneStrings(messageCodeList)
+
+    return messageCodeList.unique()
+  }
+
+  /**
+   * For {@code validation} category of failures, creates a list of message codes for resolving {@code metaData.violation.validationReport.constraintViolations[].message} parts of JSON response.
+   * <p/>
+   * Regarding {@link MessageSourceResolvableSpecification} properties, implementation fixes {@code messageCategory} to {@code failure}, {@code messageType} to {@code validation}, and
+   * {@code severity} to {@code warning}. Significant and distinguishing {@link MessageSourceResolvableSpecification} properties are {@code messageSubType}, {@code constraintViolationPropertyPath}
+   * and {@code constraintType}. This means that values of those properties (beside {@code controllerSimpleName} and {@code controllerMethodName}) are used for creating message code permutations
+   * (ordered combinations).
+   * <p/>
+   * When using a competent validation library, constraint violation messages on a property path level are usually localized already, based on validation constraint type. We need replacement of these
+   * messages only if we have to have a more specific message than only constraint type can provide. For example, the validation library can provide a standard localized message for {@code notBlank}
+   * constraint type. If we need a more specific message for {@code somePropertyOfMine.notBlank} we have to override the originally provided message. For this purpose, we can use some of the message
+   * codes generated by this method.
+   * <p/>
+   * On the other hand, if we have originally provided message specific for a particular constraint type, we do not want to override it with a more general message, just saying that validation
+   * failed, for example. Therefore, this method has {@code overridingResolvedDefaultMessage} parameter allowing the caller to provide an already resolved message. The presence of this value will
+   * prevent the usage of more general message codes.
+   * <p/>
+   * To summarize, in the presence of {@code overridingResolvedDefaultMessage} (which is a common case), we will generate only message codes that can be resolved to the more detailed message.
+   * <p/>
+   * Example of message codes for {@code messageSubType = requestDao, constraintViolationPropertyPath = somePath.message, constraintType = notNull} and non-empty
+   * {@code overridingResolvedDefaultMessage} (the common case):
+   * <pre>
+   *   "testController.testControllerMethod.failure.validation.requestDao.somePath.message.notNull",
+   *   "testController.testControllerMethod.failure.validation.requestDao.notNull",
+   *   "testController.testControllerMethod.failure.validation.notNull",
+   *
+   *   "testControllerMethod.failure.validation.requestDao.somePath.message.notNull",
+   *   "testControllerMethod.failure.validation.requestDao.notNull",
+   *   "testControllerMethod.failure.validation.notNull"
+   *
+   *   "default.failure.validation.requestDao.somePath.message.notNull",
+   *   "default.failure.validation.requestDao.notNull"
+   * </pre>
+   * Example of message codes for {@code messageSubType = requestDao, constraintViolationPropertyPath = somePath.message, constraintType = notNull} and empty {@code overridingResolvedDefaultMessage}
+   * (rare exceptional case):
+   * <pre>
+   *   "testController.testControllerMethod.failure.validation.requestDao.somePath.message.notNull",
+   *   "testController.testControllerMethod.failure.validation.requestDao.notNull",
+   *   "testController.testControllerMethod.failure.validation.notNull",
+   *
+   *   "testControllerMethod.failure.validation.requestDao.somePath.message.notNull",
+   *   "testControllerMethod.failure.validation.requestDao.notNull",
+   *   "testControllerMethod.failure.validation.notNull"
+   *
+   *   "default.failure.validation.requestDao.somePath.message.notNull",
+   *   "default.failure.validation.requestDao.notNull"
+   *
+   *   "default.failure.validation.notNull",
+   *   "default.failure.validation",
+   *   "default.failure.warning",
+   *   "default.warning",
+   * </pre>
+   */
+  @SuppressWarnings("DuplicateStringLiteral")
+  static List<String> createMessageCodeListForConstraintViolationMessageOfValidationFailure(MessageSourceResolvableSpecification specification, String overridingResolvedDefaultMessage = "") {
+    String controllerSimpleName = replaceWithDefaultIfEmpty(specification.controllerSimpleName)
+    String controllerMethodName = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.controllerMethodName))
+    String messageSubType = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.messageSubType))
+    String constraintViolationPropertyPath = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.constraintViolationPropertyPath))
+    String constraintType = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.constraintViolationType))
+
+    String failureMessageCategory = ".failure"
+    String validationMessageType = ".validation"
+    String warningSeverity = ".warning"
+
+    List<String> messageCodeList = [
+        "${ controllerSimpleName }${ controllerMethodName }${ failureMessageCategory }${ validationMessageType }${ messageSubType }${ constraintViolationPropertyPath }${ constraintType }".toString(),
+        "${ controllerSimpleName }${ controllerMethodName }${ failureMessageCategory }${ validationMessageType }${ messageSubType }${ constraintType }".toString(),
+        "${ controllerSimpleName }${ controllerMethodName }${ failureMessageCategory }${ validationMessageType }${ constraintType }".toString(),
+
+        "${ controllerMethodName }${ failureMessageCategory }${ validationMessageType }${ messageSubType }${ constraintViolationPropertyPath }${ constraintType }".toString(),
+        "${ controllerMethodName }${ failureMessageCategory }${ validationMessageType }${ messageSubType }${ constraintType }".toString(),
+        "${ controllerMethodName }${ failureMessageCategory }${ validationMessageType }${ constraintType }".toString(),
+
+        "default${ failureMessageCategory }${ validationMessageType }${ messageSubType }${ constraintViolationPropertyPath }${ constraintType }".toString(),
+        "default${ failureMessageCategory }${ validationMessageType }${ messageSubType }${ constraintType }".toString()
+    ]
+
+    List<String> fallbackCodeListForMissingOverridingDefaultMessage = [
+        "default${ failureMessageCategory }${ validationMessageType }${ constraintType }".toString(),
+        "default${ failureMessageCategory }${ validationMessageType }".toString(),
+        "default${ failureMessageCategory }${ warningSeverity }".toString(),
+        "default${ warningSeverity }".toString()
+    ]
+
+    String myResolvedDefaultMessage = overridingResolvedDefaultMessage ? overridingResolvedDefaultMessage.trim() : ""
+    if (myResolvedDefaultMessage.isEmpty()) {
+      messageCodeList.addAll(fallbackCodeListForMissingOverridingDefaultMessage)
+    }
 
     messageCodeList = removeLeadingDot(messageCodeList)
     messageCodeList = removeStandaloneStrings(messageCodeList)

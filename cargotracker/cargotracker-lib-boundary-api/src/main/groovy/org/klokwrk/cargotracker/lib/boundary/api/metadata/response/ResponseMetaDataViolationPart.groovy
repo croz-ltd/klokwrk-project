@@ -24,7 +24,7 @@ import groovy.transform.CompileStatic
  * <p/>
  * For successful responses, it should not be rendered.
  * <p/>
- * An example of metadata containing violation part can be seen in the following example:
+ * An example of metadata containing violation part rendered for domain failure can be seen in the following example:
  * <pre>
  * {
  *     "metaData": {
@@ -50,32 +50,40 @@ class ResponseMetaDataViolationPart {
    * </p>
    * In general, it does not have to be designed to be human-readable, but rather it should be in the form of some violation/error identifier. For example, the categorization of HTTP response
    * statuses (200, 400, 404, 500, etc.), or database error code categorizations, are good examples of the kind of information that should go in here.
-   * <p/>
-   * Usually, this code is originating from domain exceptions and only copied in this metadata response.
    */
   String code
 
   /**
-   * A localized human-readable message describing the main category of the violation or error.
+   * A localized human-readable message describing the code property.
    */
   String codeMessage
 
   /**
    * Type of violation as a lowercase string corresponding to the values of {@link org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType} enum.
    * <p/>
-   * This information may be valuable for the client when deciding how to handle violation. Violations of different types may add additional violation data.
+   * This information may be valuable for the client when deciding how to handle the violation. Violations of different types may add additional data in the violation part.
    */
   String type
 
   /**
-   * UUID contained in the log message of logged exception.
+   * Violation identifying UUID contained in the message of logged exception.
    * <p/>
-   * We cannot recover from some violations. A typical example is a <code>NullPointerException</code> raised during the execution of server side code. The usual method for handling such exceptions is
+   * We cannot recover from some violations. A typical example is a {@code NullPointerException} raised during the execution of server side code. The usual method for handling such exceptions is
    * to log them on the server and report them as generic exceptions to the client (without passing the stack trace). However, to enable the client to report the issue, there is a need to reference
-   * the concrete exception. This logUuid is that kind of reference. The client can use it while reporting the problem, and maintainers can then correlate it with the stack trace in the log.
+   * the concrete exception somehow. This {@code logUuid} is that kind of reference. The client can use it while reporting the problem, and maintainers can then correlate it with the stack trace in
+   * the log.
    * <p/>
-   * Property <code>logUuid</code> should occur in the response only if the exception stack trace is written in the log on the server-side. This should always happen for violations with ERROR
+   * Property {@code logUuid} should occur in the response only if the exception stack trace is written in the log on the server-side. This should always happen for violations with {@code error}
    * severity. For other severities, it may or may not occur, and usually will not.
    */
   String logUuid
+
+  /**
+   * Violation part containing detailed information about validation failures.
+   * <p/>
+   * This part is rendered only when violation failure occurs. It is not rendered for any other failure type (domain, other or unknown).
+   *
+   * @see ResponseMetaDataValidationReportPart
+   */
+  ResponseMetaDataValidationReportPart validationReport
 }

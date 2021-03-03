@@ -134,11 +134,12 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
     }
 
     verifyAll(metadataMap.violation as Map) {
-      it.size() == 4
+      it.size() == 5
       logUuid == null
       code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
       codeMessage == "Request is not valid."
       type == ViolationType.OTHER.name().toLowerCase()
+      validationReport == null
     }
   }
 
@@ -182,11 +183,12 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
     }
 
     verifyAll(metadataMap.violation as Map) {
-      it.size() == 4
+      it.size() == 5
       logUuid
       code == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
       codeMessage == "Internal server error."
       type == ViolationType.OTHER.name().toLowerCase()
+      validationReport == null
     }
   }
 }
