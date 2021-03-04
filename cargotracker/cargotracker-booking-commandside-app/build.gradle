@@ -139,6 +139,7 @@ dependencies {
   implementation "org.codehaus.groovy:groovy-macro"
   implementation "org.hamcrest:hamcrest"
   implementation "org.springframework.boot:spring-boot-starter-actuator"
+  implementation "org.springframework.boot:spring-boot-starter-validation"
   implementation "org.springframework.boot:spring-boot-starter-web"
 
   runtimeOnly "com.wavefront:wavefront-spring-boot-starter"

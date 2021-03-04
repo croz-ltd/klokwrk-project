@@ -26,6 +26,7 @@ import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizerConfiguratio
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 
 @EnableConfigurationProperties(EssentialJacksonCustomizerConfigurationProperties)
 @Configuration
@@ -46,5 +47,10 @@ class SpringBootConfig {
   @Bean
   HandlerEnhancerDefinition loggingEventSourcingHandlerEnhancerDefinition() {
     return new LoggingEventSourcingHandlerEnhancerDefinition()
+  }
+
+  @Bean
+  LocalValidatorFactoryBean validator() {
+    return new LocalValidatorFactoryBean()
   }
 }

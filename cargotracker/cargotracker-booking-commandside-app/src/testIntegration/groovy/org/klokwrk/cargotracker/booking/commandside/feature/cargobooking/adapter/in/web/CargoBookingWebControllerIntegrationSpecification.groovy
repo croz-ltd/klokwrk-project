@@ -122,7 +122,68 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     "en"           | "en"
   }
 
-  void "should return expected response when request is not valid - [acceptLanguage: #acceptLanguage]"() {
+  @SuppressWarnings("AbcMetric")
+  void "should return expected response when request is not valid - validation failure - [acceptLanguage: #acceptLanguage]"() {
+    given:
+    String myAggregateIdentifier = UUID.randomUUID()
+    String webRequestBody = objectMapper.writeValueAsString([aggregateIdentifier: myAggregateIdentifier, originLocation: null, destinationLocation: null])
+
+    when:
+    MvcResult mvcResult = mockMvc.perform(
+        post("/cargo-booking/book-cargo")
+            .content(webRequestBody)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+    ).andReturn()
+
+    Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
+
+    then:
+    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
+
+    verifyAll(responseContentMap.metaData.general as Map) {
+      it.size() == 3
+      locale == localeString
+      severity == Severity.WARNING.name().toLowerCase()
+      timestamp
+    }
+
+    verifyAll(responseContentMap.metaData.http as Map) {
+      it.size() == 2
+      message == HttpStatus.BAD_REQUEST.reasonPhrase
+      status == HttpStatus.BAD_REQUEST.value().toString()
+    }
+
+    verifyAll(responseContentMap.metaData.violation as Map) {
+      it.size() == 4
+      code == HttpStatus.BAD_REQUEST.value().toString()
+      codeMessage == myViolationCodeMessage
+      type == ViolationType.VALIDATION.name().toLowerCase()
+      validationReport != null
+    }
+
+    verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
+      it.size() == 2
+      root.type == "bookCargoRequest"
+      root.message == myViolationCodeMessage
+      constraintViolations.size() == 2
+      constraintViolations.find({ it.path == "originLocation" }).type == "notNull"
+      constraintViolations.find({ it.path == "destinationLocation" }).type == "notNull"
+    }
+
+    verifyAll(responseContentMap.payload as Map) {
+      size() == 0
+    }
+
+    where:
+    acceptLanguage | localeString | myViolationCodeMessage
+    "hr-HR"        | "hr_HR"      | "Zahtjev nije ispravan."
+    "en"           | "en"         | "Request is not valid."
+  }
+
+  void "should return expected response when request is not valid - domain failure - [acceptLanguage: #acceptLanguage]"() {
     given:
     String myAggregateIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString([aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRZAG"])

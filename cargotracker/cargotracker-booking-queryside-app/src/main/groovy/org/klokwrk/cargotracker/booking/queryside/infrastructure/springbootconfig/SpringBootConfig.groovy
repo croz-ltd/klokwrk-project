@@ -33,6 +33,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.TransactionDefinition
 import org.springframework.transaction.support.DefaultTransactionDefinition
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 
 @EnableConfigurationProperties([DataSourceProxyConfigurationProperties, EssentialJacksonCustomizerConfigurationProperties])
 @Configuration
@@ -72,5 +73,10 @@ class SpringBootConfig {
     transactionDefinition.readOnly = true
 
     return new SpringTransactionManager(transactionManager, transactionDefinition)
+  }
+
+  @Bean
+  LocalValidatorFactoryBean validator() {
+    return new LocalValidatorFactoryBean()
   }
 }

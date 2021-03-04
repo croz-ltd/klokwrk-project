@@ -52,6 +52,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         "org.codehaus.groovy..",
         "groovy..",
 
+        "javax.validation..",
         "javax.servlet",
 
         "org.axonframework.modelling.command..",

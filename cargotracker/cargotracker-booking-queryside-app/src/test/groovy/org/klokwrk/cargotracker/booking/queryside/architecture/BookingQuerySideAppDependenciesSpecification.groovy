@@ -55,7 +55,10 @@ class BookingQuerySideAppDependenciesSpecification extends Specification {
         "org.codehaus.groovy..",
         "groovy..",
 
+        "javax.validation..",
+
         "org.axonframework.spring..",
+        "org.hamcrest",
         "org.springframework.."
     ]
 
@@ -69,6 +72,7 @@ class BookingQuerySideAppDependenciesSpecification extends Specification {
 
     String[] klokwrkLibDatasourceProxyAllPackages = ["org.klokwrk.lib.datasourceproxy.."]
     String[] klokwrkLibJacksonAllPackages = ["org.klokwrk.lib.jackson.."]
+    String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lang.groovy.."]
 
     // @formatter:off
     //noinspection ChangeToOperator
@@ -89,6 +93,7 @@ class BookingQuerySideAppDependenciesSpecification extends Specification {
 
                 klokwrkLibDatasourceProxyAllPackages +
                 klokwrkLibJacksonAllPackages +
+                klokwrkLangGroovyAllPackages +
 
                 thirdPartyDependencyAllPackages as String[]
             )

@@ -29,6 +29,10 @@ import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.springframework.stereotype.Service
 
+import javax.validation.ConstraintViolation
+import javax.validation.ConstraintViolationException
+import javax.validation.Validator
+
 import static org.hamcrest.Matchers.notNullValue
 
 @Service
@@ -36,8 +40,10 @@ import static org.hamcrest.Matchers.notNullValue
 class CargoBookingApplicationService implements BookCargoPortIn {
   private final CargoBookingFactoryService cargoBookingFactoryService
   private final CommandGatewayAdapter commandGatewayAdapter
+  private final Validator validator
 
-  CargoBookingApplicationService(CommandGateway commandGateway, CargoBookingFactoryService cargoBookingFactoryService) {
+  CargoBookingApplicationService(Validator validator, CommandGateway commandGateway, CargoBookingFactoryService cargoBookingFactoryService) {
+    this.validator = validator
     this.commandGatewayAdapter = new CommandGatewayAdapter(commandGateway)
     this.cargoBookingFactoryService = cargoBookingFactoryService
   }
@@ -45,12 +51,18 @@ class CargoBookingApplicationService implements BookCargoPortIn {
   @Override
   OperationResponse<BookCargoResponse> bookCargo(OperationRequest<BookCargoRequest> bookCargoOperationRequest) {
     requireMatch(bookCargoOperationRequest, notNullValue())
-
-    // TODO dmurat: validation - implement validation of BookCargoRequest here.
+    validateOperationRequest(bookCargoOperationRequest)
 
     BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoOperationRequest.payload)
     CargoAggregate cargoAggregate = commandGatewayAdapter.sendAndWait(bookCargoCommand, bookCargoOperationRequest.metaData)
 
     return new OperationResponse(payload: cargoBookingFactoryService.createBookCargoResponse(cargoAggregate))
+  }
+
+  private void validateOperationRequest(OperationRequest<?> operationRequest) {
+    Set<ConstraintViolation<?>> constraintViolationSet = validator.validate(operationRequest.payload)
+    if (!constraintViolationSet.isEmpty()) {
+      throw new ConstraintViolationException(constraintViolationSet)
+    }
   }
 }

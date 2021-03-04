@@ -1,3 +1,25 @@
+### cargotracker-booking-queryside, cargo-summary/fetch-cargo-summary, validation failure, hr
+POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-summary/fetch-cargo-summary
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
+Accept-Language: hr-HR
+
+{
+  "aggregateIdentifier": null
+}
+
+### cargotracker-booking-queryside, cargo-summary/fetch-cargo-summary, validation failure, en
+POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-summary/fetch-cargo-summary
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
+Accept-Language: en
+
+{
+  "aggregateIdentifier": null
+}
+
 ### cargotracker-booking-queryside, cargo-summary/fetch-cargo-summary, success, hr
 POST http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-summary/fetch-cargo-summary
 Content-Type: application/json

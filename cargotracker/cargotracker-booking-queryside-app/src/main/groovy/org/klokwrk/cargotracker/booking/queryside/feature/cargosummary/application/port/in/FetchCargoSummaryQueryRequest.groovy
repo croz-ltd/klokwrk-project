@@ -22,9 +22,15 @@ import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
+import javax.validation.constraints.NotNull
+
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
 class FetchCargoSummaryQueryRequest {
+  // TODO dmurat: validation - complete validation rules for properties.
+
+  // Not null and not blank if not null. Must be in uuid format.
+  @NotNull
   String aggregateIdentifier
 }

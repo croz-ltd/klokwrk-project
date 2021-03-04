@@ -28,17 +28,28 @@ import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.springframework.stereotype.Service
 
+import javax.validation.ConstraintViolation
+import javax.validation.ConstraintViolationException
+import javax.validation.Validator
+
+import static org.hamcrest.Matchers.notNullValue
+
 @Service
 @CompileStatic
 class CargoSummaryQueryApplicationService implements FetchCargoSummaryQueryPortIn {
   private final QueryGatewayAdapter queryGatewayAdapter
+  private final Validator validator
 
-  CargoSummaryQueryApplicationService(QueryGateway queryGateway) {
+  CargoSummaryQueryApplicationService(Validator validator, QueryGateway queryGateway) {
+    this.validator = validator
     this.queryGatewayAdapter = new QueryGatewayAdapter(queryGateway)
   }
 
   @Override
   OperationResponse<FetchCargoSummaryQueryResponse> fetchCargoSummaryQuery(OperationRequest<FetchCargoSummaryQueryRequest> fetchCargoSummaryQueryOperationRequest) {
+    requireMatch(fetchCargoSummaryQueryOperationRequest, notNullValue())
+    validateOperationRequest(fetchCargoSummaryQueryOperationRequest)
+
     FetchCargoSummaryQueryResponse fetchCargoSummaryQueryResponse = queryGatewayAdapter.query(fetchCargoSummaryQueryOperationRequest, FetchCargoSummaryQueryResponse)
     return fetchCargoSummaryQueryOperationResponseFromFetchCargoSummaryQueryResponse(fetchCargoSummaryQueryResponse)
   }
@@ -46,5 +57,12 @@ class CargoSummaryQueryApplicationService implements FetchCargoSummaryQueryPortI
   protected OperationResponse<FetchCargoSummaryQueryResponse> fetchCargoSummaryQueryOperationResponseFromFetchCargoSummaryQueryResponse(FetchCargoSummaryQueryResponse fetchCargoSummaryQueryResponse) {
     ResponseMetaData responseMetaData = ResponseMetaData.createBasicInfoResponseMetaData()
     return new OperationResponse<FetchCargoSummaryQueryResponse>(payload: fetchCargoSummaryQueryResponse, metaData: responseMetaData.propertiesFiltered)
+  }
+
+  private void validateOperationRequest(OperationRequest<?> operationRequest) {
+    Set<ConstraintViolation<?>> constraintViolationSet = validator.validate(operationRequest.payload)
+    if (!constraintViolationSet.isEmpty()) {
+      throw new ConstraintViolationException(constraintViolationSet)
+    }
   }
 }
