@@ -27,11 +27,8 @@ import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applica
 import org.klokwrk.cargotracker.lib.axon.cqrs.commandgateway.CommandGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
+import org.klokwrk.lib.validation.springboot.ValidationService
 import org.springframework.stereotype.Service
-
-import javax.validation.ConstraintViolation
-import javax.validation.ConstraintViolationException
-import javax.validation.Validator
 
 import static org.hamcrest.Matchers.notNullValue
 
@@ -40,10 +37,10 @@ import static org.hamcrest.Matchers.notNullValue
 class CargoBookingApplicationService implements BookCargoPortIn {
   private final CargoBookingFactoryService cargoBookingFactoryService
   private final CommandGatewayAdapter commandGatewayAdapter
-  private final Validator validator
+  private final ValidationService validationService
 
-  CargoBookingApplicationService(Validator validator, CommandGateway commandGateway, CargoBookingFactoryService cargoBookingFactoryService) {
-    this.validator = validator
+  CargoBookingApplicationService(ValidationService validationService, CommandGateway commandGateway, CargoBookingFactoryService cargoBookingFactoryService) {
+    this.validationService = validationService
     this.commandGatewayAdapter = new CommandGatewayAdapter(commandGateway)
     this.cargoBookingFactoryService = cargoBookingFactoryService
   }
@@ -51,18 +48,11 @@ class CargoBookingApplicationService implements BookCargoPortIn {
   @Override
   OperationResponse<BookCargoResponse> bookCargo(OperationRequest<BookCargoRequest> bookCargoOperationRequest) {
     requireMatch(bookCargoOperationRequest, notNullValue())
-    validateOperationRequest(bookCargoOperationRequest)
+    validationService.validate(bookCargoOperationRequest.payload)
 
     BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoOperationRequest.payload)
     CargoAggregate cargoAggregate = commandGatewayAdapter.sendAndWait(bookCargoCommand, bookCargoOperationRequest.metaData)
 
     return new OperationResponse(payload: cargoBookingFactoryService.createBookCargoResponse(cargoAggregate))
-  }
-
-  private void validateOperationRequest(OperationRequest<?> operationRequest) {
-    Set<ConstraintViolation<?>> constraintViolationSet = validator.validate(operationRequest.payload)
-    if (!constraintViolationSet.isEmpty()) {
-      throw new ConstraintViolationException(constraintViolationSet)
-    }
   }
 }
