@@ -72,6 +72,8 @@ class BookingQuerySideAppDependenciesSpecification extends Specification {
 
     String[] klokwrkLibDatasourceProxyAllPackages = ["org.klokwrk.lib.datasourceproxy.."]
     String[] klokwrkLibJacksonAllPackages = ["org.klokwrk.lib.jackson.."]
+    String[] klokwrkLibValidationPackages = ["org.klokwrk.lib.validation.."]
+
     String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lang.groovy.."]
 
     // @formatter:off
@@ -93,6 +95,8 @@ class BookingQuerySideAppDependenciesSpecification extends Specification {
 
                 klokwrkLibDatasourceProxyAllPackages +
                 klokwrkLibJacksonAllPackages +
+                klokwrkLibValidationPackages +
+
                 klokwrkLangGroovyAllPackages +
 
                 thirdPartyDependencyAllPackages as String[]
