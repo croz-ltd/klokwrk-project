@@ -19,7 +19,18 @@ package org.klokwrk.lang.groovy.constant
 
 import groovy.transform.CompileStatic
 
+/**
+ * Constants to be used from any module of the project.
+ */
 @CompileStatic
 class CommonConstants {
-  static final String NOT_AVAILABLE = "n/a"
+  /**
+   * Used when string value represents that something is missing.
+   */
+  public static final String NOT_AVAILABLE = "n/a"
+
+  /**
+   * Regex for verifying if string complies to UUID format.
+   */
+  public static final String REGEX_UUID_FORMAT = /^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$/
 }

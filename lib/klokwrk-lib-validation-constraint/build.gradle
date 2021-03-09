@@ -1,4 +1,10 @@
 apply plugin: "java-library"
 
 dependencies {
+  implementation platform(project(":klokwrk-platform-spring-boot"))
+
+  implementation project(":klokwrk-lang-groovy")
+
+  implementation "jakarta.validation:jakarta.validation-api"
+  implementation "org.codehaus.groovy:groovy"
 }
