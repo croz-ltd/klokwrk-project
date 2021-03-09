@@ -22,7 +22,7 @@ class ValidationServiceDefaultSetupSpecification extends Specification {
   void "default configuration should be applied"() {
     expect:
     validationService.enabled
-    validationService.messageSourceBaseNames == ["klokwrkValidationHibernateMessages"] as String[]
+    validationService.messageSourceBaseNames == ["klokwrkValidationConstraintMessages"] as String[]
   }
 
   void "should not throw for valid object"() {

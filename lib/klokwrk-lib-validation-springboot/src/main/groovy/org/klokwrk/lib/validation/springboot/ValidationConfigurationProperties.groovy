@@ -30,7 +30,7 @@ class ValidationConfigurationProperties {
   Boolean enabled = true
 
   /**
-   * The list of message source base names to be used with {@code ValidationService}. By default it includes only "klokwrkValidationHibernateMessages".
+   * The list of message source base names to be used with {@code ValidationService}. By default it includes only "klokwrkValidationConstraintMessages".
    */
-  String[] messageSourceBaseNames = ["klokwrkValidationHibernateMessages"]
+  String[] messageSourceBaseNames = ["klokwrkValidationConstraintMessages"]
 }
