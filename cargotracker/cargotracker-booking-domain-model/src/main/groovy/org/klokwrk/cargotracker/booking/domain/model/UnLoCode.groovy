@@ -18,6 +18,7 @@
 package org.klokwrk.cargotracker.booking.domain.model
 
 import groovy.transform.CompileStatic
+import org.klokwrk.lang.groovy.constant.CommonConstants
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
@@ -37,7 +38,7 @@ import static org.hamcrest.Matchers.not
 class UnLoCode implements PostMapConstructorCheckable {
 
   // Note: be careful to put this static field before UNKNOWN_UN_LO_CODE. Otherwise there will be NPE while constructing UNKNOWN_UN_LO_CODE.
-  static final Pattern CODE_PATTERN = Pattern.compile(/^[A-Z]{4}[A-Z2-9]$/)
+  static final Pattern CODE_PATTERN = Pattern.compile(CommonConstants.REGEX_UN_LO_CODE)
 
   static final UnLoCode UNKNOWN_UN_LO_CODE = new UnLoCode(code: "NAUNK")
 
