@@ -162,7 +162,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
       root.type == "fetchCargoSummaryQueryRequest"
       root.message == myViolationCodeMessage
       constraintViolations.size() == 1
-      constraintViolations.find({ it.path == "aggregateIdentifier" }).type == "notNull"
+      constraintViolations.find({ it.path == "aggregateIdentifier" }).type == "notBlank"
     }
 
     verifyAll(responseContentMap.payload as Map) {
