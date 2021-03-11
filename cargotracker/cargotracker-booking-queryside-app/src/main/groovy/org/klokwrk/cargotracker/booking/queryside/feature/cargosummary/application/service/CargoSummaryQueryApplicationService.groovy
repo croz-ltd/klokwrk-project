@@ -26,19 +26,27 @@ import org.klokwrk.cargotracker.lib.axon.cqrs.querygateway.QueryGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ResponseMetaData
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
+import org.klokwrk.lib.validation.springboot.ValidationService
 import org.springframework.stereotype.Service
+
+import static org.hamcrest.Matchers.notNullValue
 
 @Service
 @CompileStatic
 class CargoSummaryQueryApplicationService implements FetchCargoSummaryQueryPortIn {
   private final QueryGatewayAdapter queryGatewayAdapter
+  private final ValidationService validationService
 
-  CargoSummaryQueryApplicationService(QueryGateway queryGateway) {
+  CargoSummaryQueryApplicationService(ValidationService validationService, QueryGateway queryGateway) {
+    this.validationService = validationService
     this.queryGatewayAdapter = new QueryGatewayAdapter(queryGateway)
   }
 
   @Override
   OperationResponse<FetchCargoSummaryQueryResponse> fetchCargoSummaryQuery(OperationRequest<FetchCargoSummaryQueryRequest> fetchCargoSummaryQueryOperationRequest) {
+    requireMatch(fetchCargoSummaryQueryOperationRequest, notNullValue())
+    validationService.validate(fetchCargoSummaryQueryOperationRequest.payload)
+
     FetchCargoSummaryQueryResponse fetchCargoSummaryQueryResponse = queryGatewayAdapter.query(fetchCargoSummaryQueryOperationRequest, FetchCargoSummaryQueryResponse)
     return fetchCargoSummaryQueryOperationResponseFromFetchCargoSummaryQueryResponse(fetchCargoSummaryQueryResponse)
   }

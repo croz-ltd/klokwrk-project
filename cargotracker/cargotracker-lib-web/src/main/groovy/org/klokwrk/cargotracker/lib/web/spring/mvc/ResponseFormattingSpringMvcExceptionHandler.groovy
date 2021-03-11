@@ -45,17 +45,16 @@ import org.springframework.web.util.WebUtils
 import java.time.Instant
 
 /**
- * Handles shaping and internationalization of the body in HTTP responses when execution of controller results in throwing SpringMvc specific exceptions.
+ * Handles shaping and internationalizing the body in HTTP responses when the execution of request results in throwing SpringMvc specific exceptions.
  * <p/>
- * SpringMvc exceptions taken into account are those that are handled by SpringMvc own {@link ResponseEntityExceptionHandler}, which is also a parent of this class.
+ * SpringMvc exceptions taken into account are those that are handled by SpringMvc own {@link ResponseEntityExceptionHandler}, which is also the parent of this class.
  * <p/>
- * Produced HTTP response body is a JSON serialized from {@link OperationResponse} instance containing populated "<code>metaData</code>" and empty "<code>payload</code>" properties. Here is an
- * example:
+ * Produced HTTP response body is a JSON serialized from {@link OperationResponse} instance containing populated {@code metaData} and empty {@code payload} properties. Here is an example:
  * <pre>
  * {
  *   "metaData": {
  *     "general": {
- *       "severity": "WARNING",
+ *       "severity": "warning",
  *       "locale": "en_GB",
  *       "timestamp": "2021-02-09T10:09:36.354151Z"
  *     },
@@ -66,46 +65,36 @@ import java.time.Instant
  *     "violation": {
  *       "code": "405",
  *       "codeMessage": "Request is not valid.",
- *       "type": "OTHER"
+ *       "type": "other"
  *     }
  *   },
  *   "payload": {}
  * }
  * </pre>
- * For <code>ERROR</code> severity, response body also contains <code>violation.logUuid</code> with the value of UUID that is part of the message logged for exception. For <code>WARNING</code>
- * severity there is no logging of the exception.
+ * For {@code error} severity, the response body also contains {@code metaData.violation.logUuid} property with the value of generated UUID. That UUID is part of the message logged for the exception.
+ * For {@code warning} severity, there is no logging of the exception.
  * <p/>
- * Here, "<code>violation.codeMessage</code>" entry is internationalized.
+ * In the response above, property {@code metaData.violation.codeMessage} needs to be localized.
  * <p/>
- * When used from Spring Boot application, the easiest is to create a controller advice that is eligible for component scanning (&#64;ControllerAdvice is annotated with &#64;Component):
+ * When used from the Spring Boot application, the easiest is to create controller advice that is eligible for component scanning (&#64;ControllerAdvice annotation is annotated with &#64;Component):
  * <pre>
  * &#64;ControllerAdvice
  * class ResponseFormattingSpringMvcExceptionHandlerControllerAdvice extends ResponseFormattingSpringMvcExceptionHandler {
  * }
  * </pre>
- * For internationalization of default messages, we are defining a resource bundle with base name "<code>responseFormattingDefaultMessages</code>". In Spring Boot application, that resource bundle
- * needs to be configured, for example, in <code>application.yml</code>:
+ * For localization purposes, we are defining {@code responseFormattingDefaultMessages} resource bundle containing default messages. In the Spring Boot application, that resource bundle needs to be
+ * configured, for example, in {@code application.yml} file:
  * <pre>
  * ...
  * spring.messages.basename: messages,responseFormattingDefaultMessages
  * ...
  * </pre>
- * The list of message codes which will be tried against the resource bundle is created by {@link MessageSourceResolvableHelper}. For resolving messages we are using
- * <code>httpResponseMetaData.violation.codeMessage</code> for <code>propertyPath</code> property of <code>MessageSourceResolvableSpecification</code>. This is to avoid potential future conflicts in
- * resource bundle keys if we'll need message resolving over some other <code>propertyPath</code>.
- * <p/>
- * Here is a list of <code>MessageSourceResolvableSpecification</code> property values used for resolving internationalized messages:
- * <ul>
- *   <li>controllerSimpleName: simple class name (without package) of a controller that was executing when an exception occurred</li>
- *   <li>controllerMethodName: method name of a controller that was executing when an exception occurred</li>
- *   <li>messageCategory: <code>failure</code></li>
- *   <li>messageType: <code>other</code></li>
- *   <li>messageSubType: simple uncapitalized class name (without package) of exception</li>
- *   <li>severity: <code>warning</code> or <code>error</code></li>
- *   <li>propertyPath: <code>httpResponseMetaData.violation.codeMessage</code></li>
- * </ul>
+ * Localization message codes for {@code metaData.violation.codeMessage} property is created with
+ * {@link MessageSourceResolvableHelper#createMessageCodeListForViolationCodeMessageOfOtherFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
+ * for further details.
  *
  * @see MessageSourceResolvableHelper
+ * @see MessageSourceResolvableHelper#createMessageCodeListForViolationCodeMessageOfOtherFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
  */
 @CompileStatic
 class ResponseFormattingSpringMvcExceptionHandler extends ResponseEntityExceptionHandler implements MessageSourceAware {
@@ -147,7 +136,7 @@ class ResponseFormattingSpringMvcExceptionHandler extends ResponseEntityExceptio
 
   protected HttpResponseMetaData createHttpResponseMetaData(Exception springMvcException, HandlerMethod handlerMethod, Locale locale, String logUuid, HttpStatus httpStatus) {
     ResponseMetaDataViolationPart responseMetaDataReportViolationPart =
-        new ResponseMetaDataViolationPart(code: httpStatus.value().toString(), codeMessage: httpStatus.reasonPhrase, type: ViolationType.OTHER, logUuid: logUuid)
+        new ResponseMetaDataViolationPart(code: httpStatus.value().toString(), codeMessage: httpStatus.reasonPhrase, type: ViolationType.OTHER.name().toLowerCase(), logUuid: logUuid)
 
     HttpResponseMetaDataHttpPart httpResponseMetaDataHttpPart = new HttpResponseMetaDataHttpPart(status: httpStatus.value().toString(), message: httpStatus.reasonPhrase)
 
@@ -157,7 +146,7 @@ class ResponseFormattingSpringMvcExceptionHandler extends ResponseEntityExceptio
     }
 
     HttpResponseMetaData httpResponseMetaData = new HttpResponseMetaData(
-        general: new ResponseMetaDataGeneralPart(timestamp: Instant.now(), severity: severity, locale: locale),
+        general: new ResponseMetaDataGeneralPart(timestamp: Instant.now(), severity: severity.name().toLowerCase(), locale: locale),
         violation: responseMetaDataReportViolationPart,
         http: httpResponseMetaDataHttpPart
     )
@@ -179,14 +168,14 @@ class ResponseFormattingSpringMvcExceptionHandler extends ResponseEntityExceptio
         controllerSimpleName: controllerSimpleName,
         controllerMethodName: controllerMethodName,
         messageCategory: "failure",
-        messageType: ViolationType.OTHER.toString().toLowerCase(),
+        messageType: ViolationType.OTHER.name().toLowerCase(),
         messageSubType: springMvcException.getClass().simpleName.uncapitalize(),
-        severity: severity.toString().toLowerCase(),
-        propertyPath: "httpResponseMetaData.violation.codeMessage"
+        severity: severity.name().toLowerCase()
     )
 
-    httpResponseMetaData.violation.codeMessage =
-        MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
+    httpResponseMetaData.violation.codeMessage = MessageSourceResolvableHelper.resolveMessageCodeList(
+        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfOtherFailure(resolvableMessageSpecification), locale
+    )
 
     return httpResponseMetaData
   }

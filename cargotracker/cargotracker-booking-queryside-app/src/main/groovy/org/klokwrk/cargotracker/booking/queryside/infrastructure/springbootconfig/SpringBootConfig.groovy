@@ -26,6 +26,8 @@ import org.klokwrk.lib.datasourceproxy.springboot.DataSourceProxyBeanPostProcess
 import org.klokwrk.lib.datasourceproxy.springboot.DataSourceProxyConfigurationProperties
 import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizer
 import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
+import org.klokwrk.lib.validation.springboot.ValidationConfigurationProperties
+import org.klokwrk.lib.validation.springboot.ValidationService
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -34,7 +36,7 @@ import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.TransactionDefinition
 import org.springframework.transaction.support.DefaultTransactionDefinition
 
-@EnableConfigurationProperties([DataSourceProxyConfigurationProperties, EssentialJacksonCustomizerConfigurationProperties])
+@EnableConfigurationProperties([DataSourceProxyConfigurationProperties, EssentialJacksonCustomizerConfigurationProperties, ValidationConfigurationProperties])
 @Configuration
 @CompileStatic
 class SpringBootConfig {
@@ -72,5 +74,11 @@ class SpringBootConfig {
     transactionDefinition.readOnly = true
 
     return new SpringTransactionManager(transactionManager, transactionDefinition)
+  }
+
+  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+  @Bean
+  ValidationService validationService(ValidationConfigurationProperties validationConfigurationProperties) {
+    return new ValidationService(validationConfigurationProperties)
   }
 }

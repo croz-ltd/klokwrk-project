@@ -51,7 +51,7 @@ import java.time.Instant
  * {
  *   "metaData": {
  *     "general": {
- *       "severity": "INFO",
+ *       "severity": "info",
  *       "locale": "en_GB",
  *       "timestamp": "2020-04-27T06:13:09.225221Z"
  *     },
@@ -112,7 +112,7 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     HttpStatus httpStatus = HttpStatus.resolve(httpServletResponse.status)
 
     HttpResponseMetaData httpResponseMetaData = new HttpResponseMetaData(
-        general: new ResponseMetaDataGeneralPart(timestamp: Instant.now(), severity: Severity.INFO, locale: httpServletRequest.locale),
+        general: new ResponseMetaDataGeneralPart(timestamp: Instant.now(), severity: Severity.INFO.name().toLowerCase(), locale: httpServletRequest.locale),
         http: createHttpResponseMetaDataPart(httpStatus)
     )
 

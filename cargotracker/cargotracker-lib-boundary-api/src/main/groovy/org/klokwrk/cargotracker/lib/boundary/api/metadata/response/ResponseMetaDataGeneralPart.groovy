@@ -30,17 +30,17 @@ import java.time.Instant
  * An example of metadata containing general part can be seen in the following example:
  * <pre>
  * {
- *     "metaData": {
- *         "general": {
- *             "severity": "WARNING",
- *             "locale": "en_GB",
- *             "timestamp": "2020-04-30T16:03:48.795816Z"
- *         }
- *         ...
- *     },
- *     "payload": {
- *         ...
+ *   "metaData": {
+ *     "general": {
+ *       "severity": "warning",
+ *       "locale": "en_GB",
+ *       "timestamp": "2020-04-30T16:03:48.795816Z"
  *     }
+ *     ...
+ *   },
+ *   "payload": {
+ *     ...
+ *   }
  * }
  * </pre>
  */
@@ -52,9 +52,9 @@ class ResponseMetaDataGeneralPart {
   Instant timestamp
 
   /**
-   * Severity of the response.
+   * Severity of the response as a lowercase string corresponding to the values of {@link Severity} enum.
    */
-  Severity severity
+  String severity
 
   /**
    * Locale used for rendering response message.

@@ -120,7 +120,7 @@ class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
 
       bodyMap.metaData.general.size() == 3
       bodyMap.metaData.general.timestamp
-      bodyMap.metaData.general.severity == "INFO"
+      bodyMap.metaData.general.severity == "info"
       bodyMap.metaData.general.locale == "en"
 
       bodyMap.metaData.violation == null

@@ -27,6 +27,7 @@ import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applica
 import org.klokwrk.cargotracker.lib.axon.cqrs.commandgateway.CommandGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
+import org.klokwrk.lib.validation.springboot.ValidationService
 import org.springframework.stereotype.Service
 
 import static org.hamcrest.Matchers.notNullValue
@@ -36,8 +37,10 @@ import static org.hamcrest.Matchers.notNullValue
 class CargoBookingApplicationService implements BookCargoPortIn {
   private final CargoBookingFactoryService cargoBookingFactoryService
   private final CommandGatewayAdapter commandGatewayAdapter
+  private final ValidationService validationService
 
-  CargoBookingApplicationService(CommandGateway commandGateway, CargoBookingFactoryService cargoBookingFactoryService) {
+  CargoBookingApplicationService(ValidationService validationService, CommandGateway commandGateway, CargoBookingFactoryService cargoBookingFactoryService) {
+    this.validationService = validationService
     this.commandGatewayAdapter = new CommandGatewayAdapter(commandGateway)
     this.cargoBookingFactoryService = cargoBookingFactoryService
   }
@@ -45,8 +48,7 @@ class CargoBookingApplicationService implements BookCargoPortIn {
   @Override
   OperationResponse<BookCargoResponse> bookCargo(OperationRequest<BookCargoRequest> bookCargoOperationRequest) {
     requireMatch(bookCargoOperationRequest, notNullValue())
-
-    // TODO dmurat: validation - implement validation of BookCargoRequest here.
+    validationService.validate(bookCargoOperationRequest.payload)
 
     BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoOperationRequest.payload)
     CargoAggregate cargoAggregate = commandGatewayAdapter.sendAndWait(bookCargoCommand, bookCargoOperationRequest.metaData)

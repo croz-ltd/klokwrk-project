@@ -52,6 +52,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         "org.codehaus.groovy..",
         "groovy..",
 
+        "javax.validation..",
         "javax.servlet",
 
         "org.axonframework.modelling.command..",
@@ -71,6 +72,8 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     String[] cargotrackerLibWebAllPackages = ["org.klokwrk.cargotracker.lib.web.."]
 
     String[] klokwrkLibJacksonAllPackages = ["org.klokwrk.lib.jackson.."]
+    String[] klokwrkLibValidationPackages = ["org.klokwrk.lib.validation.."]
+
     String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lang.groovy.."]
 
     // @formatter:off
@@ -89,6 +92,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
             cargotrackerLibWebAllPackages +
 
             klokwrkLibJacksonAllPackages +
+            klokwrkLibValidationPackages +
 
             klokwrkLangGroovyAllPackages +
 

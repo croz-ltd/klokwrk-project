@@ -21,6 +21,15 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.lib.web.spring.mvc.ResponseFormattingResponseBodyAdvice
 import org.springframework.web.bind.annotation.ControllerAdvice
 
+/**
+ * Controller advice component extending from non-component {@link ResponseFormattingResponseBodyAdvice} parent.
+ * <p/>
+ * The main reason for this class is to create a library-like {@link ResponseFormattingResponseBodyAdvice} class that is not automatically (via component scanning) included in the Spring context.
+ * Otherwise (since {@link ControllerAdvice} is also annotated with Component), the application developer will not have a clear choice not to activate customized and opinionated exception handling
+ * from {@link ResponseFormattingResponseBodyAdvice}.
+ * <p/>
+ * In our case, {@code ResponseFormattingResponseBodyControllerAdvice} is picked-up by auto-scanning from {@code BookingQuerySideApplication}.
+ */
 @ControllerAdvice
 @CompileStatic
 class ResponseFormattingResponseBodyControllerAdvice extends ResponseFormattingResponseBodyAdvice {

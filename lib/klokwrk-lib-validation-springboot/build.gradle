@@ -1,0 +1,29 @@
+apply plugin: "java-library"
+
+compileGroovy {
+  groovyOptions.javaAnnotationProcessing = true
+}
+
+dependencies {
+  implementation platform(project(":klokwrk-platform-spring-boot"))
+  annotationProcessor platform(project(":klokwrk-platform-spring-boot"))
+
+  annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+  implementation "io.github.classgraph:classgraph"
+  implementation "jakarta.validation:jakarta.validation-api"
+  implementation "org.codehaus.groovy:groovy"
+  implementation "org.glassfish:jakarta.el"
+  implementation "org.hibernate.validator:hibernate-validator"
+  implementation "org.springframework:spring-context"
+  implementation "org.springframework.boot:spring-boot"
+
+  runtimeOnly project(":klokwrk-lib-validation-validator")
+
+  testImplementation "org.spockframework:spock-core"
+  testImplementation "org.spockframework:spock-spring"
+  testImplementation "org.springframework:spring-test"
+  testImplementation "org.springframework.boot:spring-boot-autoconfigure"
+  testImplementation "org.springframework.boot:spring-boot-starter-logging"
+  testImplementation "org.springframework.boot:spring-boot-test"
+}

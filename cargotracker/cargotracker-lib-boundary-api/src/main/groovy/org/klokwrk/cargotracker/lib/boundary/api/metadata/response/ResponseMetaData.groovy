@@ -32,7 +32,7 @@ import java.time.Instant
  * {
  *     "metaData": {
  *         "general": {
- *             "severity": "INFO",
+ *             "severity": "info",
  *             "locale": "en_GB",
  *             "timestamp": "2020-04-30T15:37:24.999722Z"
  *         }
@@ -69,7 +69,7 @@ class ResponseMetaData {
    * @see Severity
    */
   static ResponseMetaData createBasicInfoResponseMetaData() {
-    ResponseMetaData responseMetadata = new ResponseMetaData(general: new ResponseMetaDataGeneralPart(timestamp: Instant.now(), severity: Severity.INFO))
+    ResponseMetaData responseMetadata = new ResponseMetaData(general: new ResponseMetaDataGeneralPart(timestamp: Instant.now(), severity: Severity.INFO.name().toLowerCase()))
     return responseMetadata
   }
 }

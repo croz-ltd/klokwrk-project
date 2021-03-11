@@ -23,11 +23,13 @@ import org.klokwrk.cargotracker.lib.axon.logging.LoggingCommandHandlerEnhancerDe
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingEventSourcingHandlerEnhancerDefinition
 import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizer
 import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
+import org.klokwrk.lib.validation.springboot.ValidationConfigurationProperties
+import org.klokwrk.lib.validation.springboot.ValidationService
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-@EnableConfigurationProperties(EssentialJacksonCustomizerConfigurationProperties)
+@EnableConfigurationProperties([EssentialJacksonCustomizerConfigurationProperties, ValidationConfigurationProperties])
 @Configuration
 @CompileStatic
 class SpringBootConfig {
@@ -46,5 +48,11 @@ class SpringBootConfig {
   @Bean
   HandlerEnhancerDefinition loggingEventSourcingHandlerEnhancerDefinition() {
     return new LoggingEventSourcingHandlerEnhancerDefinition()
+  }
+
+  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+  @Bean
+  ValidationService validationService(ValidationConfigurationProperties validationConfigurationProperties) {
+    return new ValidationService(validationConfigurationProperties)
   }
 }

@@ -39,15 +39,14 @@ import org.springframework.web.method.HandlerMethod
 import java.time.Instant
 
 /**
- * Handles shaping and internationalization of the body in HTTP responses when execution of controller results in throwing a {@link DomainException}.
+ * Handles shaping and internationalizing the body in HTTP responses when the execution of request results in throwing a {@link DomainException}.
  * <p/>
- * Produced HTTP response body is a JSON serialized from {@link OperationResponse} instance containing populated "<code>metaData</code>" and empty "<code>payload</code>" properties. Here is an
- * example:
+ * Produced HTTP response body is a JSON serialized from {@link OperationResponse} instance containing populated {@code metaData} and empty {@code payload} properties. Here is an example:
  * <pre>
  * {
  *   "metaData": {
  *     "general": {
- *       "severity": "WARNING",
+ *       "severity": "warning",
  *       "locale": "en_GB",
  *       "timestamp": "2020-04-26T09:41:04.917666Z"
  *     },
@@ -58,43 +57,33 @@ import java.time.Instant
  *     "violation": {
  *       "code": "400",
  *       "codeMessage": "Destination location cannot accept cargo from specified origin location.",
- *       "type": "DOMAIN"
+ *       "type": "domain"
  *     }
  *   },
  *   "payload": {}
  * }
  * </pre>
- * Here, "<code>violation.codeMessage</code>" entry is internationalized.
+ * Property {@code metaData.violation.codeMessage} needs to be localized.
  * <p/>
- * When used from Spring Boot application, the easiest is to create a controller advice that is eligible for component scanning (&#64;ControllerAdvice is annotated with &#64;Component):
+ * When used from the Spring Boot application, the easiest is to create controller advice that is eligible for component scanning (&#64;ControllerAdvice annotation is annotated with &#64;Component):
  * <pre>
  * &#64;ControllerAdvice
  * class ResponseFormattingDomainExceptionHandlerControllerAdvice extends ResponseFormattingDomainExceptionHandler {
  * }
  * </pre>
- * For internationalization of default messages, we are defining a resource bundle with base name "<code>responseFormattingDefaultMessages</code>". In Spring Boot application, that resource bundle
- * needs to be configured, for example, in <code>application.yml</code>:
+ * For localization purposes, we are defining {@code responseFormattingDefaultMessages} resource bundle containing default messages. In the Spring Boot application, that resource bundle needs to be
+ * configured, for example, in {@code application.yml} file:
  * <pre>
  * ...
  * spring.messages.basename: messages,responseFormattingDefaultMessages
  * ...
  * </pre>
- * The list of message codes which will be tried against the resource bundle is created by {@link MessageSourceResolvableHelper}. For resolving messages we are using
- * <code>httpResponseMetaData.violation.codeMessage</code> prefix for <code>propertyPath</code> property of <code>MessageSourceResolvableSpecification</code>. This is to avoid potential future
- * conflicts in resource bundle keys if we'll need message resolving over some other <code>propertyPath</code>.
- * <p/>
- * Here is a list of <code>MessageSourceResolvableSpecification</code> property values used for resolving internationalized messages:
- * <ul>
- *   <li>controllerSimpleName: simple class name (without package) of a controller that was executing when an exception occurred</li>
- *   <li>controllerMethodName: method name of a controller that was executing when an exception occurred</li>
- *   <li>messageCategory: <code>failure</code></li>
- *   <li>messageType: <code>domain</code></li>
- *   <li>messageSubType: value of <code>domainException.violationInfo.violationCode.codeAsText</code></li>
- *   <li>severity: value of <code>domainException.violationInfo.severity</code></li>
- *   <li>propertyPath: <code>httpResponseMetaData.violation.codeMessage</code></li>
- * </ul>
+ * Localization message codes for {@code metaData.violation.codeMessage} property is created with
+ * {@link MessageSourceResolvableHelper#createMessageCodeListForViolationCodeMessageOfDomainFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
+ * for further details.
  *
  * @see MessageSourceResolvableHelper
+ * @see MessageSourceResolvableHelper#createMessageCodeListForViolationCodeMessageOfDomainFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
  */
 @CompileStatic
 class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
@@ -119,7 +108,7 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
     HttpStatus httpStatus = mapDomainExceptionToHttpStatus(domainException)
 
     HttpResponseMetaData httpResponseMetaData = new HttpResponseMetaData(
-        general: new ResponseMetaDataGeneralPart(timestamp: Instant.now(), severity: domainException.violationInfo.severity, locale: locale),
+        general: new ResponseMetaDataGeneralPart(timestamp: Instant.now(), severity: domainException.violationInfo.severity.name().toLowerCase(), locale: locale),
         violation: createResponseMetaDataViolationPart(domainException),
         http: createHttpResponseMetaDataPart(httpStatus)
     )
@@ -150,7 +139,7 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
     ResponseMetaDataViolationPart responseMetaDataViolationPart = new ResponseMetaDataViolationPart(
         code: domainException.violationInfo.violationCode.code,
         codeMessage: domainException.violationInfo.violationCode.codeMessage,
-        type: ViolationType.DOMAIN
+        type: ViolationType.DOMAIN.name().toLowerCase()
     )
 
     return responseMetaDataViolationPart
@@ -164,18 +153,24 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
   protected HttpResponseMetaData localizeHttpResponseMetaData(
       HttpResponseMetaData httpResponseMetaData, DomainException domainException, HandlerMethod handlerMethod, Locale locale)
   {
+    String fullMessageSubType = domainException.violationInfo.violationCode.codeAsText
+    List<String> fullMessageSubTypeTokens = fullMessageSubType.tokenize(".")
+    String messageSubTypeMain = fullMessageSubTypeTokens[0]
+    String messageSubTypeDetails = fullMessageSubTypeTokens.size() > 1 ? fullMessageSubTypeTokens[1..-1].join(".") : ""
+
     MessageSourceResolvableSpecification resolvableMessageSpecification = new MessageSourceResolvableSpecification(
         controllerSimpleName: handlerMethod.beanType.simpleName.uncapitalize(),
         controllerMethodName: handlerMethod.method.name,
         messageCategory: "failure",
-        messageType: "domain",
-        messageSubType: domainException.violationInfo.violationCode.codeAsText,
-        severity: domainException.violationInfo.severity.toString().toLowerCase()
+        messageType: ViolationType.DOMAIN.name().toLowerCase(),
+        messageSubType: messageSubTypeMain,
+        messageSubTypeDetails: messageSubTypeDetails,
+        severity: domainException.violationInfo.severity.name().toLowerCase()
     )
 
-    resolvableMessageSpecification.propertyPath = "httpResponseMetaData.violation.codeMessage"
-    httpResponseMetaData.violation.codeMessage =
-        MessageSourceResolvableHelper.resolveMessageCodeList(messageSource, MessageSourceResolvableHelper.createMessageCodeList(resolvableMessageSpecification), locale)
+    httpResponseMetaData.violation.codeMessage = MessageSourceResolvableHelper.resolveMessageCodeList(
+        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfDomainFailure(resolvableMessageSpecification), locale
+    )
 
     return httpResponseMetaData
   }

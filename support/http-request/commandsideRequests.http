@@ -1,3 +1,27 @@
+### cargotracker-booking-commandside, cargo-booking/book-cargo, validation failure, hr
+POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
+Accept-Language: hr-HR
+
+{
+  "originLocation": null,
+  "destinationLocation": null
+}
+
+### cargotracker-booking-commandside, cargo-booking/book-cargo, validation failure, en
+POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
+Accept-Language: en
+
+{
+  "originLocation": null,
+  "destinationLocation": null
+}
+
 ### cargotracker-booking-commandside, cargo-booking/book-cargo, success, hr
 POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo
 Content-Type: application/json

@@ -77,14 +77,15 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
       payload.size() == 0
       metadata.general.propertiesFiltered.size() == 3
       metadata.general.timestamp
-      metadata.general.severity == Severity.ERROR
+      metadata.general.severity == Severity.ERROR.name().toLowerCase()
       metadata.general.locale == new Locale("en")
 
-      metadata.violation.propertiesFiltered.size() == 4
+      metadata.violation.propertiesFiltered.size() == 5
       metadata.violation.code == "500"
       metadata.violation.codeMessage == "Error"
-      metadata.violation.type == ViolationType.DOMAIN
+      metadata.violation.type == ViolationType.DOMAIN.name().toLowerCase()
       metadata.violation.logUuid == null
+      metadata.violation.validationReport == null
 
       metadata.http.propertiesFiltered.size() == 2
       metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
@@ -132,11 +133,12 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
       metadata.general.severity == severityParam
       metadata.general.locale == new Locale("en")
 
-      metadata.violation.propertiesFiltered.size() == 4
+      metadata.violation.propertiesFiltered.size() == 5
       metadata.violation.code == violationCodeParam
       metadata.violation.codeMessage == codeMessageParam
-      metadata.violation.type == ViolationType.DOMAIN
+      metadata.violation.type == ViolationType.DOMAIN.name().toLowerCase()
       metadata.violation.logUuid == null
+      metadata.violation.validationReport == null
 
       metadata.http.propertiesFiltered.size() == 2
       metadata.http.status == httpStatusParam
@@ -144,16 +146,16 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
     }
 
     where:
-    violationInfoParam        | exceptionParam                           | severityParam    | codeMessageParam | violationCodeParam | httpStatusParam | httpMessageParam
-    ViolationInfo.UNKNOWN     | new DomainException(violationInfoParam)  | Severity.ERROR   | "Error"          | "500"              | "500"           | "Internal Server Error"
-    ViolationInfo.UNKNOWN     | new CommandException(violationInfoParam) | Severity.ERROR   | "Error"          | "500"              | "500"           | "Internal Server Error"
-    ViolationInfo.UNKNOWN     | new QueryException(violationInfoParam)   | Severity.ERROR   | "Error"          | "500"              | "500"           | "Internal Server Error"
-    ViolationInfo.BAD_REQUEST | new DomainException(violationInfoParam)  | Severity.WARNING | "Warning"        | "400"              | "400"           | "Bad Request"
-    ViolationInfo.BAD_REQUEST | new CommandException(violationInfoParam) | Severity.WARNING | "Warning"        | "400"              | "400"           | "Bad Request"
-    ViolationInfo.BAD_REQUEST | new QueryException(violationInfoParam)   | Severity.WARNING | "Warning"        | "400"              | "400"           | "Bad Request"
-    ViolationInfo.NOT_FOUND   | new DomainException(violationInfoParam)  | Severity.WARNING | "Warning"        | "404"              | "404"           | "Not Found"
-    ViolationInfo.NOT_FOUND   | new CommandException(violationInfoParam) | Severity.WARNING | "Warning"        | "404"              | "404"           | "Not Found"
-    ViolationInfo.NOT_FOUND   | new QueryException(violationInfoParam)   | Severity.WARNING | "Warning"        | "404"              | "404"           | "Not Found"
+    violationInfoParam        | exceptionParam                           | severityParam                         | codeMessageParam | violationCodeParam | httpStatusParam | httpMessageParam
+    ViolationInfo.UNKNOWN     | new DomainException(violationInfoParam)  | Severity.ERROR.name().toLowerCase()   | "Error"          | "500"              | "500"           | "Internal Server Error"
+    ViolationInfo.UNKNOWN     | new CommandException(violationInfoParam) | Severity.ERROR.name().toLowerCase()   | "Error"          | "500"              | "500"           | "Internal Server Error"
+    ViolationInfo.UNKNOWN     | new QueryException(violationInfoParam)   | Severity.ERROR.name().toLowerCase()   | "Error"          | "500"              | "500"           | "Internal Server Error"
+    ViolationInfo.BAD_REQUEST | new DomainException(violationInfoParam)  | Severity.WARNING.name().toLowerCase() | "Warning"        | "400"              | "400"           | "Bad Request"
+    ViolationInfo.BAD_REQUEST | new CommandException(violationInfoParam) | Severity.WARNING.name().toLowerCase() | "Warning"        | "400"              | "400"           | "Bad Request"
+    ViolationInfo.BAD_REQUEST | new QueryException(violationInfoParam)   | Severity.WARNING.name().toLowerCase() | "Warning"        | "400"              | "400"           | "Bad Request"
+    ViolationInfo.NOT_FOUND   | new DomainException(violationInfoParam)  | Severity.WARNING.name().toLowerCase() | "Warning"        | "404"              | "404"           | "Not Found"
+    ViolationInfo.NOT_FOUND   | new CommandException(violationInfoParam) | Severity.WARNING.name().toLowerCase() | "Warning"        | "404"              | "404"           | "Not Found"
+    ViolationInfo.NOT_FOUND   | new QueryException(violationInfoParam)   | Severity.WARNING.name().toLowerCase() | "Warning"        | "404"              | "404"           | "Not Found"
 
     violationInfoConstantName = findViolationInfoConstantName(violationInfoParam)
   }
@@ -178,14 +180,15 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
 
       metadata.general.propertiesFiltered.size() == 3
       metadata.general.timestamp
-      metadata.general.severity == Severity.WARNING
+      metadata.general.severity == Severity.WARNING.name().toLowerCase()
       metadata.general.locale == new Locale("en")
 
-      metadata.violation.propertiesFiltered.size() == 4
+      metadata.violation.propertiesFiltered.size() == 5
       metadata.violation.code == "12345"
       metadata.violation.codeMessage == "My violation code message"
-      metadata.violation.type == ViolationType.DOMAIN
+      metadata.violation.type == ViolationType.DOMAIN.name().toLowerCase()
       metadata.violation.logUuid == null
+      metadata.violation.validationReport == null
 
       metadata.http.propertiesFiltered.size() == 2
       metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()

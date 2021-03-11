@@ -21,10 +21,16 @@ import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lib.validation.constraint.UuidFormatConstraint
+
+import javax.validation.constraints.NotBlank
 
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
 class FetchCargoSummaryQueryRequest {
+  // Not null and not blank. Must be in uuid format.
+  @UuidFormatConstraint
+  @NotBlank
   String aggregateIdentifier
 }

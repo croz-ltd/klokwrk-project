@@ -21,19 +21,28 @@ import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint
+import org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint
+import org.klokwrk.lib.validation.constraint.UuidFormatConstraint
+
+import javax.validation.constraints.NotBlank
 
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
 class BookCargoRequest {
-  // TODO dmurat: validation - specify validation rules for properties.
-
-  // Can be null. If specified, must be in uuid format.
+  // Can be null. If specified, must not be blank and must be in uuid format.
+  @NotBlankWhenNullableConstraint
+  @UuidFormatConstraint
   String aggregateIdentifier
 
-  // Not null and must be in unLoCode format. After formal validation passes (1st level validation), it also must exist in the location registry (2nd level validation).
+  // Not null and not blank when not null, and must be in unLoCode format. After formal validation passes (1st level validation), it also must exist in the location registry (2nd level validation).
+  @UnLoCodeFormatConstraint
+  @NotBlank
   String originLocation
 
-  // Not null and must be in unLoCode format. After formal validation passes (1st level validation) , it also must exist in the location registry (2nd level validation).
+  // Not null and not blank when not null, and must be in unLoCode format. After formal validation passes (1st level validation) , it also must exist in the location registry (2nd level validation).
+  @UnLoCodeFormatConstraint
+  @NotBlank
   String destinationLocation
 }
