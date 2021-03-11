@@ -169,8 +169,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
       root.type == "bookCargoRequest"
       root.message == myViolationCodeMessage
       constraintViolations.size() == 2
-      constraintViolations.find({ it.path == "originLocation" }).type == "notNull"
-      constraintViolations.find({ it.path == "destinationLocation" }).type == "notNull"
+      constraintViolations.find({ it.path == "originLocation" }).type == "notBlank"
+      constraintViolations.find({ it.path == "destinationLocation" }).type == "notBlank"
     }
 
     verifyAll(responseContentMap.payload as Map) {
