@@ -1,9 +1,16 @@
 package org.klokwrk.lib.validation.springboot
 
 import groovy.transform.CompileStatic
+import io.github.classgraph.ClassGraph
+import io.github.classgraph.ClassInfo
+import io.github.classgraph.ClassInfoList
+import io.github.classgraph.ClassRefTypeSignature
+import io.github.classgraph.ScanResult
+import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.MessageSource
 import org.springframework.context.support.ResourceBundleMessageSource
 
+import javax.validation.ConstraintValidator
 import javax.validation.ConstraintViolation
 import javax.validation.ConstraintViolationException
 import javax.validation.Validator
@@ -29,28 +36,66 @@ import javax.validation.Validator
   * </pre>
  */
 @CompileStatic
-class ValidationService {
+class ValidationService implements InitializingBean {
   Boolean enabled
   String[] messageSourceBaseNames
+  String[] validatorImplementationPackagesToScan
+
   Validator validator
 
   ValidationService(ValidationConfigurationProperties validationConfigurationProperties) {
-    this(validationConfigurationProperties.enabled, validationConfigurationProperties.messageSourceBaseNames)
+    this.enabled = validationConfigurationProperties.enabled
+    this.messageSourceBaseNames = validationConfigurationProperties.messageSourceBaseNames
+    this.validatorImplementationPackagesToScan = validationConfigurationProperties.validatorImplementationPackages
   }
 
-  ValidationService(Boolean enabled, String[] messageSourceBaseNames) {
-    this.enabled = enabled
-    this.messageSourceBaseNames = messageSourceBaseNames
+  @Override
+  void afterPropertiesSet() throws Exception {
+    if (!enabled) {
+      return
+    }
 
-    MessageSource messageSource = new ResourceBundleMessageSource()
-    messageSource.basenames = this.messageSourceBaseNames
-    messageSource.defaultEncoding = "UTF-8"
+    Map<Class, Class> validatorImplementationToConstraintAnnotationMapping = createValidatorImplementationToConstraintAnnotationMapping(validatorImplementationPackagesToScan)
 
-    KlokwrkLocalValidatorFactoryBean localValidatorFactoryBean = new KlokwrkLocalValidatorFactoryBean()
-    localValidatorFactoryBean.validationMessageSource = messageSource
+    KlokwrkLocalValidatorFactoryBean localValidatorFactoryBean = new KlokwrkLocalValidatorFactoryBean(validatorImplementationToConstraintAnnotationMapping)
+    localValidatorFactoryBean.validationMessageSource = createMessageSource(this.messageSourceBaseNames)
     localValidatorFactoryBean.afterPropertiesSet()
 
     this.validator = localValidatorFactoryBean
+  }
+
+  protected MessageSource createMessageSource(String[] messageSourceBaseNames) {
+    MessageSource messageSource = new ResourceBundleMessageSource()
+    messageSource.basenames = messageSourceBaseNames
+    messageSource.defaultEncoding = "UTF-8"
+
+    return messageSource
+  }
+
+  protected Map<Class, Class> createValidatorImplementationToConstraintAnnotationMapping(String[] validatorImplementationPackagesToScan) {
+    Map<Class, Class> validatorImplementationToConstraintAnnotationMapping = [:]
+
+    ClassGraph gradleSourceRepackClassGraph = new ClassGraph()
+        .enableClassInfo()
+        .acceptPackages(validatorImplementationPackagesToScan)
+
+    gradleSourceRepackClassGraph.scan().withCloseable { ScanResult scanResult ->
+      ClassInfoList generatedGroovyClosureClassInfoList = scanResult.getClassesImplementing(ConstraintValidator.name)
+      generatedGroovyClosureClassInfoList.each { ClassInfo classInfo ->
+        String constraintAnnotationClassName = classInfo
+            .typeSignature
+            .superinterfaceSignatures
+            .find({ ClassRefTypeSignature classRefTypeSignature -> classRefTypeSignature.baseClassName == ConstraintValidator.name })
+            .typeArguments[0]
+
+        Class validatorClass = classInfo.loadClass()
+        Class constraintAnnotationClass = scanResult.loadClass(constraintAnnotationClassName, true)
+
+        validatorImplementationToConstraintAnnotationMapping.put(validatorClass, constraintAnnotationClass)
+      }
+    }
+
+    return validatorImplementationToConstraintAnnotationMapping
   }
 
   /**

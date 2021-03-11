@@ -10,14 +10,15 @@ dependencies {
 
   annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
-  implementation project(":klokwrk-lib-validation-constraint")
-
+  implementation "io.github.classgraph:classgraph"
   implementation "jakarta.validation:jakarta.validation-api"
   implementation "org.codehaus.groovy:groovy"
   implementation "org.glassfish:jakarta.el"
   implementation "org.hibernate.validator:hibernate-validator"
   implementation "org.springframework:spring-context"
   implementation "org.springframework.boot:spring-boot"
+
+  runtimeOnly project(":klokwrk-lib-validation-validator")
 
   testImplementation "org.spockframework:spock-core"
   testImplementation "org.spockframework:spock-spring"
