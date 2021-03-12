@@ -6,24 +6,27 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        os: [ linux, macos, windows ]
         include:
-          - os: 'ubuntu-latest'
+          - os: 'linux'
+            version: 'ubuntu-latest'
             label: 'linux'
             native-image-name: 'klokwrk-tool-gradle-source-repack'
-          - os: 'macos-latest'
+          - os: 'macos'
+            version: 'macos-latest'
             label: 'mac'
             native-image-name: 'klokwrk-tool-gradle-source-repack'
-          - os: 'windows-latest'
+          - os: 'windows'
+            version: 'windows-2016'
             label: 'win'
             native-image-name: 'klokwrk-tool-gradle-source-repack.exe'
 
-    runs-on: ${{ matrix.os }}
-    name: ${{ matrix.os }} - GraalVM native image build
+    runs-on: ${{ matrix.version }}
+    name: ${{ matrix.version }} - GraalVM native image build
 
     steps:
       - name: Support long paths for Windows
-        if: ${{ matrix.os == 'windows-latest' }}
+        if: ${{ matrix.label == 'win' }}
         run: git config --system core.longpaths true
 
       - name: Checkout
@@ -35,23 +38,23 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.gradle/caches
-          key: ${{ matrix.os }}-gradle-caches-${{ hashFiles('**/*.gradle') }}
+          key: ${{ matrix.version }}-gradle-caches-${{ hashFiles('**/*.gradle') }}
           restore-keys: |
-            ${{ matrix.os }}-gradle-caches-
+            ${{ matrix.version }}-gradle-caches-
 
       - name: Cache Gradle wrapper
         uses: actions/cache@v2
         with:
           path: ~/.gradle/wrapper
-          key: ${{ matrix.os }}-gradle-wrapper-${{ hashFiles('**/*.gradle') }}
+          key: ${{ matrix.version }}-gradle-wrapper-${{ hashFiles('**/*.gradle') }}
           restore-keys: |
-            ${{ matrix.os }}-gradle-wrapper-
+            ${{ matrix.version }}-gradle-wrapper-
 
       - name: Set up GraalVM
         uses: ayltai/setup-graalvm@v1
         with:
           java-version: 11
-          graalvm-version: 21.0.0
+          graalvm-version: 21.0.0.2
           native-image: true
 
       - name: Assemble
@@ -70,25 +73,25 @@ jobs:
           echo "UPLOAD_VERSION=$(./gradlew --quiet --project-dir tool/klokwrk-tool-gradle-source-repack properties | grep "^version:." | awk '{print $2}')" >> $GITHUB_ENV
 
       - name: Jar upload
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.label == 'linux' }}
         uses: actions/upload-artifact@v2
         with:
           name: klokwrk-tool-gradle-source-repack_${{ env.UPLOAD_VERSION }}-jar
           path: tool/klokwrk-tool-gradle-source-repack/build/libs/*-all.jar
 
       - name: Build GraalVM native image for mac or linux
-        if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'}}
+        if: ${{ matrix.label == 'linux' || matrix.label == 'mac'}}
         uses: eskatos/gradle-command-action@v1
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
 
       - name: Set up Windows - Install Visual C++ Build Tools Workload for Visual Studio 2017 Build Tools
-        if: ${{ matrix.os == 'windows-latest' }}
+        if: ${{ matrix.label == 'win' }}
         run: |
           choco install visualstudio2017-workload-vctools -y
 
       - name: Build GraalVM native image for windows
-        if: ${{ matrix.os == 'windows-latest' }}
+        if: ${{ matrix.label == 'win' }}
         shell: cmd
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\Vc\Auxiliary\Build\vcvars64.bat"
