@@ -135,3 +135,10 @@ cd <klokwrk-project-dir>/tool/klokwrk-tool-gradle-source-repack
 When the native image build finishes, the tool can be used as follows:
 
 ```./build/native-image/klokwrk-tool-gradle-source-repack 6.7.1```
+
+Here is another example with several Java system properties and application switches configured:
+
+```
+./build/native-image/klokwrk-tool-gradle-source-repack -Dmicronaut.cloud.platform=BARE_METAL \
+--loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.7.1
+```
