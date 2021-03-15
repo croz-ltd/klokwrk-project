@@ -24,6 +24,8 @@ import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applica
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.FindLocationPortOut
 import org.klokwrk.cargotracker.booking.domain.model.Location
+import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
+import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import spock.lang.Specification
 
 class CargoBookingFactoryServiceSpecification extends Specification {
@@ -52,7 +54,11 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     cargoBookingFactoryService.createBookCargoCommand(bookCargoRequest)
 
     then:
-    thrown(AssertionError)
+    CommandException commandException = thrown()
+    commandException.violationInfo.severity == Severity.WARNING
+    commandException.violationInfo.violationCode.code == "400"
+    commandException.violationInfo.violationCode.codeMessage == "Bad Request"
+    commandException.violationInfo.violationCode.codeAsText == "originLocationUnknown"
   }
 
   void "createBookCargoCommand - should fail for invalid destinationLocation"() {
@@ -63,7 +69,11 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     cargoBookingFactoryService.createBookCargoCommand(bookCargoRequest)
 
     then:
-    thrown(AssertionError)
+    CommandException commandException = thrown()
+    commandException.violationInfo.severity == Severity.WARNING
+    commandException.violationInfo.violationCode.code == "400"
+    commandException.violationInfo.violationCode.codeMessage == "Bad Request"
+    commandException.violationInfo.violationCode.codeAsText == "destinationLocationUnknown"
   }
 
   void "createBookCargoCommand - should work for unspecified aggregate identifier"() {

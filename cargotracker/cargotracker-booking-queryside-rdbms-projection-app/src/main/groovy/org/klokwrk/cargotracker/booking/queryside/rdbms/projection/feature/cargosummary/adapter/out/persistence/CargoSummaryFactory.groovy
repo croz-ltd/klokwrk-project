@@ -27,7 +27,6 @@ import org.klokwrk.lang.groovy.constant.CommonConstants
 @CompileStatic
 class CargoSummaryFactory {
   static CargoSummaryJpaEntity createCargoSummaryJpaEntity(CargoBookedEvent cargoBookedEvent, DomainEventMessage domainEventMessage) {
-    // TODO dmurat: automate populating persistent entity
     String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
     String originLocation = cargoBookedEvent.originLocation.unLoCode.code
     String destinationLocation = cargoBookedEvent.destinationLocation.unLoCode.code
