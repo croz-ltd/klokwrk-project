@@ -24,6 +24,7 @@ buildscript {
   dependencies {
     classpath "com.github.jengelman.gradle.plugins:shadow:$gradleShadowPlugin"
     classpath "fr.brouillard.oss.gradle:gradle-jgitver-plugin:$gradleJgitverPluginVersion"
+    classpath "gradle.plugin.org.barfuin.gradle.taskinfo:gradle-taskinfo:$gradleTaskInfoPlugin"
     classpath "io.micronaut.gradle:micronaut-gradle-plugin:$gradleMicronautPlugin"
     classpath "org.kordamp.gradle:groovy-project-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:jacoco-gradle-plugin:$gradleKordampPluginVersion"
@@ -155,6 +156,7 @@ configure(subprojects) { Project subproject ->
     return
   }
 
+  apply plugin: "org.barfuin.gradle.taskinfo"
   apply plugin: "groovy"
   apply plugin: "idea"
   apply plugin: "org.kordamp.gradle.publishing"
