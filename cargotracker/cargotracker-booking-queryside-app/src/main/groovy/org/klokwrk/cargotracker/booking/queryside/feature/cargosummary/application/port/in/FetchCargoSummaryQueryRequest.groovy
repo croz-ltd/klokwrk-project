@@ -22,15 +22,31 @@ import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 import org.klokwrk.lib.validation.constraint.UuidFormatConstraint
+import org.klokwrk.lib.validation.group.Level1
+import org.klokwrk.lib.validation.group.Level2
+import org.klokwrk.lib.validation.group.Level3
 
+import javax.validation.GroupSequence
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.Size
 
+/**
+ * Request DTO parameter for {@code fetchCargoSummaryQuery} operation from {@link FetchCargoSummaryQueryPortIn} inbound port interface.
+ * <p/>
+ * Here we are comply to the validation ordering as explained in GroovyDoc of BookCargoRequest class. See "Implementation notes about validation" section.
+ */
+@GroupSequence([FetchCargoSummaryQueryRequest, Level1, Level2, Level3])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
 class FetchCargoSummaryQueryRequest {
-  // Not null and not blank. Must be in uuid format.
-  @UuidFormatConstraint
-  @NotBlank
+  /**
+   * Aggregate identifier of a cargo.
+   * <p/>
+   * Not null and not blank. Must be in uuid format.
+   */
+  @UuidFormatConstraint(groups = [Level3])
+  @Size(min = 36, max = 36, groups = [Level2])
+  @NotBlank(groups = [Level1])
   String aggregateIdentifier
 }

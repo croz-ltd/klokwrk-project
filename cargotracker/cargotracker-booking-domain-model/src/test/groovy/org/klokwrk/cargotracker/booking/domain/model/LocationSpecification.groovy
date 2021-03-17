@@ -36,20 +36,37 @@ class LocationSpecification extends Specification {
 
   void "map constructor should fail for invalid input params"() {
     when:
+    new Location(unLoCode: unLoCodeParam, name: nameParam, countryName: countryNameParam, unLoCodeFunction: unLoCodeFunctionParam)
+
+    then:
+    AssertionError assertionError = thrown()
+    assertionError.message.contains(messagePartParam)
+
+    where:
+    unLoCodeParam               | nameParam                                   | countryNameParam                               | unLoCodeFunctionParam                             | messagePartParam
+    null                        | new InternationalizedName(name: "someName") | new InternationalizedName(name: "someCountry") | new UnLoCodeFunction(functionEncoded: "0-------") | "notNullValue"
+    new UnLoCode(code: "HRRJK") | null                                        | new InternationalizedName(name: "someCountry") | new UnLoCodeFunction(functionEncoded: "0-------") | "notNullValue"
+    new UnLoCode(code: "HRRJK") | new InternationalizedName(name: "someName") | null                                           | new UnLoCodeFunction(functionEncoded: "0-------") | "notNullValue"
+    new UnLoCode(code: "HRRJK") | new InternationalizedName(name: "someName") | new InternationalizedName(name: "someCountry") | null                                              | "notNullValue"
+  }
+
+  void "map constructor should fail for invalid input params for construction of contained properties"() {
+    when:
     new Location(
         code: new UnLoCode(code: codeParameter), name: new InternationalizedName(name: nameParameter), countryName: new InternationalizedName(name: countryNameParameter),
-        unLoCodeFunction: new UnLoCodeFunction(functionParameter)
+        unLoCodeFunction: new UnLoCodeFunction(functionEncoded: functionParameter)
     )
 
     then:
-    thrown(AssertionError)
+    AssertionError assertionError = thrown()
+    assertionError.message.contains(errorMessagePartParam)
 
     where:
-    codeParameter | nameParameter | countryNameParameter | functionParameter
-    null          | "someName"    | "someCountry"        | "0------"
-    "HRRJK"       | null          | "someCountry"        | "0------"
-    "HRRJK"       | "someName"    | null                 | "0------"
-    "HRRJK"       | "someName"    | "someCountry"        | null
+    codeParameter | nameParameter | countryNameParameter | functionParameter | errorMessagePartParam
+    null          | "someName"    | "someCountry"        | "0------"         | "not(blankOrNullString())"
+    "HRRJK"       | null          | "someCountry"        | "0------"         | "not(blankOrNullString())"
+    "HRRJK"       | "someName"    | null                 | "0------"         | "not(blankOrNullString())"
+    "HRRJK"       | "someName"    | "someCountry"        | null              | "not(blankOrNullString())"
   }
 
   void "create() factory method should work for correct input params"() {
@@ -67,14 +84,15 @@ class LocationSpecification extends Specification {
     Location.create(codeParameter, nameParameter, countryNameParameter, functionParameter)
 
     then:
-    thrown(AssertionError)
+    AssertionError assertionError = thrown()
+    assertionError.message.contains(errorMessagePartParam)
 
     where:
-    codeParameter | nameParameter | countryNameParameter | functionParameter
-    null          | "someName"    | "someCountry"        | "0------"
-    "HRRJK"       | null          | "someCountry"        | "0------"
-    "HRRJK"       | "someName"    | null                 | "0------"
-    "HRRJK"       | "someName"    | "someCountry"        | null
+    codeParameter | nameParameter | countryNameParameter | functionParameter | errorMessagePartParam
+    null          | "someName"    | "someCountry"        | "0------"         | "not(blankOrNullString())"
+    "HRRJK"       | null          | "someCountry"        | "0------"         | "not(blankOrNullString())"
+    "HRRJK"       | "someName"    | null                 | "0------"         | "not(blankOrNullString())"
+    "HRRJK"       | "someName"    | "someCountry"        | null              | "not(blankOrNullString())"
   }
 
   static Map<String, Location> locationSampleMap = [

@@ -40,18 +40,19 @@ class UnLoCodeSpecification extends Specification {
     new UnLoCode(code: codeParameter)
 
     then:
-    thrown(AssertionError)
+    AssertionError assertionError = thrown()
+    assertionError.message.contains(errorMessagePartParam)
 
     where:
-    codeParameter | _
-    null          | _
-    ""            | _
-    "   "         | _
-    "a"           | _
-    "0"           | _
-    "hrrjk"       | _
-    "HRR0K"       | _
-    "HRRJ0"       | _
+    codeParameter | errorMessagePartParam
+    null          | "not(blankOrNullString())"
+    ""            | "not(blankOrNullString())"
+    "   "         | "not(blankOrNullString())"
+    "a"           | "hasLength"
+    "0"           | "hasLength"
+    "hrrjk"       | "matchesPattern"
+    "HRR0K"       | "matchesPattern"
+    "HRRJ0"       | "matchesPattern"
   }
 
   void "getCountryCode() should return expected value"() {

@@ -27,6 +27,7 @@ import spock.lang.Specification
 
 import javax.validation.ConstraintViolationException
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.Size
 
 class BookCargoRequestSpecification extends Specification {
   @Shared
@@ -68,14 +69,17 @@ class BookCargoRequestSpecification extends Specification {
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
-    aggregateIdentifierParam | originLocationParam | destinationLocationParam | propertyPathParam     | constraintTypeParam
-    ""                       | "AAAAA"             | "AAAAA"                  | "aggregateIdentifier" | NotBlankWhenNullableConstraint
-    "123"                    | "AAAAA"             | "AAAAA"                  | "aggregateIdentifier" | UuidFormatConstraint
+    aggregateIdentifierParam               | originLocationParam | destinationLocationParam | propertyPathParam     | constraintTypeParam
+    ""                                     | "AAAAA"             | "AAAAA"                  | "aggregateIdentifier" | NotBlankWhenNullableConstraint
+    "123"                                  | "AAAAA"             | "AAAAA"                  | "aggregateIdentifier" | Size
+    "00000000=0000=0000=0000=000000000000" | "AAAAA"             | "AAAAA"                  | "aggregateIdentifier" | UuidFormatConstraint
 
-    null                     | null                | "AAAAA"                  | "originLocation"      | NotBlank
-    null                     | "A"                 | "AAAAA"                  | "originLocation"      | UnLoCodeFormatConstraint
+    null                                   | null                | "AAAAA"                  | "originLocation"      | NotBlank
+    null                                   | "A"                 | "AAAAA"                  | "originLocation"      | Size
+    null                                   | "1===5"             | "AAAAA"                  | "originLocation"      | UnLoCodeFormatConstraint
 
-    null                     | "AAAAA"             | null                     | "destinationLocation" | NotBlank
-    null                     | "AAAAA"             | "A"                      | "destinationLocation" | UnLoCodeFormatConstraint
+    null                                   | "AAAAA"             | null                     | "destinationLocation" | NotBlank
+    null                                   | "AAAAA"             | "A"                      | "destinationLocation" | Size
+    null                                   | "AAAAA"             | "1===5"                  | "destinationLocation" | UnLoCodeFormatConstraint
   }
 }

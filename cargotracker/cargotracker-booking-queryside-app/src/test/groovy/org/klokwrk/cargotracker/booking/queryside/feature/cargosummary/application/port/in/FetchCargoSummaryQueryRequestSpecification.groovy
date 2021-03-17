@@ -25,6 +25,7 @@ import spock.lang.Specification
 
 import javax.validation.ConstraintViolationException
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.Size
 
 class FetchCargoSummaryQueryRequestSpecification extends Specification {
   @Shared
@@ -65,8 +66,9 @@ class FetchCargoSummaryQueryRequestSpecification extends Specification {
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
-    aggregateIdentifierParam | propertyPathParam     | constraintTypeParam
-    ""                       | "aggregateIdentifier" | NotBlank
-    "123"                    | "aggregateIdentifier" | UuidFormatConstraint
+    aggregateIdentifierParam               | propertyPathParam     | constraintTypeParam
+    ""                                     | "aggregateIdentifier" | NotBlank
+    "123"                                  | "aggregateIdentifier" | Size
+    "00000000=0000=0000=0000=000000000000" | "aggregateIdentifier" | UuidFormatConstraint
   }
 }
