@@ -51,13 +51,15 @@ class InternationalizedNameSpecification extends Specification {
     new InternationalizedName(name: nameParameter)
 
     then:
-    thrown(AssertionError)
+    AssertionError assertionError = thrown()
+    assertionError.message.contains(errorMessagePartParam)
 
     where:
-    nameParameter | _
-    null          | _
-    ""            | _
-    "   "         | _
+    nameParameter   | errorMessagePartParam
+    null            | "not(blankOrNullString())"
+    ""              | "not(blankOrNullString())"
+    "   "           | "not(blankOrNullString())"
+    "A".repeat(300) | "allOf(greaterThanOrEqualTo(1), lessThanOrEqualTo(200))"
   }
 
   void "getNameInternationalized() should return expected value"() {

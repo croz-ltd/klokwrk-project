@@ -40,24 +40,25 @@ class UnLoCodeFunctionSpecification extends Specification {
     new UnLoCodeFunction(functionEncoded: functionParameter)
 
     then:
-    thrown(AssertionError)
+    AssertionError assertionError = thrown()
+    assertionError.message.contains(errorMessagePartParam)
 
     where:
-    functionParameter | _
-    null              | _
-    ""                | _
-    "   "             | _
-    "1"               | _
-    "--------"        | _
-    "2-------"        | _
-    "-1------"        | _
-    "-0------"        | _
-    "11------"        | _
-    "1------"         | _
-    "1--------"       | _
-    "1------A"        | _
-    "1------8"        | _
-    "-------b"        | _
+    functionParameter | errorMessagePartParam
+    null              | "not(blankOrNullString())"
+    ""                | "not(blankOrNullString())"
+    "   "             | "not(blankOrNullString())"
+    "1"               | "hasLength"
+    "--------"        | "matchesPattern"
+    "2-------"        | "matchesPattern"
+    "-1------"        | "matchesPattern"
+    "-0------"        | "matchesPattern"
+    "11------"        | "matchesPattern"
+    "1------"         | "hasLength"
+    "1--------"       | "hasLength"
+    "1------A"        | "matchesPattern"
+    "1------8"        | "matchesPattern"
+    "-------b"        | "matchesPattern"
   }
 
   void "createWithPortClassifier() should work as expected"() {

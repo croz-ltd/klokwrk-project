@@ -24,8 +24,11 @@ import org.klokwrk.lang.groovy.transform.KwrkImmutable
 import java.text.Normalizer
 import java.util.regex.Pattern
 
-import static org.hamcrest.Matchers.not
+import static org.hamcrest.Matchers.allOf
 import static org.hamcrest.Matchers.blankOrNullString
+import static org.hamcrest.Matchers.greaterThanOrEqualTo
+import static org.hamcrest.Matchers.lessThanOrEqualTo
+import static org.hamcrest.Matchers.not
 
 /**
  * Represents an Unicode name capable to produce internationalized name.
@@ -62,10 +65,11 @@ class InternationalizedName implements PostMapConstructorCheckable {
 
   String name
 
-  @SuppressWarnings("GroovyPointlessBoolean")
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
+    // Here we are comply to the validation ordering as explained in GroovyDoc of BookCargoRequest class. See "Implementation notes about validation" section.
     requireMatch(name, not(blankOrNullString()))
+    requireMatch(name.size(), allOf(greaterThanOrEqualTo(1), lessThanOrEqualTo(200)))
   }
 
   String getNameInternationalized() {

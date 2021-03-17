@@ -25,6 +25,7 @@ import org.klokwrk.lang.groovy.transform.KwrkImmutable
 import java.util.regex.Pattern
 
 import static org.hamcrest.Matchers.blankOrNullString
+import static org.hamcrest.Matchers.hasLength
 import static org.hamcrest.Matchers.matchesPattern
 import static org.hamcrest.Matchers.not
 
@@ -55,7 +56,9 @@ class UnLoCode implements PostMapConstructorCheckable {
   @SuppressWarnings("GroovyPointlessBoolean")
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
+    // Here we are comply to the validation ordering as explained in GroovyDoc of BookCargoRequest class. See "Implementation notes about validation" section.
     requireMatch(code, not(blankOrNullString()))
+    requireMatch(code, hasLength(5))
     requireMatch(code, matchesPattern(CODE_PATTERN))
   }
 
