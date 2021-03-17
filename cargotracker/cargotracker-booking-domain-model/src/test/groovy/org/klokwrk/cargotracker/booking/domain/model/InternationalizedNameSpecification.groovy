@@ -55,11 +55,11 @@ class InternationalizedNameSpecification extends Specification {
     assertionError.message.contains(errorMessagePartParam)
 
     where:
-    nameParameter   | errorMessagePartParam
-    null            | "not(blankOrNullString())"
-    ""              | "not(blankOrNullString())"
-    "   "           | "not(blankOrNullString())"
-    "A".repeat(300) | "allOf(greaterThanOrEqualTo(1), lessThanOrEqualTo(200))"
+    nameParameter | errorMessagePartParam
+    null          | "not(blankOrNullString())"
+    ""            | "not(blankOrNullString())"
+    "   "         | "not(blankOrNullString())"
+    "A" * 300     | "allOf(greaterThanOrEqualTo(1), lessThanOrEqualTo(200))"
   }
 
   void "getNameInternationalized() should return expected value"() {
