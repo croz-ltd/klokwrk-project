@@ -121,7 +121,7 @@ class ResponseFormattingConstraintViolationExceptionHandlerSpecification extends
 
       metadata.violation.propertiesFiltered.size() == 5
       metadata.violation.code == "400"
-      metadata.violation.codeMessage == "Request is not valid."
+      metadata.violation.message == "Request is not valid."
       metadata.violation.type == ViolationType.VALIDATION.name().toLowerCase()
       metadata.violation.logUuid == null
       metadata.violation.validationReport

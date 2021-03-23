@@ -82,7 +82,7 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
 
       metadata.violation.propertiesFiltered.size() == 5
       metadata.violation.code == "500"
-      metadata.violation.codeMessage == "Error"
+      metadata.violation.message == "Error"
       metadata.violation.type == ViolationType.DOMAIN.name().toLowerCase()
       metadata.violation.logUuid == null
       metadata.violation.validationReport == null
@@ -135,7 +135,7 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
 
       metadata.violation.propertiesFiltered.size() == 5
       metadata.violation.code == violationCodeParam
-      metadata.violation.codeMessage == codeMessageParam
+      metadata.violation.message == messageParam
       metadata.violation.type == ViolationType.DOMAIN.name().toLowerCase()
       metadata.violation.logUuid == null
       metadata.violation.validationReport == null
@@ -146,16 +146,16 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
     }
 
     where:
-    violationInfoParam        | exceptionParam                           | severityParam                         | codeMessageParam | violationCodeParam | httpStatusParam | httpMessageParam
-    ViolationInfo.UNKNOWN     | new DomainException(violationInfoParam)  | Severity.ERROR.name().toLowerCase()   | "Error"          | "500"              | "500"           | "Internal Server Error"
-    ViolationInfo.UNKNOWN     | new CommandException(violationInfoParam) | Severity.ERROR.name().toLowerCase()   | "Error"          | "500"              | "500"           | "Internal Server Error"
-    ViolationInfo.UNKNOWN     | new QueryException(violationInfoParam)   | Severity.ERROR.name().toLowerCase()   | "Error"          | "500"              | "500"           | "Internal Server Error"
-    ViolationInfo.BAD_REQUEST | new DomainException(violationInfoParam)  | Severity.WARNING.name().toLowerCase() | "Warning"        | "400"              | "400"           | "Bad Request"
-    ViolationInfo.BAD_REQUEST | new CommandException(violationInfoParam) | Severity.WARNING.name().toLowerCase() | "Warning"        | "400"              | "400"           | "Bad Request"
-    ViolationInfo.BAD_REQUEST | new QueryException(violationInfoParam)   | Severity.WARNING.name().toLowerCase() | "Warning"        | "400"              | "400"           | "Bad Request"
-    ViolationInfo.NOT_FOUND   | new DomainException(violationInfoParam)  | Severity.WARNING.name().toLowerCase() | "Warning"        | "404"              | "404"           | "Not Found"
-    ViolationInfo.NOT_FOUND   | new CommandException(violationInfoParam) | Severity.WARNING.name().toLowerCase() | "Warning"        | "404"              | "404"           | "Not Found"
-    ViolationInfo.NOT_FOUND   | new QueryException(violationInfoParam)   | Severity.WARNING.name().toLowerCase() | "Warning"        | "404"              | "404"           | "Not Found"
+    violationInfoParam        | exceptionParam                           | severityParam                         | messageParam | violationCodeParam | httpStatusParam | httpMessageParam
+    ViolationInfo.UNKNOWN     | new DomainException(violationInfoParam)  | Severity.ERROR.name().toLowerCase()   | "Error"      | "500"              | "500"           | "Internal Server Error"
+    ViolationInfo.UNKNOWN     | new CommandException(violationInfoParam) | Severity.ERROR.name().toLowerCase()   | "Error"      | "500"              | "500"           | "Internal Server Error"
+    ViolationInfo.UNKNOWN     | new QueryException(violationInfoParam)   | Severity.ERROR.name().toLowerCase()   | "Error"      | "500"              | "500"           | "Internal Server Error"
+    ViolationInfo.BAD_REQUEST | new DomainException(violationInfoParam)  | Severity.WARNING.name().toLowerCase() | "Warning"    | "400"              | "400"           | "Bad Request"
+    ViolationInfo.BAD_REQUEST | new CommandException(violationInfoParam) | Severity.WARNING.name().toLowerCase() | "Warning"    | "400"              | "400"           | "Bad Request"
+    ViolationInfo.BAD_REQUEST | new QueryException(violationInfoParam)   | Severity.WARNING.name().toLowerCase() | "Warning"    | "400"              | "400"           | "Bad Request"
+    ViolationInfo.NOT_FOUND   | new DomainException(violationInfoParam)  | Severity.WARNING.name().toLowerCase() | "Warning"    | "404"              | "404"           | "Not Found"
+    ViolationInfo.NOT_FOUND   | new CommandException(violationInfoParam) | Severity.WARNING.name().toLowerCase() | "Warning"    | "404"              | "404"           | "Not Found"
+    ViolationInfo.NOT_FOUND   | new QueryException(violationInfoParam)   | Severity.WARNING.name().toLowerCase() | "Warning"    | "404"              | "404"           | "Not Found"
 
     violationInfoConstantName = findViolationInfoConstantName(violationInfoParam)
   }
@@ -185,7 +185,7 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
 
       metadata.violation.propertiesFiltered.size() == 5
       metadata.violation.code == "12345"
-      metadata.violation.codeMessage == "My violation code message"
+      metadata.violation.message == "My violation code message"
       metadata.violation.type == ViolationType.DOMAIN.name().toLowerCase()
       metadata.violation.logUuid == null
       metadata.violation.validationReport == null

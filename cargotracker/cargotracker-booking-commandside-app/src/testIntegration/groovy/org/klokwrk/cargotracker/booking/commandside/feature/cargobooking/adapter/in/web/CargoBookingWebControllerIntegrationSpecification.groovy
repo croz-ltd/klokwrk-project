@@ -159,7 +159,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     verifyAll(responseContentMap.metaData.violation as Map) {
       it.size() == 4
       code == HttpStatus.BAD_REQUEST.value().toString()
-      codeMessage == myViolationCodeMessage
+      message == myViolationMessage
       type == ViolationType.VALIDATION.name().toLowerCase()
       validationReport != null
     }
@@ -177,7 +177,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     where:
-    acceptLanguage | localeString | myViolationCodeMessage
+    acceptLanguage | localeString | myViolationMessage
     "hr-HR"        | "hr_HR"      | "Zahtjev nije ispravan."
     "en"           | "en"         | "Request is not valid."
   }
@@ -218,7 +218,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     verifyAll(responseContentMap.metaData.violation as Map) {
       it.size() == 3
       code == HttpStatus.BAD_REQUEST.value().toString()
-      codeMessage == myViolationCodeMessage
+      message == myViolationMessage
       type == ViolationType.DOMAIN.name().toLowerCase()
     }
 
@@ -227,7 +227,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     where:
-    acceptLanguage | localeString | myViolationCodeMessage
+    acceptLanguage | localeString | myViolationMessage
     "hr-HR"        | "hr_HR"      | "Teret nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije."
     "en"           | "en"         | "Destination location cannot accept cargo from specified origin location."
   }
@@ -268,7 +268,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     verifyAll(responseContentMap.metaData.violation as Map) {
       it.size() == 3
       code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
-      codeMessage == myViolationCodeMessage
+      message == myViolationMessage
       type == ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase()
     }
 
@@ -277,7 +277,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     where:
-    acceptLanguage | localeString | myViolationCodeMessage
+    acceptLanguage | localeString | myViolationMessage
     "hr-HR"        | "hr_HR"      | "Zahtjev nije ispravan."
     "en"           | "en"         | "Request is not valid."
   }

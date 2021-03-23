@@ -46,7 +46,7 @@ import org.springframework.context.support.DefaultMessageSourceResolvable
  *     },
  *     "violation": {
  *       "code": "400",
- *       "codeMessage": "Request is not valid.",
+ *       "message": "Request is not valid.",
  *
  *       "logUuid": "123", // Created only for 'unknown' violations
  *
@@ -67,11 +67,11 @@ import org.springframework.context.support.DefaultMessageSourceResolvable
  *   "payload": {} // In case of failures, payload is empty.
  * }
  * </pre>
- * There are several parts that need localization. For all failure types we have to localize {@code metaData.violation.codeMessage}. For validation failure types, localization is also needed for
+ * There are several parts that need localization. For all failure types we have to localize {@code metaData.violation.message}. For validation failure types, localization is also needed for
  * {@code metaData.violation.validationReport.root.message} and {@code metaData.violation.validationReport.constraintViolations[].message}.
  * <p/>
- * Therefore, in case of validation failure, message codes for {@code metaData.violation.codeMessage} are created via {@code createMessageCodeListForViolationCodeMessageOfValidationFailure()} method.
- * Similarly, if we have a domain failure, we will use {@code createMessageCodeListForViolationCodeMessageOfDomainFailure()} method.
+ * Therefore, in case of validation failure, message codes for {@code metaData.violation.message} are created via {@code createMessageCodeListForViolationMessageOfValidationFailure()} method.
+ * Similarly, if we have a domain failure, we will use {@code createMessageCodeListForViolationMessageOfDomainFailure()} method.
  * <p/>
  * Following the same naming principles, in case of validation failures, message codes for {@code metaData.violation.validationReport.root.message} will be created with
  * {@code createMessageCodeListForRootBeanMessageOfValidationFailure()}, while message codes for {@code metaData.violation.validationReport.constraintViolations[].message} will be created with
@@ -111,7 +111,7 @@ class MessageSourceResolvableHelper {
   }
 
   /**
-   * For {@code domain} category of failures, creates a list of message codes for resolving {@code metaData.violation.codeMessage} part of JSON response.
+   * For {@code domain} category of failures, creates a list of message codes for resolving {@code metaData.violation.message} part of JSON response.
    * <p/>
    * Regarding {@link MessageSourceResolvableSpecification} properties, implementation fixes {@code messageCategory} to {@code failure} and {@code messageType} to {@code domain}. Significant and
    * distinguishing {@link MessageSourceResolvableSpecification} properties are {@code severity}, {@code messageSubType} and {@code messageSubTypeDetails}. This means that values of those properties
@@ -126,7 +126,7 @@ class MessageSourceResolvableHelper {
    * <p/>
    * Say we have a request triggering command for accepting some kind of cargo. All request parameters are syntactically valid, but there is no route between provided locations, and consequently,
    * we cannot carry the cargo. In such a case, the command can raise a domain exception with {@code destinationLocationCannotAcceptCargo} code. When it comes to resolving of message codes for
-   * {@code metaData.violation.codeMessage}, following codes will be generated.
+   * {@code metaData.violation.message}, following codes will be generated.
    * <p/>
    * Example of message codes for {@code messageSubType = destinationLocationCannotAcceptCargo}.
    * <pre>
@@ -174,7 +174,7 @@ class MessageSourceResolvableHelper {
    * </pre>
    */
   @SuppressWarnings("DuplicateStringLiteral")
-  static List<String> createMessageCodeListForViolationCodeMessageOfDomainFailure(MessageSourceResolvableSpecification specification) {
+  static List<String> createMessageCodeListForViolationMessageOfDomainFailure(MessageSourceResolvableSpecification specification) {
     String controllerSimpleName = replaceWithDefaultIfEmpty(specification.controllerSimpleName)
     String controllerMethodName = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.controllerMethodName))
     String messageSubType = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.messageSubType))
@@ -214,7 +214,7 @@ class MessageSourceResolvableHelper {
   }
 
   /**
-   * For {@code other} category of failures, creates a list of message codes for resolving {@code metaData.violation.codeMessage} part of JSON response.
+   * For {@code other} category of failures, creates a list of message codes for resolving {@code metaData.violation.message} part of JSON response.
    * <p/>
    * Regarding {@link MessageSourceResolvableSpecification} properties, implementation fixes {@code messageCategory} to {@code failure} and {@code messageType} to {@code other}. Significant and
    * distinguishing {@link MessageSourceResolvableSpecification} properties are {@code severity} and {@code messageSubType}. This means that values of those properties (beside
@@ -242,7 +242,7 @@ class MessageSourceResolvableHelper {
    * </pre>
    */
   @SuppressWarnings("DuplicateStringLiteral")
-  static List<String> createMessageCodeListForViolationCodeMessageOfOtherFailure(MessageSourceResolvableSpecification specification) {
+  static List<String> createMessageCodeListForViolationMessageOfOtherFailure(MessageSourceResolvableSpecification specification) {
     String controllerSimpleName = replaceWithDefaultIfEmpty(specification.controllerSimpleName)
     String controllerMethodName = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.controllerMethodName))
     String messageSubType = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.messageSubType))
@@ -275,7 +275,7 @@ class MessageSourceResolvableHelper {
   }
 
   /**
-   * For {@code unknown} category of failures, creates a list of message codes for resolving {@code metaData.violation.codeMessage} part of JSON response.
+   * For {@code unknown} category of failures, creates a list of message codes for resolving {@code metaData.violation.message} part of JSON response.
    * <p/>
    * Regarding {@link MessageSourceResolvableSpecification} properties, implementation fixes {@code messageCategory} to {@code failure}, {@code messageType} to {@code unknown}, and
    * {@code severity} to {@code error}. Significant and distinguishing {@link MessageSourceResolvableSpecification} property is {@code messageSubType}. This means that
@@ -299,7 +299,7 @@ class MessageSourceResolvableHelper {
    * </pre>
    */
   @SuppressWarnings("DuplicateStringLiteral")
-  static List<String> createMessageCodeListForViolationCodeMessageOfUnknownFailure(MessageSourceResolvableSpecification specification) {
+  static List<String> createMessageCodeListForViolationMessageOfUnknownFailure(MessageSourceResolvableSpecification specification) {
     String controllerSimpleName = replaceWithDefaultIfEmpty(specification.controllerSimpleName)
     String controllerMethodName = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.controllerMethodName))
     String messageSubType = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.messageSubType))
@@ -327,7 +327,7 @@ class MessageSourceResolvableHelper {
   }
 
   /**
-   * For {@code validation} category of failures, creates a list of message codes for resolving {@code metaData.violation.codeMessage} part of JSON response.
+   * For {@code validation} category of failures, creates a list of message codes for resolving {@code metaData.violation.message} part of JSON response.
    * <p/>
    * Regarding {@link MessageSourceResolvableSpecification} properties, implementation fixes {@code messageCategory} to {@code failure}, {@code messageType} to {@code validation}, and
    * {@code severity} to {@code warning}. Significant and distinguishing {@link MessageSourceResolvableSpecification} property is only {@code messageSubType}. This means that the value of that
@@ -349,7 +349,7 @@ class MessageSourceResolvableHelper {
    * </pre>
    */
   @SuppressWarnings("DuplicateStringLiteral")
-  static List<String> createMessageCodeListForViolationCodeMessageOfValidationFailure(MessageSourceResolvableSpecification specification) {
+  static List<String> createMessageCodeListForViolationMessageOfValidationFailure(MessageSourceResolvableSpecification specification) {
     String controllerSimpleName = replaceWithDefaultIfEmpty(specification.controllerSimpleName)
     String controllerMethodName = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.controllerMethodName))
     String messageSubType = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.messageSubType))

@@ -30,7 +30,7 @@ import groovy.transform.CompileStatic
  *     "http": { ... },
  *     "violation": {
  *       "code": "400",
- *       "codeMessage": "Request myRequest is not valid.",
+ *       "message": "Request myRequest is not valid.",
  *       "type": "validation",
  *
  *       "validationReport": {

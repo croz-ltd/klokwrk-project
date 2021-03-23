@@ -87,7 +87,7 @@ class ResponseFormattingUnknownExceptionHandlerSpecification extends Specificati
 
       metadata.violation.propertiesFiltered.size() == 5
       metadata.violation.code == "500"
-      metadata.violation.codeMessage == "Internal server error."
+      metadata.violation.message == "Internal server error."
       metadata.violation.type == ViolationType.UNKNOWN.name().toLowerCase()
       metadata.violation.logUuid.size() == "116be9a6-9f38-4954-8b8f-e57e781655d0".size()
       metadata.violation.validationReport == null

@@ -62,7 +62,7 @@ import java.time.Instant
  *     },
  *     "violation": {
  *       "code": "400",
- *       "codeMessage": "Request is not valid.",
+ *       "message": "Request is not valid.",
  *       "type": "validation",
  *       "validationReport": {
  *         "root": { "type": "bookCargoRequest" },
@@ -76,10 +76,10 @@ import java.time.Instant
  *   "payload": {}
  * }
  * </pre>
- * Following properties need to be localized: {@code metaData.violation.codeMessage} and {@code metaData.violation.validationReport.constraintViolations[].message}.
+ * Following properties need to be localized: {@code metaData.violation.message} and {@code metaData.violation.validationReport.constraintViolations[].message}.
  * <p/>
- * It is important to realize that during localization of {@code metaData.violation.codeMessage}, {@code root.type} is included as a {@code messageSubType}. That way, if needed, {@code root.type} can
- * have an influence on resolved message.
+ * It is important to realize that during localization of {@code metaData.violation.message}, {@code metaData.violation.validationReport.root.type} is included as a {@code messageSubType}. That way,
+ * if needed, {@code metaData.violation.validationReport.root.type} can have an influence on resolved message.
  * <p/>
  * Message codes for these properties are created with utility methods from {@link MessageSourceResolvableHelper}. Look there for more details.
  * <p/>
@@ -123,7 +123,7 @@ class ResponseFormattingConstraintViolationExceptionHandler implements MessageSo
     HttpStatus httpStatus = HttpStatus.BAD_REQUEST
 
     ResponseMetaDataViolationPart responseMetaDataReportViolationPart = new ResponseMetaDataViolationPart(
-        code: httpStatus.value().toString(), codeMessage: httpStatus.reasonPhrase, type: ViolationType.VALIDATION.name().toLowerCase(),
+        code: httpStatus.value().toString(), message: httpStatus.reasonPhrase, type: ViolationType.VALIDATION.name().toLowerCase(),
         validationReport: createResponseMetaDataValidationReportPart(constraintViolationException)
     )
 
@@ -180,8 +180,8 @@ class ResponseFormattingConstraintViolationExceptionHandler implements MessageSo
         severity: Severity.WARNING.name().toLowerCase()
     )
 
-    httpResponseMetaData.violation.codeMessage = MessageSourceResolvableHelper.resolveMessageCodeList(
-        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfValidationFailure(resolvableMessageSpecificationForViolationMessage), locale
+    httpResponseMetaData.violation.message = MessageSourceResolvableHelper.resolveMessageCodeList(
+        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfValidationFailure(resolvableMessageSpecificationForViolationMessage), locale
     )
 
     // constraintList

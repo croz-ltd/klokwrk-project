@@ -64,7 +64,7 @@ import java.time.Instant
  *     },
  *     "violation": {
  *       "code": "405",
- *       "codeMessage": "Request is not valid.",
+ *       "message": "Request is not valid.",
  *       "type": "other"
  *     }
  *   },
@@ -74,7 +74,7 @@ import java.time.Instant
  * For {@code error} severity, the response body also contains {@code metaData.violation.logUuid} property with the value of generated UUID. That UUID is part of the message logged for the exception.
  * For {@code warning} severity, there is no logging of the exception.
  * <p/>
- * In the response above, property {@code metaData.violation.codeMessage} needs to be localized.
+ * In the response above, property {@code metaData.violation.message} needs to be localized.
  * <p/>
  * When used from the Spring Boot application, the easiest is to create controller advice that is eligible for component scanning (&#64;ControllerAdvice annotation is annotated with &#64;Component):
  * <pre>
@@ -89,12 +89,12 @@ import java.time.Instant
  * spring.messages.basename: messages,responseFormattingDefaultMessages
  * ...
  * </pre>
- * Localization message codes for {@code metaData.violation.codeMessage} property is created with
- * {@link MessageSourceResolvableHelper#createMessageCodeListForViolationCodeMessageOfOtherFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
+ * Localization message codes for {@code metaData.violation.message} property is created with
+ * {@link MessageSourceResolvableHelper#createMessageCodeListForViolationMessageOfOtherFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
  * for further details.
  *
  * @see MessageSourceResolvableHelper
- * @see MessageSourceResolvableHelper#createMessageCodeListForViolationCodeMessageOfOtherFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
+ * @see MessageSourceResolvableHelper#createMessageCodeListForViolationMessageOfOtherFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
  */
 @CompileStatic
 class ResponseFormattingSpringMvcExceptionHandler extends ResponseEntityExceptionHandler implements MessageSourceAware {
@@ -136,7 +136,7 @@ class ResponseFormattingSpringMvcExceptionHandler extends ResponseEntityExceptio
 
   protected HttpResponseMetaData createHttpResponseMetaData(Exception springMvcException, HandlerMethod handlerMethod, Locale locale, String logUuid, HttpStatus httpStatus) {
     ResponseMetaDataViolationPart responseMetaDataReportViolationPart =
-        new ResponseMetaDataViolationPart(code: httpStatus.value().toString(), codeMessage: httpStatus.reasonPhrase, type: ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase(), logUuid: logUuid)
+        new ResponseMetaDataViolationPart(code: httpStatus.value().toString(), message: httpStatus.reasonPhrase, type: ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase(), logUuid: logUuid)
 
     HttpResponseMetaDataHttpPart httpResponseMetaDataHttpPart = new HttpResponseMetaDataHttpPart(status: httpStatus.value().toString(), message: httpStatus.reasonPhrase)
 
@@ -173,8 +173,8 @@ class ResponseFormattingSpringMvcExceptionHandler extends ResponseEntityExceptio
         severity: severity.name().toLowerCase()
     )
 
-    httpResponseMetaData.violation.codeMessage = MessageSourceResolvableHelper.resolveMessageCodeList(
-        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfOtherFailure(resolvableMessageSpecification), locale
+    httpResponseMetaData.violation.message = MessageSourceResolvableHelper.resolveMessageCodeList(
+        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfOtherFailure(resolvableMessageSpecification), locale
     )
 
     return httpResponseMetaData

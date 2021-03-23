@@ -32,7 +32,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     )
 
     when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfDomainFailure(messageSourceResolvableSpecification)
+    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfDomainFailure(messageSourceResolvableSpecification)
 
     then:
     verifyAll {
@@ -68,7 +68,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     )
 
     when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfDomainFailure(messageSourceResolvableSpecification)
+    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfDomainFailure(messageSourceResolvableSpecification)
 
     then:
     verifyAll {
@@ -102,7 +102,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     MessageSourceResolvableSpecification messageSourceResolvableSpecification = new MessageSourceResolvableSpecification()
 
     when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfDomainFailure(messageSourceResolvableSpecification)
+    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfDomainFailure(messageSourceResolvableSpecification)
 
     then:
     verifyAll {
@@ -128,7 +128,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     )
 
     when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfDomainFailure(messageSourceResolvableSpecification)
+    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfDomainFailure(messageSourceResolvableSpecification)
 
     then:
     verifyAll {
@@ -165,7 +165,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     )
 
     when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfOtherFailure(messageSourceResolvableSpecification)
+    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfOtherFailure(messageSourceResolvableSpecification)
 
     then:
     verifyAll {
@@ -193,7 +193,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     MessageSourceResolvableSpecification messageSourceResolvableSpecification = new MessageSourceResolvableSpecification()
 
     when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfOtherFailure(messageSourceResolvableSpecification)
+    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfOtherFailure(messageSourceResolvableSpecification)
 
     then:
     verifyAll {
@@ -219,7 +219,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     )
 
     when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfOtherFailure(messageSourceResolvableSpecification)
+    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfOtherFailure(messageSourceResolvableSpecification)
 
     then:
     verifyAll {
@@ -256,7 +256,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     )
 
     when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfUnknownFailure(messageSourceResolvableSpecification)
+    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfUnknownFailure(messageSourceResolvableSpecification)
 
     then:
     verifyAll {
@@ -280,7 +280,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     MessageSourceResolvableSpecification messageSourceResolvableSpecification = new MessageSourceResolvableSpecification()
 
     when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfUnknownFailure(messageSourceResolvableSpecification)
+    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfUnknownFailure(messageSourceResolvableSpecification)
 
     then:
     verifyAll {
@@ -305,7 +305,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     )
 
     when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfUnknownFailure(messageSourceResolvableSpecification)
+    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfUnknownFailure(messageSourceResolvableSpecification)
 
     then:
     verifyAll {
@@ -339,7 +339,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     )
 
     when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfValidationFailure(messageSourceResolvableSpecification)
+    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfValidationFailure(messageSourceResolvableSpecification)
 
     then:
     verifyAll {
@@ -360,7 +360,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     MessageSourceResolvableSpecification messageSourceResolvableSpecification = new MessageSourceResolvableSpecification()
 
     when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfValidationFailure(messageSourceResolvableSpecification)
+    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfValidationFailure(messageSourceResolvableSpecification)
 
     then:
     verifyAll {
@@ -385,7 +385,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     )
 
     when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfValidationFailure(messageSourceResolvableSpecification)
+    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfValidationFailure(messageSourceResolvableSpecification)
 
     then:
     verifyAll {
