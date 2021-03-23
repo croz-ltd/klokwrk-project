@@ -136,7 +136,7 @@ class ResponseFormattingSpringMvcExceptionHandler extends ResponseEntityExceptio
 
   protected HttpResponseMetaData createHttpResponseMetaData(Exception springMvcException, HandlerMethod handlerMethod, Locale locale, String logUuid, HttpStatus httpStatus) {
     ResponseMetaDataViolationPart responseMetaDataReportViolationPart =
-        new ResponseMetaDataViolationPart(code: httpStatus.value().toString(), codeMessage: httpStatus.reasonPhrase, type: ViolationType.OTHER.name().toLowerCase(), logUuid: logUuid)
+        new ResponseMetaDataViolationPart(code: httpStatus.value().toString(), codeMessage: httpStatus.reasonPhrase, type: ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase(), logUuid: logUuid)
 
     HttpResponseMetaDataHttpPart httpResponseMetaDataHttpPart = new HttpResponseMetaDataHttpPart(status: httpStatus.value().toString(), message: httpStatus.reasonPhrase)
 
@@ -168,7 +168,7 @@ class ResponseFormattingSpringMvcExceptionHandler extends ResponseEntityExceptio
         controllerSimpleName: controllerSimpleName,
         controllerMethodName: controllerMethodName,
         messageCategory: "failure",
-        messageType: ViolationType.OTHER.name().toLowerCase(),
+        messageType: ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase(),
         messageSubType: springMvcException.getClass().simpleName.uncapitalize(),
         severity: severity.name().toLowerCase()
     )

@@ -262,7 +262,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
       it.size() == 3
       code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
       codeMessage == myViolationCodeMessage
-      type == ViolationType.OTHER.name().toLowerCase()
+      type == ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase()
     }
 
     verifyAll(responseContentMap.payload as Map) {
