@@ -35,7 +35,7 @@ import groovy.transform.CompileStatic
  *         },
  *         "violation": {
  *             "code": "400",
- *             "codeMessage": "Destination location cannot accept cargo from specified origin location.",
+ *             "message": "Destination location cannot accept cargo from specified origin location.",
  *             "type": "domain"
  *         }
  *     },
@@ -56,7 +56,7 @@ class ResponseMetaDataViolationPart {
   /**
    * A localized human-readable message describing the code property.
    */
-  String codeMessage
+  String message
 
   /**
    * Type of violation as a lowercase string corresponding to the values of {@link org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType} enum.

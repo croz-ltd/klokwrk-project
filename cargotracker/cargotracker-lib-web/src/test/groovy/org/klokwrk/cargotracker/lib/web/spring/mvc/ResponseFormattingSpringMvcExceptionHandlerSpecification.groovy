@@ -137,8 +137,8 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
       it.size() == 5
       logUuid == null
       code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
-      codeMessage == "Request is not valid."
-      type == ViolationType.OTHER.name().toLowerCase()
+      message == "Request is not valid."
+      type == ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase()
       validationReport == null
     }
   }
@@ -186,8 +186,8 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
       it.size() == 5
       logUuid
       code == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
-      codeMessage == "Internal server error."
-      type == ViolationType.OTHER.name().toLowerCase()
+      message == "Internal server error."
+      type == ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase()
       validationReport == null
     }
   }

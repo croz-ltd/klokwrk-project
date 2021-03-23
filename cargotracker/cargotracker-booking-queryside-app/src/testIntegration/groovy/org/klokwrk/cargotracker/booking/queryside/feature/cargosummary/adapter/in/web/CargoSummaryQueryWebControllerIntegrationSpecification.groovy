@@ -152,7 +152,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     verifyAll(responseContentMap.metaData.violation as Map) {
       it.size() == 4
       code == HttpStatus.BAD_REQUEST.value().toString()
-      codeMessage == myViolationCodeMessage
+      message == myViolationMessage
       type == ViolationType.VALIDATION.name().toLowerCase()
       validationReport != null
     }
@@ -160,7 +160,6 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
       it.size() == 2
       root.type == "fetchCargoSummaryQueryRequest"
-      root.message == myViolationCodeMessage
       constraintViolations.size() == 1
       constraintViolations.find({ it.path == "aggregateIdentifier" }).type == "notBlank"
     }
@@ -170,7 +169,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     }
 
     where:
-    acceptLanguage | localeString | myViolationCodeMessage
+    acceptLanguage | localeString | myViolationMessage
     "hr-HR"        | "hr_HR"      | "Zahtjev nije ispravan."
     "en"           | "en"         | "Request is not valid."
   }
@@ -211,7 +210,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     verifyAll(responseContentMap.metaData.violation as Map) {
       it.size() == 3
       code == HttpStatus.NOT_FOUND.value().toString()
-      codeMessage == myViolationCodeMessage
+      message == myViolationMessage
       type == ViolationType.DOMAIN.name().toLowerCase()
     }
 
@@ -220,7 +219,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     }
 
     where:
-    acceptLanguage | localeString | myViolationCodeMessage
+    acceptLanguage | localeString | myViolationMessage
     "hr-HR"        | "hr_HR"      | "Sumarni izvještaj za željeni teret nije pronađen."
     "en"           | "en"         | "Summary report for specified cargo is not found."
   }
@@ -261,8 +260,8 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     verifyAll(responseContentMap.metaData.violation as Map) {
       it.size() == 3
       code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
-      codeMessage == myViolationCodeMessage
-      type == ViolationType.OTHER.name().toLowerCase()
+      message == myViolationMessage
+      type == ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase()
     }
 
     verifyAll(responseContentMap.payload as Map) {
@@ -270,7 +269,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     }
 
     where:
-    acceptLanguage | localeString | myViolationCodeMessage
+    acceptLanguage | localeString | myViolationMessage
     "hr-HR"        | "hr_HR"      | "Zahtjev nije ispravan."
     "en"           | "en"         | "Request is not valid."
   }

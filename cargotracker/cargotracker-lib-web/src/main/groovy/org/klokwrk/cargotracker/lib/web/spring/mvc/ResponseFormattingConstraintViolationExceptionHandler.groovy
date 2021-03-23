@@ -62,10 +62,10 @@ import java.time.Instant
  *     },
  *     "violation": {
  *       "code": "400",
- *       "codeMessage": "Request is not valid.",
+ *       "message": "Request is not valid.",
  *       "type": "validation",
  *       "validationReport": {
- *         "root": { "type": "bookCargoRequest", "message": "Request is not valid." },
+ *         "root": { "type": "bookCargoRequest" },
  *         "constraintViolations": [
  *           { "type": "notNull", "scope": "property", "path": "destinationLocation", "message": "must not be null", "invalidPropertyValue": "null" },
  *           { "type": "notNull", "scope": "property", "path": "originLocation", "message": "must not be null", "invalidPropertyValue": "null" }
@@ -76,9 +76,12 @@ import java.time.Instant
  *   "payload": {}
  * }
  * </pre>
- * Following properties need to be localized: {@code metaData.violation.codeMessage}, {@code metaData.violation.validationReport.root.message} and
- * {@code metaData.violation.validationReport.constraintViolations[].message}. Message codes for these properties are created with utility methods from {@link MessageSourceResolvableHelper}.
- * Look there for more details.
+ * Following properties need to be localized: {@code metaData.violation.message} and {@code metaData.violation.validationReport.constraintViolations[].message}.
+ * <p/>
+ * It is important to realize that during localization of {@code metaData.violation.message}, {@code metaData.violation.validationReport.root.type} is included as a {@code messageSubType}. That way,
+ * if needed, {@code metaData.violation.validationReport.root.type} can have an influence on resolved message.
+ * <p/>
+ * Message codes for these properties are created with utility methods from {@link MessageSourceResolvableHelper}. Look there for more details.
  * <p/>
  * When used from the Spring Boot application, the easiest is to create controller advice that is eligible for component scanning (&#64;ControllerAdvice annotation is annotated with &#64;Component):
  * <pre>
@@ -120,7 +123,7 @@ class ResponseFormattingConstraintViolationExceptionHandler implements MessageSo
     HttpStatus httpStatus = HttpStatus.BAD_REQUEST
 
     ResponseMetaDataViolationPart responseMetaDataReportViolationPart = new ResponseMetaDataViolationPart(
-        code: httpStatus.value().toString(), codeMessage: httpStatus.reasonPhrase, type: ViolationType.VALIDATION.name().toLowerCase(),
+        code: httpStatus.value().toString(), message: httpStatus.reasonPhrase, type: ViolationType.VALIDATION.name().toLowerCase(),
         validationReport: createResponseMetaDataValidationReportPart(constraintViolationException)
     )
 
@@ -144,12 +147,10 @@ class ResponseFormattingConstraintViolationExceptionHandler implements MessageSo
       String type = (constraintViolation.constraintDescriptor as ConstraintDescriptorImpl).annotationType.simpleName.uncapitalize()
 
       String scope = null
-      String invalidPropertyValue = null
 
       ConstraintLocation.ConstraintLocationKind constraintLocationKind = (constraintViolation.constraintDescriptor as ConstraintDescriptorImpl).constraintLocationKind
       if (constraintLocationKind in [ConstraintLocation.ConstraintLocationKind.FIELD, ConstraintLocation.ConstraintLocationKind.GETTER]) {
         scope = "property"
-        invalidPropertyValue = constraintViolation.invalidValue == null ? "null" : constraintViolation.invalidValue.toString()
       }
 
       if (constraintLocationKind == ConstraintLocation.ConstraintLocationKind.TYPE) {
@@ -159,7 +160,7 @@ class ResponseFormattingConstraintViolationExceptionHandler implements MessageSo
       String path = constraintViolation.propertyPath
       String message = constraintViolation.message?.trim() ?: null
 
-      return new ValidationReportConstraintViolation(type: type, scope: scope, path: path, message: message, invalidPropertyValue: invalidPropertyValue)
+      return new ValidationReportConstraintViolation(type: type, scope: scope, path: path, message: message)
     })
 
     return new ResponseMetaDataValidationReportPart(root: validationReportRoot, constraintViolations: validationReportConstraintViolationList)
@@ -169,21 +170,8 @@ class ResponseFormattingConstraintViolationExceptionHandler implements MessageSo
   protected HttpResponseMetaData localizeHttpResponseMetaData(
       HttpResponseMetaData httpResponseMetaData, HandlerMethod handlerMethod, Locale locale, ConstraintViolationException constraintViolationException)
   {
-    MessageSourceResolvableSpecification resolvableMessageSpecificationForViolationMessage = new MessageSourceResolvableSpecification(
-        controllerSimpleName: handlerMethod.beanType.simpleName.uncapitalize(),
-        controllerMethodName: handlerMethod.method.name,
-        messageCategory: "failure",
-        messageType: ViolationType.VALIDATION.name().toLowerCase(),
-        messageSubType: "",
-        severity: Severity.WARNING.name().toLowerCase()
-    )
-
-    httpResponseMetaData.violation.codeMessage = MessageSourceResolvableHelper.resolveMessageCodeList(
-        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfValidationFailure(resolvableMessageSpecificationForViolationMessage), locale
-    )
-
     String rootBeanType = constraintViolationException.constraintViolations[0].rootBeanClass.simpleName.uncapitalize()
-    MessageSourceResolvableSpecification resolvableMessageSpecificationForValidationRootBean = new MessageSourceResolvableSpecification(
+    MessageSourceResolvableSpecification resolvableMessageSpecificationForViolationMessage = new MessageSourceResolvableSpecification(
         controllerSimpleName: handlerMethod.beanType.simpleName.uncapitalize(),
         controllerMethodName: handlerMethod.method.name,
         messageCategory: "failure",
@@ -192,8 +180,8 @@ class ResponseFormattingConstraintViolationExceptionHandler implements MessageSo
         severity: Severity.WARNING.name().toLowerCase()
     )
 
-    httpResponseMetaData.violation.validationReport.root.message = MessageSourceResolvableHelper.resolveMessageCodeList(
-        messageSource, MessageSourceResolvableHelper.createMessageCodeListForRootBeanMessageOfValidationFailure(resolvableMessageSpecificationForValidationRootBean), locale
+    httpResponseMetaData.violation.message = MessageSourceResolvableHelper.resolveMessageCodeList(
+        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfValidationFailure(resolvableMessageSpecificationForViolationMessage), locale
     )
 
     // constraintList

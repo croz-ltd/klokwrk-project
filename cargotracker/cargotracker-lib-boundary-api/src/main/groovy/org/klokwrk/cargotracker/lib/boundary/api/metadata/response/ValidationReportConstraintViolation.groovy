@@ -21,6 +21,7 @@ import groovy.transform.CompileStatic
 
 /**
  * Part of the response metadata validation report containing details about individual violation of some validation constraint.
+ * <p/>
  * An example of corresponding metadata JSON with only interesting parts included:
  * <pre>
  * {
@@ -29,15 +30,15 @@ import groovy.transform.CompileStatic
  *     "http": { ... },
  *     "violation": {
  *       "code": "400",
- *       "codeMessage": "Request is not valid.",
+ *       "message": "Request myRequest is not valid.",
  *       "type": "validation",
  *
  *       "validationReport": {
- *         root: { type: "myRequest", message: "Request myRequest is not valid." }
+ *         root: { type: "myRequest" }
  *         constraintViolations: [
  *           { type: "customObjectLevelValidationType", scope: "object", path: "", message: "The combination of properties is not quite right." },
- *           { type: "notNull", scope: "property", path: "myProperty", message: "must not be null", invalidPropertyValue: "null" },
- *           { type: "notNull", scope: "property", path: "myOtherProperty", message: "must not be null", invalidPropertyValue: "null" },
+ *           { type: "notNull", scope: "property", path: "myProperty", message: "must not be null" },
+ *           { type: "notNull", scope: "property", path: "myOtherProperty", message: "must not be null" },
  *           ...
  *         ]
  *       }
@@ -77,11 +78,4 @@ class ValidationReportConstraintViolation {
    * Localized message for concrete validation constraint violation.
    */
   String message
-
-  /**
-   * For validation constraint violations with the {@code property} scope, contains the value of that property.
-   * <p/>
-   * It should not be rendered for {@code object} scope.
-   */
-  String invalidPropertyValue
 }

@@ -56,14 +56,14 @@ import java.time.Instant
  *     },
  *     "violation": {
  *       "code": "400",
- *       "codeMessage": "Destination location cannot accept cargo from specified origin location.",
+ *       "message": "Destination location cannot accept cargo from specified origin location.",
  *       "type": "domain"
  *     }
  *   },
  *   "payload": {}
  * }
  * </pre>
- * Property {@code metaData.violation.codeMessage} needs to be localized.
+ * Property {@code metaData.violation.message} needs to be localized.
  * <p/>
  * When used from the Spring Boot application, the easiest is to create controller advice that is eligible for component scanning (&#64;ControllerAdvice annotation is annotated with &#64;Component):
  * <pre>
@@ -78,12 +78,12 @@ import java.time.Instant
  * spring.messages.basename: messages,responseFormattingDefaultMessages
  * ...
  * </pre>
- * Localization message codes for {@code metaData.violation.codeMessage} property is created with
- * {@link MessageSourceResolvableHelper#createMessageCodeListForViolationCodeMessageOfDomainFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
+ * Localization message codes for {@code metaData.violation.message} property is created with
+ * {@link MessageSourceResolvableHelper#createMessageCodeListForViolationMessageOfDomainFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
  * for further details.
  *
  * @see MessageSourceResolvableHelper
- * @see MessageSourceResolvableHelper#createMessageCodeListForViolationCodeMessageOfDomainFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
+ * @see MessageSourceResolvableHelper#createMessageCodeListForViolationMessageOfDomainFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
  */
 @CompileStatic
 class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
@@ -138,7 +138,7 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
   protected ResponseMetaDataViolationPart createResponseMetaDataViolationPart(DomainException domainException) {
     ResponseMetaDataViolationPart responseMetaDataViolationPart = new ResponseMetaDataViolationPart(
         code: domainException.violationInfo.violationCode.code,
-        codeMessage: domainException.violationInfo.violationCode.codeMessage,
+        message: domainException.violationInfo.violationCode.codeMessage,
         type: ViolationType.DOMAIN.name().toLowerCase()
     )
 
@@ -168,8 +168,8 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
         severity: domainException.violationInfo.severity.name().toLowerCase()
     )
 
-    httpResponseMetaData.violation.codeMessage = MessageSourceResolvableHelper.resolveMessageCodeList(
-        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfDomainFailure(resolvableMessageSpecification), locale
+    httpResponseMetaData.violation.message = MessageSourceResolvableHelper.resolveMessageCodeList(
+        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfDomainFailure(resolvableMessageSpecification), locale
     )
 
     return httpResponseMetaData

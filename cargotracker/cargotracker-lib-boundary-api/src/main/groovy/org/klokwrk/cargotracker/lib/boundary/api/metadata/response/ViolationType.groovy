@@ -35,11 +35,11 @@ enum ViolationType {
   VALIDATION,
 
   /**
-   * Corresponds to any other (except UNKNOWN) type of violation that is detected and handled.
+   * Corresponds to infrastructural violation that is detected and handled during processing of HTTP requests.
    * <p/>
    * For example, in web application built on top of Spring MVC, this violation can correspond to exceptions handled by {@code ResponseEntityExceptionHandler}.
    */
-  OTHER,
+  INFRASTRUCTURE_WEB,
 
   /**
    * Corresponds to the violation that is not handled.

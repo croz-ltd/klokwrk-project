@@ -146,7 +146,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
     then:
     commandResponseStatusCode == 400
-    commandResponseJson.metaData.violation.codeMessage == violationMessageParam
+    commandResponseJson.metaData.violation.message == violationMessageParam
     commandResponseJson.payload.isEmpty()
 
     where:
@@ -179,7 +179,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     then:
     queryResponseStatusCode == 404
     queryResponseJson.payload.isEmpty()
-    queryResponseJson.metaData.violation.codeMessage == violationMessageParam
+    queryResponseJson.metaData.violation.message == violationMessageParam
 
     where:
     acceptLanguageHeader | violationMessageParam

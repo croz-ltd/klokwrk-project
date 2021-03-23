@@ -57,7 +57,7 @@ import java.time.Instant
  *     },
  *     "violation": {
  *       "code": "500",
- *       "codeMessage": "Internal server error.",
+ *       "message": "Internal server error.",
  *       "type": "unknown",
  *       "logUuid": "116be9a6-9f38-4954-8b8f-e57e781655d0"
  *     }
@@ -65,7 +65,7 @@ import java.time.Instant
  *   "payload": {}
  * }
  * </pre>
- * Property {@code metaData.violation.codeMessage} needs to be localized.
+ * Property {@code metaData.violation.message} needs to be localized.
  * <p/>
  * When used from the Spring Boot application, the easiest is to create controller advice that is eligible for component scanning (&#64;ControllerAdvice annotation is annotated with &#64;Component):
  * <pre>
@@ -80,12 +80,12 @@ import java.time.Instant
  * spring.messages.basename: messages,responseFormattingDefaultMessages
  * ...
  * </pre>
- * Localization message codes for {@code metaData.violation.codeMessage} property is created with
- * {@link MessageSourceResolvableHelper#createMessageCodeListForViolationCodeMessageOfUnknownFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
+ * Localization message codes for {@code metaData.violation.message} property is created with
+ * {@link MessageSourceResolvableHelper#createMessageCodeListForViolationMessageOfUnknownFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
  * for further details.
  *
  * @see MessageSourceResolvableHelper
- * @see MessageSourceResolvableHelper#createMessageCodeListForViolationCodeMessageOfUnknownFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
+ * @see MessageSourceResolvableHelper#createMessageCodeListForViolationMessageOfUnknownFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
  */
 @CompileStatic
 class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
@@ -114,7 +114,7 @@ class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
     HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
 
     ResponseMetaDataViolationPart responseMetaDataReportViolationPart =
-        new ResponseMetaDataViolationPart(code: httpStatus.value().toString(), codeMessage: httpStatus.reasonPhrase, type: ViolationType.UNKNOWN.name().toLowerCase(), logUuid: logUuid)
+        new ResponseMetaDataViolationPart(code: httpStatus.value().toString(), message: httpStatus.reasonPhrase, type: ViolationType.UNKNOWN.name().toLowerCase(), logUuid: logUuid)
 
     HttpResponseMetaDataHttpPart httpResponseMetaDataHttpPart = new HttpResponseMetaDataHttpPart(status: httpStatus.value().toString(), message: httpStatus.reasonPhrase)
 
@@ -139,8 +139,8 @@ class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
         severity: Severity.ERROR.name().toLowerCase()
     )
 
-    httpResponseMetaData.violation.codeMessage = MessageSourceResolvableHelper.resolveMessageCodeList(
-        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationCodeMessageOfUnknownFailure(resolvableMessageSpecification), locale
+    httpResponseMetaData.violation.message = MessageSourceResolvableHelper.resolveMessageCodeList(
+        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfUnknownFailure(resolvableMessageSpecification), locale
     )
 
     return httpResponseMetaData
