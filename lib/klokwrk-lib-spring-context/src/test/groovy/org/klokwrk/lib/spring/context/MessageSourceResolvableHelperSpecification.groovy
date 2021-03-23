@@ -153,86 +153,86 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     "   "                     | _
   }
 
-  void "should create expected message code list for violation code message of other failure"() {
+  void "should create expected message code list for violation code message of infrastructure_web failure"() {
     given:
     MessageSourceResolvableSpecification messageSourceResolvableSpecification = new MessageSourceResolvableSpecification(
         controllerSimpleName: "controllerSimpleName",
         controllerMethodName: "controllerMethodName",
         messageCategory: "messageCategory", // always fixed to "failure"
-        messageType: "messageType",         // always fixed to "other"
+        messageType: "messageType",         // always fixed to "infrastructure_web"
         messageSubType: "messageSubType",
         severity: "severity",
     )
 
     when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfOtherFailure(messageSourceResolvableSpecification)
+    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfInfrastructureWebFailure(messageSourceResolvableSpecification)
 
     then:
     verifyAll {
       messageCodeList.size() == 12
 
-      messageCodeList[0] == "controllerSimpleName.controllerMethodName.failure.other.severity.messageSubType"
-      messageCodeList[1] == "controllerSimpleName.controllerMethodName.failure.other.messageSubType"
-      messageCodeList[2] == "controllerSimpleName.controllerMethodName.failure.other.severity"
+      messageCodeList[0] == "controllerSimpleName.controllerMethodName.failure.infrastructure_web.severity.messageSubType"
+      messageCodeList[1] == "controllerSimpleName.controllerMethodName.failure.infrastructure_web.messageSubType"
+      messageCodeList[2] == "controllerSimpleName.controllerMethodName.failure.infrastructure_web.severity"
 
-      messageCodeList[3] == "controllerMethodName.failure.other.severity.messageSubType"
-      messageCodeList[4] == "controllerMethodName.failure.other.messageSubType"
-      messageCodeList[5] == "controllerMethodName.failure.other.severity"
+      messageCodeList[3] == "controllerMethodName.failure.infrastructure_web.severity.messageSubType"
+      messageCodeList[4] == "controllerMethodName.failure.infrastructure_web.messageSubType"
+      messageCodeList[5] == "controllerMethodName.failure.infrastructure_web.severity"
 
-      messageCodeList[6] == "default.failure.other.severity.messageSubType"
-      messageCodeList[7] == "default.failure.other.messageSubType"
-      messageCodeList[8] == "default.failure.other.severity"
-      messageCodeList[9] == "default.failure.other"
+      messageCodeList[6] == "default.failure.infrastructure_web.severity.messageSubType"
+      messageCodeList[7] == "default.failure.infrastructure_web.messageSubType"
+      messageCodeList[8] == "default.failure.infrastructure_web.severity"
+      messageCodeList[9] == "default.failure.infrastructure_web"
       messageCodeList[10] == "default.failure.severity"
       messageCodeList[11] == "default.severity"
     }
   }
 
-  void "should create expected message code list for violation code message of other failure for empty MessageSourceResolvableSpecification"() {
+  void "should create expected message code list for violation code message of infrastructure_web failure for empty MessageSourceResolvableSpecification"() {
     given:
     MessageSourceResolvableSpecification messageSourceResolvableSpecification = new MessageSourceResolvableSpecification()
 
     when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfOtherFailure(messageSourceResolvableSpecification)
+    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfInfrastructureWebFailure(messageSourceResolvableSpecification)
 
     then:
     verifyAll {
       messageCodeList.size() == 6
-      messageCodeList[0] == "failure.other.warning"
-      messageCodeList[1] == "failure.other"
-      messageCodeList[2] == "default.failure.other.warning"
-      messageCodeList[3] == "default.failure.other"
+      messageCodeList[0] == "failure.infrastructure_web.warning"
+      messageCodeList[1] == "failure.infrastructure_web"
+      messageCodeList[2] == "default.failure.infrastructure_web.warning"
+      messageCodeList[3] == "default.failure.infrastructure_web"
       messageCodeList[4] == "default.failure.warning"
       messageCodeList[5] == "default.warning"
     }
   }
 
-  void "should create expected message code list for violation code message of other failure for missing controllerSimpleName [controllerSimpleName: '#controllerSimpleNameParam']"() {
+  void "should create expected message code list for violation code message of infrastructure_web failure for missing controllerSimpleName [controllerSimpleName: '#controllerSimpleNameParam']"() {
     given:
     MessageSourceResolvableSpecification messageSourceResolvableSpecification = new MessageSourceResolvableSpecification(
         controllerSimpleName: controllerSimpleNameParam,
         controllerMethodName: "controllerMethodName",
         messageCategory: "messageCategory", // always fixed to "failure"
-        messageType: "messageType",         // always fixed to "other"
+        messageType: "messageType",         // always fixed to "infrastructure_web"
         messageSubType: "messageSubType",
         severity: "severity"
     )
 
     when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfOtherFailure(messageSourceResolvableSpecification)
+    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfInfrastructureWebFailure(messageSourceResolvableSpecification)
 
     then:
     verifyAll {
       messageCodeList.size() == 9
 
-      messageCodeList[0] == "controllerMethodName.failure.other.severity.messageSubType"
-      messageCodeList[1] == "controllerMethodName.failure.other.messageSubType"
-      messageCodeList[2] == "controllerMethodName.failure.other.severity"
+      messageCodeList[0] == "controllerMethodName.failure.infrastructure_web.severity.messageSubType"
+      messageCodeList[1] == "controllerMethodName.failure.infrastructure_web.messageSubType"
+      messageCodeList[2] == "controllerMethodName.failure.infrastructure_web.severity"
 
-      messageCodeList[3] == "default.failure.other.severity.messageSubType"
-      messageCodeList[4] == "default.failure.other.messageSubType"
-      messageCodeList[5] == "default.failure.other.severity"
-      messageCodeList[6] == "default.failure.other"
+      messageCodeList[3] == "default.failure.infrastructure_web.severity.messageSubType"
+      messageCodeList[4] == "default.failure.infrastructure_web.messageSubType"
+      messageCodeList[5] == "default.failure.infrastructure_web.severity"
+      messageCodeList[6] == "default.failure.infrastructure_web"
       messageCodeList[7] == "default.failure.severity"
       messageCodeList[8] == "default.severity"
     }

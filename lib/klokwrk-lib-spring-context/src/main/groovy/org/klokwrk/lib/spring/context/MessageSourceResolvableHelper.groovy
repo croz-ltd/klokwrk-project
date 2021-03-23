@@ -50,7 +50,7 @@ import org.springframework.context.support.DefaultMessageSourceResolvable
  *
  *       "logUuid": "123", // Created only for 'unknown' violations
  *
- *       "type": "validation|domain|other|unknown",
+ *       "type": "validation|domain|infrastructure_web|unknown",
  *       "validationReport": {  // Created only for validation violations
  *         root: {
  *           type: "myRequest"
@@ -214,56 +214,56 @@ class MessageSourceResolvableHelper {
   }
 
   /**
-   * For {@code other} category of failures, creates a list of message codes for resolving {@code metaData.violation.message} part of JSON response.
+   * For {@code infrastructure_web} type of failures, creates a list of message codes for resolving {@code metaData.violation.message} part of JSON response.
    * <p/>
-   * Regarding {@link MessageSourceResolvableSpecification} properties, implementation fixes {@code messageCategory} to {@code failure} and {@code messageType} to {@code other}. Significant and
-   * distinguishing {@link MessageSourceResolvableSpecification} properties are {@code severity} and {@code messageSubType}. This means that values of those properties (beside
+   * Regarding {@link MessageSourceResolvableSpecification} properties, implementation fixes {@code messageCategory} to {@code failure} and {@code messageType} to {@code infrastructure_web}.
+   * Significant and distinguishing {@link MessageSourceResolvableSpecification} properties are {@code severity} and {@code messageSubType}. This means that values of those properties (beside
    * {@code controllerSimpleName} and {@code controllerMethodName}) are used for creating message code permutations (ordered combinations).
    * <p/>
-   * Failure category {@code other} represents failures handled by some framework rather than by our infrastructure. In this category, we only have SpringMvc exceptions, but in the future additional
-   * exceptions might end up here.
+   * Failure type {@code infrastructure_web} represents failures handled by springMvc framework rather than by our infrastructure. In the future we might have additional {@code infrastructure_*}
+   * types as more infrastructure is added (i.e., messaging).
    * <p/>
    * Example of message codes for {@code severity = error, messageSubType = missingPathVariableException}.
    * <pre>
-   *   "testController.testControllerMethod.failure.other.error.missingPathVariableException"
-   *   "testController.testControllerMethod.failure.other.missingPathVariableException"
-   *   "testController.testControllerMethod.failure.other.error"
+   *   "testController.testControllerMethod.failure.infrastructure_web.error.missingPathVariableException"
+   *   "testController.testControllerMethod.failure.infrastructure_web.missingPathVariableException"
+   *   "testController.testControllerMethod.failure.infrastructure_web.error"
    *
-   *   "testControllerMethod.failure.other.error.missingPathVariableException"
-   *   "testControllerMethod.failure.other.missingPathVariableException"
-   *   "testControllerMethod.failure.other.error"
+   *   "testControllerMethod.failure.infrastructure_web.error.missingPathVariableException"
+   *   "testControllerMethod.failure.infrastructure_web.missingPathVariableException"
+   *   "testControllerMethod.failure.infrastructure_web.error"
    *
-   *   "default.failure.other.error.missingPathVariableException"
-   *   "default.failure.other.missingPathVariableException"
-   *   "default.failure.other.error"
-   *   "default.failure.other"
+   *   "default.failure.infrastructure_web.error.missingPathVariableException"
+   *   "default.failure.infrastructure_web.missingPathVariableException"
+   *   "default.failure.infrastructure_web.error"
+   *   "default.failure.infrastructure_web"
    *   "default.failure.error"
    *   "default.error"
    * </pre>
    */
   @SuppressWarnings("DuplicateStringLiteral")
-  static List<String> createMessageCodeListForViolationMessageOfOtherFailure(MessageSourceResolvableSpecification specification) {
+  static List<String> createMessageCodeListForViolationMessageOfInfrastructureWebFailure(MessageSourceResolvableSpecification specification) {
     String controllerSimpleName = replaceWithDefaultIfEmpty(specification.controllerSimpleName)
     String controllerMethodName = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.controllerMethodName))
     String messageSubType = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.messageSubType))
     String severity = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.severity, "warning"))
 
     String failureMessageCategory = ".failure"
-    String otherMessageType = ".other"
+    String infrastructureWebMessageType = ".infrastructure_web"
 
     List<String> messageCodeList = [
-        "${ controllerSimpleName }${ controllerMethodName }${ failureMessageCategory }${ otherMessageType }${ severity }${ messageSubType }".toString(),
-        "${ controllerSimpleName }${ controllerMethodName }${ failureMessageCategory }${ otherMessageType }${ messageSubType }".toString(),
-        "${ controllerSimpleName }${ controllerMethodName }${ failureMessageCategory }${ otherMessageType }${ severity }".toString(),
+        "${ controllerSimpleName }${ controllerMethodName }${ failureMessageCategory }${ infrastructureWebMessageType }${ severity }${ messageSubType }".toString(),
+        "${ controllerSimpleName }${ controllerMethodName }${ failureMessageCategory }${ infrastructureWebMessageType }${ messageSubType }".toString(),
+        "${ controllerSimpleName }${ controllerMethodName }${ failureMessageCategory }${ infrastructureWebMessageType }${ severity }".toString(),
 
-        "${ controllerMethodName }${ failureMessageCategory }${ otherMessageType }${ severity }${ messageSubType }".toString(),
-        "${ controllerMethodName }${ failureMessageCategory }${ otherMessageType }${ messageSubType }".toString(),
-        "${ controllerMethodName }${ failureMessageCategory }${ otherMessageType }${ severity }".toString(),
+        "${ controllerMethodName }${ failureMessageCategory }${ infrastructureWebMessageType }${ severity }${ messageSubType }".toString(),
+        "${ controllerMethodName }${ failureMessageCategory }${ infrastructureWebMessageType }${ messageSubType }".toString(),
+        "${ controllerMethodName }${ failureMessageCategory }${ infrastructureWebMessageType }${ severity }".toString(),
 
-        "default${ failureMessageCategory }${ otherMessageType }${ severity }${ messageSubType }".toString(),
-        "default${ failureMessageCategory }${ otherMessageType }${ messageSubType }".toString(),
-        "default${ failureMessageCategory }${ otherMessageType }${ severity }".toString(),
-        "default${ failureMessageCategory }${ otherMessageType }".toString(),
+        "default${ failureMessageCategory }${ infrastructureWebMessageType }${ severity }${ messageSubType }".toString(),
+        "default${ failureMessageCategory }${ infrastructureWebMessageType }${ messageSubType }".toString(),
+        "default${ failureMessageCategory }${ infrastructureWebMessageType }${ severity }".toString(),
+        "default${ failureMessageCategory }${ infrastructureWebMessageType }".toString(),
         "default${ failureMessageCategory }${ severity }".toString(),
         "default${ severity }".toString()
     ]
