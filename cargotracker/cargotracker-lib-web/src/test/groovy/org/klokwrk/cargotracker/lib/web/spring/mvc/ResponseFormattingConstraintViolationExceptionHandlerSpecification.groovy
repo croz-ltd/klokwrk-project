@@ -160,22 +160,18 @@ class ResponseFormattingConstraintViolationExceptionHandlerSpecification extends
       stringPropertyConstraintViolation.type == "size"
       stringPropertyConstraintViolation.scope == "property"
       stringPropertyConstraintViolation.message == "size must be between 1 and 15"
-      stringPropertyConstraintViolation.invalidPropertyValue == ""
 
       localDateTimePropertyConstraintViolation.type == "past"
       localDateTimePropertyConstraintViolation.scope == "property"
       localDateTimePropertyConstraintViolation.message == "must be a past date"
-      localDateTimePropertyConstraintViolation.invalidPropertyValue == (currentLocalDateTime + 60).toString()
 
       nestedTestObjectPropertyConstraintViolation.type == "scriptAssert"
       nestedTestObjectPropertyConstraintViolation.scope == "object"
       nestedTestObjectPropertyConstraintViolation.message == /script expression "!_this.nestedStringProperty.endsWith('bla')" didn't evaluate to true/
-      nestedTestObjectPropertyConstraintViolation.invalidPropertyValue == null // because of object scope
 
       nestedIntegerPropertyConstraintViolation.type == "min"
       nestedIntegerPropertyConstraintViolation.scope == "property"
       nestedIntegerPropertyConstraintViolation.message == "must be greater than or equal to 10"
-      nestedIntegerPropertyConstraintViolation.invalidPropertyValue == "1"
     }
   }
 }

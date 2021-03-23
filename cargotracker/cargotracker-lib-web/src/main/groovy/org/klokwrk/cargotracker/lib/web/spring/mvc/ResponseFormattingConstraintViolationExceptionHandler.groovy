@@ -144,12 +144,10 @@ class ResponseFormattingConstraintViolationExceptionHandler implements MessageSo
       String type = (constraintViolation.constraintDescriptor as ConstraintDescriptorImpl).annotationType.simpleName.uncapitalize()
 
       String scope = null
-      String invalidPropertyValue = null
 
       ConstraintLocation.ConstraintLocationKind constraintLocationKind = (constraintViolation.constraintDescriptor as ConstraintDescriptorImpl).constraintLocationKind
       if (constraintLocationKind in [ConstraintLocation.ConstraintLocationKind.FIELD, ConstraintLocation.ConstraintLocationKind.GETTER]) {
         scope = "property"
-        invalidPropertyValue = constraintViolation.invalidValue == null ? "null" : constraintViolation.invalidValue.toString()
       }
 
       if (constraintLocationKind == ConstraintLocation.ConstraintLocationKind.TYPE) {
@@ -159,7 +157,7 @@ class ResponseFormattingConstraintViolationExceptionHandler implements MessageSo
       String path = constraintViolation.propertyPath
       String message = constraintViolation.message?.trim() ?: null
 
-      return new ValidationReportConstraintViolation(type: type, scope: scope, path: path, message: message, invalidPropertyValue: invalidPropertyValue)
+      return new ValidationReportConstraintViolation(type: type, scope: scope, path: path, message: message)
     })
 
     return new ResponseMetaDataValidationReportPart(root: validationReportRoot, constraintViolations: validationReportConstraintViolationList)
