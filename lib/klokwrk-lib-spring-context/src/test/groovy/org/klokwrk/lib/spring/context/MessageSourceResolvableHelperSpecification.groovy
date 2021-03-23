@@ -334,7 +334,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
         controllerMethodName: "controllerMethodName",
         messageCategory: "messageCategory", // always fixed to "failure"
         messageType: "messageType",         // always fixed to "validation"
-        messageSubType: "messageSubType",   // always ignored
+        messageSubType: "messageSubType",
         severity: "severity",               // always fixed to "warning"
     )
 
@@ -343,14 +343,15 @@ class MessageSourceResolvableHelperSpecification extends Specification {
 
     then:
     verifyAll {
-      messageCodeList.size() == 5
+      messageCodeList.size() == 6
 
-      messageCodeList[0] == "controllerSimpleName.controllerMethodName.failure.validation"
-      messageCodeList[1] == "controllerMethodName.failure.validation"
+      messageCodeList[0] == "controllerSimpleName.controllerMethodName.failure.validation.messageSubType"
+      messageCodeList[1] == "controllerMethodName.failure.validation.messageSubType"
 
-      messageCodeList[2] == "default.failure.validation"
-      messageCodeList[3] == "default.failure.warning"
-      messageCodeList[4] == "default.warning"
+      messageCodeList[2] == "default.failure.validation.messageSubType"
+      messageCodeList[3] == "default.failure.validation"
+      messageCodeList[4] == "default.failure.warning"
+      messageCodeList[5] == "default.warning"
     }
   }
 
@@ -379,7 +380,7 @@ class MessageSourceResolvableHelperSpecification extends Specification {
         controllerMethodName: "controllerMethodName",
         messageCategory: "messageCategory", // always fixed to "failure"
         messageType: "messageType",         // always fixed to "validation"
-        messageSubType: "messageSubType",   // always ignored
+        messageSubType: "messageSubType",
         severity: "severity"                // always fixed to "warning"
     )
 
@@ -388,13 +389,14 @@ class MessageSourceResolvableHelperSpecification extends Specification {
 
     then:
     verifyAll {
-      messageCodeList.size() == 4
+      messageCodeList.size() == 5
 
-      messageCodeList[0] == "controllerMethodName.failure.validation"
+      messageCodeList[0] == "controllerMethodName.failure.validation.messageSubType"
 
-      messageCodeList[1] == "default.failure.validation"
-      messageCodeList[2] == "default.failure.warning"
-      messageCodeList[3] == "default.warning"
+      messageCodeList[1] == "default.failure.validation.messageSubType"
+      messageCodeList[2] == "default.failure.validation"
+      messageCodeList[3] == "default.failure.warning"
+      messageCodeList[4] == "default.warning"
     }
 
     where:
@@ -402,34 +404,6 @@ class MessageSourceResolvableHelperSpecification extends Specification {
     null                      | _
     ""                        | _
     "   "                     | _
-  }
-
-  void "should create expected message code list for root bean message of validation failure"() {
-    given:
-    MessageSourceResolvableSpecification messageSourceResolvableSpecification = new MessageSourceResolvableSpecification(
-        controllerSimpleName: "controllerSimpleName",
-        controllerMethodName: "controllerMethodName",
-        messageCategory: "messageCategory", // always fixed to "failure"
-        messageType: "messageType",         // always fixed to "validation"
-        messageSubType: "messageSubType",
-        severity: "severity",               // always fixed to "warning"
-    )
-
-    when:
-    List<String> messageCodeList = MessageSourceResolvableHelper.createMessageCodeListForRootBeanMessageOfValidationFailure(messageSourceResolvableSpecification)
-
-    then:
-    verifyAll {
-      messageCodeList.size() == 6
-
-      messageCodeList[0] == "controllerSimpleName.controllerMethodName.failure.validation.messageSubType"
-      messageCodeList[1] == "controllerMethodName.failure.validation.messageSubType"
-
-      messageCodeList[2] == "default.failure.validation.messageSubType"
-      messageCodeList[3] == "default.failure.validation"
-      messageCodeList[4] == "default.failure.warning"
-      messageCodeList[5] == "default.warning"
-    }
   }
 
   void "should create expected message code list for constraint violation message of validation failure"() {

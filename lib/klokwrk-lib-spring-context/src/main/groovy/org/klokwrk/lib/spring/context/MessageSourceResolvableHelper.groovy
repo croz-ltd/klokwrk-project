@@ -330,56 +330,11 @@ class MessageSourceResolvableHelper {
    * For {@code validation} category of failures, creates a list of message codes for resolving {@code metaData.violation.codeMessage} part of JSON response.
    * <p/>
    * Regarding {@link MessageSourceResolvableSpecification} properties, implementation fixes {@code messageCategory} to {@code failure}, {@code messageType} to {@code validation}, and
-   * {@code severity} to {@code warning}. Beside {@code controllerSimpleName} and {@code controllerMethodName} there are no other significant and distinguishing properties. Accordingly,
-   * {@code metaData.violation.codeMessage} part of JSON response just signifies that we have some kind of validation failure.
-   * <p/>
-   * Further details about validation failure are given in other parts of JSON response, namely {@code metaData.violation.validationReport.root.message} and
-   * {@code metaData.violation.validationReport.constraintViolations[].message}. These parts are localized with the help of other methods of this class.
-   * <p/>
-   * Example of message codes:
-   * <pre>
-   *   "testController.testControllerMethod.failure.validation"
-   *
-   *   "testControllerMethod.failure.validation"
-   *
-   *   "default.failure.validation"
-   *   "default.failure.warning"
-   *   "default.warning"
-   * </pre>
-   */
-  @SuppressWarnings("DuplicateStringLiteral")
-  static List<String> createMessageCodeListForViolationCodeMessageOfValidationFailure(MessageSourceResolvableSpecification specification) {
-    String controllerSimpleName = replaceWithDefaultIfEmpty(specification.controllerSimpleName)
-    String controllerMethodName = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.controllerMethodName))
-
-    String failureMessageCategory = ".failure"
-    String validationMessageType = ".validation"
-    String warningSeverity = ".warning"
-
-    List<String> messageCodeList = [
-        "${ controllerSimpleName }${ controllerMethodName }${ failureMessageCategory }${ validationMessageType }".toString(),
-        "${ controllerMethodName }${ failureMessageCategory }${ validationMessageType }".toString(),
-        "default${ failureMessageCategory }${ validationMessageType }".toString(),
-        "default${ failureMessageCategory }${ warningSeverity }".toString(),
-        "default${ warningSeverity }".toString()
-    ]
-
-    messageCodeList = removeLeadingDot(messageCodeList)
-    messageCodeList = removeStandaloneStrings(messageCodeList)
-
-    return messageCodeList.unique()
-  }
-
-  /**
-   * For {@code validation} category of failures, creates a list of message codes for resolving {@code metaData.violation.validationReport.root.message} part of JSON response.
-   * <p/>
-   * Regarding {@link MessageSourceResolvableSpecification} properties, implementation fixes {@code messageCategory} to {@code failure}, {@code messageType} to {@code validation}, and
    * {@code severity} to {@code warning}. Significant and distinguishing {@link MessageSourceResolvableSpecification} property is only {@code messageSubType}. This means that the value of that
    * property (beside {@code controllerSimpleName} and {@code controllerMethodName}) is used for creating message code permutations (ordered combinations).
    * <p/>
-   * Response JSON part {@code  metaData.violation.validationReport.root.message} is intended to hold a message giving high-level overview of validation failure related to the {@code messageSubType},
-   * where {@code messageSubType} contains uncapitalized simple class name of a root object whose properties caused validation failure. When additional high-level description is not needed, it is
-   * common that JSON response parts {@code  metaData.violation.validationReport.root.message} and {@code metaData.violation.codeMessage} contain the same value.
+   * Further details about validation failure are given in other parts of JSON response, namely {@code metaData.violation.validationReport.constraintViolations[].message}. These parts are localized
+   * with the help of other methods of this class.
    * <p/>
    * Example of message codes for {@code messageSubType = requestDao}:
    * <pre>
@@ -394,7 +349,7 @@ class MessageSourceResolvableHelper {
    * </pre>
    */
   @SuppressWarnings("DuplicateStringLiteral")
-  static List<String> createMessageCodeListForRootBeanMessageOfValidationFailure(MessageSourceResolvableSpecification specification) {
+  static List<String> createMessageCodeListForViolationCodeMessageOfValidationFailure(MessageSourceResolvableSpecification specification) {
     String controllerSimpleName = replaceWithDefaultIfEmpty(specification.controllerSimpleName)
     String controllerMethodName = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.controllerMethodName))
     String messageSubType = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.messageSubType))

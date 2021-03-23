@@ -35,8 +35,7 @@ import groovy.transform.CompileStatic
  *
  *       "validationReport": {
  *         root: {
- *           type: "myRequest",
- *           message: "Request myRequest is not valid."
+ *           type: "myRequest"
  *         }
  *         constraintViolations: [
  *           ...
@@ -56,12 +55,4 @@ class ValidationReportRoot {
    * Do note that in constraint violations, this name is not included at the beginning of the property path.
    */
   String type
-
-  /**
-   * A message describing validation failure context.
-   * <p/>
-   * In many situations this message will be the same as {@code metaData.violation.codeMessage}. However, occasionally we might want to have a more specific high-level description depending on the
-   * concrete context of validation failure.
-   */
-  String message
 }

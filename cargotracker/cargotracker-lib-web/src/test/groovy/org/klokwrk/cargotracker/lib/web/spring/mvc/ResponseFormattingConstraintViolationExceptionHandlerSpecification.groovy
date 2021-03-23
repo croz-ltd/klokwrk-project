@@ -152,7 +152,6 @@ class ResponseFormattingConstraintViolationExceptionHandlerSpecification extends
 
     then:
     verifyAll(responseMetaDataValidationReportPart) {
-      it.root.message == "Request is not valid."
       it.root.type == "testRootObject"
 
       it.constraintViolations.size() == 4

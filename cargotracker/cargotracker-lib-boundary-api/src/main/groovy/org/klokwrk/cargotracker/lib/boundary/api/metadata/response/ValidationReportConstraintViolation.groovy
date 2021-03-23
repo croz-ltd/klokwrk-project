@@ -30,11 +30,11 @@ import groovy.transform.CompileStatic
  *     "http": { ... },
  *     "violation": {
  *       "code": "400",
- *       "codeMessage": "Request is not valid.",
+ *       "codeMessage": "Request myRequest is not valid.",
  *       "type": "validation",
  *
  *       "validationReport": {
- *         root: { type: "myRequest", message: "Request myRequest is not valid." }
+ *         root: { type: "myRequest" }
  *         constraintViolations: [
  *           { type: "customObjectLevelValidationType", scope: "object", path: "", message: "The combination of properties is not quite right." },
  *           { type: "notNull", scope: "property", path: "myProperty", message: "must not be null" },
