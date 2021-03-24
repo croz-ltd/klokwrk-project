@@ -28,7 +28,7 @@ import org.axonframework.messaging.annotation.WrappedMessageHandlingMember
 import java.lang.reflect.Method
 
 /**
- * Defines Axon's {@link HandlerEnhancerDefinition} for detailed logging of event sourcing handlers executions in projectors.
+ * Defines Axon's {@link HandlerEnhancerDefinition} for detailed logging of event sourcing handlers executions.
  * <p/>
  * Corresponding Slf4j logger uses '<code>cargotracker.axon.eventsourcing-handler-logging</code>' category and it logs on <code>DEBUG</code> level. Logger output contains information about event's
  * aggregate identifier and event's sequence number.
