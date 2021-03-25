@@ -33,7 +33,7 @@ import static AxonMessageHelper.SEQUENCE_NUMBER
 import static org.klokwrk.lang.groovy.constant.CommonConstants.NOT_AVAILABLE
 
 /**
- * Defines Axon's {@link HandlerEnhancerDefinition} for detailed logging of command handlers executions in projectors.
+ * Defines Axon's {@link HandlerEnhancerDefinition} for detailed logging of command handlers executions.
  * <p/>
  * Corresponding Slf4j logger uses '<code>cargotracker.axon.command-handler-logging</code>' category and it logs on <code>DEBUG</code> level. Logger output contains information about aggregate
  * identifier and sequence number.
