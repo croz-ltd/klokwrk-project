@@ -21,6 +21,7 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFactory
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoRequest
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
+import org.klokwrk.cargotracker.lib.web.util.ClientIpAddressExtractor
 
 import javax.servlet.http.HttpServletRequest
 
@@ -29,8 +30,7 @@ import javax.servlet.http.HttpServletRequest
 class CargoBookingWebAssembler {
 
   static OperationRequest<BookCargoRequest> toBookCargoOperationRequest(BookCargoWebRequest bookCargoWebRequest, HttpServletRequest httpServletRequest) {
-    // TODO dmurat: insert here more elaborate mechanism for detecting client IP. Good reference: https://www.marcobehler.com/guides/spring-mvc#_how_to_get_the_users_ip_address
-    Map metadataMap = WebMetaDataFactory.createMetaDataMapForWebBookingChannel(httpServletRequest.remoteAddr)
+    Map metadataMap = WebMetaDataFactory.createMetaDataMapForWebBookingChannel(ClientIpAddressExtractor.extractClientIpAddress(httpServletRequest))
 
     OperationRequest<BookCargoRequest> bookCargoOperationRequest = new OperationRequest(payload: new BookCargoRequest(bookCargoWebRequest.properties), metaData: metadataMap)
     return bookCargoOperationRequest
