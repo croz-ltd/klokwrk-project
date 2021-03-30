@@ -96,6 +96,29 @@ class GradleSourceRepackCommandSpecification extends Specification {
     outputString.contains("klokwrk-tool-gradle-source-repack")
   }
 
+  void "should work for valid gradle version"() {
+    given:
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()
+    System.err = new PrintStream(byteArrayOutputStream)
+
+    when:
+    PicocliRunner.run(GradleSourceRepackCommand, applicationContext, ["--version", gradleVersion] as String[])
+    String outputString = byteArrayOutputStream
+
+    then:
+    !outputString.contains("Invalid value '${ gradleVersion }' for parameter '<gradle-version>'.")
+
+    where:
+    gradleVersion      | _
+    "6.0"              | _
+    "6.8.3"            | _
+    "7.0-rc-1"         | _
+    "7.0-rc-10"        | _
+    "7.0-rc-22"        | _
+    "7.0-milestone-1"  | _
+    "7.0-milestone-22" | _
+  }
+
   void "should fail for invalid gradle version"() {
     given:
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()
@@ -109,15 +132,26 @@ class GradleSourceRepackCommandSpecification extends Specification {
     outputString.contains("Invalid value '${ gradleVersion }' for parameter '<gradle-version>'.")
 
     where:
-    gradleVersion | _
-    "6"           | _
-    "6."          | _
-    "6.7."        | _
-    "6.7.1."      | _
-    "6.7.1.1"     | _
-    "a"           | _
-    "6.a"         | _
-    "6.7.a"       | _
+    gradleVersion      | _
+    "6"                | _
+    "6."               | _
+    "6.7."             | _
+    "6.7.1."           | _
+    "6.7.1.1"          | _
+    "a"                | _
+    "6.a"              | _
+    "6.7.a"            | _
+    "7.0-bla"          | _
+    "7.0-bla"          | _
+    "7.0-bla1"         | _
+    "7.0-bla-0"        | _
+    "7.0-bla-1"        | _
+    "7.0-rc1"          | _
+    "7.0-rc-0"         | _
+    "7.0-rc-01"        | _
+    "7.0-milestone1"   | _
+    "7.0-milestone-0"  | _
+    "7.0-milestone-01" | _
   }
 
   void "should fail for invalid loggingLevels option"() {
@@ -135,10 +169,10 @@ class GradleSourceRepackCommandSpecification extends Specification {
     outputString.contains("--loggingLevels option contains invalid configuration:")
 
     where:
-    loggingLevels | _
-    "ROOT=INFO,org.klokwrk.tool.gradle.source.repack-DEBUG"   | _
-    "ROOT=INFO;org.klokwrk.tool.gradle.source.repack=DEBUG"   | _
-    "ROOT=INFO-org.klokwrk.tool.gradle.source.repack=DEBUG"   | _
+    loggingLevels                                           | _
+    "ROOT=INFO,org.klokwrk.tool.gradle.source.repack-DEBUG" | _
+    "ROOT=INFO;org.klokwrk.tool.gradle.source.repack=DEBUG" | _
+    "ROOT=INFO-org.klokwrk.tool.gradle.source.repack=DEBUG" | _
   }
 
   void "should work as expected for valid loggingLevels option"() {
