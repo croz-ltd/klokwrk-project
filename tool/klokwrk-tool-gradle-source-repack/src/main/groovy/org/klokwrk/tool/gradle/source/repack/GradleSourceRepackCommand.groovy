@@ -51,7 +51,7 @@ import java.util.regex.Pattern
 class GradleSourceRepackCommand implements Runnable {
   private static final Logger log = LoggerFactory.getLogger(GradleSourceRepackCommand)
 
-  private static final String GRADLE_VERSION_REGEX_FORMAT = /([2-9]\d*){1}(\.\d+){1}(\.\d+)?(-(rc|milestone)-[1-9](\d+)?)?/
+  private static final String GRADLE_VERSION_REGEX_FORMAT = /([2-9]\d*){1}(\.\d+){1}(\.\d+)?(-(rc|milestone)-[1-9]\d*)?/
   private static final Pattern GRADLE_VERSION_REGEX_PATTERN = ~GRADLE_VERSION_REGEX_FORMAT
 
   private static final String OPTION_LOGGING_LEVEL_CONFIG_LIST_DESCRIPTION = """\
