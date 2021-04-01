@@ -22,6 +22,11 @@ phases, and it should be flexible enough to support the system's growth.
 
 With the recent industry move towards microservices, carefully organizing high-level development artifacts has even more importance.
 
+This article explores issues that commonly don't exist in more straightforward projects. For this reason, it will be best if readers were exposed and have some experience working on mid to complex
+projects comprising multiple modules. Familiarity with DDD concepts, hexagonal architecture, and CQRS/ES is also a plus, although some of these ideas are introduced and briefly explained in the
+article. Project and package organization are based on constructs from the Java language but can be translated in any other environment. Although demonstrated code examples use the Groovy language,
+they should be readable enough for all readers.
+
 ### Main goals
 After the brief discussion above, we can try to enumerate the **main goals** of our targeted project structure:
 
