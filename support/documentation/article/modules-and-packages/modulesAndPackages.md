@@ -1,4 +1,7 @@
 # Organizing modules and packages
+* **Author:** Damir Murat
+* **Created:** 13.05.2020.
+* **Updated:** 01.04.2021.
 
 ## Introduction
 In this article, we'll explore and describe one specific way of organizing and structuring artifacts of the larger project. As a concrete example, we'll use
@@ -241,7 +244,7 @@ essential domain classes stand on its own. They are in their isolated universe a
 opposite direction. That way, primary domain classes are isolated from technical challenges in outer circles as much as possible. No matter what happens with technical choices for inbound channels
 and integration layers, business logic implemented in the domain should not change [5].
 
-In should be noted that feature-ignorance does not necessarily apply to the non-primary domain classes closer to the outer circles, like domain application services (a.k.a. domain facades). It makes
+It should be noted that feature-ignorance does not necessarily apply to the non-primary domain classes closer to the outer circles, like domain application services (a.k.a. domain facades). It makes
 sense to organize them by features. Application services are the first-line defense from technological influences but are also domain coordinators that directly support implementations of particular
 use cases.
 
@@ -312,7 +315,7 @@ Using hexagonal architecture might be an attractive idea as it looks like every 
 any software architecture also imposes behavioral rules, and hexagonal architecture is not the exception. When you add additional CQRS/ES flavor, there are even more rules to follow.
 
 What are these rules, and what they enforce? Basically, in the application that follows some architecture, it is not allowed that a class or an interface accesses anything that it wants. Rules impose
-constraints on dependencies that are permitted between code-level artifacts. For example, they regulate who can be called by some class can call or which interface a class should implement.
+constraints on dependencies that are permitted between code-level artifacts. For example, they regulate who can be called by some class or which interface a class should implement.
 
 That leads us to the essential question. How can we control whether all rules are honored or not? How can we ensure that developers learning about CQRS/ES and hexagonal architecture can comfortably
 work without breaking it? This is the point where architectural testing steps in the picture.
