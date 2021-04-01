@@ -1,4 +1,7 @@
 # Organizing modules and packages
+* **Author:** Damir Murat
+* **Created:** 13.05.2020.
+* **Updated:** 01.04.2021.
 
 ## Introduction
 In this article, we'll explore and describe one specific way of organizing and structuring artifacts of the larger project. As a concrete example, we'll use
@@ -18,6 +21,11 @@ since they might require dramatic refactoring of applications. It might be easie
 phases, and it should be flexible enough to support the system's growth.
 
 With the recent industry move towards microservices, carefully organizing high-level development artifacts has even more importance.
+
+This article explores issues that commonly don't exist in more straightforward projects. For this reason, it will be best if readers were exposed and have some experience working on mid to complex
+projects comprising multiple modules. Familiarity with DDD concepts, hexagonal architecture, and CQRS/ES is also a plus, although some of these ideas are introduced and briefly explained in the
+article. Project and package organization are based on constructs from the Java language but can be translated in any other environment. Although demonstrated code examples use the Groovy language,
+they should be readable enough for all readers.
 
 ### Main goals
 After the brief discussion above, we can try to enumerate the **main goals** of our targeted project structure:
@@ -241,7 +249,7 @@ essential domain classes stand on its own. They are in their isolated universe a
 opposite direction. That way, primary domain classes are isolated from technical challenges in outer circles as much as possible. No matter what happens with technical choices for inbound channels
 and integration layers, business logic implemented in the domain should not change [5].
 
-In should be noted that feature-ignorance does not necessarily apply to the non-primary domain classes closer to the outer circles, like domain application services (a.k.a. domain facades). It makes
+It should be noted that feature-ignorance does not necessarily apply to the non-primary domain classes closer to the outer circles, like domain application services (a.k.a. domain facades). It makes
 sense to organize them by features. Application services are the first-line defense from technological influences but are also domain coordinators that directly support implementations of particular
 use cases.
 
@@ -312,7 +320,7 @@ Using hexagonal architecture might be an attractive idea as it looks like every 
 any software architecture also imposes behavioral rules, and hexagonal architecture is not the exception. When you add additional CQRS/ES flavor, there are even more rules to follow.
 
 What are these rules, and what they enforce? Basically, in the application that follows some architecture, it is not allowed that a class or an interface accesses anything that it wants. Rules impose
-constraints on dependencies that are permitted between code-level artifacts. For example, they regulate who can be called by some class can call or which interface a class should implement.
+constraints on dependencies that are permitted between code-level artifacts. For example, they regulate who can be called by some class or which interface a class should implement.
 
 That leads us to the essential question. How can we control whether all rules are honored or not? How can we ensure that developers learning about CQRS/ES and hexagonal architecture can comfortably
 work without breaking it? This is the point where architectural testing steps in the picture.
@@ -386,6 +394,21 @@ First, it defines all relevant layers, and then it defines rules for these layer
 can use them in command side applications. Then, commands (`whereLayer(DOMAIN_COMMAND_LAYER)`) can be used by aggregates and application services. And so forth.
 
 By implementing appropriate architectural tests for each CQRS/ES application type, we can be sure that architectural invariants will hold.
+
+## Conclusion
+This article explored a method for structuring the complex project leveraging DDD concepts and hexagonal architecture. While doing this, we introduced project artifacts categorization into subdomain
+applications and libraries, domain libraries, generic reusable libraries, and generic reusable language extensions.
+
+We've also seen the way to deal with inter-module dependencies and how to monitor and control them.
+
+Next, we've demonstrated principles for package organization and consistent naming, including an emphasized distinction between low-level libraries and high-level application artifacts.
+
+At the application level, we introduced hexagonal architecture to structure the application's business features and seamless inclusion of CQRS/ES architecture implemented on top of the Axon framework
+and Axon Server.
+
+And finally, we ended with tests for our hexagonal CQRS/ES architecture that verify our own rules for application dependencies at the package and class/interface level.
+
+Although we dealt with quite specific architectural and technology choices, hopefully, demonstrated principles and ideas could be helpful in other environments too.
 
 ## References
 [1] [Package by type, -by layer, -by feature vs Package by layered features](https://proandroiddev.com/package-by-type-by-layer-by-feature-vs-package-by-layered-feature-e59921a4dffa) <br/>
