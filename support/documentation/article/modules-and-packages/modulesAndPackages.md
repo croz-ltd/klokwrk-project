@@ -395,6 +395,21 @@ can use them in command side applications. Then, commands (`whereLayer(DOMAIN_CO
 
 By implementing appropriate architectural tests for each CQRS/ES application type, we can be sure that architectural invariants will hold.
 
+## Conclusion
+This article explored a method for structuring the complex project leveraging DDD concepts and hexagonal architecture. While doing this, we introduced project artifacts categorization into subdomain
+applications and libraries, domain libraries, generic reusable libraries, and generic reusable language extensions.
+
+We've also seen the way to deal with inter-module dependencies and how to monitor and control them.
+
+Next, we've demonstrated principles for package organization and consistent naming, including an emphasized distinction between low-level libraries and high-level application artifacts.
+
+At the application level, we introduced hexagonal architecture to structure the application's business features and seamless inclusion of CQRS/ES architecture implemented on top of the Axon framework
+and Axon Server.
+
+And finally, we ended with tests for our hexagonal CQRS/ES architecture that verify our own rules for application dependencies at the package and class/interface level.
+
+Although we dealt with quite specific architectural and technology choices, hopefully, demonstrated principles and ideas could be helpful in other environments too.
+
 ## References
 [1] [Package by type, -by layer, -by feature vs Package by layered features](https://proandroiddev.com/package-by-type-by-layer-by-feature-vs-package-by-layered-feature-e59921a4dffa) <br/>
 [2] [Four Strategies for Organizing Code](https://medium.com/@msandin/strategies-for-organizing-code-2c9d690b6f33) <br/>
