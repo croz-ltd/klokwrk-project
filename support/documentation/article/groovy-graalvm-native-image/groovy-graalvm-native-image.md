@@ -12,7 +12,8 @@ Many popular JVM frameworks (for example, [Micronaut](https://guides.micronaut.i
 [Helidon](https://helidon.io/docs/latest/#/se/guides/36_graalnative) [8], and even [Spring Framework](https://github.com/spring-projects-experimental/spring-native) [9]) adopted GraalVM native image
 support for statically compiled languages like Java and Kotlin. Unfortunately, some other popular JVM languages, like Groovy, are left-out from out-of-the-box support.
 
-This article will explore how to convert the Micronaut CLI application written in statically compiled Groovy into a GraalVM native image.
+This article will explore how to convert the Micronaut CLI application written in statically compiled Groovy into a GraalVM native image. It is expected that readers are familiar with Java and Groovy
+languages and have some exposure to the ideas behind GraalVM, Ahead-Of-Time (AOT) compilation, and compilation into native images.
 
 My interest in compiling Groovy native images was triggered and inspired by [Szymon Stepniak's](https://e.printstacktrace.blog/)
 [work](https://e.printstacktrace.blog/graalvm-and-groovy-how-to-start/) [10] [in this](https://www.youtube.com/watch?v=BjO_vBzaB4c) [11] [area](https://www.youtube.com/watch?v=RPdugI8eZgo) [12].
