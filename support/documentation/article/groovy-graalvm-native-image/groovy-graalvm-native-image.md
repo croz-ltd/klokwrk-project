@@ -47,7 +47,7 @@ For this article we are using the following setup and assumptions:
 
 ## Easy way to the Groovy native image
 GraalVM native image support and tooling have come a long way over the past years. It always worked for Java, but for other languages, what once looked too
-[complicated](https://melix.github.io/blog/2019/03/simple-http-server-graal.html) [19], becomes much [more straightforward](https://www.youtube.com/watch?v=RPdugI8eZgo).
+[complicated](https://melix.github.io/blog/2019/03/simple-http-server-graal.html) [19], becomes much [more straightforward](https://www.youtube.com/watch?v=RPdugI8eZgo) [12].
 
 ### Adapting Groovy Micronaut CLI application
 In the case of the Groovy CLI Micronaut application, you can use [Micronaut Launch](https://micronaut.io/launch/) [20] for creating it. However, if you try to add the GraalVM feature, you will
@@ -135,7 +135,7 @@ Micronaut specific system property `micronaut.cloud.platform=BARE_METAL` squeeze
 
 ### Progress so far
 So far, we've achieved our primary goal, that is, creating a native image from the Groovy application through a relatively simple and straightforward process. If this is your only goal, and you don't
-want to bother with further details, you can stop right here.
+want to bother with further details, you can stop right here. However, before doing so, you might want to take a glance over the "Results Summary" section near the end of the article.
 
 At this point, it is worth noting the size of the created native image. As a base, we will use the invalid image created without any configuration files. It does not work but can be useful for size
 measurement:
@@ -984,6 +984,28 @@ In the end, to get a better feeling about our accomplishments, let's enumerate p
   * We now know what is going on, and what is required to be included in configuration files, what was a surplus, and why.
 * **cons**
   * Automation of the process is missing, but this is a topic for some other article.
+
+### Results Summary
+This section presents a summary and comparison of sizes for images that we have created along the way. If you are mainly interested in results, given data might help you decide if tuning the image
+size provides enough benefits for your case.
+
+- "no-config": invalid base image without any native builder configuration
+- "tuned-config": an optimally sized image with tuned and filtered native builder configuration
+- "all-inclusive": the image with "all-inclusive" native builder configuration created by java agent
+
+**1. Size increase relatively to the non-functional base image:**
+
+|                |size (B)    | size increase |
+|----------------|-----------:|--------------:|
+|**no-config**   | 72.792.392 | -
+|**tuned-config**| 74.907.872 | 2,9 %
+
+**2. Size decrease relatively to the all-inclusive image:**
+
+|                 |size (MB)   | size decrease  |
+|-----------------|-----------:|---------------:|
+|**all-inclusive**| 85.683.664 | -
+|**tuned-config** | 74.907.872 | 12,6 %
 
 ## Conclusion
 GraalVM native image is an exciting technology adopted and supported by many popular frameworks. Because of some limitations related to the static analysis of reflective code, that support is usually
