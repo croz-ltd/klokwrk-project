@@ -1,23 +1,25 @@
 # Taking a Groovy on GraalVM native image journey
 * **Author:** Damir Murat
 * **Created:** 24.01.2021.
-* **Updated:** 26.01.2021.
+* **Updated:** 06.04.2021.
 
-[GraalVM](https://www.graalvm.org/) is a fascinating [open-source project](https://github.com/oracle/graal). It started as an effort to provide a
-[high-performance polyglot](https://www.youtube.com/watch?v=9oHpAhgkNAY) virtual machine. However, in the JVM ecosystem, it looks like most of the community interest comes from GraalVM ability to
-create [high-performance, low-footprint, Ahead-Of-Time (AOT) compiled native images](https://www.youtube.com/watch?v=j9jIny7HsSo) (provided as part of
-[SubstrateVM](https://github.com/oracle/graal/blob/master/substratevm/README.md) sub-project).
+[GraalVM](https://www.graalvm.org/) [1] is a fascinating [open-source project](https://github.com/oracle/graal) [2]. It started as an effort to provide a
+[high-performance polyglot](https://www.youtube.com/watch?v=9oHpAhgkNAY) [3] virtual machine. However, in the JVM ecosystem, it looks like most of the community interest comes from GraalVM ability to
+create [high-performance, low-footprint, Ahead-Of-Time (AOT) compiled native images](https://www.youtube.com/watch?v=j9jIny7HsSo) [4] (provided as part of
+[SubstrateVM](https://github.com/oracle/graal/blob/master/substratevm/README.md) [5] sub-project).
 
-Many popular JVM frameworks (for example, [Micronaut](https://guides.micronaut.io/micronaut-creating-first-graal-app/guide/index.html), [Quarkus](https://quarkus.io/guides/building-native-image),
-[Helidon](https://helidon.io/docs/latest/#/se/guides/36_graalnative), and even [Spring Framework](https://github.com/spring-projects-experimental/spring-graalvm-native)) adopted GraalVM native image
-support for statically compiled languages like Java and Kotlin. Unfortunately, some other popular JVM languages, like Groovy, are left-out from out-of-the-box support.
+Many popular JVM frameworks (for example, [Micronaut](https://guides.micronaut.io/micronaut-creating-first-graal-app/guide/index.html) [6],
+[Quarkus](https://quarkus.io/guides/building-native-image) [7], [Helidon](https://helidon.io/docs/latest/#/se/guides/36_graalnative) [8], and even
+[Spring Framework](https://github.com/spring-projects-experimental/spring-native) [9]) adopted GraalVM native image support for statically compiled languages like Java and Kotlin. Unfortunately, some
+other popular JVM languages, like Groovy, are left-out from out-of-the-box support.
 
-This article will explore how to convert the Micronaut CLI application written in statically compiled Groovy into a GraalVM native image.
+This article will explore how to convert the Micronaut CLI application written in statically compiled Groovy into a GraalVM native image. It is expected that readers are familiar with Java and Groovy
+languages and have some exposure to the ideas behind GraalVM, Ahead-Of-Time (AOT) compilation, and compilation into native images.
 
 My interest in compiling Groovy native images was triggered and inspired by [Szymon Stepniak's](https://e.printstacktrace.blog/)
-[[work]](https://e.printstacktrace.blog/graalvm-and-groovy-how-to-start/) [[in this]](https://www.youtube.com/watch?v=BjO_vBzaB4c) [[area]](https://www.youtube.com/watch?v=RPdugI8eZgo). As nothing
-comes in a vacuum, it coincided with a need for creating a [small command-line utility](../../../../tool/klokwrk-tool-gradle-source-repack/README.md) and
-[important improvements](https://www.graalvm.org/release-notes/20_3) in GraalVM native image functionality. Those circumstances created a perfect environment for trying out GraalVM
+[work](https://e.printstacktrace.blog/graalvm-and-groovy-how-to-start/) [10] [in this](https://www.youtube.com/watch?v=BjO_vBzaB4c) [11] [area](https://www.youtube.com/watch?v=RPdugI8eZgo) [12].
+As nothing comes in a vacuum, it coincided with a need for creating a [small command-line utility](../../../../tool/klokwrk-tool-gradle-source-repack/README.md) [13] and
+[important improvements](https://www.graalvm.org/release-notes/20_3) [14] in GraalVM native image functionality. Those circumstances created a perfect environment for trying out GraalVM
 native image compilation for Groovy.
 
 ## Introduction
@@ -26,11 +28,11 @@ often as possible to the open-source community. An essential part of this is [is
 
 As Klokwrk uses Gradle as a build tool, exploratory debugging of Gradle build scripts, 3rd party plugins, and internal classes is a prerequisite for any issue report related to Gradle or its plugins.
 To help with this process, we created the [klokwrk-tool-gradle-source-repack](../../../../tool/klokwrk-tool-gradle-source-repack/README.md) submodule. To explore its role in the process of debugging
-Gradle from IntelliJ IDEA, please take a look at the "[Debugging Gradle internals from IntelliJ IDEA](../debugging-gradle-from-idea/debugging-gradle-from-idea.md)" article.
+Gradle from IntelliJ IDEA, please take a look at the "[Debugging Gradle internals from IntelliJ IDEA](../debugging-gradle-from-idea/debugging-gradle-from-idea.md)" [15] article.
 
 As `klokwrk-tool-gradle-source-repack` is a CLI (command-line) utility build on top of Groovy, Micronaut, and [picocli](https://picocli.info/), it seemed natural to see if it is possible to package
-it as a GraalVM native image. With Micronaut's [support](https://docs.micronaut.io/latest/guide/index.html#graal) for GraalVM native images and provided
-[integration](https://micronaut-projects.github.io/micronaut-picocli/latest/guide/) with picocli, we already have a great starting point. We "just" need to add Groovy in the picture.
+it as a GraalVM native image. With Micronaut's [support](https://docs.micronaut.io/latest/guide/index.html#graal) [16] for GraalVM native images and provided
+[integration](https://micronaut-projects.github.io/micronaut-picocli/latest/guide/) [17] with picocli, we already have a great starting point. We "just" need to add Groovy in the picture.
 
 Therefore, this article will use [klokwrk-tool-gradle-source-repack](../../../../tool/klokwrk-tool-gradle-source-repack/README.md) as a working example. For a more comfortable
 following of discussion and examples, it might be useful to clone/fork the [klokwrk-project](https://github.com/croz-ltd/klokwrk-project). For creating native images, you need to set up GraalVM and
@@ -39,18 +41,18 @@ its `native-image` tool. The easiest way for installing GraalVM is using [SDKMAN
 
 For this article we are using the following setup and assumptions:
 - GraalVM Community 21.0.0 for OpenJDK 11 (SDKMAN identifier - `21.0.0.r11-grl`). GraalVM 21.0.0 OpenJDK 8 variant should also work.
-- [gdub](https://github.com/gdubw/gdub) utility for easier working with Gradle wrapper via `gw` command.
+- [gdub](https://github.com/gdubw/gdub) [18] utility for easier working with Gradle wrapper via `gw` command.
 - macOS Catalina version 10.15.7.
 - All demonstrated commands are executed from `klokwrk-project/tool/klokwrk-tool-gradle-source-repack` directory.
 
 ## Easy way to the Groovy native image
 GraalVM native image support and tooling have come a long way over the past years. It always worked for Java, but for other languages, what once looked too
-[complicated](https://melix.github.io/blog/2019/03/simple-http-server-graal.html), becomes much [more straightforward](https://www.youtube.com/watch?v=RPdugI8eZgo).
+[complicated](https://melix.github.io/blog/2019/03/simple-http-server-graal.html) [19], becomes much [more straightforward](https://www.youtube.com/watch?v=RPdugI8eZgo) [12].
 
 ### Adapting Groovy Micronaut CLI application
-In the case of the Groovy CLI Micronaut application, you can use [Micronaut Launch](https://micronaut.io/launch/) for creating it. However, if you try to add the GraalVM feature, you will discover
-that Micronaut does not support the Groovy/GraalVM combination. Fortunately, using the Diff and Preview options on the equivalent Java application, you can find that you only need to add a single
-dependency in the `build.gradle` file:
+In the case of the Groovy CLI Micronaut application, you can use [Micronaut Launch](https://micronaut.io/launch/) [20] for creating it. However, if you try to add the GraalVM feature, you will
+discover that Micronaut does not support the Groovy/GraalVM combination. Fortunately, using the Diff and Preview options on the equivalent Java application, you can find that you only need to add a
+single dependency in the `build.gradle` file:
 
 ```
 ...
@@ -59,18 +61,20 @@ dependencies {
   ...
 }
 ```
-Generated Micronaut Groovy CLI application includes [Micronaut Gradle Plugin](https://github.com/micronaut-projects/micronaut-gradle-plugin), which supports compiling native images, among many other
-excellent features. However, I encountered [[some]](https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/92) [[problems]](https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/93)
-with the `nativeImage` task and decided to create a simplified version - `kwrkNativeImage`. Besides resolving issues, it also allows slightly more direct control over native image compilation.
-To get more details, take a closer look at the `klokwrk-tool-gradle-source-repack's` [build.gradle](../../../../tool/klokwrk-tool-gradle-source-repack/build.gradle) file.
+Generated Micronaut Groovy CLI application includes [Micronaut Gradle Plugin](https://github.com/micronaut-projects/micronaut-gradle-plugin) [21], which supports compiling native images, among many
+other excellent features. However, I encountered [[some]](https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/92)
+[[problems]](https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/93) with the `nativeImage` task and decided to create a simplified version - `kwrkNativeImage`. Besides resolving
+issues, it also allows slightly more direct control over native image compilation. To get more details, take a closer look at the `klokwrk-tool-gradle-source-repack's`
+[build.gradle](../../../../tool/klokwrk-tool-gradle-source-repack/build.gradle) file.
 
 ### Generating GraalVM native image configuration files
 GraalVM native image building relies on static analysis for detecting all reachable code paths. This might be problematic with any technology that uses reflection. Although
-[native images support reflection](https://www.graalvm.org/reference-manual/native-image/Reflection/), static analysis of reflective calls is simplified. It boils down to the cases where parameters
-of reflective calls can be reduced to constants. Any elaborate logic that prepares reflective API parameters can cause static analysis to miss reflective API usage.
+[native images support reflection](https://www.graalvm.org/reference-manual/native-image/Reflection/) [22], static analysis of reflective calls is simplified. It boils down to the cases where
+parameters of reflective calls can be reduced to constants. Any elaborate logic that prepares reflective API parameters can cause static analysis to miss reflective API usage.
 
-For cases that are not covered by the native image static analysis, GraalVM has a way for [specifying configuration files](https://www.graalvm.org/reference-manual/native-image/BuildConfiguration/)
-that can provide all missing elements. You can create configuration files manually, but commonly they are produced with the help of the `native-image-agent`.
+For cases that are not covered by the native image static analysis, GraalVM has a way for
+[specifying configuration files](https://www.graalvm.org/reference-manual/native-image/BuildConfiguration/) [23] that can provide all missing elements. You can create configuration files manually,
+but commonly they are produced with the help of the `native-image-agent`.
 
 GraalVM [native-image-agent](https://github.com/oracle/graal/blob/master/substratevm/src/com.oracle.svm.agent/src/com/oracle/svm/agent/NativeImageAgent.java) is a Java agent intended to be used
 with a running Java application. It [[intercepts]](https://github.com/oracle/graal/blob/master/substratevm/src/com.oracle.svm.agent/src/com/oracle/svm/agent/BreakpointInterceptor.java)
@@ -90,8 +94,8 @@ java -agentlib:native-image-agent=config-output-dir=build/native-image-agent \
 ```
 
 Here we are running `klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar` with corresponding application parameters (`--loggingLevels`, `--cleanup`, and `6.8.1` for Gradle version).
-Simultaneously, we use `native-image-agent` with the `config-output-dir` parameter that specifies the directory where configuration files will be written. After running, in the `build/native-image-agent`
-directory, we'll get a set of configuration files: `jni-config.json`, `proxy-config.json`, `reflect-config.json`, `resource-config.json`, and `serialization-config.json`.
+Simultaneously, we use `native-image-agent` with the `config-output-dir` parameter that specifies the directory where configuration files will be written. After running, in the
+`build/native-image-agent` directory, we'll get a set of configuration files: `jni-config.json`, `proxy-config.json`, `reflect-config.json`, `resource-config.json`, and `serialization-config.json`.
 
 To get the complete content of configuration files, we have to run our application with additional supported parameters and merge the configuration files' content. For this purpose,
 `native-image-agent` supports `config-merge-dir` parameter (additional application parameter is `--version`):
@@ -131,7 +135,7 @@ Micronaut specific system property `micronaut.cloud.platform=BARE_METAL` squeeze
 
 ### Progress so far
 So far, we've achieved our primary goal, that is, creating a native image from the Groovy application through a relatively simple and straightforward process. If this is your only goal, and you don't
-want to bother with further details, you can stop right here.
+want to bother with further details, you can stop right here. However, before doing so, you might want to take a glance over the "Results Summary" section near the end of the article.
 
 At this point, it is worth noting the size of the created native image. As a base, we will use the invalid image created without any configuration files. It does not work but can be useful for size
 measurement:
@@ -222,7 +226,7 @@ we need to add `org.klokwrk.tool.gradle.source.repack.cli.PropertiesVersionProvi
 ]
 ```
 With this configuration, the native image builder will include all fields and methods of the `org.klokwrk.tool.gradle.source.repack.cli.PropertiesVersionProvider` class in the generated native image.
-For more information about the exact configuration format, look at the native image builder [documentation](https://www.graalvm.org/reference-manual/native-image/Reflection/#manual-configuration).
+For more information about the exact configuration format, look at the native image builder [documentation](https://www.graalvm.org/reference-manual/native-image/Reflection/#manual-configuration) [24].
 
 If we now regenerate the native image with the `kwrkNativeImage` task and try to execute it again, we'll get an error where `picocli` is complaining about unknown CLI options. The native image static
 analysis didn't detect reflective usage of fields from `org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCommand` class that `picocli` needs for generating all supported CLI options and
@@ -401,11 +405,11 @@ It looks up and registers all Groovy generated closure classes with the native i
 ```
 kwrk-graal.registration-feature.application.enabled = true
 ```
-Before regenerating the native image, we have one more issue to deal with. In Groovy, a [closure](https://groovy-lang.org/closures.html) can reference variables declared in its surrounding lexical
-scope. However, Groovy closures also support the concept of a [delegate](https://groovy-lang.org/closures.html#_delegation_strategy) that allows referencing methods and properties from any object that
-was proclaimed to be the delegate of the closure instance. Such behavior means that the closure body can reference any application's class method or field, even if they are private, for example.
-Suppose it happens to be the only reference to those particular private methods or fields. In that case, the native image will not be aware of it since, as we saw previously, it does not know about
-closure bodies (the content of generated closure class' `doCall()` method).
+Before regenerating the native image, we have one more issue to deal with. In Groovy, a [closure](https://groovy-lang.org/closures.html) [25] can reference variables declared in its surrounding
+lexical scope. However, Groovy closures also support the concept of a [delegate](https://groovy-lang.org/closures.html#_delegation_strategy) [26] that allows referencing methods and properties from
+any object that was proclaimed to be the delegate of the closure instance. Such behavior means that the closure body can reference any application's class method or field, even if they are private,
+for example. Suppose it happens to be the only reference to those particular private methods or fields. In that case, the native image will not be aware of it since, as we saw previously, it does not
+know about closure bodies (the content of generated closure class' `doCall()` method).
 
 To simplify, closures can call back into any part of the application. Thus, we have to make sure all those called parts are included in the native image. During the native image building, there is no
 easy way to do this in a fine-grained manner. Therefore, our `GroovyApplicationRegistrationFeature` includes all application classes in the build. Consequently, we can now delete two application
@@ -537,9 +541,10 @@ File download(GradleDownloaderInfo gradleDownloaderInfo) {
 Method `map()` (defined on `io.reactivex.Flowable` class) accepts the argument of type `io.reactivex.functions.Function`. Interface `io.reactivex.functions.Function` is a functional interface,
 also known as Single Abstract Method (SAM) interface, meaning it contains a single abstract method (the method without concrete implementation).
 
-In Groovy, we can implement SAM interfaces by providing a closure as a concrete implementation ([Closure to type coercion](https://docs.groovy-lang.org/latest/html/documentation/core-semantics.html#closure-coercion)).
-Groovy will convert the closure into the appropriate SAM type. If we do not provide an explicit target type, the conversion is implicit. Implicit conversion is also called **coercion**. On the other
-hand, when the target type is listed, we have an explicit conversion, also known as **cast**:
+In Groovy, we can implement SAM interfaces by providing a closure as a concrete implementation
+([Closure to type coercion](https://docs.groovy-lang.org/latest/html/documentation/core-semantics.html#closure-coercion) [27]). Groovy will convert the closure into the appropriate SAM type. If we do
+not provide an explicit target type, the conversion is implicit. Implicit conversion is also called **coercion**. On the other hand, when the target type is listed, we have an explicit conversion,
+also known as **cast**:
 
 ```
 // closure coercion (implicit conversion) into SAM type
@@ -630,8 +635,8 @@ we will leverage several additional `native-image-agent` options.
 
 ### Trace file of `native-image-agent`
 For better understanding of dynamic and reflective calls during execution, `native-image-agent` provides the ability for
-[creating a trace file](https://www.graalvm.org/reference-manual/native-image/BuildConfiguration/#trace-files) that contains each individual access. In our case, the trace file can be created with a
-commands similar to the following:
+[creating a trace file](https://www.graalvm.org/reference-manual/native-image/BuildConfiguration/#trace-files) [28] that contains each individual access. In our case, the trace file can be created
+with a commands similar to the following:
 
 ```
 gw clean assemble
@@ -657,7 +662,7 @@ Here we see the caller class (`caller_class`), the target class (`class`), the m
 information will help as guidance during creation of filtering configuration files.
 
 ### The `native-image-agent` filtering
-The `native-image-agent` supports two kinds of [filtering](https://www.graalvm.org/reference-manual/native-image/BuildConfiguration/#agent-advanced-usage), caller-based, and access-based. With
+The `native-image-agent` supports two kinds of [filtering](https://www.graalvm.org/reference-manual/native-image/BuildConfiguration/#agent-advanced-usage) [29], caller-based, and access-based. With
 caller-based filtering, we can ignore a set of classes that triggered a specific reflective method call. As a result, the native image builder configuration files will not contain entries
 resulted from those filtered-out method calls. Access-based filtering works from the other way around, ignoring method calls based on their target class.
 
@@ -980,6 +985,28 @@ In the end, to get a better feeling about our accomplishments, let's enumerate p
 * **cons**
   * Automation of the process is missing, but this is a topic for some other article.
 
+### Results Summary
+This section presents a summary and comparison of sizes for images that we have created along the way. If you are mainly interested in results, given data might help you decide if tuning the image
+size provides enough benefits for your case.
+
+- "no-config": invalid base image without any native builder configuration
+- "tuned-config": an optimally sized image with tuned and filtered native builder configuration
+- "all-inclusive": the image with "all-inclusive" native builder configuration created by java agent
+
+**1. Size increase relatively to the non-functional base image:**
+
+|                |size (B)    | size increase |
+|----------------|-----------:|--------------:|
+|**no-config**   | 72.792.392 | -
+|**tuned-config**| 74.907.872 | 2,9 %
+
+**2. Size decrease relatively to the all-inclusive image:**
+
+|                 |size (MB)   | size decrease  |
+|-----------------|-----------:|---------------:|
+|**all-inclusive**| 85.683.664 | -
+|**tuned-config** | 74.907.872 | 12,6 %
+
 ## Conclusion
 GraalVM native image is an exciting technology adopted and supported by many popular frameworks. Because of some limitations related to the static analysis of reflective code, that support is usually
 limited on the JVM languages that do not use much reflection internally. Groovy is not in that category since it uses reflection extensively for many of its features. Fortunately, as we've
@@ -991,3 +1018,34 @@ Depending on your requirements and/or interests, you can just use the GraalVM to
 Alternatively, if you invest the time and effort to learn more about the internal working of the process, you can come up with optimally sized images for your Groovy application. Related GraalVM
 `native-image-agent` filtering configuration might be specific for the concrete tech stack which is used. However, acquired knowledge should be of great help when dealing with different types of
 Groovy applications enabling you to update configuration quickly enough.
+
+## References
+[1] GraalVM homepage - [https://www.graalvm.org](https://www.graalvm.org) <br/>
+[2] GraalVM GitHub homepage - [https://github.com/oracle/graal](https://github.com/oracle/graal) <br/>
+[3] Turning the JVM into a Polyglot VM with Graal, Chris Seaton - [https://www.youtube.com/watch?v=9oHpAhgkNAY](https://www.youtube.com/watch?v=9oHpAhgkNAY) <br/>
+[4] Maximizing Applications Performance with GraalVM, Alina Yurenko - [https://www.youtube.com/watch?v=j9jIny7HsSo](https://www.youtube.com/watch?v=j9jIny7HsSo) <br/>
+[5] GraalVM Native Image (SubstrateVM) GitHub homepage - [https://github.com/oracle/graal/blob/master/substratevm/README.md](https://github.com/oracle/graal/blob/master/substratevm/README.md) <br/>
+[6] Creating your first Micronaut Graal application - [https://guides.micronaut.io/micronaut-creating-first-graal-app/guide/index.html](https://guides.micronaut.io/micronaut-creating-first-graal-app/guide/index.html) <br/>
+[7] Quarkus - Building a Native Executable - [https://quarkus.io/guides/building-native-image](https://quarkus.io/guides/building-native-image) <br/>
+[8] Helidon - GraalVM Native Images - [https://helidon.io/docs/latest/#/se/guides/36_graalnative](https://helidon.io/docs/latest/#/se/guides/36_graalnative) <br/>
+[9] Spring Native - [https://github.com/spring-projects-experimental/spring-native](https://github.com/spring-projects-experimental/spring-native) <br/>
+[10] GraalVM and Groovy - how to start? - [https://e.printstacktrace.blog/graalvm-and-groovy-how-to-start](https://e.printstacktrace.blog/graalvm-and-groovy-how-to-start) <br/>
+[11] Groovy + GraalVM native-image = instant startup time! - [https://www.youtube.com/watch?v=BjO_vBzaB4c](https://www.youtube.com/watch?v=BjO_vBzaB4c) <br/>
+[12] GraalVM native-image - from 2.1s to 0.013s startup time | Groovy Tutorial - [https://www.youtube.com/watch?v=RPdugI8eZgo](https://www.youtube.com/watch?v=RPdugI8eZgo) <br/>
+[13] klokwrk-tool-gradle-source-repack - [https://github.com/croz-ltd/klokwrk-project/blob/feature_graalNativeImageArticleUpdate/tool/klokwrk-tool-gradle-source-repack/README.md](https://github.com/croz-ltd/klokwrk-project/blob/feature_graalNativeImageArticleUpdate/tool/klokwrk-tool-gradle-source-repack/README.md) <br/>
+[14] GraalVM 20.3.x Release Notes - [https://www.graalvm.org/release-notes/20_3](https://www.graalvm.org/release-notes/20_3) <br/>
+[15] Debugging Gradle internals from IntelliJ IDEA - [https://github.com/croz-ltd/klokwrk-project/blob/feature_graalNativeImageArticleUpdate/support/documentation/article/debugging-gradle-from-idea/debugging-gradle-from-idea.md](https://github.com/croz-ltd/klokwrk-project/blob/feature_graalNativeImageArticleUpdate/support/documentation/article/debugging-gradle-from-idea/debugging-gradle-from-idea.md) <br/>
+[16] Micronaut for GraalVM - [https://docs.micronaut.io/latest/guide/index.html#graal](https://docs.micronaut.io/latest/guide/index.html#graal) <br/>
+[17] Micronaut Picocli Integration - [https://micronaut-projects.github.io/micronaut-picocli/latest/guide/](https://micronaut-projects.github.io/micronaut-picocli/latest/guide/) <br/>
+[18] gdub - [https://github.com/gdubw/gdub](https://github.com/gdubw/gdub) <br/>
+[19] A simple native HTTP server with GraalVM - [https://melix.github.io/blog/2019/03/simple-http-server-graal.html](https://melix.github.io/blog/2019/03/simple-http-server-graal.html) <br/>
+[20] Micronaut Launch - [https://micronaut.io/launch/](https://micronaut.io/launch/) <br/>
+[21] Micronaut Gradle Plugin - [https://github.com/micronaut-projects/micronaut-gradle-plugin](https://github.com/micronaut-projects/micronaut-gradle-plugin) <br/>
+[22] Reflection Use in Native Images - [https://www.graalvm.org/reference-manual/native-image/Reflection/](https://www.graalvm.org/reference-manual/native-image/Reflection/) <br/>
+[23] Native Image Build Configuration - [https://www.graalvm.org/reference-manual/native-image/BuildConfiguration/](https://www.graalvm.org/reference-manual/native-image/BuildConfiguration/) <br/>
+[24] Reflection on Native Image - Manual Configuration - [https://www.graalvm.org/reference-manual/native-image/Reflection/#manual-configuration](https://www.graalvm.org/reference-manual/native-image/Reflection/#manual-configuration) <br/>
+[25] Groovy Closures - [https://groovy-lang.org/closures.html](https://groovy-lang.org/closures.html) <br/>
+[26] Delegation Strategy - [https://groovy-lang.org/closures.html#_delegation_strategy](https://groovy-lang.org/closures.html#_delegation_strategy) <br/>
+[27] Closure to type coercion - [https://docs.groovy-lang.org/latest/html/documentation/core-semantics.html#closure-coercion](https://docs.groovy-lang.org/latest/html/documentation/core-semantics.html#closure-coercion) <br/>
+[28] GraalVM Agent Trace Files - [https://www.graalvm.org/reference-manual/native-image/BuildConfiguration/#trace-files](https://www.graalvm.org/reference-manual/native-image/BuildConfiguration/#trace-files) <br/>
+[29] GraalVM Agent Advanced Usage - [https://www.graalvm.org/reference-manual/native-image/BuildConfiguration/#agent-advanced-usage](https://www.graalvm.org/reference-manual/native-image/BuildConfiguration/#agent-advanced-usage) <br/>
