@@ -1,7 +1,7 @@
 # Taking a Groovy on GraalVM native image journey
 * **Author:** Damir Murat
 * **Created:** 24.01.2021.
-* **Updated:** 26.01.2021.
+* **Updated:** 06.04.2021.
 
 [GraalVM](https://www.graalvm.org/) [1] is a fascinating [open-source project](https://github.com/oracle/graal) [2]. It started as an effort to provide a
 [high-performance polyglot](https://www.youtube.com/watch?v=9oHpAhgkNAY) [3] virtual machine. However, in the JVM ecosystem, it looks like most of the community interest comes from GraalVM ability to
