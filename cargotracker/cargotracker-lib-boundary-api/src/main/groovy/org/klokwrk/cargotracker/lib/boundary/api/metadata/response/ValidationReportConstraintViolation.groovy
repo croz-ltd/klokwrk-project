@@ -58,7 +58,7 @@ class ValidationReportConstraintViolation {
   String type
 
   /**
-   * The scope of violated validation constraint describing weather constraint is related to the property or object.
+   * The scope of violated validation constraint describing whether constraint is related to the property or object.
    * <p/>
    * Should contain only {@code property} or {@code object} values.
    * <p/>

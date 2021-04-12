@@ -36,6 +36,8 @@ There are several articles describing some `klokwrk-project` features in more de
   Step-by-step tutorial describing how one can run and try `klokwrk-project`.
 * [Organizing modules and packages](support/documentation/article/modules-and-packages/modulesAndPackages.md)<br/>
   Discussion about principles and ideas behind organizing high-level artifacts of a project and using hexagonal architecture in CQRS/ES context.
+* [The format of rendered responses](support/documentation/article/response-format/responseFormat.md)<br/>
+  Explains structuring and rendering of server-side responses in `klokwrk-project` applications.
 
 While not tightly related to `klokwrk-project` features, the following articles describe some specific challenges that we encountered:
 * [Debugging Gradle internals from IntelliJ IDEA](support/documentation/article/debugging-gradle-from-idea/debugging-gradle-from-idea.md)<br/>
