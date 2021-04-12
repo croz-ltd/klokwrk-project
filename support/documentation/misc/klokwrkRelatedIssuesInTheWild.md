@@ -62,8 +62,8 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-239626
 * VERIFIED (2020.3) - https://youtrack.jetbrains.com/issue/IDEA-239966
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-243620
-* IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-255422
-* REPORTED - https://youtrack.jetbrains.com/issue/IDEA-261239
+* VERIFIED (2021.1) - https://youtrack.jetbrains.com/issue/IDEA-255422
+* IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-261239
 
 ### Kordamp Gradle Plugins
 * VERIFIED (0.36.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/291
@@ -81,7 +81,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/421
 
 ### micronaut-core
-* IN PROGRESS (2.4.0) - https://github.com/micronaut-projects/micronaut-core/issues/4622
+* IN PROGRESS (2.5.0) - https://github.com/micronaut-projects/micronaut-core/issues/4622
 
 ### micronaut-gradle-plugin
 * REPORTED - https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/92
