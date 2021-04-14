@@ -16,3 +16,4 @@ This log lists the architectural decisions for `klokwrk-project`:
 * [ADR-0009 - Testing Inter-Module Dependencies](content/0009-testing-inter-module-dependencies.md)
 * [ADR-0010 - Integration Testing with Containerized Infrastructure](content/0010-integration-testing-with-containerized-infrastructure.md)
 * [ADR-0011 - Component Testing](content/0011-component-testing.md)
+* [ADR-0012 - Response Format](content/0012-response-fromat.md)
