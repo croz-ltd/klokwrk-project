@@ -311,3 +311,7 @@ In more elaborate systems, we believe there is a value in prescribing the respon
 consistency in custom server-side response rendering and client-side response handling.
 
 In `klokwrk-project`, we tried to define such a format based on many previous experiences. We do not consider it written in stone, and it might change in the future if the need arises.
+
+## References
+- [ADR-0012 - Response Format](../../adr/content/0012-response-fromat.md)
+- [ADR-0013 - Validation taxonomy](../../adr/content/0013-validation-taxonomy.md)
