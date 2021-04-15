@@ -33,7 +33,7 @@ import javax.validation.constraints.Size
 /**
  * Request DTO parameter for {@code fetchCargoSummaryQuery} operation from {@link FetchCargoSummaryQueryPortIn} inbound port interface.
  * <p/>
- * Here we are comply to the validation ordering as explained in GroovyDoc of BookCargoRequest class. See "Implementation notes about validation" section.
+ * Here we are comply to the validation ordering as explained in ADR-0013.
  */
 @GroupSequence([FetchCargoSummaryQueryRequest, Level1, Level2, Level3])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)

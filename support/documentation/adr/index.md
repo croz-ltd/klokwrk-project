@@ -17,3 +17,4 @@ This log lists the architectural decisions for `klokwrk-project`:
 * [ADR-0010 - Integration Testing with Containerized Infrastructure](content/0010-integration-testing-with-containerized-infrastructure.md)
 * [ADR-0011 - Component Testing](content/0011-component-testing.md)
 * [ADR-0012 - Response Format](content/0012-response-fromat.md)
+* [ADR-0013 - Validation taxonomy](content/0013-validation-taxonomy.md)

@@ -59,7 +59,7 @@ class UnLoCodeFunction implements PostMapConstructorCheckable {
   @SuppressWarnings("GroovyPointlessBoolean")
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
-    // Here we are comply to the validation ordering as explained in GroovyDoc of BookCargoRequest class. See "Implementation notes about validation" section.
+    // Here we are comply to the validation ordering as explained in ADR-0013.
     requireMatch(functionEncoded, not(blankOrNullString()))
     requireMatch(functionEncoded, hasLength(8))
     requireMatch(functionEncoded, matchesPattern(CODE_PATTERN))

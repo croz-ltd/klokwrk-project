@@ -80,7 +80,7 @@ class Location implements PostMapConstructorCheckable {
 
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
-    // Here we are comply to the validation ordering as explained in GroovyDoc of BookCargoRequest class. See "Implementation notes about validation" section.
+    // Here we are comply to the validation ordering as explained in ADR-0013.
     requireMatch(unLoCode, notNullValue())
     requireMatch(name, notNullValue())
     requireMatch(countryName, notNullValue())
