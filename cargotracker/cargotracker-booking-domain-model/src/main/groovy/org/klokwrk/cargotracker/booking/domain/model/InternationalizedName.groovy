@@ -67,7 +67,7 @@ class InternationalizedName implements PostMapConstructorCheckable {
 
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
-    // Here we are comply to the validation ordering as explained in GroovyDoc of BookCargoRequest class. See "Implementation notes about validation" section.
+    // Here we are comply to the validation ordering as explained in ADR-0013.
     requireMatch(name, not(blankOrNullString()))
     requireMatch(name.size(), allOf(greaterThanOrEqualTo(1), lessThanOrEqualTo(200)))
   }
