@@ -39,6 +39,10 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (1.6) - https://github.com/CodeNarc/CodeNarc/issues/511
 * VERIFIED (2.0 jitpack - commit 28ad028e05 of 2020-07-24) - https://github.com/CodeNarc/CodeNarc/issues/512
 * VERIFIED (1.6) - https://github.com/CodeNarc/CodeNarc/issues/516
+* IN PROGRESS - https://github.com/CodeNarc/CodeNarc/issues/611
+* REPORTED - https://github.com/CodeNarc/CodeNarc/issues/612
+* REPORTED - https://github.com/CodeNarc/CodeNarc/issues/613
+* REPORTED - https://github.com/CodeNarc/CodeNarc/issues/614
 
 ### GitHub Action - gradle-command-action
 * IN PROGRESS - https://github.com/eskatos/gradle-command-action/issues/22
@@ -100,6 +104,9 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 This is a list of all issues that are NOT reported by `klokwrk-project` team members, but are relevant for the project. Those issues are monitored by team members.
 
 When particular issue is resolved, it can be removed from this list when there is no value to monitor it further.
+
+### Codenarc
+* [MissingBlankLineBeforeAnnotatedField - False-positive at the beginning of a class](https://github.com/CodeNarc/CodeNarc/issues/606)
 
 ### Github
 * [GitHub IS 1017 - Support semi-linear merge option for pull requests](https://github.com/isaacs/github/issues/1017)

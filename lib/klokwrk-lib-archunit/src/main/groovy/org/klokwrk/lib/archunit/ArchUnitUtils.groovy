@@ -33,6 +33,7 @@ import java.util.regex.Pattern
 @CompileStatic
 class ArchUnitUtils {
 
+  @SuppressWarnings("SpaceInsideParentheses")
   /**
    * Imports ArchUnit's <code>JavaClasses</code> while allowing specifying packages that should be excluded from the import.
    * <p/>
@@ -51,10 +52,9 @@ class ArchUnitUtils {
    * @param importOptions Collection of additional ArchUnit's <code>ImportOption</code> options. By default it contains an instance of <code>ImportOption.DoNotIncludeTests</code>.
    * @return Imported <code>JavaClasses</code>.
    */
+  @SuppressWarnings("BracesForMethod")
   static JavaClasses importJavaClassesFromPackages(
-      Collection<String> packagesToImport,
-      Collection<String> packagesToExclude = [],
-      Collection<ImportOption> importOptions = [new ImportOption.DoNotIncludeTests()] as Collection<ImportOption>)
+      Collection<String> packagesToImport, Collection<String> packagesToExclude = [], Collection<ImportOption> importOptions = [new ImportOption.DoNotIncludeTests()] as Collection<ImportOption>)
   {
     ClassFileImporter forImportClassFileImporter = new ClassFileImporter().withImportOption(new ExcludePackagesImportOption(packagesToExclude))
     importOptions.each { ImportOption importOption -> forImportClassFileImporter = forImportClassFileImporter.withImportOption(importOption) }

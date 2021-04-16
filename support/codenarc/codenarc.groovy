@@ -44,6 +44,7 @@ ruleset {
   HardCodedWindowsRootDirectory
   IntegerGetInteger
   MultipleUnaryOperators
+  ParameterAssignmentInFilterClosure
   RandomDoubleCoercedToZero
   RemoveAllOnSelf
   ReturnFromFinallyBlock
@@ -220,7 +221,9 @@ ruleset {
   BracesForClass
   BracesForForLoop
   BracesForIfElse
-  BracesForMethod
+  BracesForMethod {
+    enabled = true  // TODO dmurat: Remove annotations when and if option for ignoring in case of multiline declarations will be available (https://github.com/CodeNarc/CodeNarc/issues/611)
+  }
   BracesForTryCatchFinally
   ClassEndsWithBlankLine { enabled = false }
   ClassStartsWithBlankLine { enabled = false }
@@ -245,11 +248,17 @@ ruleset {
   }
   MissingBlankLineAfterImports
   MissingBlankLineAfterPackage
+  MissingBlankLineBeforeAnnotatedField {
+    enabled = false // TODO dmurat: enable it back when option for ignoring first line in the class is added (https://github.com/CodeNarc/CodeNarc/issues/606)
+  }
   SpaceAfterCatch
-  SpaceAfterClosingBrace
+  SpaceAfterClosingBrace // TODO dmurat: Remove annotations when issue with String annotation elements is fixed (https://github.com/CodeNarc/CodeNarc/issues/614)
   SpaceAfterComma
   SpaceAfterFor
   SpaceAfterIf
+  SpaceAfterNotOperator
+  SpaceAfterMethodCallName
+  SpaceAfterMethodDeclarationName
   SpaceAfterOpeningBrace
   SpaceAfterSemicolon
   SpaceAfterSwitch
@@ -260,8 +269,11 @@ ruleset {
     characterAfterColonRegex = /\s/
   }
   SpaceAroundOperator
-  SpaceBeforeClosingBrace
+  SpaceBeforeClosingBrace // TODO dmurat: Remove annotations when issue with String annotation elements is fixed (https://github.com/CodeNarc/CodeNarc/issues/614)
   SpaceBeforeOpeningBrace
+  SpaceInsideParentheses {
+    enabled = true // TODO dmurat: Remove annotations when ignoring GroovyDoc comments is implemented (https://github.com/CodeNarc/CodeNarc/issues/613)
+  }
   TrailingWhitespace
 
   // rulesets/generic.xml

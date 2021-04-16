@@ -29,7 +29,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @EntityScan(basePackages = ["org.axonframework.eventhandling.tokenstore.jpa", "org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model"])
 @CompileStatic
 class BookingQuerySideRdbmsProjectionApplication {
-  @Generated // Ignore in JaCoCo report as main method is not covered by JaCoCo (probably it is too early for JaCoCo to chip in)
+  // Generated annotation ignores main method in JaCoCo report as main method is not covered by JaCoCo (probably it is too early for JaCoCo to chip in)
+  @Generated
   static void main(String[] args) {
     SpringApplication.run(BookingQuerySideRdbmsProjectionApplication, args)
   }

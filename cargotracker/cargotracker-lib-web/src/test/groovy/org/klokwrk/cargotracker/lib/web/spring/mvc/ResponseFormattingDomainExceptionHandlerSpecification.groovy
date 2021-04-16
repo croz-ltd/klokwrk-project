@@ -101,10 +101,9 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
 
   private String findViolationInfoConstantName(ViolationInfo violationInfo) {
     Field[] fieldList = violationInfo.getClass().declaredFields
-    Field foundField = fieldList.find { Field field ->
-      field.accessible = true
-      field.get(violationInfo) == violationInfo
-    }
+    Field foundField = fieldList
+        .each({ Field field -> field.accessible = true })
+        .find({ Field field -> field.get(violationInfo) == violationInfo })
 
     return foundField?.name
   }
