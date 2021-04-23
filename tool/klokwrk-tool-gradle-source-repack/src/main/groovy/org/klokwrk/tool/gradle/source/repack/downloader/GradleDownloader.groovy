@@ -28,12 +28,12 @@ import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.RxStreamingHttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.client.exceptions.HttpClientResponseException
-import io.reactivex.functions.Consumer
 import io.reactivex.internal.functions.Functions
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import javax.inject.Singleton
+import java.util.function.Supplier
 
 /**
  * Singleton service that downloads Gradle distribution files (typically {@code *.zip} or {@code *.zip.sha256}).
@@ -75,14 +75,14 @@ class GradleDownloader {
       Long downloadedBytesCount = 0
       streamingHttpClient.exchangeStream(HttpRequest.GET(realDownloadUrl).accept(MediaType.APPLICATION_OCTET_STREAM_TYPE))
                          .map({ HttpResponse<ByteBuffer<?>> byteBufferHttpResponse ->
-                           byte[] byteArray = byteBufferHttpResponse.body.orElseThrow({ new NoSuchElementException("No value present") }).toByteArray()
+                           byte[] byteArray = byteBufferHttpResponse.body.orElseThrow({ new NoSuchElementException("No value present") } as Supplier).toByteArray()
                            downloadedBytesCount += byteArray.length
                            printOutDownloadProgress(realDownloadUrl, downloadedBytesCount, contentLength)
 
                            return byteArray
                          })
                          .blockingSubscribe(
-                             { byte[] byteArray -> fileOutputStream.write(byteArray) } as Consumer,
+                             { byte[] byteArray -> fileOutputStream.write(byteArray) },
                              Functions.ON_ERROR_MISSING,
                              { printlnOutNewline() }
                          )

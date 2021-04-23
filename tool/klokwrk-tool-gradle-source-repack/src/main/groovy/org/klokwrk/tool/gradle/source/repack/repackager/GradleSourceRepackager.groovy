@@ -21,7 +21,6 @@ import groovy.transform.CompileStatic
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import java.util.function.Predicate
 import java.util.zip.ZipEntry
 import java.util.zip.ZipException
 import java.util.zip.ZipFile
@@ -84,7 +83,7 @@ class GradleSourceRepackager {
         Long zipEntriesProcessedCount = new Long(0)
         originalZipFile
             .stream()
-            .filter({ ZipEntry zipEntry -> !zipEntry.isDirectory() && zipEntry.name.startsWith(repackagerInfo.gradleDistributionSrcDirPath) } as Predicate)
+            .filter({ ZipEntry zipEntry -> !zipEntry.isDirectory() && zipEntry.name.startsWith(repackagerInfo.gradleDistributionSrcDirPath) })
             .forEach({ ZipEntry originalZipEntry ->
               String targetZipEntryName = calculateTargetZipEntryName(repackagerInfo.gradleDistributionSrcDirPath, originalZipEntry)
               String skippedMessage = repackageZipEntry(originalZipFile, originalZipEntry, targetZipOutputStream, targetZipEntryName)

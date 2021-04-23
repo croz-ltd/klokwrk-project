@@ -290,7 +290,7 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
       Set<Dependency> allDependenciesFromViolatingSource = violatingSourceJavaClass.directDependenciesFromSelf
       Set<Dependency> dependenciesFromViolatingSourceToDisallowedTarget = allDependenciesFromViolatingSource.findAll { Dependency dependency ->
         dependency.targetClass == disallowedTargetJavaClass
-      } as Set<Dependency>
+      }
 
       assert dependenciesFromViolatingSourceToDisallowedTarget, "There is no dependency from violatingSource to disallowedTarget: ${ violatingSource.simpleName } -> ${ disallowedTarget.simpleName }"
     }
