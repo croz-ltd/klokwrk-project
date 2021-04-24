@@ -32,18 +32,17 @@ class RdbmsManagementAppTestcontainersFactory {
     String containerNameSuffix = UUID.randomUUID()
 
     GenericContainer rdbmsManagementApp = new GenericContainer("klokwrkprj/cargotracker-booking-rdbms-management-app:${ imageVersion }")
-        .withCreateContainerCmdModifier({ CreateContainerCmd cmd ->
-          cmd.withName("${ containerName }-${ containerNameSuffix }")
-        })
-        .withEnv([
-            "TZ": "Europe/Zagreb",
-            "CARGOTRACKER_POSTGRES_HOSTNAME": "${ postgresqlServer.containerInfo.name - "/" }".toString(),
-            "CARGOTRACKER_POSTGRES_PORT": "5432",
-            "CARGOTRACKER_POSTGRES_USERNAME": "cargotracker",
-            "CARGOTRACKER_POSTGRES_PASSWORD": "cargotracker"
-        ])
-        .withNetwork(klokwrkNetwork)
-        .waitingFor(Wait.forLogMessage(/.*Successfully applied.*migration.*to schema "public".*/, 1))
+
+    rdbmsManagementApp.withCreateContainerCmdModifier({ CreateContainerCmd cmd -> cmd.withName("${ containerName }-${ containerNameSuffix }") })
+    rdbmsManagementApp.withEnv([
+        "TZ": "Europe/Zagreb",
+        "CARGOTRACKER_POSTGRES_HOSTNAME": "${ postgresqlServer.containerInfo.name - "/" }".toString(),
+        "CARGOTRACKER_POSTGRES_PORT": "5432",
+        "CARGOTRACKER_POSTGRES_USERNAME": "cargotracker",
+        "CARGOTRACKER_POSTGRES_PASSWORD": "cargotracker"
+    ])
+    rdbmsManagementApp.withNetwork(klokwrkNetwork)
+    rdbmsManagementApp.waitingFor(Wait.forLogMessage(/.*Successfully applied.*migration.*to schema "public".*/, 1))
 
     rdbmsManagementApp.start()
 

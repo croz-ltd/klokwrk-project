@@ -38,6 +38,7 @@ class QuerySideAppTestcontainersFactory {
    *   <li>Container time zone: <code>Europe/Zagreb</code>.</li>
    * </ul>
    */
+  @SuppressWarnings("DuplicatedCode")
   static GenericContainer createAndStartQuerySideApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
     String imageVersion = System.getProperty("cargotrackerBookingQuerySideAppDockerImageVersion")
     Integer[] exposedPorts = [8084]
@@ -46,24 +47,25 @@ class QuerySideAppTestcontainersFactory {
 
     //noinspection DuplicatedCode
     GenericContainer querySideApp = new GenericContainer("klokwrkprj/cargotracker-booking-queryside-app:${ imageVersion }")
-        .withExposedPorts(exposedPorts)
-        .withCreateContainerCmdModifier({ CreateContainerCmd cmd ->
-          cmd.withName("${ containerName }-${ containerNameSuffix }")
-        })
-        .withEnv([
-            "TZ": "Europe/Zagreb",
-            "CARGOTRACKER_AXON_SERVER_HOSTNAME": "${ axonServer.containerInfo.config.hostName }".toString(),
-            "CARGOTRACKER_POSTGRES_HOSTNAME": "${ postgresqlServer.containerInfo.name - "/" }".toString(),
-            "CARGOTRACKER_POSTGRES_PORT": "5432",
-            "CARGOTRACKER_POSTGRES_USERNAME": "cargotracker",
-            "CARGOTRACKER_POSTGRES_PASSWORD": "cargotracker",
-            "MANAGEMENT_METRICS_EXPORT_WAVEFRONT_ENABLED": "false",
-            "AXON.EXTENSION.TRACING.ENABLED": "false"
-        ])
-        .withNetwork(klokwrkNetwork)
-        .waitingFor(Wait.forHttp("/cargotracker-booking-queryside/management/health"))
 
-    querySideApp.start()
+    querySideApp.with {
+      withExposedPorts(exposedPorts)
+      withCreateContainerCmdModifier({ CreateContainerCmd cmd -> cmd.withName("${ containerName }-${ containerNameSuffix }") })
+      withEnv([
+          "TZ": "Europe/Zagreb",
+          "CARGOTRACKER_AXON_SERVER_HOSTNAME": "${ axonServer.containerInfo.config.hostName }".toString(),
+          "CARGOTRACKER_POSTGRES_HOSTNAME": "${ postgresqlServer.containerInfo.name - "/" }".toString(),
+          "CARGOTRACKER_POSTGRES_PORT": "5432",
+          "CARGOTRACKER_POSTGRES_USERNAME": "cargotracker",
+          "CARGOTRACKER_POSTGRES_PASSWORD": "cargotracker",
+          "MANAGEMENT_METRICS_EXPORT_WAVEFRONT_ENABLED": "false",
+          "AXON.EXTENSION.TRACING.ENABLED": "false"
+      ])
+      withNetwork(klokwrkNetwork)
+      waitingFor(Wait.forHttp("/cargotracker-booking-queryside/management/health"))
+
+      start()
+    }
 
     return querySideApp
   }
