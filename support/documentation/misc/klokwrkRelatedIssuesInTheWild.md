@@ -85,6 +85,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/417
 * VERIFIED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/420
 * VERIFIED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/421
+* REPORTED - https://github.com/kordamp/kordamp-gradle-plugins/issues/469
 
 ### micronaut-core
 * IN PROGRESS (2.5.0) - https://github.com/micronaut-projects/micronaut-core/issues/4622
