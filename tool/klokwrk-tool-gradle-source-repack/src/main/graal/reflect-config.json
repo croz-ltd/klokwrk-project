@@ -4,6 +4,10 @@
   "allPublicMethods":true
 },
 {
+  "name":"io.reactivex.functions.Consumer",
+  "allPublicMethods":true
+},
+{
   "name":"io.reactivex.functions.Function",
   "allPublicMethods":true
 },
@@ -71,7 +75,7 @@
   "allDeclaredConstructors":true
 },
 {
-  "name":"org.codehaus.groovy.runtime.dgm$1125",
+  "name":"org.codehaus.groovy.runtime.dgm$1154",
   "methods":[{"name":"<init>","parameterTypes":["java.lang.String","org.codehaus.groovy.reflection.CachedClass","java.lang.Class","java.lang.Class[]"] }]
 },
 {
@@ -83,7 +87,7 @@
   "methods":[{"name":"<init>","parameterTypes":["java.lang.String","org.codehaus.groovy.reflection.CachedClass","java.lang.Class","java.lang.Class[]"] }]
 },
 {
-  "name":"org.codehaus.groovy.runtime.dgm$432",
+  "name":"org.codehaus.groovy.runtime.dgm$450",
   "methods":[{"name":"<init>","parameterTypes":["java.lang.String","org.codehaus.groovy.reflection.CachedClass","java.lang.Class","java.lang.Class[]"] }]
 },
 {
