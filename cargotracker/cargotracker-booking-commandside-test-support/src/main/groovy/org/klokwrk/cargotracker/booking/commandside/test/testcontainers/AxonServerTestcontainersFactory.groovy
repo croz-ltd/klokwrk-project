@@ -46,15 +46,16 @@ class AxonServerTestcontainersFactory {
     String containerNameSuffix = UUID.randomUUID()
 
     GenericContainer axonServer = new GenericContainer("axoniq/axonserver:${ imageVersion }")
-        .withExposedPorts(exposedPorts)
-        .withCreateContainerCmdModifier({ CreateContainerCmd cmd ->
-          cmd.withName("${ containerName }-${ containerNameSuffix }")
-        })
-        .withEnv(["TZ": "Europe/Zagreb"])
-        .withNetwork(klokwrkNetwork)
-        .waitingFor(Wait.forHttp("/v1/public/me").forPort(8024))
 
-    axonServer.start()
+    axonServer.with {
+      withExposedPorts(exposedPorts)
+      withCreateContainerCmdModifier({ CreateContainerCmd cmd -> cmd.withName("${ containerName }-${ containerNameSuffix }") })
+      withEnv(["TZ": "Europe/Zagreb"])
+      withNetwork(klokwrkNetwork)
+      waitingFor(Wait.forHttp("/v1/public/me").forPort(8024))
+
+      start()
+    }
 
     return axonServer
   }

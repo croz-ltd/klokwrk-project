@@ -201,7 +201,7 @@ Example: ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG,io.micronaut.http
 
   private void cleanDownloadedFiles(List<File> fileListToDelete) {
     log.debug("Deleting downloaded files: {}", fileListToDelete)
-    fileListToDelete.each (File file) -> file.delete()
+    fileListToDelete.each((File file) -> file.delete())
   }
 
   @SuppressWarnings("Println")

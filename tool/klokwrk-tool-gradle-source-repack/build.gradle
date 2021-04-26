@@ -196,6 +196,12 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
       // Print stacktrace of underlying exceptions.
       "-H:+ReportExceptionStackTraces",
 
+      // Default locale
+      "-H:DefaultLocale=en",
+
+      // Included locales (comma separated list)
+      "-H:IncludeLocales=en",
+
       // The directory where the generated executable is placed.
       "-H:Path=${ workingDir.absolutePath }",
 

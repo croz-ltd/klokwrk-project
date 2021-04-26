@@ -47,13 +47,13 @@ class GradleSourceRepackagerInfo {
    * Absolute path of directory into which we will place an archive with repacked Gradle sources.
    * <p/>
    * By default it corresponds to the {@code generated-gradle-jars} subdirectory of directory where Gradle caches its distribution:
-   * {@code System.getProperty( "user.home" ) + "/.gradle/caches/" + this.gradleVersion + "/generated-gradle-jars"}. If that directory does not exists it falls back to the directory where Gradle
+   * {@code System.getProperty("user.home") + "/.gradle/caches/" + this.gradleVersion + "/generated-gradle-jars"}. If that directory does not exists it falls back to the directory where Gradle
    * distribution is downloaded, which is current working directory by default.
    */
   String gradleApiDirPath
 
   /**
-   * Path to the {@code src} directory inside of Gradle distribution archive (e.g. {@code gradle-6.7.1/src/} ).
+   * Path to the {@code src} directory inside of Gradle distribution archive (e.g. {@code gradle-6.7.1/src/}).
    */
   String getGradleDistributionSrcDirPath() {
     return "gradle-${ gradleVersion }/src/"

@@ -44,20 +44,21 @@ class CommandSideAppTestcontainersFactory {
     String containerNameSuffix = UUID.randomUUID()
 
     GenericContainer commandSideApp = new GenericContainer("klokwrkprj/cargotracker-booking-commandside-app:${ imageVersion }")
-        .withExposedPorts(exposedPorts)
-        .withCreateContainerCmdModifier({ CreateContainerCmd cmd ->
-          cmd.withName("${ containerName }-${ containerNameSuffix }")
-        })
-        .withEnv([
-            "TZ": "Europe/Zagreb",
-            "CARGOTRACKER_AXON_SERVER_HOSTNAME": "${ axonServer.containerInfo.config.hostName }".toString(),
-            "MANAGEMENT_METRICS_EXPORT_WAVEFRONT_ENABLED": "false",
-            "AXON.EXTENSION.TRACING.ENABLED": "false"
-        ])
-        .withNetwork(klokwrkNetwork)
-        .waitingFor(Wait.forHttp("/cargotracker-booking-commandside/management/health"))
 
-    commandSideApp.start()
+    commandSideApp.with {
+      withExposedPorts(exposedPorts)
+      withCreateContainerCmdModifier({ CreateContainerCmd cmd -> cmd.withName("${ containerName }-${ containerNameSuffix }") })
+      withEnv([
+          "TZ": "Europe/Zagreb",
+          "CARGOTRACKER_AXON_SERVER_HOSTNAME": "${ axonServer.containerInfo.config.hostName }".toString(),
+          "MANAGEMENT_METRICS_EXPORT_WAVEFRONT_ENABLED": "false",
+          "AXON.EXTENSION.TRACING.ENABLED": "false"
+      ])
+      withNetwork(klokwrkNetwork)
+      waitingFor(Wait.forHttp("/cargotracker-booking-commandside/management/health"))
+
+      start()
+    }
 
     return commandSideApp
   }
