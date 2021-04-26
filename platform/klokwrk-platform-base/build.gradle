@@ -49,6 +49,8 @@ publishing {
 }
 
 dependencies {
+  api platform("org.axonframework:axon-bom:$axonFrameworkVersion")
+
   constraints {
     api "org.codehaus.groovy:groovy:$groovyVersion"
     api "org.codehaus.groovy:groovy-ant:$groovyVersion"
@@ -78,13 +80,6 @@ dependencies {
     api "info.picocli:picocli-codegen:$picocliCodegenVersion"
     api "io.github.classgraph:classgraph:$classGraphVersion"
     api "net.ttddyy:datasource-proxy:$dataSourceProxyVersion"
-    api "org.axonframework:axon-configuration:$axonFrameworkVersion"
-    api "org.axonframework:axon-eventsourcing:$axonFrameworkVersion"
-    api "org.axonframework:axon-messaging:$axonFrameworkVersion"
-    api "org.axonframework:axon-modelling:$axonFrameworkVersion"
-    api "org.axonframework:axon-spring-boot-starter:$axonFrameworkVersion"
-    api "org.axonframework:axon-test:$axonFrameworkVersion"
-    api "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter:$axonTracingExtensionVersion"
     api "org.spockframework:spock-core:$spockVersion"
     api "org.spockframework:spock-spring:$spockVersion"
     api "uk.org.lidalia:slf4j-test:$slf4jTestVersion"
