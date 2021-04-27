@@ -1,11 +1,80 @@
 name: Release workflow
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      release-version:
+        description: "Version of already existing release"
+        required: true
 
 jobs:
-  prepare-files:
-    name: Prepare files
+  prepare-binaries-klokwrk-tool-gradle-source-repack:
+    name: Prepare klokwrk-tool-gradle-source-repack binaries
     runs-on: ubuntu-latest
     steps:
-      - name: Greeting
-        run: echo "Hello"
+      - name: Download binaries
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: klokwrk-tool-gradle-source-repack_nativeImageBuild.yml
+          workflow_conclusion: success
+
+      - name: Set execute permissions on binaries
+        run: |
+          chmod +x klokwrk-tool-gradle-source-repack_${{github.event.inputs.release-version}}-linux/klokwrk-tool-gradle-source-repack
+          chmod +x klokwrk-tool-gradle-source-repack_${{github.event.inputs.release-version}}-mac/klokwrk-tool-gradle-source-repack
+
+      - name: Compress binaries
+        run: |
+          mkdir artifacts-klokwrk-tool-gradle-source-repack
+          tar -cvzf artifacts-klokwrk-tool-gradle-source-repack/klokwrk-tool-gradle-source-repack_${{github.event.inputs.release-version}}-linux.tar.gz klokwrk-tool-gradle-source-repack_${{github.event.inputs.release-version}}-linux/klokwrk-tool-gradle-source-repack
+          tar -cvzf artifacts-klokwrk-tool-gradle-source-repack/klokwrk-tool-gradle-source-repack_${{github.event.inputs.release-version}}-mac.tar.gz klokwrk-tool-gradle-source-repack_${{github.event.inputs.release-version}}-mac/klokwrk-tool-gradle-source-repack
+          zip artifacts-klokwrk-tool-gradle-source-repack/klokwrk-tool-gradle-source-repack_${{github.event.inputs.release-version}}-java.zip klokwrk-tool-gradle-source-repack_${{github.event.inputs.release-version}}-jar/*.jar
+          zip artifacts-klokwrk-tool-gradle-source-repack/klokwrk-tool-gradle-source-repack_${{github.event.inputs.release-version}}-win.zip klokwrk-tool-gradle-source-repack_${{github.event.inputs.release-version}}-win/*.exe
+
+      - name: Upload binaries
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts-klokwrk-tool-gradle-source-repack
+          path: artifacts-klokwrk-tool-gradle-source-repack/
+          retention-days: 1
+
+  release:
+    needs: prepare-binaries-klokwrk-tool-gradle-source-repack
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Download klokwrk-tool-gradle-source-repack binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: artifacts-klokwrk-tool-gradle-source-repack
+          path: artifacts-klokwrk-tool-gradle-source-repack
+
+      - name: Debug - list dir
+        run: |
+          pwd
+          ls -d $PWD/*
+          ls -laR
+
+      - name: Setup Java for JReleaser
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Run JReleaser
+        uses: jreleaser/release-action@v1
+        env:
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: JReleaser output
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: JReleaser logs
+          path: |
+            out/jreleaser/trace.log
+            out/jreleaser/output.properties

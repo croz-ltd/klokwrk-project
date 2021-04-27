@@ -1,0 +1,20 @@
+project:
+  name: klokwrk-project
+  version: 0.0.4
+  license: Apache-2.0
+
+signing:
+  active: NEVER
+
+release:
+  github:
+    username: dmurat
+    overwrite: true
+    draft: true
+    changelog:
+      enabled: false
+
+files:
+  globs:
+    - directory: artifacts-klokwrk-tool-gradle-source-repack
+      include: "*.*"
