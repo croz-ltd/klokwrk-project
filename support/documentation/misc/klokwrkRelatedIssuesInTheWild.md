@@ -60,8 +60,8 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (3.0.8) - https://issues.apache.org/jira/browse/GROOVY-9858
   * https://groovy.markmail.org/thread/gmcivt4ywcntszwx
   * https://github.com/apache/groovy/pull/1448
-* IN PROGRESS - https://issues.apache.org/jira/browse/GROOVY-10052
-* REPORTED - https://issues.apache.org/jira/browse/GROOVY-10055
+* FIXED (3.0.9) - https://issues.apache.org/jira/browse/GROOVY-10052
+* IN PROGRESS - https://issues.apache.org/jira/browse/GROOVY-10055
 
 ### IDEA
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-216308
