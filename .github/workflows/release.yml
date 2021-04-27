@@ -1,0 +1,11 @@
+name: Release workflow
+
+on: workflow_dispatch
+
+jobs:
+  prepare-files:
+    name: Prepare files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Greeting
+        run: echo "Hello"
