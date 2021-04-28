@@ -2,6 +2,9 @@ project:
   name: klokwrk-project
   license: Apache-2.0
 
+  # Prevent creating a release named "Release early-access" for snapshot versions.
+  snapshotPattern: .*-DOESNOTEXIST
+
 signing:
   active: NEVER
 
