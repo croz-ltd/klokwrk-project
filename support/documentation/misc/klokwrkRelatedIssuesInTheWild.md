@@ -71,6 +71,9 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (2021.1) - https://youtrack.jetbrains.com/issue/IDEA-255422
 * IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-261239
 
+### JReleaser
+* IN PROGRESS (0.3.0) - https://github.com/jreleaser/jreleaser/issues/85
+
 ### Kordamp Gradle Plugins
 * VERIFIED (0.36.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/291
 * VERIFIED (0.36.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/297
