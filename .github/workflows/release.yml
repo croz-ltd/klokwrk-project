@@ -54,12 +54,6 @@ jobs:
           name: artifacts-klokwrk-tool-gradle-source-repack
           path: artifacts-klokwrk-tool-gradle-source-repack
 
-      - name: Debug - list dir
-        run: |
-          pwd
-          ls -d $PWD/*
-          ls -laR
-
       - name: Setup Java for JReleaser
         uses: actions/setup-java@v1
         with:
