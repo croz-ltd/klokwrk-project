@@ -1,6 +1,5 @@
 project:
   name: klokwrk-project
-  version: 0.0.4
   license: Apache-2.0
 
 signing:

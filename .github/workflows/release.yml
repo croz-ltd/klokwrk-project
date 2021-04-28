@@ -69,6 +69,7 @@ jobs:
         uses: jreleaser/release-action@v1
         env:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JRELEASER_PROJECT_VERSION: ${{ github.event.inputs.release-version }}
 
       - name: JReleaser output
         if: always()
