@@ -89,11 +89,11 @@ gw clean assemble
 mkdir build/native-image-agent
 
 java -agentlib:native-image-agent=config-output-dir=build/native-image-agent \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar \
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-all.jar \
 --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 ```
 
-Here we are running `klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar` with corresponding application parameters (`--loggingLevels`, `--cleanup`, and `6.8.1` for Gradle version).
+Here we are running `klokwrk-tool-gradle-source-repack-0.0.4-all.jar` with corresponding application parameters (`--loggingLevels`, `--cleanup`, and `6.8.1` for Gradle version).
 Simultaneously, we use `native-image-agent` with the `config-output-dir` parameter that specifies the directory where configuration files will be written. After running, in the
 `build/native-image-agent` directory, we'll get a set of configuration files: `jni-config.json`, `proxy-config.json`, `reflect-config.json`, `resource-config.json`, and `serialization-config.json`.
 
@@ -101,7 +101,7 @@ To get the complete content of configuration files, we have to run our applicati
 `native-image-agent` supports `config-merge-dir` parameter (additional application parameter is `--version`):
 ```
 java -agentlib:native-image-agent=config-merge-dir=build/native-image-agent \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar \
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-all.jar \
 --version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 ```
 
@@ -644,7 +644,7 @@ gw clean assemble
 mkdir build/native-image-agent
 
 java -agentlib:native-image-agent=trace-output=build/native-image-agent/agent-trace-file.json \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 ```
 
 Created `build/native-image-agent/agent-trace-file.json` is pretty big (around 13 MB for our case), and you might want to use the editor that can efficiently work with and search through large text
@@ -712,11 +712,11 @@ mkdir build/native-image-agent
 
 # creating trace file
 java -agentlib:native-image-agent=trace-output=build/native-image-agent/agent-trace-file.json \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
 # creating native image builder configuration files
 java -agentlib:native-image-agent=access-filter-file=build/resources/main/graal-agent-access-filter.json,caller-filter-file=build/resources/main/graal-agent-caller-filter.json,config-output-dir=build/native-image-agent \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 ```
 
 ### Iterating over caller-based filtering configuration
@@ -757,11 +757,11 @@ gw assemble
 
 # regenerating native image builder configuration files
 java -agentlib:native-image-agent=access-filter-file=build/resources/main/graal-agent-access-filter.json,caller-filter-file=build/resources/main/graal-agent-caller-filter.json,config-output-dir=build/native-image-agent \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
 # merging configuration files for additional application options
 java -agentlib:native-image-agent=access-filter-file=build/resources/main/graal-agent-access-filter.json,caller-filter-file=build/resources/main/graal-agent-caller-filter.json,config-merge-dir=build/native-image-agent \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-all.jar --version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 ```
 
 After examination, we can see that the generated `reflect-config.json` is reduced from around 2200 lines to less than 1000 lines. This is a very good start. At this point you might want to assure
@@ -875,11 +875,11 @@ gw assemble
 
 # regenerating native image builder configuration files
 java -agentlib:native-image-agent=access-filter-file=build/resources/main/graal-agent-access-filter.json,caller-filter-file=build/resources/main/graal-agent-caller-filter.json,config-output-dir=build/native-image-agent \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
 # merging configuration files for additional application options
 java -agentlib:native-image-agent=access-filter-file=build/resources/main/graal-agent-access-filter.json,caller-filter-file=build/resources/main/graal-agent-caller-filter.json,config-merge-dir=build/native-image-agent \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-all.jar --version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 ```
 
 Now, we can easily spot that `reflect-config.json` contains many unnecessary entries from `java.util` subpackages. However, we cannot exclude all `java.util` subpackages since this will also exclude
@@ -940,11 +940,11 @@ mkdir build/native-image-agent
 
 # Generating native image builder configuration files.
 java -agentlib:native-image-agent=access-filter-file=build/resources/main/graal-agent-access-filter.json,caller-filter-file=build/resources/main/graal-agent-caller-filter.json,config-output-dir=build/native-image-agent \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-all.jar --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
 # Generating and merging native image builder configuration files for additional application options.
 java -agentlib:native-image-agent=access-filter-file=build/resources/main/graal-agent-access-filter.json,caller-filter-file=build/resources/main/graal-agent-caller-filter.json,config-merge-dir=build/native-image-agent \
--jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-SNAPSHOT-all.jar --version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
+-jar build/libs/klokwrk-tool-gradle-source-repack-0.0.4-all.jar --version --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.1
 
 # Copy generated configuration file for native image builder
 cp build/native-image-agent/jni-config.json src/main/graal
