@@ -6,9 +6,24 @@ on:
       release-version:
         description: "Version of already existing release"
         required: true
+      release-type:
+        description: "'draft' or 'release'"
+        required: true
+        default: draft
 
 jobs:
+  verify-inputs:
+    name: Verify inputs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify input release-type
+        if: ${{ github.event.inputs.release-type != 'draft' && github.event.inputs.release-type != 'release' }}
+        run: |
+          echo "Input release-type is '${{ github.event.inputs.release-type }}' which is not allowed. Allower release-types are 'draft' or 'release'."
+          exit 1
+
   prepare-binaries-klokwrk-tool-gradle-source-repack:
+    needs: verify-inputs
     name: Prepare klokwrk-tool-gradle-source-repack binaries
     runs-on: ubuntu-latest
     steps:
@@ -39,7 +54,7 @@ jobs:
           retention-days: 1
 
   release:
-    needs: prepare-binaries-klokwrk-tool-gradle-source-repack
+    needs: [verify-inputs, prepare-binaries-klokwrk-tool-gradle-source-repack]
     name: Release
     runs-on: ubuntu-latest
     steps:
@@ -59,9 +74,17 @@ jobs:
         with:
           java-version: 11
 
+      - name: Setup current date
+        run: |
+          echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
       - name: Run JReleaser
         uses: jreleaser/release-action@v1
+        with:
+          # You may use "latest" to pull the latest stable release or "early-access" to pull the latest snapshot.
+          version: early-access
+          arguments: full-release --basedir=${{ github.workspace }} --config-file=${{ github.workspace }}/support/jreleaser/jreleaser-${{ github.event.inputs.release-type }}.yml
         env:
+          CURRENT_DATE: ${{env.CURRENT_DATE}}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JRELEASER_PROJECT_VERSION: ${{ github.event.inputs.release-version }}
 
@@ -73,3 +96,4 @@ jobs:
           path: |
             out/jreleaser/trace.log
             out/jreleaser/output.properties
+            out/jreleaser/release/CHANGELOG.md

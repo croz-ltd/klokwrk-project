@@ -10,12 +10,14 @@ signing:
 
 release:
   github:
+    releaseName: Release {{tagName}} ({{Env.CURRENT_DATE}})
     username: dmurat
     overwrite: true
-    draft: true
+    draft: false
     skipTag: true
     changelog:
-      enabled: false
+      enabled: true
+      external: ./support/jreleaser/CHANGELOG-RELEASE.md
 
 files:
   globs:
