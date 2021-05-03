@@ -72,8 +72,8 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-261239
 
 ### JReleaser
-* IN PROGRESS (0.3.0) - https://github.com/jreleaser/jreleaser/issues/85
-* REPORTED - https://github.com/jreleaser/jreleaser/issues/86
+* FIXED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/85
+* FIXED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/86
 
 ### Kordamp Gradle Plugins
 * VERIFIED (0.36.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/291

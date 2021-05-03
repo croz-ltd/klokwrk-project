@@ -22,8 +22,11 @@ When supplied with correct parameters, `klokwrk-tool-gradle-source-repack` will:
 
 ## Download
 There are two variants of the `klokwrk-tool-gradle-source-repack` to choose from: an executable JAR and standalone native utility (compiled with GraalVM native image builder tool).
-You can download the latest versions from the "Artifacts" section of the newest successful build. To do that, login into your GitHub account (otherwise, download links will not be available) and
-then:
+
+The latest released version can be accessed from the project's release page: https://github.com/croz-ltd/klokwrk-project/releases
+
+Alternatively, you can download the latest SNAPSHOT version from the "Artifacts" section of the latest successful build. To do that, login into your GitHub account (otherwise, download links will
+not be available) and then:
 - Go to the home page of [klokwrk-project](https://github.com/croz-ltd/klokwrk-project).
 - Click on the "Actions" menu.
 - Navigate further on:
