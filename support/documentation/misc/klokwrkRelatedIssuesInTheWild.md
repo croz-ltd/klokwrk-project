@@ -74,6 +74,12 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 ### JReleaser
 * FIXED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/85
 * FIXED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/86
+* FIXED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/98
+* FIXED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/99
+* FIXED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/100
+* FIXED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/114
+* RESOLVED (0.3.0)- https://github.com/jreleaser/jreleaser/issues/120
+* FIXED (0.4.0) - https://github.com/jreleaser/jreleaser/issues/121
 
 ### Kordamp Gradle Plugins
 * VERIFIED (0.36.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/291
