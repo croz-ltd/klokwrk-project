@@ -1019,6 +1019,18 @@ Alternatively, if you invest the time and effort to learn more about the interna
 `native-image-agent` filtering configuration might be specific for the concrete tech stack which is used. However, acquired knowledge should be of great help when dealing with different types of
 Groovy applications enabling you to update configuration quickly enough.
 
+## Download
+The latest released version can be accessed from the project's release page: https://github.com/croz-ltd/klokwrk-project/releases
+
+Alternatively, you can download the latest SNAPSHOT version from the "Artifacts" section of the latest successful build. To do that, login into your GitHub account (otherwise, download links will
+not be available) and then:
+- Go to the home page of [klokwrk-project](https://github.com/croz-ltd/klokwrk-project).
+- Click on the "Actions" menu.
+- Navigate further on:
+  - "klokwrk-tool-gradle-source-repack GraalVM native image builder" workflow.
+  - Choose the latest successful build of the workflow.
+  - Select the desired distribution from the "Artifacts" section.
+
 ## References
 [1] GraalVM homepage - [https://www.graalvm.org](https://www.graalvm.org) <br/>
 [2] GraalVM GitHub homepage - [https://github.com/oracle/graal](https://github.com/oracle/graal) <br/>
