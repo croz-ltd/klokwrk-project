@@ -12,7 +12,7 @@ release:
   github:
     username: dmurat
     overwrite: true
-    draft: false
+    draft: true
     skipTag: true
     changelog:
       enabled: false
