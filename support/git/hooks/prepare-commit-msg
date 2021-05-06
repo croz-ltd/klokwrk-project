@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Get the '.git' path
+gitDir=$(git rev-parse --git-dir)
+
+# Outputs the value of second script parameter into the file. Second parameter contains the source of the commit message and can be one of 'message', 'template', 'merge', 'squash' or 'commit'.
+commitSource=$2
+echo "$commitSource" > "$gitDir/prepare-commit-msg-source.txt"

@@ -1,0 +1,171 @@
+#!/bin/sh
+
+# ===== functions =====
+
+# Function checkMessageTitleGeneralRules() verifies some general rules that title of commit message must comply with.
+# Function expects a single parametar containing commit message title string.
+# If any rule fails, function exits the script with error code 1.
+# Rules:
+#     - title message must not start with whitespace characters
+#     - title message must not be longer than $commitMessageTitleMaxLength
+# ----------
+checkMessageTitleGeneralRules() {
+  myCommitMessageTitle=$1
+  myCommitMessageTitleLength=${#myCommitMessageTitle}
+
+  # Check if commit message title starts with whitespace character(s).
+  # shellcheck disable=SC2086,SC2116
+  myCommitMessageTitleTrimmed="$(echo $myCommitMessageTitle)"
+  myCommitMessageTitleTrimmedLength=${#myCommitMessageTitleTrimmed}
+  if [ "$myCommitMessageTitleLength" -ne "$myCommitMessageTitleTrimmedLength" ] ; then
+    echo "[commit-msg hook] Commit message title contains whitespaces at the start or at the end. This is not allowed."
+    echo "[commit-msg hook] If this was a merge commit, to return to the state before merging, please run 'git merge --abort'"
+    exit 1
+  fi
+
+  # Check if commit message title is too long.
+  myCommitMessageTitleLength=${#myCommitMessageTitle}
+  if [ "$myCommitMessageTitleLength" -gt "$commitMessageTitleMaxLength" ] ; then
+    echo "[commit-msg hook] Commit message title is too long. Maximum of $commitMessageTitleMaxLength is allowed. You have $myCommitMessageTitleLength characters."
+    echo "[commit-msg hook] If this was a merge commit, to return to the state before merging, please run 'git merge --abort'"
+    exit 1
+  fi
+}
+
+# Function checkMessageTitleSuffixForMergeCommit() verifies if message title of a merge commit ends with '{m}'.
+# Function expects a single parametar containing commit message title string.
+# String '{m}' is intended to note in commit history that relevant commit is a merge commit, meaning it is only for documentation purposes.
+# If check fails, function exits the script with error code 1.
+# ----------
+checkMessageTitleSuffixForMergeCommit() {
+  myCommitMessageTitle=$1
+
+  # Check if title of merge commit ends with '{m}'.
+  if [[ ! "$myCommitMessageTitle" =~ ^.*{m(,.*)*}$ ]] ; then
+    echo "[commit-msg hook] Commit message title of a merge commit must end with '{m}'."
+    echo "[commit-msg hook] To return to the state before merging, please run 'git merge --abort'"
+
+    exit 1
+  fi
+}
+
+# Function checkMessageTitleSuffixForPlainCommit() verifies that a message title of a plain commit does not end with '{m}'.
+# Function expects a single parametar containing commit message title string.
+# If check fails, function exits the script with error code 1.
+# ----------
+checkMessageTitleSuffixForPlainCommit() {
+  myCommitMessageTitle=$1
+
+  # Check if title of merge commit ends with '{m}'.
+  if [[ "$myCommitMessageTitle" =~ ^.*{m.*}$ ]] ; then
+    echo "[commit-msg hook] Commit message title of non-merge commit must not end with '{m}'."
+    exit 1
+  fi
+}
+
+# Function checkIfMessageTitleIsInConventionalCommitFormat() verifies if commit message title is in 'conventional commits' format.
+# If true, function returns string 'true'. Otherwise, it returns string 'false'.
+# Function expects two parameters:
+#     - first parameter contains commit message title string
+#     - second parameter contains a conventional commit regexp for title validation
+# ----------
+checkIfMessageTitleIsInConventionalCommitFormat() {
+  myCommitMessageTitle=$1
+  myConventionalCommitRegexp=$2
+
+  if [[ "$myCommitMessageTitle" =~ $myConventionalCommitRegexp ]]; then
+    echo "true"
+    return
+  fi
+
+  echo "false"
+}
+
+# Function checkMessageTitleInConventionalCommitFormat() checks if commit message title in 'conventional commits' format satisfies additional rules.
+# Function expects two parameters:
+#     - first parameter contains commit message title string
+#     - second parameter contains a conventional commit regexp for title validation
+# If any rule fails, function exits the script with error code 1.
+# Rules:
+#     - conventional commit title description must start with capitalized letter
+#     - conventional commit title description must not end with punctuation character
+# ----------
+checkMessageTitleInConventionalCommitFormat() {
+  myCommitMessageTitle=$1
+  myConventionalCommitRegexp=$2
+
+  if [[ "$myCommitMessageTitle" =~ $myConventionalCommitRegexp ]]; then
+    myTitleDescription="${BASH_REMATCH[3]}"
+    if [[ ! "$myTitleDescription" =~ ^[A-Z].* ]]; then
+      echo "[commit-msg hook] Title description must start with the capitalized letter."
+      echo "[commit-msg hook] If this was a merge commit, to return to the state before merging, please run 'git merge --abort'"
+      exit 1
+    fi
+
+    if [[ "$myTitleDescription" =~ ^.*[!.?]$ ]]; then
+      echo "[commit-msg hook] Title description must not end with punctuation character."
+      echo "[commit-msg hook] If this was a merge commit, to return to the state before merging, please run 'git merge --abort'"
+      exit 1
+    fi
+  fi
+}
+
+# ===== main script =====
+# ----- constants ----
+mainBranchName="master"
+commitMessageTitleMaxLength=120
+# Get the '.git' path
+gitDir=$(git rev-parse --git-dir)
+prepareCommitMessageSource=$(head -n 1 "$gitDir"/prepare-commit-msg-source.txt)
+conventionalCommitRegexp="^(feat|fix|docs|style|test|build|ci|refactor|perf|chore|task|deps|article|misc|notype)(\(.*\))?: (.*)$"
+
+# ----- body -----
+commitMessageFile=$1
+commitMessageContent=$(cat "$commitMessageFile")
+commitMessageTitle=$(echo "$commitMessageContent" | head -n 1)
+
+# Check commit message title against general rules (whitespace, length, etc.)
+checkMessageTitleGeneralRules "$commitMessageTitle"
+
+currentBranch=$(git branch --show-current)
+
+isMainBranch=false
+if [ "$currentBranch" = "$mainBranchName" ]; then
+  isMainBranch=true
+fi
+
+if [ "$prepareCommitMessageSource" = "merge" ]; then
+  checkMessageTitleSuffixForMergeCommit "$commitMessageTitle"
+else
+  checkMessageTitleSuffixForPlainCommit "$commitMessageTitle"
+fi
+
+if [ $isMainBranch = true ]; then
+  # For main branch, commits should always be in 'conventional commits' format.
+  isMessageTitleInConventionalCommitFormat=$(checkIfMessageTitleIsInConventionalCommitFormat "$commitMessageTitle" "$conventionalCommitRegexp")
+  if [ ! "$isMessageTitleInConventionalCommitFormat" ]; then
+    echo "All commits to the $mainBranchName branch must be in conventional commit format."
+    git merge --abort
+    exit 1
+  fi
+
+  checkMessageTitleInConventionalCommitFormat "$commitMessageTitle" "$conventionalCommitRegexp"
+else
+  # For feature branches, commits, in general, do not have to be in 'conventional commits' format, but they might when commit is significant enough to be included in the changelog.
+  isMessageTitleInConventionalCommitFormat=$(checkIfMessageTitleIsInConventionalCommitFormat "$commitMessageTitle" "$conventionalCommitRegexp")
+
+  if [ "$isMessageTitleInConventionalCommitFormat" = 'true' ]; then
+    checkMessageTitleInConventionalCommitFormat "$commitMessageTitle" "$conventionalCommitRegexp"
+  else
+    if [[ ! "$commitMessageTitle" =~ ^[A-Z].* ]]; then
+      echo "[commit-msg hook] Message title must start with the capitalized letter."
+      exit 1
+    fi
+
+    if [[ "$commitMessageTitle" =~ ^.*[!.?]$ ]]; then
+      echo "[commit-msg hook] Title description must not end with punctuation character."
+      echo "[commit-msg hook] If this was a merge commit, to return to the state before merging, please run 'git merge --abort'"
+      exit 1
+    fi
+  fi
+fi
