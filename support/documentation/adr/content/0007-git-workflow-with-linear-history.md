@@ -1,6 +1,8 @@
 # ADR-0007 - Git Workflow with Linear History
 * **Status: accepted**
-* Dates: proposed - 2020-11-03
+* Dates:
+  - proposed - 2020-11-03
+  - updated - 2021-05-10
 * Authors: Damir Murat (`damir.murat.git at gmail.com`)
 * Reviewers: None
 
@@ -39,6 +41,8 @@ Chosen git workflow should seamlessly support release versioning and, if needed,
 
 We will organize our [feature commits as recipes](https://www.bitsnbites.eu/git-history-work-log-vs-recipe/) because we want to promote the team's learning and communication.
 
+We will also use specific commit message format as described in [ADR-0014 - Commit Message Format](./0014-commit-message-format.md)
+
 ## Consequences
 ### Positive
 * Semi-linear Git history.
@@ -55,3 +59,4 @@ We will organize our [feature commits as recipes](https://www.bitsnbites.eu/git-
 * [A stable mainline branching model for Git](https://www.bitsnbites.eu/a-stable-mainline-branching-model-for-git/)
 * [A tidy, linear Git history](https://www.bitsnbites.eu/a-tidy-linear-git-history/)
 * [Git history: work log vs recipe](https://www.bitsnbites.eu/git-history-work-log-vs-recipe/)
+* [ADR-0014 - Commit Message Format](./0014-commit-message-format.md)

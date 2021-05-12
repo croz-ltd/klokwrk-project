@@ -1,0 +1,140 @@
+project:
+  name: klokwrk-project
+  license: Apache-2.0
+
+  # Prevent creating a release named "Release early-access" for snapshot versions.
+  snapshotPattern: .*-DOESNOTEXIST
+
+signing:
+  active: NEVER
+
+release:
+  github:
+    releaseName: Release {{tagName}} ({{Env.CURRENT_DATE}})
+    username: dmurat
+    overwrite: true
+    draft: true
+    skipTag: true
+    changelog:
+      enabled: true
+      formatted: ALWAYS
+      change: "- [`{{commitShortHash}}`]({{commitsUrl}}/{{commitShortHash}}) {{commitTitle}}"
+      links: false
+      hideUncategorized: false
+      labelers:
+        - label: 'feature'
+          title: 'feat: '
+        - label: 'feature-with-scope'
+          title: 'feat('
+        - label: 'fix'
+          title: 'fix: '
+        - label: 'fix-with-scope'
+          title: 'fix('
+        - label: 'docs'
+          title: 'docs: '
+        - label: 'docs-with-scope'
+          title: 'docs('
+        - label: 'style'
+          title: 'style: '
+        - label: 'style-with-scope'
+          title: 'style('
+        - label: 'test'
+          title: 'test: '
+        - label: 'test-with-scope'
+          title: 'test('
+        - label: 'build'
+          title: 'build: '
+        - label: 'build-with-scope'
+          title: 'build('
+        - label: 'ci'
+          title: 'ci: '
+        - label: 'ci-with-scope'
+          title: 'ci('
+        - label: 'refactor'
+          title: 'refactor: '
+        - label: 'refactor-with-scope'
+          title: 'refactor('
+        - label: 'perf'
+          title: 'perf: '
+        - label: 'perf-with-scope'
+          title: 'perf('
+        - label: 'chore'
+          title: 'chore: '
+        - label: 'chore-with-scope'
+          title: 'chore('
+        - label: 'task'
+          title: 'task: '
+        - label: 'task-with-scope'
+          title: 'task('
+        - label: 'deps'
+          title: 'deps: '
+        - label: 'deps-with-scope'
+          title: 'deps('
+        - label: 'article'
+          title: 'article: '
+        - label: 'article-with-scope'
+          title: 'article('
+        - label: 'misc'
+          title: 'misc: '
+        - label: 'misc-with-scope'
+          title: 'misc('
+      categories:
+        - title: '⭐ Features'
+          labels:
+            - 'feature'
+            - 'feature-with-scope'
+        - title: '🐞 Bug Fixes'
+          labels:
+            - 'fix'
+            - 'fix-with-scope'
+        - title: '📔️ Documentation'
+          labels:
+            - 'docs'
+            - 'docs-with-scope'
+        - title: '🕶️ Style'
+          labels:
+            - 'style'
+            - 'style-with-scope'
+        - title: '✅ Test'
+          labels:
+            - 'test'
+            - 'test-with-scope'
+        - title: '⛏️ Build'
+          labels:
+            - 'build'
+            - 'build-with-scope'
+        - title: '🏭️ CI'
+          labels:
+            - 'ci'
+            - 'ci-with-scope'
+        - title: '😰 Refactor'
+          labels:
+            - 'refactor'
+            - 'refactor-with-scope'
+        - title: '🛵 Performance'
+          labels:
+            - 'perf'
+            - 'perf-with-scope'
+        - title: '🧰 Tasks'
+          labels:
+            - 'task'
+            - 'task-with-scope'
+            - 'chore'
+            - 'chore-with-scope'
+        - title: '♾️ Dependencies'
+          labels:
+            - 'deps'
+            - 'deps-with-scope'
+        - title: '🧐️ Articles'
+          labels:
+            - 'article'
+            - 'article-with-scope'
+        - title: '◻️️ Miscellaneous'
+          labels:
+            - 'misc'
+            - 'misc-with-scope'
+
+files:
+  globs:
+    - directory: artifacts-klokwrk-tool-gradle-source-repack
+      include: "*.*"

@@ -2,14 +2,39 @@
 - do all necessary testing of draft release
 
 ### **feature branch** (i.e., `feature_preparingRelease`)
-- update JReleaser with `draft: false`
 - update versions of klokwrk application images
+- manually generate changelog. From project root with the latest JReleaser release
+
+      env JRELEASER_PROJECT_VERSION=0.0.5-SNAPSHOT JRELEASER_GITHUB_TOKEN=1 \
+      jbang --verbose jreleaser@jreleaser changelog --basedir=. --config-file=./support/jreleaser/jreleaser-draft.yml --debug
+
+  or with the latest snapshot release
+
+      env JRELEASER_PROJECT_VERSION=0.0.5-SNAPSHOT JRELEASER_GITHUB_TOKEN=1 \
+      jbang --verbose jreleaser-snapshot@jreleaser changelog --basedir=. --config-file=./support/jreleaser/jreleaser-draft.yml --debug
+
+  If using JReleaser snapshot release, and you need absolutely the latest snapshot version, before executing command make sure that cached JReleaser maven dependencies are deleted (from
+  `~/.m2/repository/com/github/jreleaser` directory)
+
+
+- Verify generated changelog and make all necessary updates like:
+  - delete uncategorized commits
+  - deduplicate `deps` commits so that only the latest upgrade of particular dependency is included
+  - add few sentences of release description if needed
+  - fix any invalid commit message metadata (i.e. {m} from non-merge commits)
+
+
+- put all content of prepared changelog in `support/jreleaser/CHANGELOG-RELEASE.md` file. That file is use for creating a changelog during real release creation on GitHub.
+- put all content of prepared changelog at the beginning of `CHANGELOG.md` file in the root od the project
 
 ### **master branch**
-- merge (`--no-ff`) `feature_preparingRelease` into local `master`
-- local - empty commit, i.e., `Release 0.0.4`
+- merge (`--no-ff`) `feature_preparingRelease` into local `master`. Use the message in the following format:
 
-      git commit --allow-empty -m "Release 0.0.4"
+      notype(project): Prepare release 0.0.4 {m}
+
+- local - make an empty commit that will carry annotated release tag. Use the message in following format: `notype(project): Release 0.0.4`
+
+      git commit --allow-empty -m "notype(project): Release 0.0.4"
 
 - local - tag previous commit with the version tag
 
@@ -44,11 +69,12 @@
 
 - let Continuous integration workflow finish
 - run GitHub workflow: klokwrk-tool-gradle-source-repack GraalVM native image builder
-- run GitHub workflow: Release workflow with new release version (without 'v' prefix)
+- run GitHub workflow: Release workflow with:
+    - version (without 'v' prefix): `0.0.4`
+    - release type: `release`
 
 # Preparing for next development cycle after release
 ### **feature branch** (i.e., `feature_preparingNextDevCycle`)
-- update and commit JReleaser with `draft: true`
 - update and commit new versions of klokwrk application images
 - local full build (oracle JVM)
 
@@ -73,15 +99,25 @@
           --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.3
 
 - upload docker images
-- push `feature_preparingNextDevCycle` branch
-- let Continuous integration workflow finish
-- run GitHub workflow: klokwrk-tool-gradle-source-repack GraalVM native image builder
-- run GitHub workflow: Release (draft) workflow with new SNAPSHOT version (without 'v' prefix)
+
+
+- optionally verify that changes in the branch work correctly
+  - push `feature_preparingNextDevCycle` branch
+  - let Continuous integration workflow finish
+  - run GitHub workflow: klokwrk-tool-gradle-source-repack GraalVM native image builder
+  - run GitHub workflow: Release workflow with
+    - version (without 'v' prefix): `0.0.5-SNAPSHOT`
+    - release type: `draft`
 
 ### **master branch**
-- merge (`--no-ff`) `feature_preparingNextDevCycle` into master
+- merge (`--no-ff`) `feature_preparingNextDevCycle` into master. Use the message in the following format:
+
+      notype(project): Prepare next development cycle {m}
+
 - push master
 - delete local and remote `feature_preparingNextDevCycle` branch
 - let Continuous integration workflow finish
 - run GitHub workflow: klokwrk-tool-gradle-source-repack GraalVM native image builder (can be skipped if time is an issue)
-- run GitHub workflow: Release (draft) workflow with new SNAPSHOT version (without 'v' prefix) (can be skipped if time is an issue)
+- run GitHub workflow: Release workflow with (can be skipped if time is an issue):
+  - version (without 'v' prefix): `0.0.5-SNAPSHOT`
+  - release type: `draft`
