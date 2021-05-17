@@ -85,16 +85,18 @@ jobs:
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
 
-      - name: Set up Windows - Install Visual C++ Build Tools Workload for Visual Studio 2017 Build Tools
+      - name: Set up Windows 1/2 - Configure environment for compiling C/C++ code
         if: ${{ matrix.label == 'win' }}
-        run: |
-          choco install visualstudio2017-workload-vctools -y
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Set up Windows 2/2 - Configure MSBuild tool
+        if: ${{ matrix.label == 'win' }}
+        uses: microsoft/setup-msbuild@v1
 
       - name: Build GraalVM native image for windows
         if: ${{ matrix.label == 'win' }}
         shell: cmd
         run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\Vc\Auxiliary\Build\vcvars64.bat"
           ./gradlew.bat --project-dir tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
 
       - name: GraalVM native image upload
