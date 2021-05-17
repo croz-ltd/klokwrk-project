@@ -11,7 +11,7 @@ class TestRetryDisablerPluginSpecification extends Specification {
   static final String LINE_SEPARATOR = System.getProperty("line.separator")
   static final Boolean DEBUG_ENABLED = true
   static final String TEST_PROJECT_NAME = "testing-test-retry-disabler"
-  static final String TEST_RETRY_PLUGIN_VERSION = "1.2.0"
+  static final String TEST_RETRY_PLUGIN_VERSION = "1.2.1"
 
   @TempDir
   File testProjectDir
