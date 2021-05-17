@@ -1,0 +1,29 @@
+plugins {
+  id "groovy-gradle-plugin"
+}
+
+repositories {
+  mavenCentral()
+  gradlePluginPortal()
+}
+
+tasks.withType(Test).configureEach {
+  setJvmArgs(["-noverify", "-XX:TieredStopAtLevel=1"])
+  useJUnitPlatform()
+}
+
+gradlePlugin {
+  plugins {
+    testRetryDisablerPlugin { PluginDeclaration pluginDeclaration ->
+      pluginDeclaration.setId("org.klokwrk.gradle.test-retry-disabler")
+      pluginDeclaration.setImplementationClass("org.klokwrk.gradle.testretrydisabler.TestRetryDisablerPlugin")
+    }
+  }
+}
+
+dependencies {
+  testImplementation("org.spockframework:spock-core:$spockVersion") {
+    exclude group: "org.codehaus.groovy"
+  }
+  testImplementation "org.gradle:test-retry-gradle-plugin:$gradleTestRetryPluginVersion"
+}
