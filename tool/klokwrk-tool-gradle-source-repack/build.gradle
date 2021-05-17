@@ -21,6 +21,7 @@ import org.gradle.internal.deprecation.DeprecatableConfiguration
 apply plugin: "io.micronaut.application"
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: "org.gradle.test-retry"
+apply plugin: "org.klokwrk.gradle.test-retry-disabler"
 
 config {
   coverage {
