@@ -17,6 +17,7 @@
  */
 apply plugin: "org.springframework.boot"
 apply plugin: "org.gradle.test-retry"
+apply plugin: "org.klokwrk.gradle.test-retry-disabler"
 
 // =================================================
 // configuring "testIntegration" source set -- start
