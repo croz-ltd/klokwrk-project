@@ -20,8 +20,6 @@ import org.gradle.internal.deprecation.DeprecatableConfiguration
 
 apply plugin: "io.micronaut.application"
 apply plugin: "com.github.johnrengelman.shadow"
-apply plugin: "org.gradle.test-retry"
-apply plugin: "org.klokwrk.gradle.test-retry-disabler"
 
 config {
   coverage {
@@ -48,12 +46,6 @@ application {
 processResources {
   filteringCharset = "UTF-8"
   filter(ReplaceTokens, tokens: [moduleName: project.name, moduleVersion: project.version])
-}
-
-test {
-  retry {
-    maxRetries = 2
-  }
 }
 
 configurations {
