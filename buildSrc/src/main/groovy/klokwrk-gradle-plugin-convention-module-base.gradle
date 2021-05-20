@@ -1,0 +1,11 @@
+group = "org.klokwrk.project"
+
+configurations {
+  all {
+    resolutionStrategy {
+      // prevent caching for snapshot dependencies
+      //noinspection GroovyAssignabilityCheck
+      cacheChangingModulesFor(0, "seconds")
+    }
+  }
+}
