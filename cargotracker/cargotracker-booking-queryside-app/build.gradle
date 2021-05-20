@@ -16,76 +16,7 @@
  * limitations under the License.
  */
 apply plugin: "org.springframework.boot"
-apply plugin: "org.gradle.test-retry"
-apply plugin: "org.klokwrk.gradle.test-retry-disabler"
-
-// =================================================
-// configuring "testIntegration" source set -- start
-// -------------------------------------------------
-// TODO dmurat: move testIntegration source set creation into the Gradle plugin.
-sourceSets {
-  testIntegration {
-    compileClasspath += sourceSets.main.output
-    runtimeClasspath += sourceSets.main.output
-
-    java {
-      outputDir = file("build/classes/groovy/testIntegration")
-      srcDirs = [file("src/testIntegration/groovy")]
-    }
-
-    resources {
-      srcDirs = [file("src/testIntegration/resources")]
-    }
-  }
-}
-
-configurations {
-  testIntegrationImplementation.extendsFrom testImplementation
-  testIntegrationRuntimeOnly.extendsFrom testRuntimeOnly
-}
-
-/**
- * Converts Gradle project properties (i.e. properties specified via gradle.properties file) with 'DockerImageVersion' suffix into Java system properties.
- * This way all versions with DockerImageVersion suffix can be used by Testcontainers factories that create and start containers.
- */
-void convertDockerImageVersionsIntoJavaSystemPropertiesForTestTask(Test testTask, Project project) {
-  Map<String, String> dockerImageVersions = project.getRootProject().properties.findAll { String key, Object value ->
-    (value instanceof String) && key.toLowerCase().endsWith("DockerImageVersion".toLowerCase())
-  } as Map<String, String>
-
-  dockerImageVersions.each { String key, String value ->
-    testTask.systemProperty(key, value)
-  }
-}
-
-tasks.register("testIntegration", Test) { Test testIntegrationTask ->
-  description = "Runs integration tests."
-  group = "verification"
-
-  convertDockerImageVersionsIntoJavaSystemPropertiesForTestTask(testIntegrationTask, project)
-  testIntegrationTask.useJUnitPlatform()
-
-  testClassesDirs = sourceSets.testIntegration.output.classesDirs
-  classpath = sourceSets.testIntegration.runtimeClasspath
-
-  jvmArgs = ["-noverify", "-XX:TieredStopAtLevel=1"]
-
-  // Docker based tests in CI environments (like GitHub Actions) may be flaky. Therefore, we will retry 2 times (3 test execution in total) before giving up.
-  retry {
-    maxRetries = 2
-  }
-}
-
-idea {
-  module {
-    // Required for IDEA to mark sources from testIntegration source set as test sources.
-    testSourceDirs += file("src/testIntegration/groovy")
-    testResourceDirs += file("src/testIntegration/resources")
-  }
-}
-// -----------------------------------------------
-// configuring "testIntegration" source set -- end
-// ===============================================
+apply plugin: "klokwrk-gradle-plugin-convention-test-integration"
 
 // https://docs.gradle.org/current/userguide/upgrading_version_6.html#publishing_spring_boot_applications
 configurations {
