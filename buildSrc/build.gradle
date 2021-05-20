@@ -22,8 +22,9 @@ gradlePlugin {
 }
 
 dependencies {
+  implementation "org.gradle:test-retry-gradle-plugin:$gradleTestRetryPluginVersion"
+
   testImplementation("org.spockframework:spock-core:$spockVersion") {
     exclude group: "org.codehaus.groovy"
   }
-  testImplementation "org.gradle:test-retry-gradle-plugin:$gradleTestRetryPluginVersion"
 }
