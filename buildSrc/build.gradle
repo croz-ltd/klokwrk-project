@@ -22,7 +22,9 @@ gradlePlugin {
 }
 
 dependencies {
+  implementation "gradle.plugin.org.barfuin.gradle.taskinfo:gradle-taskinfo:$gradleTaskInfoPlugin"
   implementation "org.gradle:test-retry-gradle-plugin:$gradleTestRetryPluginVersion"
+  implementation "org.kordamp.gradle:publishing-gradle-plugin:$gradleKordampPluginVersion"
   implementation "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
 
   testImplementation("org.spockframework:spock-core:$spockVersion") {

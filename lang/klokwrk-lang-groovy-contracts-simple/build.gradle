@@ -17,6 +17,8 @@
  */
 import org.apache.tools.ant.filters.ReplaceTokens
 
+apply plugin: "klokwrk-gradle-plugin-convention-module-base"
+apply plugin: "klokwrk-gradle-plugin-convention-module-groovy"
 apply plugin: "java-library"
 
 processResources {
