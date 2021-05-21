@@ -140,22 +140,11 @@ config {
 }
 
 configure(subprojects) { Project subproject ->
-  group = "org.klokwrk.project"
-
-  configurations {
-    all {
-      resolutionStrategy {
-        // prevent caching for snapshot dependencies
-        //noinspection GroovyAssignabilityCheck
-        cacheChangingModulesFor(0, "seconds")
-      }
-    }
-  }
-
   if (["platform", "cargotracker", "lib", "lang", "tool"].contains(subproject.name) || subproject.projectDir.parent.endsWith("platform")) {
     return
   }
 
+  apply plugin: "klokwrk-gradle-plugin-convention-module-base"
   apply plugin: "org.barfuin.gradle.taskinfo"
   apply plugin: "groovy"
   apply plugin: "idea"
