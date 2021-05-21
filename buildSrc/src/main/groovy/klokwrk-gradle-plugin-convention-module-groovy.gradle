@@ -17,7 +17,6 @@
  */
 plugins {
   id "klokwrk-gradle-plugin-convention-module-base"
-  id "org.barfuin.gradle.taskinfo"
   id "groovy"
   id "idea"
   id "org.kordamp.gradle.publishing"
