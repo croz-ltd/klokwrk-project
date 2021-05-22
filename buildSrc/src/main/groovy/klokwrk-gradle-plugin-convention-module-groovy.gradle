@@ -65,13 +65,13 @@ config {
   }
 
   publishing {
-    setPublications(["myLibrary"])
+    setPublications(["groovyModule"])
   }
 }
 
 publishing {
   publications {
-    myLibrary(MavenPublication) {
+    groovyModule(MavenPublication) {
       from components.java
     }
   }
