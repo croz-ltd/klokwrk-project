@@ -35,11 +35,11 @@ dependencies {
   implementation "org.springframework:spring-webmvc"
   implementation "org.apache.tomcat.embed:tomcat-embed-core"
 
+  testImplementation "org.apache.tomcat.embed:tomcat-embed-el"
   testImplementation "org.codehaus.groovy:groovy-json"
   testImplementation "org.codehaus.groovy:groovy-datetime"
   testImplementation "com.fasterxml.jackson.core:jackson-databind"
   testImplementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
-  testImplementation "org.glassfish:jakarta.el"
   testImplementation "org.spockframework:spock-core"
   testImplementation "org.spockframework:spock-spring"
   testImplementation "org.springframework:spring-test"

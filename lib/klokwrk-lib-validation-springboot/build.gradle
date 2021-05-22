@@ -31,8 +31,8 @@ dependencies {
 
   implementation "io.github.classgraph:classgraph"
   implementation "jakarta.validation:jakarta.validation-api"
+  implementation "org.apache.tomcat.embed:tomcat-embed-el"
   implementation "org.codehaus.groovy:groovy"
-  implementation "org.glassfish:jakarta.el"
   implementation "org.hibernate.validator:hibernate-validator"
   implementation "org.springframework:spring-context"
   implementation "org.springframework.boot:spring-boot"
