@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<ns2:softwareSystem xmlns:ns2="http://www.hello2morrow.com/sonargraph/core" id="edd1ad79d85b492f81d20049f28e84f2" version="11.1.0.660">
+<ns2:softwareSystem xmlns:ns2="http://www.hello2morrow.com/sonargraph/core" id="edd1ad79d85b492f81d20049f28e84f2" version="11.2.0.672">
 	<description></description>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-axon-api" id="873f5826c942ca8549a9c1adfcd15fba" language="Java">
 		<description></description>
@@ -112,5 +112,9 @@
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-validation-validator" id="b86033548216844f24c5d202c9423915" language="Java">
 		<description></description>
 		<rootPath name="../../lib/klokwrk-lib-validation-validator/build/classes/groovy/main"></rootPath>
+	</module>
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-test-component" id="55bf2e40e489cd5e54e95fcd66389a4c" language="Java">
+		<description></description>
+		<rootPath name="../../cargotracker/cargotracker-booking-test-component/build/classes/groovy/testIntegration"></rootPath>
 	</module>
 </ns2:softwareSystem>

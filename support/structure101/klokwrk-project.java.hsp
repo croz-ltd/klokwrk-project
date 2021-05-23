@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<local-project language="java" version="5.0.15446" xml-version="3" flavor="j2se">
+<local-project language="java" version="5.0.15458" xml-version="3" flavor="j2se">
   <property name="show-as-module" value="false" />
   <property name="publish-architecture-artifacts" value="true" />
   <property name="force-classpath" value="false" />
@@ -25,6 +25,7 @@
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-rdbms-projection-model/build/classes/groovy/main" module="cargotracker-booking-queryside-rdbms-projection-model" displaymodule="cargotracker-booking-queryside-rdbms-projection-model" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-test-support/build/classes/groovy/main" module="cargotracker-booking-queryside-test-support" displaymodule="cargotracker-booking-queryside-test-support" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-rdbms-management-app/build/classes/groovy/main" module="cargotracker-booking-rdbms-management-app" displaymodule="cargotracker-booking-rdbms-management-app" />
+    <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-test-component/build/classes/groovy/testIntegration" module="cargotracker-booking-test-component" displaymodule="cargotracker-booking-test-component" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-api/build/classes/groovy/main" module="cargotracker-lib-axon-api" displaymodule="cargotracker-lib-axon-api" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-cqrs/build/classes/groovy/main" module="cargotracker-lib-axon-cqrs" displaymodule="cargotracker-lib-axon-cqrs" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-logging/build/classes/groovy/main" module="cargotracker-lib-axon-logging" displaymodule="cargotracker-lib-axon-logging" />
@@ -49,15 +50,21 @@
   <restructuring>
     <set version="3" name="Action list 1" hiview="Codemap" active="true" todo="false" list="0" />
   </restructuring>
-  <grid-set sep="." version="5.0.15446">
-    <grid name="General Architecture" enforce="true" locked="false" strict="false" excludes="cargotracker-booking-commandside-test-support.*,cargotracker-booking-queryside-test-support.*,cargotracker-booking-rdbms-management-app.*,klokwrk-lib-archunit.*">
+  <grid-set sep="." version="5.0.15458">
+    <grid name="General Architecture" enforce="true" locked="false" strict="false" excludes="cargotracker-booking-commandside-test-support.*,cargotracker-booking-queryside-test-support.*,cargotracker-booking-rdbms-management-app.*,klokwrk-lib-archunit.*,cargotracker-booking-test-component.*">
       <row>
         <cell name="cargotracker-booking (subdomain)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
             <row>
-              <cell name="cargotracker-booking-commandside-app" pattern="cargotracker-booking-commandside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-              <cell name="cargotracker-booking-queryside-app" pattern="cargotracker-booking-queryside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-              <cell name="cargotracker-booking-queryside-rdbms-projection-app" pattern="cargotracker-booking-queryside-rdbms-projection-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="apps" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+                <grid>
+                  <row>
+                    <cell name="cargotracker-booking-commandside-app" pattern="cargotracker-booking-commandside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracker-booking-queryside-app" pattern="cargotracker-booking-queryside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracker-booking-queryside-rdbms-projection-app" pattern="cargotracker-booking-queryside-rdbms-projection-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                </grid>
+              </cell>
             </row>
             <row>
               <cell name="subdomain libraries" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
@@ -160,7 +167,7 @@
       <description>Top-level breakout</description>
     </grid>
   </grid-set>
-  <physical-grid-set sep="." version="5.0.15446">
+  <physical-grid-set sep="." version="5.0.15458">
     <grid name="Workspace spec" enforce="true" locked="true" strict="false">
       <row>
         <cell name="cargotracker-booking" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="255,255,204">
@@ -169,6 +176,9 @@
               <cell name="test-support" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="204,255,204">
                 <grid>
                   <row>
+                    <cell name="cargotracker-booking-test-component" pattern="cargotracker-booking-test-component.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
                     <cell name="cargotracker-booking-commandside-test-support" pattern="cargotracker-booking-commandside-test-support.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                     <cell name="cargotracker-booking-queryside-test-support" pattern="cargotracker-booking-queryside-test-support.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
@@ -176,12 +186,18 @@
               </cell>
             </row>
             <row>
-              <cell name="cargotracker-booking-commandside-app" pattern="cargotracker-booking-commandside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-              <cell name="cargotracker-booking-queryside-rdbms-projection-app" pattern="cargotracker-booking-queryside-rdbms-projection-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-              <cell name="cargotracker-booking-queryside-app" pattern="cargotracker-booking-queryside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-            </row>
-            <row>
-              <cell name="cargotracker-booking-rdbms-management-app" pattern="cargotracker-booking-rdbms-management-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="apps" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+                <grid>
+                  <row>
+                    <cell name="cargotracker-booking-commandside-app" pattern="cargotracker-booking-commandside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracker-booking-queryside-rdbms-projection-app" pattern="cargotracker-booking-queryside-rdbms-projection-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracker-booking-queryside-app" pattern="cargotracker-booking-queryside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
+                    <cell name="cargotracker-booking-rdbms-management-app" pattern="cargotracker-booking-rdbms-management-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                </grid>
+              </cell>
             </row>
             <row>
               <cell name="cargotracker-booking-boundary-web" pattern="cargotracker-booking-boundary-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
