@@ -10,7 +10,7 @@ This log lists the architectural decisions for `klokwrk-project`:
 * [ADR-0003 - CQRS and Event Sourcing for Applications](content/0003-cqrs-and-event-sourcing-for-applications.md)
 * [ADR-0004 - Hexagonal Architecture for Applications](content/0004-hexagonal-architecture-for-applications.md)
 * [ADR-0005 - Using Groovy](content/0005-using-groovy.md)
-* [ADR-0006 - Contributing Back to Open Source](content/0006-contirbuting-back-to-open-source.md)
+* [ADR-0006 - Contributing Back to Open Source](content/0006-contributing-back-to-open-source.md)
 * [ADR-0007 - Git Workflow with Linear History](content/0007-git-workflow-with-linear-history.md)
 * [ADR-0008 - Testing Architecture](content/0008-testing-architecture.md)
 * [ADR-0009 - Testing Inter-Module Dependencies](content/0009-testing-inter-module-dependencies.md)
