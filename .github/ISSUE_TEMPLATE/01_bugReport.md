@@ -2,7 +2,7 @@
 name: Bug report
 about: Report a bug in Project Klokwrk
 title: ""
-labels: "Type: Bug"
+labels: "bug"
 assignees: ""
 ---
 

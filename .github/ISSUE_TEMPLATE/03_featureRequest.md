@@ -2,7 +2,7 @@
 name: Feature request
 about: Suggest a new feature for Project Klokwrk
 title: ""
-labels: "Type: Feature"
+labels: "feature"
 assignees: ""
 ---
 

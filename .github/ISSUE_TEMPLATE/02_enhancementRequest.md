@@ -2,7 +2,7 @@
 name: Enhancement request
 about: Suggest an enhancement to an existing feature for Project Klokwrk
 title: ""
-labels: "Type: Enhancement"
+labels: "enhancement"
 assignees: ""
 ---
 
