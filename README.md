@@ -60,3 +60,6 @@ While not tightly related to `klokwrk-project` features, the following articles 
   The tool for repackaging Gradle source files into an archive suitable to be used as a repository of sources when debugging Gradle internals from IDEA. It is also interesting that the tool is
   created in Groovy and compiled into GraalVM native image without any reflection related GraalVM configuration.
 * [Lists of 3rd party software issues related to `klokwkr-project`](support/documentation/misc/klokwrkRelatedIssuesInTheWild.md)
+
+## Contributing
+We appreciate all contributions to Project Klokwrk. If you are interested, please read through [contributing guidelines](./CONTRIBUTING.md).
