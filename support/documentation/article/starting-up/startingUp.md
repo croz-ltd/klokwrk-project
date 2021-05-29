@@ -1,9 +1,13 @@
 ## Starting up and trying the whole thing
+* **Author:** Damir Murat
+* **Created:** 26.05.2020.
+* **Updated:** 29.05.2021.
+
 Environment:
 - OSX (should work with any desktop Linux distro and with Windows with appropriate bash-shell like git-bash)
 - JDK 11 (should work with JDK 8)
-- Gradle 6.4.1
-- IDEA Ultimate 2020.1.1 (should work with IDEA Community except for http client which is part of the Ultimate edition)
+- Gradle 6.9
+- IDEA Ultimate 2021.1.1 (should work with IDEA Community except for http client which is part of the Ultimate edition)
 - Docker
 - httpie
 
@@ -15,7 +19,7 @@ Open your shell at the project root and execute following commands (shell-1):
 
 Open another shell (shell-2) at the project root and execute following command (generating Groovydoc is skipped to speed things up)
 
-    ./gradlew clean assemble -x groovydoc
+    ./gradlew clean assemble testClasses testIntegrationClasses -x groovydoc --parallel
 
 Open next shell (shell-3) where we will run `cargotracker-booking-rdbms-management-app`. It will migrate the database schema to the state expected by applications (it wraps
 [flyway](https://flywaydb.org/) for implementing database migrations).
@@ -102,30 +106,35 @@ for a project root.
 
 Before executing any of commands bellow, position your terminal prompt at the project's root:
 
-
-- `./gradlew check -x codenarcMain -x codenarcTest`
+- `./gradlew check -x codenarcMain -x codenarcTest -x codenarcTestIntegration -x aggregateCodenarc --parallel`
 
   Executes all tests while providing convenient colored CLI output. For speeding things up, the creation of CodeNarc reports for individual projects is turned off. We will create aggregate CodeNarc
   reports instead.
 
+- `./gradlew testIntegration --parallel`
+
+  Executes all Docker containerized integration tests.
+
 - `./gradlew aggregateAllTestReports`
 
-  Creates a cumulative report of all tests for all individual projects. Report can be accessed via `klokwrk-project/build/reports/aggregate-all-tests/index.html`. It is best to open it from IDEA
+  Creates a cumulative report of all tests for all individual projects. Report can be accessed via `klokwrk-project/build/reports/aggregate-all-tests/index.html`. It can be opened from IDEA
   using `Open in Browser` action.
 
   ![Opening All Tests report from IDEA](images/01-startup-06-open-allTests-report.jpg "Opening All Tests report from IDEA")
 
   Behind the scenes, IDEA uses an internal HTTP server, which is very convenient for looking at statically generated pages like these.
 
+  Alternatively, you can open it from CLI with
+
+      open build/reports/aggregate-all-tests/index.html
+
 - `./gradlew aggregateJacocoReport`
 
   Creates a cumulative code coverage report accessible at `klokwrk-project/build/reports/jacoco/aggregate/html/index.html`
 
-- `./gradlew aggregateCodenarcMain` <br/>
-  `./gradlew aggregateCodenarcTest`
+- `./gradlew aggregateCodenarc`
 
-  These commands create a cumulative CodeNarc reports for `main` and `test` source sets, respectively. Reports can be accessed via `klokwrk-project/build/reports/codenarc/aggregateCodenarcMain.html`
-  and `klokwrk-project/build/reports/codenarc/aggregateCodenarcTest.html`.
+  Creates a cumulative CodeNarc report accessible at `klokwrk-project/build/reports/codenarc/aggregate.html`.
 
 - `./gradlew aggregateGroovydoc`
 
