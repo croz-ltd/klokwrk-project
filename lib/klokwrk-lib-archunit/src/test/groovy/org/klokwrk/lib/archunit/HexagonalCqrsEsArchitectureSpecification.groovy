@@ -109,10 +109,14 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
 
   void "should be able to override description"() {
     given:
-    HexagonalCqrsEsArchitecture hexagonalCqrsEsArchitecture = HexagonalCqrsEsArchitecture.architecture().as("Overridden description.")
+    HexagonalCqrsEsArchitecture emptyHexagonalCqrsEsArchitecture = HexagonalCqrsEsArchitecture.architecture().as("Overridden description.")
+
+    HexagonalCqrsEsArchitecture configuredHexagonalCqrsEsArchitecture = fetchArchitectureRule() as HexagonalCqrsEsArchitecture
+    configuredHexagonalCqrsEsArchitecture = configuredHexagonalCqrsEsArchitecture.as("Another overridden description")
 
     expect:
-    hexagonalCqrsEsArchitecture.description == "Overridden description."
+    emptyHexagonalCqrsEsArchitecture.description == "Overridden description."
+    configuredHexagonalCqrsEsArchitecture.description == "Another overridden description"
   }
 
   void "should fail overriding description with invalid argument"() {
