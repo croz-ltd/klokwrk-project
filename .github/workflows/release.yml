@@ -82,7 +82,7 @@ jobs:
         uses: jreleaser/release-action@v1
         with:
           # You may use "latest" to pull the latest stable release or "early-access" to pull the latest snapshot.
-          version: early-access
+          version: latest
           arguments: full-release --basedir=${{ github.workspace }} --config-file=${{ github.workspace }}/support/jreleaser/jreleaser-${{ github.event.inputs.release-type }}.yml
         env:
           CURRENT_DATE: ${{env.CURRENT_DATE}}
