@@ -285,7 +285,7 @@ class GradleSourceRepackCommandSpecification extends Specification {
     given:
     Map<String, File> testDirectoriesAndFiles = FileTestUtil.prepareDirectoriesAndFiles()
     WireMockTestUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip", "gradle-6.7.1-all.zip")
-    WireMockTestUtil.configureWireMockForGradleDistributionFile(wireMockServer, "slim-gradle-6.7.1-all.zip.sha256-invalid", "gradle-6.7.1-all.zip.sha256")
+    WireMockTestUtil.configureWireMockForGradleDistributionFile(wireMockServer, "invalid_slim-gradle-6.7.1-all.zip.sha256", "gradle-6.7.1-all.zip.sha256")
 
     String[] args = [
         "--cleanup=false", "--gradle-distribution-dir-url=${ wireMockServer.baseUrl() }",

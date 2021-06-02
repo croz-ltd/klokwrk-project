@@ -38,7 +38,7 @@ class GradleSha256CheckerSpecification extends Specification {
   void "should fail for provided invalid sha-256 checksum"() {
     given:
     ClassPathResourceLoader loader = new ResourceResolver().getLoader(ClassPathResourceLoader).get()
-    File testSlimGradleDistributionSha256File = new File(loader.getResource("classpath:testFiles/slim-gradle-6.7.1-all.zip.sha256-invalid").get().file)
+    File testSlimGradleDistributionSha256File = new File(loader.getResource("classpath:testFiles/invalid_slim-gradle-6.7.1-all.zip.sha256").get().file)
     File testSlimGradleDistributionFile = new File(loader.getResource("classpath:testFiles/slim-gradle-6.7.1-all.zip").get().file)
 
     when:
