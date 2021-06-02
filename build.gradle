@@ -83,7 +83,7 @@ config {
     // Then disable it out again if underlying plugin is not updated in the meantime.
     setEnabled(false)
 
-    setExcludes(["**/.gitkeep", "**/*.gdsl"] as Set<String>)
+    setExcludes(["**/.gitkeep", "**/*.gdsl", "**/*.zip", "**/*.sha256"] as Set<String>)
 
     licenses {
       license {
