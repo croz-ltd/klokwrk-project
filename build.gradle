@@ -28,10 +28,11 @@ buildscript {
     classpath "org.kordamp.gradle:groovy-project-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:jacoco-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:publishing-gradle-plugin:$gradleKordampPluginVersion"
-    classpath "org.kordamp.gradle:testing-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
   }
 }
+
+apply plugin: "klokwrk-gradle-plugin-convention-root-project"
 
 apply plugin: "fr.brouillard.oss.gradle.jgitver"
 jgitver {
@@ -45,7 +46,6 @@ jgitver {
 apply plugin: "org.kordamp.gradle.codenarc"
 apply plugin: "org.kordamp.gradle.groovy-project"
 apply plugin: "org.kordamp.gradle.jacoco"
-apply plugin: "org.kordamp.gradle.testing"
 
 config {
   setRelease(true)
@@ -137,3 +137,29 @@ config {
     }
   }
 }
+
+//Map<String, String> testReportConfigMap = [
+//    "allTestUnitReports": "**/test-results/test/binary/**",
+//    "allTestIntegrationReports": "**/test-results/testIntegration/binary/**",
+//    "allTestReports": "**/test-results/test*/binary/**"
+//]
+//
+//testReportConfigMap.each { testReportConfigMapEntry ->
+//  String testReportName = testReportConfigMapEntry.key
+//  String testReportIncludeFilter = testReportConfigMapEntry.value
+//
+//  String testKind = (testReportName - "allTest" - "Reports").toLowerCase()
+//  String description = testKind ? "Generates a cumulative report for all $testKind tests." : "Generates a cumulative report for tests of all kinds."
+//
+//  rootProject.tasks.register(testReportName, TestReport) { TestReport testReport ->
+//    testReport.group = "reporting"
+//    testReport.description = description
+//
+//    testReport.destinationDir = rootProject.layout.buildDirectory.dir("reports/$testReportName").get().asFile
+//
+//    FileTree fileTree = rootProject.layout.getProjectDirectory().asFileTree.matching({ PatternFilterable patternFilterable -> patternFilterable.include(testReportIncludeFilter) })
+//    Set<File> directories = fileTree.collect({File file -> file.parentFile })
+//
+//    testReport.testResultDirs = directories
+//  }
+//}
