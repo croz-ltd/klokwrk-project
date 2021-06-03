@@ -20,6 +20,7 @@
 Map<String, String> testReportConfigMap = [
     "allTestUnitReports": "**/test-results/test/binary/**",
     "allTestIntegrationReports": "**/test-results/testIntegration/binary/**",
+    "allTestComponentReports": "**/test-results/testComponent/binary/**",
     "allTestReports": "**/test-results/test*/binary/**"
 ]
 
