@@ -80,7 +80,20 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: testIntegration --parallel
+          arguments: testIntegration --parallel --continue
+
+      - name: Test Integration Report
+        if: ${{ matrix.os == 'ubuntu-latest' && always() }}
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: allTestIntegrationReports
+
+      - name: Test Integration Report Publish
+        if: ${{ matrix.os == 'ubuntu-latest' &&  always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: aggregatedTestIntegrationReports_${{ matrix.os }}-JDK-${{ matrix.java }}
+          path: build/reports/allTestIntegrationReports/*
 
       - name: CodeNarc
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' }}
