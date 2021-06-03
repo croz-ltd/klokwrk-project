@@ -32,6 +32,8 @@ buildscript {
   }
 }
 
+apply plugin: "klokwrk-gradle-plugin-convention-root-project"
+
 apply plugin: "fr.brouillard.oss.gradle.jgitver"
 jgitver {
   mavenLike true
@@ -136,28 +138,28 @@ config {
   }
 }
 
-Map<String, String> testReportConfigMap = [
-    "allTestUnitReports": "**/test-results/test/binary/**",
-    "allTestIntegrationReports": "**/test-results/testIntegration/binary/**",
-    "allTestReports": "**/test-results/test*/binary/**"
-]
-
-testReportConfigMap.each { testReportConfigMapEntry ->
-  String testReportName = testReportConfigMapEntry.key
-  String testReportIncludeFilter = testReportConfigMapEntry.value
-
-  String testKind = (testReportName - "allTest" - "Reports").toLowerCase()
-  String description = testKind ? "Generates a cumulative report for all $testKind tests." : "Generates a cumulative report for tests of all kinds."
-
-  rootProject.tasks.register(testReportName, TestReport) { TestReport testReport ->
-    testReport.group = "reporting"
-    testReport.description = description
-
-    testReport.destinationDir = rootProject.layout.buildDirectory.dir("reports/$testReportName").get().asFile
-
-    FileTree fileTree = rootProject.layout.getProjectDirectory().asFileTree.matching({ PatternFilterable patternFilterable -> patternFilterable.include(testReportIncludeFilter) })
-    Set<File> directories = fileTree.collect({File file -> file.parentFile })
-
-    testReport.testResultDirs = directories
-  }
-}
+//Map<String, String> testReportConfigMap = [
+//    "allTestUnitReports": "**/test-results/test/binary/**",
+//    "allTestIntegrationReports": "**/test-results/testIntegration/binary/**",
+//    "allTestReports": "**/test-results/test*/binary/**"
+//]
+//
+//testReportConfigMap.each { testReportConfigMapEntry ->
+//  String testReportName = testReportConfigMapEntry.key
+//  String testReportIncludeFilter = testReportConfigMapEntry.value
+//
+//  String testKind = (testReportName - "allTest" - "Reports").toLowerCase()
+//  String description = testKind ? "Generates a cumulative report for all $testKind tests." : "Generates a cumulative report for tests of all kinds."
+//
+//  rootProject.tasks.register(testReportName, TestReport) { TestReport testReport ->
+//    testReport.group = "reporting"
+//    testReport.description = description
+//
+//    testReport.destinationDir = rootProject.layout.buildDirectory.dir("reports/$testReportName").get().asFile
+//
+//    FileTree fileTree = rootProject.layout.getProjectDirectory().asFileTree.matching({ PatternFilterable patternFilterable -> patternFilterable.include(testReportIncludeFilter) })
+//    Set<File> directories = fileTree.collect({File file -> file.parentFile })
+//
+//    testReport.testResultDirs = directories
+//  }
+//}
