@@ -61,20 +61,20 @@ jobs:
       - name: Test Unit
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: check --parallel --continue --exclude-task codenarcMain --exclude-task codenarcTest --exclude-task codenarcTestIntegration --exclude-task aggregateCodenarc
+          arguments: test --parallel --continue
 
       - name: Test Unit Report
         if: ${{ always() }}
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: aggregateTestReports --exclude-task testIntegration
+          arguments: allTestUnitReports
 
       - name: Test Unit Report Publish
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
           name: aggregatedTestUnitReports_${{ matrix.os }}-JDK-${{ matrix.java }}
-          path: build/reports/aggregate-tests/*
+          path: build/reports/allTestUnitReports/*
 
       - name: Test Integration
         if: ${{ matrix.os == 'ubuntu-latest' }}
