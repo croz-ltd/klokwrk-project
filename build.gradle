@@ -28,7 +28,6 @@ buildscript {
     classpath "org.kordamp.gradle:groovy-project-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:jacoco-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:publishing-gradle-plugin:$gradleKordampPluginVersion"
-    classpath "org.kordamp.gradle:testing-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
   }
 }
@@ -45,7 +44,6 @@ jgitver {
 apply plugin: "org.kordamp.gradle.codenarc"
 apply plugin: "org.kordamp.gradle.groovy-project"
 apply plugin: "org.kordamp.gradle.jacoco"
-apply plugin: "org.kordamp.gradle.testing"
 
 config {
   setRelease(true)
