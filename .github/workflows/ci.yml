@@ -95,6 +95,25 @@ jobs:
           name: aggregatedTestIntegrationReports_${{ matrix.os }}-JDK-${{ matrix.java }}
           path: build/reports/allTestIntegrationReports/*
 
+      - name: Test Component
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: testComponent --parallel --continue
+
+      - name: Test Component Report
+        if: ${{ matrix.os == 'ubuntu-latest' && always() }}
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: allTestComponentReports
+
+      - name: Test Component Report Publish
+        if: ${{ matrix.os == 'ubuntu-latest' &&  always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: aggregatedTestComponentReports_${{ matrix.os }}-JDK-${{ matrix.java }}
+          path: build/reports/allTestComponentReports/*
+
       - name: CodeNarc
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' }}
         uses: eskatos/gradle-command-action@v1
