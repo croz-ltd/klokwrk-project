@@ -17,28 +17,28 @@
  */
 apply plugin: "klokwrk-gradle-plugin-convention-module-base"
 apply plugin: "klokwrk-gradle-plugin-convention-module-groovy"
-apply plugin: "klokwrk-gradle-plugin-convention-test-integration"
+apply plugin: "klokwrk-gradle-plugin-convention-test-component"
 
 dependencies {
   implementation platform(project(":klokwrk-platform-spring-boot"))
-  testIntegrationImplementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
+  testComponentImplementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
 
   // Need to have Groovy as implementation dependency (instead as only testIntegrationImplementation dependency) as otherwise groovydoc task fails.
   implementation "org.codehaus.groovy:groovy"
 
-  testIntegrationImplementation project(":cargotracker-booking-commandside-test-support")
-  testIntegrationImplementation project(":cargotracker-booking-queryside-test-support")
+  testComponentImplementation project(":cargotracker-booking-commandside-test-support")
+  testComponentImplementation project(":cargotracker-booking-queryside-test-support")
 
-  testIntegrationImplementation "org.apache.httpcomponents:fluent-hc"
-  testIntegrationImplementation "org.apache.httpcomponents:httpclient"
-  testIntegrationImplementation "org.awaitility:awaitility"
-  testIntegrationImplementation "org.codehaus.groovy:groovy"
-  testIntegrationImplementation "org.codehaus.groovy:groovy-json"
-  testIntegrationImplementation "org.codehaus.groovy:groovy-sql"
-  testIntegrationImplementation "org.spockframework:spock-core"
-  testIntegrationImplementation "org.testcontainers:postgresql"
-  testIntegrationImplementation "org.testcontainers:testcontainers"
+  testComponentImplementation "org.apache.httpcomponents:fluent-hc"
+  testComponentImplementation "org.apache.httpcomponents:httpclient"
+  testComponentImplementation "org.awaitility:awaitility"
+  testComponentImplementation "org.codehaus.groovy:groovy"
+  testComponentImplementation "org.codehaus.groovy:groovy-json"
+  testComponentImplementation "org.codehaus.groovy:groovy-sql"
+  testComponentImplementation "org.spockframework:spock-core"
+  testComponentImplementation "org.testcontainers:postgresql"
+  testComponentImplementation "org.testcontainers:testcontainers"
 
-  testIntegrationRuntimeOnly "ch.qos.logback:logback-classic"
-  testIntegrationRuntimeOnly "org.postgresql:postgresql"
+  testComponentRuntimeOnly "ch.qos.logback:logback-classic"
+  testComponentRuntimeOnly "org.postgresql:postgresql"
 }

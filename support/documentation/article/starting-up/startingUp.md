@@ -1,7 +1,7 @@
 ## Starting up and trying the whole thing
 * **Author:** Damir Murat
 * **Created:** 26.05.2020.
-* **Updated:** 29.05.2021.
+* **Updated:** 04.06.2021.
 
 Environment:
 - OSX (should work with any desktop Linux distro and with Windows with appropriate bash-shell like git-bash)
@@ -19,7 +19,7 @@ Open your shell at the project root and execute following commands (shell-1):
 
 Open another shell (shell-2) at the project root and execute following command (generating Groovydoc is skipped to speed things up)
 
-    ./gradlew clean assemble testClasses testIntegrationClasses -x groovydoc --parallel
+    ./gradlew clean assemble testClasses testIntegrationClasses testComponentClasses -x groovydoc --parallel
 
 Open next shell (shell-3) where we will run `cargotracker-booking-rdbms-management-app`. It will migrate the database schema to the state expected by applications (it wraps
 [flyway](https://flywaydb.org/) for implementing database migrations).
@@ -106,19 +106,22 @@ for a project root.
 
 Before executing any of commands bellow, position your terminal prompt at the project's root:
 
-- `./gradlew check -x codenarcMain -x codenarcTest -x codenarcTestIntegration -x aggregateCodenarc --parallel`
+- `./gradlew test --parallel`
 
-  Executes all tests while providing convenient colored CLI output. For speeding things up, the creation of CodeNarc reports for individual projects is turned off. We will create aggregate CodeNarc
-  reports instead.
+  Executes all unit tests while providing convenient colored CLI output.
 
 - `./gradlew testIntegration --parallel`
 
-  Executes all Docker containerized integration tests.
+  Executes all Docker containerized integration tests (for more details, take a look at [ADR-0010 - Integration Testing with Containerized Infrastructure](../../adr/content/0010-integration-testing-with-containerized-infrastructure.md)).
 
-- `./gradlew aggregateAllTestReports`
+- `./gradlew testComponent --parallel`
 
-  Creates a cumulative report of all tests for all individual projects. Report can be accessed via `klokwrk-project/build/reports/aggregate-all-tests/index.html`. It can be opened from IDEA
-  using `Open in Browser` action.
+  Executes all Docker containerized component tests (for more details, take a look at [ADR-0011 - Component Testing](../../adr/content/0011-component-testing.md)).
+
+- `./gradlew allTestReports`
+
+  Creates a cumulative report of all unit, integration and component tests for all subprojects. Report can be accessed via `klokwrk-project/build/reports/allTestReports/index.html`. It can be opened
+  from IDEA using `Open in Browser` action.
 
   ![Opening All Tests report from IDEA](images/01-startup-06-open-allTests-report.jpg "Opening All Tests report from IDEA")
 
@@ -126,7 +129,11 @@ Before executing any of commands bellow, position your terminal prompt at the pr
 
   Alternatively, you can open it from CLI with
 
-      open build/reports/aggregate-all-tests/index.html
+      open build/reports/allTestReports/index.html
+
+- `./gradlew allTestUnitReports`, `gradlew allTestIntegrationReports`, `gradlew allTestComponentReports`
+
+  These commands create cumulative reports for each supported test type.
 
 - `./gradlew aggregateJacocoReport`
 
