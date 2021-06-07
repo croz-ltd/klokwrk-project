@@ -23,7 +23,6 @@ buildscript {
 
   dependencies {
     classpath "com.github.jengelman.gradle.plugins:shadow:$gradleShadowPlugin"
-    classpath "fr.brouillard.oss.gradle:gradle-jgitver-plugin:$gradleJgitverPluginVersion"
     classpath "io.micronaut.gradle:micronaut-gradle-plugin:$gradleMicronautPlugin"
     classpath "org.kordamp.gradle:groovy-project-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:jacoco-gradle-plugin:$gradleKordampPluginVersion"
@@ -32,16 +31,6 @@ buildscript {
 }
 
 apply plugin: "klokwrk-gradle-plugin-convention-root-project"
-
-apply plugin: "fr.brouillard.oss.gradle.jgitver"
-jgitver {
-  mavenLike true
-  policy {
-    pattern = "(.*)"
-    transformations = ["IGNORE"]
-  }
-}
-
 apply plugin: "org.kordamp.gradle.codenarc"
 apply plugin: "org.kordamp.gradle.groovy-project"
 apply plugin: "org.kordamp.gradle.jacoco"

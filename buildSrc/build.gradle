@@ -45,6 +45,7 @@ gradlePlugin {
 }
 
 dependencies {
+  implementation "fr.brouillard.oss.gradle:gradle-jgitver-plugin:$gradleJgitverPluginVersion"
   implementation "org.gradle:test-retry-gradle-plugin:$gradleTestRetryPluginVersion"
   implementation "org.kordamp.gradle:publishing-gradle-plugin:$gradleKordampPluginVersion"
   implementation "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
