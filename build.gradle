@@ -28,7 +28,6 @@ buildscript {
     classpath "org.kordamp.gradle:groovy-project-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:jacoco-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:publishing-gradle-plugin:$gradleKordampPluginVersion"
-    classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
   }
 }
 
