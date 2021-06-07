@@ -15,9 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-apply plugin: "klokwrk-gradle-plugin-convention-module-base"
-apply plugin: "java-platform"
-apply plugin: "org.kordamp.gradle.publishing"
+plugins {
+  id "java-platform"
+  id "klokwrk-gradle-plugin-convention-module-base"
+}
 
 description = "Micronaut related platform for klokwrk-project modules that need Micronaut features or dependencies managed by Micronaut."
 

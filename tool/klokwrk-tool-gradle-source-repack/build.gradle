@@ -18,9 +18,11 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.internal.deprecation.DeprecatableConfiguration
 
-apply plugin: "klokwrk-gradle-plugin-convention-module-base"
-apply plugin: "klokwrk-gradle-plugin-convention-module-groovy"
-apply plugin: "klokwrk-gradle-plugin-convention-micronaut-app"
+plugins {
+  id "klokwrk-gradle-plugin-convention-module-base"
+  id "klokwrk-gradle-plugin-convention-module-groovy"
+  id "klokwrk-gradle-plugin-convention-micronaut-app"
+}
 
 config {
   coverage {

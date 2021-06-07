@@ -15,23 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-buildscript {
-  repositories {
-    gradlePluginPortal()
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath "org.kordamp.gradle:groovy-project-gradle-plugin:$gradleKordampPluginVersion"
-    classpath "org.kordamp.gradle:jacoco-gradle-plugin:$gradleKordampPluginVersion"
-    classpath "org.kordamp.gradle:publishing-gradle-plugin:$gradleKordampPluginVersion"
-  }
+plugins {
+  id "klokwrk-gradle-plugin-convention-root-project"
+  id "org.kordamp.gradle.codenarc" version "$gradleKordampPluginVersion"
+  id "org.kordamp.gradle.groovy-project" version "$gradleKordampPluginVersion"
+  id "org.kordamp.gradle.jacoco" version "$gradleKordampPluginVersion"
 }
-
-apply plugin: "klokwrk-gradle-plugin-convention-root-project"
-apply plugin: "org.kordamp.gradle.codenarc"
-apply plugin: "org.kordamp.gradle.groovy-project"
-apply plugin: "org.kordamp.gradle.jacoco"
 
 config {
   setRelease(true)
