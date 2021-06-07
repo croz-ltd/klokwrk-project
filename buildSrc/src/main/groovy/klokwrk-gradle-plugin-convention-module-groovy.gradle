@@ -35,7 +35,7 @@ test {
 // When Groovy project contains Java files, and these Java files contain javadoc comments, javaparser-core needs to be added into groovydoc classpath (otherwise, groovydoc task might fail).
 // Do note that javaparser-core is a dependency of groovy-groovydoc, and its version should be updated when Groovy version changes.
 // Helpful documentation link: https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/GroovyRuntime.html
-Closure<FileCollection> createGroovyDocGroovyClasspath = { Project project ->
+def createGroovyDocGroovyClasspathFileCollection = { Project project ->
   Dependency javaParserDependency = project.getDependencies().create("com.github.javaparser:javaparser-core:$javaparserCoreVersion")
   FileCollection javaParserDependencyFileCollection = project.getConfigurations().detachedConfiguration(javaParserDependency)
 
@@ -55,7 +55,7 @@ configurations {
 }
 
 groovydoc {
-  groovyClasspath = createGroovyDocGroovyClasspath(project) + project.configurations.groovydocExtendedClasspath
+  groovyClasspath = createGroovyDocGroovyClasspathFileCollection(project) + project.configurations.groovydocExtendedClasspath
 }
 
 config {
