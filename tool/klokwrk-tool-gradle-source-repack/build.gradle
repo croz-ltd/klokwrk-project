@@ -20,8 +20,7 @@ import org.gradle.internal.deprecation.DeprecatableConfiguration
 
 apply plugin: "klokwrk-gradle-plugin-convention-module-base"
 apply plugin: "klokwrk-gradle-plugin-convention-module-groovy"
-apply plugin: "io.micronaut.application"
-apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: "klokwrk-gradle-plugin-convention-micronaut-app"
 
 config {
   coverage {

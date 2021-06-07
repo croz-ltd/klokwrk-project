@@ -22,8 +22,6 @@ buildscript {
   }
 
   dependencies {
-    classpath "com.github.jengelman.gradle.plugins:shadow:$gradleShadowPlugin"
-    classpath "io.micronaut.gradle:micronaut-gradle-plugin:$gradleMicronautPlugin"
     classpath "org.kordamp.gradle:groovy-project-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:jacoco-gradle-plugin:$gradleKordampPluginVersion"
     classpath "org.kordamp.gradle:publishing-gradle-plugin:$gradleKordampPluginVersion"
