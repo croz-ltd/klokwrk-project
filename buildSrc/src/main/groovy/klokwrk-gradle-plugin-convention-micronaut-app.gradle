@@ -16,18 +16,6 @@
  * limitations under the License.
  */
 plugins {
-  id "java-library"
-  id "klokwrk-gradle-plugin-convention-module-base"
-  id "klokwrk-gradle-plugin-convention-module-groovy"
-}
-
-dependencies {
-  implementation platform(project(":klokwrk-platform-spring-boot"))
-
-  implementation project(":klokwrk-lang-groovy")
-
-  implementation "org.codehaus.groovy:groovy"
-  implementation "org.springframework:spring-context"
-
-  testImplementation "org.spockframework:spock-core"
+  id "com.github.johnrengelman.shadow"
+  id "io.micronaut.application"
 }

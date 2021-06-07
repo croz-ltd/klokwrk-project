@@ -15,6 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+plugins {
+  id "fr.brouillard.oss.gradle.jgitver"
+}
+
+jgitver {
+  mavenLike true
+  policy {
+    pattern = "(.*)"
+    transformations = ["IGNORE"]
+  }
+}
 
 // ----- configuring aggregated test reports - start
 Map<String, String> testReportConfigMap = [

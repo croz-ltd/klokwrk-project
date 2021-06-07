@@ -15,9 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-apply plugin: "klokwrk-gradle-plugin-convention-module-base"
-apply plugin: "klokwrk-gradle-plugin-convention-module-groovy"
-apply plugin: "java-library"
+plugins {
+  id "java-library"
+  id "klokwrk-gradle-plugin-convention-module-base"
+  id "klokwrk-gradle-plugin-convention-module-groovy"
+}
 
 dependencies {
   implementation platform(project(":klokwrk-platform-base"))

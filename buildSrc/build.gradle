@@ -24,6 +24,12 @@ repositories {
   gradlePluginPortal()
 }
 
+// reuse versions from rootDir gradle.properties - start
+Properties properties = new Properties()
+rootDir.toPath().resolveSibling("gradle.properties").toFile().withInputStream { InputStream inputStream -> properties.load(inputStream) }
+properties.each { key, val -> project.ext."$key" = val }
+// reuse versions from rootDir gradle.properties - end
+
 tasks.withType(Test).configureEach {
   setJvmArgs(["-noverify", "-XX:TieredStopAtLevel=1"])
   useJUnitPlatform()
@@ -39,11 +45,14 @@ gradlePlugin {
 }
 
 dependencies {
+  implementation "com.github.jengelman.gradle.plugins:shadow:$gradleShadowPlugin"
+  implementation "fr.brouillard.oss.gradle:gradle-jgitver-plugin:$gradleJgitverPluginVersion"
+  implementation "io.micronaut.gradle:micronaut-gradle-plugin:$gradleMicronautPlugin"
   implementation "org.gradle:test-retry-gradle-plugin:$gradleTestRetryPluginVersion"
   implementation "org.kordamp.gradle:publishing-gradle-plugin:$gradleKordampPluginVersion"
   implementation "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
 
-  testImplementation("org.spockframework:spock-core:$spockVersion") {
+  testImplementation("org.spockframework:spock-core:$spockBuildSrcVersion") {
     exclude group: "org.codehaus.groovy"
   }
 }

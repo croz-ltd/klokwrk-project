@@ -15,37 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-buildscript {
-  repositories {
-    gradlePluginPortal()
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath "com.github.jengelman.gradle.plugins:shadow:$gradleShadowPlugin"
-    classpath "fr.brouillard.oss.gradle:gradle-jgitver-plugin:$gradleJgitverPluginVersion"
-    classpath "io.micronaut.gradle:micronaut-gradle-plugin:$gradleMicronautPlugin"
-    classpath "org.kordamp.gradle:groovy-project-gradle-plugin:$gradleKordampPluginVersion"
-    classpath "org.kordamp.gradle:jacoco-gradle-plugin:$gradleKordampPluginVersion"
-    classpath "org.kordamp.gradle:publishing-gradle-plugin:$gradleKordampPluginVersion"
-    classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
-  }
+plugins {
+  id "klokwrk-gradle-plugin-convention-root-project"
+  id "org.kordamp.gradle.codenarc" version "$gradleKordampPluginVersion"
+  id "org.kordamp.gradle.groovy-project" version "$gradleKordampPluginVersion"
+  id "org.kordamp.gradle.jacoco" version "$gradleKordampPluginVersion"
 }
-
-apply plugin: "klokwrk-gradle-plugin-convention-root-project"
-
-apply plugin: "fr.brouillard.oss.gradle.jgitver"
-jgitver {
-  mavenLike true
-  policy {
-    pattern = "(.*)"
-    transformations = ["IGNORE"]
-  }
-}
-
-apply plugin: "org.kordamp.gradle.codenarc"
-apply plugin: "org.kordamp.gradle.groovy-project"
-apply plugin: "org.kordamp.gradle.jacoco"
 
 config {
   setRelease(true)
@@ -109,9 +84,6 @@ config {
 
   docs {
     groovydoc {
-      // If one don't want to execute groovydoc as part of the assemble task, use gradle CLI task exclusion. For example: gw clean assemble -x groovydocJar
-      // It also very useful to know which tasks exactly are part of task graph during execution. For that use: gw clean assemble -m
-
       setReplaceJavadoc(true)
       setIncludes(["**/*.groovy"] as Set)
 
@@ -137,29 +109,3 @@ config {
     }
   }
 }
-
-//Map<String, String> testReportConfigMap = [
-//    "allTestUnitReports": "**/test-results/test/binary/**",
-//    "allTestIntegrationReports": "**/test-results/testIntegration/binary/**",
-//    "allTestReports": "**/test-results/test*/binary/**"
-//]
-//
-//testReportConfigMap.each { testReportConfigMapEntry ->
-//  String testReportName = testReportConfigMapEntry.key
-//  String testReportIncludeFilter = testReportConfigMapEntry.value
-//
-//  String testKind = (testReportName - "allTest" - "Reports").toLowerCase()
-//  String description = testKind ? "Generates a cumulative report for all $testKind tests." : "Generates a cumulative report for tests of all kinds."
-//
-//  rootProject.tasks.register(testReportName, TestReport) { TestReport testReport ->
-//    testReport.group = "reporting"
-//    testReport.description = description
-//
-//    testReport.destinationDir = rootProject.layout.buildDirectory.dir("reports/$testReportName").get().asFile
-//
-//    FileTree fileTree = rootProject.layout.getProjectDirectory().asFileTree.matching({ PatternFilterable patternFilterable -> patternFilterable.include(testReportIncludeFilter) })
-//    Set<File> directories = fileTree.collect({File file -> file.parentFile })
-//
-//    testReport.testResultDirs = directories
-//  }
-//}

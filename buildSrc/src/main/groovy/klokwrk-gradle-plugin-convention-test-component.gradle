@@ -44,25 +44,11 @@ configurations {
   testComponentRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
-/**
- * Converts Gradle project properties (i.e. properties specified via gradle.properties file) with 'DockerImageVersion' suffix into Java system properties.
- * This way all versions with DockerImageVersion suffix can be used by Testcontainers factories that create and start containers.
- */
-void convertDockerImageVersionsIntoJavaSystemPropertiesForTestTask(Test testTask, Project project) {
-  Map<String, String> dockerImageVersions = project.getRootProject().properties.findAll { String key, Object value ->
-    (value instanceof String) && key.toLowerCase().endsWith("DockerImageVersion".toLowerCase())
-  } as Map<String, String>
-
-  dockerImageVersions.each { String key, String value ->
-    testTask.systemProperty(key, value)
-  }
-}
-
 tasks.register("testComponent", Test) { Test testComponentTask ->
   description = "Runs component tests."
   group = "verification"
 
-  convertDockerImageVersionsIntoJavaSystemPropertiesForTestTask(testComponentTask, project)
+  org.klokwrk.gradle.util.TaskUtil.convertDockerImageVersionsIntoJavaSystemPropertiesForTestTask(testComponentTask, project)
   testComponentTask.useJUnitPlatform()
 
   testClassesDirs = sourceSets.testComponent.output.classesDirs

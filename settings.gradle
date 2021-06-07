@@ -15,17 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-buildscript {
-  repositories {
-    gradlePluginPortal()
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath "org.kordamp.gradle:inline-gradle-plugin:$gradleKordampPluginVersion"
-    classpath "org.kordamp.gradle:insight-gradle-plugin:$gradleKordampPluginVersion"
-    classpath "org.kordamp.gradle:settings-gradle-plugin:$gradleKordampPluginVersion"
-  }
+plugins {
+  id "org.kordamp.gradle.inline" version "$gradleKordampPluginVersion"
+  id "org.kordamp.gradle.insight" version "$gradleKordampPluginVersion"
+  id "org.kordamp.gradle.settings" version "$gradleKordampPluginVersion"
 }
 
 dependencyResolutionManagement {
@@ -33,10 +26,6 @@ dependencyResolutionManagement {
     mavenCentral()
   }
 }
-
-apply plugin: 'org.kordamp.gradle.inline'
-apply plugin: 'org.kordamp.gradle.insight'
-apply plugin: 'org.kordamp.gradle.settings'
 
 rootProject.name = "klokwrk-project"
 
@@ -46,9 +35,7 @@ projects {
   enforceNamingConvention = false
 }
 
-//noinspection GrUnresolvedAccess
 insight {
-  //noinspection GrUnresolvedAccess
   report(org.kordamp.gradle.plugin.insight.reports.SummaryBuildReport) {
     format = "long"
     maxProjectPathSize = 60
