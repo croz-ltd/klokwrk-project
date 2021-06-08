@@ -32,6 +32,7 @@ plugins {
 }
 
 config {
+  // Enable some features related to publishing
   setRelease(true)
 
   info {
