@@ -20,6 +20,15 @@ plugins {
   id "org.kordamp.gradle.codenarc" version "$gradleKordampPluginVersion"
   id "org.kordamp.gradle.groovy-project" version "$gradleKordampPluginVersion"
   id "org.kordamp.gradle.jacoco" version "$gradleKordampPluginVersion"
+
+  // TODO dmurat: remove when Kordamp updates the version of license plugin.
+  // Kordamp applies licence plugin of 0.15.0 version which is not compatible with Gradle 7.x. Until Kordamp updates license plugin version, we are using this override with hardcoded version.
+  // As license plugin is applied by Kordamp, it is not applied here, in declaration.
+  // If needed, buildscript classpath can be checked with "gw buildEnvironment".
+  // Related issue:
+  //   - https://github.com/hierynomus/license-gradle-plugin/issues/193
+  //   - https://github.com/kordamp/kordamp-gradle-plugins/commit/28bac60deac89bc92cf269303767fda4923d921c
+  id "com.github.hierynomus.license" version "0.16.1" apply false
 }
 
 config {
@@ -51,13 +60,6 @@ config {
   }
 
   licensing {
-    // Disable licensing checks and adding them in files, but still use metadata in generated POMs.
-    // Unfortunatelly, when enabled, Gradle deprecation warnings appear (https://github.com/hierynomus/license-gradle-plugin/issues/179). Therefore, I'm disabling it by default.
-    // If license checking is needed, or adding license headers in new files is needed, or one wants to generate aggregated license report, enable it and run "gw license", "gw licenseFormat" or
-    // "gw aggregateLicenseReport".
-    // Then disable it out again if underlying plugin is not updated in the meantime.
-    setEnabled(false)
-
     setExcludes(["**/.gitkeep", "**/*.gdsl", "**/*.zip", "**/*.sha256"] as Set<String>)
 
     licenses {
