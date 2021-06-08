@@ -45,8 +45,8 @@ gradlePlugin {
 }
 
 dependencies {
-  implementation "com.github.jengelman.gradle.plugins:shadow:$gradleShadowPlugin"
   implementation "fr.brouillard.oss.gradle:gradle-jgitver-plugin:$gradleJgitverPluginVersion"
+  implementation "gradle.plugin.com.github.jengelman.gradle.plugins:shadow:$gradleShadowPlugin"
   implementation "io.micronaut.gradle:micronaut-gradle-plugin:$gradleMicronautPlugin"
   implementation "org.gradle:test-retry-gradle-plugin:$gradleTestRetryPluginVersion"
   implementation "org.kordamp.gradle:publishing-gradle-plugin:$gradleKordampPluginVersion"
