@@ -54,7 +54,4 @@ bootBuildImage {
   enabled = true
   environment = ["BP_JVM_VERSION" : "11.*"]
   imageName = "klokwrkprj/${project.name}:${project.version}"
-
-  // TODO dmurat: Remove when https://github.com/spring-projects/spring-boot/issues/26774 is fixed
-  cleanCache = true
 }
