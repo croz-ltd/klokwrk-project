@@ -35,14 +35,14 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (1.6) - https://github.com/CodeNarc/CodeNarc/issues/492
 * VERIFIED (1.6) - https://github.com/CodeNarc/CodeNarc/issues/493
 * VERIFIED (1.6) - https://github.com/CodeNarc/CodeNarc/issues/506
-* VERIFIED (2.0 jitpack - commit 8e3f130a53 of 2020-08-02) - https://github.com/CodeNarc/CodeNarc/issues/510
+* VERIFIED (2.0) - https://github.com/CodeNarc/CodeNarc/issues/510
   * https://github.com/CodeNarc/CodeNarc/pull/536
 * VERIFIED (1.6) - https://github.com/CodeNarc/CodeNarc/issues/511
-* VERIFIED (2.0 jitpack - commit 28ad028e05 of 2020-07-24) - https://github.com/CodeNarc/CodeNarc/issues/512
+* VERIFIED (2.0) - https://github.com/CodeNarc/CodeNarc/issues/512
 * VERIFIED (1.6) - https://github.com/CodeNarc/CodeNarc/issues/516
 * IN PROGRESS - https://github.com/CodeNarc/CodeNarc/issues/611
 * REPORTED - https://github.com/CodeNarc/CodeNarc/issues/612
-* REPORTED - https://github.com/CodeNarc/CodeNarc/issues/613
+* FIXED (2.2.0)- https://github.com/CodeNarc/CodeNarc/issues/613
 * REPORTED - https://github.com/CodeNarc/CodeNarc/issues/614
 
 ### GitHub Action - gradle-command-action
@@ -61,16 +61,17 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (3.0.8) - https://issues.apache.org/jira/browse/GROOVY-9858
   * https://groovy.markmail.org/thread/gmcivt4ywcntszwx
   * https://github.com/apache/groovy/pull/1448
-* FIXED (3.0.9) - https://issues.apache.org/jira/browse/GROOVY-10052
+* FIXED (4.0.0) - https://issues.apache.org/jira/browse/GROOVY-10052
 * IN PROGRESS - https://issues.apache.org/jira/browse/GROOVY-10055
 
 ### IDEA
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-216308
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-239626
 * VERIFIED (2020.3) - https://youtrack.jetbrains.com/issue/IDEA-239966
-* REPORTED - https://youtrack.jetbrains.com/issue/IDEA-243620
+* IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-243620
 * VERIFIED (2021.1) - https://youtrack.jetbrains.com/issue/IDEA-255422
 * IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-261239
+* REPORTED - https://youtrack.jetbrains.com/issue/IDEA-270964
 
 ### JReleaser
 * FIXED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/85
@@ -99,7 +100,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * IN PROGRESS - https://github.com/kordamp/kordamp-gradle-plugins/issues/469
 
 ### micronaut-core
-* IN PROGRESS (2.5.0) - https://github.com/micronaut-projects/micronaut-core/issues/4622
+* IN PROGRESS - https://github.com/micronaut-projects/micronaut-core/issues/4622
 
 ### micronaut-gradle-plugin
 * REPORTED - https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/92
@@ -110,6 +111,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 
 ### Spring Boot
 * VERIFIED (2.3.2.RELEASE) - https://github.com/spring-projects/spring-boot/issues/22200
+* VERIFIED - https://github.com/spring-projects/spring-boot/issues/26774
 
 ### Spring Boot Wavefront extension
 * VERIFIED (2.0.0) - https://github.com/wavefrontHQ/wavefront-spring-boot/issues/57
@@ -134,7 +136,3 @@ When particular issue is resolved, it can be removed from this list when there i
 ### JaCoCo
 * [JaCoCo PR 321 - Exceptions cause missed branches in previous lines](https://github.com/jacoco/jacoco/pull/321)
 * [JaCoCo IS 884 - Groovy 2.5.5 unreachable line in byte code](https://github.com/jacoco/jacoco/issues/884)
-
-### license-gradle-plugin (https://github.com/hierynomus/license-gradle-plugin)
-* [Gradle 6 compatibility - missing task annotations #179](https://github.com/hierynomus/license-gradle-plugin/issues/179)
-  * When resolved, licensing in main build.gradle can be turned on.
