@@ -271,9 +271,7 @@ ruleset {
   SpaceAroundOperator
   SpaceBeforeClosingBrace // TODO dmurat: Remove annotations when issue with String annotation elements is fixed (https://github.com/CodeNarc/CodeNarc/issues/614)
   SpaceBeforeOpeningBrace
-  SpaceInsideParentheses {
-    enabled = true // TODO dmurat: Remove annotations when ignoring GroovyDoc comments is implemented (https://github.com/CodeNarc/CodeNarc/issues/613)
-  }
+  SpaceInsideParentheses
   TrailingWhitespace
 
   // rulesets/generic.xml
