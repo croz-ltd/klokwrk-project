@@ -91,7 +91,9 @@ idea {
 dependencies {
   codenarc platform(project(":klokwrk-platform-base"))
 
-  codenarc "org.codenarc:CodeNarc"
+//  codenarc "org.codenarc:CodeNarc"
+  codenarc "com.github.codenarc:codenarc"
+
   codenarc "org.codehaus.groovy:groovy"
   codenarc "org.codehaus.groovy:groovy-templates"
 }
