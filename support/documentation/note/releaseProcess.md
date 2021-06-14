@@ -94,11 +94,20 @@
 # Preparing for next development cycle after release
 ### **feature branch** (i.e., `feature_preparingNextDevCycle`)
 - update and commit new versions of klokwrk application images
+- cleanup and commit `support/jreleaser/CHANGELOG-RELEASE.md` file
 - local full build (oracle JVM)
 
-      gw clean assemble testClasses testIntegrationClasses --parallel -x groovydoc
+      gw clean assemble testClasses testIntegrationClasses testComponentClasses --parallel -x groovydoc
       gw bootBuildImage
+      gw test --parallel
       gw testIntegration --parallel
+      gw testComponent --parallel
+      gw aggregateCodenarc
+      gw aggregateJacocoReport
+      gw aggregateGroovydoc
+      gw allTestUnitReports
+      gw allTestIntegrationReports
+      gw allTestComponentReports
 
 - local test run of applications
 - local build of GraalVM native image (GraalVm)
@@ -117,25 +126,23 @@
           --loggingLevels=ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG --cleanup=true 6.8.3
 
 - upload docker images
-
-
 - optionally verify that changes in the branch work correctly
   - push `feature_preparingNextDevCycle` branch
   - let Continuous integration workflow finish
   - run GitHub workflow: klokwrk-tool-gradle-source-repack GraalVM native image builder
   - run GitHub workflow: Release workflow with
-    - version (without 'v' prefix): `0.0.5-SNAPSHOT`
+    - version (without 'v' prefix): `0.0.6-SNAPSHOT`
     - release type: `draft`
 
 ### **master branch**
 - merge (`--no-ff`) `feature_preparingNextDevCycle` into master. Use the message in the following format:
 
-      notype(project): Prepare next development cycle {m}
+      notype: Prepare next development cycle {m}
 
 - push master
 - delete local and remote `feature_preparingNextDevCycle` branch
 - let Continuous integration workflow finish
 - run GitHub workflow: klokwrk-tool-gradle-source-repack GraalVM native image builder (can be skipped if time is an issue)
 - run GitHub workflow: Release workflow with (can be skipped if time is an issue):
-  - version (without 'v' prefix): `0.0.5-SNAPSHOT`
+  - version (without 'v' prefix): `0.0.6-SNAPSHOT`
   - release type: `draft`
