@@ -248,9 +248,7 @@ ruleset {
   }
   MissingBlankLineAfterImports
   MissingBlankLineAfterPackage
-  MissingBlankLineBeforeAnnotatedField {
-    enabled = false // TODO dmurat: enable it back when option for ignoring first line in the class is added (https://github.com/CodeNarc/CodeNarc/issues/606)
-  }
+  MissingBlankLineBeforeAnnotatedField
   SpaceAfterCatch
   SpaceAfterClosingBrace // TODO dmurat: Remove annotations when issue with String annotation elements is fixed (https://github.com/CodeNarc/CodeNarc/issues/614)
   SpaceAfterComma
