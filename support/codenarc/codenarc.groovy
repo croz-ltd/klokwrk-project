@@ -248,11 +248,9 @@ ruleset {
   }
   MissingBlankLineAfterImports
   MissingBlankLineAfterPackage
-  MissingBlankLineBeforeAnnotatedField {
-    enabled = false // TODO dmurat: enable it back when option for ignoring first line in the class is added (https://github.com/CodeNarc/CodeNarc/issues/606)
-  }
+  MissingBlankLineBeforeAnnotatedField
   SpaceAfterCatch
-  SpaceAfterClosingBrace // TODO dmurat: Remove annotations when issue with String annotation elements is fixed (https://github.com/CodeNarc/CodeNarc/issues/614)
+  SpaceAfterClosingBrace
   SpaceAfterComma
   SpaceAfterFor
   SpaceAfterIf
@@ -269,11 +267,9 @@ ruleset {
     characterAfterColonRegex = /\s/
   }
   SpaceAroundOperator
-  SpaceBeforeClosingBrace // TODO dmurat: Remove annotations when issue with String annotation elements is fixed (https://github.com/CodeNarc/CodeNarc/issues/614)
+  SpaceBeforeClosingBrace
   SpaceBeforeOpeningBrace
-  SpaceInsideParentheses {
-    enabled = true // TODO dmurat: Remove annotations when ignoring GroovyDoc comments is implemented (https://github.com/CodeNarc/CodeNarc/issues/613)
-  }
+  SpaceInsideParentheses
   TrailingWhitespace
 
   // rulesets/generic.xml

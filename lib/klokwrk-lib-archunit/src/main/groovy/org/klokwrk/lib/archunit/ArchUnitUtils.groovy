@@ -33,7 +33,6 @@ import java.util.regex.Pattern
 @CompileStatic
 class ArchUnitUtils {
 
-  @SuppressWarnings("SpaceInsideParentheses")
   /**
    * Imports ArchUnit's <code>JavaClasses</code> while allowing specifying packages that should be excluded from the import.
    * <p/>

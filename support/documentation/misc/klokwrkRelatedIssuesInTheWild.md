@@ -41,9 +41,13 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (2.0) - https://github.com/CodeNarc/CodeNarc/issues/512
 * VERIFIED (1.6) - https://github.com/CodeNarc/CodeNarc/issues/516
 * IN PROGRESS - https://github.com/CodeNarc/CodeNarc/issues/611
+  * https://github.com/CodeNarc/CodeNarc/pull/635
 * REPORTED - https://github.com/CodeNarc/CodeNarc/issues/612
-* FIXED (2.2.0)- https://github.com/CodeNarc/CodeNarc/issues/613
-* REPORTED - https://github.com/CodeNarc/CodeNarc/issues/614
+* VERIFIED (next release)- https://github.com/CodeNarc/CodeNarc/issues/613
+* VERIFIED (next release) - https://github.com/CodeNarc/CodeNarc/issues/614
+  * https://github.com/CodeNarc/CodeNarc/pull/634
+* VERIFIED (next release) - https://github.com/CodeNarc/CodeNarc/issues/632
+  * https://github.com/CodeNarc/CodeNarc/pull/633
 
 ### GitHub Action - gradle-command-action
 * IN PROGRESS - https://github.com/eskatos/gradle-command-action/issues/22
