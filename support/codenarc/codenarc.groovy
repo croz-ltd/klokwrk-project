@@ -250,7 +250,7 @@ ruleset {
   MissingBlankLineAfterPackage
   MissingBlankLineBeforeAnnotatedField
   SpaceAfterCatch
-  SpaceAfterClosingBrace // TODO dmurat: Remove annotations when issue with String annotation elements is fixed (https://github.com/CodeNarc/CodeNarc/issues/614)
+  SpaceAfterClosingBrace
   SpaceAfterComma
   SpaceAfterFor
   SpaceAfterIf
