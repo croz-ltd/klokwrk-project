@@ -52,7 +52,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
 @Retention(RUNTIME)
 @Constraint(validatedBy = [])
 @interface UnLoCodeFormatConstraint {
-  @SuppressWarnings(["SpaceBeforeClosingBrace"])
   String message() default "{org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint.message}"
 
   Class<?>[] groups() default []

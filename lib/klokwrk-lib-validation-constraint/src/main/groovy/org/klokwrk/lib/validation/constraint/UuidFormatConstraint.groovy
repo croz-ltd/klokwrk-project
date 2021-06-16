@@ -44,7 +44,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
 @Retention(RUNTIME)
 @Constraint(validatedBy = [])
 @interface UuidFormatConstraint {
-  @SuppressWarnings(["SpaceBeforeClosingBrace"])
   String message() default "{org.klokwrk.lib.validation.constraint.UuidFormatConstraint.message}"
 
   Class<?>[] groups() default []

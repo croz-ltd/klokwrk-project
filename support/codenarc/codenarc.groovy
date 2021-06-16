@@ -267,7 +267,7 @@ ruleset {
     characterAfterColonRegex = /\s/
   }
   SpaceAroundOperator
-  SpaceBeforeClosingBrace // TODO dmurat: Remove annotations when issue with String annotation elements is fixed (https://github.com/CodeNarc/CodeNarc/issues/614)
+  SpaceBeforeClosingBrace
   SpaceBeforeOpeningBrace
   SpaceInsideParentheses
   TrailingWhitespace
