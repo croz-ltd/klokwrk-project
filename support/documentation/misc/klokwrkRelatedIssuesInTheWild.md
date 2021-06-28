@@ -48,6 +48,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
   * https://github.com/CodeNarc/CodeNarc/pull/634
 * VERIFIED (next release) - https://github.com/CodeNarc/CodeNarc/issues/632
   * https://github.com/CodeNarc/CodeNarc/pull/633
+* VERIFIED (next release) - https://github.com/CodeNarc/CodeNarc/issues/636
 
 ### GitHub Action - gradle-command-action
 * IN PROGRESS - https://github.com/eskatos/gradle-command-action/issues/22
