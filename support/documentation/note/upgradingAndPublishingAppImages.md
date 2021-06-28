@@ -5,7 +5,7 @@
 
 ## Workflow hints for dependencies upgrade:
 - upgrade dependencies
-- update version of local image if necessary (i.e. when switching from the snapshot to the released version or vice versa)
+- update version of local image if necessary (for example, when switching from the snapshot to the released version or vice versa)
 - create local image
     - build app images with spring boot cloud native buildpacks support
 
