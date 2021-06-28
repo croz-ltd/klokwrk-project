@@ -173,7 +173,7 @@ class MessageSourceResolvableHelper {
    *   "default.warning"
    * </pre>
    */
-  @SuppressWarnings("DuplicateStringLiteral")
+  @SuppressWarnings("CodeNarc.DuplicateStringLiteral")
   static List<String> createMessageCodeListForViolationMessageOfDomainFailure(MessageSourceResolvableSpecification specification) {
     String controllerSimpleName = replaceWithDefaultIfEmpty(specification.controllerSimpleName)
     String controllerMethodName = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.controllerMethodName))
@@ -241,7 +241,7 @@ class MessageSourceResolvableHelper {
    *   "default.error"
    * </pre>
    */
-  @SuppressWarnings("DuplicateStringLiteral")
+  @SuppressWarnings("CodeNarc.DuplicateStringLiteral")
   static List<String> createMessageCodeListForViolationMessageOfInfrastructureWebFailure(MessageSourceResolvableSpecification specification) {
     String controllerSimpleName = replaceWithDefaultIfEmpty(specification.controllerSimpleName)
     String controllerMethodName = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.controllerMethodName))
@@ -298,7 +298,7 @@ class MessageSourceResolvableHelper {
    *   "default.error"
    * </pre>
    */
-  @SuppressWarnings("DuplicateStringLiteral")
+  @SuppressWarnings("CodeNarc.DuplicateStringLiteral")
   static List<String> createMessageCodeListForViolationMessageOfUnknownFailure(MessageSourceResolvableSpecification specification) {
     String controllerSimpleName = replaceWithDefaultIfEmpty(specification.controllerSimpleName)
     String controllerMethodName = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.controllerMethodName))
@@ -348,7 +348,7 @@ class MessageSourceResolvableHelper {
    *   "default.warning"
    * </pre>
    */
-  @SuppressWarnings("DuplicateStringLiteral")
+  @SuppressWarnings("CodeNarc.DuplicateStringLiteral")
   static List<String> createMessageCodeListForViolationMessageOfValidationFailure(MessageSourceResolvableSpecification specification) {
     String controllerSimpleName = replaceWithDefaultIfEmpty(specification.controllerSimpleName)
     String controllerMethodName = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.controllerMethodName))
@@ -426,7 +426,7 @@ class MessageSourceResolvableHelper {
    *   "default.warning",
    * </pre>
    */
-  @SuppressWarnings("DuplicateStringLiteral")
+  @SuppressWarnings("CodeNarc.DuplicateStringLiteral")
   static List<String> createMessageCodeListForConstraintViolationMessageOfValidationFailure(MessageSourceResolvableSpecification specification, String overridingResolvedDefaultMessage = "") {
     String controllerSimpleName = replaceWithDefaultIfEmpty(specification.controllerSimpleName)
     String controllerMethodName = prefixWithDotIfNotEmpty(replaceWithDefaultIfEmpty(specification.controllerMethodName))

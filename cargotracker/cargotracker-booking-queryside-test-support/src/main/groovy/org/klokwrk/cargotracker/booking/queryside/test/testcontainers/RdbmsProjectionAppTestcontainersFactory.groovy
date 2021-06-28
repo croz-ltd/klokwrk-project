@@ -38,7 +38,6 @@ class RdbmsProjectionAppTestcontainersFactory {
    *   <li>Container time zone: <code>Europe/Zagreb</code>.</li>
    * </ul>
    */
-  @SuppressWarnings("DuplicatedCode")
   static GenericContainer createAndStartRdbmsProjectionApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
     String imageVersion = System.getProperty("cargotrackerBookingRdbmsProjectionAppDockerImageVersion")
     Integer[] exposedPorts = [8082]

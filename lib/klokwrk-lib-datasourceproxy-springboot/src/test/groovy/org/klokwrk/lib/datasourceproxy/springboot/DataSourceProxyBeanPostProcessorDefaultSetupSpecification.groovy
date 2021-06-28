@@ -100,7 +100,6 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
     plainDataSource.properties.advisors == null
   }
 
-  @SuppressWarnings("SqlResolve")
   void "queryLogger - should filter out matching queries at DEBUG level"() {
     given:
     configureEnabledLevels(queryLogger, Level.DEBUG)
@@ -117,7 +116,6 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
     loggingEventList[0].message.contains("select * from person")
   }
 
-  @SuppressWarnings("SqlResolve")
   void "queryLogger - should not filter out matching queries at TRACE level"() {
     given:
     configureEnabledLevels(queryLogger, Level.TRACE)
@@ -134,7 +132,6 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
     loggingEventList[1].message.contains("select * from not_so_interesting_person")
   }
 
-  @SuppressWarnings("SqlResolve")
   void "slowQueryLogger - should log slow queries"() {
     given:
     configureEnabledLevels(slowQueryLogger, Level.INFO)

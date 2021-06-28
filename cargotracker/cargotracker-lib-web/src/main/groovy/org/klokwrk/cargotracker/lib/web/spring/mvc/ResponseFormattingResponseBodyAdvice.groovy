@@ -94,7 +94,7 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     return returnType.parameterType == OperationResponse
   }
 
-  @SuppressWarnings("BracesForMethod")
+  @SuppressWarnings("CodeNarc.BracesForMethod")
   @Override
   OperationResponse<?> beforeBodyWrite(
       OperationResponse<?> operationResponseBody, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType,

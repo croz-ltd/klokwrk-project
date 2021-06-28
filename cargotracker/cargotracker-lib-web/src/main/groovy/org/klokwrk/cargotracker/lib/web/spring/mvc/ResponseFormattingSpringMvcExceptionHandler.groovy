@@ -107,7 +107,7 @@ class ResponseFormattingSpringMvcExceptionHandler extends ResponseEntityExceptio
     this.messageSource = messageSource
   }
 
-  @SuppressWarnings("Instanceof")
+  @SuppressWarnings("CodeNarc.Instanceof")
   @Override
   protected ResponseEntity<Object> handleExceptionInternal(Exception springMvcException, @Nullable Object body, HttpHeaders httpHeaders, HttpStatus httpStatus, WebRequest webRequest) {
     if (HttpStatus.INTERNAL_SERVER_ERROR == httpStatus) {

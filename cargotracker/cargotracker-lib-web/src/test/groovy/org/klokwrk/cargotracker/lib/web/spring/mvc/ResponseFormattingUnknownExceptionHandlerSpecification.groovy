@@ -34,7 +34,7 @@ import java.lang.reflect.Method
 
 class ResponseFormattingUnknownExceptionHandlerSpecification extends Specification {
   static class TestController {
-    @SuppressWarnings(["unused", "ThrowRuntimeException"])
+    @SuppressWarnings(["unused", "CodeNarc.ThrowRuntimeException"])
     OperationResponse<Map> testControllerMethod() {
       throw new RuntimeException("Runtime exception message.")
     }

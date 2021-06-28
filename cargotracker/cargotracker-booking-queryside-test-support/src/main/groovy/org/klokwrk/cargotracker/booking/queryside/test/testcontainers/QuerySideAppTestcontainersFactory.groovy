@@ -38,7 +38,6 @@ class QuerySideAppTestcontainersFactory {
    *   <li>Container time zone: <code>Europe/Zagreb</code>.</li>
    * </ul>
    */
-  @SuppressWarnings("DuplicatedCode")
   static GenericContainer createAndStartQuerySideApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
     String imageVersion = System.getProperty("cargotrackerBookingQuerySideAppDockerImageVersion")
     Integer[] exposedPorts = [8084]

@@ -31,7 +31,7 @@ import static org.hamcrest.Matchers.not
 /**
  * Represents an 8-character function classifier code for the UN/LOCODE location.
  */
-@SuppressWarnings(["DuplicateNumberLiteral"])
+@SuppressWarnings("CodeNarc.DuplicateNumberLiteral")
 @KwrkImmutable
 @CompileStatic
 class UnLoCodeFunction implements PostMapConstructorCheckable {

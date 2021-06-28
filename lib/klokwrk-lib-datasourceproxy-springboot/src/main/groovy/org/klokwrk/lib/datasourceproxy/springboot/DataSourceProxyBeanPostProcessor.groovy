@@ -68,7 +68,7 @@ class DataSourceProxyBeanPostProcessor implements BeanPostProcessor {
     this.dataSourceProxyConfigurationProperties = dataSourceProxyConfigurationProperties
   }
 
-  @SuppressWarnings("Instanceof")
+  @SuppressWarnings("CodeNarc.Instanceof")
   @Override
   Object postProcessAfterInitialization(Object bean, String beanName) {
     if (!dataSourceProxyConfigurationProperties.enabled) {

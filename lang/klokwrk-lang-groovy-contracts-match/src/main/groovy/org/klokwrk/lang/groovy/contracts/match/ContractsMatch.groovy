@@ -51,7 +51,7 @@ class ContractsMatch {
    * At the implementation level, when this Groovy macro method is expanded and replaced, we end up with the method call to
    * {@link ContractsMatchBase#requireMatchBase(java.lang.Object, org.hamcrest.Matcher, java.lang.String, java.lang.String)}.
    */
-  @SuppressWarnings("UnusedMethodParameter")
+  @SuppressWarnings("CodeNarc.UnusedMethodParameter")
   @Macro
   static Expression requireMatch(MacroContext macroContext, Expression itemExpression, Expression matcherExpression) {
     String itemDescription = itemExpression.text

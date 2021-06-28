@@ -52,7 +52,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     mockMvc ?= webAppContextSetup(webApplicationContext).build()
   }
 
-  @SuppressWarnings("AbcMetric")
+  @SuppressWarnings("CodeNarc.AbcMetric")
   void "should work for correct request - [acceptLanguage: #acceptLanguage]"() {
     given:
     String myAggregateIdentifier = UUID.randomUUID()
@@ -122,7 +122,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     "en"           | "en"
   }
 
-  @SuppressWarnings("AbcMetric")
+  @SuppressWarnings("CodeNarc.AbcMetric")
   void "should return expected response when request is not valid - validation failure - [acceptLanguage: #acceptLanguage]"() {
     given:
     String myAggregateIdentifier = UUID.randomUUID()

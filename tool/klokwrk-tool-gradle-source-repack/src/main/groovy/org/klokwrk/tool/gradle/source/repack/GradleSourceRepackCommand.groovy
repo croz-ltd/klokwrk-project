@@ -40,7 +40,7 @@ import picocli.CommandLine.Spec
 import javax.inject.Inject
 import java.util.regex.Pattern
 
-@SuppressWarnings("JavaIoPackageAccess")
+@SuppressWarnings("CodeNarc.JavaIoPackageAccess")
 @Command(
     name = "klokwrk-tool-gradle-source-repack",
     description = "Downloads Gradle source distribution and repackages it in a JAR suitable to use for debugging Gradle internals in IDEA.",
@@ -204,7 +204,7 @@ Example: ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG,io.micronaut.http
     fileListToDelete.each((File file) -> file.delete())
   }
 
-  @SuppressWarnings("Println")
+  @SuppressWarnings("CodeNarc.Println")
   private void printlnOnConsole(String message) {
     println message
   }

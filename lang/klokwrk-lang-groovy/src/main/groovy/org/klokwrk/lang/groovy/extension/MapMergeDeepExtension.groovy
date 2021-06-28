@@ -48,7 +48,7 @@ import groovy.transform.CompileStatic
  *   <li>https://stackoverflow.com/questions/34326587/merge-two-maps-to-resultant-map-in-groovy</li>
  * </ul>
  */
-@SuppressWarnings(["unused", "Instanceof"])
+@SuppressWarnings(["unused", "CodeNarc.Instanceof"])
 @CompileStatic
 class MapMergeDeepExtension {
   static Map mergeDeep(Map self, Map... overrides) {

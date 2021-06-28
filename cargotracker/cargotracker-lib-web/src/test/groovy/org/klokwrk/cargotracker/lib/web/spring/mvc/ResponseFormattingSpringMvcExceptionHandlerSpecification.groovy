@@ -63,7 +63,7 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
       return new OperationResponse<Map>(payload: [data: "Some testing data"])
     }
 
-    @SuppressWarnings(["unused", "MVCPathVariableInspection", "UnusedMethodParameter"])
+    @SuppressWarnings(["unused", "MVCPathVariableInspection", "CodeNarc.UnusedMethodParameter"])
     @PostMapping("/springMvcExceptionHandlerInvalidTestControllerMethod")
     OperationResponse<Map> invalidTestControllerMethod(@PathVariable String nonExistingPathVariable) {
       return new OperationResponse<Map>(payload: [data: "Some testing data"])
@@ -143,7 +143,7 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
     }
   }
 
-  @SuppressWarnings("AbcMetric")
+  @SuppressWarnings("CodeNarc.AbcMetric")
   void "should work and be logged for error caused by MissingPathVariableException"() {
     given:
     TestLogger logger = TestLoggerFactory.getTestLogger(ResponseFormattingSpringMvcExceptionHandler)
