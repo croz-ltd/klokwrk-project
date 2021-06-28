@@ -108,7 +108,7 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
     return foundField?.name
   }
 
-  @SuppressWarnings("AbcMetric")
+  @SuppressWarnings("CodeNarc.AbcMetric")
   void "should work as expected for existing ViolationInfo constants [violationInfoConstantName: #violationInfoConstantName]"() {
     given:
     assert ViolationInfo.declaredFields.findAll({ it.type == ViolationInfo }).size() == 3

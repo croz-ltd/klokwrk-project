@@ -105,7 +105,7 @@ class ContractsSimpleSpecification extends Specification {
     error.message.contains("[condition: this.notValid()]")
   }
 
-  @SuppressWarnings("ComparisonOfTwoConstants")
+  @SuppressWarnings("CodeNarc.ComparisonOfTwoConstants")
   void "should work without parsing and demonstrate IDEA GDSL support"() {
     when:
     requireTrue(1 < 10)

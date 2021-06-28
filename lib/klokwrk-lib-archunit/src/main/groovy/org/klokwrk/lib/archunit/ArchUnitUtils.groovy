@@ -51,7 +51,7 @@ class ArchUnitUtils {
    * @param importOptions Collection of additional ArchUnit's <code>ImportOption</code> options. By default it contains an instance of <code>ImportOption.DoNotIncludeTests</code>.
    * @return Imported <code>JavaClasses</code>.
    */
-  @SuppressWarnings("BracesForMethod")
+  @SuppressWarnings("CodeNarc.BracesForMethod")
   static JavaClasses importJavaClassesFromPackages(
       Collection<String> packagesToImport, Collection<String> packagesToExclude = [], Collection<ImportOption> importOptions = [new ImportOption.DoNotIncludeTests()] as Collection<ImportOption>)
   {

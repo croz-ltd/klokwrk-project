@@ -21,7 +21,7 @@ import spock.lang.Specification
 
 class ContractsBaseSpecification extends Specification {
 
-  @SuppressWarnings("ComparisonOfTwoConstants")
+  @SuppressWarnings("CodeNarc.ComparisonOfTwoConstants")
   void "requireTrueBase - should work for truthy condition"() {
     when:
     ContractsBase.requireTrueBase(condition)
@@ -42,7 +42,7 @@ class ContractsBaseSpecification extends Specification {
     return true
   }
 
-  @SuppressWarnings("ComparisonOfTwoConstants")
+  @SuppressWarnings("CodeNarc.ComparisonOfTwoConstants")
   void "requireTrueBase - should work for non truthy condition as expected"() {
     when:
     ContractsBase.requireTrueBase(condition)
@@ -79,7 +79,7 @@ class ContractsBaseSpecification extends Specification {
     "   "   | _
   }
 
-  @SuppressWarnings("ComparisonOfTwoConstants")
+  @SuppressWarnings("CodeNarc.ComparisonOfTwoConstants")
   void "requireTrueBase - should work for non truthy condition with custom message - [message: '#message']"() {
     when:
     ContractsBase.requireTrueBase(condition, message)

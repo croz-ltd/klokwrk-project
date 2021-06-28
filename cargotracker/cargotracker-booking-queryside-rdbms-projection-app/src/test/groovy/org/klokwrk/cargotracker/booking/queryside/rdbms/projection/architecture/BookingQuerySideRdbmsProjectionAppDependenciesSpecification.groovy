@@ -47,7 +47,7 @@ class BookingQuerySideRdbmsProjectionAppDependenciesSpecification extends Specif
     sliceRule.check(allKlokwrkClasses)
   }
 
-  @SuppressWarnings("ExplicitCallToOrMethod")
+  @SuppressWarnings("CodeNarc.ExplicitCallToOrMethod")
   void "rdbms projection app should only access classes from allowed dependencies"() {
     given:
     String[] thirdPartyDependencyAllPackages = [

@@ -59,7 +59,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     '"    "'                       | _
   }
 
-  @SuppressWarnings(["UnnecessaryTransientModifier"])
+  @SuppressWarnings("CodeNarc.UnnecessaryTransientModifier")
   static class MyBeanWithTransientProperties {
     transient String first
     String last

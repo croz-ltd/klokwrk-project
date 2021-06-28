@@ -47,7 +47,7 @@ class BookingQuerySideAppDependenciesSpecification extends Specification {
     sliceRule.check(allKlokwrkClasses)
   }
 
-  @SuppressWarnings("ExplicitCallToOrMethod")
+  @SuppressWarnings("CodeNarc.ExplicitCallToOrMethod")
   void "queryside app should only access classes from allowed dependencies"() {
     given:
     String[] thirdPartyDependencyAllPackages = [

@@ -54,7 +54,7 @@ class ContractsSimple {
    * At the implementation level, when this Groovy macro method is expanded and replaced, we end up with the method call to
    * {@link ContractsBase#requireTrueBase(java.lang.Boolean, java.lang.String)}.
    */
-  @SuppressWarnings("UnusedMethodParameter")
+  @SuppressWarnings("CodeNarc.UnusedMethodParameter")
   @Macro
   static Expression requireTrue(MacroContext macroContext, Expression expression) {
     String expressionText = expression.text

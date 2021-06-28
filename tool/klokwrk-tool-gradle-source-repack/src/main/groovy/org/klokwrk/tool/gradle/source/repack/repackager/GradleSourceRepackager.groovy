@@ -29,7 +29,7 @@ import java.util.zip.ZipOutputStream
 /**
  * Repackages Gradle sources into a sources archive understood by IDEA.
  */
-@SuppressWarnings("JavaIoPackageAccess")
+@SuppressWarnings("CodeNarc.JavaIoPackageAccess")
 @CompileStatic
 class GradleSourceRepackager {
   private static final Logger log = LoggerFactory.getLogger(GradleSourceRepackager)
@@ -76,7 +76,7 @@ class GradleSourceRepackager {
     return targetZipEntryName
   }
 
-  @SuppressWarnings("Indentation")
+  @SuppressWarnings("CodeNarc.Indentation")
   private static void repackageZipFile(GradleSourceRepackagerInfo repackagerInfo, Long countOfTargetZipEntries) {
     new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(repackagerInfo.gradleApiSourcesFilePath))).withCloseable { ZipOutputStream targetZipOutputStream ->
       new ZipFile(repackagerInfo.gradleDistributionZipFilePath).withCloseable { ZipFile originalZipFile ->
@@ -136,7 +136,7 @@ class GradleSourceRepackager {
     return skippedMessage
   }
 
-  @SuppressWarnings("Println")
+  @SuppressWarnings("CodeNarc.Println")
   private static void printRepackagingProgressOnConsole(String gradleApiSourcesFilePath, Integer percentage, String newLineIfNecessary) {
     print "\rRepackaging into ${ gradleApiSourcesFilePath }: ${ percentage }%${ newLineIfNecessary }"
   }

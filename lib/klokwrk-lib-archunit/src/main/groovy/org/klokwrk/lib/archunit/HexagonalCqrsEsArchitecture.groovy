@@ -263,7 +263,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
     return layeredArchitectureDelegate
   }
 
-  @SuppressWarnings("UseCollectMany")
+  @SuppressWarnings("CodeNarc.UseCollectMany")
   private void specifyArchitectureDefault(LayeredArchitecture layeredArchitecture) {
     // @formatter:off
     //noinspection DuplicatedCode
@@ -302,7 +302,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
     adapterMayNotBeAccessedByAnyLayer(layeredArchitecture, adapterProjectionPackageIdentifiers, ADAPTER_PROJECTION_LAYER)
   }
 
-  @SuppressWarnings("UseCollectMany")
+  @SuppressWarnings("CodeNarc.UseCollectMany")
   private void specifyArchitectureCommandSide(LayeredArchitecture layeredArchitecture) {
     // @formatter:off
     //noinspection DuplicatedCode
@@ -336,7 +336,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
     adapterMayNotBeAccessedByAnyLayer(layeredArchitecture, adapterOutboundPackageIdentifiers, ADAPTER_OUTBOUND_LAYER)
   }
 
-  @SuppressWarnings("UseCollectMany")
+  @SuppressWarnings("CodeNarc.UseCollectMany")
   private void specifyArchitectureProjection(LayeredArchitecture layeredArchitecture) {
     // @formatter:off
     layeredArchitecture
@@ -353,7 +353,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
     adapterMayNotBeAccessedByAnyLayer(layeredArchitecture, adapterProjectionPackageIdentifiers, ADAPTER_PROJECTION_LAYER)
   }
 
-  @SuppressWarnings("UseCollectMany")
+  @SuppressWarnings("CodeNarc.UseCollectMany")
   private void specifyArchitectureQuerySide(LayeredArchitecture layeredArchitecture) {
     // @formatter:off
     layeredArchitecture

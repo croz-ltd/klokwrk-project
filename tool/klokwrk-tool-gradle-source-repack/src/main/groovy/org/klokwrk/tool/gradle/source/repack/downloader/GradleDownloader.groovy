@@ -38,7 +38,7 @@ import java.util.function.Supplier
 /**
  * Singleton service that downloads Gradle distribution files (typically {@code *.zip} or {@code *.zip.sha256}).
  */
-@SuppressWarnings("JavaIoPackageAccess")
+@SuppressWarnings("CodeNarc.JavaIoPackageAccess")
 @Singleton
 @CompileStatic
 class GradleDownloader {
@@ -153,12 +153,12 @@ class GradleDownloader {
     return generalHeadResponse
   }
 
-  @SuppressWarnings("Println")
+  @SuppressWarnings("CodeNarc.Println")
   protected void printOutDownloadProgress(String realDownloadUrl, long downloadedBytesCount, String contentLength) {
     printf("\rDownloading '${ realDownloadUrl }': %d%%", (downloadedBytesCount * 100 / contentLength.toLong()).toLong())
   }
 
-  @SuppressWarnings("Println")
+  @SuppressWarnings("CodeNarc.Println")
   protected void printlnOutNewline() {
     println ""
   }

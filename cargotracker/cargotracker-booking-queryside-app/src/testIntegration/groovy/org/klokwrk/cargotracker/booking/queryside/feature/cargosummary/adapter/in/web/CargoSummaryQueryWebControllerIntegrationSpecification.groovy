@@ -117,7 +117,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
     "en"           | "en"
   }
 
-  @SuppressWarnings("AbcMetric")
+  @SuppressWarnings("CodeNarc.AbcMetric")
   void "should return expected response when request is not valid - validation failure - [acceptLanguage: #acceptLanguage]"() {
     String webRequestBody = objectMapper.writeValueAsString([aggregateIdentifier: null])
 
