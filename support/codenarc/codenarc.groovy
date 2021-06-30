@@ -222,7 +222,8 @@ ruleset {
   BracesForForLoop
   BracesForIfElse
   BracesForMethod {
-    enabled = true  // TODO dmurat: Remove annotations when and if option for ignoring in case of multiline declarations will be available (https://github.com/CodeNarc/CodeNarc/issues/611)
+    sameLine = true
+    allowBraceOnNextLineForMultilineDeclarations = true
   }
   BracesForTryCatchFinally
   ClassEndsWithBlankLine { enabled = false }
