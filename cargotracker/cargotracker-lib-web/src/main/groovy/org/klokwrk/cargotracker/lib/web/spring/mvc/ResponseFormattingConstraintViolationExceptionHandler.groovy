@@ -166,7 +166,7 @@ class ResponseFormattingConstraintViolationExceptionHandler implements MessageSo
     return new ResponseMetaDataValidationReportPart(root: validationReportRoot, constraintViolations: validationReportConstraintViolationList)
   }
 
-  @SuppressWarnings(["CodeNarc.DuplicateStringLiteral", "CodeNarc.AbcMetric", "CodeNarc.BracesForMethod"])
+  @SuppressWarnings(["CodeNarc.DuplicateStringLiteral", "CodeNarc.AbcMetric"])
   protected HttpResponseMetaData localizeHttpResponseMetaData(
       HttpResponseMetaData httpResponseMetaData, HandlerMethod handlerMethod, Locale locale, ConstraintViolationException constraintViolationException)
   {
