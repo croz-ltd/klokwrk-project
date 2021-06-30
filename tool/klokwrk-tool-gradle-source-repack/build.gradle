@@ -74,6 +74,7 @@ dependencies {
   implementation "org.codehaus.groovy:groovy"
 
   testImplementation "com.github.tomakehurst:wiremock-jre8"
+  testImplementation "ch.qos.logback:logback-classic"
 
   runtimeOnly "ch.qos.logback:logback-classic"
 }
