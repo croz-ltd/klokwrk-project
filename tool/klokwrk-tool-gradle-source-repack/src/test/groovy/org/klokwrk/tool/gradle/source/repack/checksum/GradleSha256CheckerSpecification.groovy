@@ -39,7 +39,7 @@ class GradleSha256CheckerSpecification extends Specification {
   }
 
   // Demo for improving code coverage with Groovy @Slf4j annotation and different logging levels.
-  // Groovy @Slf4j annotation generates the most performant code for logging. Unfortunatelly, as code is generated inline, annotation produces several branches which are probabaly
+  // Groovy @Slf4j annotation generates the most performant code for logging. Unfortunatelly, as code is generated inline, annotation produces several branches which are probably
   // not covered by tests. This test provides a simple example of using already existing test and running it with different logging levels.
   void "should match for provided valid sha-256 checksum with different logging levels"() {
     given:
