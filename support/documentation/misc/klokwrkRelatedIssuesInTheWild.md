@@ -40,7 +40,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (1.6) - https://github.com/CodeNarc/CodeNarc/issues/511
 * VERIFIED (2.0) - https://github.com/CodeNarc/CodeNarc/issues/512
 * VERIFIED (1.6) - https://github.com/CodeNarc/CodeNarc/issues/516
-* IN PROGRESS - https://github.com/CodeNarc/CodeNarc/issues/611
+* VERIFIED (next release) - https://github.com/CodeNarc/CodeNarc/issues/611
   * https://github.com/CodeNarc/CodeNarc/pull/635
 * REPORTED - https://github.com/CodeNarc/CodeNarc/issues/612
 * VERIFIED (next release)- https://github.com/CodeNarc/CodeNarc/issues/613
@@ -68,6 +68,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
   * https://github.com/apache/groovy/pull/1448
 * FIXED (4.0.0) - https://issues.apache.org/jira/browse/GROOVY-10052
 * IN PROGRESS - https://issues.apache.org/jira/browse/GROOVY-10055
+* IN PROGRESS - https://issues.apache.org/jira/browse/GROOVY-10156
 
 ### IDEA
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-216308
