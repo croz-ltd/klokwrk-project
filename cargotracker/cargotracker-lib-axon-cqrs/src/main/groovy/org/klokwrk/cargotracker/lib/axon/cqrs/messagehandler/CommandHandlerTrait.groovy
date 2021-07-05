@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory
  */
 @CompileStatic
 trait CommandHandlerTrait extends MessageHandlerTrait {
+  // Note: @Slf4j AST transformation does not work with traits
   static private final Logger log = LoggerFactory.getLogger(CommandHandlerTrait.name)
 
   /**
@@ -36,8 +37,11 @@ trait CommandHandlerTrait extends MessageHandlerTrait {
    * It also logs the stacktrace of CommandExecutionException being thrown, which helps during development.
    */
   void doThrow(CommandException domainException) {
-    CommandExecutionException commandExecutionException = new CommandExecutionException("command execution failed", new ThrowAwayRuntimeException(), domainException)
-    log.debug("Command execution in '${this.getClass().name}' failed.", commandExecutionException)
+    String exceptionMessage = domainException.message ?: domainException.violationInfo.violationCode.codeMessage
+    CommandExecutionException commandExecutionException = new CommandExecutionException("Command execution failed: $exceptionMessage", new ThrowAwayRuntimeException(), domainException)
+    if (log.isDebugEnabled()) {
+      log.debug("Command execution in '${this.getClass().name}' failed: $exceptionMessage", commandExecutionException)
+    }
 
     throw commandExecutionException
   }

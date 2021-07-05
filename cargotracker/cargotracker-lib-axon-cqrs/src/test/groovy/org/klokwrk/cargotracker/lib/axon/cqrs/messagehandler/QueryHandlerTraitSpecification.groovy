@@ -17,10 +17,13 @@
  */
 package org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler
 
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
 import org.axonframework.queryhandling.QueryExecutionException
 import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationCode
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
+import org.slf4j.LoggerFactory
 import spock.lang.Specification
 
 class QueryHandlerTraitSpecification extends Specification {
@@ -45,10 +48,38 @@ class QueryHandlerTraitSpecification extends Specification {
     then:
     QueryExecutionException queryExecutionException = thrown(QueryExecutionException)
     verifyAll(queryExecutionException) {
+      queryExecutionException.message == "Query execution failed: My not found"
       queryExecutionException.cause instanceof MessageHandlerTrait.ThrowAwayRuntimeException
       details.get() instanceof QueryException
       (details.get() as QueryException).violationInfo.violationCode == ViolationCode.NOT_FOUND
+      (details.get() as QueryException).message == "My not found"
     }
+  }
+
+  void "doThrow - should throw QueryExecutionException for passed in QueryException with different logging levels"() {
+    given:
+    Logger logger = LoggerFactory.getLogger(QueryHandlerTrait) as Logger
+    logger.level = loggerLevel
+
+    MyQueryHandler myQueryHandler = new MyQueryHandler()
+
+    when:
+    myQueryHandler.handleQuery()
+
+    then:
+    QueryExecutionException queryExecutionException = thrown(QueryExecutionException)
+    verifyAll(queryExecutionException) {
+      queryExecutionException.message == "Query execution failed: My not found"
+      queryExecutionException.cause instanceof MessageHandlerTrait.ThrowAwayRuntimeException
+      details.get() instanceof QueryException
+      (details.get() as QueryException).violationInfo.violationCode == ViolationCode.NOT_FOUND
+      (details.get() as QueryException).message == "My not found"
+    }
+
+    where:
+    loggerLevel | _
+    Level.WARN  | _
+    Level.DEBUG | _
   }
 
   void "doThrow - should throw QueryExecutionException for passed in QueryException without message"() {
@@ -61,6 +92,7 @@ class QueryHandlerTraitSpecification extends Specification {
     then:
     QueryExecutionException queryExecutionException = thrown(QueryExecutionException)
     verifyAll(queryExecutionException) {
+      queryExecutionException.message == "Query execution failed: ${(details.get() as QueryException).violationInfo.violationCode.codeMessage}"
       queryExecutionException.cause instanceof MessageHandlerTrait.ThrowAwayRuntimeException
       details.get() instanceof QueryException
       (details.get() as QueryException).violationInfo.violationCode == ViolationCode.NOT_FOUND

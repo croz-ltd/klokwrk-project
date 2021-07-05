@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory
  */
 @CompileStatic
 trait QueryHandlerTrait extends MessageHandlerTrait {
+  // Note: @Slf4j AST transformation does not work with traits
   static private final Logger log = LoggerFactory.getLogger(QueryHandlerTrait.name)
 
   /**
@@ -36,8 +37,11 @@ trait QueryHandlerTrait extends MessageHandlerTrait {
    * It also logs the stacktrace of QueryExecutionException being thrown, which helps during development.
    */
   void doThrow(QueryException domainException) {
-    QueryExecutionException queryExecutionException = new QueryExecutionException("query execution failed", new ThrowAwayRuntimeException(), domainException)
-    log.debug("Query execution in '${this.getClass().name}' failed.", queryExecutionException)
+    String exceptionMessage = domainException.message ?: domainException.violationInfo.violationCode.codeMessage
+    QueryExecutionException queryExecutionException = new QueryExecutionException("Query execution failed: $exceptionMessage", new ThrowAwayRuntimeException(), domainException)
+    if (log.isDebugEnabled()) {
+      log.debug("Query execution in '${this.getClass().name}' failed: $exceptionMessage", queryExecutionException)
+    }
 
     throw queryExecutionException
   }

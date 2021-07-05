@@ -17,10 +17,13 @@
  */
 package org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler
 
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
 import org.axonframework.commandhandling.CommandExecutionException
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationCode
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
+import org.slf4j.LoggerFactory
 import spock.lang.Specification
 
 class CommandHandlerTraitSpecification extends Specification {
@@ -45,10 +48,38 @@ class CommandHandlerTraitSpecification extends Specification {
     then:
     CommandExecutionException commandExecutionException = thrown(CommandExecutionException)
     verifyAll(commandExecutionException) {
+      commandExecutionException.message == "Command execution failed: My bad request"
       cause instanceof MessageHandlerTrait.ThrowAwayRuntimeException
       details.get() instanceof CommandException
       (details.get() as CommandException).violationInfo.violationCode == ViolationCode.BAD_REQUEST
+      (details.get() as CommandException).message == "My bad request"
     }
+  }
+
+  void "doThrow - should throw CommandExecutionException for passed in CommandException with different logging levels"() {
+    given:
+    Logger logger = LoggerFactory.getLogger(CommandHandlerTrait) as Logger
+    logger.level = loggerLevel
+
+    MyAggregate myAggregate = new MyAggregate()
+
+    when:
+    myAggregate.handleCommand()
+
+    then:
+    CommandExecutionException commandExecutionException = thrown(CommandExecutionException)
+    verifyAll(commandExecutionException) {
+      commandExecutionException.message == "Command execution failed: My bad request"
+      cause instanceof MessageHandlerTrait.ThrowAwayRuntimeException
+      details.get() instanceof CommandException
+      (details.get() as CommandException).violationInfo.violationCode == ViolationCode.BAD_REQUEST
+      (details.get() as CommandException).message == "My bad request"
+    }
+
+    where:
+    loggerLevel | _
+    Level.WARN  | _
+    Level.DEBUG | _
   }
 
   void "doThrow - should throw CommandExecutionException for passed in CommandException without message"() {
@@ -61,6 +92,7 @@ class CommandHandlerTraitSpecification extends Specification {
     then:
     CommandExecutionException commandExecutionException = thrown(CommandExecutionException)
     verifyAll(commandExecutionException) {
+      commandExecutionException.message == "Command execution failed: ${(details.get() as CommandException).violationInfo.violationCode.codeMessage}"
       cause instanceof MessageHandlerTrait.ThrowAwayRuntimeException
       details.get() instanceof CommandException
       (details.get() as CommandException).violationInfo.violationCode == ViolationCode.BAD_REQUEST
