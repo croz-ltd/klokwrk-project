@@ -19,7 +19,8 @@ package org.klokwrk.cargotracker.lib.axon.logging
 
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-import org.axonframework.eventsourcing.EventSourcingHandler
+import org.axonframework.eventhandling.EventMessage
+import org.axonframework.messaging.HandlerAttributes
 import org.axonframework.messaging.Message
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
 import org.axonframework.messaging.annotation.MessageHandlingMember
@@ -47,10 +48,14 @@ import java.lang.reflect.Method
 class LoggingEventSourcingHandlerEnhancerDefinition implements HandlerEnhancerDefinition {
   @Override
   <T> MessageHandlingMember<T> wrapHandler(MessageHandlingMember<T> originalMessageHandlingMember) {
+    // @formatter:off
     MessageHandlingMember selectedMessageHandlingMember = originalMessageHandlingMember
-        .annotationAttributes(EventSourcingHandler)
-        .map((Map<String, Object> attr) -> new LoggingEventSourcingHandlingMember(originalMessageHandlingMember) as MessageHandlingMember)
-        .orElse(originalMessageHandlingMember) as MessageHandlingMember
+        .attribute(HandlerAttributes.MESSAGE_TYPE)
+          .filter({ Class messageType -> messageType == EventMessage })
+          .flatMap({ Class messageType -> originalMessageHandlingMember.attribute("EventSourcingHandler.payloadType") })
+          .map({ Class payloadType -> new LoggingEventSourcingHandlingMember(originalMessageHandlingMember) as MessageHandlingMember })
+        .orElse(originalMessageHandlingMember)
+    // @formatter:on
 
     return selectedMessageHandlingMember
   }

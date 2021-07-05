@@ -19,7 +19,8 @@ package org.klokwrk.cargotracker.lib.axon.logging
 
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-import org.axonframework.commandhandling.CommandHandler
+import org.axonframework.commandhandling.CommandMessage
+import org.axonframework.messaging.HandlerAttributes
 import org.axonframework.messaging.Message
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
 import org.axonframework.messaging.annotation.MessageHandlingMember
@@ -52,10 +53,13 @@ import static org.klokwrk.lang.groovy.constant.CommonConstants.NOT_AVAILABLE
 class LoggingCommandHandlerEnhancerDefinition implements HandlerEnhancerDefinition {
   @Override
   <T> MessageHandlingMember<T> wrapHandler(MessageHandlingMember<T> originalMessageHandlingMember) {
+    // @formatter:off
     MessageHandlingMember selectedMessageHandlingMember = originalMessageHandlingMember
-        .annotationAttributes(CommandHandler)
-        .map((Map<String, Object> attr) -> new LoggingCommandHandlingMember(originalMessageHandlingMember) as MessageHandlingMember)
-        .orElse(originalMessageHandlingMember) as MessageHandlingMember
+        .attribute(HandlerAttributes.MESSAGE_TYPE)
+          .filter({ Class messageType -> messageType == CommandMessage })
+          .map({ Class messageType -> new LoggingCommandHandlingMember(originalMessageHandlingMember) as MessageHandlingMember })
+        .orElse(originalMessageHandlingMember)
+    // @formatter:on
 
     return selectedMessageHandlingMember
   }

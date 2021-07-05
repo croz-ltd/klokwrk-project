@@ -22,6 +22,7 @@ import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.config.Configuration
 import org.axonframework.config.Configurer
 import org.axonframework.config.DefaultConfigurer
+import org.axonframework.config.EventProcessingModule
 import org.axonframework.eventsourcing.eventstore.inmemory.InMemoryEventStorageEngine
 import org.axonframework.messaging.annotation.ClasspathHandlerDefinition
 import org.axonframework.messaging.annotation.ClasspathHandlerEnhancerDefinition
@@ -30,6 +31,7 @@ import org.axonframework.messaging.annotation.MultiHandlerEnhancerDefinition
 import org.klokwrk.cargotracker.lib.axon.logging.stub.aggregate.MyTestAggregate
 import org.klokwrk.cargotracker.lib.axon.logging.stub.command.CreateMyTestAggregateCommand
 import org.klokwrk.cargotracker.lib.axon.logging.stub.command.UpdateMyTestAggregateCommand
+import org.klokwrk.cargotracker.lib.axon.logging.stub.projection.MyTestProjector
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 import uk.org.lidalia.slf4jext.Level
@@ -45,9 +47,14 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
     TestLoggerFactory.clearAll()
 //    TestLoggerFactory.getInstance().setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test
 
+    // Although not needed, here we register event processing to to validate distinction between EventSourcing and Event messages.
+    EventProcessingModule eventProcessingModule = new EventProcessingModule()
+    eventProcessingModule.registerEventHandler((Configuration axonConfiguration) -> new MyTestProjector())
+
     Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
     axonConfigurer.configureEmbeddedEventStore((Configuration axonConfiguration) -> new InMemoryEventStorageEngine())
                   .configureAggregate(MyTestAggregate)
+                  .registerModule(eventProcessingModule)
                   .registerHandlerDefinition((Configuration configuration, Class inspectedClass) -> {
                     MultiHandlerDefinition multiHandlerDefinition = MultiHandlerDefinition.ordered(
                         MultiHandlerEnhancerDefinition.ordered(ClasspathHandlerEnhancerDefinition.forClass(inspectedClass), new LoggingEventSourcingHandlerEnhancerDefinition()),
