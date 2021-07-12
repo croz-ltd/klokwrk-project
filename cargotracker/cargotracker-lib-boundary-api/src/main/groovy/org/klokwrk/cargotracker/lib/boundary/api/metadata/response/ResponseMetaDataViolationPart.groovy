@@ -47,7 +47,7 @@ import groovy.transform.CompileStatic
 class ResponseMetaDataViolationPart {
   /**
    * The primary code describing the main category of the violation or error.
-   * </p>
+   * <p/>
    * In general, it does not have to be designed to be human-readable, but rather it should be in the form of some violation/error identifier. For example, the categorization of HTTP response
    * statuses (200, 400, 404, 500, etc.), or database error code categorizations, are good examples of the kind of information that should go in here.
    */

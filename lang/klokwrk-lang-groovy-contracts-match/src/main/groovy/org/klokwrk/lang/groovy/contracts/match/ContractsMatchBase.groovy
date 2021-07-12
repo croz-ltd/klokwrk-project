@@ -33,7 +33,7 @@ class ContractsMatchBase {
 
   /**
    * DBC precondition check based on Hamcrest matcher.
-   * </p>
+   * <p/>
    * When mismatch occurs, {@link AssertionError} is thrown.
    *
    * @param item Object that is checked.

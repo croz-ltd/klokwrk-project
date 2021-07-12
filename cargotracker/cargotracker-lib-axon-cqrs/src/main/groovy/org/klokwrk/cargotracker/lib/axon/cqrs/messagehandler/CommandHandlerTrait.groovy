@@ -33,7 +33,7 @@ trait CommandHandlerTrait extends MessageHandlerTrait {
 
   /**
    * Simplifies throwing a business exception making sure it is propagated back to the caller as a details field of Axon's <code>CommandExecutionException</code>.
-   * </p>
+   * <p/>
    * It also logs the stacktrace of CommandExecutionException being thrown, which helps during development.
    */
   void doThrow(CommandException domainException) {

@@ -31,7 +31,7 @@ import spock.util.environment.RestoreSystemProperties
 class DataSourceProxyBeanPostProcessorCustomSetupSpecification extends Specification {
   /**
    * Creates a new Spring Boot application context for this test class.
-   * </p>
+   * <p/>
    * Creation of this new application context can be triggered from any test method which provides the ability to influence on the Environment. In combination with java system properties, we now
    * have the ability to exercise and test various combinations of configuration properties. This is in contrast with standard spring means where variations in properties used in tests are allowed
    * to be specified only on test class level.

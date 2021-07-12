@@ -34,7 +34,7 @@ class ContractsBase {
 
   /**
    * DBC precondition check based on boolean expression and optional message.
-   * </p>
+   * <p/>
    * When condition evaluates to {@code false}, throws {@link AssertionError}.
    */
   static void requireTrueBase(Boolean condition, String message = "$REQUIRE_TRUE_MESSAGE_DEFAULT.") {

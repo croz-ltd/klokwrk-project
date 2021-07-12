@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.not
 
 /**
  * Represents an Unicode name capable to produce internationalized name.
- * </p>
+ * <p/>
  * Internationalized name is produced simply by replacing diacritic characters with their non-diacritic Unicode counterparts. For the majority of diacritic characters, their non-diacritic counterpart
  * is encoded in Unicode itself. Therefore, such Unicode diacritic characters can be replaced by simple regex matching after decomposing them into characters canonical form containing separate codes
  * for base character and diacritic. In general this can be accomplished with following code fragment:
