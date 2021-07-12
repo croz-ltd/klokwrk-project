@@ -24,17 +24,19 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 /**
- * Simplifies some aspects of Axon API usage during query handling.
+ * Encapsulates features for simplifying some aspects of Axon API usage during query handling.
+ * <p/>
+ * Typically implemented by query handlers for easier implementation of methods annotated with Axon's {@code QueryHandler} annotation.
  */
 @CompileStatic
-trait QueryHandlerTrait extends MessageHandlerTrait {
+trait QueryHandlerTrait {
   // Note: @Slf4j AST transformation does not work with traits
   static private final Logger log = LoggerFactory.getLogger(QueryHandlerTrait.name)
 
   /**
    * Simplifies throwing a business exception making sure it is propagated back to the caller as a details field of Axon's <code>QueryExecutionException</code>.
    * <p/>
-   * It also logs the stacktrace of QueryExecutionException being thrown, which helps during development.
+   * It also logs the stacktrace of QueryExecutionException being thrown (at debug level), which helps during development.
    */
   void doThrow(QueryException domainException) {
     String exceptionMessage = domainException.message ?: domainException.violationInfo.violationCode.codeMessage

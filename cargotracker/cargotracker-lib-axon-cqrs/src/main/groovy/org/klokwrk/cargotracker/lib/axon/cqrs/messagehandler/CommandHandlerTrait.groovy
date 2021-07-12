@@ -24,17 +24,19 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 /**
- * Simplifies some aspects of Axon API usage during command handling.
+ * Encapsulates features for simplifying some aspects of Axon API usage during command handling.
+ * <p/>
+ * Typically implemented by aggregates for easier implementation of methods annotated with Axon's {@code CommandHandler} annotation.
  */
 @CompileStatic
-trait CommandHandlerTrait extends MessageHandlerTrait {
+trait CommandHandlerTrait {
   // Note: @Slf4j AST transformation does not work with traits
   static private final Logger log = LoggerFactory.getLogger(CommandHandlerTrait.name)
 
   /**
    * Simplifies throwing a business exception making sure it is propagated back to the caller as a details field of Axon's <code>CommandExecutionException</code>.
    * <p/>
-   * It also logs the stacktrace of CommandExecutionException being thrown, which helps during development.
+   * It also logs the stacktrace of CommandExecutionException being thrown (at debug level), which helps during development.
    */
   void doThrow(CommandException domainException) {
     String exceptionMessage = domainException.message ?: domainException.violationInfo.violationCode.codeMessage
