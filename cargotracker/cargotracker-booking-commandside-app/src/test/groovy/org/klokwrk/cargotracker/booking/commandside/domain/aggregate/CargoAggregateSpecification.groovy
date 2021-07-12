@@ -24,7 +24,6 @@ import org.axonframework.test.aggregate.TestExecutor
 import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.BookCargoCommandFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.CargoBookedEventFixtures
-import org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.MessageHandlerTrait
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationCode
 import spock.lang.Specification
@@ -51,7 +50,7 @@ class CargoAggregateSpecification extends Specification {
     then:
     verifyAll {
       cargoAggregateResultValidator.expectException(CommandExecutionException)
-      actualException.cause instanceof MessageHandlerTrait.ThrowAwayRuntimeException
+      actualException.cause == null
 
       detailsException.violationInfo.violationCode.code == ViolationCode.BAD_REQUEST.code
       detailsException.violationInfo.violationCode.codeAsText == CargoAggregate.VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO
@@ -72,7 +71,7 @@ class CargoAggregateSpecification extends Specification {
     then:
     verifyAll {
       cargoAggregateResultValidator.expectException(CommandExecutionException)
-      actualException.cause instanceof MessageHandlerTrait.ThrowAwayRuntimeException
+      actualException.cause == null
 
       detailsException.violationInfo.violationCode.code == ViolationCode.BAD_REQUEST.code
       detailsException.violationInfo.violationCode.codeAsText == CargoAggregate.VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO

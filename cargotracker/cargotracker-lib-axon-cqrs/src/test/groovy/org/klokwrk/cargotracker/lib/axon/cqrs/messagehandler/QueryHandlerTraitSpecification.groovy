@@ -49,7 +49,7 @@ class QueryHandlerTraitSpecification extends Specification {
     QueryExecutionException queryExecutionException = thrown(QueryExecutionException)
     verifyAll(queryExecutionException) {
       queryExecutionException.message == "Query execution failed: My not found"
-      queryExecutionException.cause instanceof MessageHandlerTrait.ThrowAwayRuntimeException
+      queryExecutionException.cause == null
       details.get() instanceof QueryException
       (details.get() as QueryException).violationInfo.violationCode == ViolationCode.NOT_FOUND
       (details.get() as QueryException).message == "My not found"
@@ -70,7 +70,7 @@ class QueryHandlerTraitSpecification extends Specification {
     QueryExecutionException queryExecutionException = thrown(QueryExecutionException)
     verifyAll(queryExecutionException) {
       queryExecutionException.message == "Query execution failed: My not found"
-      queryExecutionException.cause instanceof MessageHandlerTrait.ThrowAwayRuntimeException
+      queryExecutionException.cause == null
       details.get() instanceof QueryException
       (details.get() as QueryException).violationInfo.violationCode == ViolationCode.NOT_FOUND
       (details.get() as QueryException).message == "My not found"
@@ -93,7 +93,7 @@ class QueryHandlerTraitSpecification extends Specification {
     QueryExecutionException queryExecutionException = thrown(QueryExecutionException)
     verifyAll(queryExecutionException) {
       queryExecutionException.message == "Query execution failed: ${(details.get() as QueryException).violationInfo.violationCode.codeMessage}"
-      queryExecutionException.cause instanceof MessageHandlerTrait.ThrowAwayRuntimeException
+      queryExecutionException.cause == null
       details.get() instanceof QueryException
       (details.get() as QueryException).violationInfo.violationCode == ViolationCode.NOT_FOUND
       (details.get() as QueryException).message == (details.get() as QueryException).violationInfo.violationCode.codeMessage

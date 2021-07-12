@@ -38,7 +38,7 @@ trait CommandHandlerTrait extends MessageHandlerTrait {
    */
   void doThrow(CommandException domainException) {
     String exceptionMessage = domainException.message ?: domainException.violationInfo.violationCode.codeMessage
-    CommandExecutionException commandExecutionException = new CommandExecutionException("Command execution failed: $exceptionMessage", new ThrowAwayRuntimeException(), domainException)
+    CommandExecutionException commandExecutionException = new CommandExecutionException("Command execution failed: $exceptionMessage", null, domainException)
     if (log.isDebugEnabled()) {
       log.debug("Command execution in '${this.getClass().name}' failed: $exceptionMessage", commandExecutionException)
     }

@@ -49,7 +49,7 @@ class CommandHandlerTraitSpecification extends Specification {
     CommandExecutionException commandExecutionException = thrown(CommandExecutionException)
     verifyAll(commandExecutionException) {
       commandExecutionException.message == "Command execution failed: My bad request"
-      cause instanceof MessageHandlerTrait.ThrowAwayRuntimeException
+      cause == null
       details.get() instanceof CommandException
       (details.get() as CommandException).violationInfo.violationCode == ViolationCode.BAD_REQUEST
       (details.get() as CommandException).message == "My bad request"
@@ -70,7 +70,7 @@ class CommandHandlerTraitSpecification extends Specification {
     CommandExecutionException commandExecutionException = thrown(CommandExecutionException)
     verifyAll(commandExecutionException) {
       commandExecutionException.message == "Command execution failed: My bad request"
-      cause instanceof MessageHandlerTrait.ThrowAwayRuntimeException
+      cause == null
       details.get() instanceof CommandException
       (details.get() as CommandException).violationInfo.violationCode == ViolationCode.BAD_REQUEST
       (details.get() as CommandException).message == "My bad request"
@@ -93,7 +93,7 @@ class CommandHandlerTraitSpecification extends Specification {
     CommandExecutionException commandExecutionException = thrown(CommandExecutionException)
     verifyAll(commandExecutionException) {
       commandExecutionException.message == "Command execution failed: ${(details.get() as CommandException).violationInfo.violationCode.codeMessage}"
-      cause instanceof MessageHandlerTrait.ThrowAwayRuntimeException
+      cause == null
       details.get() instanceof CommandException
       (details.get() as CommandException).violationInfo.violationCode == ViolationCode.BAD_REQUEST
       (details.get() as CommandException).message == (details.get() as CommandException).violationInfo.violationCode.codeMessage

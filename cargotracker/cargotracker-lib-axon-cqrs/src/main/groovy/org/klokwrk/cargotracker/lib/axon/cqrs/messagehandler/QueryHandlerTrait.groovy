@@ -38,7 +38,7 @@ trait QueryHandlerTrait extends MessageHandlerTrait {
    */
   void doThrow(QueryException domainException) {
     String exceptionMessage = domainException.message ?: domainException.violationInfo.violationCode.codeMessage
-    QueryExecutionException queryExecutionException = new QueryExecutionException("Query execution failed: $exceptionMessage", new ThrowAwayRuntimeException(), domainException)
+    QueryExecutionException queryExecutionException = new QueryExecutionException("Query execution failed: $exceptionMessage", null, domainException)
     if (log.isDebugEnabled()) {
       log.debug("Query execution in '${this.getClass().name}' failed: $exceptionMessage", queryExecutionException)
     }

@@ -24,13 +24,4 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 trait MessageHandlerTrait {
-  /**
-   * Non-stacktrace throw-away exception intended to be used as a (not interesting placeholder) cause of Axon's <code>Command/QueryExecutionException</code> when throwing much more important business
-   * exceptions (propagated as details exception to the caller) from Axon's command/query handlers.
-   */
-  static class ThrowAwayRuntimeException extends RuntimeException {
-    ThrowAwayRuntimeException() {
-      super(null, null, false, false)
-    }
-  }
 }
