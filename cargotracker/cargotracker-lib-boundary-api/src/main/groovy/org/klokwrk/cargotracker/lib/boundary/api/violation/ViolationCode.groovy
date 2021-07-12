@@ -65,7 +65,6 @@ class ViolationCode implements PostMapConstructorCheckable {
    */
   String codeMessage
 
-  @SuppressWarnings("GroovyPointlessBoolean")
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     requireMatch(code, not(blankOrNullString()))
