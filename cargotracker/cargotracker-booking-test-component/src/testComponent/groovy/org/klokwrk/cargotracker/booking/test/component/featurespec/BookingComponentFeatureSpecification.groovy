@@ -25,7 +25,7 @@ import org.klokwrk.cargotracker.booking.test.component.test.base.AbstractCompone
 import spock.util.concurrent.PollingConditions
 
 class BookingComponentFeatureSpecification extends AbstractComponentIntegrationSpecification {
-  void "should book cargo for correct command: [acceptLanguageHeader: #acceptLanguageHeader]"() {
+  void "command - should book cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
     String commandCargoBookUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
     String commandPostRequestBody = """
@@ -59,7 +59,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     "en"                 | _
   }
 
-  void "should query successfully for booked cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
+  void "query - should find booked cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
     String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
     String commandPostRequestBody = """
@@ -121,7 +121,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     "en"                 | _
   }
 
-  void "should not book cargo for invalid command: [acceptLanguageHeader: #acceptLanguageHeader]"() {
+  void "command - should not book cargo for invalid command: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
     String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
     String commandPostRequestBody = """
@@ -155,7 +155,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     "en"                 | "Destination location cannot accept cargo from specified origin location."
   }
 
-  void "should not found non-existing cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
+  void "query - should not find non-existing cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
     String fetchCargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-summary/fetch-cargo-summary"
     String queryPostRequestBody = """
