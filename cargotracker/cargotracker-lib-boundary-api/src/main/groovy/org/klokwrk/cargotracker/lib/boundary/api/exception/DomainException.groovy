@@ -25,13 +25,13 @@ import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
  * <p/>
  * Domain violation conditions are expressed via contained {@link ViolationInfo} structure.
  * <p/>
- * By default (meaning, when using simpler constructors), stack-trace is not created. The primary reason is that <code>DomainException</code>, and all its subclasses, are used as alternative response
+ * By default (meaning, when using simpler constructors), stack-trace is not created. The primary reason is that {@code DomainException}, and all its subclasses, are used as alternative response
  * value from the domain. They should represent benign violations like validation errors or not-found scenarios for queries. Serious error or fatal conditions should not be communicated via
- * <code>DomainException</code> hierarchy.
+ * {@code DomainException} hierarchy.
  * <p/>
  * In addition, the lack of stack-trace is also beneficial for technical reasons since our domain implementations (aggregates and query handlers) are communicating remotely with domain facade
  * services at the domain boundary. However, there should be means (and there are) to produce relevant stack traces, at least for development. Implementation of such development-time helpers can be
- * examined in <code>CommandHandlerTrait</code> and <code>QueryHandlerTrait</code> classes.
+ * examined in {@code CommandHandlerExceptionInterceptor} and {@code QueryHandlerExceptionInterceptor} classes.
  *
  * @see ViolationInfo
  */

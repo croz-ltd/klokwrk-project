@@ -19,6 +19,7 @@ package org.klokwrk.cargotracker.booking.commandside.infrastructure.springbootco
 
 import groovy.transform.CompileStatic
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
+import org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.CommandHandlerExceptionInterceptor
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingCommandHandlerEnhancerDefinition
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingEventSourcingHandlerEnhancerDefinition
 import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizer
@@ -48,6 +49,11 @@ class SpringBootConfig {
   @Bean
   HandlerEnhancerDefinition loggingEventSourcingHandlerEnhancerDefinition() {
     return new LoggingEventSourcingHandlerEnhancerDefinition()
+  }
+
+  @Bean
+  CommandHandlerExceptionInterceptor commandHandlerExceptionInterceptor() {
+    return new CommandHandlerExceptionInterceptor()
   }
 
   @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")

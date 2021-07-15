@@ -30,7 +30,6 @@ import org.axonframework.spring.stereotype.Aggregate
 import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.event.CargoBookedEvent
 import org.klokwrk.cargotracker.booking.domain.model.Location
-import org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.CommandHandlerTrait
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
@@ -41,7 +40,7 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply
 @MapConstructor(noArg = true)
 @Aggregate
 @CompileStatic
-class CargoAggregate implements CommandHandlerTrait {
+class CargoAggregate {
   static final String VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO = "destinationLocationCannotAcceptCargo"
 
   @AggregateIdentifier
@@ -54,7 +53,7 @@ class CargoAggregate implements CommandHandlerTrait {
   @CreationPolicy(AggregateCreationPolicy.ALWAYS)
   CargoAggregate bookCargo(BookCargoCommand bookCargoCommand, MetaData metaData) {
     if (!bookCargoCommand.destinationLocation.canAcceptCargoFrom(bookCargoCommand.originLocation)) {
-      doThrow(new CommandException(ViolationInfo.createForBadRequestWithCustomCodeAsText(VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO)))
+      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeAsText(VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO))
     }
 
     apply(cargoBookedEventFromBookCargoCommand(bookCargoCommand), metaData)

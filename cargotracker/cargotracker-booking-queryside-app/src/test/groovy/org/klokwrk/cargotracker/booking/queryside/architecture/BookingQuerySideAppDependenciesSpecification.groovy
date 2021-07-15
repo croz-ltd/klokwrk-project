@@ -57,6 +57,7 @@ class BookingQuerySideAppDependenciesSpecification extends Specification {
 
         "javax.validation..",
 
+        "org.axonframework.messaging..",
         "org.axonframework.spring..",
         "org.hamcrest",
         "org.springframework.."
