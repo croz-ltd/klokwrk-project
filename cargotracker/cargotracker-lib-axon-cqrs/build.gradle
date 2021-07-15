@@ -34,6 +34,6 @@ dependencies {
   implementation "org.codehaus.groovy:groovy-macro"
   implementation "org.hamcrest:hamcrest"
 
-  testImplementation "ch.qos.logback:logback-classic"
   testImplementation "org.spockframework:spock-core"
+  testImplementation "uk.org.lidalia:slf4j-test"
 }
