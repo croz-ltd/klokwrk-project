@@ -10,6 +10,11 @@ import org.axonframework.queryhandling.QueryExecutionException
 import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
 
+/**
+ * Simplifies throwing a business exception from query handling code, making sure it is propagated back to the caller as a details field of Axon's <code>QueryExecutionException</code>.
+ * <p/>
+ * It also logs the stacktrace of QueryExecutionException being thrown (at debug level), which helps during development.
+ */
 @Slf4j
 @CompileStatic
 class QueryHandlerExceptionInterceptor<T extends Message<?>> implements MessageHandlerInterceptor<T> {

@@ -8,6 +8,9 @@ import org.springframework.context.ApplicationListener
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.stereotype.Component
 
+/**
+ * On ApplicationStartedEvent listener handling configuration logic that causes racing conditions when executed from {@code Configuration} annotated classes.
+ */
 @Component
 @CompileStatic
 class SpringBootConfigOnApplicationStartedListener implements ApplicationListener<ApplicationStartedEvent> {

@@ -10,6 +10,11 @@ import org.axonframework.messaging.unitofwork.UnitOfWork
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
 
+/**
+ * Simplifies throwing a business exception from command handling code, making sure it is propagated back to the caller as a details field of Axon's <code>CommandExecutionException</code>.
+ * <p/>
+ * It also logs the stacktrace of CommandExecutionException being thrown (at debug level), which helps during development.
+ */
 @Slf4j
 @CompileStatic
 class CommandHandlerExceptionInterceptor<T extends Message<?>> implements MessageHandlerInterceptor<T> {
