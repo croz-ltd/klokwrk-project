@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler
+package org.klokwrk.cargotracker.lib.axon.cqrs.command
 
 import com.google.common.collect.ImmutableList
 import org.axonframework.commandhandling.CommandExecutionException
@@ -65,7 +65,7 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
   void "should catch CommandException thrown from the handler and log it at the debug level"() {
     given:
     TestLoggerFactory.clearAll()
-    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.CommandHandlerExceptionInterceptor")
+    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor")
     logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG)
 
     CommandHandlerExceptionInterceptor commandHandlerExceptionInterceptor = new CommandHandlerExceptionInterceptor()
@@ -102,7 +102,7 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
   void "should catch CommandException thrown from the handler and should not log it at the level higher than debug"() {
     given:
     TestLoggerFactory.clearAll()
-    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.CommandHandlerExceptionInterceptor")
+    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor")
     logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO)
 
     CommandHandlerExceptionInterceptor commandHandlerExceptionInterceptor = new CommandHandlerExceptionInterceptor()
@@ -132,7 +132,7 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
   void "should catch and handle any other thrown from the handler"() {
     given:
     TestLoggerFactory.clearAll()
-    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.CommandHandlerExceptionInterceptor")
+    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor")
     logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO)
 
     CommandHandlerExceptionInterceptor commandHandlerExceptionInterceptor = new CommandHandlerExceptionInterceptor()

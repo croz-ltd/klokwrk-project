@@ -21,7 +21,7 @@ import groovy.transform.CompileStatic
 import org.axonframework.common.transaction.TransactionManager
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
 import org.axonframework.spring.messaging.unitofwork.SpringTransactionManager
-import org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.QueryHandlerExceptionInterceptor
+import org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingQueryHandlerEnhancerDefinition
 import org.klokwrk.lib.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
 import org.klokwrk.lib.datasourceproxy.springboot.DataSourceProxyConfigurationProperties

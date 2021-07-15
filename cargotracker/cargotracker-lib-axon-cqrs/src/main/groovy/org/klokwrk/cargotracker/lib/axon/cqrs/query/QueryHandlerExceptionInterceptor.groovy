@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler
+package org.klokwrk.cargotracker.lib.axon.cqrs.query
 
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j

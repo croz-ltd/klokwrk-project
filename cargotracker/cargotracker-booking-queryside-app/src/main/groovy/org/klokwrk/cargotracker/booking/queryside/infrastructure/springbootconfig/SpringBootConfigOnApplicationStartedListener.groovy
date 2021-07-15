@@ -2,7 +2,7 @@ package org.klokwrk.cargotracker.booking.queryside.infrastructure.springbootconf
 
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryBus
-import org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.QueryHandlerExceptionInterceptor
+import org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor
 import org.springframework.boot.context.event.ApplicationStartedEvent
 import org.springframework.context.ApplicationListener
 import org.springframework.context.ConfigurableApplicationContext

@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler
+package org.klokwrk.cargotracker.lib.axon.cqrs.query
 
 import com.google.common.collect.ImmutableList
 import org.axonframework.messaging.GenericMessage
@@ -30,7 +30,7 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     interceptorChainMock = Stub()
 
     // uncomment if you want to see logging output during the test
-    //    TestLoggerFactory.instance.printLevel = Level.DEBUG
+//    TestLoggerFactory.instance.printLevel = Level.DEBUG
   }
 
   void "should work for non-exceptional scenario"() {
@@ -65,7 +65,7 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
   void "should catch QueryException thrown from the handler and log it at the debug level"() {
     given:
     TestLoggerFactory.clearAll()
-    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.QueryHandlerExceptionInterceptor")
+    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor")
     logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG)
 
     QueryHandlerExceptionInterceptor queryHandlerExceptionInterceptor = new QueryHandlerExceptionInterceptor()
@@ -102,7 +102,7 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
   void "should catch QueryException thrown from the handler and should not log it at the level higher than debug"() {
     given:
     TestLoggerFactory.clearAll()
-    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.QueryHandlerExceptionInterceptor")
+    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor")
     logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO)
 
     QueryHandlerExceptionInterceptor queryHandlerExceptionInterceptor = new QueryHandlerExceptionInterceptor()
@@ -132,7 +132,7 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
   void "should catch and handle any other thrown from the handler"() {
     given:
     TestLoggerFactory.clearAll()
-    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.QueryHandlerExceptionInterceptor")
+    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor")
     logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO)
 
     QueryHandlerExceptionInterceptor queryHandlerExceptionInterceptor = new QueryHandlerExceptionInterceptor()
