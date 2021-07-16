@@ -23,7 +23,6 @@ import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.applicati
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.CargoSummaryJpaEntity
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.CargoSummaryJpaRepository
-import org.klokwrk.cargotracker.lib.axon.cqrs.messagehandler.QueryHandlerTrait
 import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
 import org.springframework.stereotype.Service
@@ -41,7 +40,7 @@ import org.springframework.stereotype.Service
  */
 @Service
 @CompileStatic
-class CargoSummaryQueryHandlerService implements QueryHandlerTrait {
+class CargoSummaryQueryHandlerService {
   private final CargoSummaryJpaRepository cargoSummaryJpaRepository
 
   CargoSummaryQueryHandlerService(CargoSummaryJpaRepository cargoSummaryJpaRepository) {
@@ -53,7 +52,7 @@ class CargoSummaryQueryHandlerService implements QueryHandlerTrait {
     CargoSummaryJpaEntity cargoSummaryJpaEntity = cargoSummaryJpaRepository.findByAggregateIdentifier(fetchCargoSummaryQueryRequest.aggregateIdentifier)
 
     if (!cargoSummaryJpaEntity) {
-      doThrow(new QueryException(ViolationInfo.NOT_FOUND))
+      throw new QueryException(ViolationInfo.NOT_FOUND)
     }
 
     return new FetchCargoSummaryQueryResponse(cargoSummaryJpaEntity.properties)

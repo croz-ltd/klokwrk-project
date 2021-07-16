@@ -55,6 +55,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         "javax.validation..",
         "javax.servlet",
 
+        "org.axonframework.messaging..",
         "org.axonframework.modelling.command..",
         "org.hamcrest",
         "org.springframework.."

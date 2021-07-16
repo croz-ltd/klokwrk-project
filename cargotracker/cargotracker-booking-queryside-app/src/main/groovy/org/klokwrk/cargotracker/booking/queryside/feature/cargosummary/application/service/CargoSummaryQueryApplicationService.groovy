@@ -22,7 +22,7 @@ import org.axonframework.queryhandling.QueryGateway
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryResponse
-import org.klokwrk.cargotracker.lib.axon.cqrs.querygateway.QueryGatewayAdapter
+import org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ResponseMetaData
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
