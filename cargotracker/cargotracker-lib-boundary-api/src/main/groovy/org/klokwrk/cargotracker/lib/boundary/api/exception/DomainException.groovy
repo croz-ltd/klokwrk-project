@@ -60,7 +60,7 @@ class DomainException extends RuntimeException {
   }
 
   DomainException(ViolationInfo violationInfo, String message, Throwable cause, Boolean writableStackTrace) {
-    super(message ?: violationInfo.violationCode.codeMessage, cause, false, writableStackTrace)
+    super(message?.trim() ?: violationInfo.violationCode.codeMessage, cause, false, writableStackTrace)
     this.violationInfo = violationInfo
   }
 }

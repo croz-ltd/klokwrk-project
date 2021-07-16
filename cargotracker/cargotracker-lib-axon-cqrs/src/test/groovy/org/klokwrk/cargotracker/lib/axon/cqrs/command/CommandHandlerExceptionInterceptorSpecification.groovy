@@ -97,6 +97,9 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
     commandExceptionMessageParam                        | commandExceptionParam
     ViolationInfo.BAD_REQUEST.violationCode.codeMessage | new CommandException(ViolationInfo.BAD_REQUEST)
     "Some command exception message"                    | new CommandException(ViolationInfo.BAD_REQUEST, commandExceptionMessageParam)
+    ViolationInfo.BAD_REQUEST.violationCode.codeMessage | new CommandException(ViolationInfo.BAD_REQUEST, null)
+    ViolationInfo.BAD_REQUEST.violationCode.codeMessage | new CommandException(ViolationInfo.BAD_REQUEST, "")
+    ViolationInfo.BAD_REQUEST.violationCode.codeMessage | new CommandException(ViolationInfo.BAD_REQUEST, "   ")
   }
 
   void "should catch CommandException thrown from the handler and should not log it at the level higher than debug"() {

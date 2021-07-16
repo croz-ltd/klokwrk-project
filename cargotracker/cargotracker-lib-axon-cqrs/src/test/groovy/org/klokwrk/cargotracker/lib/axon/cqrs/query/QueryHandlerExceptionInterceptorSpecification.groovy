@@ -97,6 +97,9 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     queryExceptionMessageParam                          | queryExceptionParam
     ViolationInfo.BAD_REQUEST.violationCode.codeMessage | new QueryException(ViolationInfo.BAD_REQUEST)
     "Some query exception message"                      | new QueryException(ViolationInfo.BAD_REQUEST, queryExceptionMessageParam)
+    ViolationInfo.BAD_REQUEST.violationCode.codeMessage | new QueryException(ViolationInfo.BAD_REQUEST, null)
+    ViolationInfo.BAD_REQUEST.violationCode.codeMessage | new QueryException(ViolationInfo.BAD_REQUEST, "")
+    ViolationInfo.BAD_REQUEST.violationCode.codeMessage | new QueryException(ViolationInfo.BAD_REQUEST, "   ")
   }
 
   void "should catch QueryException thrown from the handler and should not log it at the level higher than debug"() {
