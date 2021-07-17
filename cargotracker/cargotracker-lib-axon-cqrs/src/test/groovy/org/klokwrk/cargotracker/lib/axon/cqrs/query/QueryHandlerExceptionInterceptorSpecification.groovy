@@ -7,8 +7,8 @@ import org.axonframework.messaging.Message
 import org.axonframework.messaging.unitofwork.DefaultUnitOfWork
 import org.axonframework.messaging.unitofwork.UnitOfWork
 import org.axonframework.queryhandling.QueryExecutionException
-import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
+import org.klokwrk.cargotracker.lib.boundary.api.exception.RemoteHandlerException
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
@@ -132,11 +132,54 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     TestLoggerFactory.clearAll()
   }
 
-  void "should catch and handle any other thrown from the handler"() {
+  void "when unexpected error is thrown, should catch, wrap and log on error level"() {
     given:
     TestLoggerFactory.clearAll()
     TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor")
-    logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO)
+    logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG)
+
+    QueryHandlerExceptionInterceptor queryHandlerExceptionInterceptor = new QueryHandlerExceptionInterceptor()
+    interceptorChainMock.proceed() >> { throw new IllegalArgumentException(causeExceptionMessageParam as String) }
+
+    when:
+    queryHandlerExceptionInterceptor.handle(unitOfWork, interceptorChainMock)
+
+    then:
+    QueryExecutionException queryExecutionException = thrown()
+
+    queryExecutionException.details.present
+    queryExecutionException.cause instanceof IllegalArgumentException
+    queryExecutionException.cause.message == causeExceptionMessageParam
+
+    queryExecutionException.details.present
+    verifyAll(queryExecutionException.details.get(), RemoteHandlerException, { RemoteHandlerException remoteHandlerException ->
+      queryExecutionException.message == "Query execution failed [detailsException.exceptionId: ${remoteHandlerException.exceptionId}]"
+      remoteHandlerException.message == remoteHandlerExceptionMessageParam
+    })
+
+    new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
+      loggingEvents.size() == 1
+      loggingEvents[0].level == Level.ERROR
+      loggingEvents[0].message.startsWith("Execution of query handler failed [detailsException.exceptionId:")
+    }
+
+    cleanup:
+    TestLoggerFactory.clearAll()
+
+    where:
+    causeExceptionMessageParam | remoteHandlerExceptionMessageParam
+    "Some illegal arguments"   | "Query execution failed because of java.lang.IllegalArgumentException: Some illegal arguments"
+    null                       | "Query execution failed because of java.lang.IllegalArgumentException"
+    ""                         | "Query execution failed because of java.lang.IllegalArgumentException"
+    "   "                      | "Query execution failed because of java.lang.IllegalArgumentException"
+  }
+
+  void "when unexpected error is thrown and error logging is not enabled, should catch and wrap, but should not log anything"() {
+    given:
+    TestLoggerFactory.clearAll()
+    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor")
+    logger.setEnabledLevels(Level.WARN, Level.INFO, Level.DEBUG)
 
     QueryHandlerExceptionInterceptor queryHandlerExceptionInterceptor = new QueryHandlerExceptionInterceptor()
     interceptorChainMock.proceed() >> { throw new IllegalArgumentException("Some illegal arguments") }
@@ -148,20 +191,18 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     QueryExecutionException queryExecutionException = thrown()
 
     queryExecutionException.details.present
-    queryExecutionException.message == "Query execution failed."
     queryExecutionException.cause instanceof IllegalArgumentException
     queryExecutionException.cause.message == "Some illegal arguments"
 
     queryExecutionException.details.present
-    verifyAll(queryExecutionException.details.get(), DomainException, { DomainException domainException ->
-      domainException.violationInfo == ViolationInfo.UNKNOWN
+    verifyAll(queryExecutionException.details.get(), RemoteHandlerException, { RemoteHandlerException remoteHandlerException ->
+      queryExecutionException.message == "Query execution failed [detailsException.exceptionId: ${remoteHandlerException.exceptionId}]"
+      remoteHandlerException.message == "Query execution failed because of java.lang.IllegalArgumentException: Some illegal arguments"
     })
 
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
       ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-      loggingEvents.size() == 1
-      loggingEvents[0].level == Level.ERROR
-      loggingEvents[0].message == "Execution of query handler failed."
+      loggingEvents.size() == 0
     }
 
     cleanup:

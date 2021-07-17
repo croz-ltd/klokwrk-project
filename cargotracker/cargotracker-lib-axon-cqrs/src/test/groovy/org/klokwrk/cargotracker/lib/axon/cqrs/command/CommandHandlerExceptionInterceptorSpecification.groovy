@@ -8,7 +8,7 @@ import org.axonframework.messaging.Message
 import org.axonframework.messaging.unitofwork.DefaultUnitOfWork
 import org.axonframework.messaging.unitofwork.UnitOfWork
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
-import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
+import org.klokwrk.cargotracker.lib.boundary.api.exception.RemoteHandlerException
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
@@ -132,11 +132,54 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
     TestLoggerFactory.clearAll()
   }
 
-  void "should catch and handle any other thrown from the handler"() {
+  void "when unexpected error is thrown, should catch, wrap and log on error level"() {
     given:
     TestLoggerFactory.clearAll()
     TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor")
-    logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO)
+    logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG)
+
+    CommandHandlerExceptionInterceptor commandHandlerExceptionInterceptor = new CommandHandlerExceptionInterceptor()
+    interceptorChainMock.proceed() >> { throw new IllegalArgumentException(causeExceptionMessageParam as String) }
+
+    when:
+    commandHandlerExceptionInterceptor.handle(unitOfWork, interceptorChainMock)
+
+    then:
+    CommandExecutionException commandExecutionException = thrown()
+
+    commandExecutionException.details.present
+    commandExecutionException.cause instanceof IllegalArgumentException
+    commandExecutionException.cause.message == causeExceptionMessageParam
+
+    commandExecutionException.details.present
+    verifyAll(commandExecutionException.details.get(), RemoteHandlerException, { RemoteHandlerException remoteHandlerException ->
+      commandExecutionException.message == "Command execution failed [detailsException.exceptionId: ${remoteHandlerException.exceptionId}]"
+      remoteHandlerException.message == remoteHandlerExceptionMessageParam
+    })
+
+    new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
+      loggingEvents.size() == 1
+      loggingEvents[0].level == Level.ERROR
+      loggingEvents[0].message.startsWith("Execution of command handler failed [detailsException.exceptionId:")
+    }
+
+    cleanup:
+    TestLoggerFactory.clearAll()
+
+    where:
+    causeExceptionMessageParam | remoteHandlerExceptionMessageParam
+    "Some illegal arguments"   | "Command execution failed because of java.lang.IllegalArgumentException: Some illegal arguments"
+    null                       | "Command execution failed because of java.lang.IllegalArgumentException"
+    ""                         | "Command execution failed because of java.lang.IllegalArgumentException"
+    "   "                      | "Command execution failed because of java.lang.IllegalArgumentException"
+  }
+
+  void "when unexpected error is thrown and error logging is not enabled, should catch and wrap, but should not log anything"() {
+    given:
+    TestLoggerFactory.clearAll()
+    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor")
+    logger.setEnabledLevels(Level.WARN, Level.INFO, Level.DEBUG)
 
     CommandHandlerExceptionInterceptor commandHandlerExceptionInterceptor = new CommandHandlerExceptionInterceptor()
     interceptorChainMock.proceed() >> { throw new IllegalArgumentException("Some illegal arguments") }
@@ -148,20 +191,18 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
     CommandExecutionException commandExecutionException = thrown()
 
     commandExecutionException.details.present
-    commandExecutionException.message == "Command execution failed."
     commandExecutionException.cause instanceof IllegalArgumentException
     commandExecutionException.cause.message == "Some illegal arguments"
 
     commandExecutionException.details.present
-    verifyAll(commandExecutionException.details.get(), DomainException, { DomainException domainException ->
-      domainException.violationInfo == ViolationInfo.UNKNOWN
+    verifyAll(commandExecutionException.details.get(), RemoteHandlerException, { RemoteHandlerException remoteHandlerException ->
+      commandExecutionException.message == "Command execution failed [detailsException.exceptionId: ${remoteHandlerException.exceptionId}]"
+      remoteHandlerException.message == "Command execution failed because of java.lang.IllegalArgumentException: Some illegal arguments"
     })
 
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
       ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-      loggingEvents.size() == 1
-      loggingEvents[0].level == Level.ERROR
-      loggingEvents[0].message == "Execution of command handler failed."
+      loggingEvents.size() == 0
     }
 
     cleanup:

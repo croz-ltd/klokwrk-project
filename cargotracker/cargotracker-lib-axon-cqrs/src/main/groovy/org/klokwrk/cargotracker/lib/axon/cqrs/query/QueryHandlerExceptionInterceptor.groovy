@@ -7,13 +7,16 @@ import org.axonframework.messaging.Message
 import org.axonframework.messaging.MessageHandlerInterceptor
 import org.axonframework.messaging.unitofwork.UnitOfWork
 import org.axonframework.queryhandling.QueryExecutionException
-import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
+import org.klokwrk.cargotracker.lib.boundary.api.exception.RemoteHandlerException
 import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
 
 /**
- * Simplifies throwing a business exception from query handling code, making sure it is propagated back to the caller as a details field of Axon's <code>QueryExecutionException</code>.
+ * Simplifies throwing a business exception from query handling code, making sure it is propagated back to the caller as a details field of Axon's {@code QueryExecutionException}.
  * <p/>
- * It also logs the stacktrace of QueryExecutionException being thrown (at debug level), which helps during development.
+ * It logs the stacktrace of anticipated {@code QueryExecutionException} at the debug level, which helps during development.
+ * <p/>
+ * In case of unexpected exceptions, corresponding {@code QueryExecutionException} is logged at the error level, and exception details are represented with {@code RemoteHandlerException} instance.
+ * {@code exceptionId} property of {@code RemoteHandlerException} instance can be used in other JVM for correlation via logging.
  */
 @Slf4j
 @CompileStatic
@@ -36,9 +39,16 @@ class QueryHandlerExceptionInterceptor<T extends Message<?>> implements MessageH
       throw queryExecutionExceptionToThrow
     }
     catch (Exception e) {
-      QueryExecutionException queryExecutionExceptionToThrow = new QueryExecutionException("Query execution failed.", e, new DomainException())
+      String detailsExceptionMessage = "Query execution failed because of ${e.getClass().name}"
+      if (e.message?.trim()) {
+        detailsExceptionMessage += ": ${e.message.trim()}"
+      }
+      RemoteHandlerException detailsException = new RemoteHandlerException(UUID.randomUUID().toString(), detailsExceptionMessage)
 
-      log.error("Execution of query handler failed.", queryExecutionExceptionToThrow)
+      QueryExecutionException queryExecutionExceptionToThrow =
+          new QueryExecutionException("Query execution failed [detailsException.exceptionId: ${detailsException.exceptionId}]", e, detailsException)
+
+      log.error("Execution of query handler failed [detailsException.exceptionId: ${detailsException.exceptionId}]", queryExecutionExceptionToThrow)
       throw queryExecutionExceptionToThrow
     }
   }
