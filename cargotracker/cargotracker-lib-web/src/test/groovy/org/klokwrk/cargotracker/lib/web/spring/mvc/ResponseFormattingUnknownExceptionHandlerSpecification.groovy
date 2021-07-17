@@ -17,6 +17,7 @@
  */
 package org.klokwrk.cargotracker.lib.web.spring.mvc
 
+import org.klokwrk.cargotracker.lib.boundary.api.exception.RemoteHandlerException
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
@@ -117,7 +118,8 @@ class ResponseFormattingUnknownExceptionHandlerSpecification extends Specificati
     then:
     loggingEventList.size() == 1
     unknownExceptionLoggingEvent.level == Level.ERROR
-    unknownExceptionLoggingEvent.message.contains("uuid")
+    unknownExceptionLoggingEvent.message.contains("uuid: ")
+    !unknownExceptionLoggingEvent.message.contains("exceptionId: ")
     unknownExceptionLoggingEvent.message.contains(exceptionParam.getClass().name)
     unknownExceptionLoggingEvent.throwable.get() == exceptionParam
 
@@ -126,5 +128,26 @@ class ResponseFormattingUnknownExceptionHandlerSpecification extends Specificati
     new RuntimeException()      | _
     new NullPointerException()  | _
     new IllegalStateException() | _
+  }
+
+  void "should log exception id of identified runtime exceptions on error level"() {
+    given:
+    String exceptionId = UUID.randomUUID()
+    Throwable unknownException = new RemoteHandlerException(exceptionId, "some remote handler exception")
+    TestLogger logger = TestLoggerFactory.getTestLogger(ResponseFormattingUnknownExceptionHandler)
+
+    when:
+    responseFormattingUnknownExceptionHandler.handleUnknownException(unknownException, handlerMethod, locale)
+    List<LoggingEvent> loggingEventList = logger.loggingEvents.findAll { it.creatingLogger.name == ResponseFormattingUnknownExceptionHandler.name && it.level == Level.ERROR }
+    LoggingEvent unknownExceptionLoggingEvent = loggingEventList[0]
+
+    then:
+    loggingEventList.size() == 1
+    unknownExceptionLoggingEvent.level == Level.ERROR
+    unknownExceptionLoggingEvent.message.contains("uuid: ")
+    unknownExceptionLoggingEvent.message.contains("exceptionId: ")
+    unknownExceptionLoggingEvent.message.contains(exceptionId)
+    unknownExceptionLoggingEvent.message.contains(unknownException.getClass().name)
+    unknownExceptionLoggingEvent.throwable.get() == unknownException
   }
 }
