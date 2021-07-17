@@ -18,6 +18,7 @@
 package org.klokwrk.cargotracker.lib.web.spring.mvc
 
 import groovy.transform.CompileStatic
+import org.klokwrk.cargotracker.lib.boundary.api.exception.IdentifiedRuntimeException
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ResponseMetaDataGeneralPart
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ResponseMetaDataViolationPart
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType
@@ -101,7 +102,14 @@ class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
   @ExceptionHandler
   ResponseEntity handleUnknownException(Throwable unknownException, HandlerMethod handlerMethod, Locale locale) {
     String logUuid = UUID.randomUUID()
-    log.error("Unknown exception occured [uuid: ${ logUuid }, unknownExceptionClass: ${ unknownException.getClass().name }]", unknownException)
+
+    if (unknownException instanceof IdentifiedRuntimeException) {
+      IdentifiedRuntimeException identifiedRuntimeException = unknownException as IdentifiedRuntimeException
+      log.error("Unknown exception occured [uuid: ${ logUuid }, exceptionId: ${identifiedRuntimeException.exceptionId} , unknownExceptionClass: ${ unknownException.getClass().name }]", unknownException)
+    }
+    else {
+      log.error("Unknown exception occured [uuid: ${ logUuid }, unknownExceptionClass: ${ unknownException.getClass().name }]", unknownException)
+    }
 
     HttpResponseMetaData httpResponseMetaData = createHttpResponseMetaData(unknownException, handlerMethod, locale, logUuid)
     OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseMetaData.propertiesFiltered)
