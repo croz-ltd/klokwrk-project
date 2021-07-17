@@ -117,7 +117,7 @@ commitMessageTitleMaxLength=120
 # Get the '.git' path
 gitDir=$(git rev-parse --git-dir)
 prepareCommitMessageSource=$(head -n 1 "$gitDir"/prepare-commit-msg-source.txt)
-conventionalCommitRegexp="^(feat|fix|docs|style|test|build|ci|refactor|perf|chore|task|deps|article|misc|notype)(\(.*\))?: (.*)$"
+conventionalCommitRegexp="^(feat|feature|enhance|enhancement|fix|docs|style|test|build|ci|refactor|perf|chore|task|deps|article|misc|notype)(\(.*\))?: (.*)$"
 
 # ----- body -----
 commitMessageFile=$1
