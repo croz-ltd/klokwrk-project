@@ -108,7 +108,7 @@ Preferably, use `notype` merge commits, as they are still useful for clear separ
 
 #### Types for conventional commits format
 - common (angular)
-    - `feat` - a new feature
+    - `feat` or `feature` - a new feature
     - `fix` - a bug fix
     - `docs` - documentation only changes
     - `style` - changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
@@ -121,6 +121,7 @@ Preferably, use `notype` merge commits, as they are still useful for clear separ
 
 
 - custom
+    - `enhance` or `enhancement` - improvements to the existing features
     - `deps` - dependencies updates (use instead of `build` when commit only updates dependencies)<br/>
       <br/>
       There are two main scenarios when upgrading dependencies, a simple version bump and the more involved upgrade requiring resolving various issues like compilation errors, API upgrades, etc.<br/>
