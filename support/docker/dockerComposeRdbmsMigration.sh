@@ -9,6 +9,6 @@ cargotrackerBookingRdbmsManagementAppDockerImageVersion=$(prop 'cargotrackerBook
 export cargotrackerBookingRdbmsManagementAppDockerImageVersion
 # ---------- Configuring environment variables based on values from gradle.properties in the root directory. - END
 
-docker-compose --file docker-compose-rdbms-migration.yml --compatibility up
+docker-compose --file docker-compose-rdbms-migration.yml up
 
 docker container rm cargotracker-booking-rdbms-management-app
