@@ -22,11 +22,11 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
   InterceptorChain interceptorChainMock
 
   @SuppressWarnings("CodeNarc.EmptyClass")
-  static class StubMessage {
+  static class StubCommand {
   }
 
   void setup() {
-    unitOfWork = new DefaultUnitOfWork<>(new GenericMessage<Object>(new StubMessage()))
+    unitOfWork = new DefaultUnitOfWork<>(new GenericMessage<Object>(new StubCommand()))
     interceptorChainMock = Stub()
 
     // uncomment if you want to see logging output during the test
@@ -78,7 +78,7 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
     CommandExecutionException commandExecutionException = thrown()
 
     commandExecutionException.details.present
-    commandExecutionException.message == "Command execution failed for business reasons (normal execution flow): ${commandExceptionMessageParam}"
+    commandExecutionException.message == "Execution of 'StubCommand' command failed for business reasons (normal execution flow): ${commandExceptionMessageParam}"
     verifyAll(commandExecutionException.details.get(), CommandException, { CommandException commandException ->
       commandException.violationInfo == ViolationInfo.BAD_REQUEST
     })
@@ -87,7 +87,7 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
       ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 1
       loggingEvents[0].level == Level.DEBUG
-      loggingEvents[0].message == "Execution of command handler failed for business reasons (normal execution flow): ${commandExceptionMessageParam}"
+      loggingEvents[0].message == "Execution of 'StubCommand' command handler failed for business reasons (normal execution flow): ${commandExceptionMessageParam}"
     }
 
     cleanup:
@@ -118,7 +118,7 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
     CommandExecutionException commandExecutionException = thrown()
 
     commandExecutionException.details.present
-    commandExecutionException.message == "Command execution failed for business reasons (normal execution flow): Bad Request"
+    commandExecutionException.message == "Execution of 'StubCommand' command failed for business reasons (normal execution flow): Bad Request"
     verifyAll(commandExecutionException.details.get(), CommandException, { CommandException commandException ->
       commandException.violationInfo == ViolationInfo.BAD_REQUEST
     })
@@ -153,7 +153,7 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
 
     commandExecutionException.details.present
     verifyAll(commandExecutionException.details.get(), RemoteHandlerException, { RemoteHandlerException remoteHandlerException ->
-      commandExecutionException.message == "Command execution failed [detailsException.exceptionId: ${remoteHandlerException.exceptionId}]"
+      commandExecutionException.message == "Execution of 'StubCommand' command failed [detailsException.exceptionId: ${remoteHandlerException.exceptionId}]"
       remoteHandlerException.message == remoteHandlerExceptionMessageParam
     })
 
@@ -169,10 +169,10 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
 
     where:
     causeExceptionMessageParam | remoteHandlerExceptionMessageParam
-    "Some illegal arguments"   | "Command execution failed because of java.lang.IllegalArgumentException: Some illegal arguments"
-    null                       | "Command execution failed because of java.lang.IllegalArgumentException"
-    ""                         | "Command execution failed because of java.lang.IllegalArgumentException"
-    "   "                      | "Command execution failed because of java.lang.IllegalArgumentException"
+    "Some illegal arguments"   | "Execution of 'StubCommand' command failed because of java.lang.IllegalArgumentException: Some illegal arguments"
+    null                       | "Execution of 'StubCommand' command failed because of java.lang.IllegalArgumentException"
+    ""                         | "Execution of 'StubCommand' command failed because of java.lang.IllegalArgumentException"
+    "   "                      | "Execution of 'StubCommand' command failed because of java.lang.IllegalArgumentException"
   }
 
   void "when unexpected error is thrown and error logging is not enabled, should catch and wrap, but should not log anything"() {
@@ -196,8 +196,8 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
 
     commandExecutionException.details.present
     verifyAll(commandExecutionException.details.get(), RemoteHandlerException, { RemoteHandlerException remoteHandlerException ->
-      commandExecutionException.message == "Command execution failed [detailsException.exceptionId: ${remoteHandlerException.exceptionId}]"
-      remoteHandlerException.message == "Command execution failed because of java.lang.IllegalArgumentException: Some illegal arguments"
+      commandExecutionException.message == "Execution of 'StubCommand' command failed [detailsException.exceptionId: ${remoteHandlerException.exceptionId}]"
+      remoteHandlerException.message == "Execution of 'StubCommand' command failed because of java.lang.IllegalArgumentException: Some illegal arguments"
     })
 
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {

@@ -21,7 +21,7 @@ import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
 @Slf4j
 @CompileStatic
 class QueryHandlerExceptionInterceptor<T extends Message<?>> implements MessageHandlerInterceptor<T> {
-  @SuppressWarnings("CodeNarc.CatchException")
+  @SuppressWarnings(["CodeNarc.CatchException", 'DuplicatedCode'])
   @Override
   Object handle(UnitOfWork<? extends T> unitOfWork, InterceptorChain interceptorChain) throws Exception {
     try {
@@ -29,24 +29,26 @@ class QueryHandlerExceptionInterceptor<T extends Message<?>> implements MessageH
       return returnValue
     }
     catch (QueryException queryException) {
+      String queryTypeName = unitOfWork.message.payloadType.simpleName
       String exceptionMessage = queryException.message
 
       QueryExecutionException queryExecutionExceptionToThrow =
-          new QueryExecutionException("Query execution failed for business reasons (normal execution flow): $exceptionMessage", null, queryException)
+          new QueryExecutionException("Execution of '$queryTypeName' query failed for business reasons (normal execution flow): $exceptionMessage", null, queryException)
 
-      log.debug("Execution of query handler failed for business reasons (normal execution flow): $exceptionMessage", queryExecutionExceptionToThrow)
+      log.debug("Execution of '$queryTypeName' query handler failed for business reasons (normal execution flow): $exceptionMessage")
 
       throw queryExecutionExceptionToThrow
     }
     catch (Exception e) {
-      String detailsExceptionMessage = "Query execution failed because of ${e.getClass().name}"
+      String queryTypeName = unitOfWork.message.payloadType.simpleName
+      String detailsExceptionMessage = "Execution of '$queryTypeName' query failed because of ${e.getClass().name}"
       if (e.message?.trim()) {
         detailsExceptionMessage += ": ${e.message.trim()}"
       }
       RemoteHandlerException detailsException = new RemoteHandlerException(UUID.randomUUID().toString(), detailsExceptionMessage)
 
       QueryExecutionException queryExecutionExceptionToThrow =
-          new QueryExecutionException("Query execution failed [detailsException.exceptionId: ${detailsException.exceptionId}]", e, detailsException)
+          new QueryExecutionException("Execution of '$queryTypeName' query failed [detailsException.exceptionId: ${detailsException.exceptionId}]", e, detailsException)
 
       log.error("Execution of query handler failed [detailsException.exceptionId: ${detailsException.exceptionId}]", queryExecutionExceptionToThrow)
       throw queryExecutionExceptionToThrow

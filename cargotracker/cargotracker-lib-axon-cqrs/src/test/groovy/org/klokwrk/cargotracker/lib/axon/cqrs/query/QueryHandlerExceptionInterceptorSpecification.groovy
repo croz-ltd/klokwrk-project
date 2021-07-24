@@ -22,11 +22,11 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
   InterceptorChain interceptorChainMock
 
   @SuppressWarnings("CodeNarc.EmptyClass")
-  static class StubMessage {
+  static class StubQuery {
   }
 
   void setup() {
-    unitOfWork = new DefaultUnitOfWork<>(new GenericMessage<Object>(new StubMessage()))
+    unitOfWork = new DefaultUnitOfWork<>(new GenericMessage<Object>(new StubQuery()))
     interceptorChainMock = Stub()
 
     // uncomment if you want to see logging output during the test
@@ -78,7 +78,7 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     QueryExecutionException queryExecutionException = thrown()
 
     queryExecutionException.details.present
-    queryExecutionException.message == "Query execution failed for business reasons (normal execution flow): ${queryExceptionMessageParam}"
+    queryExecutionException.message == "Execution of 'StubQuery' query failed for business reasons (normal execution flow): ${queryExceptionMessageParam}"
     verifyAll(queryExecutionException.details.get(), QueryException, { QueryException queryException ->
       queryException.violationInfo == ViolationInfo.BAD_REQUEST
     })
@@ -87,7 +87,7 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
       ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 1
       loggingEvents[0].level == Level.DEBUG
-      loggingEvents[0].message == "Execution of query handler failed for business reasons (normal execution flow): ${queryExceptionMessageParam}"
+      loggingEvents[0].message == "Execution of 'StubQuery' query handler failed for business reasons (normal execution flow): ${queryExceptionMessageParam}"
     }
 
     cleanup:
@@ -118,7 +118,7 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     QueryExecutionException queryExecutionException = thrown()
 
     queryExecutionException.details.present
-    queryExecutionException.message == "Query execution failed for business reasons (normal execution flow): Bad Request"
+    queryExecutionException.message == "Execution of 'StubQuery' query failed for business reasons (normal execution flow): Bad Request"
     verifyAll(queryExecutionException.details.get(), QueryException, { QueryException queryException ->
       queryException.violationInfo == ViolationInfo.BAD_REQUEST
     })
@@ -153,7 +153,7 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
 
     queryExecutionException.details.present
     verifyAll(queryExecutionException.details.get(), RemoteHandlerException, { RemoteHandlerException remoteHandlerException ->
-      queryExecutionException.message == "Query execution failed [detailsException.exceptionId: ${remoteHandlerException.exceptionId}]"
+      queryExecutionException.message == "Execution of 'StubQuery' query failed [detailsException.exceptionId: ${remoteHandlerException.exceptionId}]"
       remoteHandlerException.message == remoteHandlerExceptionMessageParam
     })
 
@@ -169,10 +169,10 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
 
     where:
     causeExceptionMessageParam | remoteHandlerExceptionMessageParam
-    "Some illegal arguments"   | "Query execution failed because of java.lang.IllegalArgumentException: Some illegal arguments"
-    null                       | "Query execution failed because of java.lang.IllegalArgumentException"
-    ""                         | "Query execution failed because of java.lang.IllegalArgumentException"
-    "   "                      | "Query execution failed because of java.lang.IllegalArgumentException"
+    "Some illegal arguments"   | "Execution of 'StubQuery' query failed because of java.lang.IllegalArgumentException: Some illegal arguments"
+    null                       | "Execution of 'StubQuery' query failed because of java.lang.IllegalArgumentException"
+    ""                         | "Execution of 'StubQuery' query failed because of java.lang.IllegalArgumentException"
+    "   "                      | "Execution of 'StubQuery' query failed because of java.lang.IllegalArgumentException"
   }
 
   void "when unexpected error is thrown and error logging is not enabled, should catch and wrap, but should not log anything"() {
@@ -196,8 +196,8 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
 
     queryExecutionException.details.present
     verifyAll(queryExecutionException.details.get(), RemoteHandlerException, { RemoteHandlerException remoteHandlerException ->
-      queryExecutionException.message == "Query execution failed [detailsException.exceptionId: ${remoteHandlerException.exceptionId}]"
-      remoteHandlerException.message == "Query execution failed because of java.lang.IllegalArgumentException: Some illegal arguments"
+      queryExecutionException.message == "Execution of 'StubQuery' query failed [detailsException.exceptionId: ${remoteHandlerException.exceptionId}]"
+      remoteHandlerException.message == "Execution of 'StubQuery' query failed because of java.lang.IllegalArgumentException: Some illegal arguments"
     })
 
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {

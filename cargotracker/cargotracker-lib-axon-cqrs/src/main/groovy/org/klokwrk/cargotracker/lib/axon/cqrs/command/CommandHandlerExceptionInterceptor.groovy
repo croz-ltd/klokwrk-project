@@ -21,7 +21,7 @@ import org.klokwrk.cargotracker.lib.boundary.api.exception.RemoteHandlerExceptio
 @Slf4j
 @CompileStatic
 class CommandHandlerExceptionInterceptor<T extends Message<?>> implements MessageHandlerInterceptor<T> {
-  @SuppressWarnings("CodeNarc.CatchException")
+  @SuppressWarnings(["CodeNarc.CatchException", 'DuplicatedCode'])
   @Override
   Object handle(UnitOfWork<? extends T> unitOfWork, InterceptorChain interceptorChain) throws Exception {
     try {
@@ -29,24 +29,26 @@ class CommandHandlerExceptionInterceptor<T extends Message<?>> implements Messag
       return returnValue
     }
     catch (CommandException commandException) {
+      String commandTypeName = unitOfWork.message.payloadType.simpleName
       String exceptionMessage = commandException.message
 
       CommandExecutionException commandExecutionExceptionToThrow =
-          new CommandExecutionException("Command execution failed for business reasons (normal execution flow): $exceptionMessage", null, commandException)
+          new CommandExecutionException("Execution of '$commandTypeName' command failed for business reasons (normal execution flow): $exceptionMessage", null, commandException)
 
-      log.debug("Execution of command handler failed for business reasons (normal execution flow): $exceptionMessage", commandExecutionExceptionToThrow)
+      log.debug("Execution of '$commandTypeName' command handler failed for business reasons (normal execution flow): $exceptionMessage")
 
       throw commandExecutionExceptionToThrow
     }
     catch (Exception e) {
-      String detailsExceptionMessage = "Command execution failed because of ${e.getClass().name}"
+      String commandTypeName = unitOfWork.message.payloadType.simpleName
+      String detailsExceptionMessage = "Execution of '$commandTypeName' command failed because of ${e.getClass().name}"
       if (e.message?.trim()) {
         detailsExceptionMessage += ": ${e.message.trim()}"
       }
       RemoteHandlerException detailsException = new RemoteHandlerException(UUID.randomUUID().toString(), detailsExceptionMessage)
 
       CommandExecutionException commandExecutionExceptionToThrow =
-          new CommandExecutionException("Command execution failed [detailsException.exceptionId: ${detailsException.exceptionId}]", e, detailsException)
+          new CommandExecutionException("Execution of '$commandTypeName' command failed [detailsException.exceptionId: ${detailsException.exceptionId}]", e, detailsException)
 
       log.error("Execution of command handler failed [detailsException.exceptionId: ${detailsException.exceptionId}]", commandExecutionExceptionToThrow)
       throw commandExecutionExceptionToThrow
