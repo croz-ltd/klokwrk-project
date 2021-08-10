@@ -19,3 +19,4 @@ This log lists the architectural decisions for `klokwrk-project`:
 * [ADR-0012 - Response Format](content/0012-response-format.md)
 * [ADR-0013 - Validation taxonomy](content/0013-validation-taxonomy.md)
 * [ADR-0014 - Commit Message Format](content/0014-commit-message-format.md)
+* [ADR-0015 - Handling Exceptions in Distributed CQRS System](content/0015-handling-exceptions-in-distributed-cqrs-system.md)
