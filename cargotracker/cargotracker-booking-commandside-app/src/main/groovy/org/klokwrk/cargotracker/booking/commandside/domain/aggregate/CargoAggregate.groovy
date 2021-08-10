@@ -53,7 +53,7 @@ class CargoAggregate {
   @CreationPolicy(AggregateCreationPolicy.ALWAYS)
   CargoAggregate bookCargo(BookCargoCommand bookCargoCommand, MetaData metaData) {
     if (!bookCargoCommand.destinationLocation.canAcceptCargoFrom(bookCargoCommand.originLocation)) {
-      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeAsText(VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO))
+      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey(VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO))
     }
 
     apply(cargoBookedEventFromBookCargoCommand(bookCargoCommand), metaData)

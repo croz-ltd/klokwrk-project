@@ -151,7 +151,7 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
   }
 
   protected HttpResponseMetaData localizeHttpResponseMetaData(HttpResponseMetaData httpResponseMetaData, DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
-    String fullMessageSubType = domainException.violationInfo.violationCode.codeAsText
+    String fullMessageSubType = domainException.violationInfo.violationCode.codeKey
     List<String> fullMessageSubTypeTokens = fullMessageSubType.tokenize(".")
     String messageSubTypeMain = fullMessageSubTypeTokens[0]
     String messageSubTypeDetails = fullMessageSubTypeTokens.size() > 1 ? fullMessageSubTypeTokens[1..-1].join(".") : ""
