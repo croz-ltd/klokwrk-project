@@ -1,6 +1,8 @@
 # ADR-0012 - Response Format
 * **Status: accepted**
-* Dates: proposed - 2021-04-14
+* Dates:
+  - proposed - 2021-04-14
+  - updated - 2021-08-10
 * Authors: Damir Murat (`damir.murat.git at gmail.com`)
 * Reviewers: None
 
@@ -32,7 +34,8 @@ Format structure is independent of concrete protocol or channel and should be us
 Concrete details of the prescribed format are given in the "[The format of rendered responses](../../article/response-format/responseFormat.md)" article. Although the article presents prescribed
 structures in JSON, concrete format implementation is not essential. It can be anything else that is more suitable for some chosen protocol, as long as defined structures are followed.
 
-Implementations of response renderers are specific for each supported channel.
+Implementations of response renderers are specific for each supported channel. At the moment, we have an implementation for the Spring MVC channel that can be found in `cargotracker-lib-web` module
+in `org.klokwrk.cargotracker.lib.web.spring.mvc` package.
 
 ## Consequences
 ### Positive
