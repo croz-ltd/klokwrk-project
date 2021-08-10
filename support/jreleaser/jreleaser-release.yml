@@ -2,8 +2,9 @@ project:
   name: klokwrk-project
   license: Apache-2.0
 
-  # Prevent creating a release named "Release early-access" for snapshot versions.
-  snapshotPattern: .*-DOESNOTEXIST
+  snapshot:
+    # Prevent creating a release named "Release early-access" for snapshot versions.
+    pattern: .*-DOESNOTEXIST
 
 signing:
   active: NEVER
@@ -21,5 +22,4 @@ release:
 
 files:
   globs:
-    - directory: artifacts-klokwrk-tool-gradle-source-repack
-      include: "*.*"
+    - pattern: artifacts-klokwrk-tool-gradle-source-repack/*.*

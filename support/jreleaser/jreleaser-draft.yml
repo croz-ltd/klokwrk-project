@@ -2,8 +2,9 @@ project:
   name: klokwrk-project
   license: Apache-2.0
 
-  # Prevent creating a release named "Release early-access" for snapshot versions.
-  snapshotPattern: .*-DOESNOTEXIST
+  snapshot:
+    # Prevent creating a release named "Release early-access" for snapshot versions.
+    pattern: .*-DOESNOTEXIST
 
 signing:
   active: NEVER
@@ -18,9 +19,13 @@ release:
     changelog:
       enabled: true
       formatted: ALWAYS
-      change: "- [`{{commitShortHash}}`]({{commitsUrl}}/{{commitShortHash}}) {{commitTitle}}"
+      format: "- [`{{commitShortHash}}`]({{commitsUrl}}/{{commitShortHash}}) {{commitTitle}}"
       links: false
-      hideUncategorized: false
+      hide:
+        uncategorized: false
+      contributors:
+        enabled: true
+        format: '- {{contributorName}} ({{contributorUsernameAsLink}})'
       labelers:
         - label: 'feature'
           title: 'feat: '
@@ -156,5 +161,4 @@ release:
 
 files:
   globs:
-    - directory: artifacts-klokwrk-tool-gradle-source-repack
-      include: "*.*"
+    - pattern: artifacts-klokwrk-tool-gradle-source-repack/*.*
