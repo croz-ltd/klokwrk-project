@@ -50,7 +50,7 @@ class CargoAggregateSpecification extends Specification {
       actualException.cause == null
 
       actualException.violationInfo.violationCode.code == ViolationCode.BAD_REQUEST.code
-      actualException.violationInfo.violationCode.codeAsText == CargoAggregate.VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO
+      actualException.violationInfo.violationCode.codeKey == CargoAggregate.VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO
     }
   }
 
@@ -69,7 +69,7 @@ class CargoAggregateSpecification extends Specification {
       actualException.cause == null
 
       actualException.violationInfo.violationCode.code == ViolationCode.BAD_REQUEST.code
-      actualException.violationInfo.violationCode.codeAsText == CargoAggregate.VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO
+      actualException.violationInfo.violationCode.codeKey == CargoAggregate.VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO
     }
   }
 

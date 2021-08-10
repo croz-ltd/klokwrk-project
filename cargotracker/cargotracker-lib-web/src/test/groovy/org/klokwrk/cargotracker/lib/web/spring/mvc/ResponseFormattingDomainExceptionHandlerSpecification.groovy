@@ -161,7 +161,7 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
 
   void "should work for custom ViolationInfo"() {
     given:
-    ViolationCode violationCode = new ViolationCode(code: "12345", codeAsText: "myTestCode", codeMessage: "codeMessage")
+    ViolationCode violationCode = new ViolationCode(code: "12345", codeKey: "myTestCode", codeMessage: "codeMessage")
     ViolationInfo violationInfo = new ViolationInfo(severity: Severity.WARNING, violationCode: violationCode)
     DomainException exception = new DomainException(violationInfo)
 

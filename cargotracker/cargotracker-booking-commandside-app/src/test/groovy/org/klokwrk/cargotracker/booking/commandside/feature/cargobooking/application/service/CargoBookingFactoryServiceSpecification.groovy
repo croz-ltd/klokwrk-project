@@ -58,7 +58,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     commandException.violationInfo.severity == Severity.WARNING
     commandException.violationInfo.violationCode.code == "400"
     commandException.violationInfo.violationCode.codeMessage == "Bad Request"
-    commandException.violationInfo.violationCode.codeAsText == "originLocationUnknown"
+    commandException.violationInfo.violationCode.codeKey == "originLocationUnknown"
   }
 
   void "createBookCargoCommand - should fail for invalid destinationLocation"() {
@@ -73,7 +73,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     commandException.violationInfo.severity == Severity.WARNING
     commandException.violationInfo.violationCode.code == "400"
     commandException.violationInfo.violationCode.codeMessage == "Bad Request"
-    commandException.violationInfo.violationCode.codeAsText == "destinationLocationUnknown"
+    commandException.violationInfo.violationCode.codeKey == "destinationLocationUnknown"
   }
 
   void "createBookCargoCommand - should work for unspecified aggregate identifier"() {

@@ -27,16 +27,16 @@ import static org.hamcrest.Matchers.not
 /**
  * Immutable data structure describing violation's code and the corresponding non-localized code's message.
  * <p/>
- * There is also <code>codeAsText</code> property that is used for easier resolving of localized messages outside of the domain's boundary.
+ * There is also <code>codeKey</code> property that is used for easier resolving of localized messages outside of the domain's boundary.
  * <p/>
  * All three members must be specified at construction time.
  */
 @KwrkImmutable
 @CompileStatic
 class ViolationCode implements PostMapConstructorCheckable {
-  static final ViolationCode UNKNOWN = new ViolationCode(code: "500", codeAsText: "internalServerError", codeMessage: "Internal Server Error")
-  static final ViolationCode BAD_REQUEST = new ViolationCode(code: "400", codeAsText: "badRequest", codeMessage: "Bad Request")
-  static final ViolationCode NOT_FOUND = new ViolationCode(code: "404", codeAsText: "notFound", codeMessage: "Not Found")
+  static final ViolationCode UNKNOWN = new ViolationCode(code: "500", codeKey: "internalServerError", codeMessage: "Internal Server Error")
+  static final ViolationCode BAD_REQUEST = new ViolationCode(code: "400", codeKey: "badRequest", codeMessage: "Bad Request")
+  static final ViolationCode NOT_FOUND = new ViolationCode(code: "404", codeKey: "notFound", codeMessage: "Not Found")
 
   /**
    * The primary code describing the main category of the violation.
@@ -49,14 +49,14 @@ class ViolationCode implements PostMapConstructorCheckable {
   /**
    * More human-readable alias for <code>code</code> property.
    * <p/>
-   * In this context, human-readable does not mean full sentences but rather some textual encoded value that is easily recognizable by developers. The intention is that <code>codeAsText</code> is
+   * In this context, human-readable does not mean full sentences but rather some textual encoded value that is easily recognizable by developers. The intention is that <code>codeKey</code> is
    * used as an alias of primary code property that is more appealing for writing localized resource bundles at the inbound channel level. For example, when maintaining resource bundles, it should be
    * easier for developers to deduct the meaning of <code>cargoSummaryQueryWebController.fetchCargoSummaryQuery.failure.other.badRequest</code> resource bundle key instead the meaning of
    * <code>cargoSummaryQueryWebController.fetchCargoSummaryQuery.failure.other.400</code> key. And this is exactly the intention behind this property.
    * <p/>
-   * If we need some kind of categorization inside <code>codeAsText</code>, it is recommended to use dot character. For example, <code>notFound.personSummary</code>.
+   * If we need some kind of categorization inside <code>codeKey</code>, it is recommended to use dot character. For example, <code>notFound.personSummary</code>.
    */
-  String codeAsText
+  String codeKey
 
   /**
    * A short human-readable message written in English describing the problem identified by primary code.
@@ -68,7 +68,7 @@ class ViolationCode implements PostMapConstructorCheckable {
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     requireMatch(code, not(blankOrNullString()))
-    requireMatch(codeAsText, not(blankOrNullString()))
+    requireMatch(codeKey, not(blankOrNullString()))
     requireMatch(codeMessage, not(blankOrNullString()))
   }
 }

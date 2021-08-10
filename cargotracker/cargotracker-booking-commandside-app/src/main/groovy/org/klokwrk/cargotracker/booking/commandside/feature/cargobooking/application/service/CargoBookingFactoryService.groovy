@@ -78,9 +78,9 @@ class CargoBookingFactoryService {
     return bookCargoCommand
   }
 
-  protected void requireKnownLocation(Location location, String violationCode) {
+  protected void requireKnownLocation(Location location, String violationCodeKey) {
     if (location == Location.UNKNOWN_LOCATION) {
-      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeAsText(violationCode))
+      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey(violationCodeKey))
     }
   }
 
