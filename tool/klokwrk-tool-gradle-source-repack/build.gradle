@@ -180,6 +180,9 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
       // Do not fallback on plain JVM when AOT native image compilation fails. Throw an error instead.
       "--no-fallback",
 
+      // Build a native image without starting background compilation server as a daemon.
+      "--no-server",
+
       // Comma separated list of directories containing GraalVM native image builder configuration files that are not part of the classpath. This directory may contain all four files configuration
       // files: jni-config.json, reflect-config.json, proxy-config.json and resource-config.json.
       "-H:ConfigurationFileDirectories=${ mainGraalSourceSetDir.absolutePath }",
