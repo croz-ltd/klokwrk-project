@@ -160,11 +160,22 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
       "--report-unsupported-elements-at-runtime",
 
       // A comma-separated list of packages and classes (and implicitly all of their superclasses) that are initialized during image generation. An empty string designates all packages.
-      "--initialize-at-build-time",
+      // As of Graal 21.2, this list should not be empty (https://www.graalvm.org/release-notes/21_2/#native-image)
+      "--initialize-at-build-time=".concat(String.join(",", [
+          "com.sun.beans",
+          "groovy.lang",
+          "groovyjarjarantlr4.v4",
+          "java.beans",
+          "org.apache.groovy",
+          "org.codehaus.groovy"
+      ])),
 
       // A comma-separated list of packages and classes (and implicitly all of their subclasses) that must be initialized at runtime and not during image building. An empty string is currently not
       // supported.
-      "--initialize-at-run-time=org.codehaus.groovy.control.XStreamUtils,groovy.grape.GrapeIvy",
+      "--initialize-at-run-time=".concat(String.join(",", [
+          "org.codehaus.groovy.control.XStreamUtils",
+          "groovy.grape.GrapeIvy"
+      ])),
 
       // Do not fallback on plain JVM when AOT native image compilation fails. Throw an error instead.
       "--no-fallback",

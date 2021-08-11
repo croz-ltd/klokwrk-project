@@ -13,6 +13,7 @@ Here we maintain list of issues in 3rd party software that are discovered during
 | WON'T FIX           | Issue is declined by a maintainer. |
 | INVALID             | Issue is reported, but is resolved as invalid. |
 | RESOLVED            | Issue is reported, and can be resolved without any fix. Similar to question. |
+| OBSOLETE            | Issue is reported and recognized, but will be resolved in some other way. |
 
 ## List of reported issues
 This is a list of all issues, categorized per 3rd party software, that are reported by `klokwrk-project` team members.
@@ -23,6 +24,8 @@ This is a list of all issues, categorized per 3rd party software, that are repor
   * https://github.com/AxonFramework/AxonFramework/pull/1371#issuecomment-648673152
 * VERIFIED (4.4.2) - https://github.com/AxonFramework/AxonFramework/issues/1481
 * VERIFIED (4.5.1) - https://github.com/AxonFramework/AxonFramework/issues/1805
+* FIXED (4.6.0) - https://github.com/AxonFramework/AxonFramework/issues/1901
+  * https://github.com/AxonFramework/AxonFramework/pull/1905
 
 ### Axon Server:
 * VERIFIED (in Axon Framework 4.4.1) - https://github.com/AxonIQ/axon-server-se/issues/148
@@ -40,15 +43,15 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (1.6) - https://github.com/CodeNarc/CodeNarc/issues/511
 * VERIFIED (2.0) - https://github.com/CodeNarc/CodeNarc/issues/512
 * VERIFIED (1.6) - https://github.com/CodeNarc/CodeNarc/issues/516
-* VERIFIED (next release) - https://github.com/CodeNarc/CodeNarc/issues/611
+* VERIFIED (2.2.0) - https://github.com/CodeNarc/CodeNarc/issues/611
   * https://github.com/CodeNarc/CodeNarc/pull/635
-* REPORTED - https://github.com/CodeNarc/CodeNarc/issues/612
-* VERIFIED (next release)- https://github.com/CodeNarc/CodeNarc/issues/613
-* VERIFIED (next release) - https://github.com/CodeNarc/CodeNarc/issues/614
+* WON'T FIX - https://github.com/CodeNarc/CodeNarc/issues/612
+* VERIFIED (2.2.0)- https://github.com/CodeNarc/CodeNarc/issues/613
+* VERIFIED (2.2.0) - https://github.com/CodeNarc/CodeNarc/issues/614
   * https://github.com/CodeNarc/CodeNarc/pull/634
-* VERIFIED (next release) - https://github.com/CodeNarc/CodeNarc/issues/632
+* VERIFIED (2.2.0) - https://github.com/CodeNarc/CodeNarc/issues/632
   * https://github.com/CodeNarc/CodeNarc/pull/633
-* VERIFIED (next release) - https://github.com/CodeNarc/CodeNarc/issues/636
+* VERIFIED (2.2.0) - https://github.com/CodeNarc/CodeNarc/issues/636
 
 ### GitHub Action - gradle-command-action
 * IN PROGRESS - https://github.com/eskatos/gradle-command-action/issues/22
@@ -76,18 +79,18 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (2020.3) - https://youtrack.jetbrains.com/issue/IDEA-239966
 * IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-243620
 * VERIFIED (2021.1) - https://youtrack.jetbrains.com/issue/IDEA-255422
-* IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-261239
+* VERIFIED (2021.2) - https://youtrack.jetbrains.com/issue/IDEA-261239
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-270964
 
 ### JReleaser
-* FIXED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/85
-* FIXED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/86
-* FIXED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/98
-* FIXED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/99
-* FIXED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/100
-* FIXED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/114
+* VERIFIED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/85
+* VERIFIED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/86
+* VERIFIED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/98
+* VERIFIED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/99
+* VERIFIED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/100
+* VERIFIED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/114
 * RESOLVED (0.3.0)- https://github.com/jreleaser/jreleaser/issues/120
-* FIXED (0.4.0) - https://github.com/jreleaser/jreleaser/issues/121
+* VERIFIED (0.4.0) - https://github.com/jreleaser/jreleaser/issues/121
 
 ### Kordamp Gradle Plugins
 * VERIFIED (0.36.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/291
@@ -107,7 +110,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * IN PROGRESS - https://github.com/kordamp/kordamp-gradle-plugins/issues/486
 
 ### micronaut-core
-* IN PROGRESS - https://github.com/micronaut-projects/micronaut-core/issues/4622
+* OBSOLETE - https://github.com/micronaut-projects/micronaut-core/issues/4622
 
 ### micronaut-gradle-plugin
 * REPORTED - https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/92
@@ -128,18 +131,11 @@ This is a list of all issues that are NOT reported by `klokwrk-project` team mem
 
 When particular issue is resolved, it can be removed from this list when there is no value to monitor it further.
 
-### Codenarc
-* [MissingBlankLineBeforeAnnotatedField - False-positive at the beginning of a class](https://github.com/CodeNarc/CodeNarc/issues/606)
-
 ### Github
 * [GitHub IS 1017 - Support semi-linear merge option for pull requests](https://github.com/isaacs/github/issues/1017)
   * related to [ADR 0007 - ADR-0007 - Git Workflow with Linear History](../adr/content/0007-git-workflow-with-linear-history.md)
 * [GitHub IS 1143 - Rebase and merge pull request option should add a merge commit](https://github.com/isaacs/github/issues/1143)
   * related to [ADR 0007 - ADR-0007 - Git Workflow with Linear History](../adr/content/0007-git-workflow-with-linear-history.md)
 
-### Groovy
-* [Groovy IS 9373 - ASM: rework line numbers...](https://issues.apache.org/jira/browse/GROOVY-9373)
-
 ### JaCoCo
 * [JaCoCo PR 321 - Exceptions cause missed branches in previous lines](https://github.com/jacoco/jacoco/pull/321)
-* [JaCoCo IS 884 - Groovy 2.5.5 unreachable line in byte code](https://github.com/jacoco/jacoco/issues/884)
