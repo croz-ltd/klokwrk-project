@@ -18,22 +18,42 @@
 package org.klokwrk.cargotracker.booking.commandside.infrastructure.springbootconfig
 
 import groovy.transform.CompileStatic
+import io.opentracing.Tracer
+import org.axonframework.commandhandling.CommandBus
+import org.axonframework.commandhandling.gateway.CommandGateway
+import org.axonframework.commandhandling.gateway.DefaultCommandGateway
+import org.axonframework.commandhandling.gateway.RetryScheduler
+import org.axonframework.extensions.tracing.MessageTagBuilderService
+import org.axonframework.extensions.tracing.OpenTraceDispatchInterceptor
+import org.axonframework.extensions.tracing.OpenTraceHandlerInterceptor
+import org.axonframework.extensions.tracing.TracingCommandGateway
+import org.axonframework.messaging.MessageHandlerInterceptor
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor
+import org.klokwrk.cargotracker.lib.axon.cqrs.command.CustomIntervalRetryScheduler
+import org.klokwrk.cargotracker.lib.axon.cqrs.command.NonTransientFailurePredicate
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingCommandHandlerEnhancerDefinition
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingEventSourcingHandlerEnhancerDefinition
 import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizer
 import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
 import org.klokwrk.lib.validation.springboot.ValidationConfigurationProperties
 import org.klokwrk.lib.validation.springboot.ValidationService
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledExecutorService
 
 @EnableConfigurationProperties([EssentialJacksonCustomizerConfigurationProperties, ValidationConfigurationProperties])
 @Configuration
 @CompileStatic
 class SpringBootConfig {
+
+  private static final Integer MAX_RETRY_COUNT_DEFAULT = 3
+  private static final Long RETRY_INTERVAL_DEFAULT = 1000L
+  private static final Integer RETRY_EXECUTOR_POOL_SIZE_DEFAULT = 4
 
   @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Bean
@@ -60,5 +80,58 @@ class SpringBootConfig {
   @Bean
   ValidationService validationService(ValidationConfigurationProperties validationConfigurationProperties) {
     return new ValidationService(validationConfigurationProperties)
+  }
+
+  @ConditionalOnProperty(value = "axon.extension.tracing.enabled", havingValue = "false", matchIfMissing = false)
+  @Bean
+  CommandGateway defaultCommandGateway(CommandBus commandBus) {
+    ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(RETRY_EXECUTOR_POOL_SIZE_DEFAULT)
+    RetryScheduler retryScheduler = CustomIntervalRetryScheduler
+        .builder()
+        .retryExecutor(scheduledExecutorService)
+        .nonTransientFailurePredicate(new NonTransientFailurePredicate())
+        .maxRetryCount(MAX_RETRY_COUNT_DEFAULT)
+        .retryInterval(RETRY_INTERVAL_DEFAULT).build()
+
+    CommandGateway defaultCommandGateway = DefaultCommandGateway
+        .builder()
+        .commandBus(commandBus)
+        .retryScheduler(retryScheduler)
+        .build()
+
+    return defaultCommandGateway
+  }
+
+  @ConditionalOnProperty(value = "axon.extension.tracing.enabled", havingValue = "true", matchIfMissing = true)
+  @Bean
+  CommandGateway tracingCommandGateway(
+      Tracer tracer, CommandBus commandBus, OpenTraceDispatchInterceptor openTraceDispatchInterceptor, OpenTraceHandlerInterceptor openTraceHandlerInterceptor,
+      MessageTagBuilderService messageTagBuilderService)
+  {
+    commandBus.registerHandlerInterceptor(openTraceHandlerInterceptor as MessageHandlerInterceptor)
+
+    ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(RETRY_EXECUTOR_POOL_SIZE_DEFAULT)
+    RetryScheduler retryScheduler = CustomIntervalRetryScheduler
+        .builder()
+        .retryExecutor(scheduledExecutorService)
+        .nonTransientFailurePredicate(new NonTransientFailurePredicate())
+        .maxRetryCount(MAX_RETRY_COUNT_DEFAULT)
+        .retryInterval(RETRY_INTERVAL_DEFAULT).build()
+
+    CommandGateway commandGatewayDelegate = DefaultCommandGateway
+        .builder()
+        .commandBus(commandBus)
+        .retryScheduler(retryScheduler)
+        .build()
+
+    TracingCommandGateway tracingCommandGateway = TracingCommandGateway
+        .builder()
+        .tracer(tracer)
+        .delegateCommandGateway(commandGatewayDelegate)
+        .messageTagBuilderService(messageTagBuilderService)
+        .build()
+
+    tracingCommandGateway.registerDispatchInterceptor(openTraceDispatchInterceptor)
+    return tracingCommandGateway
   }
 }
