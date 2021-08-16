@@ -25,12 +25,8 @@ import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMe
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
 
-@SpringBootTest
-@ActiveProfiles("testIntegration")
-class CargoBookingApplicationServiceIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
+abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
   @Autowired
   BookCargoPortIn bookCargoPortIn
 
