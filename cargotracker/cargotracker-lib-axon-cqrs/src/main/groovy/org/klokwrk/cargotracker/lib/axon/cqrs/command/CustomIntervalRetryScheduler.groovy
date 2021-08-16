@@ -9,6 +9,7 @@ import java.util.function.Predicate
 
 import static org.axonframework.common.BuilderUtils.assertPositive
 
+// TODO dmurat: remove and replace with Axon IntervalRetryScheduler when, and if, https://github.com/AxonFramework/AxonFramework/pull/1910 gets merged and released.
 /**
  * Custom variant of Axon {@code IntervalRetryScheduler} that allows configurable logic for determining non transient exceptions.
  */
