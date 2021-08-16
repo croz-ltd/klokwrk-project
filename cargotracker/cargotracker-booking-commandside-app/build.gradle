@@ -50,8 +50,8 @@ dependencies {
   implementation "org.springframework.boot:spring-boot-starter-web"
 
   runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
-  runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"
-  runtimeOnly "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
+  implementation "io.opentracing.contrib:opentracing-spring-cloud-starter"
+  implementation "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
 
   testImplementation project(":cargotracker-booking-commandside-test-support")
   testImplementation project(":klokwrk-lib-archunit")

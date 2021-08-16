@@ -45,57 +45,160 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     sliceRule.check(allKlokwrkClasses)
   }
 
-  void "commandside app should only access classes from allowed dependencies"() {
+  void "commandside app spring boot application class should only access classes from allowed dependencies"() {
     given:
     String[] thirdPartyDependencyAllPackages = [
         "java..",
         "org.codehaus.groovy..",
         "groovy..",
 
-        "javax.validation..",
-        "javax.servlet",
-
-        "org.axonframework.messaging..",
-        "org.axonframework.modelling.command..",
-        "org.hamcrest",
-        "org.springframework.."
+        "org.springframework.boot"
     ]
 
-    String[] cargotrackerBookingCommandsideAppAllPackages = ["org.klokwrk.cargotracker.booking.commandside.."]
+    String[] cargotrackerBookingCommandsideAppSpringBootApplicationPackages = ["org.klokwrk.cargotracker.booking.commandside"]
+
+    // @formatter:off
+    ArchRule rule = ArchRuleDefinition
+        .classes().that().resideInAnyPackage(cargotrackerBookingCommandsideAppSpringBootApplicationPackages)
+        .should().onlyAccessClassesThat().resideInAnyPackage(
+            cargotrackerBookingCommandsideAppSpringBootApplicationPackages +
+
+            thirdPartyDependencyAllPackages as String[]
+        )
+    // @formatter:on
+
+    expect:
+    rule.check(allKlokwrkClasses)
+  }
+
+  void "commandside app domain aggregate classes should only access classes from allowed dependencies"() {
+    given:
+    String[] thirdPartyDependencyAllPackages = [
+        "java..",
+        "org.codehaus.groovy..",
+        "groovy..",
+
+        "org.axonframework.modelling.command.."
+    ]
+
+    String[] cargotrackerBookingCommandsideAppDomainAggregatePackages = ["org.klokwrk.cargotracker.booking.commandside.domain.aggregate.."]
+
+    String[] cargotrackerBookingAxonApiAllPackages = ["org.klokwrk.cargotracker.booking.axon.api.."]
+    String[] cargotrackerBookingDomainModelAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.."]
+
+    String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracker.lib.boundary.api.."]
+
+    // @formatter:off
+    ArchRule rule = ArchRuleDefinition
+        .classes().that().resideInAnyPackage(cargotrackerBookingCommandsideAppDomainAggregatePackages)
+        .should().onlyAccessClassesThat().resideInAnyPackage(
+            cargotrackerBookingCommandsideAppDomainAggregatePackages +
+
+            cargotrackerBookingAxonApiAllPackages +
+            cargotrackerBookingDomainModelAllPackages +
+
+            cargotrackerLibBoundaryApiAllPackages +
+
+            thirdPartyDependencyAllPackages as String[]
+        )
+    // @formatter:on
+
+    expect:
+    rule.check(allKlokwrkClasses)
+  }
+
+  void "commandside app feature classes should only access classes from allowed dependencies"() {
+    given:
+    String[] thirdPartyDependencyAllPackages = [
+        "java..",
+        "org.codehaus.groovy..",
+        "groovy..",
+
+        "org.hamcrest"
+    ]
+
+    String[] cargotrackerBookingCommandsideAppFeaturePackages = ["org.klokwrk.cargotracker.booking.commandside.feature.."]
 
     String[] cargotrackerBookingAxonApiAllPackages = ["org.klokwrk.cargotracker.booking.axon.api.."]
     String[] cargotrackerBookingBoundaryWebAllPackages = ["org.klokwrk.cargotracker.booking.boundary.web.."]
     String[] cargotrackerBookingDomainModelAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.."]
+    String[] cargotrackerBookingCommandsideDomainAggregatePackages = ["org.klokwrk.cargotracker.booking.commandside.domain.aggregate.."]
 
-    String[] cargotrackerLibAxonCqrsAllPackages = ["org.klokwrk.cargotracker.lib.axon.cqrs.."]
-    String[] cargotrackerLibAxonLoggingAllPackages = ["org.klokwrk.cargotracker.lib.axon.logging.."]
+    String[] cargotrackerLibAxonCqrsCommandPackages = ["org.klokwrk.cargotracker.lib.axon.cqrs.command.."]
     String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracker.lib.boundary.api.."]
     String[] cargotrackerLibWebAllPackages = ["org.klokwrk.cargotracker.lib.web.."]
 
-    String[] klokwrkLibJacksonAllPackages = ["org.klokwrk.lib.jackson.."]
     String[] klokwrkLibValidationPackages = ["org.klokwrk.lib.validation.."]
 
     String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lang.groovy.."]
 
     // @formatter:off
     ArchRule rule = ArchRuleDefinition
-        .classes().that().resideInAnyPackage(cargotrackerBookingCommandsideAppAllPackages)
+        .classes().that().resideInAnyPackage(cargotrackerBookingCommandsideAppFeaturePackages)
         .should().onlyAccessClassesThat().resideInAnyPackage(
-            cargotrackerBookingCommandsideAppAllPackages +
+            cargotrackerBookingCommandsideAppFeaturePackages +
 
             cargotrackerBookingAxonApiAllPackages +
             cargotrackerBookingBoundaryWebAllPackages +
             cargotrackerBookingDomainModelAllPackages +
+            cargotrackerBookingCommandsideDomainAggregatePackages +
 
-            cargotrackerLibAxonCqrsAllPackages +
-            cargotrackerLibAxonLoggingAllPackages +
+            cargotrackerLibAxonCqrsCommandPackages +
             cargotrackerLibBoundaryApiAllPackages +
             cargotrackerLibWebAllPackages +
 
-            klokwrkLibJacksonAllPackages +
             klokwrkLibValidationPackages +
 
             klokwrkLangGroovyAllPackages +
+
+            thirdPartyDependencyAllPackages as String[]
+        )
+    // @formatter:on
+
+    expect:
+    rule.check(allKlokwrkClasses)
+  }
+
+  void "commandside app infrastructure classes should only access classes from allowed dependencies"() {
+    given:
+    String[] thirdPartyDependencyAllPackages = [
+        "java..",
+        "org.codehaus.groovy..",
+        "groovy..",
+
+        "org.axonframework.commandhandling",
+        "org.axonframework.commandhandling.gateway",
+        "org.axonframework.messaging",
+        "org.axonframework.messaging.annotation",
+
+        "org.axonframework.extensions.tracing",
+
+        "org.springframework.boot.context..",
+        "org.springframework.beans..",
+        "org.springframework.context.."
+    ]
+
+    String[] cargotrackerBookingCommandsideAppInfrastructurePackages = ["org.klokwrk.cargotracker.booking.commandside.infrastructure.."]
+
+    String[] cargotrackerLibAxonCqrsCommandPackages = ["org.klokwrk.cargotracker.lib.axon.cqrs.command.."]
+    String[] cargotrackerLibAxonLoggingAllPackages = ["org.klokwrk.cargotracker.lib.axon.logging.."]
+    String[] cargotrackerLibWebAllPackages = ["org.klokwrk.cargotracker.lib.web.."]
+
+    String[] klokwrkLibJacksonAllPackages = ["org.klokwrk.lib.jackson.."]
+    String[] klokwrkLibValidationSpringBootPackages = ["org.klokwrk.lib.validation.springboot"]
+
+    // @formatter:off
+    ArchRule rule = ArchRuleDefinition
+        .classes().that().resideInAnyPackage(cargotrackerBookingCommandsideAppInfrastructurePackages)
+        .should().onlyAccessClassesThat().resideInAnyPackage(
+            cargotrackerBookingCommandsideAppInfrastructurePackages +
+
+            cargotrackerLibAxonCqrsCommandPackages +
+            cargotrackerLibAxonLoggingAllPackages +
+            cargotrackerLibWebAllPackages +
+
+            klokwrkLibJacksonAllPackages +
+            klokwrkLibValidationSpringBootPackages +
 
             thirdPartyDependencyAllPackages as String[]
         )

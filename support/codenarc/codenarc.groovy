@@ -258,7 +258,9 @@ ruleset {
   SpaceAfterNotOperator
   SpaceAfterMethodCallName
   SpaceAfterMethodDeclarationName
-  SpaceAfterOpeningBrace
+  SpaceAfterOpeningBrace {
+    ignoreEmptyBlock = true
+  }
   SpaceAfterSemicolon
   SpaceAfterSwitch
   SpaceAfterWhile
@@ -268,7 +270,9 @@ ruleset {
     characterAfterColonRegex = /\s/
   }
   SpaceAroundOperator
-  SpaceBeforeClosingBrace
+  SpaceBeforeClosingBrace {
+    ignoreEmptyBlock = true
+  }
   SpaceBeforeOpeningBrace
   SpaceInsideParentheses
   TrailingWhitespace
