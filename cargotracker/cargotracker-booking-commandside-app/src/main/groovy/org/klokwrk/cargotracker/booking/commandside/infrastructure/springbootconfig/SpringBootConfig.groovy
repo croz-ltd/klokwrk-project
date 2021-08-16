@@ -51,8 +51,8 @@ import java.util.concurrent.ScheduledExecutorService
 @CompileStatic
 class SpringBootConfig {
 
-  private static final Integer MAX_RETRY_COUNT_DEFAULT = 3
-  private static final Long RETRY_INTERVAL_DEFAULT = 1000L
+  static final Integer MAX_RETRY_COUNT_DEFAULT = 3
+  static final Long RETRY_INTERVAL_DEFAULT = 1000L
   private static final Integer RETRY_EXECUTOR_POOL_SIZE_DEFAULT = 4
 
   @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
