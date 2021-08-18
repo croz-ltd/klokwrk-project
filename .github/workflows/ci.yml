@@ -54,18 +54,18 @@ jobs:
           java-version: ${{ matrix.java }}
 
       - name: Assemble
-        uses: eskatos/gradle-command-action@v1
+        uses: gradle/gradle-build-action@v1
         with:
           arguments: assemble testClasses testIntegrationClasses --continue --exclude-task groovydoc
 
       - name: Test Unit
-        uses: eskatos/gradle-command-action@v1
+        uses: gradle/gradle-build-action@v1
         with:
           arguments: test --parallel --continue
 
       - name: Test Unit Report
         if: ${{ always() }}
-        uses: eskatos/gradle-command-action@v1
+        uses: gradle/gradle-build-action@v1
         with:
           arguments: allTestUnitReports
 
@@ -78,13 +78,13 @@ jobs:
 
       - name: Test Integration
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        uses: eskatos/gradle-command-action@v1
+        uses: gradle/gradle-build-action@v1
         with:
           arguments: testIntegration --parallel --continue
 
       - name: Test Integration Report
         if: ${{ matrix.os == 'ubuntu-latest' && always() }}
-        uses: eskatos/gradle-command-action@v1
+        uses: gradle/gradle-build-action@v1
         with:
           arguments: allTestIntegrationReports
 
@@ -97,13 +97,13 @@ jobs:
 
       - name: Test Component
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        uses: eskatos/gradle-command-action@v1
+        uses: gradle/gradle-build-action@v1
         with:
           arguments: testComponent --parallel --continue
 
       - name: Test Component Report
         if: ${{ matrix.os == 'ubuntu-latest' && always() }}
-        uses: eskatos/gradle-command-action@v1
+        uses: gradle/gradle-build-action@v1
         with:
           arguments: allTestComponentReports
 
@@ -116,7 +116,7 @@ jobs:
 
       - name: CodeNarc
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' }}
-        uses: eskatos/gradle-command-action@v1
+        uses: gradle/gradle-build-action@v1
         with:
           arguments: aggregateCodenarc
 
@@ -129,7 +129,7 @@ jobs:
 
       - name: JaCoCo Coverage Report
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' }}
-        uses: eskatos/gradle-command-action@v1
+        uses: gradle/gradle-build-action@v1
         with:
           arguments: aggregateJacocoReport
 
@@ -142,7 +142,7 @@ jobs:
 
       - name: Groovydoc
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' && github.ref == 'refs/heads/master' && github.event_name == 'push' }}
-        uses: eskatos/gradle-command-action@v1
+        uses: gradle/gradle-build-action@v1
         with:
           arguments: aggregateGroovydoc
 

@@ -58,12 +58,12 @@ jobs:
           native-image: true
 
       - name: Assemble
-        uses: eskatos/gradle-command-action@v1
+        uses: gradle/gradle-build-action@v1
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue --exclude-task groovydoc clean assemble testClasses
 
       - name: Test Unit
-        uses: eskatos/gradle-command-action@v1
+        uses: gradle/gradle-build-action@v1
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue check
 
@@ -81,7 +81,7 @@ jobs:
 
       - name: Build GraalVM native image for mac or linux
         if: ${{ matrix.label == 'linux' || matrix.label == 'mac'}}
-        uses: eskatos/gradle-command-action@v1
+        uses: gradle/gradle-build-action@v1
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
 
