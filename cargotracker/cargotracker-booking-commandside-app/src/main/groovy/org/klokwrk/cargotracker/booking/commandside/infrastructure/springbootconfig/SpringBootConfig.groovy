@@ -82,8 +82,15 @@ class SpringBootConfig {
     return new ValidationService(validationConfigurationProperties)
   }
 
-  // TODO dmurat: refactor (ideally, remove) defaultCommandGateway and tracingCommandGateway if https://discuss.axoniq.io/t/issues-when-configuring-commandgateway-with-retryscheduler/3518
-  //              will be resolved somehow.
+  // NOTE: At the moment, configuring a RetryScheduler is somewhat awkward. In our scenario with tracing extension present, it requires a redefinition of both DefaultCommandGateway and
+  //       TracingCommandGateway beans. This introduces explicit imports of numerous classes from tracing extension and redefinition of related dependencies as implementation instead of runtime
+  //       dependencies.
+  //
+  //       As explained in https://discuss.axoniq.io/t/issues-when-configuring-commandgateway-with-retryscheduler/3518, some (or all) of these problems might be handled in the future when the new
+  //       implementation of tracing extension (based on Open Telemetry API) will be available.
+  //
+  //       When and if this happens, we should update this setup.
+  //
   @ConditionalOnProperty(value = "axon.extension.tracing.enabled", havingValue = "false", matchIfMissing = false)
   @Bean
   CommandGateway defaultCommandGateway(CommandBus commandBus) {
