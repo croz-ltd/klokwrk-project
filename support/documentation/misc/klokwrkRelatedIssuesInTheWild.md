@@ -26,6 +26,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (4.5.1) - https://github.com/AxonFramework/AxonFramework/issues/1805
 * FIXED (4.6.0) - https://github.com/AxonFramework/AxonFramework/issues/1901
   * https://github.com/AxonFramework/AxonFramework/pull/1905
+* IN PROGRESS - https://github.com/AxonFramework/AxonFramework/pull/1910
 
 ### Axon Server:
 * VERIFIED (in Axon Framework 4.4.1) - https://github.com/AxonIQ/axon-server-se/issues/148
