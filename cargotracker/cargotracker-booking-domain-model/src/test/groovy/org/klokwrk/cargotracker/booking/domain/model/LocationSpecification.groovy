@@ -53,7 +53,7 @@ class LocationSpecification extends Specification {
   void "map constructor should fail for invalid input params for construction of contained properties"() {
     when:
     new Location(
-        code: new UnLoCode(code: codeParameter), name: new InternationalizedName(name: nameParameter), countryName: new InternationalizedName(name: countryNameParameter),
+        unLoCode: new UnLoCode(code: codeParameter), name: new InternationalizedName(name: nameParameter), countryName: new InternationalizedName(name: countryNameParameter),
         unLoCodeFunction: new UnLoCodeFunction(functionEncoded: functionParameter)
     )
 
@@ -63,10 +63,10 @@ class LocationSpecification extends Specification {
 
     where:
     codeParameter | nameParameter | countryNameParameter | functionParameter | errorMessagePartParam
-    null          | "someName"    | "someCountry"        | "0------"         | "not(blankOrNullString())"
-    "HRRJK"       | null          | "someCountry"        | "0------"         | "not(blankOrNullString())"
-    "HRRJK"       | "someName"    | null                 | "0------"         | "not(blankOrNullString())"
-    "HRRJK"       | "someName"    | "someCountry"        | null              | "not(blankOrNullString())"
+    null          | "someName"    | "someCountry"        | "0-------"        | "item: code, expected: not(blankOrNullString())"
+    "HRRJK"       | null          | "someCountry"        | "0-------"        | "item: name, expected: not(blankOrNullString())"
+    "HRRJK"       | "someName"    | null                 | "0-------"        | "item: name, expected: not(blankOrNullString())"
+    "HRRJK"       | "someName"    | "someCountry"        | null              | "item: functionEncoded, expected: not(blankOrNullString())"
   }
 
   void "create() factory method should work for correct input params"() {
