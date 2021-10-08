@@ -51,6 +51,18 @@ class AxonMessageHelperSpecification extends Specification {
     globalIndex == "10"
   }
 
+  void "fetchGlobalIndexAsStringIfPossible - should work when global index is zero - GlobalSequenceTrackingToken"() {
+    DomainEventMessage domainEventMessage = new GenericDomainEventMessage("MyAggregate", "123", 0, "payload")
+    GlobalSequenceTrackingToken globalSequenceTrackingToken = new GlobalSequenceTrackingToken(0)
+    GenericTrackedDomainEventMessage genericTrackedDomainEventMessage = new GenericTrackedDomainEventMessage(globalSequenceTrackingToken, domainEventMessage)
+
+    when:
+    String globalIndex = AxonMessageHelper.fetchGlobalIndexAsStringIfPossible(genericTrackedDomainEventMessage)
+
+    then:
+    globalIndex == "0"
+  }
+
   void "fetchGlobalIndexAsStringIfPossible - should work when global index is NOT available - GenericMessage"() {
     given:
     GenericMessage genericMessage = new GenericMessage(null)

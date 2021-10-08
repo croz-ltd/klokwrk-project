@@ -94,7 +94,7 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
       loggingEvents[0].message.contains(aggregateIdentifier)
 
       // sample message: Executing EventSourcingHandler method [MyTestAggregate.onMyTestAggregateCreatedEvent(MyTestAggregateCreatedEvent)] with event [MyTestAggregateCreatedEvent(aggregateIdentifier: 4bbf8ddd-6310-424d-8085-882f9df64200, sequenceNumber: 0)]
-      loggingEvents[0].message ==~ /Executing EventHandler method \[MyTestProjector.handle\(MyTestAggregateCreatedEvent\)] with event \[eventGlobalIndex: n\/a, eventId: \p{Graph}{36}, MyTestAggregateCreatedEvent\(aggregateIdentifier: \p{Graph}{36}, sequenceNumber: 0\)]/
+      loggingEvents[0].message ==~ /Executing EventHandler method \[MyTestProjector.handle\(MyTestAggregateCreatedEvent\)] with event \[eventGlobalIndex: 0, eventId: \p{Graph}{36}, MyTestAggregateCreatedEvent\(aggregateIdentifier: \p{Graph}{36}, sequenceNumber: 0\)]/
 
       loggingEvents[1].level == Level.DEBUG
       loggingEvents[1].message.contains(aggregateIdentifier)

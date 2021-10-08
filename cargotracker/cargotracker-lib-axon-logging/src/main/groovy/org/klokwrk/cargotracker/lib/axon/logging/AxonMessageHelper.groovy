@@ -34,7 +34,9 @@ class AxonMessageHelper {
   static final String SEQUENCE_NUMBER = "sequenceNumber"
 
   static String fetchGlobalIndexAsStringIfPossible(Message<?> message, String nonExistingPlaceholder = NOT_AVAILABLE) {
-    return fetchGlobalIndexIfPossible(message) ?: nonExistingPlaceholder
+    Long globalIndex = fetchGlobalIndexIfPossible(message)
+    String globalIndexString = globalIndex != null ? globalIndex.toString() : nonExistingPlaceholder
+    return globalIndexString
   }
 
   @SuppressWarnings("CodeNarc.Instanceof")
