@@ -161,7 +161,7 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
 
   void "should work for custom ViolationInfo"() {
     given:
-    ViolationCode violationCode = new ViolationCode(code: "12345", codeKey: "myTestCode", codeMessage: "codeMessage")
+    ViolationCode violationCode = new ViolationCode(code: "12345", codeKey: codeKeyParam, codeMessage: "codeMessage")
     ViolationInfo violationInfo = new ViolationInfo(severity: Severity.WARNING, violationCode: violationCode)
     DomainException exception = new DomainException(violationInfo)
 
@@ -184,7 +184,7 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
 
       metadata.violation.propertiesFiltered.size() == 5
       metadata.violation.code == "12345"
-      metadata.violation.message == "My violation code message"
+      metadata.violation.message == violationMessageParam
       metadata.violation.type == ViolationType.DOMAIN.name().toLowerCase()
       metadata.violation.logUuid == null
       metadata.violation.validationReport == null
@@ -193,5 +193,10 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
       metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
       metadata.http.message == HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase
     }
+
+    where:
+    codeKeyParam                            | violationMessageParam
+    "myTestCode"                            | "My violation code message"
+    "myMainTestCode.myMoreSpecificTestCode" | "My more specific violation code message"
   }
 }
