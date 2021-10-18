@@ -70,9 +70,19 @@ class ResponseFormattingConstraintViolationExceptionHandlerSpecification extends
     @Size(min = 1, max = 15)
     String nestedStringProperty
 
-    @NotNull
-    @Min(value = 10L)
     Integer nestedIntegerProperty
+
+    @SuppressWarnings("unused")
+    @NotNull
+    @Min(value = 10L, message = "") // Attribute message is empty string to test that scenario too. Do note that compiler will complain if message is null, thus we do not test for that case.
+    Integer getNestedIntegerProperty() {
+      return nestedIntegerProperty
+    }
+
+    @SuppressWarnings("unused")
+    @NotNull
+    @Min(value = 20L, message = "   ") // Attribute message is whitespace string to test that scenario too
+    Integer secondNestedIntegerProperty
   }
 
   Locale locale
@@ -135,7 +145,7 @@ class ResponseFormattingConstraintViolationExceptionHandlerSpecification extends
   void "should create expected validation report in case of validation failure"() {
     given:
     LocalDateTime currentLocalDateTime = LocalDateTime.now()
-    NestedTestObject nestedTestObject = new NestedTestObject(nestedStringProperty: "nested-bla", nestedIntegerProperty: 1)
+    NestedTestObject nestedTestObject = new NestedTestObject(nestedStringProperty: "nested-bla", nestedIntegerProperty: 1, secondNestedIntegerProperty: 2)
     TestRootObject testRootObject = new TestRootObject(stringProperty: "", localDateTimeProperty: currentLocalDateTime + 60, nestedTestObject: nestedTestObject)
     Set<ConstraintViolation> constraintViolationSet = validator.validate(testRootObject)
     ConstraintViolationException constraintViolationException = new ConstraintViolationException(constraintViolationSet)
@@ -149,12 +159,13 @@ class ResponseFormattingConstraintViolationExceptionHandlerSpecification extends
     ValidationReportConstraintViolation localDateTimePropertyConstraintViolation = responseMetaDataValidationReportPart.constraintViolations.find({ it.path == "localDateTimeProperty" })
     ValidationReportConstraintViolation nestedTestObjectPropertyConstraintViolation = responseMetaDataValidationReportPart.constraintViolations.find({ it.path == "nestedTestObject" })
     ValidationReportConstraintViolation nestedIntegerPropertyConstraintViolation = responseMetaDataValidationReportPart.constraintViolations.find({ it.path == "nestedTestObject.nestedIntegerProperty" })
+    ValidationReportConstraintViolation secondIntegerPropertyConstraintViolation = responseMetaDataValidationReportPart.constraintViolations.find({ it.path == "nestedTestObject.secondNestedIntegerProperty" })
 
     then:
     verifyAll(responseMetaDataValidationReportPart) {
       it.root.type == "testRootObject"
 
-      it.constraintViolations.size() == 4
+      it.constraintViolations.size() == 5
 
       stringPropertyConstraintViolation.type == "size"
       stringPropertyConstraintViolation.scope == "property"
@@ -170,7 +181,11 @@ class ResponseFormattingConstraintViolationExceptionHandlerSpecification extends
 
       nestedIntegerPropertyConstraintViolation.type == "min"
       nestedIntegerPropertyConstraintViolation.scope == "property"
-      nestedIntegerPropertyConstraintViolation.message == "must be greater than or equal to 10"
+      nestedIntegerPropertyConstraintViolation.message == "Request is not valid." // Resolved from bundle
+
+      secondIntegerPropertyConstraintViolation.type == "min"
+      secondIntegerPropertyConstraintViolation.scope == "property"
+      secondIntegerPropertyConstraintViolation.message == "Request is not valid." // Resolved from bundle
     }
   }
 }

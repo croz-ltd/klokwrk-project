@@ -149,7 +149,7 @@ class ResponseFormattingConstraintViolationExceptionHandler implements MessageSo
       String scope = null
 
       ConstraintLocation.ConstraintLocationKind constraintLocationKind = (constraintViolation.constraintDescriptor as ConstraintDescriptorImpl).constraintLocationKind
-      if (constraintLocationKind in [ConstraintLocation.ConstraintLocationKind.FIELD, ConstraintLocation.ConstraintLocationKind.GETTER]) {
+      if ([ConstraintLocation.ConstraintLocationKind.FIELD, ConstraintLocation.ConstraintLocationKind.GETTER].contains(constraintLocationKind)) {
         scope = "property"
       }
 
@@ -158,7 +158,7 @@ class ResponseFormattingConstraintViolationExceptionHandler implements MessageSo
       }
 
       String path = constraintViolation.propertyPath
-      String message = constraintViolation.message?.trim() ?: null
+      String message = constraintViolation.message.trim() ?: null
 
       return new ValidationReportConstraintViolation(type: type, scope: scope, path: path, message: message)
     })
