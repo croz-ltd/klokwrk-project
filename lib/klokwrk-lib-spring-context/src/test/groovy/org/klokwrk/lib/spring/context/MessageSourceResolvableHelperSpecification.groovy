@@ -442,4 +442,58 @@ class MessageSourceResolvableHelperSpecification extends Specification {
       messageCodeList[11] == "default.warning"
     }
   }
+
+  void "removeLeadingDot - should return null for null param"() {
+    expect:
+    MessageSourceResolvableHelper.removeLeadingDot(null) == null
+  }
+
+  void "removeLeadingDot - should return empty list for empty list param"() {
+    given:
+    List<String> inputList = []
+
+    expect:
+    MessageSourceResolvableHelper.removeLeadingDot(inputList) == inputList
+  }
+
+  void "removeLeadingDot - should work with list containing null or empty strings"() {
+    given:
+    List<String> inputList = [".abc", "", "   ", null, "123", ".bcd"]
+    List<String> withoutLeadingDotsList = MessageSourceResolvableHelper.removeLeadingDot(inputList)
+
+    expect:
+    withoutLeadingDotsList.size() == 6
+
+    withoutLeadingDotsList[0] == "abc"
+    withoutLeadingDotsList[1] == ""
+    withoutLeadingDotsList[2] == "   "
+    withoutLeadingDotsList[3] == null
+    withoutLeadingDotsList[4] == "123"
+    withoutLeadingDotsList[5] == "bcd"
+  }
+
+  void "removeStandaloneStrings - should return null for null param"() {
+    expect:
+    MessageSourceResolvableHelper.removeStandaloneStrings(null) == null
+  }
+
+  void "removeStandaloneStrings - should return empty list for empty list param"() {
+    given:
+    List<String> inputList = []
+
+    expect:
+    MessageSourceResolvableHelper.removeStandaloneStrings(inputList) == inputList
+  }
+
+  void "removeStandaloneStrings - should work with list containing null or empty strings"() {
+    given:
+    List<String> inputList = [".abc", "", "   ", null, "123", ".bcd"]
+    List<String> withoutLeadingDotsList = MessageSourceResolvableHelper.removeStandaloneStrings(inputList)
+
+    expect:
+    withoutLeadingDotsList.size() == 2
+
+    withoutLeadingDotsList[0] == ".abc"
+    withoutLeadingDotsList[1] == ".bcd"
+  }
 }

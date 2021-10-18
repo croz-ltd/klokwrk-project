@@ -480,7 +480,7 @@ class MessageSourceResolvableHelper {
   }
 
   protected static List<String> removeLeadingDot(List<String> messageCodeList) {
-    List<String> withoutLeadingDotMessageCodeList = messageCodeList.collect { String messageCode ->
+    List<String> withoutLeadingDotMessageCodeList = messageCodeList?.collect { String messageCode ->
       if (!messageCode) {
         return messageCode
       }
@@ -499,8 +499,8 @@ class MessageSourceResolvableHelper {
    * Filters out any standalone (without containing dots) strings, i.e. empty strings, "warning", "default" etc.
    */
   protected static List<String> removeStandaloneStrings(List<String> messageCodeList) {
-    List<String> withoutStandaloneStringsMessageCodeList = messageCodeList.findAll { String messageCode ->
-      messageCode.contains(".")
+    List<String> withoutStandaloneStringsMessageCodeList = messageCodeList?.findAll { String messageCode ->
+      messageCode?.contains(".")
     }
 
     return withoutStandaloneStringsMessageCodeList
