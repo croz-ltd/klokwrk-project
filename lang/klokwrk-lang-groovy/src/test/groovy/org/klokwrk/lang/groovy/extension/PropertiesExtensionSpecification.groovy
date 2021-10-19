@@ -17,9 +17,11 @@
  */
 package org.klokwrk.lang.groovy.extension
 
+import groovy.transform.MapConstructor
 import spock.lang.Specification
 
 class PropertiesExtensionSpecification extends Specification {
+  @MapConstructor
   class MyPogoPerson {
     String firstName
     String lastName

@@ -33,7 +33,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import javax.inject.Singleton
-import java.util.function.Supplier
 
 /**
  * Singleton service that downloads Gradle distribution files (typically {@code *.zip} or {@code *.zip.sha256}).
@@ -75,7 +74,7 @@ class GradleDownloader {
       Long downloadedBytesCount = 0
       streamingHttpClient.exchangeStream(HttpRequest.GET(realDownloadUrl).accept(MediaType.APPLICATION_OCTET_STREAM_TYPE))
                          .map({ HttpResponse<ByteBuffer<?>> byteBufferHttpResponse ->
-                           byte[] byteArray = byteBufferHttpResponse.body.orElseThrow({ new NoSuchElementException("No value present") } as Supplier).toByteArray()
+                           byte[] byteArray = byteBufferHttpResponse.body.orElseThrow({ new NoSuchElementException("No value present") }).toByteArray()
                            downloadedBytesCount += byteArray.length
                            printOutDownloadProgress(realDownloadUrl, downloadedBytesCount, contentLength)
 
