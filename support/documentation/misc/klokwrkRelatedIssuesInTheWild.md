@@ -54,8 +54,11 @@ This is a list of all issues, categorized per 3rd party software, that are repor
   * https://github.com/CodeNarc/CodeNarc/pull/633
 * VERIFIED (2.2.0) - https://github.com/CodeNarc/CodeNarc/issues/636
 
-### GitHub Action - gradle-command-action
-* IN PROGRESS - https://github.com/eskatos/gradle-command-action/issues/22
+### GitHub Action - gradle-build-action
+* VERIFIED - https://github.com/gradle/gradle-build-action/issues/22
+
+### GraalVM - Native Build TOOLS
+* FIXED - https://github.com/graalvm/native-build-tools/issues/129
 
 ### Gradle Dependency Analyze
 * IN PROGRESS - https://github.com/gradle-dependency-analyze/gradle-dependency-analyze/issues/108
@@ -70,9 +73,10 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (3.0.8) - https://issues.apache.org/jira/browse/GROOVY-9858
   * https://groovy.markmail.org/thread/gmcivt4ywcntszwx
   * https://github.com/apache/groovy/pull/1448
-* FIXED (4.0.0) - https://issues.apache.org/jira/browse/GROOVY-10052
-* IN PROGRESS - https://issues.apache.org/jira/browse/GROOVY-10055
+* VERIFIED (3.0.9) - https://issues.apache.org/jira/browse/GROOVY-10052
+* FIXED (4.0.0) - https://issues.apache.org/jira/browse/GROOVY-10055
 * IN PROGRESS - https://issues.apache.org/jira/browse/GROOVY-10156
+* FIXED (3.0.10) - https://issues.apache.org/jira/browse/GROOVY-10318
 
 ### IDEA
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-216308
@@ -115,7 +119,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 
 ### micronaut-gradle-plugin
 * REPORTED - https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/92
-* REPORTED - https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/93
+* OBSOLETE - https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/93
 
 ### Spock Framework
 * VERIFIED (in GROOVY-9643) - https://github.com/spockframework/spock/issues/1177
