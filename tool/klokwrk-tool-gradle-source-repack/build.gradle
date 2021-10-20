@@ -69,7 +69,8 @@ dependencies {
   implementation "io.micronaut:micronaut-core"
   implementation "io.micronaut:micronaut-http-client"
   implementation "io.micronaut.picocli:micronaut-picocli"
-  implementation "io.reactivex.rxjava2:rxjava"
+  implementation "io.micronaut.rxjava2:micronaut-rxjava2"
+  implementation "io.micronaut.rxjava2:micronaut-rxjava2-http-client"
   implementation "javax.inject:javax.inject:1"
   implementation "org.codehaus.groovy:groovy"
 

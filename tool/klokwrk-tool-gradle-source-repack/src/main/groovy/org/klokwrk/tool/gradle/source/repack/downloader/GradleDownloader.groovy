@@ -25,9 +25,9 @@ import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.http.client.HttpClient
-import io.micronaut.http.client.RxStreamingHttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.client.exceptions.HttpClientResponseException
+import io.micronaut.rxjava2.http.client.RxStreamingHttpClient
 import io.reactivex.internal.functions.Functions
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
