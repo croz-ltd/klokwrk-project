@@ -70,7 +70,7 @@ dependencies {
   implementation "io.micronaut:micronaut-http-client"
   implementation "io.micronaut.picocli:micronaut-picocli"
   implementation "io.reactivex.rxjava2:rxjava"
-  implementation "javax.inject:javax.inject"
+  implementation "javax.inject:javax.inject:1"
   implementation "org.codehaus.groovy:groovy"
 
   testImplementation "com.github.tomakehurst:wiremock-jre8"
