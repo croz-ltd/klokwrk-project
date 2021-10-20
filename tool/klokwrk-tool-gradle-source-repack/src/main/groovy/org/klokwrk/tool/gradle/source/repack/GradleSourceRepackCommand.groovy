@@ -38,6 +38,8 @@ import picocli.CommandLine.Parameters
 import picocli.CommandLine.Spec
 
 import jakarta.inject.Inject
+import java.nio.file.FileSystem
+import java.nio.file.FileSystems
 import java.util.regex.Pattern
 
 @SuppressWarnings("CodeNarc.JavaIoPackageAccess")
@@ -110,7 +112,7 @@ Example: ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG,io.micronaut.http
     configureCustomLoggingLevels()
     log.debug("Started.")
 
-    GradleSourceRepackCliArguments cliArguments = createGradleSourceRepackCliArguments()
+    GradleSourceRepackCliArguments cliArguments = createGradleSourceRepackCliArguments(FileSystems.default)
     log.debug("cliArguments: {}", cliArguments)
 
     File gradleDistributionZipFile = fetchGradleDistributionZipFile(cliArguments, gradleDownloader)
@@ -149,8 +151,8 @@ Example: ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG,io.micronaut.http
     }
   }
 
-  GradleSourceRepackCliArguments createGradleSourceRepackCliArguments() {
-    GradleSourceRepackCliArguments cliArguments = new GradleSourceRepackCliArguments(cliParameterGradleVersion.trim())
+  GradleSourceRepackCliArguments createGradleSourceRepackCliArguments(FileSystem fileSystem) {
+    GradleSourceRepackCliArguments cliArguments = new GradleSourceRepackCliArguments(cliParameterGradleVersion.trim(), fileSystem)
     cliArguments.performCleanup = cliOptionCleanup
 
     if (gradleDistributionDirUrl) {

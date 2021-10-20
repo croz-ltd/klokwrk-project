@@ -75,6 +75,7 @@ dependencies {
   implementation "org.slf4j:slf4j-api"
 
   testImplementation "com.github.tomakehurst:wiremock-jre8"
+  testImplementation "com.google.jimfs:jimfs"
   testImplementation "ch.qos.logback:logback-classic"
 
   runtimeOnly "ch.qos.logback:logback-classic"
