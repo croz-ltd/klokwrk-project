@@ -37,7 +37,7 @@ import picocli.CommandLine.ParameterException
 import picocli.CommandLine.Parameters
 import picocli.CommandLine.Spec
 
-import javax.inject.Inject
+import jakarta.inject.Inject
 import java.util.regex.Pattern
 
 @SuppressWarnings("CodeNarc.JavaIoPackageAccess")

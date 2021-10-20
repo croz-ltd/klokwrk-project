@@ -32,7 +32,7 @@ import io.reactivex.internal.functions.Functions
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 /**
  * Singleton service that downloads Gradle distribution files (typically {@code *.zip} or {@code *.zip.sha256}).
