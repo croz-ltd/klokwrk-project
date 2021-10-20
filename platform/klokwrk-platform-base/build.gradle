@@ -65,6 +65,6 @@ dependencies {
     api "uk.org.lidalia:slf4j-test:$slf4jTestVersion"
 
     api "org.codenarc:CodeNarc:$codeNarcVersion"
-    api "com.github.codenarc:codenarc:$codeNarcJitpackVersion"
+//    api "com.github.codenarc:codenarc:$codeNarcJitpackVersion"
   }
 }
