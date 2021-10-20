@@ -67,12 +67,12 @@ dependencies {
 
   implementation "info.picocli:picocli"
   implementation "io.micronaut:micronaut-core"
-  implementation "io.micronaut:micronaut-http-client"
+  implementation "io.micronaut:micronaut-http-client-core"
   implementation "io.micronaut.picocli:micronaut-picocli"
-  implementation "io.micronaut.rxjava2:micronaut-rxjava2"
-  implementation "io.micronaut.rxjava2:micronaut-rxjava2-http-client"
+  implementation "io.micronaut.reactor:micronaut-reactor-http-client"
   implementation "jakarta.inject:jakarta.inject-api"
   implementation "org.codehaus.groovy:groovy"
+  implementation "org.slf4j:slf4j-api"
 
   testImplementation "com.github.tomakehurst:wiremock-jre8"
   testImplementation "ch.qos.logback:logback-classic"

@@ -27,8 +27,7 @@ import io.micronaut.http.MediaType
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.client.exceptions.HttpClientResponseException
-import io.micronaut.rxjava2.http.client.RxStreamingHttpClient
-import io.reactivex.internal.functions.Functions
+import io.micronaut.reactor.http.client.ReactorStreamingHttpClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -43,7 +42,7 @@ import jakarta.inject.Singleton
 class GradleDownloader {
   private static final Logger log = LoggerFactory.getLogger(GradleDownloader)
 
-  RxStreamingHttpClient streamingHttpClient
+  ReactorStreamingHttpClient streamingHttpClient
   HttpClient headOnlyHttpClient
 
   /**
@@ -52,7 +51,7 @@ class GradleDownloader {
    * Http client {@code streamingHttpClient} is used for downloading potentially large Gradle distribution files. Http client {@code headOnlyHttpClient} is used only for executing HEAD requests
    * used for getting an info about the size of there resource to be downloaded with {@code streamingHttpClient}.
    */
-  GradleDownloader(@Client RxStreamingHttpClient streamingHttpClient, @Client("head-only") HttpClient headOnlyHttpClient) {
+  GradleDownloader(@Client ReactorStreamingHttpClient streamingHttpClient, @Client("head-only") HttpClient headOnlyHttpClient) {
     this.streamingHttpClient = streamingHttpClient
     this.headOnlyHttpClient = headOnlyHttpClient
   }
@@ -80,11 +79,9 @@ class GradleDownloader {
 
                            return byteArray
                          })
-                         .blockingSubscribe(
-                             { byte[] byteArray -> fileOutputStream.write(byteArray) },
-                             Functions.ON_ERROR_MISSING,
-                             { printlnOutNewline() }
-                         )
+                         .doOnNext({ byte[] byteArray -> fileOutputStream.write(byteArray) })
+                         .doOnComplete({ printlnOutNewline() })
+                         .blockLast()
     }
 
     return new File(gradleDownloaderInfo.downloadTargetFileAbsolutePath)
