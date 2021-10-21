@@ -1,7 +1,4 @@
 [
-  ["io.reactivex.functions.Action"],
-  ["io.reactivex.functions.Consumer"],
-  ["io.reactivex.functions.Function"],
   ["java.util.function.Consumer"],
   ["java.util.function.Function"],
   ["java.util.function.Predicate"],

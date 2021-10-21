@@ -1,17 +1,5 @@
 [
 {
-  "name":"io.reactivex.functions.Action",
-  "allPublicMethods":true
-},
-{
-  "name":"io.reactivex.functions.Consumer",
-  "allPublicMethods":true
-},
-{
-  "name":"io.reactivex.functions.Function",
-  "allPublicMethods":true
-},
-{
   "name":"java.util.function.Consumer",
   "allPublicMethods":true
 },

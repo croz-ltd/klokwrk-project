@@ -57,7 +57,6 @@ dependencies {
   constraints {
     api "com.github.tomakehurst:wiremock-jre8:$wireMockVersion"
     api "com.tngtech.archunit:archunit-junit5:$archUnitVersion"
-    api "info.picocli:picocli-codegen:$picocliCodegenVersion"
     api "io.github.classgraph:classgraph:$classGraphVersion"
     api "net.ttddyy:datasource-proxy:$dataSourceProxyVersion"
     api "org.spockframework:spock-core:$spockVersion"

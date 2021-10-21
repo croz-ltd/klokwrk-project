@@ -36,7 +36,10 @@ import java.nio.file.Files
 @ToString(includeNames = true)
 @CompileStatic
 class GradleSourceRepackCliArguments {
-  private final String gradleVersion
+  /**
+   * Gradle version whose sources will be downloaded and repacked.
+   */
+  String gradleVersion
 
   /**
    * Indicates if downloaded resources should be deleted after repacking finishes.
@@ -104,13 +107,6 @@ class GradleSourceRepackCliArguments {
     }
 
     this.performCleanup = true
-  }
-
-  /**
-   * Gradle version whose sources will be downloaded and repacked.
-   */
-  String getGradleVersion() {
-    return gradleVersion
   }
 
   String getGradleApiSourcesFilePath() {
