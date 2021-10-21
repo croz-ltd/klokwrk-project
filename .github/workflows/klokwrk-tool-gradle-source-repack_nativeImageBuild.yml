@@ -17,7 +17,7 @@ jobs:
             label: 'mac'
             native-image-name: 'klokwrk-tool-gradle-source-repack'
           - os: 'windows'
-            version: 'windows-2016'
+            version: 'windows-latest'
             label: 'win'
             native-image-name: 'klokwrk-tool-gradle-source-repack.exe'
 
