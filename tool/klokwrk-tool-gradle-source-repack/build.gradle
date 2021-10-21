@@ -92,6 +92,9 @@ Boolean isWindows() {
 // In addition there is also an issue with missing resources in Micronaut task that causes native image build failing in the presence of both java and groovy source sets. Didn't reported that yet,
 // but I guess it will not get much attention since native image for Groovy is not supported.
 tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
+  def shadowJar = project.tasks.findByName("shadowJar")
+  thisExecTask.dependsOn shadowJar
+
   String nativeImageBuilderClasspath = null
   project.configurations { ConfigurationContainer configurationContainer ->
     Set<Configuration> filteredConfigurations = configurationContainer
@@ -109,17 +112,11 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
           return configuration.canBeResolved
         }
         .findAll({ Configuration configuration ->
-          return ["runtimeClasspath", "graalNativeImageDependencies"].contains(configuration.name)
+          return ["graalNativeImageDependencies"].contains(configuration.name)
         })
 
     Set<File> resolvedDependencies = filteredConfigurations.collectMany { Configuration configuration -> configuration.resolve() }
-
-    SourceSet mainSourceSet = project.sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
-    FileCollection outputDirs = mainSourceSet.getOutput().getClassesDirs().filter({ File file -> file.exists() })
-    File resourcesDir = mainSourceSet.getOutput().getResourcesDir()
-
-    //noinspection GroovyAssignabilityCheck
-    nativeImageBuilderClasspath = project.files(resolvedDependencies, outputDirs, resourcesDir).asPath
+    nativeImageBuilderClasspath = project.files(resolvedDependencies, shadowJar.archiveFile as RegularFile).asPath
 
     return
   }
