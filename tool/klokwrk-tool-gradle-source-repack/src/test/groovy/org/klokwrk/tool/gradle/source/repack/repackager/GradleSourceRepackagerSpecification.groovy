@@ -17,8 +17,13 @@
  */
 package org.klokwrk.tool.gradle.source.repack.repackager
 
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.read.ListAppender
 import io.micronaut.core.io.ResourceResolver
 import io.micronaut.core.io.scan.ClassPathResourceLoader
+import org.slf4j.LoggerFactory
 import spock.lang.Specification
 
 import java.nio.file.Files
@@ -85,8 +90,15 @@ class GradleSourceRepackagerSpecification extends Specification {
     new File(repackedZipFileDirectoryPath).delete()
   }
 
+  // More advanced demo for improving code coverage with slf4j and different logging levels. Same principle can be used when Groovy @Slf4j annotation is employed.
   void "should repack Gradle source archive with duplicates skipping in target"() {
     given:
+    Logger logger = LoggerFactory.getLogger(GradleSourceRepackager) as Logger
+    logger.level = loggerLevelParam
+    ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
+    listAppender.start()
+    logger.addAppender(listAppender)
+
     ClassPathResourceLoader loader = new ResourceResolver().getLoader(ClassPathResourceLoader).get()
     File testSlimGradleDistributionFile = new File(loader.getResource("classpath:testFiles/slim-with-duplicates-gradle-6.7.1-all.zip").get().file)
 
@@ -104,9 +116,17 @@ class GradleSourceRepackagerSpecification extends Specification {
     then:
     repackedZipFile.exists()
     repackedZipFilePath.size() > 0
+    listAppender.list.any({ it.formattedMessage.contains("Skipping duplicate entry") }) == skippingMessageFoundParam
 
     cleanup:
     new File(repackedZipFilePath).delete()
     new File(repackedZipFileDirectoryPath).delete()
+    logger.detachAppender(listAppender)
+
+    where:
+    loggerLevelParam | skippingMessageFoundParam
+    Level.WARN       | false
+    Level.DEBUG      | true
+    Level.TRACE      | true
   }
 }
