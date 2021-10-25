@@ -56,6 +56,7 @@ dependencies {
 
   constraints {
     api "com.github.tomakehurst:wiremock-jre8:$wireMockVersion"
+    api "com.google.jimfs:jimfs:$jimfsVersion"
     api "com.tngtech.archunit:archunit-junit5:$archUnitVersion"
     api "io.github.classgraph:classgraph:$classGraphVersion"
     api "net.ttddyy:datasource-proxy:$dataSourceProxyVersion"

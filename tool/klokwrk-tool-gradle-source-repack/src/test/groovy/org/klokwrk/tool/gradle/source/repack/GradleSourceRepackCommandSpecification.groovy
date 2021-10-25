@@ -19,14 +19,22 @@ package org.klokwrk.tool.gradle.source.repack
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
+import com.google.common.jimfs.Configuration
+import com.google.common.jimfs.Jimfs
 import io.micronaut.configuration.picocli.PicocliRunner
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.Environment
+import org.klokwrk.tool.gradle.source.repack.constant.Constant
 import org.klokwrk.tool.gradle.source.repack.testutil.FileTestUtil
 import org.klokwrk.tool.gradle.source.repack.testutil.WireMockTestUtil
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
+
+import java.nio.file.FileSystem
+import java.nio.file.FileSystems
+import java.nio.file.Files
+import java.nio.file.Path
 
 class GradleSourceRepackCommandSpecification extends Specification {
 
@@ -51,6 +59,20 @@ class GradleSourceRepackCommandSpecification extends Specification {
 
   void setup() {
     wireMockServer.resetAll()
+  }
+
+  void "should fail for unknown option"() {
+    given:
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()
+    System.err = new PrintStream(byteArrayOutputStream)
+
+    String[] args = ["--some-unknown-option", "7.0.2"] as String[]
+    GradleSourceRepackCommand.main(args)
+    String outputString = byteArrayOutputStream
+
+    expect:
+    outputString.trim().startsWith("Unknown option: '--some-unknown-option'")
+    outputString.trim().endsWith("Print version information and exit.")
   }
 
   void "should display help message"() {
@@ -302,5 +324,78 @@ class GradleSourceRepackCommandSpecification extends Specification {
     then:
     errorOutputString.contains("java.lang.IllegalStateException: SHA-256 does not match")
     !testDirectoriesAndFiles.repackedSourceArchiveFile.exists()
+  }
+
+  void "createGradleSourceRepackCliArguments - should return expected defaults when 'generated-gradle-jars' does NOT exists"() {
+    given:
+    FileSystem fileSystem = Jimfs.newFileSystem(Configuration.unix())
+    String inputGradleVersion = "7.0.2"
+
+    when:
+    GradleSourceRepackCommand gradleSourceRepackCommand = new GradleSourceRepackCommand().tap {
+      cliParameterGradleVersion = inputGradleVersion
+    }
+
+    GradleSourceRepackCliArguments gradleSourceRepackCliArguments = gradleSourceRepackCommand.createGradleSourceRepackCliArguments(fileSystem)
+
+    then:
+    verifyAll(gradleSourceRepackCliArguments, {
+      gradleVersion == inputGradleVersion
+      gradleDistributionType == Constant.GRADLE_DISTRIBUTION_TYPE_DEFAULT
+      gradleDistributionFileExtension == Constant.GRADLE_DISTRIBUTION_FILE_EXTENSION_DEFAULT
+      gradleDistributionSiteUrl == Constant.GRADLE_DISTRIBUTION_SITE_URL_DEFAULT
+      downloadTargetDir == System.getProperty("user.dir")
+      gradleApiSourcesFileName == "gradle-api-${ inputGradleVersion }-sources.jar"
+
+      gradleApiDirName == downloadTargetDir
+    })
+  }
+
+  void "createGradleSourceRepackCliArguments - should return expected defaults when 'generated-gradle-jars' does exists"() {
+    given:
+    FileSystem fileSystem = Jimfs.newFileSystem(Configuration.unix())
+    String inputGradleVersion = "7.0.2"
+    Path generatedGradleJarsDirectoryPath = fileSystem.getPath("${ System.getProperty("user.home") }/.gradle/caches/${ inputGradleVersion }/generated-gradle-jars")
+    Files.createDirectories(generatedGradleJarsDirectoryPath)
+
+    when:
+    GradleSourceRepackCommand gradleSourceRepackCommand = new GradleSourceRepackCommand().tap {
+      cliParameterGradleVersion = inputGradleVersion
+    }
+
+    GradleSourceRepackCliArguments gradleSourceRepackCliArguments = gradleSourceRepackCommand.createGradleSourceRepackCliArguments(fileSystem)
+
+    then:
+    verifyAll(gradleSourceRepackCliArguments, {
+      gradleVersion == inputGradleVersion
+      gradleDistributionType == Constant.GRADLE_DISTRIBUTION_TYPE_DEFAULT
+      gradleDistributionFileExtension == Constant.GRADLE_DISTRIBUTION_FILE_EXTENSION_DEFAULT
+      gradleDistributionSiteUrl == Constant.GRADLE_DISTRIBUTION_SITE_URL_DEFAULT
+      downloadTargetDir == System.getProperty("user.dir")
+      gradleApiSourcesFileName == "gradle-api-${ inputGradleVersion }-sources.jar"
+
+      gradleApiDirName == generatedGradleJarsDirectoryPath.toString()
+    })
+  }
+
+  void "createGradleSourceRepackCliArguments - should always append slash character on gradleDistributionSiteUrl"() {
+    given:
+    String inputGradleVersion = "7.0.2"
+
+    when:
+    GradleSourceRepackCommand gradleSourceRepackCommand = new GradleSourceRepackCommand().tap {
+      cliParameterGradleVersion = inputGradleVersion
+      gradleDistributionDirUrl = gradleDistributionDirUrlParam
+    }
+
+    GradleSourceRepackCliArguments gradleSourceRepackCliArguments = gradleSourceRepackCommand.createGradleSourceRepackCliArguments(FileSystems.default)
+
+    then:
+    gradleSourceRepackCliArguments.gradleDistributionSiteUrl.endsWith("/")
+
+    where:
+    gradleDistributionDirUrlParam            | _
+    "https://some.gradle.org/distributions"  | _
+    "https://some.gradle.org/distributions/" | _
   }
 }
