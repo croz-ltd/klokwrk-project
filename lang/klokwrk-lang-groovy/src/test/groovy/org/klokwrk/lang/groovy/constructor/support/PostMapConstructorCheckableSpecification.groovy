@@ -24,6 +24,7 @@ import spock.lang.Specification
 class PostMapConstructorCheckableSpecification extends Specification {
   void "should not throw for empty constructor by default"() {
     when:
+    //noinspection GroovyImplicitNullArgumentCall
     new TestPerson()
 
     then:
@@ -32,6 +33,7 @@ class PostMapConstructorCheckableSpecification extends Specification {
 
   void "should throw for empty constructor when postMapConstructorShouldThrowForEmptyConstructorArguments() is overridden"() {
     when:
+    //noinspection GroovyImplicitNullArgumentCall
     new TestStrictPerson()
 
     then:
@@ -50,5 +52,13 @@ class PostMapConstructorCheckableSpecification extends Specification {
     null           | _
     ""             | _
     "   "          | _
+  }
+
+  void "should post-process when checks are finished"() {
+    when:
+    TestPerson testPerson = new TestPerson(firstName: "SomeFirstName", lastName: "SomeLastName")
+
+    then:
+    testPerson.fullName == "${ testPerson.firstName } ${ testPerson.lastName }"
   }
 }

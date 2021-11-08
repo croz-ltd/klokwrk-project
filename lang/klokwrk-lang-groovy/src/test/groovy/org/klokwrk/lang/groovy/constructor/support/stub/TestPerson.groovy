@@ -25,11 +25,25 @@ import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 @CompileStatic
 class TestPerson implements PostMapConstructorCheckable {
   String firstName
+  String lastName
+
+  private String fullName
+  String getFullName() {
+    return fullName
+  }
 
   @SuppressWarnings("GroovyPointlessBoolean")
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     assert firstName
     assert firstName.isBlank() == false
+
+    assert lastName
+    assert lastName.isBlank() == false
+  }
+
+  @Override
+  void postMapConstructorProcess(Map<String, ?> constructorArguments) {
+    fullName = "$firstName $lastName"
   }
 }

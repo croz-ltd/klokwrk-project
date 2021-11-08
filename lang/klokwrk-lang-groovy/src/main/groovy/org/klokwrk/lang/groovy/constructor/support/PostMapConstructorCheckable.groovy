@@ -18,6 +18,7 @@
 package org.klokwrk.lang.groovy.constructor.support
 
 import groovy.transform.CompileStatic
+import groovy.transform.Generated
 
 /**
  * Defines protocol and simplifies implementation for common precondition checking (in Design-By-Contract style) when {@code @MapConstructor} is used with {@code post} attribute.
@@ -56,6 +57,10 @@ import groovy.transform.CompileStatic
  *     }
  *   }
  * </pre>
+ * <p/>
+ * When consistency checks of immutable objects are finished, there is often a need to do additional post-constructor processing. For example, at this point, we might want to calculate values of all
+ * derived properties. For that post-constructor processing purpose, one may override and use {@link PostMapConstructorCheckable#postMapConstructorProcess(java.util.Map)} method. Default
+ * implementation of <code>postMapConstructorProcess(Map constructorArguments)</code> does nothing.
  */
 @CompileStatic
 interface PostMapConstructorCheckable {
@@ -69,11 +74,22 @@ interface PostMapConstructorCheckable {
     }
 
     postMapConstructorCheck(constructorArguments)
+    postMapConstructorProcess(constructorArguments)
   }
 
+  /**
+   * Default implementation returns {@code false}.
+   * <p/>
+   * Method is annotated with {@link Generated} to avoid its appearance in coverage reports as it is not usually overridden for reasons stated in class' Groovydoc.
+   */
+  @Generated
   default Boolean postMapConstructorShouldThrowForEmptyConstructorArguments() {
     return false
   }
 
   void postMapConstructorCheck(Map<String, ?> constructorArguments)
+
+  @SuppressWarnings(["CodeNarc.EmptyMethod", "CodeNarc.UnusedMethodParameter"])
+  default void postMapConstructorProcess(Map<String, ?> constructorArguments) {
+  }
 }
