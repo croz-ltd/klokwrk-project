@@ -87,6 +87,10 @@ class KwrkMapConstructorNoArgHideableAstTransformation extends AbstractASTTransf
   }
 
   private AnnotationNode findGeneratedAnnotation(ConstructorNode constructorNode) {
+    if (constructorNode == null) {
+      return null
+    }
+
     AnnotationNode generatedAnnotationNode = constructorNode.annotations.find { AnnotationNode annotationNode -> annotationNode.classNode.name == Generated.name }
     return generatedAnnotationNode
   }

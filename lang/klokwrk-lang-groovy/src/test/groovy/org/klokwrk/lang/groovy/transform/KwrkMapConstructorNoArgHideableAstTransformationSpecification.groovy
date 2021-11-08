@@ -236,4 +236,25 @@ class KwrkMapConstructorNoArgHideableAstTransformationSpecification extends Spec
     myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() == 0 }.modifiers == Opcodes.ACC_PUBLIC
     myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() != 0 }.modifiers == Opcodes.ACC_PUBLIC
   }
+
+  void "should skip when MapConstructor does not generate no-arg constructor due to missing properties"() {
+    given:
+    Class myClass = new GroovyClassLoader().parseClass("""
+        import groovy.transform.MapConstructor
+        import org.klokwrk.lang.groovy.transform.KwrkMapConstructorNoArgHideable
+
+        @MapConstructor(noArg = true)
+        @KwrkMapConstructorNoArgHideable
+        class MyClass {
+        }
+    """)
+
+    when:
+    def myClassInstance = myClass.getDeclaredConstructor(Map).newInstance([:])
+
+    then:
+    myClassInstance
+    myClass.declaredConstructors.size() == 1
+    myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() != 0 }.modifiers == Opcodes.ACC_PUBLIC
+  }
 }
