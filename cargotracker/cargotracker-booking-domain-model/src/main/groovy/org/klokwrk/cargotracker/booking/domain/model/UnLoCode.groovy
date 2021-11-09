@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.not
 /**
  * Code conforming to the UN/LOCODE standard.
  * <p/>
- * Useful reference: https://service.unece.org/trade/locode/Service/LocodeColumn.htm
+ * Useful reference: https://service.unece.org/trade/locode/Service/LocodeColumn.htm - Section: 1.2 Column "LOCODE"
  */
 @KwrkImmutable
 @CompileStatic

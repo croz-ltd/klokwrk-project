@@ -30,6 +30,8 @@ import static org.hamcrest.Matchers.not
 
 /**
  * Represents an 8-character function classifier code for the UN/LOCODE location.
+ * <p/>
+ * Useful reference: https://service.unece.org/trade/locode/Service/LocodeColumn.htm - Section: 1.6 Column "Function"
  */
 @SuppressWarnings("CodeNarc.DuplicateNumberLiteral")
 @KwrkImmutable
