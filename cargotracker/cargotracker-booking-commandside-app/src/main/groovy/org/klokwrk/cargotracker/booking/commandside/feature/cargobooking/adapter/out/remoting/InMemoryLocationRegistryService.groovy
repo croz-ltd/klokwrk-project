@@ -34,9 +34,9 @@ class InMemoryLocationRegistryService implements FindLocationPortOut {
   static class LocationSample {
     @SuppressWarnings("CodeNarc.DuplicateStringLiteral")
     static final Map<String, Location> LOCATION_SAMPLE_MAP = [
-        "HRKRK": Location.create("HRKRK", "Krk", "Hrvatska", "1-3-----"),
-        "HRRJK": Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----"),
-        "HRZAG": Location.create("HRZAG", "Zagreb", "Hrvatska", "-2345---")
+        "HRKRK": Location.create("HRKRK", "Krk", "Hrvatska", "1-3-----", "4502N 01435E"),
+        "HRRJK": Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----", "4520N 01424E"),
+        "HRZAG": Location.create("HRZAG", "Zagreb", "Hrvatska", "-2345---", "4548N 01600E")
     ]
 
     static Location findByUnLoCode(String unLoCode) {
