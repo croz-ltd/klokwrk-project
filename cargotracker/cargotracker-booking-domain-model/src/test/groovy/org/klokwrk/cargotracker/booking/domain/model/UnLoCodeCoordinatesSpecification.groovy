@@ -131,6 +131,15 @@ class UnLoCodeCoordinatesSpecification extends Specification {
     UnLoCodeCoordinates.UNKNOWN_UN_LO_CODE_COORDINATES.latitudeInDegrees == null
   }
 
+  void "getLatitudeInDegrees - should return cached value on second invocation"() {
+    when:
+    UnLoCodeCoordinates unLoCodeCoordinates = new UnLoCodeCoordinates(coordinatesEncoded: "5231N 01323E")
+    BigDecimal latitude = unLoCodeCoordinates.latitudeInDegrees
+
+    then:
+    unLoCodeCoordinates.latitudeInDegrees === latitude
+  }
+
   void "getLatitudeInDegrees - should work as expected"() {
     when:
     UnLoCodeCoordinates unLoCodeCoordinates = new UnLoCodeCoordinates(coordinatesEncoded: coordinatesEncodedParam)
@@ -149,6 +158,15 @@ class UnLoCodeCoordinatesSpecification extends Specification {
   void "getLongitudeInDegrees - should return null for UNKNOWN_UN_LO_CODE_COORDINATES"() {
     expect:
     UnLoCodeCoordinates.UNKNOWN_UN_LO_CODE_COORDINATES.longitudeInDegrees == null
+  }
+
+  void "getLongitudeInDegrees - should return cached value on second invocation"() {
+    when:
+    UnLoCodeCoordinates unLoCodeCoordinates = new UnLoCodeCoordinates(coordinatesEncoded: "5231N 01323E")
+    BigDecimal longitude = unLoCodeCoordinates.longitudeInDegrees
+
+    then:
+    unLoCodeCoordinates.longitudeInDegrees === longitude
   }
 
   void "getLongitudeInDegrees - should work as expected"() {
