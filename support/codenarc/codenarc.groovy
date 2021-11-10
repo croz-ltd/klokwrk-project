@@ -504,7 +504,7 @@ ruleset {
   UnnecessarySubstring
   UnnecessaryTernaryExpression
   UnnecessaryToString
-  UnnecessaryTransientModifier
+  UnnecessaryTransientModifier { enabled = false }
 
   // rulesets/unused.xml
   UnusedArray
