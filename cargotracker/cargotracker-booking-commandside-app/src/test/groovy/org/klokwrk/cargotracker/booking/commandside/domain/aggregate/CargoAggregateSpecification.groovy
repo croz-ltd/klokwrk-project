@@ -37,7 +37,7 @@ class CargoAggregateSpecification extends Specification {
 
   void "should fail for same origin and destination locations"() {
     given:
-    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandInvalidWithSameOriginAndLocation()
+    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandInvalidWithEqualOriginAndDestinationLocations()
     TestExecutor<CargoAggregate> cargoAggregateTestExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     when:

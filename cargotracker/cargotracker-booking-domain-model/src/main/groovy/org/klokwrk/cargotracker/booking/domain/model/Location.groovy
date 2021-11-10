@@ -86,24 +86,4 @@ class Location implements PostMapConstructorCheckable {
     requireMatch(countryName, notNullValue())
     requireMatch(unLoCodeFunction, notNullValue())
   }
-
-  Boolean canAcceptCargoFrom(Location originLocation) {
-    if (this == originLocation) {
-      return false
-    }
-
-    if (!originLocation) {
-      return false
-    }
-
-    if (unLoCodeFunction.isPort() && originLocation.unLoCodeFunction.isPort()) {
-      return true
-    }
-
-    if (unLoCodeFunction.isRailTerminal() && originLocation.unLoCodeFunction.isRailTerminal()) {
-      return true
-    }
-
-    return false
-  }
 }

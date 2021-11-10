@@ -27,6 +27,7 @@ import spock.util.concurrent.PollingConditions
 class BookingComponentFeatureSpecification extends AbstractComponentIntegrationSpecification {
   void "command - should book cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
+    //noinspection HttpUrlsUsage
     String commandCargoBookUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
     String commandPostRequestBody = """
         {
@@ -61,6 +62,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
   void "query - should find booked cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
+    //noinspection HttpUrlsUsage
     String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
     String commandPostRequestBody = """
         {
@@ -69,6 +71,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
         }
         """
 
+    //noinspection HttpUrlsUsage
     String fetchCargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-summary/fetch-cargo-summary"
     Closure<String> queryPostRequestBodyClosure = { String commandResponseAggregateIdentifier ->
       """
@@ -123,6 +126,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
   void "command - should not book cargo for invalid command: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
+    //noinspection HttpUrlsUsage
     String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
     String commandPostRequestBody = """
         {
@@ -157,6 +161,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
   void "query - should not find non-existing cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
+    //noinspection HttpUrlsUsage
     String fetchCargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-summary/fetch-cargo-summary"
     String queryPostRequestBody = """
       {

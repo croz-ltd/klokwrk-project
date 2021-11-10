@@ -33,10 +33,15 @@ class BookCargoCommandFixtures {
   ]
 
   /**
-   * Creates invalid command where origin and destination location are same.
+   * Creates invalid command where origin and destination location are equal.
    */
-  static BookCargoCommand commandInvalidWithSameOriginAndLocation(String aggregateIdentifier = UUID.randomUUID()) {
-    BookCargoCommand bookCargoCommand = new BookCargoCommand(aggregateIdentifier: aggregateIdentifier, originLocation: LOCATION_SAMPLE_MAP.HRRJK, destinationLocation: LOCATION_SAMPLE_MAP.HRRJK)
+  static BookCargoCommand commandInvalidWithEqualOriginAndDestinationLocations(String aggregateIdentifier = UUID.randomUUID()) {
+    BookCargoCommand bookCargoCommand = new BookCargoCommand(
+        aggregateIdentifier: aggregateIdentifier,
+        originLocation: Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----"),
+        destinationLocation: Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----")
+    )
+
     return bookCargoCommand
   }
 
