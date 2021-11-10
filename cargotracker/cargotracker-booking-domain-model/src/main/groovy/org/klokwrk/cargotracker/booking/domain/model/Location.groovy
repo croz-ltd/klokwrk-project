@@ -41,7 +41,7 @@ class Location implements PostMapConstructorCheckable {
 
   static final Location UNKNOWN_LOCATION = new Location(
       unLoCode: UnLoCode.UNKNOWN_UN_LO_CODE, name: InternationalizedName.UNKNOWN_INTERNATIONALIZED_NAME, countryName: InternationalizedName.UNKNOWN_INTERNATIONALIZED_NAME,
-      unLoCodeFunction: UnLoCodeFunction.UNKNOWN_UN_LO_CODE_FUNCTION
+      unLoCodeFunction: UnLoCodeFunction.UNKNOWN_UN_LO_CODE_FUNCTION, unLoCodeCoordinates: UnLoCodeCoordinates.UNKNOWN_UN_LO_CODE_COORDINATES
   )
 
   UnLoCode unLoCode
@@ -64,15 +64,15 @@ class Location implements PostMapConstructorCheckable {
    */
   UnLoCodeFunction unLoCodeFunction
 
-  // TODO dmurat: expand it into object. Do not use right now
-//  String status
-  // TODO dmurat: expand it into object. Do not use right now
-//  String coordinates
+  /**
+   * 12-character coordinates string for the UN/LOCODE location.
+   */
+  UnLoCodeCoordinates unLoCodeCoordinates
 
-  static Location create(String unLoCode, String name, String countryName, String unLoCodeFunction) {
+  static Location create(String unLoCode, String name, String countryName, String unLoCodeFunction, String unLoCodeCoordinates) {
     Location createdLocation = new Location(
         unLoCode: new UnLoCode(code: unLoCode), name: new InternationalizedName(name: name), countryName: new InternationalizedName(name: countryName),
-        unLoCodeFunction: new UnLoCodeFunction(functionEncoded: unLoCodeFunction)
+        unLoCodeFunction: new UnLoCodeFunction(functionEncoded: unLoCodeFunction), unLoCodeCoordinates: new UnLoCodeCoordinates(coordinatesEncoded: unLoCodeCoordinates)
     )
 
     return createdLocation
@@ -85,5 +85,6 @@ class Location implements PostMapConstructorCheckable {
     requireMatch(name, notNullValue())
     requireMatch(countryName, notNullValue())
     requireMatch(unLoCodeFunction, notNullValue())
+    requireMatch(unLoCodeCoordinates, notNullValue())
   }
 }

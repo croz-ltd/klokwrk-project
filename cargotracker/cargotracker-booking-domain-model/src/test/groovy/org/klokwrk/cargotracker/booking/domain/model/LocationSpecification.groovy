@@ -25,7 +25,7 @@ class LocationSpecification extends Specification {
     when:
     Location location = new Location(
         unLoCode: new UnLoCode(code: "HRRJK"), name: new InternationalizedName(name: "Rijeka"), countryName: new InternationalizedName(name: "Hrvatska"),
-        unLoCodeFunction: new UnLoCodeFunction(functionEncoded: "1234----")
+        unLoCodeFunction: new UnLoCodeFunction(functionEncoded: "1234----"), unLoCodeCoordinates: new UnLoCodeCoordinates(coordinatesEncoded: "4520N 01424E")
     )
 
     then:
@@ -71,7 +71,7 @@ class LocationSpecification extends Specification {
 
   void "create() factory method should work for correct input params"() {
     when:
-    Location location = Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----")
+    Location location = Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----", "4520N 01424E")
 
     then:
     location.unLoCode == new UnLoCode(code: "HRRJK")
@@ -81,17 +81,18 @@ class LocationSpecification extends Specification {
 
   void "create() factory method should fail for invalid input params"() {
     when:
-    Location.create(codeParameter, nameParameter, countryNameParameter, functionParameter)
+    Location.create(codeParameter, nameParameter, countryNameParameter, functionParameter, coordinatesParameter)
 
     then:
     AssertionError assertionError = thrown()
     assertionError.message.contains(errorMessagePartParam)
 
     where:
-    codeParameter | nameParameter | countryNameParameter | functionParameter | errorMessagePartParam
-    null          | "someName"    | "someCountry"        | "0------"         | "not(blankOrNullString())"
-    "HRRJK"       | null          | "someCountry"        | "0------"         | "not(blankOrNullString())"
-    "HRRJK"       | "someName"    | null                 | "0------"         | "not(blankOrNullString())"
-    "HRRJK"       | "someName"    | "someCountry"        | null              | "not(blankOrNullString())"
+    codeParameter | nameParameter | countryNameParameter | functionParameter | coordinatesParameter | errorMessagePartParam
+    null          | "someName"    | "someCountry"        | "0-------"        | "0000N 00000W"       | "not(blankOrNullString())"
+    "HRRJK"       | null          | "someCountry"        | "0-------"        | "0000N 00000W"       | "not(blankOrNullString())"
+    "HRRJK"       | "someName"    | null                 | "0-------"        | "0000N 00000W"       | "not(blankOrNullString())"
+    "HRRJK"       | "someName"    | "someCountry"        | null              | "0000N 00000W"       | "not(blankOrNullString())"
+    "HRRJK"       | "someName"    | "someCountry"        | "0-------"        | null                 | "not(blankOrNullString())"
   }
 }
