@@ -39,19 +39,20 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
  * So called 'essential' options are completely opinionated, of course, but they proven to be very useful base in many internal projects. If one finds some, or all of them, not appropriate, they can
  * be turned off via {@link EssentialJacksonCustomizerConfigurationProperties} configuration properties.
  * <p/>
- * Beside Jackson configuration options available here, Spring Boot default options from <code>JacksonAutoConfiguration</code> still apply. Namely these are
- * <code>SerializationFeature.WRITE_DATES_AS_TIMESTAMPS = false</code> and <code>SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS = false</code>.
+ * Beside Jackson configuration options available here, Spring Boot default options from {@code JacksonAutoConfiguration} still apply. Namely these are
+ * {@code SerializationFeature.WRITE_DATES_AS_TIMESTAMPS = false} and {@code SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS = false}.
  * <p/>
  * EssentialJacksonCustomizer configures following defaults:
  * <ul>
- *   <li>transient fields and properties are ignored for de/serialization (<code>MapperFeature.PROPAGATE_TRANSIENT_MARKER = true</code>)</li>
+ *   <li>transient fields and properties are ignored for de/serialization ({@ code MapperFeature.PROPAGATE_TRANSIENT_MARKER = true})</li>
+ *   <li>read-only (a.k.a. getter-only or derived) properties are ignored for de/serialization ({@ code MapperFeature.REQUIRE_SETTERS_FOR_GETTERS = true})</li>
  *   <li>serialization - adds {@link GStringSerializer} serializer</li>
- *   <li>serialization - null values are skipped (<code>serializationInclusion = JsonInclude.Include.NON_NULL</code>)</li>
+ *   <li>serialization - null values are skipped ({@code serializationInclusion = JsonInclude.Include.NON_NULL})</li>
  *   <li>deserialization - adds {@link StringSanitizingDeserializer} deserializer</li>
- *   <li>deserialization - json comments are allowed (<code>JsonParser.Feature.ALLOW_COMMENTS = true</code>)</li>
- *   <li>deserialization - single values are accepted into array (<code>DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY = true</code>)</li>
- *   <li>deserialization - failing on unknown properties is disabled (<code>DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES = false</code>)</li>
- *   <li>deserialization - null values are skipped (<code>defaultSetterInfo = JsonSetter.Value.forValueNulls(Nulls.SKIP)</code>)</li>
+ *   <li>deserialization - json comments are allowed ({@code JsonParser.Feature.ALLOW_COMMENTS = true})</li>
+ *   <li>deserialization - single values are accepted into array ({@code DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY = true})</li>
+ *   <li>deserialization - failing on unknown properties is disabled ({@code DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES = false})</li>
+ *   <li>deserialization - null values are skipped ({@code defaultSetterInfo = JsonSetter.Value.forValueNulls(Nulls.SKIP)})</li>
  * </ul>
  */
 @CompileStatic
@@ -85,6 +86,10 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
 
     if (essentialJacksonCustomizerConfigurationProperties.mapper.ignoreTransient == true) {
       myFeatureToEnableList << MapperFeature.PROPAGATE_TRANSIENT_MARKER
+    }
+
+    if (essentialJacksonCustomizerConfigurationProperties.mapper.ignoreReadOnly == true) {
+      myFeatureToEnableList << MapperFeature.REQUIRE_SETTERS_FOR_GETTERS
     }
 
     if (essentialJacksonCustomizerConfigurationProperties.deserialization.allowJsonComments == true) {

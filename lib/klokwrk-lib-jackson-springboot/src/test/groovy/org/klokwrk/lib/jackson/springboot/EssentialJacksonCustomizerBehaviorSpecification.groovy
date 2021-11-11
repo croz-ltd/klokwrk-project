@@ -63,6 +63,10 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
   static class MyBeanWithTransientProperties {
     transient String first
     String last
+
+    String getFullName() {
+      return "$first $last"
+    }
   }
 
   void "deserialization - should not deserialize transient properties"() {
@@ -261,6 +265,19 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     then:
     serializedString.contains(/"first":/) == false
     serializedString.contains(/"someFirst"/) == false
+  }
+
+  @SuppressWarnings("GroovyPointlessBoolean")
+  void "serialization - should not serialize read-only properties"() {
+    given:
+    MyBeanWithTransientProperties myBeanWithTransientProperties = new MyBeanWithTransientProperties(first: "someFirst", last: "someLast")
+
+    when:
+    String serializedString = objectMapper.writeValueAsString(myBeanWithTransientProperties)
+
+    then:
+    serializedString.contains(/"fullName":/) == false
+    serializedString.contains(/"someFirst someLast"/) == false
   }
 
   void "serialization - timestamp types should work as expected"() {

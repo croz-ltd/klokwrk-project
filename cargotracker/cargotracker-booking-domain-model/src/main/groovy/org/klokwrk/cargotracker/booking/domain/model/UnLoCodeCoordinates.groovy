@@ -47,8 +47,7 @@ class UnLoCodeCoordinates implements PostMapConstructorCheckable {
 
   String coordinatesEncoded
 
-  private BigDecimal latitudeInDegrees
-  private BigDecimal longitudeInDegrees
+  private final transient BigDecimal[] internalCoordinatesCache = new BigDecimal[] { null, null }
 
   /**
    * Checks provided {@code unLoCodeCoordinates} for value validity and consistency.
@@ -165,28 +164,21 @@ class UnLoCodeCoordinates implements PostMapConstructorCheckable {
   }
 
   /**
-   * During instance construction, calculates latitude and longitude in degrees.
-   * <p/>
-   * Calculation is skipped for {@link UnLoCodeCoordinates#UNKNOWN_UN_LO_CODE_COORDINATES} instance.
-   */
-  @Override
-  void postMapConstructorProcess(Map<String, ?> constructorArguments) {
-    // Skip calculations for UNKNOWN_UN_LO_CODE_COORDINATES instance
-    if (UNKNOWN_UN_LO_CODE_COORDINATES == null) {
-      return
-    }
-
-    latitudeInDegrees = calculateLatitudeDegrees(coordinatesEncoded)
-    longitudeInDegrees = calculateLongitudeDegrees(coordinatesEncoded)
-  }
-
-  /**
    * Returns latitude in degrees.
    * <p/>
    * For {@link UnLoCodeCoordinates#UNKNOWN_UN_LO_CODE_COORDINATES} instance, returns {@code null}.
    */
   BigDecimal getLatitudeInDegrees() {
-    return latitudeInDegrees
+    if (this === UNKNOWN_UN_LO_CODE_COORDINATES) {
+      return null
+    }
+
+    if (internalCoordinatesCache[0]) {
+      return internalCoordinatesCache[0]
+    }
+
+    internalCoordinatesCache[0] = calculateLatitudeDegrees(coordinatesEncoded)
+    return internalCoordinatesCache[0]
   }
 
   /**
@@ -195,6 +187,15 @@ class UnLoCodeCoordinates implements PostMapConstructorCheckable {
    * For {@link UnLoCodeCoordinates#UNKNOWN_UN_LO_CODE_COORDINATES} instance, returns {@code null}.
    */
   BigDecimal getLongitudeInDegrees() {
-    return longitudeInDegrees
+    if (this === UNKNOWN_UN_LO_CODE_COORDINATES) {
+      return null
+    }
+
+    if (internalCoordinatesCache[1]) {
+      return internalCoordinatesCache[1]
+    }
+
+    internalCoordinatesCache[1] = calculateLongitudeDegrees(coordinatesEncoded)
+    return internalCoordinatesCache[1]
   }
 }

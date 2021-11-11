@@ -42,7 +42,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 @CompileStatic
 class EssentialJacksonCustomizerConfigurationProperties {
   /**
-   * By default EssentialJacksonCustomizer is enabled. Set to <code>false</code> to disable it.
+   * By default EssentialJacksonCustomizer is enabled. Set to {@code false} to disable it.
    */
   Boolean enabled = true
 
@@ -52,28 +52,28 @@ class EssentialJacksonCustomizerConfigurationProperties {
     StringSanitizingDeserializer stringSanitizingDeserializer = new StringSanitizingDeserializer()
     class StringSanitizingDeserializer {
       /**
-       * By default StringSanitizingDeserializer is enabled. Set to <code>false</code> to disable it.
+       * By default StringSanitizingDeserializer is enabled. Set to {@code false} to disable it.
        */
       Boolean enabled = true
     }
 
     /**
-     * By default json comments are allowed. Set to <code>false</code> to disable this behavior.
+     * By default json comments are allowed. Set to {@code false} to disable this behavior.
      */
     Boolean allowJsonComments = true
 
     /**
-     * By default accepting a single value into an array during deserialization is allowed. Set to <code>false</code> to disable this behavior.
+     * By default accepting a single value into an array during deserialization is allowed. Set to {@code false} to disable this behavior.
      */
     Boolean acceptSingleValueAsArray = true
 
     /**
-     * By default failing on unknown properties is disabled. Set to <code>true</code> to enable this behavior.
+     * By default failing on unknown properties is disabled. Set to {@code true} to enable this behavior.
      */
     Boolean failOnUnknownProperties = false
 
     /**
-     * By default skipping null values during deserialization is enabled. Set to <code>false</code> to disable this behavior.
+     * By default skipping null values during deserialization is enabled. Set to {@code false} to disable this behavior.
      */
     Boolean skipNullValues = true
   }
@@ -84,23 +84,27 @@ class EssentialJacksonCustomizerConfigurationProperties {
     GStringSerializer gStringSerializer = new GStringSerializer()
     class GStringSerializer {
       /**
-       * By default GStringSerializer is enabled. Set to <code>false</code> to disable it.
+       * By default GStringSerializer is enabled. Set to {@code false} to disable it.
        */
       Boolean enabled = true
     }
 
     /**
-     * By default skipping null values during serialization is enabled. Set to <code>false</code> to disable this behavior.
+     * By default skipping null values during serialization is enabled. Set to {@code false} to disable this behavior.
      */
     Boolean skipNullValues = true
   }
 
-  @SuppressWarnings("unused")
   Mapper mapper = new Mapper()
   class Mapper {
     /**
-     * By default transient fields and properties are ignored. Set to <code>false</code> to disable this behavior.
+     * By default transient fields and properties are ignored. Set to {@code false} to disable this behavior.
      */
     Boolean ignoreTransient = true
+
+    /**
+     * By default read-only properties (a.k.a. getter-only or derived properties) are ignored. Set to {@code false} to disable this behavior.
+     */
+    Boolean ignoreReadOnly = true
   }
 }
