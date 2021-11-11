@@ -143,9 +143,9 @@ fi
 if [ $isMainBranch = true ]; then
   # For main branch, commits should always be in 'conventional commits' format.
   isMessageTitleInConventionalCommitFormat=$(checkIfMessageTitleIsInConventionalCommitFormat "$commitMessageTitle" "$conventionalCommitRegexp")
-  if [ ! "$isMessageTitleInConventionalCommitFormat" ]; then
-    echo "All commits to the $mainBranchName branch must be in conventional commit format."
-    git merge --abort
+  if [ "$isMessageTitleInConventionalCommitFormat" = "false" ]; then
+    echo "[commit-msg hook] All commits to the $mainBranchName branch must be in conventional commit format."
+    echo "[commit-msg hook] If this was a merge commit, to return to the state before merging, please run 'git merge --abort'"
     exit 1
   fi
 
