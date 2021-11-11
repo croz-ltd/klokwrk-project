@@ -35,6 +35,8 @@ release:
           title: 'feat('
         - label: 'feature-long-with-scope'
           title: 'feature('
+        - label: 'feature-spelling-error-001'
+          title: 'fature:'
         - label: 'enhancement'
           title: 'enhance: '
         - label: 'enhancement-long'
@@ -102,6 +104,7 @@ release:
             - 'feature-long'
             - 'feature-with-scope'
             - 'feature-long-with-scope'
+            - 'feature-spelling-error-001'
         - title: '✨ Enhancements'
           labels:
             - 'enhancement'
