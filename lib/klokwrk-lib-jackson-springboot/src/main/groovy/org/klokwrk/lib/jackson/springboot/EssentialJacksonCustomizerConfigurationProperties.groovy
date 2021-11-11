@@ -101,5 +101,10 @@ class EssentialJacksonCustomizerConfigurationProperties {
      * By default transient fields and properties are ignored. Set to {@code false} to disable this behavior.
      */
     Boolean ignoreTransient = true
+
+    /**
+     * By default read-only properties (a.k.a. getter-only or derived properties) are ignored. Set to {@code false} to disable this behavior.
+     */
+    Boolean ignoreReadOnly = true
   }
 }

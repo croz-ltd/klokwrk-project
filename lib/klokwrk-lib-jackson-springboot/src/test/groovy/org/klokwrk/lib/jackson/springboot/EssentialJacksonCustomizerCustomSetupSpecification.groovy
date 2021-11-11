@@ -116,6 +116,18 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   }
 
   @RestoreSystemProperties
+  void "should not ignore read-only properties when configured so"() {
+    given:
+    System.setProperty("klokwrk.jackson.customizer.essential.mapper.ignoreReadOnly", "false")
+    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
+
+    expect:
+    //noinspection GroovyPointlessBoolean
+    objectMapper.isEnabled(MapperFeature.REQUIRE_SETTERS_FOR_GETTERS) == false
+  }
+
+  @RestoreSystemProperties
   void "should not allow json comments when configured so"() {
     given:
     System.setProperty("klokwrk.jackson.customizer.essential.deserialization.allowJsonComments", "false")

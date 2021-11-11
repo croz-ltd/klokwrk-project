@@ -45,6 +45,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
  * EssentialJacksonCustomizer configures following defaults:
  * <ul>
  *   <li>transient fields and properties are ignored for de/serialization ({@ code MapperFeature.PROPAGATE_TRANSIENT_MARKER = true})</li>
+ *   <li>read-only (a.k.a. getter-only or derived) properties are ignored for de/serialization ({@ code MapperFeature.REQUIRE_SETTERS_FOR_GETTERS = true})</li>
  *   <li>serialization - adds {@link GStringSerializer} serializer</li>
  *   <li>serialization - null values are skipped ({@code serializationInclusion = JsonInclude.Include.NON_NULL})</li>
  *   <li>deserialization - adds {@link StringSanitizingDeserializer} deserializer</li>
@@ -85,6 +86,10 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
 
     if (essentialJacksonCustomizerConfigurationProperties.mapper.ignoreTransient == true) {
       myFeatureToEnableList << MapperFeature.PROPAGATE_TRANSIENT_MARKER
+    }
+
+    if (essentialJacksonCustomizerConfigurationProperties.mapper.ignoreReadOnly == true) {
+      myFeatureToEnableList << MapperFeature.REQUIRE_SETTERS_FOR_GETTERS
     }
 
     if (essentialJacksonCustomizerConfigurationProperties.deserialization.allowJsonComments == true) {
