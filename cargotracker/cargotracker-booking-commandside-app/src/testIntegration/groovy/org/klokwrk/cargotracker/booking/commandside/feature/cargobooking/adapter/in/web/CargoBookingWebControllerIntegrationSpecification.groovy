@@ -96,8 +96,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
       name == "Zagreb"
       nameInternationalized == "Zagreb"
 
-      country.name == "Hrvatska"
-      country.nameInternationalized == "Hrvatska"
+      country.name == "Croatia"
+      country.nameInternationalized == "Croatia"
 
       unLoCode.code == "HRZAG"
       unLoCode.countryCode == "HR"
@@ -108,8 +108,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
       name == "Rijeka"
       nameInternationalized == "Rijeka"
 
-      country.name == "Hrvatska"
-      country.nameInternationalized == "Hrvatska"
+      country.name == "Croatia"
+      country.nameInternationalized == "Croatia"
 
       unLoCode.code == "HRRJK"
       unLoCode.countryCode == "HR"

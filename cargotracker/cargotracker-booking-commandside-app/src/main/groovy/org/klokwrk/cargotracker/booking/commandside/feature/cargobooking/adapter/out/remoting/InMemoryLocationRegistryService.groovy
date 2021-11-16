@@ -35,9 +35,9 @@ class InMemoryLocationRegistryService implements FindLocationPortOut {
     @SuppressWarnings("CodeNarc.DuplicateStringLiteral")
     static final Map<String, Location> LOCATION_SAMPLE_MAP = [
         // Locations in Croatia
-        "HRKRK": Location.create("HRKRK", "Krk", "Hrvatska", "1-3-----", "4502N 01435E"),
-        "HRRJK": Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----", "4520N 01424E"),
-        "HRZAG": Location.create("HRZAG", "Zagreb", "Hrvatska", "-2345---", "4548N 01600E"),
+        "HRKRK": Location.create("HRKRK", "Krk", "Croatia", "1-3-----", "4502N 01435E"),
+        "HRRJK": Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E"),
+        "HRZAG": Location.create("HRZAG", "Zagreb", "Croatia", "-2345---", "4548N 01600E"),
 
         // Top 10 container ports in Europe, together with their corresponding state capital cities
         // ==========
