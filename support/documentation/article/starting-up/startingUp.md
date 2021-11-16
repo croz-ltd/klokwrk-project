@@ -1,13 +1,13 @@
 ## Starting up and trying the whole thing
 * **Author:** Damir Murat
 * **Created:** 26.05.2020.
-* **Updated:** 04.06.2021.
+* **Updated:** 16.11.2021.
 
 Environment:
 - OSX (should work with any desktop Linux distro and with Windows with appropriate bash-shell like git-bash)
 - JDK 11 (should work with JDK 8)
-- Gradle 6.9
-- IDEA Ultimate 2021.1.1 (should work with IDEA Community except for http client which is part of the Ultimate edition)
+- Gradle 7.0.2
+- IDEA Ultimate 2021.2.3 (should work with IDEA Community except for http client which is part of the Ultimate edition)
 - Docker
 - httpie
 
@@ -37,13 +37,13 @@ Going back to shell-2, some HTTP requests can be tried via `httpie`:
 
       http POST http://localhost:8080/cargotracker-booking-commandside/cargo-booking/book-cargo \
         Content-Type:application/json Accept:application/json Accept-Charset:utf-8 Accept-Language:hr-HR \
-        originLocation=HRRJK \
-        destinationLocation=HRZAG
+        originLocation=NLRTM \
+        destinationLocation=USNYC
 
       http POST http://localhost:8080/cargotracker-booking-commandside/cargo-booking/book-cargo \
         Content-Type:application/json Accept:application/json Accept-Charset:utf-8 Accept-Language:en \
-        originLocation=HRRJK \
-        destinationLocation=HRZAG
+        originLocation=NLRTM \
+        destinationLocation=USNYC
 
 - queryside
 
