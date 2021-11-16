@@ -30,8 +30,8 @@ Accept-Charset: utf-8
 Accept-Language: hr-HR
 
 {
-  "originLocation": "HRRJK",
-  "destinationLocation": "HRZAG"
+  "originLocation": "NLRTM",
+  "destinationLocation": "USNYC"
 }
 
 > {%
@@ -47,8 +47,8 @@ Accept-Charset: utf-8
 Accept-Language: en
 
 {
-  "originLocation": "HRRJK",
-  "destinationLocation": "HRZAG"
+  "originLocation": "NLRTM",
+  "destinationLocation": "USNYC"
 }
 
 > {%
@@ -64,8 +64,8 @@ Accept-Charset: utf-8
 Accept-Language: hr-HR
 
 {
-  "originLocation": "HRKRK",
-  "destinationLocation": "HRZAG"
+  "originLocation": "GRPIR",
+  "destinationLocation": "GRATH"
 }
 
 ### cargotracker-booking-commandside, cargo-booking/book-cargo, failure, en
@@ -76,8 +76,8 @@ Accept-Charset: utf-8
 Accept-Language: en
 
 {
-  "originLocation": "HRKRK",
-  "destinationLocation": "HRZAG"
+  "originLocation": "GRPIR",
+  "destinationLocation": "GRATH"
 }
 
 ###

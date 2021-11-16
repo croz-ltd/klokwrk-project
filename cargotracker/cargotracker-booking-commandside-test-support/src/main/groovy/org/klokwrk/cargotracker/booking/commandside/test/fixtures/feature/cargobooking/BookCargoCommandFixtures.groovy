@@ -27,9 +27,9 @@ import org.klokwrk.cargotracker.booking.domain.model.Location
 @CompileStatic
 class BookCargoCommandFixtures {
   static final Map<String, Location> LOCATION_SAMPLE_MAP = [
-      "HRKRK": Location.create("HRKRK", "Krk", "Hrvatska", "1-3-----", "4502N 01435E"),
-      "HRRJK": Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----", "4520N 01424E"),
-      "HRZAG": Location.create("HRZAG", "Zagreb", "Hrvatska", "-2345---", "4548N 01600E")
+      "HRKRK": Location.create("HRKRK", "Krk", "Croatia", "1-3-----", "4502N 01435E"),
+      "HRRJK": Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E"),
+      "HRZAG": Location.create("HRZAG", "Zagreb", "Croatia", "-2345---", "4548N 01600E")
   ]
 
   /**
@@ -38,8 +38,8 @@ class BookCargoCommandFixtures {
   static BookCargoCommand commandInvalidWithEqualOriginAndDestinationLocations(String aggregateIdentifier = UUID.randomUUID()) {
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
         aggregateIdentifier: aggregateIdentifier,
-        originLocation: Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----", "4520N 01424E"),
-        destinationLocation: Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----", "4520N 01424E")
+        originLocation: Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E"),
+        destinationLocation: Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E")
     )
 
     return bookCargoCommand

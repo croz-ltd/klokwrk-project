@@ -24,14 +24,14 @@ class LocationSpecification extends Specification {
   void "map constructor should work for correct input params"() {
     when:
     Location location = new Location(
-        unLoCode: new UnLoCode(code: "HRRJK"), name: new InternationalizedName(name: "Rijeka"), countryName: new InternationalizedName(name: "Hrvatska"),
+        unLoCode: new UnLoCode(code: "HRRJK"), name: new InternationalizedName(name: "Rijeka"), countryName: new InternationalizedName(name: "Croatia"),
         unLoCodeFunction: new UnLoCodeFunction(functionEncoded: "1234----"), unLoCodeCoordinates: new UnLoCodeCoordinates(coordinatesEncoded: "4520N 01424E")
     )
 
     then:
     location.unLoCode == new UnLoCode(code: "HRRJK")
     location.name == new InternationalizedName(name: "Rijeka")
-    location.countryName == new InternationalizedName(name: "Hrvatska")
+    location.countryName == new InternationalizedName(name: "Croatia")
   }
 
   void "map constructor should fail for invalid input params"() {
@@ -71,12 +71,12 @@ class LocationSpecification extends Specification {
 
   void "create() factory method should work for correct input params"() {
     when:
-    Location location = Location.create("HRRJK", "Rijeka", "Hrvatska", "1234----", "4520N 01424E")
+    Location location = Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E")
 
     then:
     location.unLoCode == new UnLoCode(code: "HRRJK")
     location.name == new InternationalizedName(name: "Rijeka")
-    location.countryName == new InternationalizedName(name: "Hrvatska")
+    location.countryName == new InternationalizedName(name: "Croatia")
   }
 
   void "create() factory method should fail for invalid input params"() {

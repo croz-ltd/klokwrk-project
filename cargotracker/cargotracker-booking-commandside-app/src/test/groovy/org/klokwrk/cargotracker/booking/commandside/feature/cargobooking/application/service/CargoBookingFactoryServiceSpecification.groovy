@@ -136,8 +136,8 @@ class CargoBookingFactoryServiceSpecification extends Specification {
           name: "Rijeka",
           nameInternationalized: "Rijeka",
           country: [
-              name: "Hrvatska",
-              nameInternationalized: "Hrvatska"
+              name: "Croatia",
+              nameInternationalized: "Croatia"
           ],
           unLoCode: [
               code: "HRRJK",
@@ -150,8 +150,8 @@ class CargoBookingFactoryServiceSpecification extends Specification {
           name: "Zagreb",
           nameInternationalized: "Zagreb",
           country: [
-              name: "Hrvatska",
-              nameInternationalized: "Hrvatska"
+              name: "Croatia",
+              nameInternationalized: "Croatia"
           ],
           unLoCode: [
               code: "HRZAG",
