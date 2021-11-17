@@ -32,10 +32,10 @@ import org.springframework.web.bind.annotation.RestController
 @CompileStatic
 @RestController
 @RequestMapping("/cargo-summary")
-class CargoSummaryQueryWebController {
+class CargoInfoQueryWebController {
   private final CargoSummaryQueryPortIn cargoSummaryQueryPortIn
 
-  CargoSummaryQueryWebController(CargoSummaryQueryPortIn cargoSummaryQueryPortIn) {
+  CargoInfoQueryWebController(CargoSummaryQueryPortIn cargoSummaryQueryPortIn) {
     this.cargoSummaryQueryPortIn = cargoSummaryQueryPortIn
   }
 

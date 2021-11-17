@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
+class CargoInfoQueryWebControllerIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
   @TestConfiguration
   static class TestSpringBootConfiguration {
     @Bean
