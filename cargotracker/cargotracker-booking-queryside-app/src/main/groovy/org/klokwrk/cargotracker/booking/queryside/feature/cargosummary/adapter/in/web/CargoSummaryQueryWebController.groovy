@@ -39,7 +39,7 @@ class CargoSummaryQueryWebController {
     this.fetchCargoSummaryQueryPortIn = fetchCargoSummaryQueryPortIn
   }
 
-  @PostMapping("/fetch-cargo-summary")
+  @PostMapping("/cargo-summary")
   OperationResponse<FetchCargoSummaryQueryResponse> fetchCargoSummaryQuery(@RequestBody FetchCargoSummaryQueryWebRequest webRequest, Locale locale) {
     OperationResponse<FetchCargoSummaryQueryResponse> cargoSummary = fetchCargoSummaryQueryPortIn.fetchCargoSummaryQuery(createOperationRequest(webRequest, FetchCargoSummaryQueryRequest, locale))
     return cargoSummary

@@ -72,7 +72,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
         """
 
     //noinspection HttpUrlsUsage
-    String fetchCargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-summary/fetch-cargo-summary"
+    String fetchCargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-summary/cargo-summary"
     Closure<String> queryPostRequestBodyClosure = { String commandResponseAggregateIdentifier ->
       """
       {
@@ -162,7 +162,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
   void "query - should not find non-existing cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
     //noinspection HttpUrlsUsage
-    String fetchCargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-summary/fetch-cargo-summary"
+    String fetchCargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-summary/cargo-summary"
     String queryPostRequestBody = """
       {
         "aggregateIdentifier": "${ UUID.randomUUID() }"
