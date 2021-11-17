@@ -68,7 +68,7 @@ class CargoSummaryQueryApplicationServiceIntegrationSpecification extends Abstra
     )
 
     when:
-    OperationResponse<FetchCargoSummaryQueryResponse> operationResponse = fetchCargoSummaryQueryPortIn.fetchCargoSummaryQuery(operationRequest)
+    OperationResponse<FetchCargoSummaryQueryResponse> operationResponse = fetchCargoSummaryQueryPortIn.cargoSummaryQuery(operationRequest)
 
     then:
     verifyAll(operationResponse.payload) {
@@ -100,7 +100,7 @@ class CargoSummaryQueryApplicationServiceIntegrationSpecification extends Abstra
     )
 
     when:
-    fetchCargoSummaryQueryPortIn.fetchCargoSummaryQuery(operationRequest)
+    fetchCargoSummaryQueryPortIn.cargoSummaryQuery(operationRequest)
 
     then:
     QueryException queryException = thrown()

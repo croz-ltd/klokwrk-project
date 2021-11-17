@@ -43,7 +43,7 @@ class CargoSummaryQueryApplicationService implements FetchCargoSummaryQueryPortI
   }
 
   @Override
-  OperationResponse<FetchCargoSummaryQueryResponse> fetchCargoSummaryQuery(OperationRequest<FetchCargoSummaryQueryRequest> fetchCargoSummaryQueryOperationRequest) {
+  OperationResponse<FetchCargoSummaryQueryResponse> cargoSummaryQuery(OperationRequest<FetchCargoSummaryQueryRequest> fetchCargoSummaryQueryOperationRequest) {
     requireMatch(fetchCargoSummaryQueryOperationRequest, notNullValue())
     validationService.validate(fetchCargoSummaryQueryOperationRequest.payload)
 
