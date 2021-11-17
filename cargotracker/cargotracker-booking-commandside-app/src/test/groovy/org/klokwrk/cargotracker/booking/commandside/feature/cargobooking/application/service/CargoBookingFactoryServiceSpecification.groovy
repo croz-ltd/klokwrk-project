@@ -134,29 +134,53 @@ class CargoBookingFactoryServiceSpecification extends Specification {
       aggregateIdentifier == myAggregateIdentifier
       originLocation == [
           name: "Rijeka",
-          nameInternationalized: "Rijeka",
-          country: [
-              name: "Croatia",
-              nameInternationalized: "Croatia"
-          ],
+          countryName: "Croatia",
           unLoCode: [
-              code: "HRRJK",
-              countryCode: "HR",
-              locationCode: "RJK"
+              code: [
+                  encoded: "HRRJK",
+                  countryCode: "HR",
+                  locationCode: "RJK"
+              ],
+              coordinates: [
+                  encoded: "4520N 01424E",
+                  latitudeInDegrees: 45.33,
+                  longitudeInDegrees: 14.40
+              ],
+              function: [
+                  encoded: "1234----",
+                  isPort: true,
+                  isRailTerminal: true,
+                  isRoadTerminal: true,
+                  isAirport: true,
+                  isPostalExchangeOffice: false,
+                  isBorderCrossing: false
+              ]
           ]
       ]
 
       destinationLocation == [
           name: "Zagreb",
-          nameInternationalized: "Zagreb",
-          country: [
-              name: "Croatia",
-              nameInternationalized: "Croatia"
-          ],
+          countryName: "Croatia",
           unLoCode: [
-              code: "HRZAG",
-              countryCode: "HR",
-              locationCode: "ZAG"
+              code: [
+                  encoded: "HRZAG",
+                  countryCode: "HR",
+                  locationCode: "ZAG"
+              ],
+              coordinates: [
+                  encoded: "4548N 01600E",
+                  latitudeInDegrees: 45.80,
+                  longitudeInDegrees: 16.00
+              ],
+              function: [
+                  encoded: "-2345---",
+                  isPort: false,
+                  isRailTerminal: true,
+                  isRoadTerminal: true,
+                  isAirport: true,
+                  isPostalExchangeOffice: true,
+                  isBorderCrossing: false
+              ]
           ]
       ]
     }

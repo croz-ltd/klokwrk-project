@@ -90,6 +90,20 @@ class CargoBookingFactoryService {
   BookCargoResponse createBookCargoResponse(CargoAggregate cargoAggregate) {
     requireMatch(cargoAggregate, notNullValue())
 
+    // NOTE: A direct synchronous returning of aggregate state, as is done here, is considered an anti-pattern and should be avoided in general. However, there are situations where it might be
+    //       helpful, but please consider best-practice alternatives first, like using queryside or subscription queries.
+    //
+    //       Remember that you may not need data from the server at all (except acknowledge that command is accepted, i.e., HTTP OK status). All data sent via command are correct if the command has
+    //       been accepted. In some situations, this may be enough for the client.
+    //
+    //       Use direct synchronous returning of aggregate state only as a last measure.
+    //
+    //       The internal aggregate state is not suitable for exposure to clients for multiple reasons like unwanted coupling and security. Moreover, even if the coupling is not a problem (i.e., when
+    //       the same team implements clients and aggregates), such API will be highly unstable. We might remedy that instability somewhat by applying transformations as done here.
+    //
+    //       An additional problem is a tendency to add fields not required by business logic in the aggregate but only for display purposes.
+    //
+    //       If clients still decide to use direct responses from aggregate for gaining data, they should be aware of consequences and have a robust suite of regression tests in place.
     Map<String, ?> originLocationMap = createMapFromLocation(cargoAggregate.originLocation)
     Map<String, ?> destinationLocationMap = createMapFromLocation(cargoAggregate.destinationLocation)
 
@@ -102,16 +116,28 @@ class CargoBookingFactoryService {
    */
   protected Map<String, ?> createMapFromLocation(Location location) {
     Map<String, ?> renderedMap = [
-        name: location.name.name,
-        nameInternationalized: location.name.nameInternationalized,
-        country: [
-            name: location.countryName.name,
-            nameInternationalized: location.countryName.nameInternationalized
-        ],
+        name: location.name.nameInternationalized,
+        countryName: location.countryName.nameInternationalized,
         unLoCode: [
-            code: location.unLoCode.code,
-            countryCode: location.unLoCode.countryCode,
-            locationCode: location.unLoCode.locationCode
+            code: [
+                encoded: location.unLoCode.code,
+                countryCode: location.unLoCode.countryCode,
+                locationCode: location.unLoCode.locationCode
+            ],
+            coordinates: [
+                encoded: location.unLoCodeCoordinates.coordinatesEncoded,
+                latitudeInDegrees: location.unLoCodeCoordinates.latitudeInDegrees,
+                longitudeInDegrees: location.unLoCodeCoordinates.longitudeInDegrees
+            ],
+            function: [
+                encoded: location.unLoCodeFunction.functionEncoded,
+                isPort: location.unLoCodeFunction.port,
+                isRailTerminal: location.unLoCodeFunction.railTerminal,
+                isRoadTerminal: location.unLoCodeFunction.roadTerminal,
+                isAirport: location.unLoCodeFunction.airport,
+                isPostalExchangeOffice: location.unLoCodeFunction.postalExchangeOffice,
+                isBorderCrossing: location.unLoCodeFunction.borderCrossing,
+            ]
         ]
     ]
 
