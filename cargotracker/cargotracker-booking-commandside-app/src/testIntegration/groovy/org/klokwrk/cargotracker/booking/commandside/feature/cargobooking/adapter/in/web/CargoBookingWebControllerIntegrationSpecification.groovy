@@ -94,26 +94,34 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     verifyAll(responseContentMap.payload.originLocation as Map) {
       name == "Zagreb"
-      nameInternationalized == "Zagreb"
+      countryName == "Croatia"
 
-      country.name == "Croatia"
-      country.nameInternationalized == "Croatia"
+      unLoCode
 
-      unLoCode.code == "HRZAG"
-      unLoCode.countryCode == "HR"
-      unLoCode.locationCode == "ZAG"
+      unLoCode.code
+      unLoCode.code.encoded == "HRZAG"
+
+      unLoCode.coordinates
+      unLoCode.coordinates.encoded == "4548N 01600E"
+
+      unLoCode.function
+      unLoCode.function.encoded == "-2345---"
     }
 
     verifyAll(responseContentMap.payload.destinationLocation as Map) {
       name == "Rijeka"
-      nameInternationalized == "Rijeka"
+      countryName == "Croatia"
 
-      country.name == "Croatia"
-      country.nameInternationalized == "Croatia"
+      unLoCode
 
-      unLoCode.code == "HRRJK"
-      unLoCode.countryCode == "HR"
-      unLoCode.locationCode == "RJK"
+      unLoCode.code
+      unLoCode.code.encoded == "HRRJK"
+
+      unLoCode.coordinates
+      unLoCode.coordinates.encoded == "4520N 01424E"
+
+      unLoCode.function
+      unLoCode.function.encoded == "1234----"
     }
 
     where:
