@@ -102,16 +102,28 @@ class CargoBookingFactoryService {
    */
   protected Map<String, ?> createMapFromLocation(Location location) {
     Map<String, ?> renderedMap = [
-        name: location.name.name,
-        nameInternationalized: location.name.nameInternationalized,
-        country: [
-            name: location.countryName.name,
-            nameInternationalized: location.countryName.nameInternationalized
-        ],
+        name: location.name.nameInternationalized,
+        countryName: location.countryName.nameInternationalized,
         unLoCode: [
-            code: location.unLoCode.code,
-            countryCode: location.unLoCode.countryCode,
-            locationCode: location.unLoCode.locationCode
+            code: [
+                encoded: location.unLoCode.code,
+                countryCode: location.unLoCode.countryCode,
+                locationCode: location.unLoCode.locationCode
+            ],
+            coordinates: [
+                encoded: location.unLoCodeCoordinates.coordinatesEncoded,
+                latitudeInDegrees: location.unLoCodeCoordinates.latitudeInDegrees,
+                longitudeInDegrees: location.unLoCodeCoordinates.longitudeInDegrees
+            ],
+            function: [
+                encoded: location.unLoCodeFunction.functionEncoded,
+                isPort: location.unLoCodeFunction.port,
+                isRailTerminal: location.unLoCodeFunction.railTerminal,
+                isRoadTerminal: location.unLoCodeFunction.roadTerminal,
+                isAirport: location.unLoCodeFunction.airport,
+                isPostalExchangeOffice: location.unLoCodeFunction.postalExchangeOffice,
+                isBorderCrossing: location.unLoCodeFunction.borderCrossing,
+            ]
         ]
     ]
 
