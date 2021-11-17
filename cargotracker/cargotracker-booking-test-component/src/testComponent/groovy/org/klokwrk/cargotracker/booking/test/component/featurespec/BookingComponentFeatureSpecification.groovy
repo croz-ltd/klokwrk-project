@@ -72,7 +72,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
         """
 
     //noinspection HttpUrlsUsage
-    String fetchCargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-summary/cargo-summary"
+    String cargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-summary/cargo-summary"
     Closure<String> queryPostRequestBodyClosure = { String commandResponseAggregateIdentifier ->
       """
       {
@@ -101,7 +101,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
     new PollingConditions(timeout: 5, initialDelay: 0, delay: 0.05).eventually {
       // given
-      Request queryRequest = Request.Post(fetchCargoSummaryQueryUrl)
+      Request queryRequest = Request.Post(cargoSummaryQueryUrl)
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
@@ -162,14 +162,14 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
   void "query - should not find non-existing cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
     given:
     //noinspection HttpUrlsUsage
-    String fetchCargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-summary/cargo-summary"
+    String cargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-summary/cargo-summary"
     String queryPostRequestBody = """
       {
         "aggregateIdentifier": "${ UUID.randomUUID() }"
       }
       """
 
-    Request queryRequest = Request.Post(fetchCargoSummaryQueryUrl)
+    Request queryRequest = Request.Post(cargoSummaryQueryUrl)
                                   .addHeader("Content-Type", "application/json")
                                   .addHeader("Accept", "application/json")
                                   .addHeader("Accept-Charset", "utf-8")

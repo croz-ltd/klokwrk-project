@@ -43,16 +43,16 @@ class CargoSummaryQueryApplicationService implements CargoSummaryQueryPortIn {
   }
 
   @Override
-  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(OperationRequest<CargoSummaryQueryRequest> fetchCargoSummaryQueryOperationRequest) {
-    requireMatch(fetchCargoSummaryQueryOperationRequest, notNullValue())
-    validationService.validate(fetchCargoSummaryQueryOperationRequest.payload)
+  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(OperationRequest<CargoSummaryQueryRequest> cargoSummaryQueryOperationRequest) {
+    requireMatch(cargoSummaryQueryOperationRequest, notNullValue())
+    validationService.validate(cargoSummaryQueryOperationRequest.payload)
 
-    CargoSummaryQueryResponse fetchCargoSummaryQueryResponse = queryGatewayAdapter.query(fetchCargoSummaryQueryOperationRequest, CargoSummaryQueryResponse)
-    return fetchCargoSummaryQueryOperationResponseFromFetchCargoSummaryQueryResponse(fetchCargoSummaryQueryResponse)
+    CargoSummaryQueryResponse cargoSummaryQueryResponse = queryGatewayAdapter.query(cargoSummaryQueryOperationRequest, CargoSummaryQueryResponse)
+    return cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(cargoSummaryQueryResponse)
   }
 
-  protected OperationResponse<CargoSummaryQueryResponse> fetchCargoSummaryQueryOperationResponseFromFetchCargoSummaryQueryResponse(CargoSummaryQueryResponse fetchCargoSummaryQueryResponse) {
+  protected OperationResponse<CargoSummaryQueryResponse> cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(CargoSummaryQueryResponse cargoSummaryQueryResponse) {
     ResponseMetaData responseMetaData = ResponseMetaData.createBasicInfoResponseMetaData()
-    return new OperationResponse<CargoSummaryQueryResponse>(payload: fetchCargoSummaryQueryResponse, metaData: responseMetaData.propertiesFiltered)
+    return new OperationResponse<CargoSummaryQueryResponse>(payload: cargoSummaryQueryResponse, metaData: responseMetaData.propertiesFiltered)
   }
 }

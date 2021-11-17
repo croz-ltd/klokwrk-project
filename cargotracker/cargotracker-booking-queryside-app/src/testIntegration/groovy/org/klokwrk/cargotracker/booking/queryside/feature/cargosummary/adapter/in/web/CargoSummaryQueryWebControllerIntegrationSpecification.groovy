@@ -159,7 +159,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
 
     verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
       it.size() == 2
-      root.type == "fetchCargoSummaryQueryRequest"
+      root.type == "cargoSummaryQueryRequest"
       constraintViolations.size() == 1
       constraintViolations.find({ it.path == "aggregateIdentifier" }).type == "notBlank"
     }

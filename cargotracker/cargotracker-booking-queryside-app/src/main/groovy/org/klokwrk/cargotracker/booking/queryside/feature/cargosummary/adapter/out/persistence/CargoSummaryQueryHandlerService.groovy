@@ -48,8 +48,8 @@ class CargoSummaryQueryHandlerService {
   }
 
   @QueryHandler
-  CargoSummaryQueryResponse handleFetchCargoSummaryQueryRequest(CargoSummaryQueryRequest fetchCargoSummaryQueryRequest) {
-    CargoSummaryJpaEntity cargoSummaryJpaEntity = cargoSummaryJpaRepository.findByAggregateIdentifier(fetchCargoSummaryQueryRequest.aggregateIdentifier)
+  CargoSummaryQueryResponse handleCargoSummaryQueryRequest(CargoSummaryQueryRequest cargoSummaryQueryRequest) {
+    CargoSummaryJpaEntity cargoSummaryJpaEntity = cargoSummaryJpaRepository.findByAggregateIdentifier(cargoSummaryQueryRequest.aggregateIdentifier)
 
     if (!cargoSummaryJpaEntity) {
       throw new QueryException(ViolationInfo.NOT_FOUND)

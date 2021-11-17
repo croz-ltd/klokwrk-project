@@ -55,20 +55,20 @@ class CargoSummaryQueryApplicationServiceIntegrationSpecification extends Abstra
   Sql groovySql
 
   @Autowired
-  CargoSummaryQueryPortIn fetchCargoSummaryQueryPortIn
+  CargoSummaryQueryPortIn cargoSummaryQueryPortIn
 
   void "should work for correct request - [locale: #localeParam]"() {
     given:
     String myAggregateIdentifier = publishAndWaitForProjectedCargoBookedEvent(eventBus, groovySql)
 
-    CargoSummaryQueryRequest fetchCargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: myAggregateIdentifier)
+    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: myAggregateIdentifier)
     OperationRequest<CargoSummaryQueryRequest> operationRequest = new OperationRequest(
-        payload: fetchCargoSummaryQueryRequest,
+        payload: cargoSummaryQueryRequest,
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): localeParam]
     )
 
     when:
-    OperationResponse<CargoSummaryQueryResponse> operationResponse = fetchCargoSummaryQueryPortIn.cargoSummaryQuery(operationRequest)
+    OperationResponse<CargoSummaryQueryResponse> operationResponse = cargoSummaryQueryPortIn.cargoSummaryQuery(operationRequest)
 
     then:
     verifyAll(operationResponse.payload) {
@@ -93,14 +93,14 @@ class CargoSummaryQueryApplicationServiceIntegrationSpecification extends Abstra
 
   void "should throw when CargoSummary cannot be found - [locale: #locale]"() {
     given:
-    CargoSummaryQueryRequest fetchCargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: UUID.randomUUID())
+    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: UUID.randomUUID())
     OperationRequest<CargoSummaryQueryRequest> operationRequest = new OperationRequest(
-        payload: fetchCargoSummaryQueryRequest,
+        payload: cargoSummaryQueryRequest,
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): locale]
     )
 
     when:
-    fetchCargoSummaryQueryPortIn.cargoSummaryQuery(operationRequest)
+    cargoSummaryQueryPortIn.cargoSummaryQuery(operationRequest)
 
     then:
     QueryException queryException = thrown()

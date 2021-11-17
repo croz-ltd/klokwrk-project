@@ -33,15 +33,15 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/cargo-summary")
 class CargoSummaryQueryWebController {
-  private final CargoSummaryQueryPortIn fetchCargoSummaryQueryPortIn
+  private final CargoSummaryQueryPortIn cargoSummaryQueryPortIn
 
-  CargoSummaryQueryWebController(CargoSummaryQueryPortIn fetchCargoSummaryQueryPortIn) {
-    this.fetchCargoSummaryQueryPortIn = fetchCargoSummaryQueryPortIn
+  CargoSummaryQueryWebController(CargoSummaryQueryPortIn cargoSummaryQueryPortIn) {
+    this.cargoSummaryQueryPortIn = cargoSummaryQueryPortIn
   }
 
   @PostMapping("/cargo-summary")
-  OperationResponse<CargoSummaryQueryResponse> fetchCargoSummaryQuery(@RequestBody CargoSummaryQueryWebRequest webRequest, Locale locale) {
-    OperationResponse<CargoSummaryQueryResponse> cargoSummary = fetchCargoSummaryQueryPortIn.cargoSummaryQuery(createOperationRequest(webRequest, CargoSummaryQueryRequest, locale))
+  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(@RequestBody CargoSummaryQueryWebRequest webRequest, Locale locale) {
+    OperationResponse<CargoSummaryQueryResponse> cargoSummary = cargoSummaryQueryPortIn.cargoSummaryQuery(createOperationRequest(webRequest, CargoSummaryQueryRequest, locale))
     return cargoSummary
   }
 

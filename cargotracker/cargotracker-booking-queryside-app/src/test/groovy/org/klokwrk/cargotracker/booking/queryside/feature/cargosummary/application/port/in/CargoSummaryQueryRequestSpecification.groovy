@@ -38,10 +38,10 @@ class CargoSummaryQueryRequestSpecification extends Specification {
 
   void "should pass validation for valid data"() {
     given:
-    CargoSummaryQueryRequest fetchCargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: aggregateIdentifierParam)
+    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: aggregateIdentifierParam)
 
     when:
-    validationService.validate(fetchCargoSummaryQueryRequest)
+    validationService.validate(cargoSummaryQueryRequest)
 
     then:
     notThrown(ConstraintViolationException)
@@ -53,10 +53,10 @@ class CargoSummaryQueryRequestSpecification extends Specification {
 
   void "should not pass validation for invalid data"() {
     given:
-    CargoSummaryQueryRequest fetchCargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: aggregateIdentifierParam)
+    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: aggregateIdentifierParam)
 
     when:
-    validationService.validate(fetchCargoSummaryQueryRequest)
+    validationService.validate(cargoSummaryQueryRequest)
 
     then:
     ConstraintViolationException constraintViolationException = thrown()
