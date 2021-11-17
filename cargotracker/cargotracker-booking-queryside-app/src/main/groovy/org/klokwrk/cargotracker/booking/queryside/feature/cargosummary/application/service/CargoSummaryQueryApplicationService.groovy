@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.applicat
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryGateway
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryPortIn
-import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ResponseMetaData
@@ -43,7 +43,7 @@ class CargoSummaryQueryApplicationService implements CargoSummaryQueryPortIn {
   }
 
   @Override
-  OperationResponse<FetchCargoSummaryQueryResponse> cargoSummaryQuery(OperationRequest<FetchCargoSummaryQueryRequest> fetchCargoSummaryQueryOperationRequest) {
+  OperationResponse<FetchCargoSummaryQueryResponse> cargoSummaryQuery(OperationRequest<CargoSummaryQueryRequest> fetchCargoSummaryQueryOperationRequest) {
     requireMatch(fetchCargoSummaryQueryOperationRequest, notNullValue())
     validationService.validate(fetchCargoSummaryQueryOperationRequest.payload)
 

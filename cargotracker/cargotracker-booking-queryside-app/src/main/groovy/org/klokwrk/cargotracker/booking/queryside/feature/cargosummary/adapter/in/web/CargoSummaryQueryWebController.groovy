@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.adapter.
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryPortIn
-import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.constant.MetaDataConstant
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
@@ -40,8 +40,8 @@ class CargoSummaryQueryWebController {
   }
 
   @PostMapping("/cargo-summary")
-  OperationResponse<FetchCargoSummaryQueryResponse> fetchCargoSummaryQuery(@RequestBody FetchCargoSummaryQueryWebRequest webRequest, Locale locale) {
-    OperationResponse<FetchCargoSummaryQueryResponse> cargoSummary = fetchCargoSummaryQueryPortIn.cargoSummaryQuery(createOperationRequest(webRequest, FetchCargoSummaryQueryRequest, locale))
+  OperationResponse<FetchCargoSummaryQueryResponse> fetchCargoSummaryQuery(@RequestBody CargoSummaryQueryWebRequest webRequest, Locale locale) {
+    OperationResponse<FetchCargoSummaryQueryResponse> cargoSummary = fetchCargoSummaryQueryPortIn.cargoSummaryQuery(createOperationRequest(webRequest, CargoSummaryQueryRequest, locale))
     return cargoSummary
   }
 

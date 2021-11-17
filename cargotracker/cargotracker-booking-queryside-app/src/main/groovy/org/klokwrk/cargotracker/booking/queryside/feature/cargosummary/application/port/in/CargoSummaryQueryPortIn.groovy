@@ -23,5 +23,5 @@ import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 
 @CompileStatic
 interface CargoSummaryQueryPortIn {
-  OperationResponse<FetchCargoSummaryQueryResponse> cargoSummaryQuery(OperationRequest<FetchCargoSummaryQueryRequest> fetchCargoSummaryQueryOperationRequest)
+  OperationResponse<FetchCargoSummaryQueryResponse> cargoSummaryQuery(OperationRequest<CargoSummaryQueryRequest> fetchCargoSummaryQueryOperationRequest)
 }

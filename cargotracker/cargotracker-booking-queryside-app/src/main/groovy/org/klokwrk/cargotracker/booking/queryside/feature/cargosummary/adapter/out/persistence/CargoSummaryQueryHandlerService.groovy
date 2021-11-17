@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.adapter.
 
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryHandler
-import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.CargoSummaryJpaEntity
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.CargoSummaryJpaRepository
@@ -48,7 +48,7 @@ class CargoSummaryQueryHandlerService {
   }
 
   @QueryHandler
-  FetchCargoSummaryQueryResponse handleFetchCargoSummaryQueryRequest(FetchCargoSummaryQueryRequest fetchCargoSummaryQueryRequest) {
+  FetchCargoSummaryQueryResponse handleFetchCargoSummaryQueryRequest(CargoSummaryQueryRequest fetchCargoSummaryQueryRequest) {
     CargoSummaryJpaEntity cargoSummaryJpaEntity = cargoSummaryJpaRepository.findByAggregateIdentifier(fetchCargoSummaryQueryRequest.aggregateIdentifier)
 
     if (!cargoSummaryJpaEntity) {

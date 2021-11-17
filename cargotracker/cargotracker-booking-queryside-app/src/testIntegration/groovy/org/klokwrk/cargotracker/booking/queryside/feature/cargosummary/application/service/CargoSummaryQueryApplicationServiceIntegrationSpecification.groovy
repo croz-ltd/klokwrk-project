@@ -21,7 +21,7 @@ import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.test.base.AbstractQuerySideIntegrationSpecification
-import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.constant.MetaDataConstant
@@ -61,8 +61,8 @@ class CargoSummaryQueryApplicationServiceIntegrationSpecification extends Abstra
     given:
     String myAggregateIdentifier = publishAndWaitForProjectedCargoBookedEvent(eventBus, groovySql)
 
-    FetchCargoSummaryQueryRequest fetchCargoSummaryQueryRequest = new FetchCargoSummaryQueryRequest(aggregateIdentifier: myAggregateIdentifier)
-    OperationRequest<FetchCargoSummaryQueryRequest> operationRequest = new OperationRequest(
+    CargoSummaryQueryRequest fetchCargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: myAggregateIdentifier)
+    OperationRequest<CargoSummaryQueryRequest> operationRequest = new OperationRequest(
         payload: fetchCargoSummaryQueryRequest,
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): localeParam]
     )
@@ -93,8 +93,8 @@ class CargoSummaryQueryApplicationServiceIntegrationSpecification extends Abstra
 
   void "should throw when CargoSummary cannot be found - [locale: #locale]"() {
     given:
-    FetchCargoSummaryQueryRequest fetchCargoSummaryQueryRequest = new FetchCargoSummaryQueryRequest(aggregateIdentifier: UUID.randomUUID())
-    OperationRequest<FetchCargoSummaryQueryRequest> operationRequest = new OperationRequest(
+    CargoSummaryQueryRequest fetchCargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: UUID.randomUUID())
+    OperationRequest<CargoSummaryQueryRequest> operationRequest = new OperationRequest(
         payload: fetchCargoSummaryQueryRequest,
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): locale]
     )
