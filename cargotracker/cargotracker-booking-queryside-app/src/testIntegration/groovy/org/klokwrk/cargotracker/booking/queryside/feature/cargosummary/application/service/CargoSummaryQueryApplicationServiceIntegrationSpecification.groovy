@@ -22,7 +22,7 @@ import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.test.base.AbstractQuerySideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.constant.MetaDataConstant
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
@@ -68,7 +68,7 @@ class CargoSummaryQueryApplicationServiceIntegrationSpecification extends Abstra
     )
 
     when:
-    OperationResponse<FetchCargoSummaryQueryResponse> operationResponse = fetchCargoSummaryQueryPortIn.cargoSummaryQuery(operationRequest)
+    OperationResponse<CargoSummaryQueryResponse> operationResponse = fetchCargoSummaryQueryPortIn.cargoSummaryQuery(operationRequest)
 
     then:
     verifyAll(operationResponse.payload) {

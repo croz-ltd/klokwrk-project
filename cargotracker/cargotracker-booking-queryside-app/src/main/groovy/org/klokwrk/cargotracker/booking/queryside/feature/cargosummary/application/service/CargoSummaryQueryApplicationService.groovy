@@ -21,7 +21,7 @@ import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryGateway
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ResponseMetaData
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
@@ -43,16 +43,16 @@ class CargoSummaryQueryApplicationService implements CargoSummaryQueryPortIn {
   }
 
   @Override
-  OperationResponse<FetchCargoSummaryQueryResponse> cargoSummaryQuery(OperationRequest<CargoSummaryQueryRequest> fetchCargoSummaryQueryOperationRequest) {
+  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(OperationRequest<CargoSummaryQueryRequest> fetchCargoSummaryQueryOperationRequest) {
     requireMatch(fetchCargoSummaryQueryOperationRequest, notNullValue())
     validationService.validate(fetchCargoSummaryQueryOperationRequest.payload)
 
-    FetchCargoSummaryQueryResponse fetchCargoSummaryQueryResponse = queryGatewayAdapter.query(fetchCargoSummaryQueryOperationRequest, FetchCargoSummaryQueryResponse)
+    CargoSummaryQueryResponse fetchCargoSummaryQueryResponse = queryGatewayAdapter.query(fetchCargoSummaryQueryOperationRequest, CargoSummaryQueryResponse)
     return fetchCargoSummaryQueryOperationResponseFromFetchCargoSummaryQueryResponse(fetchCargoSummaryQueryResponse)
   }
 
-  protected OperationResponse<FetchCargoSummaryQueryResponse> fetchCargoSummaryQueryOperationResponseFromFetchCargoSummaryQueryResponse(FetchCargoSummaryQueryResponse fetchCargoSummaryQueryResponse) {
+  protected OperationResponse<CargoSummaryQueryResponse> fetchCargoSummaryQueryOperationResponseFromFetchCargoSummaryQueryResponse(CargoSummaryQueryResponse fetchCargoSummaryQueryResponse) {
     ResponseMetaData responseMetaData = ResponseMetaData.createBasicInfoResponseMetaData()
-    return new OperationResponse<FetchCargoSummaryQueryResponse>(payload: fetchCargoSummaryQueryResponse, metaData: responseMetaData.propertiesFiltered)
+    return new OperationResponse<CargoSummaryQueryResponse>(payload: fetchCargoSummaryQueryResponse, metaData: responseMetaData.propertiesFiltered)
   }
 }
