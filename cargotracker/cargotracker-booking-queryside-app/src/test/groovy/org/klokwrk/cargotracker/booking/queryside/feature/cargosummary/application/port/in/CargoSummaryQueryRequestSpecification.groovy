@@ -27,7 +27,7 @@ import javax.validation.ConstraintViolationException
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
-class FetchCargoSummaryQueryRequestSpecification extends Specification {
+class CargoSummaryQueryRequestSpecification extends Specification {
   @Shared
   ValidationService validationService
 
@@ -38,10 +38,10 @@ class FetchCargoSummaryQueryRequestSpecification extends Specification {
 
   void "should pass validation for valid data"() {
     given:
-    FetchCargoSummaryQueryRequest fetchCargoSummaryQueryRequest = new FetchCargoSummaryQueryRequest(aggregateIdentifier: aggregateIdentifierParam)
+    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: aggregateIdentifierParam)
 
     when:
-    validationService.validate(fetchCargoSummaryQueryRequest)
+    validationService.validate(cargoSummaryQueryRequest)
 
     then:
     notThrown(ConstraintViolationException)
@@ -53,10 +53,10 @@ class FetchCargoSummaryQueryRequestSpecification extends Specification {
 
   void "should not pass validation for invalid data"() {
     given:
-    FetchCargoSummaryQueryRequest fetchCargoSummaryQueryRequest = new FetchCargoSummaryQueryRequest(aggregateIdentifier: aggregateIdentifierParam)
+    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: aggregateIdentifierParam)
 
     when:
-    validationService.validate(fetchCargoSummaryQueryRequest)
+    validationService.validate(cargoSummaryQueryRequest)
 
     then:
     ConstraintViolationException constraintViolationException = thrown()

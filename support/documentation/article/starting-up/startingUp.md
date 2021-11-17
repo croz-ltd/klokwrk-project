@@ -1,7 +1,7 @@
 ## Starting up and trying the whole thing
 * **Author:** Damir Murat
 * **Created:** 26.05.2020.
-* **Updated:** 16.11.2021.
+* **Updated:** 17.11.2021.
 
 Environment:
 - OSX (should work with any desktop Linux distro and with Windows with appropriate bash-shell like git-bash)
@@ -49,11 +49,11 @@ Going back to shell-2, some HTTP requests can be tried via `httpie`:
 
     To be able to execute queryside request, from the previous commandside output we need to take the value of `aggregateIdentifier` element, and then try some queryside requests. For example:
 
-      http POST http://localhost:8084/cargotracker-booking-queryside/cargo-summary/fetch-cargo-summary \
+      http POST http://localhost:8084/cargotracker-booking-queryside/cargo-summary/cargo-summary \
         Content-Type:application/json Accept:application/json Accept-Charset:utf-8 Accept-Language:hr-HR \
         aggregateIdentifier=9e4a13c8-cb74-4a01-9717-f41aaba5428d
 
-      http POST http://localhost:8084/cargotracker-booking-queryside/cargo-summary/fetch-cargo-summary \
+      http POST http://localhost:8084/cargotracker-booking-queryside/cargo-summary/cargo-summary \
         Content-Type:application/json Accept:application/json Accept-Charset:utf-8 Accept-Language:en \
         aggregateIdentifier=9e4a13c8-cb74-4a01-9717-f41aaba5428d
 

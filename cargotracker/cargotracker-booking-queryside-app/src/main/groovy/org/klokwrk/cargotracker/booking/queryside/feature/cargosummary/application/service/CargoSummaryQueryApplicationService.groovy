@@ -19,9 +19,9 @@ package org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.applicat
 
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryGateway
-import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryPortIn
-import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryPortIn
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ResponseMetaData
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
@@ -33,7 +33,7 @@ import static org.hamcrest.Matchers.notNullValue
 
 @Service
 @CompileStatic
-class CargoSummaryQueryApplicationService implements FetchCargoSummaryQueryPortIn {
+class CargoSummaryQueryApplicationService implements CargoSummaryQueryPortIn {
   private final QueryGatewayAdapter queryGatewayAdapter
   private final ValidationService validationService
 
@@ -43,16 +43,16 @@ class CargoSummaryQueryApplicationService implements FetchCargoSummaryQueryPortI
   }
 
   @Override
-  OperationResponse<FetchCargoSummaryQueryResponse> fetchCargoSummaryQuery(OperationRequest<FetchCargoSummaryQueryRequest> fetchCargoSummaryQueryOperationRequest) {
-    requireMatch(fetchCargoSummaryQueryOperationRequest, notNullValue())
-    validationService.validate(fetchCargoSummaryQueryOperationRequest.payload)
+  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(OperationRequest<CargoSummaryQueryRequest> cargoSummaryQueryOperationRequest) {
+    requireMatch(cargoSummaryQueryOperationRequest, notNullValue())
+    validationService.validate(cargoSummaryQueryOperationRequest.payload)
 
-    FetchCargoSummaryQueryResponse fetchCargoSummaryQueryResponse = queryGatewayAdapter.query(fetchCargoSummaryQueryOperationRequest, FetchCargoSummaryQueryResponse)
-    return fetchCargoSummaryQueryOperationResponseFromFetchCargoSummaryQueryResponse(fetchCargoSummaryQueryResponse)
+    CargoSummaryQueryResponse cargoSummaryQueryResponse = queryGatewayAdapter.query(cargoSummaryQueryOperationRequest, CargoSummaryQueryResponse)
+    return cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(cargoSummaryQueryResponse)
   }
 
-  protected OperationResponse<FetchCargoSummaryQueryResponse> fetchCargoSummaryQueryOperationResponseFromFetchCargoSummaryQueryResponse(FetchCargoSummaryQueryResponse fetchCargoSummaryQueryResponse) {
+  protected OperationResponse<CargoSummaryQueryResponse> cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(CargoSummaryQueryResponse cargoSummaryQueryResponse) {
     ResponseMetaData responseMetaData = ResponseMetaData.createBasicInfoResponseMetaData()
-    return new OperationResponse<FetchCargoSummaryQueryResponse>(payload: fetchCargoSummaryQueryResponse, metaData: responseMetaData.propertiesFiltered)
+    return new OperationResponse<CargoSummaryQueryResponse>(payload: cargoSummaryQueryResponse, metaData: responseMetaData.propertiesFiltered)
   }
 }

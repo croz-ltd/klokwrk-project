@@ -78,7 +78,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-summary/fetch-cargo-summary")
+        post("/cargo-summary/cargo-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -123,7 +123,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-summary/fetch-cargo-summary")
+        post("/cargo-summary/cargo-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -159,7 +159,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
 
     verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
       it.size() == 2
-      root.type == "fetchCargoSummaryQueryRequest"
+      root.type == "cargoSummaryQueryRequest"
       constraintViolations.size() == 1
       constraintViolations.find({ it.path == "aggregateIdentifier" }).type == "notBlank"
     }
@@ -181,7 +181,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-summary/fetch-cargo-summary")
+        post("/cargo-summary/cargo-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -231,7 +231,7 @@ class CargoSummaryQueryWebControllerIntegrationSpecification extends AbstractQue
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        put("/cargo-summary/fetch-cargo-summary")
+        put("/cargo-summary/cargo-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)

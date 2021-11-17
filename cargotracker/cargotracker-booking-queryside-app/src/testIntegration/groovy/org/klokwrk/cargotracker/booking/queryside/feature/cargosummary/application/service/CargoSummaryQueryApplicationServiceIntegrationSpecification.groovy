@@ -19,10 +19,10 @@ package org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.applicat
 
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
-import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryPortIn
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.test.base.AbstractQuerySideIntegrationSpecification
-import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.constant.MetaDataConstant
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
@@ -55,20 +55,20 @@ class CargoSummaryQueryApplicationServiceIntegrationSpecification extends Abstra
   Sql groovySql
 
   @Autowired
-  FetchCargoSummaryQueryPortIn fetchCargoSummaryQueryPortIn
+  CargoSummaryQueryPortIn cargoSummaryQueryPortIn
 
   void "should work for correct request - [locale: #localeParam]"() {
     given:
     String myAggregateIdentifier = publishAndWaitForProjectedCargoBookedEvent(eventBus, groovySql)
 
-    FetchCargoSummaryQueryRequest fetchCargoSummaryQueryRequest = new FetchCargoSummaryQueryRequest(aggregateIdentifier: myAggregateIdentifier)
-    OperationRequest<FetchCargoSummaryQueryRequest> operationRequest = new OperationRequest(
-        payload: fetchCargoSummaryQueryRequest,
+    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: myAggregateIdentifier)
+    OperationRequest<CargoSummaryQueryRequest> operationRequest = new OperationRequest(
+        payload: cargoSummaryQueryRequest,
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): localeParam]
     )
 
     when:
-    OperationResponse<FetchCargoSummaryQueryResponse> operationResponse = fetchCargoSummaryQueryPortIn.fetchCargoSummaryQuery(operationRequest)
+    OperationResponse<CargoSummaryQueryResponse> operationResponse = cargoSummaryQueryPortIn.cargoSummaryQuery(operationRequest)
 
     then:
     verifyAll(operationResponse.payload) {
@@ -93,14 +93,14 @@ class CargoSummaryQueryApplicationServiceIntegrationSpecification extends Abstra
 
   void "should throw when CargoSummary cannot be found - [locale: #locale]"() {
     given:
-    FetchCargoSummaryQueryRequest fetchCargoSummaryQueryRequest = new FetchCargoSummaryQueryRequest(aggregateIdentifier: UUID.randomUUID())
-    OperationRequest<FetchCargoSummaryQueryRequest> operationRequest = new OperationRequest(
-        payload: fetchCargoSummaryQueryRequest,
+    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: UUID.randomUUID())
+    OperationRequest<CargoSummaryQueryRequest> operationRequest = new OperationRequest(
+        payload: cargoSummaryQueryRequest,
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): locale]
     )
 
     when:
-    fetchCargoSummaryQueryPortIn.fetchCargoSummaryQuery(operationRequest)
+    cargoSummaryQueryPortIn.cargoSummaryQuery(operationRequest)
 
     then:
     QueryException queryException = thrown()

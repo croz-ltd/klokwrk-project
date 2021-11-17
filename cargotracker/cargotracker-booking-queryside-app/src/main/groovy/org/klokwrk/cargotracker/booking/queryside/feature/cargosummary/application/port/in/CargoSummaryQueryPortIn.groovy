@@ -18,17 +18,10 @@
 package org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in
 
 import groovy.transform.CompileStatic
-import groovy.transform.MapConstructor
-import groovy.transform.PropertyOptions
-import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
+import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 
-@PropertyOptions(propertyHandler = RelaxedPropertyHandler)
-@MapConstructor(noArg = true)
 @CompileStatic
-class FetchCargoSummaryQueryResponse {
-  String aggregateIdentifier
-  Long aggregateSequenceNumber
-
-  String originLocation
-  String destinationLocation
+interface CargoSummaryQueryPortIn {
+  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(OperationRequest<CargoSummaryQueryRequest> cargoSummaryQueryOperationRequest)
 }

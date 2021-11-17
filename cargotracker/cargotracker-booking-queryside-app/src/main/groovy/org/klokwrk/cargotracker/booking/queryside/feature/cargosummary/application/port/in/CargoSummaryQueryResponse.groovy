@@ -15,13 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.adapter.in.web
+package org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryRequest
+import groovy.transform.MapConstructor
+import groovy.transform.PropertyOptions
+import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
-// In general, in web interface we use FetchCargoSummaryQueryRequest directly, but FetchCargoSummaryQueryWebRequest can be used for adding additional properties that are only web specific and handled in
-// controller before sending FetchCargoSummaryQueryRequest into domain facade.
+@PropertyOptions(propertyHandler = RelaxedPropertyHandler)
+@MapConstructor(noArg = true)
 @CompileStatic
-class FetchCargoSummaryQueryWebRequest extends FetchCargoSummaryQueryRequest {
+class CargoSummaryQueryResponse {
+  String aggregateIdentifier
+  Long aggregateSequenceNumber
+
+  String originLocation
+  String destinationLocation
 }
