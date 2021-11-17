@@ -31,7 +31,7 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
 /**
- * Request DTO parameter for {@code fetchCargoSummaryQuery} operation from {@link FetchCargoSummaryQueryPortIn} inbound port interface.
+ * Request DTO parameter for {@code fetchCargoSummaryQuery} operation from {@link CargoSummaryQueryPortIn} inbound port interface.
  * <p/>
  * Here we are comply to the validation ordering as explained in ADR-0013.
  */

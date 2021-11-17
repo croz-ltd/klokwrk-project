@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.adapter.in.web
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryPortIn
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.boundary.api.metadata.constant.MetaDataConstant
@@ -33,9 +33,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/cargo-summary")
 class CargoSummaryQueryWebController {
-  private final FetchCargoSummaryQueryPortIn fetchCargoSummaryQueryPortIn
+  private final CargoSummaryQueryPortIn fetchCargoSummaryQueryPortIn
 
-  CargoSummaryQueryWebController(FetchCargoSummaryQueryPortIn fetchCargoSummaryQueryPortIn) {
+  CargoSummaryQueryWebController(CargoSummaryQueryPortIn fetchCargoSummaryQueryPortIn) {
     this.fetchCargoSummaryQueryPortIn = fetchCargoSummaryQueryPortIn
   }
 

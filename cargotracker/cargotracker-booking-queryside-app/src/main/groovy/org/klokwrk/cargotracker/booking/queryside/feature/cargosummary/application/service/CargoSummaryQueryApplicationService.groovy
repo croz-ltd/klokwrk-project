@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.applicat
 
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryGateway
-import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryPortIn
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryGatewayAdapter
@@ -33,7 +33,7 @@ import static org.hamcrest.Matchers.notNullValue
 
 @Service
 @CompileStatic
-class CargoSummaryQueryApplicationService implements FetchCargoSummaryQueryPortIn {
+class CargoSummaryQueryApplicationService implements CargoSummaryQueryPortIn {
   private final QueryGatewayAdapter queryGatewayAdapter
   private final ValidationService validationService
 

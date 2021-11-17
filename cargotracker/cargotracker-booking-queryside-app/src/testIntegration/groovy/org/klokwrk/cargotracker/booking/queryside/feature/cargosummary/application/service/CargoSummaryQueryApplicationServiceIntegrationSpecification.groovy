@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.applicat
 
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
-import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryPortIn
+import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.CargoSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.test.base.AbstractQuerySideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.cargosummary.application.port.in.FetchCargoSummaryQueryResponse
@@ -55,7 +55,7 @@ class CargoSummaryQueryApplicationServiceIntegrationSpecification extends Abstra
   Sql groovySql
 
   @Autowired
-  FetchCargoSummaryQueryPortIn fetchCargoSummaryQueryPortIn
+  CargoSummaryQueryPortIn fetchCargoSummaryQueryPortIn
 
   void "should work for correct request - [locale: #localeParam]"() {
     given:
