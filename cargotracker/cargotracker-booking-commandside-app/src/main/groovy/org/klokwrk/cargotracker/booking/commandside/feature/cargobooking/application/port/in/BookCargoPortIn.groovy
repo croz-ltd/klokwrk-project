@@ -23,5 +23,5 @@ import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 
 @CompileStatic
 interface BookCargoPortIn {
-  OperationResponse<BookCargoResponse> bookCargo(OperationRequest<BookCargoRequest> bookCargoOperationRequest)
+  OperationResponse<BookCargoResponse> bookCargoCommand(OperationRequest<BookCargoRequest> bookCargoOperationRequest)
 }

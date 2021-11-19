@@ -51,7 +51,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
-    OperationResponse<BookCargoResponse> bookCargoOperationResponse = bookCargoPortIn.bookCargo(new OperationRequest<>(payload: bookCargoRequest, metaData: requestMetadataMap))
+    OperationResponse<BookCargoResponse> bookCargoOperationResponse = bookCargoPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoRequest, metaData: requestMetadataMap))
     BookCargoResponse bookCargoResponsePayload = bookCargoOperationResponse.payload
     Map bookCargoResponseMetadata = bookCargoOperationResponse.metaData
 
@@ -88,7 +88,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
-    OperationResponse<BookCargoResponse> bookCargoOperationResponse = bookCargoPortIn.bookCargo(new OperationRequest<>(payload: bookCargoRequest, metaData: requestMetadataMap))
+    OperationResponse<BookCargoResponse> bookCargoOperationResponse = bookCargoPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoRequest, metaData: requestMetadataMap))
     BookCargoResponse bookCargoResponsePayload = bookCargoOperationResponse.payload
     Map bookCargoResponseMetadata = bookCargoOperationResponse.metaData
     List<ILoggingEvent> loggingEventList = listAppender.list
@@ -134,7 +134,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
-    bookCargoPortIn.bookCargo(new OperationRequest<>(payload: bookCargoRequest, metaData: requestMetadataMap))
+    bookCargoPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoRequest, metaData: requestMetadataMap))
 
     then:
     thrown(RemoteHandlerException)

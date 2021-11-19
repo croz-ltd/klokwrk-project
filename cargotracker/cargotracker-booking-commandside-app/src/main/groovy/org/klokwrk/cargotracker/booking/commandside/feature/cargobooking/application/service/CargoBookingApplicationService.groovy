@@ -46,7 +46,7 @@ class CargoBookingApplicationService implements BookCargoPortIn {
   }
 
   @Override
-  OperationResponse<BookCargoResponse> bookCargo(OperationRequest<BookCargoRequest> bookCargoOperationRequest) {
+  OperationResponse<BookCargoResponse> bookCargoCommand(OperationRequest<BookCargoRequest> bookCargoOperationRequest) {
     requireMatch(bookCargoOperationRequest, notNullValue())
     validationService.validate(bookCargoOperationRequest.payload)
 
