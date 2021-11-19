@@ -39,7 +39,7 @@ import javax.sql.DataSource
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class CargoSummaryProjectorServiceIntegrationSpecification extends AbstractRdbmsProjectionIntegrationSpecification {
+class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbmsProjectionIntegrationSpecification {
 
   @TestConfiguration
   static class TestSpringBootConfiguration {

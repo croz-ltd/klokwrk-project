@@ -28,10 +28,10 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 @CompileStatic
-class CargoSummaryProjectorService {
+class CargoSummaryProjectionService {
   private final CargoSummaryJpaRepository cargoSummaryJpaRepository
 
-  CargoSummaryProjectorService(CargoSummaryJpaRepository cargoSummaryJpaRepository) {
+  CargoSummaryProjectionService(CargoSummaryJpaRepository cargoSummaryJpaRepository) {
     this.cargoSummaryJpaRepository = cargoSummaryJpaRepository
   }
 
