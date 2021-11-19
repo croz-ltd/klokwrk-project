@@ -21,7 +21,7 @@ import org.axonframework.eventhandling.EventHandler
 import org.klokwrk.cargotracker.lib.axon.logging.stub.event.MyTestAggregateCreatedEvent
 import org.klokwrk.cargotracker.lib.axon.logging.stub.event.MyTestAggregateUpdatedEvent
 
-class MyTestProjector {
+class MyTestProjection {
   @SuppressWarnings(["unused", "CodeNarc.UnusedMethodParameter"])
   @EventHandler
   void handle(MyTestAggregateCreatedEvent event) {
