@@ -22,7 +22,7 @@ import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.command.Bo
 import org.klokwrk.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.FindLocationPortOut
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.LocationByUnLoCodeQueryPortOut
 import org.klokwrk.cargotracker.booking.domain.model.Location
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
@@ -37,10 +37,10 @@ import static org.hamcrest.Matchers.notNullValue
 @Service
 @CompileStatic
 class CargoBookingFactoryService {
-  private final FindLocationPortOut findLocationPortOut
+  private final LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut
 
-  CargoBookingFactoryService(FindLocationPortOut findLocationPortOut) {
-    this.findLocationPortOut = findLocationPortOut
+  CargoBookingFactoryService(LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut) {
+    this.locationByUnLoCodeQueryPortOut = locationByUnLoCodeQueryPortOut
   }
 
   /**
@@ -68,10 +68,10 @@ class CargoBookingFactoryService {
     //
     //       Further, the validator and its corresponding annotation will be highly domain and use-case specific which will tie them to the domain facade/application layer. Also, data resolving
     //       should rarely fail as original unresolved data should be provided as a selectable UI choice (populated with registry data fetched from backend) instead of a free-form entry.
-    Location originLocation = findLocationPortOut.findByUnLoCode(bookCargoCommandRequest.originLocation)
+    Location originLocation = locationByUnLoCodeQueryPortOut.findByUnLoCode(bookCargoCommandRequest.originLocation)
     requireKnownLocation(originLocation, "originLocationUnknown")
 
-    Location destinationLocation = findLocationPortOut.findByUnLoCode(bookCargoCommandRequest.destinationLocation)
+    Location destinationLocation = locationByUnLoCodeQueryPortOut.findByUnLoCode(bookCargoCommandRequest.destinationLocation)
     requireKnownLocation(destinationLocation, "destinationLocationUnknown")
 
     BookCargoCommand bookCargoCommand = new BookCargoCommand(aggregateIdentifier: aggregateIdentifier, originLocation: originLocation, destinationLocation: destinationLocation)

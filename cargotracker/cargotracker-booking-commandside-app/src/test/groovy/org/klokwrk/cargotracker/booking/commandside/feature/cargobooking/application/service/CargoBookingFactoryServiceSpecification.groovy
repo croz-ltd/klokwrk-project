@@ -22,7 +22,7 @@ import org.klokwrk.cargotracker.booking.commandside.domain.aggregate.CargoAggreg
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapter.out.remoting.InMemoryLocationRegistryService
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.FindLocationPortOut
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.LocationByUnLoCodeQueryPortOut
 import org.klokwrk.cargotracker.booking.domain.model.Location
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
@@ -31,11 +31,11 @@ import spock.lang.Specification
 class CargoBookingFactoryServiceSpecification extends Specification {
 
   CargoBookingFactoryService cargoBookingFactoryService
-  FindLocationPortOut findLocationPortOut
+  LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut
 
   void setup() {
-    findLocationPortOut = new InMemoryLocationRegistryService()
-    cargoBookingFactoryService = new CargoBookingFactoryService(findLocationPortOut)
+    locationByUnLoCodeQueryPortOut = new InMemoryLocationRegistryService()
+    cargoBookingFactoryService = new CargoBookingFactoryService(locationByUnLoCodeQueryPortOut)
   }
 
   void "createBookCargoCommand - should throw for passed null"() {
@@ -121,8 +121,8 @@ class CargoBookingFactoryServiceSpecification extends Specification {
   void "createBookCargoCommandResponse - should create expected response"() {
     given:
     String myAggregateIdentifier = UUID.randomUUID()
-    Location myOriginLocation = findLocationPortOut.findByUnLoCode("HRRJK")
-    Location myDestinationLocation = findLocationPortOut.findByUnLoCode("HRZAG")
+    Location myOriginLocation = locationByUnLoCodeQueryPortOut.findByUnLoCode("HRRJK")
+    Location myDestinationLocation = locationByUnLoCodeQueryPortOut.findByUnLoCode("HRZAG")
 
     CargoAggregate cargoAggregate = new CargoAggregate(aggregateIdentifier: myAggregateIdentifier, originLocation: myOriginLocation, destinationLocation: myDestinationLocation)
 
