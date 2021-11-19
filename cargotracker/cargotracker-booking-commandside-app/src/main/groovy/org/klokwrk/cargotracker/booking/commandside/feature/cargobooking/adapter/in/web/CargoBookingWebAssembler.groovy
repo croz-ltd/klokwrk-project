@@ -29,10 +29,10 @@ import javax.servlet.http.HttpServletRequest
 @CompileStatic
 class CargoBookingWebAssembler {
 
-  static OperationRequest<BookCargoRequest> toBookCargoOperationRequest(BookCargoWebRequest bookCargoWebRequest, HttpServletRequest httpServletRequest) {
+  static OperationRequest<BookCargoRequest> toBookCargoOperationRequest(BookCargoCommandWebRequest bookCargoCommandWebRequest, HttpServletRequest httpServletRequest) {
     Map metadataMap = WebMetaDataFactory.createMetaDataMapForWebBookingChannel(ClientIpAddressExtractor.extractClientIpAddress(httpServletRequest))
 
-    OperationRequest<BookCargoRequest> bookCargoOperationRequest = new OperationRequest(payload: new BookCargoRequest(bookCargoWebRequest.properties), metaData: metadataMap)
+    OperationRequest<BookCargoRequest> bookCargoOperationRequest = new OperationRequest(payload: new BookCargoRequest(bookCargoCommandWebRequest.properties), metaData: metadataMap)
     return bookCargoOperationRequest
   }
 }
