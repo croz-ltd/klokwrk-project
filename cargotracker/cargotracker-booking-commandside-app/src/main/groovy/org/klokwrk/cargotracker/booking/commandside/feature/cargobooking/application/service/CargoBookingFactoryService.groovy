@@ -21,7 +21,7 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoResponse
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.FindLocationPortOut
 import org.klokwrk.cargotracker.booking.domain.model.Location
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
@@ -85,9 +85,9 @@ class CargoBookingFactoryService {
   }
 
   /**
-   * Creates {@link org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoResponse} from supplied {@link CargoAggregate} instance.
+   * Creates {@link BookCargoCommandResponse} from supplied {@link CargoAggregate} instance.
    */
-  BookCargoResponse createBookCargoResponse(CargoAggregate cargoAggregate) {
+  BookCargoCommandResponse createBookCargoCommandResponse(CargoAggregate cargoAggregate) {
     requireMatch(cargoAggregate, notNullValue())
 
     // NOTE: A direct synchronous returning of aggregate state, as is done here, is considered an anti-pattern and should be avoided in general. However, there are situations where it might be
@@ -107,8 +107,10 @@ class CargoBookingFactoryService {
     Map<String, ?> originLocationMap = createMapFromLocation(cargoAggregate.originLocation)
     Map<String, ?> destinationLocationMap = createMapFromLocation(cargoAggregate.destinationLocation)
 
-    BookCargoResponse bookCargoResponse = new BookCargoResponse(aggregateIdentifier: cargoAggregate.aggregateIdentifier, originLocation: originLocationMap, destinationLocation: destinationLocationMap)
-    return bookCargoResponse
+    BookCargoCommandResponse bookCargoCommandResponse =
+        new BookCargoCommandResponse(aggregateIdentifier: cargoAggregate.aggregateIdentifier, originLocation: originLocationMap, destinationLocation: destinationLocationMap)
+
+    return bookCargoCommandResponse
   }
 
   /**

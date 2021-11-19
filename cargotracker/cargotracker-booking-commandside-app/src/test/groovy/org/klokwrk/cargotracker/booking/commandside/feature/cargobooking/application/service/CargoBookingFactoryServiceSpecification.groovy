@@ -21,7 +21,7 @@ import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.command.Bo
 import org.klokwrk.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapter.out.remoting.InMemoryLocationRegistryService
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoResponse
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.FindLocationPortOut
 import org.klokwrk.cargotracker.booking.domain.model.Location
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
@@ -118,7 +118,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     thrown(IllegalArgumentException)
   }
 
-  void "createBookCargoResponse - should create expected response"() {
+  void "createBookCargoCommandResponse - should create expected response"() {
     given:
     String myAggregateIdentifier = UUID.randomUUID()
     Location myOriginLocation = findLocationPortOut.findByUnLoCode("HRRJK")
@@ -127,10 +127,10 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     CargoAggregate cargoAggregate = new CargoAggregate(aggregateIdentifier: myAggregateIdentifier, originLocation: myOriginLocation, destinationLocation: myDestinationLocation)
 
     when:
-    BookCargoResponse bookCargoResponse = cargoBookingFactoryService.createBookCargoResponse(cargoAggregate)
+    BookCargoCommandResponse bookCargoCommandResponse = cargoBookingFactoryService.createBookCargoCommandResponse(cargoAggregate)
 
     then:
-    verifyAll(bookCargoResponse) {
+    verifyAll(bookCargoCommandResponse) {
       aggregateIdentifier == myAggregateIdentifier
       originLocation == [
           name: "Rijeka",

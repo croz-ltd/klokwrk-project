@@ -25,7 +25,7 @@ import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor
 @CompileStatic
-class BookCargoResponse {
+class BookCargoCommandResponse {
   String aggregateIdentifier
 
   Map<String, ?> originLocation
