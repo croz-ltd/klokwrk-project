@@ -121,8 +121,8 @@ class CargoBookingFactoryServiceSpecification extends Specification {
   void "createBookCargoCommandResponse - should create expected response"() {
     given:
     String myAggregateIdentifier = UUID.randomUUID()
-    Location myOriginLocation = locationByUnLoCodeQueryPortOut.findByUnLoCode("HRRJK")
-    Location myDestinationLocation = locationByUnLoCodeQueryPortOut.findByUnLoCode("HRZAG")
+    Location myOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRRJK")
+    Location myDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRZAG")
 
     CargoAggregate cargoAggregate = new CargoAggregate(aggregateIdentifier: myAggregateIdentifier, originLocation: myOriginLocation, destinationLocation: myDestinationLocation)
 

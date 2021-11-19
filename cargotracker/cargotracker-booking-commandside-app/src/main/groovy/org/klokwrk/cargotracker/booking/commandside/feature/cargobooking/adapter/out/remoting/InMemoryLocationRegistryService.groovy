@@ -26,8 +26,8 @@ import org.springframework.stereotype.Service
 @Service
 @CompileStatic
 class InMemoryLocationRegistryService implements LocationByUnLoCodeQueryPortOut {
-  Location findByUnLoCode(String unLoCode) {
-    Location locationFound = LocationSample.findByUnLoCode(unLoCode)
+  Location locationByUnLoCodeQuery(String unLoCode) {
+    Location locationFound = LocationSample.locationByUnLoCodeQuery(unLoCode)
     return locationFound
   }
 
@@ -136,7 +136,7 @@ class InMemoryLocationRegistryService implements LocationByUnLoCodeQueryPortOut 
         // ==========
     ]
 
-    static Location findByUnLoCode(String unLoCode) {
+    static Location locationByUnLoCodeQuery(String unLoCode) {
       Location locationFound = LOCATION_SAMPLE_MAP.get(unLoCode, Location.UNKNOWN_LOCATION)
       return locationFound
     }

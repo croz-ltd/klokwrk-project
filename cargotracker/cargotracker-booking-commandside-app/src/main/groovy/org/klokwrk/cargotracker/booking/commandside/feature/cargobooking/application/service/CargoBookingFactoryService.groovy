@@ -68,10 +68,10 @@ class CargoBookingFactoryService {
     //
     //       Further, the validator and its corresponding annotation will be highly domain and use-case specific which will tie them to the domain facade/application layer. Also, data resolving
     //       should rarely fail as original unresolved data should be provided as a selectable UI choice (populated with registry data fetched from backend) instead of a free-form entry.
-    Location originLocation = locationByUnLoCodeQueryPortOut.findByUnLoCode(bookCargoCommandRequest.originLocation)
+    Location originLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.originLocation)
     requireKnownLocation(originLocation, "originLocationUnknown")
 
-    Location destinationLocation = locationByUnLoCodeQueryPortOut.findByUnLoCode(bookCargoCommandRequest.destinationLocation)
+    Location destinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.destinationLocation)
     requireKnownLocation(destinationLocation, "destinationLocationUnknown")
 
     BookCargoCommand bookCargoCommand = new BookCargoCommand(aggregateIdentifier: aggregateIdentifier, originLocation: originLocation, destinationLocation: destinationLocation)

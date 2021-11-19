@@ -22,5 +22,5 @@ import org.springframework.stereotype.Service
 
 @Service
 interface LocationByUnLoCodeQueryPortOut {
-  Location findByUnLoCode(String unLoCode)
+  Location locationByUnLoCodeQuery(String unLoCode)
 }
