@@ -21,7 +21,7 @@ import groovy.transform.CompileStatic
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoPortIn
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandPortIn
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoResponse
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandGatewayAdapter
@@ -34,7 +34,7 @@ import static org.hamcrest.Matchers.notNullValue
 
 @Service
 @CompileStatic
-class CargoBookingApplicationService implements BookCargoPortIn {
+class CargoBookingApplicationService implements BookCargoCommandPortIn {
   private final CargoBookingFactoryService cargoBookingFactoryService
   private final CommandGatewayAdapter commandGatewayAdapter
   private final ValidationService validationService
@@ -46,12 +46,12 @@ class CargoBookingApplicationService implements BookCargoPortIn {
   }
 
   @Override
-  OperationResponse<BookCargoResponse> bookCargoCommand(OperationRequest<BookCargoRequest> bookCargoOperationRequest) {
-    requireMatch(bookCargoOperationRequest, notNullValue())
-    validationService.validate(bookCargoOperationRequest.payload)
+  OperationResponse<BookCargoResponse> bookCargoCommand(OperationRequest<BookCargoRequest> bookCargoCommandOperationRequest) {
+    requireMatch(bookCargoCommandOperationRequest, notNullValue())
+    validationService.validate(bookCargoCommandOperationRequest.payload)
 
-    BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoOperationRequest.payload)
-    CargoAggregate cargoAggregate = commandGatewayAdapter.sendAndWait(bookCargoCommand, bookCargoOperationRequest.metaData)
+    BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandOperationRequest.payload)
+    CargoAggregate cargoAggregate = commandGatewayAdapter.sendAndWait(bookCargoCommand, bookCargoCommandOperationRequest.metaData)
 
     return new OperationResponse(payload: cargoBookingFactoryService.createBookCargoResponse(cargoAggregate))
   }
