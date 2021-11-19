@@ -33,7 +33,7 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
 /**
- * Request DTO parameter for {@code bookCargo} operation from {@link BookCargoPortIn} inbound port interface.
+ * Request DTO parameter for {@code bookCargoCommand} operation from {@link BookCargoCommandPortIn} inbound port interface.
  * <p/>
  * References:
  * <ul>
@@ -41,11 +41,11 @@ import javax.validation.constraints.Size
  *   <li>https://stackoverflow.com/questions/5571231/control-validation-annotations-order/66264530#66264530</li>
  * </ul>
  */
-@GroupSequence([BookCargoRequest, Level1, Level2, Level3])
+@GroupSequence([BookCargoCommandRequest, Level1, Level2, Level3])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
-class BookCargoRequest {
+class BookCargoCommandRequest {
   /**
    * Optional aggregate identifier of a cargo to book.
    * <p/>

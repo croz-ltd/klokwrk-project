@@ -20,8 +20,8 @@ package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applic
 import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapter.out.remoting.InMemoryLocationRegistryService
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoRequest
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoResponse
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.FindLocationPortOut
 import org.klokwrk.cargotracker.booking.domain.model.Location
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
@@ -48,10 +48,10 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
   void "createBookCargoCommand - should fail for invalid originLocation"() {
     given:
-    BookCargoRequest bookCargoRequest = new BookCargoRequest(originLocation: "invalidOrigin", destinationLocation: "HRRJK")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(originLocation: "invalidOrigin", destinationLocation: "HRRJK")
 
     when:
-    cargoBookingFactoryService.createBookCargoCommand(bookCargoRequest)
+    cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
 
     then:
     CommandException commandException = thrown()
@@ -63,10 +63,10 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
   void "createBookCargoCommand - should fail for invalid destinationLocation"() {
     given:
-    BookCargoRequest bookCargoRequest = new BookCargoRequest(originLocation: "HRRJK", destinationLocation: "invalidDestination")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(originLocation: "HRRJK", destinationLocation: "invalidDestination")
 
     when:
-    cargoBookingFactoryService.createBookCargoCommand(bookCargoRequest)
+    cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
 
     then:
     CommandException commandException = thrown()
@@ -78,10 +78,10 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
   void "createBookCargoCommand - should work for unspecified aggregate identifier"() {
     given:
-    BookCargoRequest bookCargoRequest = new BookCargoRequest(originLocation: "HRRJK", destinationLocation: "HRZAG")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(originLocation: "HRRJK", destinationLocation: "HRZAG")
 
     when:
-    BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoRequest)
+    BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
 
     then:
     verifyAll(bookCargoCommand) {
@@ -94,10 +94,10 @@ class CargoBookingFactoryServiceSpecification extends Specification {
   void "createBookCargoCommand - should work for specified aggregate identifier"() {
     given:
     String myAggregateIdentifier = UUID.randomUUID()
-    BookCargoRequest bookCargoRequest = new BookCargoRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRRJK", destinationLocation: "HRZAG")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRRJK", destinationLocation: "HRZAG")
 
     when:
-    BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoRequest)
+    BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
 
     then:
     verifyAll(bookCargoCommand) {
@@ -109,16 +109,16 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
   void "createBookCargoCommand - should throw for specified aggregate identifier in invalid format"() {
     given:
-    BookCargoRequest bookCargoRequest = new BookCargoRequest(aggregateIdentifier: "invalid", originLocation: "HRRJK", destinationLocation: "HRZAG")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(aggregateIdentifier: "invalid", originLocation: "HRRJK", destinationLocation: "HRZAG")
 
     when:
-    cargoBookingFactoryService.createBookCargoCommand(bookCargoRequest)
+    cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
 
     then:
     thrown(IllegalArgumentException)
   }
 
-  void "createBookCargoResponse - should create expected response"() {
+  void "createBookCargoCommandResponse - should create expected response"() {
     given:
     String myAggregateIdentifier = UUID.randomUUID()
     Location myOriginLocation = findLocationPortOut.findByUnLoCode("HRRJK")
@@ -127,10 +127,10 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     CargoAggregate cargoAggregate = new CargoAggregate(aggregateIdentifier: myAggregateIdentifier, originLocation: myOriginLocation, destinationLocation: myDestinationLocation)
 
     when:
-    BookCargoResponse bookCargoResponse = cargoBookingFactoryService.createBookCargoResponse(cargoAggregate)
+    BookCargoCommandResponse bookCargoCommandResponse = cargoBookingFactoryService.createBookCargoCommandResponse(cargoAggregate)
 
     then:
-    verifyAll(bookCargoResponse) {
+    verifyAll(bookCargoCommandResponse) {
       aggregateIdentifier == myAggregateIdentifier
       originLocation == [
           name: "Rijeka",

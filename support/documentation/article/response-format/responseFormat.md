@@ -229,7 +229,7 @@ individual broken constraints:
 
       "validationReport": {
         "root": {
-          "type": "bookCargoRequest"
+          "type": "bookCargoCommandRequest"
         },
         "constraintViolations": [
           { "type": "notBlank", "scope": "property", "path": "originLocation", "message": "must not be blank" },

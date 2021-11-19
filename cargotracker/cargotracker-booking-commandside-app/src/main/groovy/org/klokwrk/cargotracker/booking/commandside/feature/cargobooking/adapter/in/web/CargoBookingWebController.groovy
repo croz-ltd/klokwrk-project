@@ -18,8 +18,8 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapter.in.web
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoPortIn
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoResponse
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandPortIn
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -32,15 +32,17 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 @RequestMapping("/cargo-booking")
 class CargoBookingWebController {
-  private final BookCargoPortIn bookCargoPortIn
+  private final BookCargoCommandPortIn bookCargoCommandPortIn
 
-  CargoBookingWebController(BookCargoPortIn bookCargoPortIn) {
-    this.bookCargoPortIn = bookCargoPortIn
+  CargoBookingWebController(BookCargoCommandPortIn bookCargoCommandPortIn) {
+    this.bookCargoCommandPortIn = bookCargoCommandPortIn
   }
 
   @PostMapping("/book-cargo")
-  OperationResponse<BookCargoResponse> bookCargo(@RequestBody BookCargoWebRequest bookCargoWebRequest, HttpServletRequest httpServletRequest) {
-    OperationResponse<BookCargoResponse> bookCargoResponse = bookCargoPortIn.bookCargo(CargoBookingWebAssembler.toBookCargoOperationRequest(bookCargoWebRequest, httpServletRequest))
-    return bookCargoResponse
+  OperationResponse<BookCargoCommandResponse> bookCargoCommand(@RequestBody BookCargoCommandWebRequest bookCargoCommandWebRequest, HttpServletRequest httpServletRequest) {
+    OperationResponse<BookCargoCommandResponse> bookCargoCommandResponse =
+        bookCargoCommandPortIn.bookCargoCommand(CargoBookingWebAssembler.toBookCargoCommandOperationRequest(bookCargoCommandWebRequest, httpServletRequest))
+
+    return bookCargoCommandResponse
   }
 }

@@ -25,9 +25,9 @@ import org.axonframework.commandhandling.CommandBus
 import org.axonframework.common.Registration
 import org.axonframework.messaging.InterceptorChain
 import org.axonframework.messaging.unitofwork.UnitOfWork
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoPortIn
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoRequest
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoResponse
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandPortIn
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.infrastructure.springbootconfig.SpringBootConfig
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
@@ -39,7 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired
 
 abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
   @Autowired
-  BookCargoPortIn bookCargoPortIn
+  BookCargoCommandPortIn bookCargoCommandPortIn
 
   @Autowired
   CommandBus commandBus
@@ -47,17 +47,19 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
   void "should work for correct request"() {
     given:
     String myAggregateIdentifier = UUID.randomUUID()
-    BookCargoRequest bookCargoRequest = new BookCargoRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
-    OperationResponse<BookCargoResponse> bookCargoOperationResponse = bookCargoPortIn.bookCargo(new OperationRequest<>(payload: bookCargoRequest, metaData: requestMetadataMap))
-    BookCargoResponse bookCargoResponsePayload = bookCargoOperationResponse.payload
-    Map bookCargoResponseMetadata = bookCargoOperationResponse.metaData
+    OperationResponse<BookCargoCommandResponse> bookCargoCommandOperationResponse =
+        bookCargoCommandPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoCommandRequest, metaData: requestMetadataMap))
+
+    BookCargoCommandResponse bookCargoCommandResponsePayload = bookCargoCommandOperationResponse.payload
+    Map bookCargoCommandResponseMetadata = bookCargoCommandOperationResponse.metaData
 
     then:
-    bookCargoResponseMetadata.isEmpty()
-    verifyAll(bookCargoResponsePayload) {
+    bookCargoCommandResponseMetadata.isEmpty()
+    verifyAll(bookCargoCommandResponsePayload) {
       aggregateIdentifier == myAggregateIdentifier
       originLocation.name == "Zagreb"
       destinationLocation.name == "Rijeka"
@@ -84,18 +86,20 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     })
 
     String myAggregateIdentifier = UUID.randomUUID()
-    BookCargoRequest bookCargoRequest = new BookCargoRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
-    OperationResponse<BookCargoResponse> bookCargoOperationResponse = bookCargoPortIn.bookCargo(new OperationRequest<>(payload: bookCargoRequest, metaData: requestMetadataMap))
-    BookCargoResponse bookCargoResponsePayload = bookCargoOperationResponse.payload
-    Map bookCargoResponseMetadata = bookCargoOperationResponse.metaData
+    OperationResponse<BookCargoCommandResponse> bookCargoCommandOperationResponse =
+        bookCargoCommandPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoCommandRequest, metaData: requestMetadataMap))
+
+    BookCargoCommandResponse bookCargoCommandResponsePayload = bookCargoCommandOperationResponse.payload
+    Map bookCargoCommandResponseMetadata = bookCargoCommandOperationResponse.metaData
     List<ILoggingEvent> loggingEventList = listAppender.list
 
     then:
-    bookCargoResponseMetadata.isEmpty()
-    bookCargoResponsePayload.aggregateIdentifier == myAggregateIdentifier
+    bookCargoCommandResponseMetadata.isEmpty()
+    bookCargoCommandResponsePayload.aggregateIdentifier == myAggregateIdentifier
 
     loggingEventList.size() == 1
     loggingEventList[0].level == Level.INFO
@@ -130,11 +134,11 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     })
 
     String myAggregateIdentifier = UUID.randomUUID()
-    BookCargoRequest bookCargoRequest = new BookCargoRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
-    bookCargoPortIn.bookCargo(new OperationRequest<>(payload: bookCargoRequest, metaData: requestMetadataMap))
+    bookCargoCommandPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoCommandRequest, metaData: requestMetadataMap))
 
     then:
     thrown(RemoteHandlerException)

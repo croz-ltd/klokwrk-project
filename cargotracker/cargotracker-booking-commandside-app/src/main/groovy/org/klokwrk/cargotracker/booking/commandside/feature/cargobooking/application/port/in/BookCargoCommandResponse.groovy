@@ -15,17 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapter.in.web
+package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoRequest
+import groovy.transform.MapConstructor
+import groovy.transform.PropertyOptions
+import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
-/**
- * Represents a web request for book cargo operation.
- * <p/>
- * Very often, web interface will use <code>BookCargoRequest</code> directly. However, <code>BookCargoWebRequest</code> can be used for handling additional properties that are only web specific and
- * should be handled in controller before sending the <code>BookCargoRequest</code> into domain application layer.
- */
+@PropertyOptions(propertyHandler = RelaxedPropertyHandler)
+@MapConstructor
 @CompileStatic
-class BookCargoWebRequest extends BookCargoRequest {
+class BookCargoCommandResponse {
+  String aggregateIdentifier
+
+  Map<String, ?> originLocation
+  Map<String, ?> destinationLocation
 }
