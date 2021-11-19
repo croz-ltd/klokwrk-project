@@ -31,7 +31,7 @@ import org.axonframework.messaging.annotation.MultiHandlerEnhancerDefinition
 import org.klokwrk.cargotracker.lib.axon.logging.stub.aggregate.MyTestAggregate
 import org.klokwrk.cargotracker.lib.axon.logging.stub.command.CreateMyTestAggregateCommand
 import org.klokwrk.cargotracker.lib.axon.logging.stub.command.UpdateMyTestAggregateCommand
-import org.klokwrk.cargotracker.lib.axon.logging.stub.projection.MyTestProjector
+import org.klokwrk.cargotracker.lib.axon.logging.stub.projection.MyTestProjection
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 import uk.org.lidalia.slf4jext.Level
@@ -49,7 +49,7 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
 
     // Although not needed, here we register event processing to to validate distinction between EventSourcing and Event messages.
     EventProcessingModule eventProcessingModule = new EventProcessingModule()
-    eventProcessingModule.registerEventHandler((Configuration axonConfiguration) -> new MyTestProjector())
+    eventProcessingModule.registerEventHandler((Configuration axonConfiguration) -> new MyTestProjection())
 
     Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
     axonConfigurer.configureEmbeddedEventStore((Configuration axonConfiguration) -> new InMemoryEventStorageEngine())

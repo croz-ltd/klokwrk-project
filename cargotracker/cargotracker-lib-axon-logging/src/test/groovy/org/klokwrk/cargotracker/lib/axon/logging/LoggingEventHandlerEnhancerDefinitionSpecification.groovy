@@ -31,7 +31,7 @@ import org.axonframework.messaging.annotation.MultiHandlerEnhancerDefinition
 import org.klokwrk.cargotracker.lib.axon.logging.stub.aggregate.MyTestAggregate
 import org.klokwrk.cargotracker.lib.axon.logging.stub.command.CreateMyTestAggregateCommand
 import org.klokwrk.cargotracker.lib.axon.logging.stub.command.UpdateMyTestAggregateCommand
-import org.klokwrk.cargotracker.lib.axon.logging.stub.projection.MyTestProjector
+import org.klokwrk.cargotracker.lib.axon.logging.stub.projection.MyTestProjection
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 import uk.org.lidalia.slf4jext.Level
@@ -48,7 +48,7 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
 //    TestLoggerFactory.getInstance().setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test
 
     EventProcessingModule eventProcessingModule = new EventProcessingModule()
-    eventProcessingModule.registerEventHandler((Configuration axonConfiguration) -> new MyTestProjector())
+    eventProcessingModule.registerEventHandler((Configuration axonConfiguration) -> new MyTestProjection())
 
     Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
     axonConfigurer.configureEmbeddedEventStore((Configuration axonConfiguration) -> new InMemoryEventStorageEngine())
@@ -94,13 +94,13 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
       loggingEvents[0].message.contains(aggregateIdentifier)
 
       // sample message: Executing EventSourcingHandler method [MyTestAggregate.onMyTestAggregateCreatedEvent(MyTestAggregateCreatedEvent)] with event [MyTestAggregateCreatedEvent(aggregateIdentifier: 4bbf8ddd-6310-424d-8085-882f9df64200, sequenceNumber: 0)]
-      loggingEvents[0].message ==~ /Executing EventHandler method \[MyTestProjector.handle\(MyTestAggregateCreatedEvent\)] with event \[eventGlobalIndex: 0, eventId: \p{Graph}{36}, MyTestAggregateCreatedEvent\(aggregateIdentifier: \p{Graph}{36}, sequenceNumber: 0\)]/
+      loggingEvents[0].message ==~ /Executing EventHandler method \[MyTestProjection.handle\(MyTestAggregateCreatedEvent\)] with event \[eventGlobalIndex: 0, eventId: \p{Graph}{36}, MyTestAggregateCreatedEvent\(aggregateIdentifier: \p{Graph}{36}, sequenceNumber: 0\)]/
 
       loggingEvents[1].level == Level.DEBUG
       loggingEvents[1].message.contains(aggregateIdentifier)
 
-      // sample message: Executing EventHandler method [MyTestProjector.handle(MyTestAggregateUpdatedEvent)] with event [eventId: bd88fa8e-d834-4c93-8cc2-d39dc619d009, MyTestAggregateUpdatedEvent(aggregateIdentifier: 000580e3-5682-46be-8b41-8aabbb39f7b5, sequenceNumber: 1)]
-      loggingEvents[1].message ==~ /Executing EventHandler method \[MyTestProjector.handle\(MyTestAggregateUpdatedEvent\)] with event \[eventGlobalIndex: 1, eventId: \p{Graph}{36}, MyTestAggregateUpdatedEvent\(aggregateIdentifier: \p{Graph}{36}, sequenceNumber: 1\)]/
+      // sample message: Executing EventHandler method [MyTestProjection.handle(MyTestAggregateUpdatedEvent)] with event [eventId: bd88fa8e-d834-4c93-8cc2-d39dc619d009, MyTestAggregateUpdatedEvent(aggregateIdentifier: 000580e3-5682-46be-8b41-8aabbb39f7b5, sequenceNumber: 1)]
+      loggingEvents[1].message ==~ /Executing EventHandler method \[MyTestProjection.handle\(MyTestAggregateUpdatedEvent\)] with event \[eventGlobalIndex: 1, eventId: \p{Graph}{36}, MyTestAggregateUpdatedEvent\(aggregateIdentifier: \p{Graph}{36}, sequenceNumber: 1\)]/
     }
   }
 
