@@ -51,8 +51,8 @@ class ViolationCode implements PostMapConstructorCheckable {
    * <p/>
    * In this context, human-readable does not mean full sentences but rather some textual encoded value that is easily recognizable by developers. The intention is that <code>codeKey</code> is
    * used as an alias of primary code property that is more appealing for writing localized resource bundles at the inbound channel level. For example, when maintaining resource bundles, it should be
-   * easier for developers to deduct the meaning of <code>cargoInfoQueryWebController.cargoSummaryQuery.failure.other.badRequest</code> resource bundle key instead the meaning of
-   * <code>cargoInfoQueryWebController.cargoSummaryQuery.failure.other.400</code> key. And this is exactly the intention behind this property.
+   * easier for developers to deduct the meaning of <code>cargoInfoWebController.cargoSummaryQuery.failure.other.badRequest</code> resource bundle key instead the meaning of
+   * <code>cargoInfoWebController.cargoSummaryQuery.failure.other.400</code> key. And this is exactly the intention behind this property.
    * <p/>
    * If we need some kind of categorization inside <code>codeKey</code>, it is recommended to use dot character. For example, <code>notFound.personSummary</code>.
    */
