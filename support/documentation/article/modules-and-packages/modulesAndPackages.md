@@ -302,7 +302,7 @@ domain application services (i.e., `CargoBookingApplicationService`) that implem
 
 Adapters live in the `adapter` package. There are inbound and outbound adapters. We can see here `CargoBookingWebController` as an example of a **driving inbound** adapter. It depends on and calls
 the `BookCargoPortIn` inbound port, which is implemented by the application service `CargoBookingApplicationService`. As an example of an **outbound**, or **driven**, adapter, here we have
-`InMemoryLocationRegistryService`. It implements `FindLocationPortOut` outbound port, which is called by application service `CargoBookingApplicationService`.
+`InMemoryLocationRegistryService`. It implements `LocationByUnLoCodeQueryPortOut` outbound port, which is called by application service `CargoBookingApplicationService`.
 
 For comparison, the following picture shows the structure of projection and query side applications.
 

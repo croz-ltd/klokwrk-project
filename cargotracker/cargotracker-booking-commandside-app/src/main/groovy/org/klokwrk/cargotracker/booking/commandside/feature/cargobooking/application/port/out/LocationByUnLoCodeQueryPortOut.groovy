@@ -21,6 +21,6 @@ import org.klokwrk.cargotracker.booking.domain.model.Location
 import org.springframework.stereotype.Service
 
 @Service
-interface FindLocationPortOut {
-  Location findByUnLoCode(String unLoCode)
+interface LocationByUnLoCodeQueryPortOut {
+  Location locationByUnLoCodeQuery(String unLoCode)
 }

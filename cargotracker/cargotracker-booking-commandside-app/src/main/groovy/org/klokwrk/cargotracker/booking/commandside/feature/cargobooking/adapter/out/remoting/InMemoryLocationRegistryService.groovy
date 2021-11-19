@@ -18,16 +18,16 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapter.out.remoting
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.FindLocationPortOut
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.LocationByUnLoCodeQueryPortOut
 import org.klokwrk.cargotracker.booking.domain.model.Location
 import org.springframework.stereotype.Service
 
 // TODO dmurat: implement real registry
 @Service
 @CompileStatic
-class InMemoryLocationRegistryService implements FindLocationPortOut {
-  Location findByUnLoCode(String unLoCode) {
-    Location locationFound = LocationSample.findByUnLoCode(unLoCode)
+class InMemoryLocationRegistryService implements LocationByUnLoCodeQueryPortOut {
+  Location locationByUnLoCodeQuery(String unLoCode) {
+    Location locationFound = LocationSample.locationByUnLoCodeQuery(unLoCode)
     return locationFound
   }
 
@@ -136,7 +136,7 @@ class InMemoryLocationRegistryService implements FindLocationPortOut {
         // ==========
     ]
 
-    static Location findByUnLoCode(String unLoCode) {
+    static Location locationByUnLoCodeQuery(String unLoCode) {
       Location locationFound = LOCATION_SAMPLE_MAP.get(unLoCode, Location.UNKNOWN_LOCATION)
       return locationFound
     }
