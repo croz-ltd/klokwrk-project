@@ -297,7 +297,7 @@ The package `feature` is a placeholder for all features of our command side appl
 are contained in a single feature. In our case, we have a feature with the name `cargobooking`.
 
 Under the `cargobooking` feature package, we can find packages and classes related to the hexagonal architecture - `adapter` and `application`. Package `application` contains inbound and outbound
-port interfaces, together with corresponding data structure classes if those are necessary (i.e., `BookCargoRequest` and `BookCargoResponse`). Under the `service` package, we can find domain
+port interfaces, together with corresponding data structure classes if those are necessary (i.e., `BookCargoCommandRequest` and `BookCargoResponse`). Under the `service` package, we can find domain
 application services (i.e., `CargoBookingApplicationService`) that implement inbound port interfaces.
 
 Adapters live in the `adapter` package. There are inbound and outbound adapters. We can see here `CargoBookingWebController` as an example of a **driving inbound** adapter. It depends on and calls

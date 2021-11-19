@@ -29,7 +29,7 @@ import javax.validation.ConstraintViolationException
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
-class BookCargoRequestSpecification extends Specification {
+class BookCargoCommandRequestSpecification extends Specification {
   @Shared
   ValidationService validationService
 
@@ -40,10 +40,11 @@ class BookCargoRequestSpecification extends Specification {
 
   void "should pass validation for valid data"() {
     given:
-    BookCargoRequest bookCargoRequest = new BookCargoRequest(aggregateIdentifier: aggregateIdentifierParam, originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+    BookCargoCommandRequest bookCargoCommandRequest =
+        new BookCargoCommandRequest(aggregateIdentifier: aggregateIdentifierParam, originLocation: originLocationParam, destinationLocation: destinationLocationParam)
 
     when:
-    validationService.validate(bookCargoRequest)
+    validationService.validate(bookCargoCommandRequest)
 
     then:
     notThrown(ConstraintViolationException)
@@ -56,10 +57,11 @@ class BookCargoRequestSpecification extends Specification {
 
   void "should not pass validation for invalid data"() {
     given:
-    BookCargoRequest bookCargoRequest = new BookCargoRequest(aggregateIdentifier: aggregateIdentifierParam, originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+    BookCargoCommandRequest bookCargoCommandRequest =
+        new BookCargoCommandRequest(aggregateIdentifier: aggregateIdentifierParam, originLocation: originLocationParam, destinationLocation: destinationLocationParam)
 
     when:
-    validationService.validate(bookCargoRequest)
+    validationService.validate(bookCargoCommandRequest)
 
     then:
     ConstraintViolationException constraintViolationException = thrown()

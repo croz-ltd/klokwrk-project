@@ -26,7 +26,7 @@ import org.axonframework.common.Registration
 import org.axonframework.messaging.InterceptorChain
 import org.axonframework.messaging.unitofwork.UnitOfWork
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandPortIn
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoRequest
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoResponse
 import org.klokwrk.cargotracker.booking.commandside.infrastructure.springbootconfig.SpringBootConfig
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
@@ -47,11 +47,11 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
   void "should work for correct request"() {
     given:
     String myAggregateIdentifier = UUID.randomUUID()
-    BookCargoRequest bookCargoRequest = new BookCargoRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
-    OperationResponse<BookCargoResponse> bookCargoOperationResponse = bookCargoCommandPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoRequest, metaData: requestMetadataMap))
+    OperationResponse<BookCargoResponse> bookCargoOperationResponse = bookCargoCommandPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoCommandRequest, metaData: requestMetadataMap))
     BookCargoResponse bookCargoResponsePayload = bookCargoOperationResponse.payload
     Map bookCargoResponseMetadata = bookCargoOperationResponse.metaData
 
@@ -84,11 +84,11 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     })
 
     String myAggregateIdentifier = UUID.randomUUID()
-    BookCargoRequest bookCargoRequest = new BookCargoRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
-    OperationResponse<BookCargoResponse> bookCargoOperationResponse = bookCargoCommandPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoRequest, metaData: requestMetadataMap))
+    OperationResponse<BookCargoResponse> bookCargoOperationResponse = bookCargoCommandPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoCommandRequest, metaData: requestMetadataMap))
     BookCargoResponse bookCargoResponsePayload = bookCargoOperationResponse.payload
     Map bookCargoResponseMetadata = bookCargoOperationResponse.metaData
     List<ILoggingEvent> loggingEventList = listAppender.list
@@ -130,11 +130,11 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     })
 
     String myAggregateIdentifier = UUID.randomUUID()
-    BookCargoRequest bookCargoRequest = new BookCargoRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
-    bookCargoCommandPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoRequest, metaData: requestMetadataMap))
+    bookCargoCommandPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoCommandRequest, metaData: requestMetadataMap))
 
     then:
     thrown(RemoteHandlerException)

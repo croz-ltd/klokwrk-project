@@ -18,14 +18,14 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapter.in.web
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoRequest
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
 
 /**
  * Represents a web request for book cargo operation.
  * <p/>
- * Very often, web interface will use <code>BookCargoRequest</code> directly. However, <code>BookCargoCommandWebRequest</code> can be used for handling additional properties that are only web
- * specific and should be handled in controller before sending the <code>BookCargoRequest</code> into domain application layer.
+ * Very often, web interface will use <code>BookCargoCommandRequest</code> directly. However, <code>BookCargoCommandWebRequest</code> can be used for handling additional properties that are only web
+ * specific and should be handled in controller before sending the <code>BookCargoCommandRequest</code> into domain application layer.
  */
 @CompileStatic
-class BookCargoCommandWebRequest extends BookCargoRequest {
+class BookCargoCommandWebRequest extends BookCargoCommandRequest {
 }

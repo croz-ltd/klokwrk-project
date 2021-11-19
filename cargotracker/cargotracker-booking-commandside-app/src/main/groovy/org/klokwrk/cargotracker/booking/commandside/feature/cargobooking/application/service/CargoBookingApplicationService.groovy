@@ -22,7 +22,7 @@ import org.axonframework.commandhandling.gateway.CommandGateway
 import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandPortIn
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoRequest
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoResponse
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
@@ -46,7 +46,7 @@ class CargoBookingApplicationService implements BookCargoCommandPortIn {
   }
 
   @Override
-  OperationResponse<BookCargoResponse> bookCargoCommand(OperationRequest<BookCargoRequest> bookCargoCommandOperationRequest) {
+  OperationResponse<BookCargoResponse> bookCargoCommand(OperationRequest<BookCargoCommandRequest> bookCargoCommandOperationRequest) {
     requireMatch(bookCargoCommandOperationRequest, notNullValue())
     validationService.validate(bookCargoCommandOperationRequest.payload)
 

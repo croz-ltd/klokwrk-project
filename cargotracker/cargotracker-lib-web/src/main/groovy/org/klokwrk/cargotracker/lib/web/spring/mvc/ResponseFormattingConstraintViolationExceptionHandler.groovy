@@ -65,7 +65,7 @@ import java.time.Instant
  *       "message": "Request is not valid.",
  *       "type": "validation",
  *       "validationReport": {
- *         "root": { "type": "bookCargoRequest" },
+ *         "root": { "type": "bookCargoCommandRequest" },
  *         "constraintViolations": [
  *           { "type": "notNull", "scope": "property", "path": "destinationLocation", "message": "must not be null", "invalidPropertyValue": "null" },
  *           { "type": "notNull", "scope": "property", "path": "originLocation", "message": "must not be null", "invalidPropertyValue": "null" }
