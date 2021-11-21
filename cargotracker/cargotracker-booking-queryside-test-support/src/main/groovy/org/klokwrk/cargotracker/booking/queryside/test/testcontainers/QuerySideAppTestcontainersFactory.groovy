@@ -55,8 +55,8 @@ class QuerySideAppTestcontainersFactory {
           "CARGOTRACKER_AXON_SERVER_HOSTNAME": "${ axonServer.containerInfo.config.hostName }".toString(),
           "CARGOTRACKER_POSTGRES_HOSTNAME": "${ postgresqlServer.containerInfo.name - "/" }".toString(),
           "CARGOTRACKER_POSTGRES_PORT": "5432",
-          "CARGOTRACKER_POSTGRES_USERNAME": "cargotracker",
-          "CARGOTRACKER_POSTGRES_PASSWORD": "cargotracker",
+          "CARGOTRACKER_POSTGRES_USERNAME": "cargotracker_readonly",
+          "CARGOTRACKER_POSTGRES_PASSWORD": "cargotracker_readonly",
           "MANAGEMENT_METRICS_EXPORT_WAVEFRONT_ENABLED": "false",
           "AXON.EXTENSION.TRACING.ENABLED": "false"
       ])

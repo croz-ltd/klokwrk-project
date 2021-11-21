@@ -27,6 +27,10 @@ CREATE TABLE token_entry (
   PRIMARY KEY (processor_name, segment)
 );
 
+-- after this point, cargotracker_readonly will be given SELECT grant on all created tables
+CREATE USER cargotracker_readonly WITH PASSWORD 'cargotracker_readonly';
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO cargotracker_readonly;
+
 CREATE SEQUENCE cargo_summary_sequence INCREMENT BY 50 MINVALUE 1 MAXVALUE 9223372036854775807 START WITH 1 NO CYCLE;
 
 CREATE TABLE cargo_summary (
