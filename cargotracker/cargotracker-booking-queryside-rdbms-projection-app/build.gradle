@@ -26,7 +26,7 @@ dependencies {
   implementation platform(project(":klokwrk-platform-spring-boot"))
   testIntegrationImplementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
 
-  implementation project(":cargotracker-booking-axon-api")
+  implementation project(":cargotracker-booking-domain-model-event")
   implementation project(":cargotracker-booking-domain-model-value")
   implementation project(":cargotracker-booking-queryside-rdbms-projection-model")
   implementation project(":cargotracker-lib-axon-logging")
@@ -58,6 +58,7 @@ dependencies {
 
   testIntegrationImplementation project(":cargotracker-booking-boundary-web")
   testIntegrationImplementation project(":cargotracker-booking-commandside-test-support")
+  testIntegrationImplementation project(":cargotracker-booking-domain-model-command")
   testIntegrationImplementation project(":cargotracker-booking-queryside-test-support")
   testIntegrationImplementation project(":cargotracker-lib-domain-model-command")
 

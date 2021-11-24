@@ -26,7 +26,6 @@ dependencies {
 
   implementation project(":cargotracker-booking-domain-model-value")
   implementation project(":cargotracker-lib-domain-model-command")
-  implementation project(":cargotracker-lib-domain-model-event")
   implementation project(":klokwrk-lang-groovy")
 
   implementation("org.axonframework:axon-modelling") { transitive(false) }

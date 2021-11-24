@@ -22,18 +22,13 @@ plugins {
 }
 
 dependencies {
-  implementation platform(project(":klokwrk-platform-spring-boot"))
-  implementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
+  implementation platform(project(":klokwrk-platform-base"))
 
-  implementation project(":cargotracker-booking-boundary-web")
-  implementation project(":cargotracker-booking-domain-model-command")
-  implementation project(":cargotracker-booking-domain-model-event")
   implementation project(":cargotracker-booking-domain-model-value")
-  implementation project(":cargotracker-lib-domain-model-command")
   implementation project(":cargotracker-lib-domain-model-event")
   implementation project(":klokwrk-lang-groovy")
 
-  implementation "com.tngtech.archunit:archunit-junit5"
   implementation "org.codehaus.groovy:groovy"
-  implementation "org.testcontainers:testcontainers"
+
+  testImplementation "org.spockframework:spock-core"
 }
