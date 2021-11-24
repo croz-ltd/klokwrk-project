@@ -27,7 +27,7 @@ dependencies {
   testIntegrationImplementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
 
   implementation project(":cargotracker-booking-axon-api")
-  implementation project(":cargotracker-booking-domain-model")
+  implementation project(":cargotracker-booking-domain-model-value")
   implementation project(":cargotracker-booking-queryside-rdbms-projection-model")
   implementation project(":cargotracker-lib-axon-api")
   implementation project(":cargotracker-lib-axon-logging")

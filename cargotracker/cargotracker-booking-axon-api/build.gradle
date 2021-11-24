@@ -24,7 +24,7 @@ plugins {
 dependencies {
   implementation platform(project(":klokwrk-platform-base"))
 
-  implementation project(":cargotracker-booking-domain-model")
+  implementation project(":cargotracker-booking-domain-model-value")
   implementation project(":cargotracker-lib-axon-api")
   implementation project(":klokwrk-lang-groovy")
 
