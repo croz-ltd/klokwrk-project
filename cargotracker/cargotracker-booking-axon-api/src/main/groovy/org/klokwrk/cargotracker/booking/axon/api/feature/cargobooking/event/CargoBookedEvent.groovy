@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.event
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
-import org.klokwrk.cargotracker.lib.axon.api.event.BaseEvent
+import org.klokwrk.cargotracker.lib.domain.model.event.BaseEvent
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
 @KwrkImmutable

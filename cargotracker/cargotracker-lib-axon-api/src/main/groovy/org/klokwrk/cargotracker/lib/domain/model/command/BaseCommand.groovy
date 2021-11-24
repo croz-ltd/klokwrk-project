@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.axon.api.command
+package org.klokwrk.cargotracker.lib.domain.model.command
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier
 import org.axonframework.modelling.command.TargetAggregateVersion
