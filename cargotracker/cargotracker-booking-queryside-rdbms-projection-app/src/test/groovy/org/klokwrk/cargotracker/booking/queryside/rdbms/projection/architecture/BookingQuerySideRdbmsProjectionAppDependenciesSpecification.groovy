@@ -65,7 +65,7 @@ class BookingQuerySideRdbmsProjectionAppDependenciesSpecification extends Specif
         "org.klokwrk.cargotracker.booking.queryside.rdbms.projection.feature..", "org.klokwrk.cargotracker.booking.queryside.rdbms.projection.infrastructure.."
     ]
     String[] cargotrackerBookingAxonApiAllowedPackages = ["org.klokwrk.cargotracker.booking.axon.api..event.."]
-    String[] cargotrackerBookingDomainModelAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.."]
+    String[] cargotrackerBookingDomainModelAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
     String[] cargotrackerBookingQuerysideRdbmsProjectionModelAllPackages = ["org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.."]
 
     String[] cargotrackerLibAxonLoggingAllPackages = ["org.klokwrk.cargotracker.lib.axon.logging.."]

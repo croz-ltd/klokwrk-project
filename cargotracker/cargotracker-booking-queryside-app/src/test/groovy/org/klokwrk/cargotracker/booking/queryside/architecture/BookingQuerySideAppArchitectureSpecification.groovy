@@ -36,7 +36,7 @@ class BookingQuerySideAppArchitectureSpecification extends Specification {
 
   void setupSpec() {
     importedClasses = ArchUnitUtils.importJavaClassesFromPackages(
-        ["org.klokwrk.cargotracker.booking.queryside", "org.klokwrk.cargotracker.booking.domain.model"],
+        ["org.klokwrk.cargotracker.booking.queryside", "org.klokwrk.cargotracker.booking.domain.model.value"],
         ["org.klokwrk.cargotracker.booking.queryside.rdbms.projection"]
     )
   }
@@ -69,7 +69,7 @@ class BookingQuerySideAppArchitectureSpecification extends Specification {
     // @formatter:off
     ArchRule rule = HexagonalCqrsEsArchitecture
         .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.QUERYSIDE)
-        .domainModels("..cargotracker.booking.domain.model..")
+        .domainModels("..cargotracker.booking.domain.model.value..")
 
         .applicationInboundPorts("..cargotracker.booking.queryside.feature.*.application.port.in..")
         .applicationOutboundPorts("..cargotracker.booking.queryside.feature.*.application.port.out..")
