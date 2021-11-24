@@ -85,7 +85,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
 
     String[] cargotrackerBookingCommandAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.command.."]
     String[] cargotrackerBookingEventAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.event.."]
-    String[] cargotrackerBookingDomainModelValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
+    String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
 
     String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracker.lib.boundary.api.."]
 
@@ -97,7 +97,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
 
             cargotrackerBookingCommandAllPackages +
             cargotrackerBookingEventAllPackages +
-            cargotrackerBookingDomainModelValueAllPackages +
+            cargotrackerBookingDomainValueAllPackages +
 
             cargotrackerLibBoundaryApiAllPackages +
 
@@ -124,7 +124,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     String[] cargotrackerBookingCommandAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.command.."]
     String[] cargotrackerBookingEventAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.event.."]
     String[] cargotrackerBookingBoundaryWebAllPackages = ["org.klokwrk.cargotracker.booking.boundary.web.."]
-    String[] cargotrackerBookingDomainModelValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
+    String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
     String[] cargotrackerBookingCommandsideDomainAggregatePackages = ["org.klokwrk.cargotracker.booking.commandside.domain.aggregate.."]
 
     String[] cargotrackerLibAxonCqrsCommandPackages = ["org.klokwrk.cargotracker.lib.axon.cqrs.command.."]
@@ -144,7 +144,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
             cargotrackerBookingCommandAllPackages +
             cargotrackerBookingEventAllPackages +
             cargotrackerBookingBoundaryWebAllPackages +
-            cargotrackerBookingDomainModelValueAllPackages +
+            cargotrackerBookingDomainValueAllPackages +
             cargotrackerBookingCommandsideDomainAggregatePackages +
 
             cargotrackerLibAxonCqrsCommandPackages +

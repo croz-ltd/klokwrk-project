@@ -69,7 +69,7 @@ class BookingQuerySideAppArchitectureSpecification extends Specification {
     // @formatter:off
     ArchRule rule = HexagonalCqrsEsArchitecture
         .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.QUERYSIDE)
-        .domainModelValues("..cargotracker.booking.domain.model.value..")
+        .domainValues("..cargotracker.booking.domain.model.value..")
 
         .applicationInboundPorts("..cargotracker.booking.queryside.feature.*.application.port.in..")
         .applicationOutboundPorts("..cargotracker.booking.queryside.feature.*.application.port.out..")

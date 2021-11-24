@@ -118,7 +118,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
     // @formatter:off
     ArchRule rule = HexagonalCqrsEsArchitecture
         .architecture()
-        .domainModelValues("..cargotracker.booking.domain.model.value..")
+        .domainValues("..cargotracker.booking.domain.model.value..")
         .domainEvents("..cargotracker.booking.domain.model.event..")
         .domainCommands("..cargotracker.booking.domain.model.command..")
         .domainAggregates("..cargotracker.booking.commandside.domain.aggregate..")
@@ -149,7 +149,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
     // @formatter:off
     ArchRule rule = HexagonalCqrsEsArchitecture
         .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
-        .domainModelValues("..cargotracker.booking.domain.model.value..")
+        .domainValues("..cargotracker.booking.domain.model.value..")
         .domainEvents("..cargotracker.booking.domain.model.event..")
         .domainCommands("..cargotracker.booking.domain.model.command..")
         .domainAggregates("..cargotracker.booking.commandside.domain.aggregate..")

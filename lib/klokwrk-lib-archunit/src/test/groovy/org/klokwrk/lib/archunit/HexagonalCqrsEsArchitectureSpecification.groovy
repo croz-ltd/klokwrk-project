@@ -51,7 +51,7 @@ import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.APPLICATION_S
 import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.DOMAIN_AGGREGATE_LAYER
 import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.DOMAIN_COMMAND_LAYER
 import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.DOMAIN_EVENT_LAYER
-import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.DOMAIN_MODEL_VALUE_LAYER
+import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.DOMAIN_VALUE_LAYER
 
 @Slf4j
 class HexagonalCqrsEsArchitectureSpecification extends Specification {
@@ -80,7 +80,7 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
     given:
     HexagonalCqrsEsArchitecture hexagonalCqrsEsArchitectureRule = HexagonalCqrsEsArchitecture.architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
     hexagonalCqrsEsArchitectureRule
-        .domainModelValues("..domain.model.value..")
+        .domainValues("..domain.model.value..")
         .domainEvents("..domain.event..")
         .domainCommands("..domain.command..")
         .domainAggregates("..domain.aggregate..")
@@ -148,7 +148,7 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
     switch (architectureSubType) {
       case HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE:
         hexagonalCqrsEsArchitectureRule
-            .domainModelValues("..domain.model.value..")
+            .domainValues("..domain.model.value..")
             .domainEvents("..domain.event..")
             .domainCommands("..domain.command..")
             .domainAggregates("..domain.aggregate..")
@@ -166,7 +166,7 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
 
       case HexagonalCqrsEsArchitecture.ArchitectureSubType.PROJECTION:
         hexagonalCqrsEsArchitectureRule
-            .domainModelValues("..domain.model.value..")
+            .domainValues("..domain.model.value..")
             .domainEvents("..domain.event..")
 
             .adapterProjection("projection", "..adapter.projection..")
@@ -177,7 +177,7 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
 
       case HexagonalCqrsEsArchitecture.ArchitectureSubType.QUERYSIDE:
         hexagonalCqrsEsArchitectureRule
-            .domainModelValues("..domain.model.value..")
+            .domainValues("..domain.model.value..")
 
             .applicationInboundPorts("..application.port.in..")
             .applicationOutboundPorts("..application.port.out..")
@@ -192,7 +192,7 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
 
       default:
         hexagonalCqrsEsArchitectureRule
-            .domainModelValues("..domain.model.value..")
+            .domainValues("..domain.model.value..")
             .domainEvents("..domain.event..")
             .domainCommands("..domain.command..")
             .domainAggregates("..domain.aggregate..")
@@ -243,7 +243,7 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
     allowedSources                                                                              | disallowedTarget                     | description
     [DomainEventViolationClass, DomainCommandViolationClass, DomainAggregateViolationClass,
      ApplicationPortOutViolationInterface, ApplicationServiceViolationClass,
-     AdapterOutViolationClass, AdapterProjectionViolationClass]                                 | DomainModelValueViolationClass       | "* -> ${ DOMAIN_MODEL_VALUE_LAYER }"
+     AdapterOutViolationClass, AdapterProjectionViolationClass]                                 | DomainModelValueViolationClass       | "* -> ${ DOMAIN_VALUE_LAYER }"
     [DomainAggregateViolationClass, AdapterProjectionViolationClass]                            | DomainEventViolationClass            | "* -> ${ DOMAIN_EVENT_LAYER }"
     [DomainAggregateViolationClass, ApplicationServiceViolationClass]                           | DomainCommandViolationClass          | "* -> ${ DOMAIN_COMMAND_LAYER }"
     [ApplicationServiceViolationClass]                                                          | DomainAggregateViolationClass        | "* -> ${ DOMAIN_AGGREGATE_LAYER }"
@@ -339,7 +339,7 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
     where:
     allowedSources                                                                                     | disallowedTarget                     | description
     [DomainEventViolationClass, DomainCommandViolationClass, DomainAggregateViolationClass,
-     ApplicationServiceViolationClass, ApplicationPortOutViolationInterface, AdapterOutViolationClass] | DomainModelValueViolationClass       | "* -> ${ DOMAIN_MODEL_VALUE_LAYER }"
+     ApplicationServiceViolationClass, ApplicationPortOutViolationInterface, AdapterOutViolationClass] | DomainModelValueViolationClass       | "* -> ${ DOMAIN_VALUE_LAYER }"
     [DomainAggregateViolationClass]                                                                    | DomainEventViolationClass            | "* -> ${ DOMAIN_EVENT_LAYER }"
     [DomainAggregateViolationClass, ApplicationServiceViolationClass]                                  | DomainCommandViolationClass          | "* -> ${ DOMAIN_COMMAND_LAYER }"
     [ApplicationServiceViolationClass]                                                                 | DomainAggregateViolationClass        | "* -> ${ DOMAIN_AGGREGATE_LAYER }"
@@ -382,7 +382,7 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
 
     where:
     allowedSources                                               | disallowedTarget                | description
-    [DomainEventViolationClass, AdapterProjectionViolationClass] | DomainModelValueViolationClass  | "* -> ${ DOMAIN_MODEL_VALUE_LAYER }"
+    [DomainEventViolationClass, AdapterProjectionViolationClass] | DomainModelValueViolationClass  | "* -> ${ DOMAIN_VALUE_LAYER }"
     [AdapterProjectionViolationClass]                            | DomainEventViolationClass       | "* -> ${ DOMAIN_EVENT_LAYER }"
     []                                                           | AdapterOutViolationClass        | "* -> ${ ADAPTER_OUTBOUND_LAYER }"
     []                                                           | AdapterProjectionViolationClass | "* -> ${ ADAPTER_PROJECTION_LAYER }"
@@ -419,7 +419,7 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
 
     where:
     allowedSources                                                                                     | disallowedTarget                     | description
-    [ApplicationServiceViolationClass, ApplicationPortOutViolationInterface, AdapterOutViolationClass] | DomainModelValueViolationClass       | "* -> ${ DOMAIN_MODEL_VALUE_LAYER }"
+    [ApplicationServiceViolationClass, ApplicationPortOutViolationInterface, AdapterOutViolationClass] | DomainModelValueViolationClass       | "* -> ${ DOMAIN_VALUE_LAYER }"
     [ApplicationServiceViolationClass, AdapterInViolationClass, AdapterOutViolationClass]              | ApplicationPortInViolationInterface  | "* -> ${ APPLICATION_INBOUND_PORT_LAYER }"
     [ApplicationServiceViolationClass, AdapterOutViolationClass]                                       | ApplicationPortOutViolationInterface | "* -> ${ APPLICATION_OUTBOUND_PORT_LAYER }"
     []                                                                                                 | ApplicationServiceViolationClass     | "* -> ${ APPLICATION_SERVICE_LAYER }"

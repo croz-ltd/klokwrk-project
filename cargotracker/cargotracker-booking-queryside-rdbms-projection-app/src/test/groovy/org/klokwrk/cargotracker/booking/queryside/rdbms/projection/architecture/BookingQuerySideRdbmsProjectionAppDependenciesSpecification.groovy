@@ -65,7 +65,7 @@ class BookingQuerySideRdbmsProjectionAppDependenciesSpecification extends Specif
         "org.klokwrk.cargotracker.booking.queryside.rdbms.projection.feature..", "org.klokwrk.cargotracker.booking.queryside.rdbms.projection.infrastructure.."
     ]
     String[] cargotrackerBookingDomainEventAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.event.."]
-    String[] cargotrackerBookingDomainModelValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
+    String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
     String[] cargotrackerBookingQuerysideRdbmsProjectionModelAllPackages = ["org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.."]
 
     String[] cargotrackerLibAxonLoggingAllPackages = ["org.klokwrk.cargotracker.lib.axon.logging.."]
@@ -87,7 +87,7 @@ class BookingQuerySideRdbmsProjectionAppDependenciesSpecification extends Specif
             .resideInAnyPackage(
                 cargotrackerBookingRdbmsProjectionAppAllPackages +
                 cargotrackerBookingDomainEventAllPackages +
-                cargotrackerBookingDomainModelValueAllPackages +
+                cargotrackerBookingDomainValueAllPackages +
                 cargotrackerBookingQuerysideRdbmsProjectionModelAllPackages +
 
                 cargotrackerLibAxonLoggingAllPackages +

@@ -100,7 +100,7 @@ import static org.hamcrest.Matchers.not
 @CompileStatic
 class HexagonalCqrsEsArchitecture implements ArchRule {
 
-  static final String DOMAIN_MODEL_VALUE_LAYER = "domain model value"
+  static final String DOMAIN_VALUE_LAYER = "domain value"
   static final String DOMAIN_EVENT_LAYER = "domain event"
   static final String DOMAIN_COMMAND_LAYER = "domain command"
   static final String DOMAIN_AGGREGATE_LAYER = "domain aggregate"
@@ -117,7 +117,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
 
   private final ArchitectureSubType architectureSubType
 
-  private String[] domainModelValuePackageIdentifiers = []
+  private String[] domainValuePackageIdentifiers = []
   private String[] domainEventPackageIdentifiers = []
   private String[] domainCommandPackageIdentifiers = []
   private String[] domainAggregatePackageIdentifiers = []
@@ -151,7 +151,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
 
   private HexagonalCqrsEsArchitecture copyWith(String overriddenDescription) {
     HexagonalCqrsEsArchitecture newHexagonalCqrsEsArchitecture = new HexagonalCqrsEsArchitecture(architectureSubType, overriddenDescription)
-        .domainModelValues(domainModelValuePackageIdentifiers)
+        .domainValues(domainValuePackageIdentifiers)
         .domainEvents(domainEventPackageIdentifiers)
         .domainCommands(domainCommandPackageIdentifiers)
         .domainAggregates(domainAggregatePackageIdentifiers)
@@ -167,8 +167,8 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
     return newHexagonalCqrsEsArchitecture
   }
 
-  HexagonalCqrsEsArchitecture domainModelValues(String... packageIdentifiers) {
-    domainModelValuePackageIdentifiers = packageIdentifiers
+  HexagonalCqrsEsArchitecture domainValues(String... packageIdentifiers) {
+    domainValuePackageIdentifiers = packageIdentifiers
     return this
   }
 
@@ -268,7 +268,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
     // @formatter:off
     //noinspection DuplicatedCode
     layeredArchitecture
-        .layer(DOMAIN_MODEL_VALUE_LAYER).definedBy(domainModelValuePackageIdentifiers)
+        .layer(DOMAIN_VALUE_LAYER).definedBy(domainValuePackageIdentifiers)
         .layer(DOMAIN_EVENT_LAYER).definedBy(domainEventPackageIdentifiers)
         .layer(DOMAIN_COMMAND_LAYER).definedBy(domainCommandPackageIdentifiers)
         .layer(DOMAIN_AGGREGATE_LAYER).definedBy(domainAggregatePackageIdentifiers)
@@ -282,7 +282,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
         .layer(ADAPTER_PROJECTION_LAYER).definedBy(adapterProjectionPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
 
         // For now, access to DOMAIN_MODEL_LAYER is forbidden for APPLICATION_INBOUND_PORT_LAYER and ADAPTER_INBOUND_LAYER. Will see how this goes.
-        .whereLayer(DOMAIN_MODEL_VALUE_LAYER)
+        .whereLayer(DOMAIN_VALUE_LAYER)
             .mayOnlyBeAccessedByLayers(
                 DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_AGGREGATE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER, APPLICATION_SERVICE_LAYER,
                 ADAPTER_OUTBOUND_LAYER, ADAPTER_PROJECTION_LAYER
@@ -307,7 +307,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
     // @formatter:off
     //noinspection DuplicatedCode
     layeredArchitecture
-        .layer(DOMAIN_MODEL_VALUE_LAYER).definedBy(domainModelValuePackageIdentifiers)
+        .layer(DOMAIN_VALUE_LAYER).definedBy(domainValuePackageIdentifiers)
         .layer(DOMAIN_EVENT_LAYER).definedBy(domainEventPackageIdentifiers)
         .layer(DOMAIN_COMMAND_LAYER).definedBy(domainCommandPackageIdentifiers)
         .layer(DOMAIN_AGGREGATE_LAYER).definedBy(domainAggregatePackageIdentifiers)
@@ -320,7 +320,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
         .optionalLayer(ADAPTER_OUTBOUND_LAYER).definedBy(adapterOutboundPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
 
         // For now, access to DOMAIN_MODEL_LAYER is forbidden for APPLICATION_INBOUND_PORT_LAYER and ADAPTER_INBOUND_LAYER. Will see how this goes.
-        .whereLayer(DOMAIN_MODEL_VALUE_LAYER)
+        .whereLayer(DOMAIN_VALUE_LAYER)
             .mayOnlyBeAccessedByLayers(DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER, ADAPTER_OUTBOUND_LAYER)
         .whereLayer(DOMAIN_EVENT_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER)
         .whereLayer(DOMAIN_COMMAND_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER)
@@ -340,12 +340,12 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
   private void specifyArchitectureProjection(LayeredArchitecture layeredArchitecture) {
     // @formatter:off
     layeredArchitecture
-        .optionalLayer(DOMAIN_MODEL_VALUE_LAYER).definedBy(domainModelValuePackageIdentifiers)
+        .optionalLayer(DOMAIN_VALUE_LAYER).definedBy(domainValuePackageIdentifiers)
         .layer(DOMAIN_EVENT_LAYER).definedBy(domainEventPackageIdentifiers)
 
         .layer(ADAPTER_PROJECTION_LAYER).definedBy(adapterProjectionPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
 
-        .whereLayer(DOMAIN_MODEL_VALUE_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_EVENT_LAYER, ADAPTER_PROJECTION_LAYER)
+        .whereLayer(DOMAIN_VALUE_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_EVENT_LAYER, ADAPTER_PROJECTION_LAYER)
         .whereLayer(DOMAIN_EVENT_LAYER).mayOnlyBeAccessedByLayers(ADAPTER_PROJECTION_LAYER)
     // @formatter:on
 
@@ -357,7 +357,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
   private void specifyArchitectureQuerySide(LayeredArchitecture layeredArchitecture) {
     // @formatter:off
     layeredArchitecture
-        .optionalLayer(DOMAIN_MODEL_VALUE_LAYER).definedBy(domainModelValuePackageIdentifiers)
+        .optionalLayer(DOMAIN_VALUE_LAYER).definedBy(domainValuePackageIdentifiers)
 
         .layer(APPLICATION_INBOUND_PORT_LAYER).definedBy(applicationInboundPortPackageIdentifiers)
         .optionalLayer(APPLICATION_OUTBOUND_PORT_LAYER).definedBy(applicationOutboundPortPackageIdentifiers)
@@ -366,7 +366,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
         .layer(ADAPTER_INBOUND_LAYER).definedBy(adapterInboundPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
         .layer(ADAPTER_OUTBOUND_LAYER).definedBy(adapterOutboundPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
 
-        .whereLayer(DOMAIN_MODEL_VALUE_LAYER).mayOnlyBeAccessedByLayers(APPLICATION_SERVICE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER, ADAPTER_OUTBOUND_LAYER)
+        .whereLayer(DOMAIN_VALUE_LAYER).mayOnlyBeAccessedByLayers(APPLICATION_SERVICE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER, ADAPTER_OUTBOUND_LAYER)
 
         // Here we are allowing for outbound layer to access types defined in APPLICATION_INBOUND_PORT_LAYER. Reason is, this is queryside where often application services just pass
         // inbound data to the outbound queries. Outbound queries than can use response types that are defined in inbound ports.
@@ -419,7 +419,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
     List<String> lines = ["Hexagonal architecture (CQRS/ES flavor, subtype ${architectureSubType}) consisting of ${ optionalLayers ? " (optional)" : "" }".toString()]
 
     lines.with {
-      addAll(describeStandardPackageIdentifiers(domainModelValuePackageIdentifiers, "domain model value objects"))
+      addAll(describeStandardPackageIdentifiers(domainValuePackageIdentifiers, "domain value objects"))
       addAll(describeStandardPackageIdentifiers(domainEventPackageIdentifiers, "domain events"))
       addAll(describeStandardPackageIdentifiers(domainCommandPackageIdentifiers, "domain commands"))
       addAll(describeStandardPackageIdentifiers(domainAggregatePackageIdentifiers, "domain aggregates"))

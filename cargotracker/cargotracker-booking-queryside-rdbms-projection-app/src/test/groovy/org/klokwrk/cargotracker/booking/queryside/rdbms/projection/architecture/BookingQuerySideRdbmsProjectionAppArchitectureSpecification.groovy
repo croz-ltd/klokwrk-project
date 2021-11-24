@@ -60,7 +60,7 @@ class BookingQuerySideRdbmsProjectionAppArchitectureSpecification extends Specif
     // @formatter:off
     ArchRule rule = HexagonalCqrsEsArchitecture
         .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.PROJECTION)
-        .domainModelValues("..cargotracker.booking.domain.model.value..")
+        .domainValues("..cargotracker.booking.domain.model.value..")
         .domainEvents("..cargotracker.booking.domain.model.event..")
 
         .adapterProjection("out.persistence", "..cargotracker.booking.queryside.rdbms.projection.feature.*.adapter.out..")
