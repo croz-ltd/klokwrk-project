@@ -34,7 +34,7 @@ class BookingQuerySideRdbmsProjectionAppArchitectureSpecification extends Specif
 
   void setupSpec() {
     importedClasses = ArchUnitUtils.importJavaClassesFromPackages(
-        ["org.klokwrk.cargotracker.booking.queryside.rdbms.projection", "org.klokwrk.cargotracker.booking.domain.model.value", "org.klokwrk.cargotracker.booking.axon.api.feature"]
+        ["org.klokwrk.cargotracker.booking.queryside.rdbms.projection", "org.klokwrk.cargotracker.booking.domain.model.value", "org.klokwrk.cargotracker.booking.domain.model.event"]
     )
   }
 
@@ -45,7 +45,7 @@ class BookingQuerySideRdbmsProjectionAppArchitectureSpecification extends Specif
         .noClasses().that()
             .resideInAPackage("org.klokwrk.cargotracker.booking.queryside.rdbms.projection..")
         .should()
-            .dependOnClassesThat().resideInAPackage("org.klokwrk.cargotracker.booking.axon.api.feature.*.command..")
+            .dependOnClassesThat().resideInAPackage("org.klokwrk.cargotracker.booking.domain.model.command..")
     // @formatter:on
 
     expect:
@@ -61,7 +61,7 @@ class BookingQuerySideRdbmsProjectionAppArchitectureSpecification extends Specif
     ArchRule rule = HexagonalCqrsEsArchitecture
         .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.PROJECTION)
         .domainModelValues("..cargotracker.booking.domain.model.value..")
-        .domainEvents("..cargotracker.booking.axon.api.feature.*.event..")
+        .domainEvents("..cargotracker.booking.domain.model.event..")
 
         .adapterProjection("out.persistence", "..cargotracker.booking.queryside.rdbms.projection.feature.*.adapter.out..")
 

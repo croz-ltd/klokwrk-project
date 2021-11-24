@@ -18,8 +18,8 @@
 package org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.command.BookCargoCommand
-import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.event.CargoBookedEvent
+import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
+import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
 
 /**
  * Contains test data fixtures for {@link CargoBookedEvent}.

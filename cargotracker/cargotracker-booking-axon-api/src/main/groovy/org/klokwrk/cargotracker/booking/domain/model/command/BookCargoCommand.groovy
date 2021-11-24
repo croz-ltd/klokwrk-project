@@ -15,16 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.event
+package org.klokwrk.cargotracker.booking.domain.model.command
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
-import org.klokwrk.cargotracker.lib.domain.model.event.BaseEvent
+import org.klokwrk.cargotracker.lib.domain.model.command.BaseCreateCommand
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
 @KwrkImmutable
 @CompileStatic
-class CargoBookedEvent implements BaseEvent {
+class BookCargoCommand implements BaseCreateCommand {
   String aggregateIdentifier
 
   Location originLocation

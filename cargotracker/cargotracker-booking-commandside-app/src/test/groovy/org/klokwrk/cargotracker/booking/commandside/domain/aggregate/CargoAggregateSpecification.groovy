@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.commandside.domain.aggregate
 import org.axonframework.test.aggregate.AggregateTestFixture
 import org.axonframework.test.aggregate.ResultValidator
 import org.axonframework.test.aggregate.TestExecutor
-import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.command.BookCargoCommand
+import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.BookCargoCommandFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.CargoBookedEventFixtures
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException

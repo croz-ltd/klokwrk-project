@@ -34,7 +34,12 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
 
   void setupSpec() {
     importedClasses = ArchUnitUtils.importJavaClassesFromPackages(
-        ["org.klokwrk.cargotracker.booking.commandside", "org.klokwrk.cargotracker.booking.domain.model.value", "org.klokwrk.cargotracker.booking.axon.api.feature"],
+        [
+            "org.klokwrk.cargotracker.booking.commandside",
+            "org.klokwrk.cargotracker.booking.domain.model.value",
+            "org.klokwrk.cargotracker.booking.domain.model.command",
+            "org.klokwrk.cargotracker.booking.domain.model.event"
+        ],
         ["org.klokwrk.cargotracker.booking.commandside.test"]
     )
   }
@@ -85,8 +90,8 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .onionArchitecture()
         .domainModels(
             "..cargotracker.booking.commandside.domain.aggregate..", // domainAggregates
-            "..cargotracker.booking.axon.api.feature.*.command..",   // domainCommands
-            "..cargotracker.booking.axon.api.feature.*.event..",     // domainEvents
+            "..cargotracker.booking.domain.model.command..",   // domainCommands
+            "..cargotracker.booking.domain.model.event..",     // domainEvents
             "..cargotracker.booking.domain.model.value.."            // domain model value objects
         )
         .applicationServices(
@@ -114,8 +119,8 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
     ArchRule rule = HexagonalCqrsEsArchitecture
         .architecture()
         .domainModelValues("..cargotracker.booking.domain.model.value..")
-        .domainEvents("..cargotracker.booking.axon.api.feature.*.event..")
-        .domainCommands("..cargotracker.booking.axon.api.feature.*.command..")
+        .domainEvents("..cargotracker.booking.domain.model.event..")
+        .domainCommands("..cargotracker.booking.domain.model.command..")
         .domainAggregates("..cargotracker.booking.commandside.domain.aggregate..")
 
         .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
@@ -145,8 +150,8 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
     ArchRule rule = HexagonalCqrsEsArchitecture
         .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
         .domainModelValues("..cargotracker.booking.domain.model.value..")
-        .domainEvents("..cargotracker.booking.axon.api.feature.*.event..")
-        .domainCommands("..cargotracker.booking.axon.api.feature.*.command..")
+        .domainEvents("..cargotracker.booking.domain.model.event..")
+        .domainCommands("..cargotracker.booking.domain.model.command..")
         .domainAggregates("..cargotracker.booking.commandside.domain.aggregate..")
 
         .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")

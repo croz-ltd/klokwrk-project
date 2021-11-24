@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.axon.api.feature.cargobooking.command.BookCargoCommand
+import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 
 /**
