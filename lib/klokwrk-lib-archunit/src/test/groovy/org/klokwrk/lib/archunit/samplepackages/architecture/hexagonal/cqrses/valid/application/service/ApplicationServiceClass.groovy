@@ -22,12 +22,12 @@ import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.val
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.application.port.out.ApplicationPortOutInterface
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.aggregate.DomainAggregateClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.command.DomainCommandClass
-import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.DomainModelClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.value.DomainModelValueClass
 
 @SuppressWarnings('unused')
 @CompileStatic
 class ApplicationServiceClass implements ApplicationPortInInterface {
-  DomainModelClass domainModelClass = new DomainModelClass()
+  DomainModelValueClass domainModelValueClass = new DomainModelValueClass()
   DomainCommandClass domainCommandClass = new DomainCommandClass()
   DomainAggregateClass domainAggregateClass = new DomainAggregateClass()
 

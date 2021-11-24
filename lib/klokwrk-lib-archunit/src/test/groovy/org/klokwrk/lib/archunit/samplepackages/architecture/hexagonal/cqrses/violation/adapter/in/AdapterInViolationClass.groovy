@@ -25,12 +25,12 @@ import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.vio
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.aggregate.DomainAggregateViolationClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.command.DomainCommandViolationClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.event.DomainEventViolationClass
-import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.DomainModelViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.value.DomainModelValueViolationClass
 
 @SuppressWarnings('unused')
 @CompileStatic
 class AdapterInViolationClass {
-  DomainModelViolationClass domainModelViolationClass = new DomainModelViolationClass()
+  DomainModelValueViolationClass domainModelViolationClass = new DomainModelValueViolationClass()
   DomainEventViolationClass domainEventViolationClass = new DomainEventViolationClass()
   DomainCommandViolationClass domainCommandViolationClass = new DomainCommandViolationClass()
   DomainAggregateViolationClass domainAggregateViolationClass = new DomainAggregateViolationClass()

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model
+package org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.value
 
 import groovy.transform.CompileStatic
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.adapter.in.AdapterInViolationClass
@@ -30,7 +30,7 @@ import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.vio
 
 @SuppressWarnings('unused')
 @CompileStatic
-class DomainModelViolationClass {
+class DomainModelValueViolationClass {
   DomainEventViolationClass domainEventViolationClass = new DomainEventViolationClass()
   DomainCommandViolationClass domainCommandViolationClass = new DomainCommandViolationClass()
   DomainAggregateViolationClass domainAggregateViolationClass = new DomainAggregateViolationClass()
@@ -43,10 +43,10 @@ class DomainModelViolationClass {
   AdapterOutViolationClass adapterOutViolationClass = new AdapterOutViolationClass()
   AdapterProjectionViolationClass adapterProjectionViolationClass = new AdapterProjectionViolationClass()
 
-  DomainModelViolationClass() {
+  DomainModelValueViolationClass() {
   }
 
-  DomainModelViolationClass(ApplicationPortInViolationInterface applicationPortInViolationInterface, ApplicationPortOutViolationInterface applicationPortOutViolationInterface) {
+  DomainModelValueViolationClass(ApplicationPortInViolationInterface applicationPortInViolationInterface, ApplicationPortOutViolationInterface applicationPortOutViolationInterface) {
     this.applicationPortInViolationInterface = applicationPortInViolationInterface
     this.applicationPortOutViolationInterface = applicationPortOutViolationInterface
   }

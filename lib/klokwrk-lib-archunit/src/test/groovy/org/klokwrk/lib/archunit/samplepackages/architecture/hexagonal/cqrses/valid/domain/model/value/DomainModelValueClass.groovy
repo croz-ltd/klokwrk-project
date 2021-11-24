@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model
+package org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.value
 
 import groovy.transform.CompileStatic
 
 @CompileStatic
-class DomainModelClass {
+class DomainModelValueClass {
 }
