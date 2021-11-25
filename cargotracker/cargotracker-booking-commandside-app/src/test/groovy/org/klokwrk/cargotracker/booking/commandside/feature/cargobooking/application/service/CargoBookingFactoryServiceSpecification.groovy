@@ -17,7 +17,7 @@
  */
 package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.service
 
-import org.klokwrk.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
+import org.klokwrk.cargotracker.booking.domain.model.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapter.out.remoting.InMemoryLocationRegistryService
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse

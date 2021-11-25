@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applic
 
 import groovy.transform.CompileStatic
 import org.axonframework.commandhandling.gateway.CommandGateway
-import org.klokwrk.cargotracker.booking.commandside.domain.aggregate.CargoAggregate
+import org.klokwrk.cargotracker.booking.domain.model.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandPortIn
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
