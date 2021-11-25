@@ -19,6 +19,7 @@
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-boundary-web/build/classes/groovy/main" module="cargotracker-booking-boundary-web" displaymodule="cargotracker-booking-boundary-web" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-commandside-app/build/classes/groovy/main" module="cargotracker-booking-commandside-app" displaymodule="cargotracker-booking-commandside-app" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-commandside-test-support/build/classes/groovy/main" module="cargotracker-booking-commandside-test-support" displaymodule="cargotracker-booking-commandside-test-support" />
+    <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model-aggregate/build/classes/groovy/main" module="cargotracker-booking-domain-model-aggregate" displaymodule="cargotracker-booking-domain-model-aggregate" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model-command/build/classes/groovy/main" module="cargotracker-booking-domain-model-command" displaymodule="cargotracker-booking-domain-model-command" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model-event/build/classes/groovy/main" module="cargotracker-booking-domain-model-event" displaymodule="cargotracker-booking-domain-model-event" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model-value/build/classes/groovy/main" module="cargotracker-booking-domain-model-value" displaymodule="cargotracker-booking-domain-model-value" />
@@ -77,11 +78,20 @@
                     <cell name="cargotracker-booking-queryside-rdbms-projection-model" pattern="cargotracker-booking-queryside-rdbms-projection-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
-                    <cell name="cargotracker-booking-domain-model-command" pattern="cargotracker-booking-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                    <cell name="cargotracker-booking-domain-model-event" pattern="cargotracker-booking-domain-model-event.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                  </row>
-                  <row>
-                    <cell name="cargotracker-booking-domain-model-value" pattern="cargotracker-booking-domain-model-value.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="domain model" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+                      <grid>
+                        <row>
+                          <cell name="cargotracker-booking-domain-model-aggregate" pattern="cargotracker-booking-domain-model-aggregate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                        </row>
+                        <row>
+                          <cell name="cargotracker-booking-domain-model-command" pattern="cargotracker-booking-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                          <cell name="cargotracker-booking-domain-model-event" pattern="cargotracker-booking-domain-model-event.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                        </row>
+                        <row>
+                          <cell name="cargotracker-booking-domain-model-value" pattern="cargotracker-booking-domain-model-value.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                        </row>
+                      </grid>
+                    </cell>
                   </row>
                 </grid>
               </cell>
@@ -211,11 +221,20 @@
               <cell name="cargotracker-booking-queryside-rdbms-projection-model" pattern="cargotracker-booking-queryside-rdbms-projection-model.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
             <row>
-              <cell name="cargotracker-booking-domain-model-command" pattern="cargotracker-booking-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-              <cell name="cargotracker-booking-domain-model-event" pattern="cargotracker-booking-domain-model-event.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-            </row>
-            <row>
-              <cell name="cargotracker-booking-domain-model-value" pattern="cargotracker-booking-domain-model-value.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="domain model" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+                <grid>
+                  <row>
+                    <cell name="cargotracker-booking-domain-model-aggregate" pattern="cargotracker-booking-domain-model-aggregate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
+                    <cell name="cargotracker-booking-domain-model-command" pattern="cargotracker-booking-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracker-booking-domain-model-event" pattern="cargotracker-booking-domain-model-event.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
+                    <cell name="cargotracker-booking-domain-model-value" pattern="cargotracker-booking-domain-model-value.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                </grid>
+              </cell>
             </row>
           </grid>
         </cell>
