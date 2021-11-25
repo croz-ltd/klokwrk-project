@@ -25,7 +25,7 @@ import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.lang.EvaluationResult
 import groovy.util.logging.Slf4j
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.adapter.projection.AdapterProjectionClass
-import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.event.DomainEventClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.event.DomainEventClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.value.DomainModelValueClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.adapter.in.AdapterInViolationClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.adapter.out.AdapterOutViolationClass
@@ -33,9 +33,9 @@ import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.vio
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.application.port.in.ApplicationPortInViolationInterface
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.application.port.out.ApplicationPortOutViolationInterface
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.application.service.ApplicationServiceViolationClass
-import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.aggregate.DomainAggregateViolationClass
-import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.command.DomainCommandViolationClass
-import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.event.DomainEventViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.aggregate.DomainAggregateViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.command.DomainCommandViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.event.DomainEventViolationClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.value.DomainModelValueViolationClass
 import spock.lang.Shared
 import spock.lang.Specification
@@ -81,9 +81,9 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
     HexagonalCqrsEsArchitecture hexagonalCqrsEsArchitectureRule = HexagonalCqrsEsArchitecture.architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
     hexagonalCqrsEsArchitectureRule
         .domainValues("..domain.model.value..")
-        .domainEvents("..domain.event..")
-        .domainCommands("..domain.command..")
-        .domainAggregates("..domain.aggregate..")
+        .domainEvents("..domain.model.event..")
+        .domainCommands("..domain.model.command..")
+        .domainAggregates("..domain.model.aggregate..")
 
         .applicationInboundPorts("..application.port.in..")
         .applicationOutboundPorts("..application.port.out..")
@@ -95,7 +95,9 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
         .withOptionalLayers(false)
 
     hexagonalCqrsEsArchitectureRule
-        .ignoreDependency(resideInAnyPackage(["..adapter.projection.."] as String[]), resideInAnyPackage(["..domain.command..", "domain.aggregate", "..application..", "..adapter.."] as String[]))
+        .ignoreDependency(
+            resideInAnyPackage(["..adapter.projection.."] as String[]), resideInAnyPackage(["..domain.model.command..", "domain.model.aggregate", "..application..", "..adapter.."] as String[])
+        )
         .ignoreDependency(AdapterProjectionClass, DomainModelValueClass)
         .ignoreDependency(AdapterProjectionClass.name, DomainEventClass.name)
 
@@ -149,9 +151,9 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
       case HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE:
         hexagonalCqrsEsArchitectureRule
             .domainValues("..domain.model.value..")
-            .domainEvents("..domain.event..")
-            .domainCommands("..domain.command..")
-            .domainAggregates("..domain.aggregate..")
+            .domainEvents("..domain.model.event..")
+            .domainCommands("..domain.model.command..")
+            .domainAggregates("..domain.model.aggregate..")
 
             .applicationInboundPorts("..application.port.in..")
             .applicationOutboundPorts("..application.port.out..")
@@ -167,12 +169,12 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
       case HexagonalCqrsEsArchitecture.ArchitectureSubType.PROJECTION:
         hexagonalCqrsEsArchitectureRule
             .domainValues("..domain.model.value..")
-            .domainEvents("..domain.event..")
+            .domainEvents("..domain.model.event..")
 
             .adapterProjection("projection", "..adapter.projection..")
 
             .withOptionalLayers(false)
-            .ignoreDependency(resideOutsideOfPackages(["..domain.model.value..", "..domain.event..", "..adapter.projection.."] as String[]), DescribedPredicate.alwaysTrue())
+            .ignoreDependency(resideOutsideOfPackages(["..domain.model.value..", "..domain.model.event..", "..adapter.projection.."] as String[]), DescribedPredicate.alwaysTrue())
         break
 
       case HexagonalCqrsEsArchitecture.ArchitectureSubType.QUERYSIDE:
@@ -187,15 +189,17 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
             .adapterOutbound("out", "..adapter.out..")
 
             .withOptionalLayers(false)
-            .ignoreDependency(resideInAnyPackage(["..domain.event..", "..domain.command..", "..domain.aggregate..", "..adapter.projection.."] as String[]), DescribedPredicate.alwaysTrue())
+            .ignoreDependency(
+                resideInAnyPackage(["..domain.model.event..", "..domain.model.command..", "..domain.model.aggregate..", "..adapter.projection.."] as String[]), DescribedPredicate.alwaysTrue()
+            )
         break
 
       default:
         hexagonalCqrsEsArchitectureRule
             .domainValues("..domain.model.value..")
-            .domainEvents("..domain.event..")
-            .domainCommands("..domain.command..")
-            .domainAggregates("..domain.aggregate..")
+            .domainEvents("..domain.model.event..")
+            .domainCommands("..domain.model.command..")
+            .domainAggregates("..domain.model.aggregate..")
 
             .applicationInboundPorts("..application.port.in..")
             .applicationOutboundPorts("..application.port.out..")

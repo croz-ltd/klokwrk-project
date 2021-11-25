@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.event
+package org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.command
 
 import groovy.transform.CompileStatic
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.value.DomainModelValueClass
 
 @SuppressWarnings('unused')
 @CompileStatic
-class DomainEventClass {
+class DomainCommandClass {
   DomainModelValueClass domainModelValueClass = new DomainModelValueClass()
 }
