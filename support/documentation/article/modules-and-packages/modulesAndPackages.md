@@ -96,12 +96,9 @@ projection application and queryside application.
 Therefore, both modules require quite different 3rd party libraries (Axon or JPA) and are used by different modules. Even if you think that both modules can be combined into one, significant
 differences in the usage and differences in 3rd party libraries should convince you otherwise.
 
-Module `cargotracker-booking-domain-model` contains subdomain's value objects. Contrary to what you might expect from the name, it contains only domain value objects. There are no aggregates or
-entities or anything else from the domain. Just value objects. Why is that?
-
-In CQRS applications, aggregates and entities belong only to the command side. They cannot be used either from projections or query side. But domain value objects can be shared among all of these.
-In one part, value objects are used for expressing the internal state of aggregates. They are also used as building blocks for modeling events. Query side can also use domain value objects while
-describing query requirements.
+Module `cargotracker-booking-domain-model-value` contains subdomain's value objects. In CQRS applications, aggregates and entities belong only to the command side. They cannot be used either from
+projections or query side. But domain value objects can be shared among all of these. In one part, value objects are used for expressing the internal state of aggregates. They are also used as
+building blocks for modeling events. Query side can also use domain value objects while describing query requirements.
 
 That broad reusability potential across subdomain is the main reason for extracting domain value objects into a standalone module.
 
@@ -336,10 +333,10 @@ To better understand how this works, we can look at the test fragment for comman
     given:
     ArchRule rule = HexagonalCqrsEsArchitecture
         .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
-        .domainModels("..cargotracker.booking.domain.model..")
-        .domainEvents("..cargotracker.booking.axon.api.feature.*.event..")
-        .domainCommands("..cargotracker.booking.axon.api.feature.*.command..")
-        .domainAggregates("..cargotracker.booking.commandside.domain.aggregate..")
+        .domainValues("..cargotracker.booking.domain.model.value..")
+        .domainEvents("..cargotracker.booking.domain.model.event..")
+        .domainCommands("..cargotracker.booking.domain.model.command..")
+        .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
 
         .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
         .applicationOutboundPorts("..cargotracker.booking.commandside.feature.*.application.port.out..")
@@ -362,7 +359,7 @@ from `HexagonalCqrsEsArchitecture` class).
 ```
   private void specifyArchitectureCommandSide(LayeredArchitecture layeredArchitecture) {
     layeredArchitecture
-        .layer(DOMAIN_MODEL_LAYER).definedBy(domainModelPackageIdentifiers)
+        .layer(DOMAIN_VALUE_LAYER).definedBy(domainModelPackageIdentifiers)
         .layer(DOMAIN_EVENT_LAYER).definedBy(domainEventPackageIdentifiers)
         .layer(DOMAIN_COMMAND_LAYER).definedBy(domainCommandPackageIdentifiers)
         .layer(DOMAIN_AGGREGATE_LAYER).definedBy(domainAggregatePackageIdentifiers)
@@ -374,7 +371,7 @@ from `HexagonalCqrsEsArchitecture` class).
         .layer(ADAPTER_INBOUND_LAYER).definedBy(adapterInboundPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
         .optionalLayer(ADAPTER_OUTBOUND_LAYER).definedBy(adapterOutboundPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
 
-        .whereLayer(DOMAIN_MODEL_LAYER)
+        .whereLayer(DOMAIN_VALUE_LAYER)
             .mayOnlyBeAccessedByLayers(DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER, ADAPTER_OUTBOUND_LAYER)
         .whereLayer(DOMAIN_EVENT_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER)
         .whereLayer(DOMAIN_COMMAND_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER)

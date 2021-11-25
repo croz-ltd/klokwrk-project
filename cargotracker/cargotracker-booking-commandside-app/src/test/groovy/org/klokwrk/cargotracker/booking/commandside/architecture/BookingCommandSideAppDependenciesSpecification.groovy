@@ -71,7 +71,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     rule.check(allKlokwrkClasses)
   }
 
-  void "commandside app domain aggregate classes should only access classes from allowed dependencies"() {
+  void "domain aggregate and entity classes should only access classes from allowed dependencies"() {
     given:
     String[] thirdPartyDependencyAllPackages = [
         "java..",
@@ -81,21 +81,23 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         "org.axonframework.modelling.command.."
     ]
 
-    String[] cargotrackerBookingCommandsideAppDomainAggregatePackages = ["org.klokwrk.cargotracker.booking.commandside.domain.aggregate.."]
+    String[] cargotrackerBookingDomainAggregateAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.aggregate.."]
 
-    String[] cargotrackerBookingAxonApiAllPackages = ["org.klokwrk.cargotracker.booking.axon.api.."]
-    String[] cargotrackerBookingDomainModelAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.."]
+    String[] cargotrackerBookingCommandAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.command.."]
+    String[] cargotrackerBookingEventAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.event.."]
+    String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
 
     String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracker.lib.boundary.api.."]
 
     // @formatter:off
     ArchRule rule = ArchRuleDefinition
-        .classes().that().resideInAnyPackage(cargotrackerBookingCommandsideAppDomainAggregatePackages)
+        .classes().that().resideInAnyPackage(cargotrackerBookingDomainAggregateAllPackages)
         .should().onlyAccessClassesThat().resideInAnyPackage(
-            cargotrackerBookingCommandsideAppDomainAggregatePackages +
+            cargotrackerBookingDomainAggregateAllPackages +
 
-            cargotrackerBookingAxonApiAllPackages +
-            cargotrackerBookingDomainModelAllPackages +
+            cargotrackerBookingCommandAllPackages +
+            cargotrackerBookingEventAllPackages +
+            cargotrackerBookingDomainValueAllPackages +
 
             cargotrackerLibBoundaryApiAllPackages +
 
@@ -119,10 +121,11 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
 
     String[] cargotrackerBookingCommandsideAppFeaturePackages = ["org.klokwrk.cargotracker.booking.commandside.feature.."]
 
-    String[] cargotrackerBookingAxonApiAllPackages = ["org.klokwrk.cargotracker.booking.axon.api.."]
+    String[] cargotrackerBookingCommandAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.command.."]
+    String[] cargotrackerBookingEventAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.event.."]
     String[] cargotrackerBookingBoundaryWebAllPackages = ["org.klokwrk.cargotracker.booking.boundary.web.."]
-    String[] cargotrackerBookingDomainModelAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.."]
-    String[] cargotrackerBookingCommandsideDomainAggregatePackages = ["org.klokwrk.cargotracker.booking.commandside.domain.aggregate.."]
+    String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
+    String[] cargotrackerBookingDomainAggregateAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.aggregate.."]
 
     String[] cargotrackerLibAxonCqrsCommandPackages = ["org.klokwrk.cargotracker.lib.axon.cqrs.command.."]
     String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracker.lib.boundary.api.."]
@@ -138,10 +141,11 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         .should().onlyAccessClassesThat().resideInAnyPackage(
             cargotrackerBookingCommandsideAppFeaturePackages +
 
-            cargotrackerBookingAxonApiAllPackages +
+            cargotrackerBookingCommandAllPackages +
+            cargotrackerBookingEventAllPackages +
             cargotrackerBookingBoundaryWebAllPackages +
-            cargotrackerBookingDomainModelAllPackages +
-            cargotrackerBookingCommandsideDomainAggregatePackages +
+            cargotrackerBookingDomainValueAllPackages +
+            cargotrackerBookingDomainAggregateAllPackages +
 
             cargotrackerLibAxonCqrsCommandPackages +
             cargotrackerLibBoundaryApiAllPackages +

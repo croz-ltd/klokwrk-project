@@ -40,7 +40,7 @@ class ArchUnitUtils {
    * <p/>
    * <pre>
    * JavaClasses importedClasses= ArchUnitUtils.importJavaClassesFromPackages(
-   *     ["org.klokwrk.cargotracker.booking.commandside", "org.klokwrk.cargotracker.booking.domain.model", "org.klokwrk.cargotracker.booking.axon.api.feature"],
+   *     ["org.klokwrk.cargotracker.booking.commandside", "org.klokwrk.cargotracker.booking.domain.model.value", "org.klokwrk.cargotracker.booking.axon.api.feature"],
    *     ["org.klokwrk.cargotracker.booking.commandside.test"]
    * )
    * </pre>

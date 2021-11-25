@@ -59,10 +59,10 @@ dependencies {
   testImplementation "com.tngtech.archunit:archunit-junit5"
   testImplementation "org.spockframework:spock-core"
 
-  testIntegrationImplementation project(":cargotracker-booking-axon-api")
+  testIntegrationImplementation project(":cargotracker-booking-domain-model-event")
   testIntegrationImplementation project(":cargotracker-booking-commandside-test-support")
   testIntegrationImplementation project(":cargotracker-booking-queryside-test-support")
-  testIntegrationImplementation project(":cargotracker-lib-axon-api")
+  testIntegrationImplementation project(":cargotracker-lib-domain-model-event")
 
   testIntegrationImplementation "org.awaitility:awaitility"
   testIntegrationImplementation "org.codehaus.groovy:groovy-sql"

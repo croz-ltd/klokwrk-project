@@ -17,7 +17,7 @@
  */
 package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out
 
-import org.klokwrk.cargotracker.booking.domain.model.Location
+import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.springframework.stereotype.Service
 
 @Service
