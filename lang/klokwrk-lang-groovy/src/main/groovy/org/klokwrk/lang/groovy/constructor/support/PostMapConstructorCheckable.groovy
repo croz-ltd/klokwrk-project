@@ -59,7 +59,7 @@ import groovy.transform.Generated
  * </pre>
  * <p/>
  * When consistency checks of immutable objects are finished, there is often a need to do additional post-constructor processing. For example, at this point, we might want to calculate values of all
- * derived properties. For that post-constructor processing purpose, one may override and use {@link PostMapConstructorCheckable#postMapConstructorProcess(java.util.Map)} method. Default
+ * derived properties. For that post-constructor processing purpose, one may override and use {@link PostMapConstructorCheckable#postMapConstructorPostCheckProcess(java.util.Map)} method. Default
  * implementation of <code>postMapConstructorProcess(Map constructorArguments)</code> does nothing.
  */
 @CompileStatic
@@ -74,7 +74,7 @@ interface PostMapConstructorCheckable {
     }
 
     postMapConstructorCheck(constructorArguments)
-    postMapConstructorProcess(constructorArguments)
+    postMapConstructorPostCheckProcess(constructorArguments)
   }
 
   /**
@@ -90,6 +90,6 @@ interface PostMapConstructorCheckable {
   void postMapConstructorCheck(Map<String, ?> constructorArguments)
 
   @SuppressWarnings(["CodeNarc.EmptyMethod", "CodeNarc.UnusedMethodParameter"])
-  default void postMapConstructorProcess(Map<String, ?> constructorArguments) {
+  default void postMapConstructorPostCheckProcess(Map<String, ?> constructorArguments) {
   }
 }

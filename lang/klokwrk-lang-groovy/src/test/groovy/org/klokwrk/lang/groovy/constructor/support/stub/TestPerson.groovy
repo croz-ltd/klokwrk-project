@@ -43,7 +43,7 @@ class TestPerson implements PostMapConstructorCheckable {
   }
 
   @Override
-  void postMapConstructorProcess(Map<String, ?> constructorArguments) {
+  void postMapConstructorPostCheckProcess(Map<String, ?> constructorArguments) {
     fullName = "$firstName $lastName"
   }
 }
