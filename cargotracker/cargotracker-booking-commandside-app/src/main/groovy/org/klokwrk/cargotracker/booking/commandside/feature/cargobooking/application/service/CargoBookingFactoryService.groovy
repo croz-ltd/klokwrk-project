@@ -97,7 +97,7 @@ class CargoBookingFactoryService {
     Map<String, ?> destinationLocationMap = createMapFromLocation(cargoAggregate.destinationLocation)
 
     BookCargoCommandResponse bookCargoCommandResponse =
-        new BookCargoCommandResponse(aggregateIdentifier: cargoAggregate.cargoId.identifier, originLocation: originLocationMap, destinationLocation: destinationLocationMap)
+        new BookCargoCommandResponse(cargoIdentifier: cargoAggregate.cargoId.identifier, originLocation: originLocationMap, destinationLocation: destinationLocationMap)
 
     return bookCargoCommandResponse
   }

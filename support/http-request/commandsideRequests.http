@@ -36,7 +36,7 @@ Accept-Language: hr-HR
 
 > {%
 // noinspection JSUnresolvedVariable
-client.global.set("receivedAggregateIdentifier", response.body.payload.aggregateIdentifier);
+client.global.set("receivedAggregateIdentifier", response.body.payload.cargoIdentifier);
 %}
 
 ### cargotracker-booking-commandside, cargo-booking/book-cargo, success, en
@@ -53,7 +53,7 @@ Accept-Language: en
 
 > {%
 // noinspection JSUnresolvedVariable
-client.global.set("receivedAggregateIdentifier", response.body.payload.aggregateIdentifier);
+client.global.set("receivedAggregateIdentifier", response.body.payload.cargoIdentifier);
 %}
 
 ### cargotracker-booking-commandside, cargo-booking/book-cargo, failure, hr

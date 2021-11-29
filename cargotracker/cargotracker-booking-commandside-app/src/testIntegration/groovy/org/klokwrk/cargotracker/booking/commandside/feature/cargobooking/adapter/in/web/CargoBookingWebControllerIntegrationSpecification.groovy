@@ -55,8 +55,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
   @SuppressWarnings("CodeNarc.AbcMetric")
   void "should work for correct request - [acceptLanguage: #acceptLanguage]"() {
     given:
-    String cargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK"])
+    String myCargoIdentifier = UUID.randomUUID()
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: myCargoIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK"])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -87,7 +87,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     verifyAll(responseContentMap.payload as Map) {
-      aggregateIdentifier == cargoIdentifier
+      cargoIdentifier == myCargoIdentifier
       originLocation.name == "Zagreb"
       destinationLocation.name == "Rijeka"
     }

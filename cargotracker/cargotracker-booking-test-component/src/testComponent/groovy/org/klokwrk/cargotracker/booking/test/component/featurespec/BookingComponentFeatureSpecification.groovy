@@ -48,11 +48,11 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     Integer commandResponseStatusCode = commandResponse.statusLine.statusCode
 
     Object commandResponseJson = new JsonSlurper().parseText(commandResponse.entity.content.text)
-    String commandResponseAggregateIdentifier = commandResponseJson.payload.aggregateIdentifier
+    String commandResponseCargoIdentifier = commandResponseJson.payload.cargoIdentifier
 
     then:
     commandResponseStatusCode == 200
-    commandResponseAggregateIdentifier
+    commandResponseCargoIdentifier
 
     where:
     acceptLanguageHeader | _
@@ -73,10 +73,10 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
     //noinspection HttpUrlsUsage
     String cargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-info/cargo-summary"
-    Closure<String> queryPostRequestBodyClosure = { String commandResponseAggregateIdentifier ->
+    Closure<String> queryPostRequestBodyClosure = { String commandResponseCargoIdentifier ->
       """
       {
-        "aggregateIdentifier": "${ commandResponseAggregateIdentifier }"
+        "aggregateIdentifier": "${ commandResponseCargoIdentifier }"
       }
       """
     }
@@ -93,11 +93,11 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     Integer commandResponseStatusCode = commandResponse.statusLine.statusCode
 
     Object commandResponseJson = new JsonSlurper().parseText(commandResponse.entity.content.text)
-    String commandResponseAggregateIdentifier = commandResponseJson.payload.aggregateIdentifier
+    String commandResponseCargoIdentifier = commandResponseJson.payload.cargoIdentifier
 
     then:
     commandResponseStatusCode == 200
-    commandResponseAggregateIdentifier
+    commandResponseCargoIdentifier
 
     new PollingConditions(timeout: 5, initialDelay: 0, delay: 0.05).eventually {
       // given
@@ -106,7 +106,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
                                     .addHeader("Accept-Language", acceptLanguageHeader)
-                                    .bodyString(queryPostRequestBodyClosure(commandResponseAggregateIdentifier), ContentType.APPLICATION_JSON)
+                                    .bodyString(queryPostRequestBodyClosure(commandResponseCargoIdentifier), ContentType.APPLICATION_JSON)
 
       // when
       HttpResponse queryResponse = queryRequest.execute().returnResponse()
@@ -115,7 +115,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
       // then:
       queryResponseStatusCode == 200
-      queryResponseJson.payload.aggregateIdentifier == commandResponseAggregateIdentifier
+      queryResponseJson.payload.aggregateIdentifier == commandResponseCargoIdentifier
     }
 
     where:

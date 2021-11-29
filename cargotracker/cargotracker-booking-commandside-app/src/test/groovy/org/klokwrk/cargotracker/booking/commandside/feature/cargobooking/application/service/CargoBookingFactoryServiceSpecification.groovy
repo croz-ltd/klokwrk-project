@@ -124,18 +124,18 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
   void "createBookCargoCommandResponse - should create expected response"() {
     given:
-    String cargoIdentifier = UUID.randomUUID()
+    String myCargoIdentifier = UUID.randomUUID()
     Location myOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRRJK")
     Location myDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRZAG")
 
-    CargoAggregate cargoAggregate = new CargoAggregate(cargoId: CargoId.create(cargoIdentifier), originLocation: myOriginLocation, destinationLocation: myDestinationLocation)
+    CargoAggregate cargoAggregate = new CargoAggregate(cargoId: CargoId.create(myCargoIdentifier), originLocation: myOriginLocation, destinationLocation: myDestinationLocation)
 
     when:
     BookCargoCommandResponse bookCargoCommandResponse = cargoBookingFactoryService.createBookCargoCommandResponse(cargoAggregate)
 
     then:
     verifyAll(bookCargoCommandResponse) {
-      aggregateIdentifier == cargoIdentifier
+      cargoIdentifier == myCargoIdentifier
       originLocation == [
           name: "Rijeka",
           countryName: "Croatia",
