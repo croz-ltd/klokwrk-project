@@ -29,6 +29,7 @@ import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
+import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
@@ -44,11 +45,15 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply
 class CargoAggregate {
   static final String VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO = "destinationLocationCannotAcceptCargo"
 
-  @AggregateIdentifier
-  String aggregateIdentifier
-
+  CargoId cargoId
   Location originLocation
   Location destinationLocation
+
+  @AggregateIdentifier
+  String getAggregateIdentifier() {
+    // Note: Must use null safe navigation here as cargoId might be null when first command is not successful (and axon requires aggregate identifier for further processing)
+    return cargoId?.identifier
+  }
 
   @CommandHandler
   @CreationPolicy(AggregateCreationPolicy.ALWAYS)
@@ -71,7 +76,7 @@ class CargoAggregate {
 
   @EventSourcingHandler
   void onCargoBookedEvent(CargoBookedEvent cargoBookedEvent) {
-    aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
+    cargoId = cargoBookedEvent.cargoId
     originLocation = cargoBookedEvent.originLocation
     destinationLocation = cargoBookedEvent.destinationLocation
   }

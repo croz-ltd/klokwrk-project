@@ -29,8 +29,8 @@ class CargoBookedEventFixtures {
   /**
    * Creates valid event where origin and destination locations are connected via rail.
    */
-  static CargoBookedEvent eventValidConnectedViaRail(String aggregateIdentifier = UUID.randomUUID()) {
-    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandValidConnectedViaRail(aggregateIdentifier)
+  static CargoBookedEvent eventValidConnectedViaRail(String cargoIdentifier = UUID.randomUUID()) {
+    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandValidConnectedViaRail(cargoIdentifier)
     CargoBookedEvent cargoBookedEvent = eventValidForCommand(bookCargoCommand)
     return cargoBookedEvent
   }

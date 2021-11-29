@@ -27,7 +27,7 @@ import org.klokwrk.lang.groovy.constant.CommonConstants
 @CompileStatic
 class CargoSummaryFactory {
   static CargoSummaryJpaEntity createCargoSummaryJpaEntity(CargoBookedEvent cargoBookedEvent, DomainEventMessage domainEventMessage) {
-    String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
+    String aggregateIdentifier = cargoBookedEvent.cargoId.identifier
     String originLocation = cargoBookedEvent.originLocation.unLoCode.code
     String destinationLocation = cargoBookedEvent.destinationLocation.unLoCode.code
     Long aggregateSequenceNumber = domainEventMessage.sequenceNumber

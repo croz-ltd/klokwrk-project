@@ -18,6 +18,7 @@
 package org.klokwrk.cargotracker.booking.domain.model.event
 
 import groovy.transform.CompileStatic
+import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.lib.domain.model.event.BaseEvent
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
@@ -25,8 +26,11 @@ import org.klokwrk.lang.groovy.transform.KwrkImmutable
 @KwrkImmutable
 @CompileStatic
 class CargoBookedEvent implements BaseEvent {
-  String aggregateIdentifier
-
+  CargoId cargoId
   Location originLocation
   Location destinationLocation
+
+  String getAggregateIdentifier() {
+    return cargoId.identifier
+  }
 }

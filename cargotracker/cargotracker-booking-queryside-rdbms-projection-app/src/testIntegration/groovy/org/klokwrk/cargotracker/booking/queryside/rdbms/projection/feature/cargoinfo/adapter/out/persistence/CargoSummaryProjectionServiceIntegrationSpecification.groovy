@@ -60,7 +60,7 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
     Long startingCargoSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
 
     CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidConnectedViaRail()
-    String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
+    String aggregateIdentifier = cargoBookedEvent.cargoId.identifier
 
     GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(cargoBookedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
     eventBus.publish(genericDomainEventMessage)
@@ -86,7 +86,7 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
     Long startingCargoSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
 
     CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidConnectedViaRail()
-    String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
+    String aggregateIdentifier = cargoBookedEvent.cargoId.identifier
 
     GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(cargoBookedEvent, [:])
     eventBus.publish(genericDomainEventMessage)

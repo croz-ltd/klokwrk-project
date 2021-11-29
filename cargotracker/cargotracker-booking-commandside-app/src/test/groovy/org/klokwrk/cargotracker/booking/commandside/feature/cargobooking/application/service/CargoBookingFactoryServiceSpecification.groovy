@@ -23,6 +23,7 @@ import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applica
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.LocationByUnLoCodeQueryPortOut
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
+import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
@@ -86,6 +87,8 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     then:
     verifyAll(bookCargoCommand) {
       aggregateIdentifier
+      cargoId
+      cargoId.identifier
       originLocation.unLoCode.code == "HRRJK"
       destinationLocation.unLoCode.code == "HRZAG"
     }
@@ -93,15 +96,16 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
   void "createBookCargoCommand - should work for specified aggregate identifier"() {
     given:
-    String myAggregateIdentifier = UUID.randomUUID()
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRRJK", destinationLocation: "HRZAG")
+    String cargoIdString = UUID.randomUUID()
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(aggregateIdentifier: cargoIdString, originLocation: "HRRJK", destinationLocation: "HRZAG")
 
     when:
     BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
 
     then:
     verifyAll(bookCargoCommand) {
-      aggregateIdentifier == myAggregateIdentifier
+      aggregateIdentifier == cargoIdString
+      cargoId.identifier == cargoIdString
       originLocation.unLoCode.code == "HRRJK"
       destinationLocation.unLoCode.code == "HRZAG"
     }
@@ -115,23 +119,23 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
 
     then:
-    thrown(IllegalArgumentException)
+    thrown(AssertionError)
   }
 
   void "createBookCargoCommandResponse - should create expected response"() {
     given:
-    String myAggregateIdentifier = UUID.randomUUID()
+    String cargoIdString = UUID.randomUUID()
     Location myOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRRJK")
     Location myDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRZAG")
 
-    CargoAggregate cargoAggregate = new CargoAggregate(aggregateIdentifier: myAggregateIdentifier, originLocation: myOriginLocation, destinationLocation: myDestinationLocation)
+    CargoAggregate cargoAggregate = new CargoAggregate(cargoId: CargoId.create(cargoIdString), originLocation: myOriginLocation, destinationLocation: myDestinationLocation)
 
     when:
     BookCargoCommandResponse bookCargoCommandResponse = cargoBookingFactoryService.createBookCargoCommandResponse(cargoAggregate)
 
     then:
     verifyAll(bookCargoCommandResponse) {
-      aggregateIdentifier == myAggregateIdentifier
+      aggregateIdentifier == cargoIdString
       originLocation == [
           name: "Rijeka",
           countryName: "Croatia",
