@@ -61,7 +61,7 @@ class CargoBookingFactoryService {
     requireKnownLocation(destinationLocation, "destinationLocationUnknown")
 
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
-        cargoId: CargoId.createWithGeneratedIdentifierIfNeeded(bookCargoCommandRequest.aggregateIdentifier), originLocation: originLocation, destinationLocation: destinationLocation
+        cargoId: CargoId.createWithGeneratedIdentifierIfNeeded(bookCargoCommandRequest.cargoIdentifier), originLocation: originLocation, destinationLocation: destinationLocation
     )
 
     return bookCargoCommand

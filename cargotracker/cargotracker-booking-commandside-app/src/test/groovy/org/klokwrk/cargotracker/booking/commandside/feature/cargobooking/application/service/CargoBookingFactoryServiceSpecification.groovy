@@ -77,7 +77,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     commandException.violationInfo.violationCode.codeKey == "destinationLocationUnknown"
   }
 
-  void "createBookCargoCommand - should work for unspecified aggregate identifier"() {
+  void "createBookCargoCommand - should work for unspecified cargo identifier"() {
     given:
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(originLocation: "HRRJK", destinationLocation: "HRZAG")
 
@@ -94,26 +94,26 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     }
   }
 
-  void "createBookCargoCommand - should work for specified aggregate identifier"() {
+  void "createBookCargoCommand - should work for specified cargo identifier"() {
     given:
-    String cargoIdString = UUID.randomUUID()
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(aggregateIdentifier: cargoIdString, originLocation: "HRRJK", destinationLocation: "HRZAG")
+    String cargoIdentifier = UUID.randomUUID()
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(cargoIdentifier: cargoIdentifier, originLocation: "HRRJK", destinationLocation: "HRZAG")
 
     when:
     BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
 
     then:
     verifyAll(bookCargoCommand) {
-      aggregateIdentifier == cargoIdString
-      cargoId.identifier == cargoIdString
+      aggregateIdentifier == cargoIdentifier
+      cargoId.identifier == cargoIdentifier
       originLocation.unLoCode.code == "HRRJK"
       destinationLocation.unLoCode.code == "HRZAG"
     }
   }
 
-  void "createBookCargoCommand - should throw for specified aggregate identifier in invalid format"() {
+  void "createBookCargoCommand - should throw for specified cargo identifier in invalid format"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(aggregateIdentifier: "invalid", originLocation: "HRRJK", destinationLocation: "HRZAG")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(cargoIdentifier: "invalid", originLocation: "HRRJK", destinationLocation: "HRZAG")
 
     when:
     cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
@@ -124,18 +124,18 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
   void "createBookCargoCommandResponse - should create expected response"() {
     given:
-    String cargoIdString = UUID.randomUUID()
+    String cargoIdentifier = UUID.randomUUID()
     Location myOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRRJK")
     Location myDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRZAG")
 
-    CargoAggregate cargoAggregate = new CargoAggregate(cargoId: CargoId.create(cargoIdString), originLocation: myOriginLocation, destinationLocation: myDestinationLocation)
+    CargoAggregate cargoAggregate = new CargoAggregate(cargoId: CargoId.create(cargoIdentifier), originLocation: myOriginLocation, destinationLocation: myDestinationLocation)
 
     when:
     BookCargoCommandResponse bookCargoCommandResponse = cargoBookingFactoryService.createBookCargoCommandResponse(cargoAggregate)
 
     then:
     verifyAll(bookCargoCommandResponse) {
-      aggregateIdentifier == cargoIdString
+      aggregateIdentifier == cargoIdentifier
       originLocation == [
           name: "Rijeka",
           countryName: "Croatia",
