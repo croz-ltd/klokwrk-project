@@ -55,6 +55,9 @@ class CargoSummaryQueryHandlerService {
       throw new QueryException(ViolationInfo.NOT_FOUND)
     }
 
-    return new CargoSummaryQueryResponse(cargoSummaryJpaEntity.properties)
+    Map properties = cargoSummaryJpaEntity.properties
+    properties.put("cargoIdentifier", cargoSummaryJpaEntity.aggregateIdentifier)
+
+    return new CargoSummaryQueryResponse(properties)
   }
 }
