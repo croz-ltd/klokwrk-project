@@ -35,12 +35,15 @@ CREATE SEQUENCE cargo_summary_sequence INCREMENT BY 50 MINVALUE 1 MAXVALUE 92233
 
 CREATE TABLE cargo_summary (
   id bigint NOT NULL,
-  aggregate_identifier CHAR(36) NOT NULL,
-  aggregate_sequence_number BIGINT NOT NULL,
+
+  cargo_identifier CHAR(36) NOT NULL,
+  origin_location VARCHAR(255) NOT NULL,
   destination_location VARCHAR(255) NOT NULL,
+
+  aggregate_version BIGINT NOT NULL,
+
   inbound_channel_name VARCHAR(255) NOT NULL,
   inbound_channel_type VARCHAR(255) NOT NULL,
-  origin_location VARCHAR(255) NOT NULL,
 
   PRIMARY KEY (id)
 );

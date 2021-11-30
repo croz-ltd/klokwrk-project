@@ -41,12 +41,11 @@ class CargoSummaryJpaEntity {
   @SequenceGenerator(name = "cargoSummarySequenceGenerator", sequenceName = "cargo_summary_sequence", initialValue = 1, allocationSize = 50)
   Long id
 
-  @Column(nullable = false, columnDefinition="char(36)") String aggregateIdentifier
-  @Column(nullable = false) Long aggregateSequenceNumber
-
+  @Column(nullable = false, columnDefinition="char(36)") String cargoIdentifier
   @Column(nullable = false) String originLocation
   @Column(nullable = false) String destinationLocation
 
+  @Column(nullable = false) Long aggregateVersion
   @Column(nullable = false) String inboundChannelName
   @Column(nullable = false) String inboundChannelType
 }
