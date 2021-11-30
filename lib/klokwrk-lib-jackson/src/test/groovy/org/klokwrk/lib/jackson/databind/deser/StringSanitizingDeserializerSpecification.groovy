@@ -34,11 +34,11 @@ class StringSanitizingDeserializerSpecification extends Specification {
     this.objectMapper = objectMapper
   }
 
-  void "should deserialize empty string into null - string value is #aggregateIdentifierStringValue"() {
+  void "should deserialize empty string into null"() {
     given:
     String stringToDeserialize = """
       {
-        "aggregateIdentifier": ${ aggregateIdentifierStringValue },
+        "cargoIdentifier": ${ cargoIdentifierStringValue },
         "originLocation": "myOrigin",
         "destinationLocation": "myDestination"
       }
@@ -48,19 +48,19 @@ class StringSanitizingDeserializerSpecification extends Specification {
     Map<String, ?> deserializedMap = objectMapper.readValue(stringToDeserialize, Map)
 
     then:
-    deserializedMap.aggregateIdentifier == null
+    deserializedMap.cargoIdentifier == null
 
     where:
-    aggregateIdentifierStringValue | _
-    '""'                           | _
-    '"    "'                       | _
+    cargoIdentifierStringValue | _
+    '""'                       | _
+    '"    "'                   | _
   }
 
   void "should deserialize null into null"() {
     given:
     String stringToDeserialize = """
       {
-        "aggregateIdentifier": null,
+        "cargoIdentifier": null,
         "originLocation": "myOrigin",
         "destinationLocation": "myDestination"
       }
@@ -70,6 +70,6 @@ class StringSanitizingDeserializerSpecification extends Specification {
     Map<String, ?> deserializedMap = objectMapper.readValue(stringToDeserialize, Map)
 
     then:
-    deserializedMap.aggregateIdentifier == null
+    deserializedMap.cargoIdentifier == null
   }
 }

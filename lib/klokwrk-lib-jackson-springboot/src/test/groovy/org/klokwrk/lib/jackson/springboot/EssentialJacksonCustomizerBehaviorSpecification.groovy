@@ -37,11 +37,11 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
   @Autowired
   ObjectMapper objectMapper
 
-  void "deserialization - should deserialize empty string into null - string value is #aggregateIdentifierStringValue"() {
+  void "deserialization - should deserialize empty string into null"() {
     given:
     String stringToDeserialize = """
       {
-        "aggregateIdentifier": ${ aggregateIdentifierStringValue },
+        "cargoIdentifier": ${ cargoIdentifierStringValue },
         "originLocation": "myOrigin",
         "destinationLocation": "myDestination"
       }
@@ -51,12 +51,12 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     Map<String, ?> deserializedMap = objectMapper.readValue(stringToDeserialize, Map)
 
     then:
-    deserializedMap.aggregateIdentifier == null
+    deserializedMap.cargoIdentifier == null
 
     where:
-    aggregateIdentifierStringValue | _
-    '""'                           | _
-    '"    "'                       | _
+    cargoIdentifierStringValue | _
+    '""'                       | _
+    '"    "'                   | _
   }
 
   @SuppressWarnings("CodeNarc.UnnecessaryTransientModifier")
@@ -91,7 +91,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     String stringToDeserialize = """
       {
         /* some comment */
-        "aggregateIdentifier": "someIdentifier", /* some comment */
+        "cargoIdentifier": "someIdentifier", /* some comment */
         "originLocation": "myOrigin", /* some comment */
         "destinationLocation": "myDestination" /* some comment */
       }
@@ -101,7 +101,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     Map<String, ?> deserializedMap = objectMapper.readValue(stringToDeserialize, Map)
 
     then:
-    deserializedMap.aggregateIdentifier == "someIdentifier"
+    deserializedMap.cargoIdentifier == "someIdentifier"
   }
 
   static class MyBean {
@@ -240,7 +240,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
   void "serialization - should serialize GString as a String"() {
     given:
     Closure closure = {
-      return "${123} 456"
+      return "${ 123 } 456"
     }
 
     Map mapToSerialize = [
