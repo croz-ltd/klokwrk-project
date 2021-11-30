@@ -47,14 +47,14 @@ import javax.validation.constraints.Size
 @CompileStatic
 class BookCargoCommandRequest {
   /**
-   * Optional aggregate identifier of a cargo to book.
+   * Optional identifier of a cargo to book.
    * <p/>
    * Can be null. If specified, must not be blank and must be in uuid format.
    */
   @UuidFormatConstraint(groups = [Level3])
   @Size(min = 36, max = 36, groups = [Level2])
   @NotBlankWhenNullableConstraint(groups = [Level1])
-  String aggregateIdentifier
+  String cargoIdentifier
 
   /**
    * Origin (start) location of a cargo.

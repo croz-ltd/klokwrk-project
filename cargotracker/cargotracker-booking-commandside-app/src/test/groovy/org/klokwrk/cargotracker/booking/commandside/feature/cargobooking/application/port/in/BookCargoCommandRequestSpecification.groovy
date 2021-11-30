@@ -41,7 +41,7 @@ class BookCargoCommandRequestSpecification extends Specification {
   void "should pass validation for valid data"() {
     given:
     BookCargoCommandRequest bookCargoCommandRequest =
-        new BookCargoCommandRequest(aggregateIdentifier: aggregateIdentifierParam, originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+        new BookCargoCommandRequest(cargoIdentifier: cargoIdentifierParam, originLocation: originLocationParam, destinationLocation: destinationLocationParam)
 
     when:
     validationService.validate(bookCargoCommandRequest)
@@ -50,7 +50,7 @@ class BookCargoCommandRequestSpecification extends Specification {
     notThrown(ConstraintViolationException)
 
     where:
-    aggregateIdentifierParam               | originLocationParam | destinationLocationParam
+    cargoIdentifierParam                   | originLocationParam | destinationLocationParam
     null                                   | "AAAAA"             | "AAAAA"
     "00000000-0000-0000-0000-000000000000" | "AAAAA"             | "AAAAA"
   }
@@ -58,7 +58,7 @@ class BookCargoCommandRequestSpecification extends Specification {
   void "should not pass validation for invalid data"() {
     given:
     BookCargoCommandRequest bookCargoCommandRequest =
-        new BookCargoCommandRequest(aggregateIdentifier: aggregateIdentifierParam, originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+        new BookCargoCommandRequest(cargoIdentifier: cargoIdentifierParam, originLocation: originLocationParam, destinationLocation: destinationLocationParam)
 
     when:
     validationService.validate(bookCargoCommandRequest)
@@ -71,10 +71,10 @@ class BookCargoCommandRequestSpecification extends Specification {
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
-    aggregateIdentifierParam               | originLocationParam | destinationLocationParam | propertyPathParam     | constraintTypeParam
-    ""                                     | "AAAAA"             | "AAAAA"                  | "aggregateIdentifier" | NotBlankWhenNullableConstraint
-    "123"                                  | "AAAAA"             | "AAAAA"                  | "aggregateIdentifier" | Size
-    "00000000=0000=0000=0000=000000000000" | "AAAAA"             | "AAAAA"                  | "aggregateIdentifier" | UuidFormatConstraint
+    cargoIdentifierParam                   | originLocationParam | destinationLocationParam | propertyPathParam     | constraintTypeParam
+    ""                                     | "AAAAA"             | "AAAAA"                  | "cargoIdentifier"     | NotBlankWhenNullableConstraint
+    "123"                                  | "AAAAA"             | "AAAAA"                  | "cargoIdentifier"     | Size
+    "00000000=0000=0000=0000=000000000000" | "AAAAA"             | "AAAAA"                  | "cargoIdentifier"     | UuidFormatConstraint
 
     null                                   | null                | "AAAAA"                  | "originLocation"      | NotBlank
     null                                   | "A"                 | "AAAAA"                  | "originLocation"      | Size

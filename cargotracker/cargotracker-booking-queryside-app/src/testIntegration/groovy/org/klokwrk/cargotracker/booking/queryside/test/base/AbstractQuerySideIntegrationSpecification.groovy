@@ -68,7 +68,7 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
 
   static String publishAndWaitForProjectedCargoBookedEvent(EventBus eventBus, Sql groovySql, CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidConnectedViaRail()) {
     Long startingCargoSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
-    String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
+    String cargoIdentifier = cargoBookedEvent.cargoId.identifier
 
     GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(cargoBookedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
     eventBus.publish(genericDomainEventMessage)
@@ -76,6 +76,6 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
     // Wait for projection to complete
     Awaitility.await().atMost(Duration.ofSeconds(10)).until({ CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql) == startingCargoSummaryRecordsCount + 1 })
 
-    return aggregateIdentifier
+    return cargoIdentifier
   }
 }

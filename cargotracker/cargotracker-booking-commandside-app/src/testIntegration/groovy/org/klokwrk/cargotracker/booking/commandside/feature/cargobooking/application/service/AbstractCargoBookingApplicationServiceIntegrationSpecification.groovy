@@ -46,8 +46,8 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
 
   void "should work for correct request"() {
     given:
-    String myAggregateIdentifier = UUID.randomUUID()
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
+    String myCargoIdentifier = UUID.randomUUID()
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(cargoIdentifier: myCargoIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
@@ -60,7 +60,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     then:
     bookCargoCommandResponseMetadata.isEmpty()
     verifyAll(bookCargoCommandResponsePayload) {
-      aggregateIdentifier == myAggregateIdentifier
+      cargoIdentifier == myCargoIdentifier
       originLocation.name == "Zagreb"
       destinationLocation.name == "Rijeka"
     }
@@ -85,8 +85,8 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
       return interceptorChain.proceed()
     })
 
-    String myAggregateIdentifier = UUID.randomUUID()
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
+    String myCargoIdentifier = UUID.randomUUID()
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(cargoIdentifier: myCargoIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
@@ -99,7 +99,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
 
     then:
     bookCargoCommandResponseMetadata.isEmpty()
-    bookCargoCommandResponsePayload.aggregateIdentifier == myAggregateIdentifier
+    bookCargoCommandResponsePayload.cargoIdentifier == myCargoIdentifier
 
     loggingEventList.size() == 1
     loggingEventList[0].level == Level.INFO
@@ -133,8 +133,8 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
       return interceptorChain.proceed()
     })
 
-    String myAggregateIdentifier = UUID.randomUUID()
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
+    String cargoIdentifier = UUID.randomUUID()
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(cargoIdentifier: cargoIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:

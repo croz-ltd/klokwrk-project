@@ -55,8 +55,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
   @SuppressWarnings("CodeNarc.AbcMetric")
   void "should work for correct request - [acceptLanguage: #acceptLanguage]"() {
     given:
-    String myAggregateIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK"])
+    String myCargoIdentifier = UUID.randomUUID()
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: myCargoIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK"])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -87,7 +87,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     verifyAll(responseContentMap.payload as Map) {
-      aggregateIdentifier == myAggregateIdentifier
+      cargoIdentifier == myCargoIdentifier
       originLocation.name == "Zagreb"
       destinationLocation.name == "Rijeka"
     }
@@ -133,8 +133,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
   @SuppressWarnings("CodeNarc.AbcMetric")
   void "should return expected response when request is not valid - validation failure - [acceptLanguage: #acceptLanguage]"() {
     given:
-    String myAggregateIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([aggregateIdentifier: myAggregateIdentifier, originLocation: null, destinationLocation: null])
+    String cargoIdentifier = UUID.randomUUID()
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, originLocation: null, destinationLocation: null])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -192,8 +192,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
   void "should return expected response when request is not valid - domain failure - [acceptLanguage: #acceptLanguage]"() {
     given:
-    String myAggregateIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRZAG"])
+    String cargoIdentifier = UUID.randomUUID()
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, originLocation: "HRZAG", destinationLocation: "HRZAG"])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -242,8 +242,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
   void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguage]"() {
     given:
-    String myAggregateIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([aggregateIdentifier: myAggregateIdentifier, originLocation: "HRZAG", destinationLocation: "HRZAG"])
+    String cargoIdentifier = UUID.randomUUID()
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, originLocation: "HRZAG", destinationLocation: "HRZAG"])
 
     when:
     MvcResult mvcResult = mockMvc.perform(

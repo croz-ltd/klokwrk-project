@@ -27,13 +27,14 @@ import org.klokwrk.lang.groovy.constant.CommonConstants
 @CompileStatic
 class CargoSummaryFactory {
   static CargoSummaryJpaEntity createCargoSummaryJpaEntity(CargoBookedEvent cargoBookedEvent, DomainEventMessage domainEventMessage) {
-    String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
+    String cargoIdentifier = cargoBookedEvent.cargoId.identifier
     String originLocation = cargoBookedEvent.originLocation.unLoCode.code
     String destinationLocation = cargoBookedEvent.destinationLocation.unLoCode.code
-    Long aggregateSequenceNumber = domainEventMessage.sequenceNumber
+    Long aggregateVersion = domainEventMessage.sequenceNumber
 
     CargoSummaryJpaEntity cargoSummaryJpaEntity = new CargoSummaryJpaEntity(
-      aggregateIdentifier: aggregateIdentifier, aggregateSequenceNumber: aggregateSequenceNumber, originLocation: originLocation, destinationLocation: destinationLocation,
+      cargoIdentifier: cargoIdentifier, originLocation: originLocation, destinationLocation: destinationLocation,
+      aggregateVersion: aggregateVersion,
       inboundChannelName: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_NAME_KEY] ?: CommonConstants.NOT_AVAILABLE,
       inboundChannelType: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_TYPE_KEY] ?: CommonConstants.NOT_AVAILABLE
     )

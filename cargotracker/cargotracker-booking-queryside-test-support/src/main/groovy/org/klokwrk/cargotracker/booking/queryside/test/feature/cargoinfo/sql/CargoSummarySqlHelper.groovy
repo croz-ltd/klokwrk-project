@@ -28,8 +28,8 @@ class CargoSummarySqlHelper {
     return groovyRowResult.recordsCount as Long
   }
 
-  static Map<String, ?> selectCargoSummaryRecord(Sql groovySql, String aggregateIdentifier) {
-    List<GroovyRowResult> groovyRowResultList = groovySql.rows([aggregateIdentifier: aggregateIdentifier], "SELECT * from cargo_summary where aggregate_identifier = :aggregateIdentifier")
+  static Map<String, ?> selectCargoSummaryRecord(Sql groovySql, String cargoIdentifier) {
+    List<GroovyRowResult> groovyRowResultList = groovySql.rows([cargoIdentifier: cargoIdentifier], "SELECT * from cargo_summary where cargo_identifier = :cargoIdentifier")
     return groovyRowResultList[0] as Map<String, ?>
   }
 }

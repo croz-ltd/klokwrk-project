@@ -26,8 +26,8 @@ import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 @MapConstructor(noArg = true)
 @CompileStatic
 class CargoSummaryQueryResponse {
-  String aggregateIdentifier
-  Long aggregateSequenceNumber
+  String cargoIdentifier
+  Long aggregateVersion
 
   String originLocation
   String destinationLocation

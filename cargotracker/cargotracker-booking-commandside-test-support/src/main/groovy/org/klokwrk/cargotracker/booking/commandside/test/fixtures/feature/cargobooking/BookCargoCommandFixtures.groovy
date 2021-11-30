@@ -19,6 +19,7 @@ package org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargo
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
+import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 
 /**
@@ -35,9 +36,9 @@ class BookCargoCommandFixtures {
   /**
    * Creates invalid command where origin and destination location are equal.
    */
-  static BookCargoCommand commandInvalidWithEqualOriginAndDestinationLocations(String aggregateIdentifier = UUID.randomUUID()) {
+  static BookCargoCommand commandInvalidWithEqualOriginAndDestinationLocations(String cargoIdentifier = UUID.randomUUID()) {
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
-        aggregateIdentifier: aggregateIdentifier,
+        cargoId: CargoId.create(cargoIdentifier),
         originLocation: Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E"),
         destinationLocation: Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E")
     )
@@ -48,16 +49,16 @@ class BookCargoCommandFixtures {
   /**
    * Creates invalid command where origin and destination location are not connected.
    */
-  static BookCargoCommand commandInvalidWithNotConnectedLocations(String aggregateIdentifier = UUID.randomUUID()) {
-    BookCargoCommand bookCargoCommand = new BookCargoCommand(aggregateIdentifier: aggregateIdentifier, originLocation: LOCATION_SAMPLE_MAP.HRZAG, destinationLocation: LOCATION_SAMPLE_MAP.HRKRK)
+  static BookCargoCommand commandInvalidWithNotConnectedLocations(String cargoIdentifier = UUID.randomUUID()) {
+    BookCargoCommand bookCargoCommand = new BookCargoCommand(cargoId: CargoId.create(cargoIdentifier), originLocation: LOCATION_SAMPLE_MAP.HRZAG, destinationLocation: LOCATION_SAMPLE_MAP.HRKRK)
     return bookCargoCommand
   }
 
   /**
    * Creates valid command where origin and destination locations are connected via rail.
    */
-  static BookCargoCommand commandValidConnectedViaRail(String aggregateIdentifier = UUID.randomUUID()) {
-    BookCargoCommand bookCargoCommand = new BookCargoCommand(aggregateIdentifier: aggregateIdentifier, originLocation: LOCATION_SAMPLE_MAP.HRRJK, destinationLocation: LOCATION_SAMPLE_MAP.HRZAG)
+  static BookCargoCommand commandValidConnectedViaRail(String cargoIdentifier = UUID.randomUUID()) {
+    BookCargoCommand bookCargoCommand = new BookCargoCommand(cargoId: CargoId.create(cargoIdentifier), originLocation: LOCATION_SAMPLE_MAP.HRRJK, destinationLocation: LOCATION_SAMPLE_MAP.HRZAG)
     return bookCargoCommand
   }
 }

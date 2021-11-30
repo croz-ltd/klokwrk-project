@@ -60,7 +60,7 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
     Long startingCargoSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
 
     CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidConnectedViaRail()
-    String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
+    String cargoIdentifier = cargoBookedEvent.cargoId.identifier
 
     GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(cargoBookedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
     eventBus.publish(genericDomainEventMessage)
@@ -68,13 +68,13 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
     expect:
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql) == startingCargoSummaryRecordsCount + 1
-      verifyAll(CargoSummarySqlHelper.selectCargoSummaryRecord(groovySql, aggregateIdentifier)) {
+      verifyAll(CargoSummarySqlHelper.selectCargoSummaryRecord(groovySql, cargoIdentifier)) {
         size() == 7
         id >= 0
-        aggregate_identifier == aggregateIdentifier
-        aggregate_sequence_number == 0
+        cargo_identifier == cargoIdentifier
         origin_location == "HRRJK"
         destination_location == "HRZAG"
+        aggregate_version == 0
         inbound_channel_name == WebMetaDataConstant.WEB_BOOKING_CHANNEL_NAME
         inbound_channel_type == WebMetaDataConstant.WEB_BOOKING_CHANNEL_TYPE
       }
@@ -86,7 +86,7 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
     Long startingCargoSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
 
     CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidConnectedViaRail()
-    String aggregateIdentifier = cargoBookedEvent.aggregateIdentifier
+    String cargoIdentifier = cargoBookedEvent.cargoId.identifier
 
     GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(cargoBookedEvent, [:])
     eventBus.publish(genericDomainEventMessage)
@@ -94,13 +94,13 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
     expect:
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql) == startingCargoSummaryRecordsCount + 1
-      verifyAll(CargoSummarySqlHelper.selectCargoSummaryRecord(groovySql, aggregateIdentifier)) {
+      verifyAll(CargoSummarySqlHelper.selectCargoSummaryRecord(groovySql, cargoIdentifier)) {
         size() == 7
         id >= 0
-        aggregate_identifier == aggregateIdentifier
-        aggregate_sequence_number == 0
+        cargo_identifier == cargoIdentifier
         origin_location == "HRRJK"
         destination_location == "HRZAG"
+        aggregate_version == 0
         inbound_channel_name == CommonConstants.NOT_AVAILABLE
         inbound_channel_type == CommonConstants.NOT_AVAILABLE
       }
