@@ -38,7 +38,7 @@ class CargoSummaryQueryRequestSpecification extends Specification {
 
   void "should pass validation for valid data"() {
     given:
-    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: aggregateIdentifierParam)
+    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(cargoIdentifier: cargoIdentifierParam)
 
     when:
     validationService.validate(cargoSummaryQueryRequest)
@@ -47,13 +47,13 @@ class CargoSummaryQueryRequestSpecification extends Specification {
     notThrown(ConstraintViolationException)
 
     where:
-    aggregateIdentifierParam               | _
+    cargoIdentifierParam                   | _
     "00000000-0000-0000-0000-000000000000" | _
   }
 
   void "should not pass validation for invalid data"() {
     given:
-    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: aggregateIdentifierParam)
+    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(cargoIdentifier: cargoIdentifierParam)
 
     when:
     validationService.validate(cargoSummaryQueryRequest)
@@ -66,9 +66,9 @@ class CargoSummaryQueryRequestSpecification extends Specification {
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
-    aggregateIdentifierParam               | propertyPathParam     | constraintTypeParam
-    ""                                     | "aggregateIdentifier" | NotBlank
-    "123"                                  | "aggregateIdentifier" | Size
-    "00000000=0000=0000=0000=000000000000" | "aggregateIdentifier" | UuidFormatConstraint
+    cargoIdentifierParam                   | propertyPathParam | constraintTypeParam
+    ""                                     | "cargoIdentifier" | NotBlank
+    "123"                                  | "cargoIdentifier" | Size
+    "00000000=0000=0000=0000=000000000000" | "cargoIdentifier" | UuidFormatConstraint
   }
 }

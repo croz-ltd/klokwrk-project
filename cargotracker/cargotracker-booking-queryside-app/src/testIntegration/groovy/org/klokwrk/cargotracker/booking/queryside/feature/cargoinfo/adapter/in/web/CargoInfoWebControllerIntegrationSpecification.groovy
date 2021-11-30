@@ -73,8 +73,8 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
 
   void "should work for correct request - [acceptLanguage: #acceptLanguage]"() {
     given:
-    String myAggregateIdentifier = publishAndWaitForProjectedCargoBookedEvent(eventBus, groovySql)
-    String webRequestBody = objectMapper.writeValueAsString([aggregateIdentifier: myAggregateIdentifier])
+    String myCargoIdentifier = publishAndWaitForProjectedCargoBookedEvent(eventBus, groovySql)
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: myCargoIdentifier])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -105,7 +105,7 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
     }
 
     verifyAll(responseContentMap.payload as Map) {
-      aggregateIdentifier == myAggregateIdentifier
+      aggregateIdentifier == myCargoIdentifier
       aggregateSequenceNumber == 0
       originLocation == "HRRJK"
       destinationLocation == "HRZAG"
@@ -119,7 +119,7 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
 
   @SuppressWarnings("CodeNarc.AbcMetric")
   void "should return expected response when request is not valid - validation failure - [acceptLanguage: #acceptLanguage]"() {
-    String webRequestBody = objectMapper.writeValueAsString([aggregateIdentifier: null])
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: null])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -161,7 +161,7 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
       it.size() == 2
       root.type == "cargoSummaryQueryRequest"
       constraintViolations.size() == 1
-      constraintViolations.find({ it.path == "aggregateIdentifier" }).type == "notBlank"
+      constraintViolations.find({ it.path == "cargoIdentifier" }).type == "notBlank"
     }
 
     verifyAll(responseContentMap.payload as Map) {
@@ -176,8 +176,8 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
 
   void "should return expected response when CargoSummary cannot be found - domain failure - [acceptLanguage: #acceptLanguage]"() {
     given:
-    String myAggregateIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([aggregateIdentifier: myAggregateIdentifier])
+    String myCargoIdentifier = UUID.randomUUID()
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: myCargoIdentifier])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -226,8 +226,8 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
 
   void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguage]"() {
     given:
-    String myAggregateIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([aggregateIdentifier: myAggregateIdentifier])
+    String myCargoIdentifier = UUID.randomUUID()
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: myCargoIdentifier])
 
     when:
     MvcResult mvcResult = mockMvc.perform(

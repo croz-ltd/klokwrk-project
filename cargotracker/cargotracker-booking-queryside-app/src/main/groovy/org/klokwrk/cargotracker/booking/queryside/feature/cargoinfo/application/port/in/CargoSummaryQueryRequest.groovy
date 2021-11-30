@@ -41,12 +41,14 @@ import javax.validation.constraints.Size
 @CompileStatic
 class CargoSummaryQueryRequest {
   /**
-   * Aggregate identifier of a cargo.
+   * Identifier of a cargo.
    * <p/>
    * Not null and not blank. Must be in uuid format.
+   * <p/>
+   * This particular identifier is used as an aggregate identifier.
    */
   @UuidFormatConstraint(groups = [Level3])
   @Size(min = 36, max = 36, groups = [Level2])
   @NotBlank(groups = [Level1])
-  String aggregateIdentifier
+  String cargoIdentifier
 }

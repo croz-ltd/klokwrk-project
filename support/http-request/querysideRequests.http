@@ -6,7 +6,7 @@ Accept-Charset: utf-8
 Accept-Language: hr-HR
 
 {
-  "aggregateIdentifier": null
+  "cargoIdentifier": null
 }
 
 ### cargotracker-booking-queryside, cargo-info/cargo-summary, validation failure, en
@@ -17,7 +17,7 @@ Accept-Charset: utf-8
 Accept-Language: en
 
 {
-  "aggregateIdentifier": null
+  "cargoIdentifier": null
 }
 
 ### cargotracker-booking-queryside, cargo-info/cargo-summary, success, hr
@@ -28,7 +28,7 @@ Accept-Charset: utf-8
 Accept-Language: hr-HR
 
 {
-  "aggregateIdentifier": "{{receivedAggregateIdentifier}}"
+  "cargoIdentifier": "{{receivedCargoIdentifier}}"
 }
 
 ### cargotracker-booking-queryside, cargo-info/cargo-summary, success, en
@@ -39,7 +39,7 @@ Accept-Charset: utf-8
 Accept-Language: en
 
 {
-  "aggregateIdentifier": "{{receivedAggregateIdentifier}}"
+  "cargoIdentifier": "{{receivedCargoIdentifier}}"
 }
 
 ### cargotracker-booking-queryside, cargo-info/cargo-summary, failure, hr
@@ -50,7 +50,7 @@ Accept-Charset: utf-8
 Accept-Language: hr-HR
 
 {
-  "aggregateIdentifier": "{{$uuid}}"
+  "cargoIdentifier": "{{$uuid}}"
 }
 
 ### cargotracker-booking-queryside, cargo-info/cargo-summary, failure, en
@@ -61,7 +61,7 @@ Accept-Charset: utf-8
 Accept-Language: en
 
 {
-  "aggregateIdentifier": "{{$uuid}}"
+  "cargoIdentifier": "{{$uuid}}"
 }
 
 ###

@@ -59,9 +59,9 @@ class CargoInfoApplicationServiceIntegrationSpecification extends AbstractQueryS
 
   void "should work for correct request - [locale: #localeParam]"() {
     given:
-    String myAggregateIdentifier = publishAndWaitForProjectedCargoBookedEvent(eventBus, groovySql)
+    String myCargoIdentifier = publishAndWaitForProjectedCargoBookedEvent(eventBus, groovySql)
 
-    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: myAggregateIdentifier)
+    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(cargoIdentifier: myCargoIdentifier)
     OperationRequest<CargoSummaryQueryRequest> operationRequest = new OperationRequest(
         payload: cargoSummaryQueryRequest,
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): localeParam]
@@ -72,7 +72,7 @@ class CargoInfoApplicationServiceIntegrationSpecification extends AbstractQueryS
 
     then:
     verifyAll(operationResponse.payload) {
-      aggregateIdentifier == myAggregateIdentifier
+      aggregateIdentifier == myCargoIdentifier
       aggregateSequenceNumber == 0
       originLocation == "HRRJK"
       destinationLocation == "HRZAG"
@@ -93,7 +93,7 @@ class CargoInfoApplicationServiceIntegrationSpecification extends AbstractQueryS
 
   void "should throw when CargoSummary cannot be found - [locale: #locale]"() {
     given:
-    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(aggregateIdentifier: UUID.randomUUID())
+    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(cargoIdentifier: UUID.randomUUID())
     OperationRequest<CargoSummaryQueryRequest> operationRequest = new OperationRequest(
         payload: cargoSummaryQueryRequest,
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): locale]

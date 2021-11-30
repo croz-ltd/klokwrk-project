@@ -49,7 +49,7 @@ class CargoSummaryQueryHandlerService {
 
   @QueryHandler
   CargoSummaryQueryResponse handleCargoSummaryQueryRequest(CargoSummaryQueryRequest cargoSummaryQueryRequest) {
-    CargoSummaryJpaEntity cargoSummaryJpaEntity = cargoSummaryJpaRepository.findByAggregateIdentifier(cargoSummaryQueryRequest.aggregateIdentifier)
+    CargoSummaryJpaEntity cargoSummaryJpaEntity = cargoSummaryJpaRepository.findByAggregateIdentifier(cargoSummaryQueryRequest.cargoIdentifier)
 
     if (!cargoSummaryJpaEntity) {
       throw new QueryException(ViolationInfo.NOT_FOUND)

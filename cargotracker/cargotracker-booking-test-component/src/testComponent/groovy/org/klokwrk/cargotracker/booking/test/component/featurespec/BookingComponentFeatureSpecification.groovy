@@ -76,7 +76,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     Closure<String> queryPostRequestBodyClosure = { String commandResponseCargoIdentifier ->
       """
       {
-        "aggregateIdentifier": "${ commandResponseCargoIdentifier }"
+        "cargoIdentifier": "${ commandResponseCargoIdentifier }"
       }
       """
     }
@@ -165,7 +165,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     String cargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-info/cargo-summary"
     String queryPostRequestBody = """
       {
-        "aggregateIdentifier": "${ UUID.randomUUID() }"
+        "cargoIdentifier": "${ UUID.randomUUID() }"
       }
       """
 
