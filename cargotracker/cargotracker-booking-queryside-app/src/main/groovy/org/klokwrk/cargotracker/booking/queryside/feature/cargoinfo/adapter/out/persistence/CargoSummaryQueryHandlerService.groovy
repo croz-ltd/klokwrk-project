@@ -57,6 +57,7 @@ class CargoSummaryQueryHandlerService {
 
     Map properties = cargoSummaryJpaEntity.properties
     properties.put("cargoIdentifier", cargoSummaryJpaEntity.aggregateIdentifier)
+    properties.put("aggregateVersion", cargoSummaryJpaEntity.aggregateSequenceNumber)
 
     return new CargoSummaryQueryResponse(properties)
   }

@@ -106,7 +106,7 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
 
     verifyAll(responseContentMap.payload as Map) {
       cargoIdentifier == myCargoIdentifier
-      aggregateSequenceNumber == 0
+      aggregateVersion == 0
       originLocation == "HRRJK"
       destinationLocation == "HRZAG"
     }

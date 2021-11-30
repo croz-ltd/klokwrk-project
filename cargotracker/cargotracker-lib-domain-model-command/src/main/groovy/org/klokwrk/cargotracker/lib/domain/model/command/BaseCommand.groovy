@@ -28,5 +28,5 @@ interface BaseCommand {
   String getAggregateIdentifier()
 
   @TargetAggregateVersion
-  Long getAggregateSequenceNumber()
+  Long getAggregateVersion()
 }

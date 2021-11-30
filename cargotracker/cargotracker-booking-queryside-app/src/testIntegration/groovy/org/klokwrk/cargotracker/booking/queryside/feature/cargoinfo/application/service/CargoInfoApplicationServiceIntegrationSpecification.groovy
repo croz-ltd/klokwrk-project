@@ -73,7 +73,7 @@ class CargoInfoApplicationServiceIntegrationSpecification extends AbstractQueryS
     then:
     verifyAll(operationResponse.payload) {
       cargoIdentifier == myCargoIdentifier
-      aggregateSequenceNumber == 0
+      aggregateVersion == 0
       originLocation == "HRRJK"
       destinationLocation == "HRZAG"
     }
