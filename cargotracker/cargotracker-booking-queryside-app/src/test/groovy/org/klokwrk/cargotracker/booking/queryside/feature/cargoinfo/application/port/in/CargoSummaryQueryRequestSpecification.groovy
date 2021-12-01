@@ -17,7 +17,7 @@
  */
 package org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in
 
-import org.klokwrk.lib.validation.constraint.UuidFormatConstraint
+import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
 import org.klokwrk.lib.validation.springboot.ValidationConfigurationProperties
 import org.klokwrk.lib.validation.springboot.ValidationService
 import spock.lang.Shared
@@ -48,7 +48,7 @@ class CargoSummaryQueryRequestSpecification extends Specification {
 
     where:
     cargoIdentifierParam                   | _
-    "00000000-0000-0000-0000-000000000000" | _
+    "00000000-0000-4000-8000-000000000000" | _
   }
 
   void "should not pass validation for invalid data"() {
@@ -69,6 +69,6 @@ class CargoSummaryQueryRequestSpecification extends Specification {
     cargoIdentifierParam                   | propertyPathParam | constraintTypeParam
     ""                                     | "cargoIdentifier" | NotBlank
     "123"                                  | "cargoIdentifier" | Size
-    "00000000=0000=0000=0000=000000000000" | "cargoIdentifier" | UuidFormatConstraint
+    "00000000=0000=0000=0000=000000000000" | "cargoIdentifier" | RandomUuidFormatConstraint
   }
 }
