@@ -37,7 +37,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
  * <p/>
  * Accepts only {@code String} types. Message interpolation key is {@code org.klokwrk.lib.validation.constraint.UuidFormatConstraint.message}.
  */
-@SuppressWarnings("unused")
 @Documented
 @Repeatable(UuidFormatConstraintList)
 @Target([FIELD, METHOD, PARAMETER, TYPE_USE, ANNOTATION_TYPE])

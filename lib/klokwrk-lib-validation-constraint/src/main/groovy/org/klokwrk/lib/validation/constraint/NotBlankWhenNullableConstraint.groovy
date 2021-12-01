@@ -39,7 +39,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
  *  <p/>
  *  This constraint is very similar to the bean validation's {@code NotBlank}, but this one skips null values and does not report them as violations.
  */
-@SuppressWarnings("unused")
 @Documented
 @Repeatable(NotBlankWhenNullableConstraintList)
 @Target([FIELD, METHOD, PARAMETER, TYPE_USE, ANNOTATION_TYPE])
