@@ -18,8 +18,8 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in
 
 import org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint
+import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
 import org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint
-import org.klokwrk.lib.validation.constraint.UuidFormatConstraint
 import org.klokwrk.lib.validation.springboot.ValidationConfigurationProperties
 import org.klokwrk.lib.validation.springboot.ValidationService
 import spock.lang.Shared
@@ -52,7 +52,7 @@ class BookCargoCommandRequestSpecification extends Specification {
     where:
     cargoIdentifierParam                   | originLocationParam | destinationLocationParam
     null                                   | "AAAAA"             | "AAAAA"
-    "00000000-0000-0000-0000-000000000000" | "AAAAA"             | "AAAAA"
+    "00000000-0000-4000-8000-000000000000" | "AAAAA"             | "AAAAA"
   }
 
   void "should not pass validation for invalid data"() {
@@ -74,7 +74,7 @@ class BookCargoCommandRequestSpecification extends Specification {
     cargoIdentifierParam                   | originLocationParam | destinationLocationParam | propertyPathParam     | constraintTypeParam
     ""                                     | "AAAAA"             | "AAAAA"                  | "cargoIdentifier"     | NotBlankWhenNullableConstraint
     "123"                                  | "AAAAA"             | "AAAAA"                  | "cargoIdentifier"     | Size
-    "00000000=0000=0000=0000=000000000000" | "AAAAA"             | "AAAAA"                  | "cargoIdentifier"     | UuidFormatConstraint
+    "00000000=0000=0000=0000=000000000000" | "AAAAA"             | "AAAAA"                  | "cargoIdentifier"     | RandomUuidFormatConstraint
 
     null                                   | null                | "AAAAA"                  | "originLocation"      | NotBlank
     null                                   | "A"                 | "AAAAA"                  | "originLocation"      | Size

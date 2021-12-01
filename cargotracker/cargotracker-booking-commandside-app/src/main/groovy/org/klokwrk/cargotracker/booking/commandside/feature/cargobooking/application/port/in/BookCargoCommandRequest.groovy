@@ -22,8 +22,8 @@ import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 import org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint
+import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
 import org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint
-import org.klokwrk.lib.validation.constraint.UuidFormatConstraint
 import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
 import org.klokwrk.lib.validation.group.Level3
@@ -49,9 +49,9 @@ class BookCargoCommandRequest {
   /**
    * Optional identifier of a cargo to book.
    * <p/>
-   * Can be null. If specified, must not be blank and must be in uuid format.
+   * Can be null. If specified, must not be blank and must be in random uuid format.
    */
-  @UuidFormatConstraint(groups = [Level3])
+  @RandomUuidFormatConstraint(groups = [Level3])
   @Size(min = 36, max = 36, groups = [Level2])
   @NotBlankWhenNullableConstraint(groups = [Level1])
   String cargoIdentifier

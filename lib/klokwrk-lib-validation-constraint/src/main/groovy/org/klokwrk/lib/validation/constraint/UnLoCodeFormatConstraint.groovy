@@ -45,7 +45,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
  * Next part contains a 3-character code for the location. The 3-character code element for the location will normally comprise three letters. However, where all permutations available for a
  * country have been exhausted, the numerals 2-9 may also be used.
  */
-@SuppressWarnings("unused")
 @Documented
 @Repeatable(UnLoCodeFormatConstraintList)
 @Target([FIELD, METHOD, PARAMETER, TYPE_USE, ANNOTATION_TYPE])
