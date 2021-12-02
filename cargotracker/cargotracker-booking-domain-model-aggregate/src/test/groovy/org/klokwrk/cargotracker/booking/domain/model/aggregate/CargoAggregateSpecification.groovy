@@ -35,25 +35,6 @@ class CargoAggregateSpecification extends Specification {
     aggregateTestFixture = new AggregateTestFixture(CargoAggregate)
   }
 
-  void "should fail for same origin and destination locations"() {
-    given:
-    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandInvalidWithEqualOriginAndDestinationLocations()
-    TestExecutor<CargoAggregate> cargoAggregateTestExecutor = aggregateTestFixture.givenNoPriorActivity()
-
-    when:
-    ResultValidator<CargoAggregate> cargoAggregateResultValidator = cargoAggregateTestExecutor.when(bookCargoCommand)
-    CommandException actualException = cargoAggregateResultValidator.actualException
-
-    then:
-    verifyAll {
-      cargoAggregateResultValidator.expectException(CommandException)
-      actualException.cause == null
-
-      actualException.violationInfo.violationCode.code == ViolationCode.BAD_REQUEST.code
-      actualException.violationInfo.violationCode.codeKey == CargoAggregate.VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO
-    }
-  }
-
   void "should fail when origin and destination locations can not connect via rail or water"() {
     given:
     BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandInvalidWithNotConnectedLocations()

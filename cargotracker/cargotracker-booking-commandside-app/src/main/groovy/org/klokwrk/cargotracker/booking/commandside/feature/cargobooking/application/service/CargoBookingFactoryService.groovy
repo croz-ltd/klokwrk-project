@@ -25,8 +25,6 @@ import org.klokwrk.cargotracker.booking.domain.model.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
-import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
-import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
 import org.springframework.stereotype.Service
 
 import static org.hamcrest.Matchers.notNullValue
@@ -55,22 +53,13 @@ class CargoBookingFactoryService {
     //       registry data (a.k.a. master data) from the outbound adapter.
 
     Location originLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.originLocation)
-    requireKnownLocation(originLocation, "originLocationUnknown")
-
     Location destinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.destinationLocation)
-    requireKnownLocation(destinationLocation, "destinationLocationUnknown")
 
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
         cargoId: CargoId.createWithGeneratedIdentifierIfNeeded(bookCargoCommandRequest.cargoIdentifier), originLocation: originLocation, destinationLocation: destinationLocation
     )
 
     return bookCargoCommand
-  }
-
-  protected void requireKnownLocation(Location location, String violationCodeKey) {
-    if (location == Location.UNKNOWN_LOCATION) {
-      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey(violationCodeKey))
-    }
   }
 
   /**

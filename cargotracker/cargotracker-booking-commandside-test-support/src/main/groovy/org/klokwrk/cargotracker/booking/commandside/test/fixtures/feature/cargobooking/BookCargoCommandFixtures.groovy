@@ -34,19 +34,6 @@ class BookCargoCommandFixtures {
   ]
 
   /**
-   * Creates invalid command where origin and destination location are equal.
-   */
-  static BookCargoCommand commandInvalidWithEqualOriginAndDestinationLocations(String cargoIdentifier = UUID.randomUUID()) {
-    BookCargoCommand bookCargoCommand = new BookCargoCommand(
-        cargoId: CargoId.create(cargoIdentifier),
-        originLocation: Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E"),
-        destinationLocation: Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E")
-    )
-
-    return bookCargoCommand
-  }
-
-  /**
    * Creates invalid command where origin and destination location are not connected.
    */
   static BookCargoCommand commandInvalidWithNotConnectedLocations(String cargoIdentifier = UUID.randomUUID()) {

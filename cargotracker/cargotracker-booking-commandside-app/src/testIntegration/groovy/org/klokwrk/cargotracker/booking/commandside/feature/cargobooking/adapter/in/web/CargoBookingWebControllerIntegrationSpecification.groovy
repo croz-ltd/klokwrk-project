@@ -190,10 +190,60 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     "en"           | "en"         | "Request is not valid."
   }
 
-  void "should return expected response when request is not valid - domain failure - [acceptLanguage: #acceptLanguage]"() {
+  void "should fail when origin and destination locations are equal - domain failure - [acceptLanguage: #acceptLanguage]"() {
     given:
     String cargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, originLocation: "HRZAG", destinationLocation: "HRZAG"])
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, originLocation: "HRRJK", destinationLocation: "HRRJK"])
+
+    when:
+    MvcResult mvcResult = mockMvc.perform(
+        post("/cargo-booking/book-cargo")
+            .content(webRequestBody)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+    ).andReturn()
+
+    Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
+
+    then:
+    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
+
+    verifyAll(responseContentMap.metaData.general as Map) {
+      it.size() == 3
+      locale == localeString
+      severity == Severity.WARNING.name().toLowerCase()
+      timestamp
+    }
+
+    verifyAll(responseContentMap.metaData.http as Map) {
+      it.size() == 2
+      message == HttpStatus.BAD_REQUEST.reasonPhrase
+      status == HttpStatus.BAD_REQUEST.value().toString()
+    }
+
+    verifyAll(responseContentMap.metaData.violation as Map) {
+      it.size() == 3
+      code == HttpStatus.BAD_REQUEST.value().toString()
+      message == myViolationMessage
+      type == ViolationType.DOMAIN.name().toLowerCase()
+    }
+
+    verifyAll(responseContentMap.payload as Map) {
+      size() == 0
+    }
+
+    where:
+    acceptLanguage | localeString | myViolationMessage
+    "hr-HR"        | "hr_HR"      | "Navedena polazna lokacija jednaka je navedenoj ciljnoj lokaciji."
+    "en"           | "en"         | "Specified origin location is equal to specified destination location."
+  }
+
+  void "should fail when cargo can not be sent to destination location - domain failure - [acceptLanguage: #acceptLanguage]"() {
+    given:
+    String cargoIdentifier = UUID.randomUUID()
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, originLocation: "HRKRK", destinationLocation: "HRZAG"])
 
     when:
     MvcResult mvcResult = mockMvc.perform(

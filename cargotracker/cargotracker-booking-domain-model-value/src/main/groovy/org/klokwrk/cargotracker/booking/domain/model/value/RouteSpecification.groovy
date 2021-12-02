@@ -21,9 +21,7 @@ import groovy.transform.CompileStatic
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
-import static org.hamcrest.Matchers.not
 import static org.hamcrest.Matchers.notNullValue
-import static org.hamcrest.Matchers.sameInstance
 
 /**
  * Represents route specification.
