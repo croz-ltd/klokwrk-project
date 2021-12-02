@@ -51,7 +51,6 @@ class RouteSpecificationSpecification extends Specification {
     originLocationParam        | destinationLocationParam   | messagePartParam
     null                       | locationSampleMap["HRRJK"] | "notNullValue"
     locationSampleMap["HRRJK"] | null                       | "notNullValue"
-    locationSampleMap["HRRJK"] | locationSampleMap["HRRJK"] | "not(sameInstance(destinationLocation))"
   }
 
   void "create() factory method should work for correct input params"() {
@@ -75,7 +74,6 @@ class RouteSpecificationSpecification extends Specification {
     originLocationParam        | destinationLocationParam   | errorMessagePartParam
     null                       | locationSampleMap["HRRJK"] | "notNullValue"
     locationSampleMap["HRRJK"] | null                       | "notNullValue"
-    locationSampleMap["HRRJK"] | locationSampleMap["HRRJK"] | "not(sameInstance(destinationLocation))"
   }
 
   void "canDestinationAcceptCargoFromOrigin() should work as expected"() {
@@ -86,17 +84,17 @@ class RouteSpecificationSpecification extends Specification {
     routeSpecification.canDestinationAcceptCargoFromOrigin() == destinationCanAccept
 
     where:
-    originLocationInstance                                                    | destinationLocationInstance | destinationCanAccept | originDescription              | destinationDescription
-    Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E") | locationSampleMap["HRRJK"]  | false                | "any"                          | "same as origin"
-    locationSampleMap["HRZAD"]                                                | locationSampleMap["HRRJK"]  | true                 | "port & rail terminal"         | "port & rail terminal"
-    locationSampleMap["HRZAD"]                                                | locationSampleMap["HRKRK"]  | true                 | "port & rail terminal"         | "port"
-    locationSampleMap["HRKRK"]                                                | locationSampleMap["HRZAD"]  | true                 | "port"                         | "port & rail terminal"
-    locationSampleMap["HRZAG"]                                                | locationSampleMap["HRZAD"]  | true                 | "rail terminal"                | "port & rail terminal"
-    locationSampleMap["HRZAG"]                                                | locationSampleMap["HRVZN"]  | true                 | "rail terminal"                | "rail terminal"
-    locationSampleMap["HRZAG"]                                                | locationSampleMap["HRKRK"]  | false                | "rail terminal"                | "port"
-    locationSampleMap["HRKRK"]                                                | locationSampleMap["HRZAG"]  | false                | "port"                         | "rail terminal"
-    locationSampleMap["HRDKO"]                                                | locationSampleMap["HRZAG"]  | false                | "not port & not rail terminal" | "rail terminal"
-    locationSampleMap["HRZAG"]                                                | locationSampleMap["HRDKO"]  | false                | "rail terminal"                | "not port & not rail terminal"
-    locationSampleMap["HRMVN"]                                                | locationSampleMap["HRDKO"]  | false                | "not port & not rail terminal" | "not port & not rail terminal"
+    originLocationInstance     | destinationLocationInstance | destinationCanAccept | originDescription              | destinationDescription
+    locationSampleMap["HRRJK"] | locationSampleMap["HRRJK"]  | false                | "any"                          | "equals as origin"
+    locationSampleMap["HRZAD"] | locationSampleMap["HRRJK"]  | true                 | "port & rail terminal"         | "port & rail terminal"
+    locationSampleMap["HRZAD"] | locationSampleMap["HRKRK"]  | true                 | "port & rail terminal"         | "port"
+    locationSampleMap["HRKRK"] | locationSampleMap["HRZAD"]  | true                 | "port"                         | "port & rail terminal"
+    locationSampleMap["HRZAG"] | locationSampleMap["HRZAD"]  | true                 | "rail terminal"                | "port & rail terminal"
+    locationSampleMap["HRZAG"] | locationSampleMap["HRVZN"]  | true                 | "rail terminal"                | "rail terminal"
+    locationSampleMap["HRZAG"] | locationSampleMap["HRKRK"]  | false                | "rail terminal"                | "port"
+    locationSampleMap["HRKRK"] | locationSampleMap["HRZAG"]  | false                | "port"                         | "rail terminal"
+    locationSampleMap["HRDKO"] | locationSampleMap["HRZAG"]  | false                | "not port & not rail terminal" | "rail terminal"
+    locationSampleMap["HRZAG"] | locationSampleMap["HRDKO"]  | false                | "rail terminal"                | "not port & not rail terminal"
+    locationSampleMap["HRMVN"] | locationSampleMap["HRDKO"]  | false                | "not port & not rail terminal" | "not port & not rail terminal"
   }
 }
