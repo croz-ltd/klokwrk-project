@@ -108,7 +108,7 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
       cargoIdentifier == myCargoIdentifier
       aggregateVersion == 0
       originLocation == "HRRJK"
-      destinationLocation == "HRZAG"
+      destinationLocation == "NLRTM"
     }
 
     where:

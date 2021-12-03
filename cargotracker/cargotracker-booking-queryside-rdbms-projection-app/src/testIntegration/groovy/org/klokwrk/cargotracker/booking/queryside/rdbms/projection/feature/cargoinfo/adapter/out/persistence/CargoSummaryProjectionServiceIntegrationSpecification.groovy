@@ -59,7 +59,7 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
     given:
     Long startingCargoSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
 
-    CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidConnectedViaRail()
+    CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidRouteSpecification()
     String cargoIdentifier = cargoBookedEvent.cargoId.identifier
 
     GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(cargoBookedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
@@ -73,7 +73,7 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
         id >= 0
         cargo_identifier == cargoIdentifier
         origin_location == "HRRJK"
-        destination_location == "HRZAG"
+        destination_location == "NLRTM"
         aggregate_version == 0
         inbound_channel_name == WebMetaDataConstant.WEB_BOOKING_CHANNEL_NAME
         inbound_channel_type == WebMetaDataConstant.WEB_BOOKING_CHANNEL_TYPE
@@ -85,7 +85,7 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
     given:
     Long startingCargoSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
 
-    CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidConnectedViaRail()
+    CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidRouteSpecification()
     String cargoIdentifier = cargoBookedEvent.cargoId.identifier
 
     GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(cargoBookedEvent, [:])
@@ -99,7 +99,7 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
         id >= 0
         cargo_identifier == cargoIdentifier
         origin_location == "HRRJK"
-        destination_location == "HRZAG"
+        destination_location == "NLRTM"
         aggregate_version == 0
         inbound_channel_name == CommonConstants.NOT_AVAILABLE
         inbound_channel_type == CommonConstants.NOT_AVAILABLE

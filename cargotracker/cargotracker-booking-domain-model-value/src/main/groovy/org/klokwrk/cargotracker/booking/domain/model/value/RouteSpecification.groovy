@@ -67,11 +67,7 @@ class RouteSpecification implements PostMapConstructorCheckable {
       return false
     }
 
-    if (destinationLocation.unLoCodeFunction.isPort() && originLocation.unLoCodeFunction.isPort()) {
-      return true
-    }
-
-    if (destinationLocation.unLoCodeFunction.isRailTerminal() && originLocation.unLoCodeFunction.isRailTerminal()) {
+    if (originLocation.portCapabilities.isSeaContainerPort() && destinationLocation.portCapabilities.isSeaContainerPort()) {
       return true
     }
 
