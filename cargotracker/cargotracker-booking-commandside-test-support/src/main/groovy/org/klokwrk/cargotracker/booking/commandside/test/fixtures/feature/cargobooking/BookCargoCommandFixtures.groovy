@@ -21,6 +21,7 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
+import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
 
 /**
  * Contains test data fixtures for {@link BookCargoCommand}.
@@ -28,9 +29,9 @@ import org.klokwrk.cargotracker.booking.domain.model.value.Location
 @CompileStatic
 class BookCargoCommandFixtures {
   static final Map<String, Location> LOCATION_SAMPLE_MAP = [
-      "HRKRK": Location.create("HRKRK", "Krk", "Croatia", "1-3-----", "4502N 01435E"),
-      "HRRJK": Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E"),
-      "HRZAG": Location.create("HRZAG", "Zagreb", "Croatia", "-2345---", "4548N 01600E")
+      "HRKRK": Location.create("HRKRK", "Krk", "Croatia", "1-3-----", "4502N 01435E", PortCapabilities.SEA_PORT_CAPABILITIES),
+      "HRRJK": Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
+      "HRZAG": Location.create("HRZAG", "Zagreb", "Croatia", "-2345---", "4548N 01600E", PortCapabilities.NO_PORT_CAPABILITIES)
   ]
 
   /**

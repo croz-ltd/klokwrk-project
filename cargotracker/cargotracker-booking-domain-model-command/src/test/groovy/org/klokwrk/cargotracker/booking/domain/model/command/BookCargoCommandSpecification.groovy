@@ -2,6 +2,7 @@ package org.klokwrk.cargotracker.booking.domain.model.command
 
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
+import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import org.klokwrk.lang.groovy.misc.UUIDUtils
@@ -9,8 +10,8 @@ import spock.lang.Specification
 
 class BookCargoCommandSpecification extends Specification {
   static Map<String, Location> locationSampleMap = [
-      "NLRTM": Location.create("NLRTM", "Rotterdam", "Netherlands", "12345---", "5155N 00430E"),
-      "DEHAM": Location.create("DEHAM", "Hamburg", "Germany", "12345---", "5331N 00956E")
+      "NLRTM": Location.create("NLRTM", "Rotterdam", "Netherlands", "12345---", "5155N 00430E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
+      "DEHAM": Location.create("DEHAM", "Hamburg", "Germany", "12345---", "5331N 00956E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES)
   ]
 
   void "map constructor should work for correct input params"() {
