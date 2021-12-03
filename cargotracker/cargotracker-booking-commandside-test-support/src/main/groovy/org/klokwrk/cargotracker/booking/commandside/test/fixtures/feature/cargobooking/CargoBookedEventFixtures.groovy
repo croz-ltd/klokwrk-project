@@ -27,10 +27,10 @@ import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
 @CompileStatic
 class CargoBookedEventFixtures {
   /**
-   * Creates valid event where origin and destination locations are connected via rail.
+   * Creates valid event where origin and destination locations form supported route.
    */
-  static CargoBookedEvent eventValidConnectedViaRail(String cargoIdentifier = UUID.randomUUID()) {
-    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandValidConnectedViaRail(cargoIdentifier)
+  static CargoBookedEvent eventValidRouteSpecification(String cargoIdentifier = UUID.randomUUID()) {
+    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandValidRouteSpecification(cargoIdentifier)
     CargoBookedEvent cargoBookedEvent = eventValidForCommand(bookCargoCommand)
     return cargoBookedEvent
   }

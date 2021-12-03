@@ -47,7 +47,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
   void "should work for correct request"() {
     given:
     String myCargoIdentifier = UUID.randomUUID()
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(cargoIdentifier: myCargoIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(cargoIdentifier: myCargoIdentifier, originLocation: "NLRTM", destinationLocation: "HRRJK")
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
@@ -61,7 +61,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     bookCargoCommandResponseMetadata.isEmpty()
     verifyAll(bookCargoCommandResponsePayload) {
       cargoIdentifier == myCargoIdentifier
-      originLocation.name == "Zagreb"
+      originLocation.name == "Rotterdam"
       destinationLocation.name == "Rijeka"
     }
   }
@@ -86,7 +86,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     })
 
     String myCargoIdentifier = UUID.randomUUID()
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(cargoIdentifier: myCargoIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(cargoIdentifier: myCargoIdentifier, originLocation: "NLRTM", destinationLocation: "HRRJK")
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
@@ -134,7 +134,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     })
 
     String cargoIdentifier = UUID.randomUUID()
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(cargoIdentifier: cargoIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(cargoIdentifier: cargoIdentifier, originLocation: "NLRTM", destinationLocation: "HRRJK")
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:

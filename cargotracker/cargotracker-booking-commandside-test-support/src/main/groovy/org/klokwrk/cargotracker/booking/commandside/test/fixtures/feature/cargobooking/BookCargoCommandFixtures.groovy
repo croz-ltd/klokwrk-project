@@ -21,6 +21,7 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
+import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
 
 /**
  * Contains test data fixtures for {@link BookCargoCommand}.
@@ -28,24 +29,26 @@ import org.klokwrk.cargotracker.booking.domain.model.value.Location
 @CompileStatic
 class BookCargoCommandFixtures {
   static final Map<String, Location> LOCATION_SAMPLE_MAP = [
-      "HRKRK": Location.create("HRKRK", "Krk", "Croatia", "1-3-----", "4502N 01435E"),
-      "HRRJK": Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E"),
-      "HRZAG": Location.create("HRZAG", "Zagreb", "Croatia", "-2345---", "4548N 01600E")
+      "HRKRK": Location.create("HRKRK", "Krk", "Croatia", "1-3-----", "4502N 01435E", PortCapabilities.SEA_PORT_CAPABILITIES),
+      "HRRJK": Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
+      "HRZAG": Location.create("HRZAG", "Zagreb", "Croatia", "-2345---", "4548N 01600E", PortCapabilities.NO_PORT_CAPABILITIES),
+
+      "NLRTM": Location.create("NLRTM", "Rotterdam", "Netherlands", "12345---", "5155N 00430E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
   ]
 
   /**
-   * Creates invalid command where origin and destination location are not connected.
+   * Creates invalid command where origin and destination do not form supported route specification.
    */
-  static BookCargoCommand commandInvalidWithNotConnectedLocations(String cargoIdentifier = UUID.randomUUID()) {
+  static BookCargoCommand commandInvalidRouteSpecification(String cargoIdentifier = UUID.randomUUID()) {
     BookCargoCommand bookCargoCommand = new BookCargoCommand(cargoId: CargoId.create(cargoIdentifier), originLocation: LOCATION_SAMPLE_MAP.HRZAG, destinationLocation: LOCATION_SAMPLE_MAP.HRKRK)
     return bookCargoCommand
   }
 
   /**
-   * Creates valid command where origin and destination locations are connected via rail.
+   * Creates valid command where origin and destination locations form supported route.
    */
-  static BookCargoCommand commandValidConnectedViaRail(String cargoIdentifier = UUID.randomUUID()) {
-    BookCargoCommand bookCargoCommand = new BookCargoCommand(cargoId: CargoId.create(cargoIdentifier), originLocation: LOCATION_SAMPLE_MAP.HRRJK, destinationLocation: LOCATION_SAMPLE_MAP.HRZAG)
+  static BookCargoCommand commandValidRouteSpecification(String cargoIdentifier = UUID.randomUUID()) {
+    BookCargoCommand bookCargoCommand = new BookCargoCommand(cargoId: CargoId.create(cargoIdentifier), originLocation: LOCATION_SAMPLE_MAP.HRRJK, destinationLocation: LOCATION_SAMPLE_MAP.NLRTM)
     return bookCargoCommand
   }
 }

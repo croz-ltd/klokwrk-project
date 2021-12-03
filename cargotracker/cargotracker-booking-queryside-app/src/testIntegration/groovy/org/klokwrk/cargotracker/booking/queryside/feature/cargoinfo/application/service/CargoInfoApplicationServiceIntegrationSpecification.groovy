@@ -75,7 +75,7 @@ class CargoInfoApplicationServiceIntegrationSpecification extends AbstractQueryS
       cargoIdentifier == myCargoIdentifier
       aggregateVersion == 0
       originLocation == "HRRJK"
-      destinationLocation == "HRZAG"
+      destinationLocation == "NLRTM"
     }
 
     verifyAll(operationResponse.metaData) {

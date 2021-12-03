@@ -32,7 +32,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     String commandPostRequestBody = """
         {
           "originLocation": "HRRJK",
-          "destinationLocation": "HRZAG"
+          "destinationLocation": "NLRTM"
         }
         """
 
@@ -67,7 +67,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     String commandPostRequestBody = """
         {
           "originLocation": "HRRJK",
-          "destinationLocation": "HRZAG"
+          "destinationLocation": "NLRTM"
         }
         """
 
@@ -130,7 +130,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
     String commandPostRequestBody = """
         {
-          "originLocation": "HRKRK",
+          "originLocation": "NLRTM",
           "destinationLocation": "HRZAG"
         }
         """

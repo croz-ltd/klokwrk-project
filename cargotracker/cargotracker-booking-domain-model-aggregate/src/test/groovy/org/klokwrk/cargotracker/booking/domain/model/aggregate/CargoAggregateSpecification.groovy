@@ -35,9 +35,9 @@ class CargoAggregateSpecification extends Specification {
     aggregateTestFixture = new AggregateTestFixture(CargoAggregate)
   }
 
-  void "should fail when origin and destination locations can not connect via rail or water"() {
+  void "should fail when origin and destination locations are not container ports at sea"() {
     given:
-    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandInvalidWithNotConnectedLocations()
+    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandInvalidRouteSpecification()
     TestExecutor<CargoAggregate> cargoAggregateTestExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     when:
@@ -54,9 +54,9 @@ class CargoAggregateSpecification extends Specification {
     }
   }
 
-  void "should work when origin and destination locations can connect via rail or water"() {
+  void "should work when origin and destination locations are both container ports at sea"() {
     given:
-    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandValidConnectedViaRail()
+    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandValidRouteSpecification()
     TestExecutor<CargoAggregate> cargoAggregateTestExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     when:

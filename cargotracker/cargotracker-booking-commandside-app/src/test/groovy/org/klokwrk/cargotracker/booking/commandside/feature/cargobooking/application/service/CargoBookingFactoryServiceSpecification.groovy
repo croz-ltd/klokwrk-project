@@ -174,7 +174,8 @@ class CargoBookingFactoryServiceSpecification extends Specification {
                   isPostalExchangeOffice: false,
                   isBorderCrossing: false
               ]
-          ]
+          ],
+          portCapabilities: ["CONTAINER_PORT", "SEA_PORT"]
       ]
 
       destinationLocation == [
@@ -200,7 +201,8 @@ class CargoBookingFactoryServiceSpecification extends Specification {
                   isPostalExchangeOffice: true,
                   isBorderCrossing: false
               ]
-          ]
+          ],
+          portCapabilities: ["NO_PORT"]
       ]
     }
   }

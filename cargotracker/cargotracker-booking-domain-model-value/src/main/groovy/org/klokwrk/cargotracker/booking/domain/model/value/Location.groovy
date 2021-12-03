@@ -21,6 +21,7 @@ import groovy.transform.CompileStatic
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
+import static org.hamcrest.Matchers.is
 import static org.hamcrest.Matchers.notNullValue
 
 /**
@@ -41,7 +42,8 @@ class Location implements PostMapConstructorCheckable {
 
   static final Location UNKNOWN_LOCATION = new Location(
       unLoCode: UnLoCode.UNKNOWN_UN_LO_CODE, name: InternationalizedName.UNKNOWN_INTERNATIONALIZED_NAME, countryName: InternationalizedName.UNKNOWN_INTERNATIONALIZED_NAME,
-      unLoCodeFunction: UnLoCodeFunction.UNKNOWN_UN_LO_CODE_FUNCTION, unLoCodeCoordinates: UnLoCodeCoordinates.UNKNOWN_UN_LO_CODE_COORDINATES
+      unLoCodeFunction: UnLoCodeFunction.UNKNOWN_UN_LO_CODE_FUNCTION, unLoCodeCoordinates: UnLoCodeCoordinates.UNKNOWN_UN_LO_CODE_COORDINATES,
+      portCapabilities: PortCapabilities.NO_PORT_CAPABILITIES
   )
 
   UnLoCode unLoCode
@@ -69,10 +71,21 @@ class Location implements PostMapConstructorCheckable {
    */
   UnLoCodeCoordinates unLoCodeCoordinates
 
-  static Location create(String unLoCode, String name, String countryName, String unLoCodeFunction, String unLoCodeCoordinates) {
+  /**
+   * Capabilities of a port.
+   * <p/>
+   * It supplements information from {@code unLoCodeFunction} with a list of port features.
+   */
+  PortCapabilities portCapabilities
+
+  @SuppressWarnings("CodeNarc.ParameterCount")
+  static Location create(
+      String unLoCode, String name, String countryName, String unLoCodeFunction, String unLoCodeCoordinates, PortCapabilities portCapabilities = PortCapabilities.NO_PORT_CAPABILITIES)
+  {
     Location createdLocation = new Location(
         unLoCode: new UnLoCode(code: unLoCode), name: new InternationalizedName(name: name), countryName: new InternationalizedName(name: countryName),
-        unLoCodeFunction: new UnLoCodeFunction(functionEncoded: unLoCodeFunction), unLoCodeCoordinates: new UnLoCodeCoordinates(coordinatesEncoded: unLoCodeCoordinates)
+        unLoCodeFunction: new UnLoCodeFunction(functionEncoded: unLoCodeFunction), unLoCodeCoordinates: new UnLoCodeCoordinates(coordinatesEncoded: unLoCodeCoordinates),
+        portCapabilities: portCapabilities
     )
 
     return createdLocation
@@ -86,5 +99,11 @@ class Location implements PostMapConstructorCheckable {
     requireMatch(countryName, notNullValue())
     requireMatch(unLoCodeFunction, notNullValue())
     requireMatch(unLoCodeCoordinates, notNullValue())
+    requireMatch(portCapabilities, notNullValue())
+
+    // Skip check only for UNKNOWN_LOCATION instance
+    if (UNKNOWN_LOCATION != null) {
+      requireMatch(unLoCodeFunction.isPort(), is(portCapabilities.isPort()))
+    }
   }
 }

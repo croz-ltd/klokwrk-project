@@ -25,6 +25,7 @@ import org.klokwrk.cargotracker.booking.domain.model.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
+import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilityType
 import org.springframework.stereotype.Service
 
 import static org.hamcrest.Matchers.notNullValue
@@ -118,7 +119,8 @@ class CargoBookingFactoryService {
                 isPostalExchangeOffice: location.unLoCodeFunction.postalExchangeOffice,
                 isBorderCrossing: location.unLoCodeFunction.borderCrossing,
             ]
-        ]
+        ],
+        portCapabilities: location.portCapabilities.capabilities.sort(false, { PortCapabilityType portCapabilityType -> portCapabilityType.name() }) as String[]
     ]
 
     return renderedMap

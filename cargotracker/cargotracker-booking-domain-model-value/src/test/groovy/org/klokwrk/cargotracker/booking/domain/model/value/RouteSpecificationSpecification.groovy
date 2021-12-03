@@ -21,13 +21,16 @@ import spock.lang.Specification
 
 class RouteSpecificationSpecification extends Specification {
   static Map<String, Location> locationSampleMap = [
-      "HRDKO": Location.create("HRDKO", "Đakovo", "Croatia", "--3-----", "4518N 01824E"),
-      "HRKRK": Location.create("HRKRK", "Krk", "Croatia", "1-3-----", "4502N 01435E"),
-      "HRMVN": Location.create("HRMVN", "Motovun", "Croatia", "--3-----", "4520N 01349E"),
-      "HRRJK": Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E"),
-      "HRVZN": Location.create("HRVZN", "Varaždin", "Croatia", "-23-----", "4618N 01620E"),
-      "HRZAD": Location.create("HRZAD", "Zadar", "Croatia", "1234----", "4407N 01514E"),
-      "HRZAG": Location.create("HRZAG", "Zagreb", "Croatia", "-2345---", "4548N 01600E")
+      "HRDKO": Location.create("HRDKO", "Đakovo", "Croatia", "--3-----", "4518N 01824E", PortCapabilities.NO_PORT_CAPABILITIES),
+      "HRKRK": Location.create("HRKRK", "Krk", "Croatia", "1-3-----", "4502N 01435E", PortCapabilities.SEA_PORT_CAPABILITIES),
+      "HRMVN": Location.create("HRMVN", "Motovun", "Croatia", "--3-----", "4520N 01349E", PortCapabilities.NO_PORT_CAPABILITIES),
+      "HRRJK": Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
+      "HRVZN": Location.create("HRVZN", "Varaždin", "Croatia", "-23-----", "4618N 01620E", PortCapabilities.NO_PORT_CAPABILITIES),
+      "HRZAD": Location.create("HRZAD", "Zadar", "Croatia", "1234----", "4407N 01514E", PortCapabilities.SEA_PORT_CAPABILITIES),
+      "HRZAG": Location.create("HRZAG", "Zagreb", "Croatia", "-2345---", "4548N 01600E", PortCapabilities.NO_PORT_CAPABILITIES),
+
+      "NLRTM": Location.create("NLRTM", "Rotterdam", "Netherlands", "12345---", "5155N 00430E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
+      "BEBRU": Location.create("BEBRU", "Brussel", "Belgium", "1234----", "5050N 00420E", PortCapabilities.RIVER_PORT_CAPABILITIES),
   ]
 
   void "map constructor should work for correct input params"() {
@@ -84,17 +87,12 @@ class RouteSpecificationSpecification extends Specification {
     routeSpecification.canDestinationAcceptCargoFromOrigin() == destinationCanAccept
 
     where:
-    originLocationInstance     | destinationLocationInstance | destinationCanAccept | originDescription              | destinationDescription
-    locationSampleMap["HRRJK"] | locationSampleMap["HRRJK"]  | false                | "any"                          | "equals as origin"
-    locationSampleMap["HRZAD"] | locationSampleMap["HRRJK"]  | true                 | "port & rail terminal"         | "port & rail terminal"
-    locationSampleMap["HRZAD"] | locationSampleMap["HRKRK"]  | true                 | "port & rail terminal"         | "port"
-    locationSampleMap["HRKRK"] | locationSampleMap["HRZAD"]  | true                 | "port"                         | "port & rail terminal"
-    locationSampleMap["HRZAG"] | locationSampleMap["HRZAD"]  | true                 | "rail terminal"                | "port & rail terminal"
-    locationSampleMap["HRZAG"] | locationSampleMap["HRVZN"]  | true                 | "rail terminal"                | "rail terminal"
-    locationSampleMap["HRZAG"] | locationSampleMap["HRKRK"]  | false                | "rail terminal"                | "port"
-    locationSampleMap["HRKRK"] | locationSampleMap["HRZAG"]  | false                | "port"                         | "rail terminal"
-    locationSampleMap["HRDKO"] | locationSampleMap["HRZAG"]  | false                | "not port & not rail terminal" | "rail terminal"
-    locationSampleMap["HRZAG"] | locationSampleMap["HRDKO"]  | false                | "rail terminal"                | "not port & not rail terminal"
-    locationSampleMap["HRMVN"] | locationSampleMap["HRDKO"]  | false                | "not port & not rail terminal" | "not port & not rail terminal"
+    originLocationInstance     | destinationLocationInstance | destinationCanAccept | originDescription               | destinationDescription
+    locationSampleMap["NLRTM"] | locationSampleMap["HRRJK"]  | true                 | "sea port & container"          | "sea port & container terminal"
+    locationSampleMap["HRRJK"] | locationSampleMap["HRRJK"]  | false                | "any"                           | "equals as origin"
+    locationSampleMap["HRZAG"] | locationSampleMap["HRRJK"]  | false                | "not port"                      | "sea port & container terminal"
+    locationSampleMap["HRRJK"] | locationSampleMap["HRZAG"]  | false                | "sea port & container terminal" | "not port"
+    locationSampleMap["HRRJK"] | locationSampleMap["BEBRU"]  | false                | "sea port & container terminal" | "river port"
+    locationSampleMap["BEBRU"] | locationSampleMap["HRRJK"]  | false                | "river port"                    | "sea port & container terminal"
   }
 }

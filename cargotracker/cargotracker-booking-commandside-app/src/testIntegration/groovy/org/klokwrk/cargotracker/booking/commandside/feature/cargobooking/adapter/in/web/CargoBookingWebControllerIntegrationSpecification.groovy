@@ -56,7 +56,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
   void "should work for correct request - [acceptLanguage: #acceptLanguage]"() {
     given:
     String myCargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: myCargoIdentifier, originLocation: "HRZAG", destinationLocation: "HRRJK"])
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: myCargoIdentifier, originLocation: "NLRTM", destinationLocation: "HRRJK"])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -74,41 +74,47 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     mvcResult.response.status == HttpStatus.OK.value()
 
     verifyAll(responseContentMap.metaData.general as Map) {
-      it.size() == 3
+      size() == 3
       locale == localeString
       severity == Severity.INFO.name().toLowerCase()
       timestamp
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
-      it.size() == 2
+      size() == 2
       message == HttpStatus.OK.reasonPhrase
       status == HttpStatus.OK.value().toString()
     }
 
     verifyAll(responseContentMap.payload as Map) {
+      size() == 3
       cargoIdentifier == myCargoIdentifier
-      originLocation.name == "Zagreb"
+      originLocation.name == "Rotterdam"
       destinationLocation.name == "Rijeka"
     }
 
     verifyAll(responseContentMap.payload.originLocation as Map) {
-      name == "Zagreb"
-      countryName == "Croatia"
+      size() == 4
+      name == "Rotterdam"
+      countryName == "Netherlands"
 
       unLoCode
 
       unLoCode.code
-      unLoCode.code.encoded == "HRZAG"
-
-      unLoCode.coordinates
-      unLoCode.coordinates.encoded == "4548N 01600E"
+      unLoCode.code.encoded == "NLRTM"
 
       unLoCode.function
-      unLoCode.function.encoded == "-2345---"
+      unLoCode.function.encoded == "12345---"
+
+      unLoCode.coordinates
+      unLoCode.coordinates.encoded == "5155N 00430E"
+
+      portCapabilities
+      portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
     }
 
     verifyAll(responseContentMap.payload.destinationLocation as Map) {
+      size() == 4
       name == "Rijeka"
       countryName == "Croatia"
 
@@ -122,6 +128,9 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
       unLoCode.function
       unLoCode.function.encoded == "1234----"
+
+      portCapabilities
+      portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
     }
 
     where:
@@ -152,20 +161,20 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
 
     verifyAll(responseContentMap.metaData.general as Map) {
-      it.size() == 3
+      size() == 3
       locale == localeString
       severity == Severity.WARNING.name().toLowerCase()
       timestamp
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
-      it.size() == 2
+      size() == 2
       message == HttpStatus.BAD_REQUEST.reasonPhrase
       status == HttpStatus.BAD_REQUEST.value().toString()
     }
 
     verifyAll(responseContentMap.metaData.violation as Map) {
-      it.size() == 4
+      size() == 4
       code == HttpStatus.BAD_REQUEST.value().toString()
       message == myViolationMessage
       type == ViolationType.VALIDATION.name().toLowerCase()
@@ -173,7 +182,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
-      it.size() == 2
+      size() == 2
       root.type == "bookCargoCommandRequest"
       constraintViolations.size() == 2
       constraintViolations.find({ it.path == "originLocation" }).type == "notBlank"
@@ -211,20 +220,20 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
 
     verifyAll(responseContentMap.metaData.general as Map) {
-      it.size() == 3
+      size() == 3
       locale == localeString
       severity == Severity.WARNING.name().toLowerCase()
       timestamp
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
-      it.size() == 2
+      size() == 2
       message == HttpStatus.BAD_REQUEST.reasonPhrase
       status == HttpStatus.BAD_REQUEST.value().toString()
     }
 
     verifyAll(responseContentMap.metaData.violation as Map) {
-      it.size() == 3
+      size() == 3
       code == HttpStatus.BAD_REQUEST.value().toString()
       message == myViolationMessage
       type == ViolationType.DOMAIN.name().toLowerCase()
@@ -243,7 +252,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
   void "should fail when cargo can not be sent to destination location - domain failure - [acceptLanguage: #acceptLanguage]"() {
     given:
     String cargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, originLocation: "HRKRK", destinationLocation: "HRZAG"])
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, originLocation: "NLRTM", destinationLocation: "HRZAG"])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -261,20 +270,20 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
 
     verifyAll(responseContentMap.metaData.general as Map) {
-      it.size() == 3
+      size() == 3
       locale == localeString
       severity == Severity.WARNING.name().toLowerCase()
       timestamp
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
-      it.size() == 2
+      size() == 2
       message == HttpStatus.BAD_REQUEST.reasonPhrase
       status == HttpStatus.BAD_REQUEST.value().toString()
     }
 
     verifyAll(responseContentMap.metaData.violation as Map) {
-      it.size() == 3
+      size() == 3
       code == HttpStatus.BAD_REQUEST.value().toString()
       message == myViolationMessage
       type == ViolationType.DOMAIN.name().toLowerCase()
@@ -293,7 +302,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
   void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguage]"() {
     given:
     String cargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, originLocation: "HRZAG", destinationLocation: "HRZAG"])
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, originLocation: "HRRJK", destinationLocation: "HRRJK"])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -311,20 +320,20 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     mvcResult.response.status == HttpStatus.METHOD_NOT_ALLOWED.value()
 
     verifyAll(responseContentMap.metaData.general as Map) {
-      it.size() == 3
+      size() == 3
       locale == localeString
       severity == Severity.WARNING.name().toLowerCase()
       timestamp
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
-      it.size() == 2
+      size() == 2
       message == HttpStatus.METHOD_NOT_ALLOWED.reasonPhrase
       status == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
     }
 
     verifyAll(responseContentMap.metaData.violation as Map) {
-      it.size() == 3
+      size() == 3
       code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
       message == myViolationMessage
       type == ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase()
