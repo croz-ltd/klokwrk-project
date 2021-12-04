@@ -3,6 +3,7 @@ package org.klokwrk.cargotracker.booking.domain.model.command
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
+import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import org.klokwrk.lang.groovy.misc.UUIDUtils
@@ -17,34 +18,36 @@ class BookCargoCommandSpecification extends Specification {
   void "map constructor should work for correct input params"() {
     when:
     CargoId cargoId = CargoId.createWithGeneratedIdentifier()
-    BookCargoCommand bookCargoCommand = new BookCargoCommand(cargoId: cargoId, originLocation: locationSampleMap["NLRTM"], destinationLocation: locationSampleMap["DEHAM"])
+    BookCargoCommand bookCargoCommand = new BookCargoCommand(
+        cargoId: cargoId,
+        routeSpecification: new RouteSpecification(originLocation: locationSampleMap["NLRTM"], destinationLocation: locationSampleMap["DEHAM"])
+    )
 
     then:
     bookCargoCommand.cargoId
     UUIDUtils.checkIfRandomUuid(bookCargoCommand.cargoId.identifier)
 
-    bookCargoCommand.originLocation.unLoCode.code == "NLRTM"
-    bookCargoCommand.destinationLocation.unLoCode.code == "DEHAM"
+    bookCargoCommand.routeSpecification.originLocation.unLoCode.code == "NLRTM"
+    bookCargoCommand.routeSpecification.destinationLocation.unLoCode.code == "DEHAM"
   }
 
-  void "map constructor should fail for invalid formats of input params"() {
+  void "map constructor should fail for invalid input params"() {
     when:
-    new BookCargoCommand(cargoId: cargoIdParam, originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+    new BookCargoCommand(cargoId: cargoIdParam, routeSpecification: routeSpecificationParam)
 
     then:
     AssertionError assertionError = thrown()
     assertionError.message.contains(messagePartParam)
 
     where:
-    cargoIdParam                            | originLocationParam        | destinationLocationParam   | messagePartParam
-    null                                    | locationSampleMap["NLRTM"] | locationSampleMap["DEHAM"] | "notNullValue"
-    CargoId.createWithGeneratedIdentifier() | null                       | locationSampleMap["DEHAM"] | "notNullValue"
-    CargoId.createWithGeneratedIdentifier() | locationSampleMap["NLRTM"] | null                       | "notNullValue"
+    cargoIdParam                            | routeSpecificationParam                                                           | messagePartParam
+    null                                    | RouteSpecification.create(locationSampleMap["NLRTM"], locationSampleMap["DEHAM"]) | "notNullValue"
+    CargoId.createWithGeneratedIdentifier() | null                                                                              | "notNullValue"
   }
 
   void "map constructor should fail for failing business rules"() {
     when:
-    new BookCargoCommand(cargoId: cargoIdParam, originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+    new BookCargoCommand(cargoId: cargoIdParam, routeSpecification: new RouteSpecification(originLocation: originLocationParam, destinationLocation: destinationLocationParam))
 
     then:
     CommandException commandException = thrown()

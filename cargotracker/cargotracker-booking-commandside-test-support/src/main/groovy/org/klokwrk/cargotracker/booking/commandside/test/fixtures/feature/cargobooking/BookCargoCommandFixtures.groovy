@@ -22,6 +22,7 @@ import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
+import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 
 /**
  * Contains test data fixtures for {@link BookCargoCommand}.
@@ -40,7 +41,11 @@ class BookCargoCommandFixtures {
    * Creates invalid command where origin and destination do not form supported route specification.
    */
   static BookCargoCommand commandInvalidRouteSpecification(String cargoIdentifier = UUID.randomUUID()) {
-    BookCargoCommand bookCargoCommand = new BookCargoCommand(cargoId: CargoId.create(cargoIdentifier), originLocation: LOCATION_SAMPLE_MAP.HRZAG, destinationLocation: LOCATION_SAMPLE_MAP.HRKRK)
+    BookCargoCommand bookCargoCommand = new BookCargoCommand(
+        cargoId: CargoId.create(cargoIdentifier),
+        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRZAG, LOCATION_SAMPLE_MAP.HRKRK)
+    )
+
     return bookCargoCommand
   }
 
@@ -48,7 +53,11 @@ class BookCargoCommandFixtures {
    * Creates valid command where origin and destination locations form supported route.
    */
   static BookCargoCommand commandValidRouteSpecification(String cargoIdentifier = UUID.randomUUID()) {
-    BookCargoCommand bookCargoCommand = new BookCargoCommand(cargoId: CargoId.create(cargoIdentifier), originLocation: LOCATION_SAMPLE_MAP.HRRJK, destinationLocation: LOCATION_SAMPLE_MAP.NLRTM)
+    BookCargoCommand bookCargoCommand = new BookCargoCommand(
+        cargoId: CargoId.create(cargoIdentifier),
+        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM)
+    )
+
     return bookCargoCommand
   }
 }

@@ -31,7 +31,6 @@ import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
-import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
@@ -61,8 +60,7 @@ class CargoAggregate {
     // Note: Following validation logic does not require the aggregate state, so it is more appropriate to execute it during the command preparation (in application service or command constructor).
     //       Nevertheless, validation is included here to demonstrate how stateful validation (one that actually requires aggregate state) can be implemented.
     //       I may move this validation to a more appropriate place once we have implemented other examples of stateful business validation.
-    RouteSpecification routeSpecification = new RouteSpecification(originLocation: bookCargoCommand.originLocation, destinationLocation: bookCargoCommand.destinationLocation)
-    if (!routeSpecification.canDestinationAcceptCargoFromOrigin()) {
+    if (!bookCargoCommand.routeSpecification.canDestinationAcceptCargoFromOrigin()) {
       throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey(VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO))
     }
 
@@ -71,7 +69,9 @@ class CargoAggregate {
   }
 
   CargoBookedEvent cargoBookedEventFromBookCargoCommand(BookCargoCommand bookCargoCommand) {
-    return new CargoBookedEvent(bookCargoCommand.properties)
+    return new CargoBookedEvent(
+        cargoId: bookCargoCommand.cargoId, originLocation: bookCargoCommand.routeSpecification.originLocation, destinationLocation: bookCargoCommand.routeSpecification.destinationLocation
+    )
   }
 
   @EventSourcingHandler

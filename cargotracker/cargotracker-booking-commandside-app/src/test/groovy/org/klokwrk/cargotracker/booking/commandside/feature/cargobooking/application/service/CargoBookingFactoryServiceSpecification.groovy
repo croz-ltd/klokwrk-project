@@ -105,8 +105,8 @@ class CargoBookingFactoryServiceSpecification extends Specification {
       aggregateIdentifier
       cargoId
       cargoId.identifier
-      originLocation.unLoCode.code == "HRRJK"
-      destinationLocation.unLoCode.code == "HRZAG"
+      routeSpecification.originLocation.unLoCode.code == "HRRJK"
+      routeSpecification.destinationLocation.unLoCode.code == "HRZAG"
     }
   }
 
@@ -125,8 +125,8 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     verifyAll(bookCargoCommand) {
       aggregateIdentifier == cargoIdentifier
       cargoId.identifier == cargoIdentifier
-      originLocation.unLoCode.code == "HRRJK"
-      destinationLocation.unLoCode.code == "HRZAG"
+      routeSpecification.originLocation.unLoCode.code == "HRRJK"
+      routeSpecification.destinationLocation.unLoCode.code == "HRZAG"
     }
   }
 
