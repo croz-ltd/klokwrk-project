@@ -23,13 +23,13 @@ import groovy.transform.PropertyOptions
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 import org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint
 import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
-import org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint
 import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
 import org.klokwrk.lib.validation.group.Level3
 
 import javax.validation.GroupSequence
-import javax.validation.constraints.NotBlank
+import javax.validation.Valid
+import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
 /**
@@ -56,23 +56,7 @@ class BookCargoCommandRequest {
   @NotBlankWhenNullableConstraint(groups = [Level1])
   String cargoIdentifier
 
-  /**
-   * Origin (start) location of a cargo.
-   * <p/>
-   * Not null and not blank when not null, and must be in unLoCode format. After formal validation passes (1st level validation), it also must exist in the location registry (2nd level validation).
-   */
-  @UnLoCodeFormatConstraint(groups = [Level3])
-  @Size(min = 5, max = 5, groups = [Level2])
-  @NotBlank(groups = [Level1])
-  String originLocation
-
-  /**
-   * Destination (end) location of a cargo.
-   * <p/>
-   * Not null and not blank when not null, and must be in unLoCode format. After formal validation passes (1st level validation) , it also must exist in the location registry (2nd level validation).
-   */
-  @UnLoCodeFormatConstraint(groups = [Level3])
-  @Size(min = 5, max = 5, groups = [Level2])
-  @NotBlank(groups = [Level1])
-  String destinationLocation
+  @Valid
+  @NotNull(groups = [Level1])
+  RouteSpecificationData routeSpecification
 }

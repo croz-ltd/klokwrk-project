@@ -27,6 +27,7 @@ import spock.lang.Specification
 
 import javax.validation.ConstraintViolationException
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
 class BookCargoCommandRequestSpecification extends Specification {
@@ -40,8 +41,10 @@ class BookCargoCommandRequestSpecification extends Specification {
 
   void "should pass validation for valid data"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest =
-        new BookCargoCommandRequest(cargoIdentifier: cargoIdentifierParam, originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+        cargoIdentifier: cargoIdentifierParam,
+        routeSpecification: new RouteSpecificationData(originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+    )
 
     when:
     validationService.validate(bookCargoCommandRequest)
@@ -55,10 +58,12 @@ class BookCargoCommandRequestSpecification extends Specification {
     "00000000-0000-4000-8000-000000000000" | "AAAAA"             | "AAAAA"
   }
 
-  void "should not pass validation for invalid data"() {
+  void "should not pass validation for invalid cargoIdentifier"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest =
-        new BookCargoCommandRequest(cargoIdentifier: cargoIdentifierParam, originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+        cargoIdentifier: cargoIdentifierParam,
+        routeSpecification: new RouteSpecificationData(originLocation: "AAAAA", destinationLocation: "AAAAA")
+    )
 
     when:
     validationService.validate(bookCargoCommandRequest)
@@ -71,17 +76,59 @@ class BookCargoCommandRequestSpecification extends Specification {
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
-    cargoIdentifierParam                   | originLocationParam | destinationLocationParam | propertyPathParam     | constraintTypeParam
-    ""                                     | "AAAAA"             | "AAAAA"                  | "cargoIdentifier"     | NotBlankWhenNullableConstraint
-    "123"                                  | "AAAAA"             | "AAAAA"                  | "cargoIdentifier"     | Size
-    "00000000=0000=0000=0000=000000000000" | "AAAAA"             | "AAAAA"                  | "cargoIdentifier"     | RandomUuidFormatConstraint
+    cargoIdentifierParam                   | propertyPathParam | constraintTypeParam
+    ""                                     | "cargoIdentifier" | NotBlankWhenNullableConstraint
+    "123"                                  | "cargoIdentifier" | Size
+    "00000000=0000=0000=0000=000000000000" | "cargoIdentifier" | RandomUuidFormatConstraint
+  }
 
-    null                                   | null                | "AAAAA"                  | "originLocation"      | NotBlank
-    null                                   | "A"                 | "AAAAA"                  | "originLocation"      | Size
-    null                                   | "1===5"             | "AAAAA"                  | "originLocation"      | UnLoCodeFormatConstraint
+  void "should not pass validation for null routeSpecification"() {
+    given:
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+        cargoIdentifier: "00000000-0000-4000-8000-000000000000",
+        routeSpecification: null
+    )
 
-    null                                   | "AAAAA"             | null                     | "destinationLocation" | NotBlank
-    null                                   | "AAAAA"             | "A"                      | "destinationLocation" | Size
-    null                                   | "AAAAA"             | "1===5"                  | "destinationLocation" | UnLoCodeFormatConstraint
+    when:
+    validationService.validate(bookCargoCommandRequest)
+
+    then:
+    ConstraintViolationException constraintViolationException = thrown()
+
+    constraintViolationException.constraintViolations.size() == 1
+    constraintViolationException.constraintViolations[0].propertyPath.toString() == "routeSpecification"
+    constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == NotNull
+  }
+
+  void "should not pass validation for invalid nested data"() {
+    given:
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+        cargoIdentifier: cargoIdentifierParam,
+        routeSpecification: new RouteSpecificationData(originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+    )
+
+    when:
+    validationService.validate(bookCargoCommandRequest)
+
+    then:
+    ConstraintViolationException constraintViolationException = thrown()
+
+    constraintViolationException.constraintViolations.size() == 1
+    constraintViolationException.constraintViolations[0].propertyPath.toString() == propertyPathParam
+    constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
+
+    where:
+    cargoIdentifierParam                   | originLocationParam | destinationLocationParam | propertyPathParam                        | constraintTypeParam
+    ""                                     | "AAAAA"             | "AAAAA"                  | "cargoIdentifier"                        | NotBlankWhenNullableConstraint
+    "123"                                  | "AAAAA"             | "AAAAA"                  | "cargoIdentifier"                        | Size
+    "00000000=0000=0000=0000=000000000000" | "AAAAA"             | "AAAAA"                  | "cargoIdentifier"                        | RandomUuidFormatConstraint
+
+    null                                   | null                | "AAAAA"                  | "routeSpecification.originLocation"      | NotBlank
+    null                                   | "A"                 | "AAAAA"                  | "routeSpecification.originLocation"      | Size
+    null                                   | "1===5"             | "AAAAA"                  | "routeSpecification.originLocation"      | UnLoCodeFormatConstraint
+
+    null                                   | "AAAAA"             | null                     | "routeSpecification.destinationLocation" | NotBlank
+    null                                   | "AAAAA"             | "A"                      | "routeSpecification.destinationLocation" | Size
+    null                                   | "AAAAA"             | "1===5"                  | "routeSpecification.destinationLocation" | UnLoCodeFormatConstraint
   }
 }

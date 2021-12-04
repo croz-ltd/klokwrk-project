@@ -20,6 +20,7 @@ package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applic
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapter.out.remoting.InMemoryLocationRegistryService
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.RouteSpecificationData
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.LocationByUnLoCodeQueryPortOut
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
@@ -49,7 +50,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
   void "createBookCargoCommand - should fail for invalid originLocation"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(originLocation: "invalidOrigin", destinationLocation: "HRRJK")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(routeSpecification: new RouteSpecificationData(originLocation: "invalidOrigin", destinationLocation: "HRRJK"))
 
     when:
     cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
@@ -64,7 +65,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
   void "createBookCargoCommand - should fail for invalid destinationLocation"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(originLocation: "HRRJK", destinationLocation: "invalidDestination")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(routeSpecification: new RouteSpecificationData(originLocation: "HRRJK", destinationLocation: "invalidDestination"))
 
     when:
     cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
@@ -79,7 +80,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
   void "createBookCargoCommand - should fail for equal origin and destination locations"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(originLocation: "HRRJK", destinationLocation: "HRRJK")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(routeSpecification: new RouteSpecificationData(originLocation: "HRRJK", destinationLocation: "HRRJK"))
 
     when:
     cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
@@ -94,7 +95,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
   void "createBookCargoCommand - should work for unspecified cargo identifier"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(originLocation: "HRRJK", destinationLocation: "HRZAG")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(routeSpecification: new RouteSpecificationData(originLocation: "HRRJK", destinationLocation: "HRZAG"))
 
     when:
     BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
@@ -112,7 +113,10 @@ class CargoBookingFactoryServiceSpecification extends Specification {
   void "createBookCargoCommand - should work for specified cargo identifier"() {
     given:
     String cargoIdentifier = UUID.randomUUID()
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(cargoIdentifier: cargoIdentifier, originLocation: "HRRJK", destinationLocation: "HRZAG")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+        cargoIdentifier: cargoIdentifier,
+        routeSpecification: new RouteSpecificationData(originLocation: "HRRJK", destinationLocation: "HRZAG")
+    )
 
     when:
     BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
@@ -128,7 +132,10 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
   void "createBookCargoCommand - should throw for specified cargo identifier in invalid format"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(cargoIdentifier: "invalid", originLocation: "HRRJK", destinationLocation: "HRZAG")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+        cargoIdentifier: "invalid",
+        routeSpecification: new RouteSpecificationData(originLocation: "HRRJK", destinationLocation: "HRZAG")
+    )
 
     when:
     cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)

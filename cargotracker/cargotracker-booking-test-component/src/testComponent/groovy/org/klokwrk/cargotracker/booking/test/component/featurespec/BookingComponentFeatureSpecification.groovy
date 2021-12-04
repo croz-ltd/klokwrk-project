@@ -25,14 +25,16 @@ import org.klokwrk.cargotracker.booking.test.component.test.base.AbstractCompone
 import spock.util.concurrent.PollingConditions
 
 class BookingComponentFeatureSpecification extends AbstractComponentIntegrationSpecification {
-  void "command - should book cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
+  void "command - should book cargo: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
     //noinspection HttpUrlsUsage
     String commandCargoBookUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
     String commandPostRequestBody = """
         {
-          "originLocation": "HRRJK",
-          "destinationLocation": "NLRTM"
+          "routeSpecification": {
+            "originLocation": "HRRJK",
+            "destinationLocation": "NLRTM"
+          }
         }
         """
 
@@ -40,7 +42,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
-                                    .addHeader("Accept-Language", acceptLanguageHeader)
+                                    .addHeader("Accept-Language", acceptLanguageHeaderParam)
                                     .bodyString(commandPostRequestBody, ContentType.APPLICATION_JSON)
 
     when:
@@ -55,19 +57,21 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     commandResponseCargoIdentifier
 
     where:
-    acceptLanguageHeader | _
-    "hr-HR"              | _
-    "en"                 | _
+    acceptLanguageHeaderParam | _
+    "hr-HR"                   | _
+    "en"                      | _
   }
 
-  void "query - should find booked cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
+  void "query - should find booked cargo: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
     //noinspection HttpUrlsUsage
     String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
     String commandPostRequestBody = """
         {
-          "originLocation": "HRRJK",
-          "destinationLocation": "NLRTM"
+          "routeSpecification": {
+            "originLocation": "HRRJK",
+            "destinationLocation": "NLRTM"
+          }
         }
         """
 
@@ -85,7 +89,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
-                                    .addHeader("Accept-Language", acceptLanguageHeader)
+                                    .addHeader("Accept-Language", acceptLanguageHeaderParam)
                                     .bodyString(commandPostRequestBody, ContentType.APPLICATION_JSON)
 
     when:
@@ -105,7 +109,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
-                                    .addHeader("Accept-Language", acceptLanguageHeader)
+                                    .addHeader("Accept-Language", acceptLanguageHeaderParam)
                                     .bodyString(queryPostRequestBodyClosure(commandResponseCargoIdentifier), ContentType.APPLICATION_JSON)
 
       // when
@@ -119,19 +123,21 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     }
 
     where:
-    acceptLanguageHeader | _
-    "hr-HR"              | _
-    "en"                 | _
+    acceptLanguageHeaderParam | _
+    "hr-HR"                   | _
+    "en"                      | _
   }
 
-  void "command - should not book cargo for invalid command: [acceptLanguageHeader: #acceptLanguageHeader]"() {
+  void "command - should not book cargo for invalid command: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
     //noinspection HttpUrlsUsage
     String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
     String commandPostRequestBody = """
         {
-          "originLocation": "NLRTM",
-          "destinationLocation": "HRZAG"
+          "routeSpecification": {
+            "originLocation": "NLRTM",
+            "destinationLocation": "HRZAG"
+          }
         }
         """
 
@@ -139,7 +145,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
-                                    .addHeader("Accept-Language", acceptLanguageHeader)
+                                    .addHeader("Accept-Language", acceptLanguageHeaderParam)
                                     .bodyString(commandPostRequestBody, ContentType.APPLICATION_JSON)
 
     when:
@@ -154,12 +160,12 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     commandResponseJson.payload.isEmpty()
 
     where:
-    acceptLanguageHeader | violationMessageParam
-    "hr-HR"              | "Teret nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije."
-    "en"                 | "Destination location cannot accept cargo from specified origin location."
+    acceptLanguageHeaderParam | violationMessageParam
+    "hr-HR"                   | "Teret nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije."
+    "en"                      | "Destination location cannot accept cargo from specified origin location."
   }
 
-  void "query - should not find non-existing cargo: [acceptLanguageHeader: #acceptLanguageHeader]"() {
+  void "query - should not find non-existing cargo: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
     //noinspection HttpUrlsUsage
     String cargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-info/cargo-summary"
@@ -173,7 +179,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
                                   .addHeader("Content-Type", "application/json")
                                   .addHeader("Accept", "application/json")
                                   .addHeader("Accept-Charset", "utf-8")
-                                  .addHeader("Accept-Language", acceptLanguageHeader)
+                                  .addHeader("Accept-Language", acceptLanguageHeaderParam)
                                   .bodyString(queryPostRequestBody, ContentType.APPLICATION_JSON)
 
     when:
@@ -187,8 +193,8 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     queryResponseJson.metaData.violation.message == violationMessageParam
 
     where:
-    acceptLanguageHeader | violationMessageParam
-    "hr-HR"              | "Sumarni izvještaj za željeni teret nije pronađen."
-    "en"                 | "Summary report for specified cargo is not found."
+    acceptLanguageHeaderParam | violationMessageParam
+    "hr-HR"                   | "Sumarni izvještaj za željeni teret nije pronađen."
+    "en"                      | "Summary report for specified cargo is not found."
   }
 }

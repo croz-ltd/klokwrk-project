@@ -28,6 +28,7 @@ import org.axonframework.messaging.unitofwork.UnitOfWork
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandPortIn
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.RouteSpecificationData
 import org.klokwrk.cargotracker.booking.commandside.infrastructure.springbootconfig.SpringBootConfig
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
@@ -47,7 +48,10 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
   void "should work for correct request"() {
     given:
     String myCargoIdentifier = UUID.randomUUID()
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(cargoIdentifier: myCargoIdentifier, originLocation: "NLRTM", destinationLocation: "HRRJK")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+        cargoIdentifier: myCargoIdentifier,
+        routeSpecification: new RouteSpecificationData(originLocation: "NLRTM", destinationLocation: "HRRJK")
+    )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
@@ -86,7 +90,10 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     })
 
     String myCargoIdentifier = UUID.randomUUID()
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(cargoIdentifier: myCargoIdentifier, originLocation: "NLRTM", destinationLocation: "HRRJK")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+        cargoIdentifier: myCargoIdentifier,
+        routeSpecification: new RouteSpecificationData(originLocation: "NLRTM", destinationLocation: "HRRJK")
+    )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
@@ -134,7 +141,10 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     })
 
     String cargoIdentifier = UUID.randomUUID()
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(cargoIdentifier: cargoIdentifier, originLocation: "NLRTM", destinationLocation: "HRRJK")
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+        cargoIdentifier: cargoIdentifier,
+        routeSpecification: new RouteSpecificationData(originLocation: "NLRTM", destinationLocation: "HRRJK")
+    )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:

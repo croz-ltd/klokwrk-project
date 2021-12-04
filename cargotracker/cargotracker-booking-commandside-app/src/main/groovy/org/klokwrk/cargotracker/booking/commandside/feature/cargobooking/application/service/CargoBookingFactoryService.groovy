@@ -53,8 +53,8 @@ class CargoBookingFactoryService {
     //       While creating a command, we sometimes have to resolve data from external services. The domain facade is an excellent choice for such activities. In this example, we resolve Location
     //       registry data (a.k.a. master data) from the outbound adapter.
 
-    Location originLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.originLocation)
-    Location destinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.destinationLocation)
+    Location originLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.routeSpecification.originLocation)
+    Location destinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.routeSpecification.destinationLocation)
 
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
         cargoId: CargoId.createWithGeneratedIdentifierIfNeeded(bookCargoCommandRequest.cargoIdentifier), originLocation: originLocation, destinationLocation: destinationLocation
