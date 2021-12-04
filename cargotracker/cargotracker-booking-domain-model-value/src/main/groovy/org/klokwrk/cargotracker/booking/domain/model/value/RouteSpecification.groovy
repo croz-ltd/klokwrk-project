@@ -46,6 +46,14 @@ class RouteSpecification implements PostMapConstructorCheckable {
     requireMatch(destinationLocation, notNullValue())
   }
 
+  Boolean areDestinationAndOriginEqual() {
+    if (originLocation == destinationLocation) {
+      return true
+    }
+
+    return false
+  }
+
   Boolean canDestinationAcceptCargoFromOrigin() {
     // We can question here why equality check is not executed during construction.
     //

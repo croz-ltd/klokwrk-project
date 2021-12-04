@@ -55,19 +55,11 @@ class BookCargoCommand implements BaseCreateCommand, PostMapConstructorCheckable
 
     requireKnownLocation(routeSpecification.originLocation, "originLocationUnknown")
     requireKnownLocation(routeSpecification.destinationLocation, "destinationLocationUnknown")
-
-    requireDifferentOriginAndDestination(routeSpecification.originLocation, routeSpecification.destinationLocation)
   }
 
   private void requireKnownLocation(Location location, String violationCodeKey) {
     if (location == Location.UNKNOWN_LOCATION) {
       throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey(violationCodeKey))
-    }
-  }
-
-  void requireDifferentOriginAndDestination(Location originLocation, Location destinationLocation) {
-    if (originLocation == destinationLocation) {
-      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey("originLocationEqualToDestinationLocation"))
     }
   }
 

@@ -78,21 +78,6 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     commandException.violationInfo.violationCode.codeKey == "destinationLocationUnknown"
   }
 
-  void "createBookCargoCommand - should fail for equal origin and destination locations"() {
-    given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(routeSpecification: new RouteSpecificationData(originLocation: "HRRJK", destinationLocation: "HRRJK"))
-
-    when:
-    cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
-
-    then:
-    CommandException commandException = thrown()
-    commandException.violationInfo.severity == Severity.WARNING
-    commandException.violationInfo.violationCode.code == "400"
-    commandException.violationInfo.violationCode.codeMessage == "Bad Request"
-    commandException.violationInfo.violationCode.codeKey == "originLocationEqualToDestinationLocation"
-  }
-
   void "createBookCargoCommand - should work for unspecified cargo identifier"() {
     given:
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(routeSpecification: new RouteSpecificationData(originLocation: "HRRJK", destinationLocation: "HRZAG"))

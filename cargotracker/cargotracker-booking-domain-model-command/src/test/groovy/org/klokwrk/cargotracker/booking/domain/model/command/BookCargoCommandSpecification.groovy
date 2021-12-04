@@ -60,6 +60,5 @@ class BookCargoCommandSpecification extends Specification {
     cargoIdParam                            | originLocationParam        | destinationLocationParam   | violationCodeKeyParam
     CargoId.createWithGeneratedIdentifier() | Location.UNKNOWN_LOCATION  | locationSampleMap["DEHAM"] | "originLocationUnknown"
     CargoId.createWithGeneratedIdentifier() | locationSampleMap["NLRTM"] | Location.UNKNOWN_LOCATION  | "destinationLocationUnknown"
-    CargoId.createWithGeneratedIdentifier() | locationSampleMap["NLRTM"] | locationSampleMap["NLRTM"] | "originLocationEqualToDestinationLocation"
   }
 }
