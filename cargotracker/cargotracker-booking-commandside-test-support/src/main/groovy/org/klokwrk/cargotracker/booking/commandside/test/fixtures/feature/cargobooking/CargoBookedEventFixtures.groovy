@@ -41,10 +41,7 @@ class CargoBookedEventFixtures {
    * Used implementation is the same as when aggregate creates event from command.
    */
   static CargoBookedEvent eventValidForCommand(BookCargoCommand bookCargoCommand) {
-    CargoBookedEvent cargoBookedEvent = new CargoBookedEvent(
-        cargoId: bookCargoCommand.cargoId, originLocation: bookCargoCommand.routeSpecification.originLocation, destinationLocation: bookCargoCommand.routeSpecification.destinationLocation
-    )
-
+    CargoBookedEvent cargoBookedEvent = new CargoBookedEvent(bookCargoCommand.properties)
     return cargoBookedEvent
   }
 }

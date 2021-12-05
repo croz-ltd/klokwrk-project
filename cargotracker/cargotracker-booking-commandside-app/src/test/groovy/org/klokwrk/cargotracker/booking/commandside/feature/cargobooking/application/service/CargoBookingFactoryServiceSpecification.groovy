@@ -26,6 +26,7 @@ import org.klokwrk.cargotracker.booking.domain.model.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
+import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
 import spock.lang.Specification
@@ -135,7 +136,10 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     Location myOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRRJK")
     Location myDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRZAG")
 
-    CargoAggregate cargoAggregate = new CargoAggregate(cargoId: CargoId.create(myCargoIdentifier), originLocation: myOriginLocation, destinationLocation: myDestinationLocation)
+    CargoAggregate cargoAggregate = new CargoAggregate(
+        cargoId: CargoId.create(myCargoIdentifier),
+        routeSpecification: new RouteSpecification(originLocation: myOriginLocation, destinationLocation: myDestinationLocation)
+    )
 
     when:
     BookCargoCommandResponse bookCargoCommandResponse = cargoBookingFactoryService.createBookCargoCommandResponse(cargoAggregate)

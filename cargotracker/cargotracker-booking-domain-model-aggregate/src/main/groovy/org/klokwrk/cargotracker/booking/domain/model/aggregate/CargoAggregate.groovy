@@ -30,7 +30,7 @@ import org.axonframework.spring.stereotype.Aggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
-import org.klokwrk.cargotracker.booking.domain.model.value.Location
+import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
@@ -46,8 +46,7 @@ class CargoAggregate {
   static final String VIOLATION_ORIGIN_LOCATION_EQUAL_TO_DESTINATION_LOCATION = "originLocationEqualToDestinationLocation"
 
   CargoId cargoId
-  Location originLocation
-  Location destinationLocation
+  RouteSpecification routeSpecification
 
   @AggregateIdentifier
   String getAggregateIdentifier() {
@@ -69,20 +68,13 @@ class CargoAggregate {
       throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey(VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO))
     }
 
-    apply(cargoBookedEventFromBookCargoCommand(bookCargoCommand), metaData)
+    apply(new CargoBookedEvent(bookCargoCommand.properties), metaData)
     return this
-  }
-
-  CargoBookedEvent cargoBookedEventFromBookCargoCommand(BookCargoCommand bookCargoCommand) {
-    return new CargoBookedEvent(
-        cargoId: bookCargoCommand.cargoId, originLocation: bookCargoCommand.routeSpecification.originLocation, destinationLocation: bookCargoCommand.routeSpecification.destinationLocation
-    )
   }
 
   @EventSourcingHandler
   void onCargoBookedEvent(CargoBookedEvent cargoBookedEvent) {
     cargoId = cargoBookedEvent.cargoId
-    originLocation = cargoBookedEvent.originLocation
-    destinationLocation = cargoBookedEvent.destinationLocation
+    routeSpecification = cargoBookedEvent.routeSpecification
   }
 }
