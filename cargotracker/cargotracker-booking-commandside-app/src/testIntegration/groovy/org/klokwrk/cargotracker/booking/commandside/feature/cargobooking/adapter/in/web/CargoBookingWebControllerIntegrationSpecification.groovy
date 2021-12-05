@@ -53,10 +53,10 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
   }
 
   @SuppressWarnings("CodeNarc.AbcMetric")
-  void "should work for correct request - [acceptLanguage: #acceptLanguage]"() {
+  void "should work for correct request - [acceptLanguage: #acceptLanguageParam]"() {
     given:
     String myCargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: myCargoIdentifier, originLocation: "NLRTM", destinationLocation: "HRRJK"])
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: myCargoIdentifier, routeSpecification: [originLocation: "NLRTM", destinationLocation: "HRRJK"]])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -65,7 +65,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
     ).andReturn()
 
     Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
@@ -75,7 +75,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     verifyAll(responseContentMap.metaData.general as Map) {
       size() == 3
-      locale == localeString
+      locale == localeStringParam
       severity == Severity.INFO.name().toLowerCase()
       timestamp
     }
@@ -87,13 +87,13 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     verifyAll(responseContentMap.payload as Map) {
-      size() == 3
-      cargoIdentifier == myCargoIdentifier
-      originLocation.name == "Rotterdam"
-      destinationLocation.name == "Rijeka"
+      size() == 2
+      cargoId.identifier == myCargoIdentifier
+      routeSpecification.originLocation.name == "Rotterdam"
+      routeSpecification.destinationLocation.name == "Rijeka"
     }
 
-    verifyAll(responseContentMap.payload.originLocation as Map) {
+    verifyAll(responseContentMap.payload.routeSpecification.originLocation as Map) {
       size() == 4
       name == "Rotterdam"
       countryName == "Netherlands"
@@ -113,7 +113,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
       portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
     }
 
-    verifyAll(responseContentMap.payload.destinationLocation as Map) {
+    verifyAll(responseContentMap.payload.routeSpecification.destinationLocation as Map) {
       size() == 4
       name == "Rijeka"
       countryName == "Croatia"
@@ -134,16 +134,16 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     where:
-    acceptLanguage | localeString
-    "hr-HR"        | "hr_HR"
-    "en"           | "en"
+    acceptLanguageParam | localeStringParam
+    "hr-HR"             | "hr_HR"
+    "en"                | "en"
   }
 
   @SuppressWarnings("CodeNarc.AbcMetric")
-  void "should return expected response when request is not valid - validation failure - [acceptLanguage: #acceptLanguage]"() {
+  void "should return expected response when request is not valid - validation failure - [acceptLanguage: #acceptLanguageParam]"() {
     given:
     String cargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, originLocation: null, destinationLocation: null])
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, routeSpecification: [originLocation: null, destinationLocation: null]])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -152,7 +152,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
     ).andReturn()
 
     Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
@@ -162,7 +162,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     verifyAll(responseContentMap.metaData.general as Map) {
       size() == 3
-      locale == localeString
+      locale == localeStringParam
       severity == Severity.WARNING.name().toLowerCase()
       timestamp
     }
@@ -176,7 +176,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     verifyAll(responseContentMap.metaData.violation as Map) {
       size() == 4
       code == HttpStatus.BAD_REQUEST.value().toString()
-      message == myViolationMessage
+      message == violationMessageParam
       type == ViolationType.VALIDATION.name().toLowerCase()
       validationReport != null
     }
@@ -185,8 +185,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
       size() == 2
       root.type == "bookCargoCommandRequest"
       constraintViolations.size() == 2
-      constraintViolations.find({ it.path == "originLocation" }).type == "notBlank"
-      constraintViolations.find({ it.path == "destinationLocation" }).type == "notBlank"
+      constraintViolations.find({ it.path == "routeSpecification.originLocation" }).type == "notBlank"
+      constraintViolations.find({ it.path == "routeSpecification.destinationLocation" }).type == "notBlank"
     }
 
     verifyAll(responseContentMap.payload as Map) {
@@ -194,15 +194,15 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     where:
-    acceptLanguage | localeString | myViolationMessage
-    "hr-HR"        | "hr_HR"      | "Zahtjev nije ispravan."
-    "en"           | "en"         | "Request is not valid."
+    acceptLanguageParam | localeStringParam | violationMessageParam
+    "hr-HR"             | "hr_HR"           | "Zahtjev nije ispravan."
+    "en"                | "en"              | "Request is not valid."
   }
 
-  void "should fail when origin and destination locations are equal - domain failure - [acceptLanguage: #acceptLanguage]"() {
+  void "should fail when origin and destination locations are equal - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
     given:
     String cargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, originLocation: "HRRJK", destinationLocation: "HRRJK"])
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, routeSpecification: [originLocation: "HRRJK", destinationLocation: "HRRJK"]])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -211,7 +211,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
     ).andReturn()
 
     Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
@@ -221,7 +221,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     verifyAll(responseContentMap.metaData.general as Map) {
       size() == 3
-      locale == localeString
+      locale == localeStringParam
       severity == Severity.WARNING.name().toLowerCase()
       timestamp
     }
@@ -235,7 +235,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     verifyAll(responseContentMap.metaData.violation as Map) {
       size() == 3
       code == HttpStatus.BAD_REQUEST.value().toString()
-      message == myViolationMessage
+      message == violationMessageParam
       type == ViolationType.DOMAIN.name().toLowerCase()
     }
 
@@ -244,15 +244,15 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     where:
-    acceptLanguage | localeString | myViolationMessage
-    "hr-HR"        | "hr_HR"      | "Navedena polazna lokacija jednaka je navedenoj ciljnoj lokaciji."
-    "en"           | "en"         | "Specified origin location is equal to specified destination location."
+    acceptLanguageParam | localeStringParam | violationMessageParam
+    "hr-HR"             | "hr_HR"           | "Navedena polazna lokacija jednaka je navedenoj ciljnoj lokaciji."
+    "en"                | "en"              | "Specified origin location is equal to specified destination location."
   }
 
-  void "should fail when cargo can not be sent to destination location - domain failure - [acceptLanguage: #acceptLanguage]"() {
+  void "should fail when cargo can not be sent to destination location - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
     given:
     String cargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, originLocation: "NLRTM", destinationLocation: "HRZAG"])
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, routeSpecification: [originLocation: "NLRTM", destinationLocation: "HRZAG"]])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -261,7 +261,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
     ).andReturn()
 
     Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
@@ -271,7 +271,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     verifyAll(responseContentMap.metaData.general as Map) {
       size() == 3
-      locale == localeString
+      locale == localeStringParam
       severity == Severity.WARNING.name().toLowerCase()
       timestamp
     }
@@ -285,7 +285,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     verifyAll(responseContentMap.metaData.violation as Map) {
       size() == 3
       code == HttpStatus.BAD_REQUEST.value().toString()
-      message == myViolationMessage
+      message == violationMessageParam
       type == ViolationType.DOMAIN.name().toLowerCase()
     }
 
@@ -294,15 +294,15 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     where:
-    acceptLanguage | localeString | myViolationMessage
-    "hr-HR"        | "hr_HR"      | "Teret nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije."
-    "en"           | "en"         | "Destination location cannot accept cargo from specified origin location."
+    acceptLanguageParam | localeStringParam | violationMessageParam
+    "hr-HR"             | "hr_HR"           | "Teret nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije."
+    "en"                | "en"              | "Destination location cannot accept cargo from specified origin location."
   }
 
-  void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguage]"() {
+  void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguageParam]"() {
     given:
     String cargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, originLocation: "HRRJK", destinationLocation: "HRRJK"])
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, routeSpecification: [originLocation: "HRRJK", destinationLocation: "HRRJK"]])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -311,7 +311,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
     ).andReturn()
 
     Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
@@ -321,7 +321,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     verifyAll(responseContentMap.metaData.general as Map) {
       size() == 3
-      locale == localeString
+      locale == localeStringParam
       severity == Severity.WARNING.name().toLowerCase()
       timestamp
     }
@@ -335,7 +335,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     verifyAll(responseContentMap.metaData.violation as Map) {
       size() == 3
       code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
-      message == myViolationMessage
+      message == violationMessageParam
       type == ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase()
     }
 
@@ -344,8 +344,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     where:
-    acceptLanguage | localeString | myViolationMessage
-    "hr-HR"        | "hr_HR"      | "Zahtjev nije ispravan."
-    "en"           | "en"         | "Request is not valid."
+    acceptLanguageParam | localeStringParam | violationMessageParam
+    "hr-HR"             | "hr_HR"           | "Zahtjev nije ispravan."
+    "en"                | "en"              | "Request is not valid."
   }
 }

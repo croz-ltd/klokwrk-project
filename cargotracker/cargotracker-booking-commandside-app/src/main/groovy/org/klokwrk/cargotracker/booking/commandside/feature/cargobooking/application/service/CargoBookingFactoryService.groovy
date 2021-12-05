@@ -26,6 +26,7 @@ import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilityType
+import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.springframework.stereotype.Service
 
 import static org.hamcrest.Matchers.notNullValue
@@ -53,11 +54,12 @@ class CargoBookingFactoryService {
     //       While creating a command, we sometimes have to resolve data from external services. The domain facade is an excellent choice for such activities. In this example, we resolve Location
     //       registry data (a.k.a. master data) from the outbound adapter.
 
-    Location originLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.originLocation)
-    Location destinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.destinationLocation)
+    Location resolvedOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.routeSpecification.originLocation)
+    Location resolvedDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.routeSpecification.destinationLocation)
 
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
-        cargoId: CargoId.createWithGeneratedIdentifierIfNeeded(bookCargoCommandRequest.cargoIdentifier), originLocation: originLocation, destinationLocation: destinationLocation
+        cargoId: CargoId.createWithGeneratedIdentifierIfNeeded(bookCargoCommandRequest.cargoIdentifier),
+        routeSpecification: new RouteSpecification(originLocation: resolvedOriginLocation, destinationLocation: resolvedDestinationLocation)
     )
 
     return bookCargoCommand
@@ -78,16 +80,20 @@ class CargoBookingFactoryService {
     //       Use direct synchronous returning of aggregate state only as a last measure.
     //
     //       The internal aggregate state is not suitable for exposure to clients for multiple reasons like unwanted coupling and security. Moreover, even if the coupling is not a problem (i.e., when
-    //       the same team implements clients and aggregates), such API will be highly unstable. We might remedy that instability somewhat by applying transformations as done here.
+    //       the same team implements clients and aggregates), such API will be highly unstable. We might remedy that instability somewhat by applying custom transformations as done here.
+    //       Don't concentrate too much on actual transformation and what it produces in this concrete example. It can be anything.
     //
     //       An additional problem is a tendency to add fields not required by business logic in the aggregate but only for display purposes.
     //
     //       If clients still decide to use direct responses from aggregate for gaining data, they should be aware of consequences and have a robust suite of regression tests in place.
-    Map<String, ?> originLocationMap = createMapFromLocation(cargoAggregate.originLocation)
-    Map<String, ?> destinationLocationMap = createMapFromLocation(cargoAggregate.destinationLocation)
 
-    BookCargoCommandResponse bookCargoCommandResponse =
-        new BookCargoCommandResponse(cargoIdentifier: cargoAggregate.cargoId.identifier, originLocation: originLocationMap, destinationLocation: destinationLocationMap)
+    Map<String, ?> originLocationMap = createMapFromLocation(cargoAggregate.routeSpecification.originLocation)
+    Map<String, ?> destinationLocationMap = createMapFromLocation(cargoAggregate.routeSpecification.destinationLocation)
+
+    BookCargoCommandResponse bookCargoCommandResponse = new BookCargoCommandResponse(
+        cargoId: [identifier: cargoAggregate.cargoId.identifier],
+        routeSpecification: [originLocation: originLocationMap, destinationLocation: destinationLocationMap]
+    )
 
     return bookCargoCommandResponse
   }

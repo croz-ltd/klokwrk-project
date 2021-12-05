@@ -1,4 +1,4 @@
-### cargotracker-booking-commandside, cargo-booking/book-cargo, validation failure, hr
+### cargotracker-booking-commandside, cargo-booking/book-cargo, validation failure at top level, hr
 POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo
 Content-Type: application/json
 Accept: application/json
@@ -6,11 +6,10 @@ Accept-Charset: utf-8
 Accept-Language: hr-HR
 
 {
-  "originLocation": null,
-  "destinationLocation": null
+  "routeSpecification": null
 }
 
-### cargotracker-booking-commandside, cargo-booking/book-cargo, validation failure, en
+### cargotracker-booking-commandside, cargo-booking/book-cargo, validation failure at top level, en
 POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo
 Content-Type: application/json
 Accept: application/json
@@ -18,8 +17,35 @@ Accept-Charset: utf-8
 Accept-Language: en
 
 {
-  "originLocation": null,
-  "destinationLocation": null
+  "routeSpecification": null
+}
+
+### cargotracker-booking-commandside, cargo-booking/book-cargo, validation failure at nested level, hr
+POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
+Accept-Language: hr-HR
+
+{
+  "routeSpecification": {
+    "originLocation": null,
+    "destinationLocation": null
+  }
+}
+
+### cargotracker-booking-commandside, cargo-booking/book-cargo, validation failure at nested level, en
+POST http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
+Accept-Language: en
+
+{
+  "routeSpecification": {
+    "originLocation": null,
+    "destinationLocation": null
+  }
 }
 
 ### cargotracker-booking-commandside, cargo-booking/book-cargo, success, hr
@@ -30,8 +56,10 @@ Accept-Charset: utf-8
 Accept-Language: hr-HR
 
 {
-  "originLocation": "NLRTM",
-  "destinationLocation": "USNYC"
+  "routeSpecification": {
+    "originLocation": "NLRTM",
+    "destinationLocation": "USNYC"
+  }
 }
 
 > {%
@@ -47,8 +75,10 @@ Accept-Charset: utf-8
 Accept-Language: en
 
 {
-  "originLocation": "NLRTM",
-  "destinationLocation": "USNYC"
+  "routeSpecification": {
+    "originLocation": "NLRTM",
+    "destinationLocation": "USNYC"
+  }
 }
 
 > {%
@@ -64,8 +94,10 @@ Accept-Charset: utf-8
 Accept-Language: hr-HR
 
 {
-  "originLocation": "GRPIR",
-  "destinationLocation": "GRATH"
+  "routeSpecification": {
+    "originLocation": "GRPIR",
+    "destinationLocation": "GRATH"
+  }
 }
 
 ### cargotracker-booking-commandside, cargo-booking/book-cargo, failure, en
@@ -76,8 +108,10 @@ Accept-Charset: utf-8
 Accept-Language: en
 
 {
-  "originLocation": "GRPIR",
-  "destinationLocation": "GRATH"
+  "routeSpecification": {
+    "originLocation": "GRPIR",
+    "destinationLocation": "GRATH"
+  }
 }
 
 ###
