@@ -25,6 +25,8 @@ import org.axonframework.messaging.Message
 import org.axonframework.messaging.unitofwork.DefaultUnitOfWork
 import org.axonframework.messaging.unitofwork.UnitOfWork
 import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
+import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
+import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.exception.RemoteHandlerException
 import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
 import spock.lang.Specification
@@ -62,10 +64,10 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
     result == "ok"
   }
 
-  void "should catch and handle CommandException thrown from the handler"() {
+  void "should catch and handle Domain and Command exceptions thrown from the handler"() {
     given:
     CommandHandlerExceptionInterceptor commandHandlerExceptionInterceptor = new CommandHandlerExceptionInterceptor()
-    interceptorChainMock.proceed() >> { throw new CommandException(ViolationInfo.BAD_REQUEST) }
+    interceptorChainMock.proceed() >> { throw domainExceptionParam }
 
     when:
     commandHandlerExceptionInterceptor.handle(unitOfWork, interceptorChainMock)
@@ -74,19 +76,25 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
     CommandExecutionException commandExecutionException = thrown()
 
     commandExecutionException.details.present
-    verifyAll(commandExecutionException.details.get(), CommandException, { CommandException commandException ->
-      commandException.violationInfo == ViolationInfo.BAD_REQUEST
+    verifyAll(commandExecutionException.details.get(), DomainException, { DomainException domainException ->
+      domainException.violationInfo == ViolationInfo.BAD_REQUEST
     })
+
+    where:
+    domainExceptionParam                            | _
+    new DomainException(ViolationInfo.BAD_REQUEST)  | _
+    new CommandException(ViolationInfo.BAD_REQUEST) | _
   }
 
-  void "should catch CommandException thrown from the handler and log it at the debug level"() {
+  @SuppressWarnings("CodeNarc.AbcMetric")
+  void "should catch Domain and Command thrown from the handler and log them at the debug level"() {
     given:
     TestLoggerFactory.clearAll()
     TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor")
     logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG)
 
     CommandHandlerExceptionInterceptor commandHandlerExceptionInterceptor = new CommandHandlerExceptionInterceptor()
-    interceptorChainMock.proceed() >> { throw commandExceptionParam }
+    interceptorChainMock.proceed() >> { throw domainExceptionParam }
 
     when:
     commandHandlerExceptionInterceptor.handle(unitOfWork, interceptorChainMock)
@@ -95,38 +103,44 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
     CommandExecutionException commandExecutionException = thrown()
 
     commandExecutionException.details.present
-    commandExecutionException.message == "Execution of 'StubCommand' command failed for business reasons (normal execution flow): ${commandExceptionMessageParam}"
-    verifyAll(commandExecutionException.details.get(), CommandException, { CommandException commandException ->
-      commandException.violationInfo == ViolationInfo.BAD_REQUEST
+    commandExecutionException.message == "Execution of 'StubCommand' command failed for business reasons (normal execution flow): ${ domainExceptionMessageParam }"
+    verifyAll(commandExecutionException.details.get(), DomainException, { DomainException domainException ->
+      domainException.violationInfo == ViolationInfo.BAD_REQUEST
     })
 
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
       ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
       loggingEvents.size() == 1
       loggingEvents[0].level == Level.DEBUG
-      loggingEvents[0].message == "Execution of 'StubCommand' command handler failed for business reasons (normal execution flow): ${commandExceptionMessageParam}"
+      loggingEvents[0].message == "Execution of 'StubCommand' command handler failed for business reasons (normal execution flow): ${ domainExceptionMessageParam }"
     }
 
     cleanup:
     TestLoggerFactory.clearAll()
 
     where:
-    commandExceptionMessageParam                        | commandExceptionParam
+    domainExceptionMessageParam                         | domainExceptionParam
+    ViolationInfo.BAD_REQUEST.violationCode.codeMessage | new DomainException(ViolationInfo.BAD_REQUEST)
+    "Some domain¬ exception message"                    | new DomainException(ViolationInfo.BAD_REQUEST, domainExceptionMessageParam)
+    ViolationInfo.BAD_REQUEST.violationCode.codeMessage | new DomainException(ViolationInfo.BAD_REQUEST, null)
+    ViolationInfo.BAD_REQUEST.violationCode.codeMessage | new DomainException(ViolationInfo.BAD_REQUEST, "")
+    ViolationInfo.BAD_REQUEST.violationCode.codeMessage | new DomainException(ViolationInfo.BAD_REQUEST, "   ")
+
     ViolationInfo.BAD_REQUEST.violationCode.codeMessage | new CommandException(ViolationInfo.BAD_REQUEST)
-    "Some command exception message"                    | new CommandException(ViolationInfo.BAD_REQUEST, commandExceptionMessageParam)
+    "Some command exception message"                    | new CommandException(ViolationInfo.BAD_REQUEST, domainExceptionMessageParam)
     ViolationInfo.BAD_REQUEST.violationCode.codeMessage | new CommandException(ViolationInfo.BAD_REQUEST, null)
     ViolationInfo.BAD_REQUEST.violationCode.codeMessage | new CommandException(ViolationInfo.BAD_REQUEST, "")
     ViolationInfo.BAD_REQUEST.violationCode.codeMessage | new CommandException(ViolationInfo.BAD_REQUEST, "   ")
   }
 
-  void "should catch CommandException thrown from the handler and should not log it at the level higher than debug"() {
+  void "should catch Domain and Command thrown from the handler and should not log them at the level higher than debug"() {
     given:
     TestLoggerFactory.clearAll()
     TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor")
     logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO)
 
     CommandHandlerExceptionInterceptor commandHandlerExceptionInterceptor = new CommandHandlerExceptionInterceptor()
-    interceptorChainMock.proceed() >> { throw new CommandException(ViolationInfo.BAD_REQUEST) }
+    interceptorChainMock.proceed() >> { throw domainExceptionParam }
 
     when:
     commandHandlerExceptionInterceptor.handle(unitOfWork, interceptorChainMock)
@@ -136,8 +150,76 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
 
     commandExecutionException.details.present
     commandExecutionException.message == "Execution of 'StubCommand' command failed for business reasons (normal execution flow): Bad Request"
-    verifyAll(commandExecutionException.details.get(), CommandException, { CommandException commandException ->
-      commandException.violationInfo == ViolationInfo.BAD_REQUEST
+    verifyAll(commandExecutionException.details.get(), DomainException, { DomainException domainException ->
+      domainException.violationInfo == ViolationInfo.BAD_REQUEST
+    })
+
+    new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
+      loggingEvents.size() == 0
+    }
+
+    cleanup:
+    TestLoggerFactory.clearAll()
+
+    where:
+    domainExceptionParam                            | _
+    new DomainException(ViolationInfo.BAD_REQUEST)  | _
+    new CommandException(ViolationInfo.BAD_REQUEST) | _
+  }
+
+  void "when QueryException is thrown should handle it like domain exception and log a warning message"() {
+    given:
+    TestLoggerFactory.clearAll()
+    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor")
+    logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO)
+
+    CommandHandlerExceptionInterceptor commandHandlerExceptionInterceptor = new CommandHandlerExceptionInterceptor()
+    interceptorChainMock.proceed() >> { throw new QueryException(ViolationInfo.BAD_REQUEST) }
+
+    when:
+    commandHandlerExceptionInterceptor.handle(unitOfWork, interceptorChainMock)
+
+    then:
+    CommandExecutionException commandExecutionException = thrown()
+
+    commandExecutionException.details.present
+    commandExecutionException.message == "Execution of 'StubCommand' command failed for business reasons (normal execution flow): Bad Request"
+    verifyAll(commandExecutionException.details.get(), QueryException, { QueryException queryException ->
+      queryException.violationInfo == ViolationInfo.BAD_REQUEST
+    })
+
+    new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
+      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
+      loggingEvents.size() == 1
+      loggingEvents[0].level == Level.WARN
+      loggingEvents[0].message.startsWith("QueryException is thrown during command handling, which is unexpected.")
+    }
+
+    cleanup:
+    TestLoggerFactory.clearAll()
+  }
+
+  @SuppressWarnings("CodeNarc.UnnecessarySetter")
+  void "should not log QueryException occurrence on a level higher than warning"() {
+    given:
+    TestLoggerFactory.clearAll()
+    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor")
+    logger.setEnabledLevels(Level.ERROR)
+
+    CommandHandlerExceptionInterceptor commandHandlerExceptionInterceptor = new CommandHandlerExceptionInterceptor()
+    interceptorChainMock.proceed() >> { throw new QueryException(ViolationInfo.BAD_REQUEST) }
+
+    when:
+    commandHandlerExceptionInterceptor.handle(unitOfWork, interceptorChainMock)
+
+    then:
+    CommandExecutionException commandExecutionException = thrown()
+
+    commandExecutionException.details.present
+    commandExecutionException.message == "Execution of 'StubCommand' command failed for business reasons (normal execution flow): Bad Request"
+    verifyAll(commandExecutionException.details.get(), QueryException, { QueryException queryException ->
+      queryException.violationInfo == ViolationInfo.BAD_REQUEST
     })
 
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
@@ -170,7 +252,7 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
 
     commandExecutionException.details.present
     verifyAll(commandExecutionException.details.get(), RemoteHandlerException, { RemoteHandlerException remoteHandlerException ->
-      commandExecutionException.message == "Execution of 'StubCommand' command failed [detailsException.exceptionId: ${remoteHandlerException.exceptionId}]"
+      commandExecutionException.message == "Execution of 'StubCommand' command failed [detailsException.exceptionId: ${ remoteHandlerException.exceptionId }]"
       remoteHandlerException.message == remoteHandlerExceptionMessageParam
     })
 
@@ -213,7 +295,7 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
 
     commandExecutionException.details.present
     verifyAll(commandExecutionException.details.get(), RemoteHandlerException, { RemoteHandlerException remoteHandlerException ->
-      commandExecutionException.message == "Execution of 'StubCommand' command failed [detailsException.exceptionId: ${remoteHandlerException.exceptionId}]"
+      commandExecutionException.message == "Execution of 'StubCommand' command failed [detailsException.exceptionId: ${ remoteHandlerException.exceptionId }]"
       remoteHandlerException.message == "Execution of 'StubCommand' command failed because of java.lang.IllegalArgumentException: Some illegal arguments"
     })
 

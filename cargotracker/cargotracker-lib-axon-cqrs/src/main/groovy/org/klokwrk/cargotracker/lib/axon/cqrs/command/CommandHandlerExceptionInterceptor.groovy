@@ -24,7 +24,8 @@ import org.axonframework.messaging.InterceptorChain
 import org.axonframework.messaging.Message
 import org.axonframework.messaging.MessageHandlerInterceptor
 import org.axonframework.messaging.unitofwork.UnitOfWork
-import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
+import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
+import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.exception.RemoteHandlerException
 
 /**
@@ -45,12 +46,22 @@ class CommandHandlerExceptionInterceptor<T extends Message<?>> implements Messag
       Object returnValue = interceptorChain.proceed()
       return returnValue
     }
-    catch (CommandException commandException) {
+    // Intention here is to catch CommandException and DomainException exceptions. CommandExceptions should be thrown from command handling code (including aggregates and entities), while
+    // DomainExceptions should be thrown from other plain domain classes like value objects.
+    // Although QueryException should never happen here, it can still occur if this interceptor is misconfigured on QueryBus or QueryException is erroneously thrown from command side.
+    catch (DomainException domainException) {
+      if (domainException instanceof QueryException) {
+        log.warn(
+            "QueryException is thrown during command handling, which is unexpected. Check if your CommandHandlerExceptionInterceptor is misconfigured on QueryBus or you are throwing QueryException " +
+            "from command handling code."
+        )
+      }
+
       String commandTypeName = unitOfWork.message.payloadType.simpleName
-      String exceptionMessage = commandException.message
+      String exceptionMessage = domainException.message
 
       CommandExecutionException commandExecutionExceptionToThrow =
-          new CommandExecutionException("Execution of '$commandTypeName' command failed for business reasons (normal execution flow): $exceptionMessage", null, commandException)
+          new CommandExecutionException("Execution of '$commandTypeName' command failed for business reasons (normal execution flow): $exceptionMessage", null, domainException)
 
       log.debug("Execution of '$commandTypeName' command handler failed for business reasons (normal execution flow): $exceptionMessage")
 

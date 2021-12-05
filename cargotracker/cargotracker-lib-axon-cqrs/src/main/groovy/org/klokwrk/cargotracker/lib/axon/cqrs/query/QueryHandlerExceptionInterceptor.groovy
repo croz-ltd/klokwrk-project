@@ -24,8 +24,9 @@ import org.axonframework.messaging.Message
 import org.axonframework.messaging.MessageHandlerInterceptor
 import org.axonframework.messaging.unitofwork.UnitOfWork
 import org.axonframework.queryhandling.QueryExecutionException
+import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
+import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.exception.RemoteHandlerException
-import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
 
 /**
  * Simplifies throwing a business exception from query handling code, making sure it is propagated back to the caller as a details field of Axon's {@code QueryExecutionException}.
@@ -45,12 +46,22 @@ class QueryHandlerExceptionInterceptor<T extends Message<?>> implements MessageH
       Object returnValue = interceptorChain.proceed()
       return returnValue
     }
-    catch (QueryException queryException) {
+    // Intention here is to catch QueryException and DomainException exceptions. QueryExceptions should be thrown from query handling code, while DomainExceptions should be thrown from plain domain
+    // classes like value objects.
+    // Although CommandException should never happen here, it can still occur if this interceptor is misconfigured on CommandBus or CommandException is erroneously thrown from command side.
+    catch (DomainException domainException) {
+      if (domainException instanceof CommandException) {
+        log.warn(
+            "CommandException is thrown during query handling, which is unexpected. Check if your QueryHandlerExceptionInterceptor is misconfigured on CommandBus or you are throwing " +
+            "CommandException from query handling code."
+        )
+      }
+
       String queryTypeName = unitOfWork.message.payloadType.simpleName
-      String exceptionMessage = queryException.message
+      String exceptionMessage = domainException.message
 
       QueryExecutionException queryExecutionExceptionToThrow =
-          new QueryExecutionException("Execution of '$queryTypeName' query failed for business reasons (normal execution flow): $exceptionMessage", null, queryException)
+          new QueryExecutionException("Execution of '$queryTypeName' query failed for business reasons (normal execution flow): $exceptionMessage", null, domainException)
 
       log.debug("Execution of '$queryTypeName' query handler failed for business reasons (normal execution flow): $exceptionMessage")
 
