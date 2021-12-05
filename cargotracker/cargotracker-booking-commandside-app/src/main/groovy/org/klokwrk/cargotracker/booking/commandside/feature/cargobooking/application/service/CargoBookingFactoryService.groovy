@@ -86,11 +86,14 @@ class CargoBookingFactoryService {
     //       An additional problem is a tendency to add fields not required by business logic in the aggregate but only for display purposes.
     //
     //       If clients still decide to use direct responses from aggregate for gaining data, they should be aware of consequences and have a robust suite of regression tests in place.
+
     Map<String, ?> originLocationMap = createMapFromLocation(cargoAggregate.routeSpecification.originLocation)
     Map<String, ?> destinationLocationMap = createMapFromLocation(cargoAggregate.routeSpecification.destinationLocation)
 
-    BookCargoCommandResponse bookCargoCommandResponse =
-        new BookCargoCommandResponse(cargoIdentifier: cargoAggregate.cargoId.identifier, originLocation: originLocationMap, destinationLocation: destinationLocationMap)
+    BookCargoCommandResponse bookCargoCommandResponse = new BookCargoCommandResponse(
+        cargoId: [identifier: cargoAggregate.cargoId.identifier],
+        routeSpecification: [originLocation: originLocationMap, destinationLocation: destinationLocationMap]
+    )
 
     return bookCargoCommandResponse
   }

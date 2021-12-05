@@ -64,9 +64,9 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     then:
     bookCargoCommandResponseMetadata.isEmpty()
     verifyAll(bookCargoCommandResponsePayload) {
-      cargoIdentifier == myCargoIdentifier
-      originLocation.name == "Rotterdam"
-      destinationLocation.name == "Rijeka"
+      cargoId.identifier == myCargoIdentifier
+      routeSpecification.originLocation.name == "Rotterdam"
+      routeSpecification.destinationLocation.name == "Rijeka"
     }
   }
 
@@ -106,7 +106,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
 
     then:
     bookCargoCommandResponseMetadata.isEmpty()
-    bookCargoCommandResponsePayload.cargoIdentifier == myCargoIdentifier
+    bookCargoCommandResponsePayload.cargoId.identifier == myCargoIdentifier
 
     loggingEventList.size() == 1
     loggingEventList[0].level == Level.INFO

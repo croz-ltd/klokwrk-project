@@ -146,59 +146,64 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
     then:
     verifyAll(bookCargoCommandResponse) {
-      cargoIdentifier == myCargoIdentifier
-      originLocation == [
-          name: "Rijeka",
-          countryName: "Croatia",
-          unLoCode: [
-              code: [
-                  encoded: "HRRJK",
-                  countryCode: "HR",
-                  locationCode: "RJK"
-              ],
-              coordinates: [
-                  encoded: "4520N 01424E",
-                  latitudeInDegrees: 45.33,
-                  longitudeInDegrees: 14.40
-              ],
-              function: [
-                  encoded: "1234----",
-                  isPort: true,
-                  isRailTerminal: true,
-                  isRoadTerminal: true,
-                  isAirport: true,
-                  isPostalExchangeOffice: false,
-                  isBorderCrossing: false
-              ]
-          ],
-          portCapabilities: ["CONTAINER_PORT", "SEA_PORT"]
+      cargoId == [
+          identifier: myCargoIdentifier
       ]
 
-      destinationLocation == [
-          name: "Zagreb",
-          countryName: "Croatia",
-          unLoCode: [
-              code: [
-                  encoded: "HRZAG",
-                  countryCode: "HR",
-                  locationCode: "ZAG"
+      routeSpecification == [
+          originLocation: [
+              name: "Rijeka",
+              countryName: "Croatia",
+              unLoCode: [
+                  code: [
+                      encoded: "HRRJK",
+                      countryCode: "HR",
+                      locationCode: "RJK"
+                  ],
+                  coordinates: [
+                      encoded: "4520N 01424E",
+                      latitudeInDegrees: 45.33,
+                      longitudeInDegrees: 14.40
+                  ],
+                  function: [
+                      encoded: "1234----",
+                      isPort: true,
+                      isRailTerminal: true,
+                      isRoadTerminal: true,
+                      isAirport: true,
+                      isPostalExchangeOffice: false,
+                      isBorderCrossing: false
+                  ]
               ],
-              coordinates: [
-                  encoded: "4548N 01600E",
-                  latitudeInDegrees: 45.80,
-                  longitudeInDegrees: 16.00
-              ],
-              function: [
-                  encoded: "-2345---",
-                  isPort: false,
-                  isRailTerminal: true,
-                  isRoadTerminal: true,
-                  isAirport: true,
-                  isPostalExchangeOffice: true,
-                  isBorderCrossing: false
-              ]
+              portCapabilities: ["CONTAINER_PORT", "SEA_PORT"]
           ],
-          portCapabilities: ["NO_PORT"]
+
+          destinationLocation: [
+              name: "Zagreb",
+              countryName: "Croatia",
+              unLoCode: [
+                  code: [
+                      encoded: "HRZAG",
+                      countryCode: "HR",
+                      locationCode: "ZAG"
+                  ],
+                  coordinates: [
+                      encoded: "4548N 01600E",
+                      latitudeInDegrees: 45.80,
+                      longitudeInDegrees: 16.00
+                  ],
+                  function: [
+                      encoded: "-2345---",
+                      isPort: false,
+                      isRailTerminal: true,
+                      isRoadTerminal: true,
+                      isAirport: true,
+                      isPostalExchangeOffice: true,
+                      isBorderCrossing: false
+                  ]
+              ],
+              portCapabilities: ["NO_PORT"]
+          ]
       ]
     }
   }

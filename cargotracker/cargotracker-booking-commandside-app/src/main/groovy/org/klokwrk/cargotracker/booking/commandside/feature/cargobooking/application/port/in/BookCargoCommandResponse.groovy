@@ -26,8 +26,6 @@ import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 @MapConstructor
 @CompileStatic
 class BookCargoCommandResponse {
-  String cargoIdentifier
-
-  Map<String, ?> originLocation
-  Map<String, ?> destinationLocation
+  Map<String, ?> cargoId
+  Map<String, ?> routeSpecification
 }

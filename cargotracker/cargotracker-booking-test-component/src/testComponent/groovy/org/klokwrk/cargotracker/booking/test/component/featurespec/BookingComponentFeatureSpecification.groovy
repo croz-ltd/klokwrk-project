@@ -50,7 +50,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     Integer commandResponseStatusCode = commandResponse.statusLine.statusCode
 
     Object commandResponseJson = new JsonSlurper().parseText(commandResponse.entity.content.text)
-    String commandResponseCargoIdentifier = commandResponseJson.payload.cargoIdentifier
+    String commandResponseCargoIdentifier = commandResponseJson.payload.cargoId.identifier
 
     then:
     commandResponseStatusCode == 200
@@ -97,7 +97,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     Integer commandResponseStatusCode = commandResponse.statusLine.statusCode
 
     Object commandResponseJson = new JsonSlurper().parseText(commandResponse.entity.content.text)
-    String commandResponseCargoIdentifier = commandResponseJson.payload.cargoIdentifier
+    String commandResponseCargoIdentifier = commandResponseJson.payload.cargoId.identifier
 
     then:
     commandResponseStatusCode == 200

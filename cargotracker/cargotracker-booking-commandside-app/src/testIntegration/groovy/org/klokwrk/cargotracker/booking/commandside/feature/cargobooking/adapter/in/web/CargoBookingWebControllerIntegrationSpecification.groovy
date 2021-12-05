@@ -87,13 +87,13 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     verifyAll(responseContentMap.payload as Map) {
-      size() == 3
-      cargoIdentifier == myCargoIdentifier
-      originLocation.name == "Rotterdam"
-      destinationLocation.name == "Rijeka"
+      size() == 2
+      cargoId.identifier == myCargoIdentifier
+      routeSpecification.originLocation.name == "Rotterdam"
+      routeSpecification.destinationLocation.name == "Rijeka"
     }
 
-    verifyAll(responseContentMap.payload.originLocation as Map) {
+    verifyAll(responseContentMap.payload.routeSpecification.originLocation as Map) {
       size() == 4
       name == "Rotterdam"
       countryName == "Netherlands"
@@ -113,7 +113,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
       portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
     }
 
-    verifyAll(responseContentMap.payload.destinationLocation as Map) {
+    verifyAll(responseContentMap.payload.routeSpecification.destinationLocation as Map) {
       size() == 4
       name == "Rijeka"
       countryName == "Croatia"
