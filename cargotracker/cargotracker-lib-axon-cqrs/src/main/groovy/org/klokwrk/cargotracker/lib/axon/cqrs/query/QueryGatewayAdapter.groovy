@@ -22,7 +22,7 @@ import org.axonframework.messaging.GenericMessage
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryExecutionException
 import org.axonframework.queryhandling.QueryGateway
-import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
+import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 
 import java.util.concurrent.CompletionException
 

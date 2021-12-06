@@ -18,8 +18,8 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
-import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
+import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
+import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
 
 @CompileStatic
 interface BookCargoCommandPortIn {

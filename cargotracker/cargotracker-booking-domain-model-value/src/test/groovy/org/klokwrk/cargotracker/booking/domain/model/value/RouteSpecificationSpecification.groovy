@@ -17,7 +17,7 @@
  */
 package org.klokwrk.cargotracker.booking.domain.model.value
 
-import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
 import spock.lang.Specification
 
 class RouteSpecificationSpecification extends Specification {

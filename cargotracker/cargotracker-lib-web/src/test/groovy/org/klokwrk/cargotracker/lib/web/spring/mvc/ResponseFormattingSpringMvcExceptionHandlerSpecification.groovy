@@ -18,8 +18,9 @@
 package org.klokwrk.cargotracker.lib.web.spring.mvc
 
 import groovy.json.JsonSlurper
-import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
-import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
+import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
+import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
+import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
@@ -42,7 +43,6 @@ import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import spock.lang.Specification
-import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType
 import uk.org.lidalia.slf4jext.Level
 import uk.org.lidalia.slf4jtest.LoggingEvent
 import uk.org.lidalia.slf4jtest.TestLogger

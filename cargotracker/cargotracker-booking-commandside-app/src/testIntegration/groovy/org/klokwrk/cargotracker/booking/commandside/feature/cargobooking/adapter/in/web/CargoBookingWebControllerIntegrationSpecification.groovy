@@ -19,8 +19,8 @@ package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapte
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
-import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType
-import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
+import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
+import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpHeaders

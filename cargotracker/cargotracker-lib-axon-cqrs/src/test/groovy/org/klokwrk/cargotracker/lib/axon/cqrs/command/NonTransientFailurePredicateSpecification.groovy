@@ -19,10 +19,10 @@ package org.klokwrk.cargotracker.lib.axon.cqrs.command
 
 import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.common.AxonNonTransientException
-import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
-import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
-import org.klokwrk.cargotracker.lib.boundary.api.exception.RemoteHandlerException
-import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
+import org.klokwrk.cargotracker.lib.boundary.api.application.exception.RemoteHandlerException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import spock.lang.Specification
 
 class NonTransientFailurePredicateSpecification extends Specification {

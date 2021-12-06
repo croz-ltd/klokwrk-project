@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapte
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFactory
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
-import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
+import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.web.util.ClientIpAddressExtractor
 
 import javax.servlet.http.HttpServletRequest

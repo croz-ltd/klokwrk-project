@@ -22,8 +22,8 @@ import groovy.transform.Generated
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
-import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
-import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.cargotracker.lib.domain.model.command.BaseCreateCommand
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.transform.KwrkImmutable

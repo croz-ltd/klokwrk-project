@@ -24,9 +24,9 @@ import org.axonframework.messaging.Message
 import org.axonframework.messaging.MessageHandlerInterceptor
 import org.axonframework.messaging.unitofwork.UnitOfWork
 import org.axonframework.queryhandling.QueryExecutionException
-import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
-import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
-import org.klokwrk.cargotracker.lib.boundary.api.exception.RemoteHandlerException
+import org.klokwrk.cargotracker.lib.boundary.api.application.exception.RemoteHandlerException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
 
 /**
  * Simplifies throwing a business exception from query handling code, making sure it is propagated back to the caller as a details field of Axon's {@code QueryExecutionException}.

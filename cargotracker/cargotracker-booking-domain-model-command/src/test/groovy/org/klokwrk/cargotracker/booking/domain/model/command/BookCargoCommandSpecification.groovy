@@ -4,8 +4,8 @@ import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
-import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
-import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import org.klokwrk.lang.groovy.misc.UUIDUtils
 import spock.lang.Specification
 
