@@ -25,8 +25,8 @@ import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applica
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandGatewayAdapter
-import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
-import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
+import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
+import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
 import org.klokwrk.lib.validation.springboot.ValidationService
 import org.springframework.stereotype.Service
 

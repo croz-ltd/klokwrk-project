@@ -17,14 +17,14 @@
  */
 package org.klokwrk.cargotracker.lib.web.spring.mvc
 
-import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
-import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
-import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
-import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType
-import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
-import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
-import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationCode
-import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
+import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
+import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
+import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationCode
+import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.springframework.context.support.ResourceBundleMessageSource
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

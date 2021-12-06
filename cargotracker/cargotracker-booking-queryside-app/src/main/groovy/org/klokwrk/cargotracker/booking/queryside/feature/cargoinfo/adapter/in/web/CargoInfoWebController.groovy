@@ -21,9 +21,9 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryResponse
-import org.klokwrk.cargotracker.lib.boundary.api.metadata.constant.MetaDataConstant
-import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationRequest
-import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
+import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
+import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
+import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDataConstant
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping

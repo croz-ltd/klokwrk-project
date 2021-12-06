@@ -18,11 +18,11 @@
 package org.klokwrk.cargotracker.lib.web.spring.mvc
 
 import org.hibernate.validator.constraints.ScriptAssert
-import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ResponseMetaDataValidationReportPart
-import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ValidationReportConstraintViolation
-import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType
-import org.klokwrk.cargotracker.lib.boundary.api.operation.OperationResponse
-import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
+import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ResponseMetaDataValidationReportPart
+import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ValidationReportConstraintViolation
+import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
+import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
+import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import org.springframework.context.support.ResourceBundleMessageSource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.method.HandlerMethod

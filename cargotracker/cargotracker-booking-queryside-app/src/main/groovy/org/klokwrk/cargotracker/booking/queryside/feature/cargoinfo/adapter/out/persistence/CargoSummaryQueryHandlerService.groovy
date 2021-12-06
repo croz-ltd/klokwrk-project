@@ -23,8 +23,8 @@ import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.CargoSummaryJpaEntity
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.CargoSummaryJpaRepository
-import org.klokwrk.cargotracker.lib.boundary.api.exception.QueryException
-import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.springframework.stereotype.Service
 
 /**

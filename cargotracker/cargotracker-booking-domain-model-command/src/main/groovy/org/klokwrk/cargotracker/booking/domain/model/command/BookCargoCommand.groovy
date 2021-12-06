@@ -18,11 +18,12 @@
 package org.klokwrk.cargotracker.booking.domain.model.command
 
 import groovy.transform.CompileStatic
+import groovy.transform.Generated
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
-import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
-import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.cargotracker.lib.domain.model.command.BaseCreateCommand
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
@@ -52,11 +53,16 @@ class BookCargoCommand implements BaseCreateCommand, PostMapConstructorCheckable
     // On the other hand, we can have such rules implemented in the aggregate. However, that would require command dispatch and instantiation of the aggregate. Suppose stateless rules do not depend
     // on the aggregate state. In that case, it might be better for performance to check and invoke them before reaching the aggregate (similar as we are doing with validations of application service
     // requests).
+    //
+    // After all this discussion, it is worth mentioning that constraints are not really use-case specific in our concrete example here, and we can safely move them into the RouteSpecification value
+    // object. In fact, that concrete constraint is repeated in RouteSpecification, therefore the same constraint in command will never be violated as RouteSpecification is already constructed.
+    // Still, we'll also leave constraint here for illustration purposes.
 
-    requireKnownLocation(routeSpecification.originLocation, "originLocationUnknown")
-    requireKnownLocation(routeSpecification.destinationLocation, "destinationLocationUnknown")
+    requireKnownLocation(routeSpecification.originLocation, "bookCargoCommand.originLocationUnknown")
+    requireKnownLocation(routeSpecification.destinationLocation, "bookCargoCommand.destinationLocationUnknown")
   }
 
+  @Generated // To avoid unnecessary drop-down in code coverage (see the last paragraph in comment inside postMapConstructorCheck() method).
   private void requireKnownLocation(Location location, String violationCodeKey) {
     if (location == Location.UNKNOWN_LOCATION) {
       throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey(violationCodeKey))

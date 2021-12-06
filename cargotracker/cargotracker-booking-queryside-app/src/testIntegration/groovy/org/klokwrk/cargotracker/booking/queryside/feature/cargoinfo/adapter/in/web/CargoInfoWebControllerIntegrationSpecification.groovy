@@ -21,8 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracker.booking.queryside.test.base.AbstractQuerySideIntegrationSpecification
-import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType
-import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
+import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
+import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration

@@ -38,18 +38,6 @@ class BookCargoCommandFixtures {
   ]
 
   /**
-   * Creates invalid command where origin and destination do not form supported route specification.
-   */
-  static BookCargoCommand commandInvalidRouteSpecification(String cargoIdentifier = UUID.randomUUID()) {
-    BookCargoCommand bookCargoCommand = new BookCargoCommand(
-        cargoId: CargoId.create(cargoIdentifier),
-        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRZAG, LOCATION_SAMPLE_MAP.HRKRK)
-    )
-
-    return bookCargoCommand
-  }
-
-  /**
    * Creates valid command where origin and destination locations form supported route.
    */
   static BookCargoCommand commandValidRouteSpecification(String cargoIdentifier = UUID.randomUUID()) {

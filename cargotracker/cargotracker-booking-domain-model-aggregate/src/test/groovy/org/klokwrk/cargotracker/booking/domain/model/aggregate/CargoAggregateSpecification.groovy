@@ -23,8 +23,6 @@ import org.axonframework.test.aggregate.TestExecutor
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.BookCargoCommandFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.CargoBookedEventFixtures
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
-import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
-import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationCode
 import spock.lang.Specification
 
 class CargoAggregateSpecification extends Specification {
@@ -33,25 +31,6 @@ class CargoAggregateSpecification extends Specification {
 
   void setup() {
     aggregateTestFixture = new AggregateTestFixture(CargoAggregate)
-  }
-
-  void "should fail when origin and destination locations are not container ports at sea"() {
-    given:
-    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandInvalidRouteSpecification()
-    TestExecutor<CargoAggregate> cargoAggregateTestExecutor = aggregateTestFixture.givenNoPriorActivity()
-
-    when:
-    ResultValidator<CargoAggregate> cargoAggregateResultValidator = cargoAggregateTestExecutor.when(bookCargoCommand)
-    CommandException actualException = cargoAggregateResultValidator.actualException
-
-    then:
-    verifyAll {
-      cargoAggregateResultValidator.expectException(CommandException)
-      actualException.cause == null
-
-      actualException.violationInfo.violationCode.code == ViolationCode.BAD_REQUEST.code
-      actualException.violationInfo.violationCode.codeKey == CargoAggregate.VIOLATION_DESTINATION_LOCATION_CANNOT_ACCEPT_CARGO
-    }
   }
 
   void "should work when origin and destination locations are both container ports at sea"() {

@@ -27,8 +27,8 @@ import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
-import org.klokwrk.cargotracker.lib.boundary.api.exception.CommandException
-import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import spock.lang.Specification
 
 class CargoBookingFactoryServiceSpecification extends Specification {
@@ -49,39 +49,33 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     thrown(AssertionError)
   }
 
-  void "createBookCargoCommand - should fail for invalid originLocation"() {
+  void "createBookCargoCommand - should fail for invalid RouteSpecificationData"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(routeSpecification: new RouteSpecificationData(originLocation: "invalidOrigin", destinationLocation: "HRRJK"))
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+        routeSpecification: new RouteSpecificationData(originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+    )
 
     when:
     cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
 
     then:
-    CommandException commandException = thrown()
-    commandException.violationInfo.severity == Severity.WARNING
-    commandException.violationInfo.violationCode.code == "400"
-    commandException.violationInfo.violationCode.codeMessage == "Bad Request"
-    commandException.violationInfo.violationCode.codeKey == "originLocationUnknown"
-  }
+    DomainException domainException = thrown()
+    domainException.violationInfo.severity == Severity.WARNING
+    domainException.violationInfo.violationCode.code == "400"
+    domainException.violationInfo.violationCode.codeMessage == "Bad Request"
+    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
 
-  void "createBookCargoCommand - should fail for invalid destinationLocation"() {
-    given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(routeSpecification: new RouteSpecificationData(originLocation: "HRRJK", destinationLocation: "invalidDestination"))
-
-    when:
-    cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
-
-    then:
-    CommandException commandException = thrown()
-    commandException.violationInfo.severity == Severity.WARNING
-    commandException.violationInfo.violationCode.code == "400"
-    commandException.violationInfo.violationCode.codeMessage == "Bad Request"
-    commandException.violationInfo.violationCode.codeKey == "destinationLocationUnknown"
+    where:
+    originLocationParam | destinationLocationParam | violationCodeKeyParam
+    "invalidOrigin"     | "HRRJK"                  | "routeSpecification.unknownOriginLocation"
+    "HRRJK"             | "invalidOrigin"          | "routeSpecification.unknownDestinationLocation"
+    "HRRJK"             | "HRRJK"                  | "routeSpecification.originAndDestinationLocationAreEqual"
+    "HRRJK"             | "HRZAG"                  | "routeSpecification.cannotRouteCargoFromOriginToDestination"
   }
 
   void "createBookCargoCommand - should work for unspecified cargo identifier"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(routeSpecification: new RouteSpecificationData(originLocation: "HRRJK", destinationLocation: "HRZAG"))
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(routeSpecification: new RouteSpecificationData(originLocation: "HRRJK", destinationLocation: "NLRTM"))
 
     when:
     BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
@@ -92,7 +86,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
       cargoId
       cargoId.identifier
       routeSpecification.originLocation.unLoCode.code == "HRRJK"
-      routeSpecification.destinationLocation.unLoCode.code == "HRZAG"
+      routeSpecification.destinationLocation.unLoCode.code == "NLRTM"
     }
   }
 
@@ -101,7 +95,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     String cargoIdentifier = UUID.randomUUID()
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: cargoIdentifier,
-        routeSpecification: new RouteSpecificationData(originLocation: "HRRJK", destinationLocation: "HRZAG")
+        routeSpecification: new RouteSpecificationData(originLocation: "HRRJK", destinationLocation: "NLRTM")
     )
 
     when:
@@ -112,7 +106,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
       aggregateIdentifier == cargoIdentifier
       cargoId.identifier == cargoIdentifier
       routeSpecification.originLocation.unLoCode.code == "HRRJK"
-      routeSpecification.destinationLocation.unLoCode.code == "HRZAG"
+      routeSpecification.destinationLocation.unLoCode.code == "NLRTM"
     }
   }
 
@@ -134,7 +128,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     given:
     String myCargoIdentifier = UUID.randomUUID()
     Location myOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRRJK")
-    Location myDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRZAG")
+    Location myDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("NLRTM")
 
     CargoAggregate cargoAggregate = new CargoAggregate(
         cargoId: CargoId.create(myCargoIdentifier),
@@ -179,22 +173,22 @@ class CargoBookingFactoryServiceSpecification extends Specification {
           ],
 
           destinationLocation: [
-              name: "Zagreb",
-              countryName: "Croatia",
+              name: "Rotterdam",
+              countryName: "Netherlands",
               unLoCode: [
                   code: [
-                      encoded: "HRZAG",
-                      countryCode: "HR",
-                      locationCode: "ZAG"
+                      encoded: "NLRTM",
+                      countryCode: "NL",
+                      locationCode: "RTM"
                   ],
                   coordinates: [
-                      encoded: "4548N 01600E",
-                      latitudeInDegrees: 45.80,
-                      longitudeInDegrees: 16.00
+                      encoded: "5155N 00430E",
+                      latitudeInDegrees: 51.92,
+                      longitudeInDegrees: 4.50
                   ],
                   function: [
-                      encoded: "-2345---",
-                      isPort: false,
+                      encoded: "12345---",
+                      isPort: true,
                       isRailTerminal: true,
                       isRoadTerminal: true,
                       isAirport: true,
@@ -202,7 +196,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
                       isBorderCrossing: false
                   ]
               ],
-              portCapabilities: ["NO_PORT"]
+              portCapabilities: ["CONTAINER_PORT", "SEA_PORT"]
           ]
       ]
     }

@@ -19,8 +19,8 @@ package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapte
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
-import org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType
-import org.klokwrk.cargotracker.lib.boundary.api.severity.Severity
+import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
+import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpHeaders
@@ -295,8 +295,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
-    "hr-HR"             | "hr_HR"           | "Teret nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije."
-    "en"                | "en"              | "Destination location cannot accept cargo from specified origin location."
+    "hr-HR"             | "hr_HR"           | "Teret nije moguće poslati sa navedene početne lokacije na navedenu ciljnu lokaciju."
+    "en"                | "en"              | "Cargo cannot be sent from the specified origin location to the destination location."
   }
 
   void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguageParam]"() {

@@ -17,6 +17,7 @@
  */
 package org.klokwrk.cargotracker.booking.domain.model.value
 
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
 import spock.lang.Specification
 
 class RouteSpecificationSpecification extends Specification {
@@ -35,11 +36,11 @@ class RouteSpecificationSpecification extends Specification {
 
   void "map constructor should work for correct input params"() {
     when:
-    RouteSpecification routeSpecification = new RouteSpecification(originLocation: locationSampleMap["HRRJK"], destinationLocation: locationSampleMap["HRZAG"])
+    RouteSpecification routeSpecification = new RouteSpecification(originLocation: locationSampleMap["HRRJK"], destinationLocation: locationSampleMap["NLRTM"])
 
     then:
     routeSpecification.originLocation.unLoCode.code == "HRRJK"
-    routeSpecification.destinationLocation.unLoCode.code == "HRZAG"
+    routeSpecification.destinationLocation.unLoCode.code == "NLRTM"
   }
 
   void "map constructor should fail for invalid input params"() {
@@ -56,13 +57,31 @@ class RouteSpecificationSpecification extends Specification {
     locationSampleMap["HRRJK"] | null                       | "notNullValue"
   }
 
+  void "map constructor should fail for input params violating business rules"() {
+    when:
+    new RouteSpecification(originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+
+    then:
+    DomainException domainException = thrown()
+    domainException.violationInfo.violationCode.code == "400"
+    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+
+    where:
+    originLocationParam        | destinationLocationParam   | violationCodeKeyParam
+    Location.UNKNOWN_LOCATION  | locationSampleMap["NLRTM"] | "routeSpecification.unknownOriginLocation"
+    locationSampleMap["HRRJK"] | Location.UNKNOWN_LOCATION  | "routeSpecification.unknownDestinationLocation"
+    locationSampleMap["HRRJK"] | locationSampleMap["HRRJK"] | "routeSpecification.originAndDestinationLocationAreEqual"
+    locationSampleMap["HRRJK"] | locationSampleMap["HRZAG"] | "routeSpecification.cannotRouteCargoFromOriginToDestination"
+    locationSampleMap["HRZAG"] | locationSampleMap["HRRJK"] | "routeSpecification.cannotRouteCargoFromOriginToDestination"
+  }
+
   void "create() factory method should work for correct input params"() {
     when:
-    RouteSpecification routeSpecification = RouteSpecification.create(locationSampleMap["HRRJK"], locationSampleMap["HRZAG"])
+    RouteSpecification routeSpecification = RouteSpecification.create(locationSampleMap["HRRJK"], locationSampleMap["NLRTM"])
 
     then:
     routeSpecification.originLocation.unLoCode.code == "HRRJK"
-    routeSpecification.destinationLocation.unLoCode.code == "HRZAG"
+    routeSpecification.destinationLocation.unLoCode.code == "NLRTM"
   }
 
   void "create() factory method should fail for invalid input params"() {
@@ -79,20 +98,20 @@ class RouteSpecificationSpecification extends Specification {
     locationSampleMap["HRRJK"] | null                       | "notNullValue"
   }
 
-  void "canDestinationAcceptCargoFromOrigin() should work as expected"() {
+  void "create() factory method should fail for input params violating business rules"() {
     when:
-    RouteSpecification routeSpecification = new RouteSpecification(originLocation: originLocationInstance, destinationLocation: destinationLocationInstance)
+    RouteSpecification.create(originLocationParam, destinationLocationParam)
 
     then:
-    routeSpecification.canDestinationAcceptCargoFromOrigin() == destinationCanAccept
+    DomainException domainException = thrown()
+    domainException.violationInfo.violationCode.code == "400"
+    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
 
     where:
-    originLocationInstance     | destinationLocationInstance | destinationCanAccept | originDescription               | destinationDescription
-    locationSampleMap["NLRTM"] | locationSampleMap["HRRJK"]  | true                 | "sea port & container"          | "sea port & container terminal"
-    locationSampleMap["HRRJK"] | locationSampleMap["HRRJK"]  | false                | "any"                           | "equals as origin"
-    locationSampleMap["HRZAG"] | locationSampleMap["HRRJK"]  | false                | "not port"                      | "sea port & container terminal"
-    locationSampleMap["HRRJK"] | locationSampleMap["HRZAG"]  | false                | "sea port & container terminal" | "not port"
-    locationSampleMap["HRRJK"] | locationSampleMap["BEBRU"]  | false                | "sea port & container terminal" | "river port"
-    locationSampleMap["BEBRU"] | locationSampleMap["HRRJK"]  | false                | "river port"                    | "sea port & container terminal"
+    originLocationParam        | destinationLocationParam   | violationCodeKeyParam
+    Location.UNKNOWN_LOCATION  | locationSampleMap["NLRTM"] | "routeSpecification.unknownOriginLocation"
+    locationSampleMap["HRRJK"] | Location.UNKNOWN_LOCATION  | "routeSpecification.unknownDestinationLocation"
+    locationSampleMap["HRRJK"] | locationSampleMap["HRRJK"] | "routeSpecification.originAndDestinationLocationAreEqual"
+    locationSampleMap["HRRJK"] | locationSampleMap["HRZAG"] | "routeSpecification.cannotRouteCargoFromOriginToDestination"
   }
 }
