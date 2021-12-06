@@ -161,8 +161,8 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
     where:
     acceptLanguageHeaderParam | violationMessageParam
-    "hr-HR"                   | "Teret nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije."
-    "en"                      | "Destination location cannot accept cargo from specified origin location."
+    "hr-HR"                   | "Teret nije moguće poslati sa navedene početne lokacije na navedenu ciljnu lokaciju."
+    "en"                      | "Cargo cannot be sent from the specified origin location to the destination location."
   }
 
   void "query - should not find non-existing cargo: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {

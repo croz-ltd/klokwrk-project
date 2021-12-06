@@ -295,8 +295,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
-    "hr-HR"             | "hr_HR"           | "Teret nije moguće poslati na ciljnu lokaciju iz navedene početne lokacije."
-    "en"                | "en"              | "Destination location cannot accept cargo from specified origin location."
+    "hr-HR"             | "hr_HR"           | "Teret nije moguće poslati sa navedene početne lokacije na navedenu ciljnu lokaciju."
+    "en"                | "en"              | "Cargo cannot be sent from the specified origin location to the destination location."
   }
 
   void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguageParam]"() {

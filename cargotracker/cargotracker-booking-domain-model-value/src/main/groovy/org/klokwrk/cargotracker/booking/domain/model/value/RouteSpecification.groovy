@@ -18,6 +18,8 @@
 package org.klokwrk.cargotracker.booking.domain.model.value
 
 import groovy.transform.CompileStatic
+import org.klokwrk.cargotracker.lib.boundary.api.exception.DomainException
+import org.klokwrk.cargotracker.lib.boundary.api.violation.ViolationInfo
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
@@ -44,41 +46,28 @@ class RouteSpecification implements PostMapConstructorCheckable {
     // Here we are comply to the validation ordering as explained in ADR-0013.
     requireMatch(originLocation, notNullValue())
     requireMatch(destinationLocation, notNullValue())
+
+    requireKnownLocation(originLocation, "routeSpecification.unknownOriginLocation")
+    requireKnownLocation(destinationLocation, "routeSpecification.unknownDestinationLocation")
+    requireDifferentOriginAndDestination(originLocation, destinationLocation, "routeSpecification.originAndDestinationLocationAreEqual")
+    requireCanRouteCargoFromOriginToDestination(originLocation, destinationLocation, "routeSpecification.cannotRouteCargoFromOriginToDestination")
   }
 
-  Boolean areDestinationAndOriginEqual() {
-    if (originLocation == destinationLocation) {
-      return true
+  private void requireKnownLocation(Location location, String violationCodeKey) {
+    if (location == Location.UNKNOWN_LOCATION) {
+      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey(violationCodeKey))
     }
-
-    return false
   }
 
-  Boolean canDestinationAcceptCargoFromOrigin() {
-    // We can question here why equality check is not executed during construction.
-    //
-    // The first reason is technical and dependent on the current implementation. The canDestinationAcceptCargoFromOrigin() method is executed by business logic inside the aggregate. And in the
-    // aggregate, we want to throw CommandException instead of AssertionError as throwing CommandException (or DomainException) directly from the value object is not appropriate.
-    //
-    // One alternative would be to create a custom exception like InvalidParameterException and place it in the domain-model-value module. InvalidParameterException should then carry some type of
-    // error code to translate it in the desired domain exception.
-    //
-    // There is a second reason, though. We can use the RouteSpecification value object in different scenarios. In some of them, all checks from canDestinationAcceptCargoFromOrigin() would not be
-    // necessary (i.e., when fetching RouteSpecification from the database. We might even conclude that we need another type of object, perhaps something like RouteSpecificationPolicy domain service,
-    // which will be responsible for checking all required business rules for a particular context.
-    //
-    // Anyway, while value objects can contain helpful domain-related checks and methods, they should be at a reasonably low level as we can use the same value objects in quite different use cases.
-    //
-    // At the moment, we have here a simple static method implementing some more advanced business rules. However, we can move it later outside of this class to a more appropriate place.
-
+  private void requireDifferentOriginAndDestination(Location originLocation, Location destinationLocation, String violationCodeKey) {
     if (originLocation == destinationLocation) {
-      return false
+      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey(violationCodeKey))
     }
+  }
 
-    if (originLocation.portCapabilities.isSeaContainerPort() && destinationLocation.portCapabilities.isSeaContainerPort()) {
-      return true
+  private void requireCanRouteCargoFromOriginToDestination(Location originLocation, Location destinationLocation, String violationCodeKey) {
+    if (!(originLocation.portCapabilities.isSeaContainerPort() && destinationLocation.portCapabilities.isSeaContainerPort())) {
+      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey(violationCodeKey))
     }
-
-    return false
   }
 }
