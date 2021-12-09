@@ -21,7 +21,13 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
+import org.klokwrk.lang.groovy.misc.InstantUtils
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
+
+import java.time.Clock
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 import static org.hamcrest.Matchers.notNullValue
 
@@ -33,11 +39,59 @@ import static org.hamcrest.Matchers.notNullValue
 @KwrkImmutable
 @CompileStatic
 class RouteSpecification implements PostMapConstructorCheckable {
+  /**
+   * Location from which the cargo should be picked up.
+   */
   Location originLocation
+
+  /**
+   * Location to which cargo should be shipped.
+   */
   Location destinationLocation
 
-  static RouteSpecification create(Location originLocation, Location destinationLocation) {
-    RouteSpecification createdRouteSpecification = new RouteSpecification(originLocation: originLocation, destinationLocation: destinationLocation)
+  /**
+   * Time of creation of this instance.
+   * <p/>
+   * During construction it is used as an equivalent of current system time for time based calculations.
+   */
+  Instant creationTime
+
+  /**
+   * The earliest time when cargo can be departed.
+   * <p/>
+   * This instant should be rounded to the hour (minutes, seconds and nanos set to 0).
+   * <p/>
+   * This instant indicates the earliest time in which customer can prepare a cargo ready to be shipped.
+   */
+  Instant departureEarliestTime
+
+  /**
+   * The latest time when cargo has to be departed.
+   * <p/>
+   * This instant should be rounded to the hour (minutes, seconds and nanos set to 0).
+   * <p/>
+   * This time indicates the latest time when cargo should be shipped or otherwise packaged commodities can go bad.
+   */
+  Instant departureLatestTime
+
+  /**
+   * Creates RouteSpecification instance and adjust input values as necessary.
+   * <p/>
+   * If {@code departureEarliestTime} contains non-zero minutes, seconds or nanos, {@code departureEarliestTime} is rounded up to the next hour.
+   * <p/>
+   * If {@code departureLatestTime} contains non-zero minutes, seconds or nanos, {@code departureLatestTime} is rounded up to the next hour.
+   */
+  static RouteSpecification create(
+      Location originLocation, Location destinationLocation, Instant departureEarliestTime, Instant departureLatestTime, Clock clock = Clock.systemUTC())
+  {
+    Instant departureEarliestTimeToUse = departureEarliestTime ? InstantUtils.roundUpInstantToTheHour(departureEarliestTime) : null
+    Instant departureLatestTimeToUse = departureLatestTime ? InstantUtils.roundUpInstantToTheHour(departureLatestTime) : null
+
+    RouteSpecification createdRouteSpecification = new RouteSpecification(
+        originLocation: originLocation, destinationLocation: destinationLocation, creationTime: Instant.now(clock),
+        departureEarliestTime: departureEarliestTimeToUse, departureLatestTime: departureLatestTimeToUse
+    )
+
     return createdRouteSpecification
   }
 
@@ -47,10 +101,21 @@ class RouteSpecification implements PostMapConstructorCheckable {
     requireMatch(originLocation, notNullValue())
     requireMatch(destinationLocation, notNullValue())
 
+    requireMatch(creationTime, notNullValue())
+    requireMatch(departureEarliestTime, notNullValue())
+    requireMatch(departureLatestTime, notNullValue())
+
     requireKnownLocation(originLocation, "routeSpecification.unknownOriginLocation")
     requireKnownLocation(destinationLocation, "routeSpecification.unknownDestinationLocation")
-    requireDifferentOriginAndDestination(originLocation, destinationLocation, "routeSpecification.originAndDestinationLocationAreEqual")
-    requireCanRouteCargoFromOriginToDestination(originLocation, destinationLocation, "routeSpecification.cannotRouteCargoFromOriginToDestination")
+    requireDifferentOriginAndDestination(originLocation, destinationLocation)
+    requireCanRouteCargoFromOriginToDestination(originLocation, destinationLocation)
+
+    requireInstantInFuture(departureEarliestTime, creationTime, "routeSpecification.departureEarliestTime.notInFuture")
+    requireInstantInFuture(departureLatestTime, creationTime, "routeSpecification.departureLatestTime.notInFuture")
+    requireDepartureEarliestTimeBeforeOrEqualToDepartureLatestTime(departureEarliestTime, departureLatestTime)
+
+    requireInstantInHours(departureEarliestTime, "routeSpecification.departureEarliestTime.notInHours")
+    requireInstantInHours(departureLatestTime, "routeSpecification.departureLatestTime.notInHours")
   }
 
   private void requireKnownLocation(Location location, String violationCodeKey) {
@@ -59,14 +124,36 @@ class RouteSpecification implements PostMapConstructorCheckable {
     }
   }
 
-  private void requireDifferentOriginAndDestination(Location originLocation, Location destinationLocation, String violationCodeKey) {
+  private void requireDifferentOriginAndDestination(Location originLocation, Location destinationLocation) {
     if (originLocation == destinationLocation) {
+      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("routeSpecification.originAndDestinationLocationAreEqual"))
+    }
+  }
+
+  private void requireCanRouteCargoFromOriginToDestination(Location originLocation, Location destinationLocation) {
+    if (!(originLocation.portCapabilities.isSeaContainerPort() && destinationLocation.portCapabilities.isSeaContainerPort())) {
+      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("routeSpecification.cannotRouteCargoFromOriginToDestination"))
+    }
+  }
+
+  private void requireInstantInFuture(Instant instantToCheck, Instant currentTimeInstant, String violationCodeKey) {
+    if (currentTimeInstant >= instantToCheck) {
       throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey(violationCodeKey))
     }
   }
 
-  private void requireCanRouteCargoFromOriginToDestination(Location originLocation, Location destinationLocation, String violationCodeKey) {
-    if (!(originLocation.portCapabilities.isSeaContainerPort() && destinationLocation.portCapabilities.isSeaContainerPort())) {
+  private void requireDepartureEarliestTimeBeforeOrEqualToDepartureLatestTime(Instant departureEarliestTime, Instant departureLatestTime) {
+    if (departureEarliestTime > departureLatestTime) {
+      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("routeSpecification.departureEarliestTime.afterDepartureLatestTime"))
+    }
+  }
+
+  private void requireInstantInHours(Instant instantToCheck, String violationCodeKey) {
+    Integer nanoSeconds = LocalDateTime.ofInstant(instantToCheck, ZoneOffset.UTC).nano
+    Integer seconds = LocalDateTime.ofInstant(instantToCheck, ZoneOffset.UTC).second
+    Integer minutes = LocalDateTime.ofInstant(instantToCheck, ZoneOffset.UTC).minute
+
+    if (nanoSeconds + seconds + minutes != 0) {
       throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey(violationCodeKey))
     }
   }
