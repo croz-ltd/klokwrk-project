@@ -24,16 +24,25 @@ import org.apache.http.entity.ContentType
 import org.klokwrk.cargotracker.booking.test.component.test.base.AbstractComponentIntegrationSpecification
 import spock.util.concurrent.PollingConditions
 
+import java.time.Duration
+import java.time.Instant
+
 class BookingComponentFeatureSpecification extends AbstractComponentIntegrationSpecification {
   void "command - should book cargo: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
+    Instant currentTime = Instant.now()
+    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
+    Instant departureLatestTime = currentTime + Duration.ofHours(2)
+
     //noinspection HttpUrlsUsage
     String commandCargoBookUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
     String commandPostRequestBody = """
         {
           "routeSpecification": {
             "originLocation": "HRRJK",
-            "destinationLocation": "NLRTM"
+            "destinationLocation": "NLRTM",
+            "departureEarliestTime": "${ departureEarliestTime }",
+            "departureLatestTime": "${ departureLatestTime }"
           }
         }
         """
@@ -64,13 +73,19 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
   void "query - should find booked cargo: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
+    Instant currentTime = Instant.now()
+    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
+    Instant departureLatestTime = currentTime + Duration.ofHours(2)
+
     //noinspection HttpUrlsUsage
     String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
     String commandPostRequestBody = """
         {
           "routeSpecification": {
             "originLocation": "HRRJK",
-            "destinationLocation": "NLRTM"
+            "destinationLocation": "NLRTM",
+            "departureEarliestTime": "${ departureEarliestTime }",
+            "departureLatestTime": "${ departureLatestTime }"
           }
         }
         """
@@ -130,13 +145,19 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
   void "command - should not book cargo for invalid command: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
+    Instant currentTime = Instant.now()
+    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
+    Instant departureLatestTime = currentTime + Duration.ofHours(2)
+
     //noinspection HttpUrlsUsage
     String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
     String commandPostRequestBody = """
         {
           "routeSpecification": {
             "originLocation": "NLRTM",
-            "destinationLocation": "HRZAG"
+            "destinationLocation": "HRZAG",
+            "departureEarliestTime": "${ departureEarliestTime }",
+            "departureLatestTime": "${ departureLatestTime }"
           }
         }
         """

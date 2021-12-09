@@ -35,8 +35,12 @@ import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMe
 import org.klokwrk.cargotracker.lib.boundary.api.application.exception.RemoteHandlerException
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
+import org.klokwrk.lang.groovy.misc.InstantUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+
+import java.time.Duration
+import java.time.Instant
 
 abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
   @Autowired
@@ -47,10 +51,19 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
 
   void "should work for correct request"() {
     given:
+    Instant currentInstant = Instant.now()
+    Instant currentInstantAndOneHour = currentInstant + Duration.ofHours(1)
+    Instant currentInstantAndTwoHours = currentInstant + Duration.ofHours(2)
+
+    Instant currentInstantRoundedAndOneHour = InstantUtils.roundUpInstantToTheHour(currentInstantAndOneHour)
+    Instant currentInstantRoundedAndTwoHours = InstantUtils.roundUpInstantToTheHour(currentInstantAndTwoHours)
+
     String myCargoIdentifier = UUID.randomUUID()
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: myCargoIdentifier,
-        routeSpecification: new RouteSpecificationData(originLocation: "NLRTM", destinationLocation: "HRRJK")
+        routeSpecification: new RouteSpecificationData(
+            originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: currentInstantAndOneHour, departureLatestTime: currentInstantAndTwoHours
+        )
     )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
@@ -67,6 +80,8 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
       cargoId.identifier == myCargoIdentifier
       routeSpecification.originLocation.name == "Rotterdam"
       routeSpecification.destinationLocation.name == "Rijeka"
+      routeSpecification.departureEarliestTime == currentInstantRoundedAndOneHour
+      routeSpecification.departureLatestTime == currentInstantRoundedAndTwoHours
     }
   }
 
@@ -92,7 +107,9 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     String myCargoIdentifier = UUID.randomUUID()
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: myCargoIdentifier,
-        routeSpecification: new RouteSpecificationData(originLocation: "NLRTM", destinationLocation: "HRRJK")
+        routeSpecification: new RouteSpecificationData(
+            originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1)
+        )
     )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
@@ -143,7 +160,9 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     String cargoIdentifier = UUID.randomUUID()
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: cargoIdentifier,
-        routeSpecification: new RouteSpecificationData(originLocation: "NLRTM", destinationLocation: "HRRJK")
+        routeSpecification: new RouteSpecificationData(
+            originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1)
+        )
     )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 

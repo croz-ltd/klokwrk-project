@@ -29,6 +29,8 @@ import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilityType
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.springframework.stereotype.Service
 
+import java.time.Clock
+
 import static org.hamcrest.Matchers.notNullValue
 
 /**
@@ -39,9 +41,12 @@ import static org.hamcrest.Matchers.notNullValue
 @CompileStatic
 class CargoBookingFactoryService {
   private final LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut
+  private final Clock clock
 
-  CargoBookingFactoryService(LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut) {
+  @SuppressWarnings("CodeNarc.OptionalMethodParameter")
+  CargoBookingFactoryService(LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut, Optional<Clock> clockOptional) {
     this.locationByUnLoCodeQueryPortOut = locationByUnLoCodeQueryPortOut
+    this.clock = clockOptional.orElse(Clock.systemUTC())
   }
 
   /**
@@ -59,7 +64,10 @@ class CargoBookingFactoryService {
 
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
         cargoId: CargoId.createWithGeneratedIdentifierIfNeeded(bookCargoCommandRequest.cargoIdentifier),
-        routeSpecification: new RouteSpecification(originLocation: resolvedOriginLocation, destinationLocation: resolvedDestinationLocation)
+        routeSpecification: RouteSpecification.create(
+            resolvedOriginLocation, resolvedDestinationLocation, bookCargoCommandRequest.routeSpecification.departureEarliestTime, bookCargoCommandRequest.routeSpecification.departureLatestTime,
+            clock
+        )
     )
 
     return bookCargoCommand
@@ -92,7 +100,10 @@ class CargoBookingFactoryService {
 
     BookCargoCommandResponse bookCargoCommandResponse = new BookCargoCommandResponse(
         cargoId: [identifier: cargoAggregate.cargoId.identifier],
-        routeSpecification: [originLocation: originLocationMap, destinationLocation: destinationLocationMap]
+        routeSpecification: [
+            originLocation: originLocationMap, destinationLocation: destinationLocationMap,
+            departureEarliestTime: cargoAggregate.routeSpecification.departureEarliestTime, departureLatestTime: cargoAggregate.routeSpecification.departureLatestTime
+        ]
     )
 
     return bookCargoCommandResponse

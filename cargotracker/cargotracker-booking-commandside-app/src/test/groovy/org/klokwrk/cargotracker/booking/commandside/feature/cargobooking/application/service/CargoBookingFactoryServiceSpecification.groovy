@@ -31,14 +31,27 @@ import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainExceptio
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import spock.lang.Specification
 
+import java.time.Clock
+import java.time.Duration
+import java.time.Instant
+import java.time.ZoneOffset
+
 class CargoBookingFactoryServiceSpecification extends Specification {
+
+  static Clock clock = Clock.fixed(Instant.parse("2021-12-07T12:00:00Z"), ZoneOffset.UTC)
+  static Instant currentInstantRounded = Instant.now(clock)
+  static Instant currentInstantRoundedAndOneHour = currentInstantRounded + Duration.ofHours(1)
+  static Instant currentInstantRoundedAndTwoHours = currentInstantRounded + Duration.ofHours(2)
+  static RouteSpecificationData validRouteSpecificationData = new RouteSpecificationData(
+      originLocation: "HRRJK", destinationLocation: "NLRTM", departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours
+  )
 
   CargoBookingFactoryService cargoBookingFactoryService
   LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut
 
   void setup() {
     locationByUnLoCodeQueryPortOut = new InMemoryLocationRegistryService()
-    cargoBookingFactoryService = new CargoBookingFactoryService(locationByUnLoCodeQueryPortOut)
+    cargoBookingFactoryService = new CargoBookingFactoryService(locationByUnLoCodeQueryPortOut, Optional.of(clock))
   }
 
   void "createBookCargoCommand - should throw for passed null"() {
@@ -49,10 +62,13 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     thrown(AssertionError)
   }
 
-  void "createBookCargoCommand - should fail for invalid RouteSpecificationData"() {
+  void "createBookCargoCommand - should fail for invalid locations in RouteSpecificationData"() {
     given:
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        routeSpecification: new RouteSpecificationData(originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+        routeSpecification: new RouteSpecificationData(
+            originLocation: originLocationParam, destinationLocation: destinationLocationParam,
+            departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours
+        )
     )
 
     when:
@@ -73,9 +89,36 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     "HRRJK"             | "HRZAG"                  | "routeSpecification.cannotRouteCargoFromOriginToDestination"
   }
 
+  void "createBookCargoCommand - should fail for invalid departure instants in RouteSpecificationData"() {
+    given:
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+        routeSpecification: new RouteSpecificationData(
+            originLocation: "HRRJK", destinationLocation: "NLRTM", departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam
+        )
+    )
+
+    when:
+    cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
+
+    then:
+    DomainException domainException = thrown()
+    domainException.violationInfo.severity == Severity.WARNING
+    domainException.violationInfo.violationCode.code == "400"
+    domainException.violationInfo.violationCode.codeMessage == "Bad Request"
+    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+
+    where:
+    departureEarliestTimeParam                            | departureLatestTimeParam                    | violationCodeKeyParam
+    currentInstantRounded                                 | currentInstantRoundedAndTwoHours            | "routeSpecification.departureEarliestTime.notInFuture"
+    currentInstantRounded - Duration.ofHours(1)           | currentInstantRoundedAndTwoHours            | "routeSpecification.departureEarliestTime.notInFuture"
+    currentInstantRoundedAndOneHour                       | currentInstantRounded                       | "routeSpecification.departureLatestTime.notInFuture"
+    currentInstantRoundedAndOneHour                       | currentInstantRounded - Duration.ofHours(1) | "routeSpecification.departureLatestTime.notInFuture"
+    currentInstantRoundedAndOneHour + Duration.ofHours(1) | currentInstantRoundedAndOneHour             | "routeSpecification.departureEarliestTime.afterDepartureLatestTime"
+  }
+
   void "createBookCargoCommand - should work for unspecified cargo identifier"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(routeSpecification: new RouteSpecificationData(originLocation: "HRRJK", destinationLocation: "NLRTM"))
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(routeSpecification: validRouteSpecificationData)
 
     when:
     BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
@@ -87,6 +130,8 @@ class CargoBookingFactoryServiceSpecification extends Specification {
       cargoId.identifier
       routeSpecification.originLocation.unLoCode.code == "HRRJK"
       routeSpecification.destinationLocation.unLoCode.code == "NLRTM"
+      routeSpecification.departureEarliestTime == currentInstantRoundedAndOneHour
+      routeSpecification.departureLatestTime == currentInstantRoundedAndTwoHours
     }
   }
 
@@ -95,7 +140,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     String cargoIdentifier = UUID.randomUUID()
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: cargoIdentifier,
-        routeSpecification: new RouteSpecificationData(originLocation: "HRRJK", destinationLocation: "NLRTM")
+        routeSpecification: validRouteSpecificationData
     )
 
     when:
@@ -107,6 +152,8 @@ class CargoBookingFactoryServiceSpecification extends Specification {
       cargoId.identifier == cargoIdentifier
       routeSpecification.originLocation.unLoCode.code == "HRRJK"
       routeSpecification.destinationLocation.unLoCode.code == "NLRTM"
+      routeSpecification.departureEarliestTime == currentInstantRoundedAndOneHour
+      routeSpecification.departureLatestTime == currentInstantRoundedAndTwoHours
     }
   }
 
@@ -114,7 +161,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     given:
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: "invalid",
-        routeSpecification: new RouteSpecificationData(originLocation: "HRRJK", destinationLocation: "HRZAG")
+        routeSpecification: validRouteSpecificationData
     )
 
     when:
@@ -132,7 +179,10 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
     CargoAggregate cargoAggregate = new CargoAggregate(
         cargoId: CargoId.create(myCargoIdentifier),
-        routeSpecification: new RouteSpecification(originLocation: myOriginLocation, destinationLocation: myDestinationLocation)
+        routeSpecification: new RouteSpecification(
+            originLocation: myOriginLocation, destinationLocation: myDestinationLocation,
+            creationTime: currentInstantRounded, departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours
+        )
     )
 
     when:
@@ -197,7 +247,10 @@ class CargoBookingFactoryServiceSpecification extends Specification {
                   ]
               ],
               portCapabilities: ["CONTAINER_PORT", "SEA_PORT"]
-          ]
+          ],
+
+          departureEarliestTime: currentInstantRoundedAndOneHour,
+          departureLatestTime: currentInstantRoundedAndTwoHours
       ]
     }
   }

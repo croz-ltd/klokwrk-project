@@ -11,7 +11,9 @@ import org.klokwrk.lib.validation.group.Level3
 
 import javax.validation.GroupSequence
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
+import java.time.Instant
 
 /**
  * DTO encapsulating route specification data pieces gathered from external ports/adapters.
@@ -40,4 +42,20 @@ class RouteSpecificationData {
   @Size(min = 5, max = 5, groups = [Level2])
   @NotBlank(groups = [Level1])
   String destinationLocation
+
+  /**
+   * The earliest time when cargo can be departed.
+   * <p/>
+   * Not null.
+   */
+  @NotNull(groups = [Level1])
+  Instant departureEarliestTime
+
+  /**
+   * The latest time when cargo can be departed.
+   * <p/>
+   * Not null.
+   */
+  @NotNull(groups = [Level1])
+  Instant departureLatestTime
 }

@@ -29,6 +29,7 @@ import javax.validation.ConstraintViolationException
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
+import java.time.Instant
 
 class BookCargoCommandRequestSpecification extends Specification {
   @Shared
@@ -43,7 +44,9 @@ class BookCargoCommandRequestSpecification extends Specification {
     given:
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: cargoIdentifierParam,
-        routeSpecification: new RouteSpecificationData(originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+        routeSpecification: new RouteSpecificationData(
+            originLocation: originLocationParam, destinationLocation: destinationLocationParam, departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam
+        )
     )
 
     when:
@@ -53,16 +56,16 @@ class BookCargoCommandRequestSpecification extends Specification {
     notThrown(ConstraintViolationException)
 
     where:
-    cargoIdentifierParam                   | originLocationParam | destinationLocationParam
-    null                                   | "AAAAA"             | "AAAAA"
-    "00000000-0000-4000-8000-000000000000" | "AAAAA"             | "AAAAA"
+    cargoIdentifierParam                   | originLocationParam | destinationLocationParam | departureEarliestTimeParam | departureLatestTimeParam
+    null                                   | "AAAAA"             | "AAAAA"                  | Instant.now()              | Instant.now()
+    "00000000-0000-4000-8000-000000000000" | "AAAAA"             | "AAAAA"                  | Instant.now()              | Instant.now()
   }
 
   void "should not pass validation for invalid cargoIdentifier"() {
     given:
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: cargoIdentifierParam,
-        routeSpecification: new RouteSpecificationData(originLocation: "AAAAA", destinationLocation: "AAAAA")
+        routeSpecification: new RouteSpecificationData(originLocation: "AAAAA", destinationLocation: "AAAAA", departureEarliestTime: Instant.now(), departureLatestTime: Instant.now())
     )
 
     when:
@@ -100,11 +103,11 @@ class BookCargoCommandRequestSpecification extends Specification {
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == NotNull
   }
 
-  void "should not pass validation for invalid nested data"() {
+  void "should not pass validation for invalid cargoIdentifier data"() {
     given:
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: cargoIdentifierParam,
-        routeSpecification: new RouteSpecificationData(originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+        routeSpecification: new RouteSpecificationData(originLocation: "AAAAA", destinationLocation: "AAAAA", departureEarliestTime: Instant.now(), departureLatestTime: Instant.now())
     )
 
     when:
@@ -118,17 +121,64 @@ class BookCargoCommandRequestSpecification extends Specification {
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
-    cargoIdentifierParam                   | originLocationParam | destinationLocationParam | propertyPathParam                        | constraintTypeParam
-    ""                                     | "AAAAA"             | "AAAAA"                  | "cargoIdentifier"                        | NotBlankWhenNullableConstraint
-    "123"                                  | "AAAAA"             | "AAAAA"                  | "cargoIdentifier"                        | Size
-    "00000000=0000=0000=0000=000000000000" | "AAAAA"             | "AAAAA"                  | "cargoIdentifier"                        | RandomUuidFormatConstraint
+    cargoIdentifierParam                   | propertyPathParam | constraintTypeParam
+    ""                                     | "cargoIdentifier" | NotBlankWhenNullableConstraint
+    "123"                                  | "cargoIdentifier" | Size
+    "00000000=0000=0000=0000=000000000000" | "cargoIdentifier" | RandomUuidFormatConstraint
+  }
 
-    null                                   | null                | "AAAAA"                  | "routeSpecification.originLocation"      | NotBlank
-    null                                   | "A"                 | "AAAAA"                  | "routeSpecification.originLocation"      | Size
-    null                                   | "1===5"             | "AAAAA"                  | "routeSpecification.originLocation"      | UnLoCodeFormatConstraint
+  void "should not pass validation for invalid locations data"() {
+    given:
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+        cargoIdentifier: null,
+        routeSpecification: new RouteSpecificationData(
+            originLocation: originLocationParam, destinationLocation: destinationLocationParam, departureEarliestTime: Instant.now(), departureLatestTime: Instant.now()
+        )
+    )
 
-    null                                   | "AAAAA"             | null                     | "routeSpecification.destinationLocation" | NotBlank
-    null                                   | "AAAAA"             | "A"                      | "routeSpecification.destinationLocation" | Size
-    null                                   | "AAAAA"             | "1===5"                  | "routeSpecification.destinationLocation" | UnLoCodeFormatConstraint
+    when:
+    validationService.validate(bookCargoCommandRequest)
+
+    then:
+    ConstraintViolationException constraintViolationException = thrown()
+
+    constraintViolationException.constraintViolations.size() == 1
+    constraintViolationException.constraintViolations[0].propertyPath.toString() == propertyPathParam
+    constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
+
+    where:
+    originLocationParam | destinationLocationParam | propertyPathParam                        | constraintTypeParam
+    null                | "AAAAA"                  | "routeSpecification.originLocation"      | NotBlank
+    "A"                 | "AAAAA"                  | "routeSpecification.originLocation"      | Size
+    "1===5"             | "AAAAA"                  | "routeSpecification.originLocation"      | UnLoCodeFormatConstraint
+
+    "AAAAA"             | null                     | "routeSpecification.destinationLocation" | NotBlank
+    "AAAAA"             | "A"                      | "routeSpecification.destinationLocation" | Size
+    "AAAAA"             | "1===5"                  | "routeSpecification.destinationLocation" | UnLoCodeFormatConstraint
+  }
+
+  void "should not pass validation for invalid departures instant data"() {
+    given:
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+        cargoIdentifier: null,
+        routeSpecification: new RouteSpecificationData(
+            originLocation: "AAAAA", destinationLocation: "AAAAA", departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam
+        )
+    )
+
+    when:
+    validationService.validate(bookCargoCommandRequest)
+
+    then:
+    ConstraintViolationException constraintViolationException = thrown()
+
+    constraintViolationException.constraintViolations.size() == 1
+    constraintViolationException.constraintViolations[0].propertyPath.toString() == propertyPathParam
+    constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
+
+    where:
+    departureEarliestTimeParam | departureLatestTimeParam | propertyPathParam                          | constraintTypeParam
+    null                       | Instant.now()            | "routeSpecification.departureEarliestTime" | NotNull
+    Instant.now()              | null                     | "routeSpecification.departureLatestTime"   | NotNull
   }
 }
