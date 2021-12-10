@@ -1,0 +1,1243 @@
+{
+	"info": {
+		"_postman_id": "b2669363-87fc-4805-ba3f-84c982ca9888",
+		"name": "cargotracker-booking",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "individual-requests",
+			"item": [
+				{
+					"name": "commandside",
+					"item": [
+						{
+							"name": "cargo-booking",
+							"item": [
+								{
+									"name": "book-cargo, success, hr",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var currentTimeAndOneHour = new Date();",
+													"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
+													"",
+													"var currentTimeAndTwoHours = new Date();",
+													"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
+													"",
+													"var currentTimeAndThreeHours = new Date();",
+													"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
+													"",
+													"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
+													"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
+													"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
+													"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
+													"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
+													"",
+													"if (pm.response.to.have.status(200)) {",
+													"    var receivedCargoIdentifier = pm.response.json().payload.cargoId.identifier",
+													"    pm.collectionVariables.set(\"execution_receivedCargoIdentifier\", receivedCargoIdentifier)",
+													"}",
+													"",
+													"postman.setNextRequest(null);",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "hr",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  }\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-commandside}}",
+											"path": [
+												"cargotracker-booking-commandside",
+												"cargo-booking",
+												"book-cargo"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "book-cargo, success, en",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var currentTimeAndOneHour = new Date();",
+													"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
+													"",
+													"var currentTimeAndTwoHours = new Date();",
+													"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
+													"",
+													"var currentTimeAndThreeHours = new Date();",
+													"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
+													"",
+													"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
+													"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
+													"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
+													"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
+													"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
+													"",
+													"if (pm.response.to.have.status(200)) {",
+													"    var receivedCargoIdentifier = pm.response.json().payload.cargoId.identifier",
+													"    pm.collectionVariables.set(\"execution_receivedCargoIdentifier\", receivedCargoIdentifier)",
+													"}",
+													"",
+													"postman.setNextRequest(null);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "en",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  }\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-commandside}}",
+											"path": [
+												"cargotracker-booking-commandside",
+												"cargo-booking",
+												"book-cargo"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "book-cargo, validation failure, top level, hr",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"postman.setNextRequest(null);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "hr-HR",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"routeSpecification\": null\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-commandside}}",
+											"path": [
+												"cargotracker-booking-commandside",
+												"cargo-booking",
+												"book-cargo"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "book-cargo, validation failure, top level, en",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"postman.setNextRequest(null);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "en",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"routeSpecification\": null\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-commandside}}",
+											"path": [
+												"cargotracker-booking-commandside",
+												"cargo-booking",
+												"book-cargo"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "book-cargo, validation failure, nested level, hr",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"postman.setNextRequest(null);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "hr-HR",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": null,\n    \"destinationLocation\": null\n  }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-commandside}}",
+											"path": [
+												"cargotracker-booking-commandside",
+												"cargo-booking",
+												"book-cargo"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "book-cargo, validation failure, nested level, en",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"postman.setNextRequest(null);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "en",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": null,\n    \"destinationLocation\": null\n  }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-commandside}}",
+											"path": [
+												"cargotracker-booking-commandside",
+												"cargo-booking",
+												"book-cargo"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "book-cargo, domain failure, hr",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var currentTimeAndOneHour = new Date();",
+													"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
+													"",
+													"var currentTimeAndTwoHours = new Date();",
+													"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
+													"",
+													"var currentTimeAndThreeHours = new Date();",
+													"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
+													"",
+													"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
+													"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
+													"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
+													"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
+													"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
+													"",
+													"postman.setNextRequest(null);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "hr",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  }\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-commandside}}",
+											"path": [
+												"cargotracker-booking-commandside",
+												"cargo-booking",
+												"book-cargo"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "book-cargo, domain failure, en",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var currentTimeAndOneHour = new Date();",
+													"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
+													"",
+													"var currentTimeAndTwoHours = new Date();",
+													"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
+													"",
+													"var currentTimeAndThreeHours = new Date();",
+													"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
+													"",
+													"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
+													"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
+													"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
+													"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
+													"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
+													"",
+													"postman.setNextRequest(null);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "en",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  }\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-commandside}}",
+											"path": [
+												"cargotracker-booking-commandside",
+												"cargo-booking",
+												"book-cargo"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "queryside",
+					"item": [
+						{
+							"name": "cargo-info",
+							"item": [
+								{
+									"name": "cargo-summary, success, hr",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"postman.setNextRequest(null);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "hr",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"cargoIdentifier\": \"{{execution_receivedCargoIdentifier}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/cargo-summary",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-queryside}}",
+											"path": [
+												"cargotracker-booking-queryside",
+												"cargo-info",
+												"cargo-summary"
+											]
+										},
+										"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
+									},
+									"response": []
+								},
+								{
+									"name": "cargo-summary, success, en",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"postman.setNextRequest(null);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "en",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"cargoIdentifier\": \"{{execution_receivedCargoIdentifier}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/cargo-summary",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-queryside}}",
+											"path": [
+												"cargotracker-booking-queryside",
+												"cargo-info",
+												"cargo-summary"
+											]
+										},
+										"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
+									},
+									"response": []
+								},
+								{
+									"name": "cargo-summary, validation failure, hr",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"postman.setNextRequest(null);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "hr",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"cargoIdentifier\": null\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/cargo-summary",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-queryside}}",
+											"path": [
+												"cargotracker-booking-queryside",
+												"cargo-info",
+												"cargo-summary"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "cargo-summary, validation failure, en",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"postman.setNextRequest(null);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "en",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"cargoIdentifier\": null\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/cargo-summary",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-queryside}}",
+											"path": [
+												"cargotracker-booking-queryside",
+												"cargo-info",
+												"cargo-summary"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "cargo-summary, not-found, hr",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"postman.setNextRequest(null);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "hr",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"cargoIdentifier\": \"{{$randomUUID}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/cargo-summary",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-queryside}}",
+											"path": [
+												"cargotracker-booking-queryside",
+												"cargo-info",
+												"cargo-summary"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "cargo-summary, not-found, en",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"postman.setNextRequest(null);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "en",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"cargoIdentifier\": \"{{$randomUUID}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/cargo-summary",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-queryside}}",
+											"path": [
+												"cargotracker-booking-queryside",
+												"cargo-info",
+												"cargo-summary"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "scenarios",
+			"item": [
+				{
+					"name": "Create cargo and view summary",
+					"item": [
+						{
+							"name": "book-cargo, success, hr",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var currentTimeAndOneHour = new Date();",
+											"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
+											"",
+											"var currentTimeAndTwoHours = new Date();",
+											"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
+											"",
+											"var currentTimeAndThreeHours = new Date();",
+											"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
+											"",
+											"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
+											"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
+											"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
+											"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
+											"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
+											"",
+											"if (pm.response.to.have.status(200)) {",
+											"    var receivedCargoIdentifier = pm.response.json().payload.cargoId.identifier",
+											"    pm.collectionVariables.set(\"execution_receivedCargoIdentifier\", receivedCargoIdentifier)",
+											"}",
+											"",
+											"pm.test(\"cargo created\", function () {",
+											"    pm.expect(pm.response.json().payload.cargoId.identifier).to.not.null;",
+											"});",
+											"",
+											"pm.test(\"locale is hr\", function () {",
+											"    pm.expect(pm.response.json().metaData.general.locale).to.equal(\"hr\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept-Charset",
+										"value": "utf-8",
+										"type": "text"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "hr",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port-commandside}}",
+									"path": [
+										"cargotracker-booking-commandside",
+										"cargo-booking",
+										"book-cargo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cargo-summary, success, hr",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"summary received\", function () {",
+											"    pm.expect(pm.response.json().payload.cargoIdentifier).to.not.null;",
+											"});",
+											"",
+											"pm.test(\"locale is hr\", function () {",
+											"    pm.expect(pm.response.json().metaData.general.locale).to.equal(\"hr\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept-Charset",
+										"value": "utf-8",
+										"type": "text"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "hr",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"cargoIdentifier\": \"{{execution_receivedCargoIdentifier}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/cargo-summary",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port-queryside}}",
+									"path": [
+										"cargotracker-booking-queryside",
+										"cargo-info",
+										"cargo-summary"
+									]
+								},
+								"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
+							},
+							"response": []
+						},
+						{
+							"name": "book-cargo, success, en",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var currentTimeAndOneHour = new Date();",
+											"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
+											"",
+											"var currentTimeAndTwoHours = new Date();",
+											"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
+											"",
+											"var currentTimeAndThreeHours = new Date();",
+											"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
+											"",
+											"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
+											"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
+											"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
+											"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
+											"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
+											"",
+											"if (pm.response.to.have.status(200)) {",
+											"    var receivedCargoIdentifier = pm.response.json().payload.cargoId.identifier",
+											"    pm.collectionVariables.set(\"execution_receivedCargoIdentifier\", receivedCargoIdentifier)",
+											"}",
+											"",
+											"pm.test(\"cargo created\", function () {",
+											"    pm.expect(pm.response.json().payload.cargoId.identifier).to.not.null;",
+											"});",
+											"",
+											"pm.test(\"locale is en\", function () {",
+											"    pm.expect(pm.response.json().metaData.general.locale).to.equal(\"en\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept-Charset",
+										"value": "utf-8",
+										"type": "text"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "en",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port-commandside}}",
+									"path": [
+										"cargotracker-booking-commandside",
+										"cargo-booking",
+										"book-cargo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cargo-summary, success, en",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"summary received\", function () {",
+											"    pm.expect(pm.response.json().payload.cargoIdentifier).to.not.null;",
+											"});",
+											"",
+											"pm.test(\"locale is en\", function () {",
+											"    pm.expect(pm.response.json().metaData.general.locale).to.equal(\"en\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept-Charset",
+										"value": "utf-8",
+										"type": "text"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "en",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"cargoIdentifier\": \"{{execution_receivedCargoIdentifier}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/cargo-summary",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port-queryside}}",
+									"path": [
+										"cargotracker-booking-queryside",
+										"cargo-info",
+										"cargo-summary"
+									]
+								},
+								"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "localhost"
+		},
+		{
+			"key": "port-commandside",
+			"value": "8080"
+		},
+		{
+			"key": "port-queryside",
+			"value": "8084"
+		}
+	]
+}
