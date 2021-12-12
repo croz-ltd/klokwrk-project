@@ -65,8 +65,9 @@ class CargoBookingFactoryService {
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
         cargoId: CargoId.createWithGeneratedIdentifierIfNeeded(bookCargoCommandRequest.cargoIdentifier),
         routeSpecification: RouteSpecification.create(
-            resolvedOriginLocation, resolvedDestinationLocation, bookCargoCommandRequest.routeSpecification.departureEarliestTime, bookCargoCommandRequest.routeSpecification.departureLatestTime,
-            clock
+            resolvedOriginLocation, resolvedDestinationLocation,
+            bookCargoCommandRequest.routeSpecification.departureEarliestTime, bookCargoCommandRequest.routeSpecification.departureLatestTime,
+            bookCargoCommandRequest.routeSpecification.arrivalLatestTime, clock
         )
     )
 
@@ -102,7 +103,8 @@ class CargoBookingFactoryService {
         cargoId: [identifier: cargoAggregate.cargoId.identifier],
         routeSpecification: [
             originLocation: originLocationMap, destinationLocation: destinationLocationMap,
-            departureEarliestTime: cargoAggregate.routeSpecification.departureEarliestTime, departureLatestTime: cargoAggregate.routeSpecification.departureLatestTime
+            departureEarliestTime: cargoAggregate.routeSpecification.departureEarliestTime, departureLatestTime: cargoAggregate.routeSpecification.departureLatestTime,
+            arrivalLatestTime: cargoAggregate.routeSpecification.arrivalLatestTime
         ]
     )
 

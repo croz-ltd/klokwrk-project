@@ -48,10 +48,11 @@ class BookCargoCommandFixtures {
     Instant currentTime = Instant.now(clock)
     Instant currentTimeAndOneHour = currentTime + Duration.ofHours(1)
     Instant currentTimeAndTwoHours = currentTime + Duration.ofHours(2)
+    Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
         cargoId: CargoId.create(cargoIdentifier),
-        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, clock)
+        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock)
     )
 
     return bookCargoCommand

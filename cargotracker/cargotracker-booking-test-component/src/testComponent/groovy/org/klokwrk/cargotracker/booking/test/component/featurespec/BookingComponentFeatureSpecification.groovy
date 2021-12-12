@@ -33,6 +33,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
+    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
     //noinspection HttpUrlsUsage
     String commandCargoBookUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
@@ -42,7 +43,8 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
             "originLocation": "HRRJK",
             "destinationLocation": "NLRTM",
             "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }"
+            "departureLatestTime": "${ departureLatestTime }",
+            "arrivalLatestTime": "${ arrivalLatestTime }"
           }
         }
         """
@@ -76,6 +78,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
+    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
     //noinspection HttpUrlsUsage
     String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
@@ -85,7 +88,8 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
             "originLocation": "HRRJK",
             "destinationLocation": "NLRTM",
             "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }"
+            "departureLatestTime": "${ departureLatestTime }",
+            "arrivalLatestTime": "${ arrivalLatestTime }"
           }
         }
         """
@@ -148,6 +152,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
+    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
     //noinspection HttpUrlsUsage
     String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
@@ -157,7 +162,8 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
             "originLocation": "NLRTM",
             "destinationLocation": "HRZAG",
             "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }"
+            "departureLatestTime": "${ departureLatestTime }",
+            "arrivalLatestTime": "${ arrivalLatestTime }"
           }
         }
         """

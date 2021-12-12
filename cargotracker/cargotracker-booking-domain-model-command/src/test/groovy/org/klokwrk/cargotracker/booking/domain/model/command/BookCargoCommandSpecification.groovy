@@ -25,8 +25,9 @@ class BookCargoCommandSpecification extends Specification {
   static Instant currentInstantRounded = Instant.now(clock)
   static Instant currentInstantRoundedAndOneHour = currentInstantRounded + Duration.ofHours(1)
   static Instant currentInstantRoundedAndTwoHours = currentInstantRounded + Duration.ofHours(2)
+  static Instant currentInstantRoundedAndThreeHours = currentInstantRounded + Duration.ofHours(3)
   static RouteSpecification validRouteSpecification = RouteSpecification.create(
-      locationSampleMap["NLRTM"], locationSampleMap["DEHAM"], currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours, clock
+      locationSampleMap["NLRTM"], locationSampleMap["DEHAM"], currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours, currentInstantRoundedAndThreeHours, clock
   )
 
   void "map constructor should work for correct input params"() {
@@ -46,6 +47,7 @@ class BookCargoCommandSpecification extends Specification {
     bookCargoCommand.routeSpecification.creationTime == currentInstantRounded
     bookCargoCommand.routeSpecification.departureEarliestTime == currentInstantRoundedAndOneHour
     bookCargoCommand.routeSpecification.departureLatestTime == currentInstantRoundedAndTwoHours
+    bookCargoCommand.routeSpecification.arrivalLatestTime == currentInstantRoundedAndThreeHours
   }
 
   void "map constructor should fail for null input params"() {
@@ -66,7 +68,11 @@ class BookCargoCommandSpecification extends Specification {
     when:
     new BookCargoCommand(
         cargoId: cargoIdParam,
-        routeSpecification: RouteSpecification.create(originLocationParam, destinationLocationParam, currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours, clock)
+        routeSpecification: RouteSpecification.create(
+            originLocationParam, destinationLocationParam,
+            currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours,
+            currentInstantRoundedAndThreeHours, clock
+        )
     )
 
     then:

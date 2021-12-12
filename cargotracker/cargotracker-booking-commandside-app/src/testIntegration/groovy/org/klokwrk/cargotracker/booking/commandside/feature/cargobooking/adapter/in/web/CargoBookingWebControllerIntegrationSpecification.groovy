@@ -61,6 +61,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
+    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
     String myCargoIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString(
@@ -68,7 +69,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
             cargoIdentifier: myCargoIdentifier,
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK",
-                departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime
+                departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
+                arrivalLatestTime: arrivalLatestTime
             ]
         ]
     )
@@ -108,11 +110,12 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     verifyAll(responseContentMap.payload.routeSpecification as Map) {
-      size() == 4
+      size() == 5
       originLocation
       destinationLocation
       it.departureEarliestTime == InstantUtils.roundUpInstantToTheHour(departureEarliestTime).toString()
       it.departureLatestTime == InstantUtils.roundUpInstantToTheHour(departureLatestTime).toString()
+      it.arrivalLatestTime == InstantUtils.roundUpInstantToTheHour(arrivalLatestTime).toString()
     }
 
     verifyAll(responseContentMap.payload.routeSpecification.originLocation as Map) {
@@ -166,7 +169,10 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     given:
     String cargoIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString(
-        [cargoIdentifier: cargoIdentifier, routeSpecification: [originLocation: null, destinationLocation: null, departureEarliestTime: null, departureLatestTime: null]]
+        [
+            cargoIdentifier: cargoIdentifier,
+            routeSpecification: [originLocation: null, destinationLocation: null, departureEarliestTime: null, departureLatestTime: null, arrivalLatestTime: null]
+        ]
     )
 
     when:
@@ -208,11 +214,12 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
       size() == 2
       root.type == "bookCargoCommandRequest"
-      constraintViolations.size() == 4
+      constraintViolations.size() == 5
       constraintViolations.find({ it.path == "routeSpecification.originLocation" }).type == "notBlank"
       constraintViolations.find({ it.path == "routeSpecification.destinationLocation" }).type == "notBlank"
       constraintViolations.find({ it.path == "routeSpecification.departureEarliestTime" }).type == "notNull"
       constraintViolations.find({ it.path == "routeSpecification.departureLatestTime" }).type == "notNull"
+      constraintViolations.find({ it.path == "routeSpecification.arrivalLatestTime" }).type == "notNull"
     }
 
     verifyAll(responseContentMap.payload as Map) {
@@ -230,12 +237,15 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
+    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
     String cargoIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString(
         [
             cargoIdentifier: cargoIdentifier,
-            routeSpecification: [originLocation: "HRRJK", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime]
+            routeSpecification: [
+                originLocation: "HRRJK", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
+            ]
         ]
     )
 
@@ -289,12 +299,15 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
+    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
     String cargoIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString(
         [
             cargoIdentifier: cargoIdentifier,
-            routeSpecification: [originLocation: "NLRTM", destinationLocation: "HRZAG", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime]
+            routeSpecification: [
+                originLocation: "NLRTM", destinationLocation: "HRZAG", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
+            ]
         ]
     )
 

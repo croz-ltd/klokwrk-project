@@ -58,4 +58,12 @@ class RouteSpecificationData {
    */
   @NotNull(groups = [Level1])
   Instant departureLatestTime
+
+  /**
+   * The latest time when cargo must arrive at the destination.
+   * <p/>
+   * Not null.
+   */
+  @NotNull(groups = [Level1])
+  Instant arrivalLatestTime
 }

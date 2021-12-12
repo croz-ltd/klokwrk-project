@@ -42,8 +42,11 @@ class CargoBookingFactoryServiceSpecification extends Specification {
   static Instant currentInstantRounded = Instant.now(clock)
   static Instant currentInstantRoundedAndOneHour = currentInstantRounded + Duration.ofHours(1)
   static Instant currentInstantRoundedAndTwoHours = currentInstantRounded + Duration.ofHours(2)
+  static Instant currentInstantRoundedAndThreeHours = currentInstantRounded + Duration.ofHours(3)
   static RouteSpecificationData validRouteSpecificationData = new RouteSpecificationData(
-      originLocation: "HRRJK", destinationLocation: "NLRTM", departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours
+      originLocation: "HRRJK", destinationLocation: "NLRTM",
+      departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
+      arrivalLatestTime: currentInstantRoundedAndThreeHours
   )
 
   CargoBookingFactoryService cargoBookingFactoryService
@@ -67,7 +70,8 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         routeSpecification: new RouteSpecificationData(
             originLocation: originLocationParam, destinationLocation: destinationLocationParam,
-            departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours
+            departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
+            arrivalLatestTime: currentInstantRoundedAndThreeHours
         )
     )
 
@@ -93,7 +97,9 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     given:
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         routeSpecification: new RouteSpecificationData(
-            originLocation: "HRRJK", destinationLocation: "NLRTM", departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam
+            originLocation: "HRRJK", destinationLocation: "NLRTM",
+            departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam,
+            arrivalLatestTime: currentInstantRoundedAndThreeHours
         )
     )
 
@@ -116,6 +122,34 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     currentInstantRoundedAndOneHour + Duration.ofHours(1) | currentInstantRoundedAndOneHour             | "routeSpecification.departureEarliestTime.afterDepartureLatestTime"
   }
 
+  void "createBookCargoCommand - should fail for invalid arrival instant in RouteSpecificationData"() {
+    given:
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+        routeSpecification: new RouteSpecificationData(
+            originLocation: "HRRJK", destinationLocation: "NLRTM",
+            departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
+            arrivalLatestTime: arrivalLatestTimeParam
+        )
+    )
+
+    when:
+    cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
+
+    then:
+    DomainException domainException = thrown()
+    domainException.violationInfo.severity == Severity.WARNING
+    domainException.violationInfo.violationCode.code == "400"
+    domainException.violationInfo.violationCode.codeMessage == "Bad Request"
+    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+
+    where:
+    arrivalLatestTimeParam                                   | violationCodeKeyParam
+    currentInstantRounded                                    | "routeSpecification.arrivalLatestTime.notInFuture"
+    currentInstantRounded - Duration.ofMinutes(1)            | "routeSpecification.arrivalLatestTime.notInFuture"
+    currentInstantRoundedAndTwoHours                         | "routeSpecification.arrivalLatestTime.beforeDepartureLatestTime"
+    currentInstantRoundedAndTwoHours - Duration.ofMinutes(1) | "routeSpecification.arrivalLatestTime.beforeDepartureLatestTime"
+  }
+
   void "createBookCargoCommand - should work for unspecified cargo identifier"() {
     given:
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(routeSpecification: validRouteSpecificationData)
@@ -132,6 +166,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
       routeSpecification.destinationLocation.unLoCode.code == "NLRTM"
       routeSpecification.departureEarliestTime == currentInstantRoundedAndOneHour
       routeSpecification.departureLatestTime == currentInstantRoundedAndTwoHours
+      routeSpecification.arrivalLatestTime == currentInstantRoundedAndThreeHours
     }
   }
 
@@ -154,6 +189,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
       routeSpecification.destinationLocation.unLoCode.code == "NLRTM"
       routeSpecification.departureEarliestTime == currentInstantRoundedAndOneHour
       routeSpecification.departureLatestTime == currentInstantRoundedAndTwoHours
+      routeSpecification.arrivalLatestTime == currentInstantRoundedAndThreeHours
     }
   }
 
@@ -181,7 +217,9 @@ class CargoBookingFactoryServiceSpecification extends Specification {
         cargoId: CargoId.create(myCargoIdentifier),
         routeSpecification: new RouteSpecification(
             originLocation: myOriginLocation, destinationLocation: myDestinationLocation,
-            creationTime: currentInstantRounded, departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours
+            creationTime: currentInstantRounded,
+            departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
+            arrivalLatestTime: currentInstantRoundedAndThreeHours
         )
     )
 
@@ -250,7 +288,8 @@ class CargoBookingFactoryServiceSpecification extends Specification {
           ],
 
           departureEarliestTime: currentInstantRoundedAndOneHour,
-          departureLatestTime: currentInstantRoundedAndTwoHours
+          departureLatestTime: currentInstantRoundedAndTwoHours,
+          arrivalLatestTime: currentInstantRoundedAndThreeHours
       ]
     }
   }
