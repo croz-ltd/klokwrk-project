@@ -75,21 +75,30 @@ class RouteSpecification implements PostMapConstructorCheckable {
   Instant departureLatestTime
 
   /**
+   * The latest time when cargo has to arrive at the destination.
+   * <p/>
+   * This instant should be rounded to the hour (minutes, seconds and nanos set to 0).
+   */
+  Instant arrivalLatestTime
+
+  /**
    * Creates RouteSpecification instance and adjust input values as necessary.
    * <p/>
    * If {@code departureEarliestTime} contains non-zero minutes, seconds or nanos, {@code departureEarliestTime} is rounded up to the next hour.
    * <p/>
    * If {@code departureLatestTime} contains non-zero minutes, seconds or nanos, {@code departureLatestTime} is rounded up to the next hour.
    */
+  @SuppressWarnings("CodeNarc.ParameterCount")
   static RouteSpecification create(
-      Location originLocation, Location destinationLocation, Instant departureEarliestTime, Instant departureLatestTime, Clock clock = Clock.systemUTC())
+      Location originLocation, Location destinationLocation, Instant departureEarliestTime, Instant departureLatestTime, Instant arrivalLatestTime, Clock clock = Clock.systemUTC())
   {
     Instant departureEarliestTimeToUse = departureEarliestTime ? InstantUtils.roundUpInstantToTheHour(departureEarliestTime) : null
     Instant departureLatestTimeToUse = departureLatestTime ? InstantUtils.roundUpInstantToTheHour(departureLatestTime) : null
+    Instant arrivalLatestTimeToUse = arrivalLatestTime ? InstantUtils.roundUpInstantToTheHour(arrivalLatestTime) : null
 
     RouteSpecification createdRouteSpecification = new RouteSpecification(
         originLocation: originLocation, destinationLocation: destinationLocation, creationTime: Instant.now(clock),
-        departureEarliestTime: departureEarliestTimeToUse, departureLatestTime: departureLatestTimeToUse
+        departureEarliestTime: departureEarliestTimeToUse, departureLatestTime: departureLatestTimeToUse, arrivalLatestTime: arrivalLatestTimeToUse
     )
 
     return createdRouteSpecification
@@ -104,6 +113,7 @@ class RouteSpecification implements PostMapConstructorCheckable {
     requireMatch(creationTime, notNullValue())
     requireMatch(departureEarliestTime, notNullValue())
     requireMatch(departureLatestTime, notNullValue())
+    requireMatch(arrivalLatestTime, notNullValue())
 
     requireKnownLocation(originLocation, "routeSpecification.unknownOriginLocation")
     requireKnownLocation(destinationLocation, "routeSpecification.unknownDestinationLocation")
@@ -116,6 +126,10 @@ class RouteSpecification implements PostMapConstructorCheckable {
 
     requireInstantInHours(departureEarliestTime, "routeSpecification.departureEarliestTime.notInHours")
     requireInstantInHours(departureLatestTime, "routeSpecification.departureLatestTime.notInHours")
+
+    requireInstantInFuture(arrivalLatestTime, creationTime, "routeSpecification.arrivalLatestTime.notInFuture")
+    requireInstantInHours(arrivalLatestTime, "routeSpecification.arrivalLatestTime.notInHours")
+    requireArrivalLatestTimeAfterDepartureLatestTime(arrivalLatestTime, departureLatestTime)
   }
 
   private void requireKnownLocation(Location location, String violationCodeKey) {
@@ -155,6 +169,12 @@ class RouteSpecification implements PostMapConstructorCheckable {
 
     if (nanoSeconds + seconds + minutes != 0) {
       throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey(violationCodeKey))
+    }
+  }
+
+  private void requireArrivalLatestTimeAfterDepartureLatestTime(Instant arrivalLatestTime, Instant departureLatestTime) {
+    if (arrivalLatestTime <= departureLatestTime) {
+      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("routeSpecification.arrivalLatestTime.beforeDepartureLatestTime"))
     }
   }
 }
