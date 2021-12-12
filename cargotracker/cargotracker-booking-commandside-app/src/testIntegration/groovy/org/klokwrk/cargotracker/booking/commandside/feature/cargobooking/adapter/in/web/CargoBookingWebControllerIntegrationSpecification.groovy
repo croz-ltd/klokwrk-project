@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
+import org.klokwrk.lang.groovy.misc.InstantUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpHeaders
@@ -32,6 +33,8 @@ import org.springframework.test.web.servlet.MvcResult
 import org.springframework.web.context.WebApplicationContext
 
 import java.nio.charset.Charset
+import java.time.Duration
+import java.time.Instant
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
@@ -52,11 +55,25 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     mockMvc ?= webAppContextSetup(webApplicationContext).build()
   }
 
-  @SuppressWarnings("CodeNarc.AbcMetric")
+  @SuppressWarnings(["CodeNarc.AbcMetric", "CodeNarc.MethodSize"])
   void "should work for correct request - [acceptLanguage: #acceptLanguageParam]"() {
     given:
+    Instant currentTime = Instant.now()
+    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
+    Instant departureLatestTime = currentTime + Duration.ofHours(2)
+    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
+
     String myCargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: myCargoIdentifier, routeSpecification: [originLocation: "NLRTM", destinationLocation: "HRRJK"]])
+    String webRequestBody = objectMapper.writeValueAsString(
+        [
+            cargoIdentifier: myCargoIdentifier,
+            routeSpecification: [
+                originLocation: "NLRTM", destinationLocation: "HRRJK",
+                departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
+                arrivalLatestTime: arrivalLatestTime
+            ]
+        ]
+    )
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -89,8 +106,16 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     verifyAll(responseContentMap.payload as Map) {
       size() == 2
       cargoId.identifier == myCargoIdentifier
-      routeSpecification.originLocation.name == "Rotterdam"
-      routeSpecification.destinationLocation.name == "Rijeka"
+      routeSpecification
+    }
+
+    verifyAll(responseContentMap.payload.routeSpecification as Map) {
+      size() == 5
+      originLocation
+      destinationLocation
+      it.departureEarliestTime == InstantUtils.roundUpInstantToTheHour(departureEarliestTime).toString()
+      it.departureLatestTime == InstantUtils.roundUpInstantToTheHour(departureLatestTime).toString()
+      it.arrivalLatestTime == InstantUtils.roundUpInstantToTheHour(arrivalLatestTime).toString()
     }
 
     verifyAll(responseContentMap.payload.routeSpecification.originLocation as Map) {
@@ -143,7 +168,12 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
   void "should return expected response when request is not valid - validation failure - [acceptLanguage: #acceptLanguageParam]"() {
     given:
     String cargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, routeSpecification: [originLocation: null, destinationLocation: null]])
+    String webRequestBody = objectMapper.writeValueAsString(
+        [
+            cargoIdentifier: cargoIdentifier,
+            routeSpecification: [originLocation: null, destinationLocation: null, departureEarliestTime: null, departureLatestTime: null, arrivalLatestTime: null]
+        ]
+    )
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -184,9 +214,12 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
       size() == 2
       root.type == "bookCargoCommandRequest"
-      constraintViolations.size() == 2
+      constraintViolations.size() == 5
       constraintViolations.find({ it.path == "routeSpecification.originLocation" }).type == "notBlank"
       constraintViolations.find({ it.path == "routeSpecification.destinationLocation" }).type == "notBlank"
+      constraintViolations.find({ it.path == "routeSpecification.departureEarliestTime" }).type == "notNull"
+      constraintViolations.find({ it.path == "routeSpecification.departureLatestTime" }).type == "notNull"
+      constraintViolations.find({ it.path == "routeSpecification.arrivalLatestTime" }).type == "notNull"
     }
 
     verifyAll(responseContentMap.payload as Map) {
@@ -201,8 +234,20 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
   void "should fail when origin and destination locations are equal - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
     given:
+    Instant currentTime = Instant.now()
+    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
+    Instant departureLatestTime = currentTime + Duration.ofHours(2)
+    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
+
     String cargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, routeSpecification: [originLocation: "HRRJK", destinationLocation: "HRRJK"]])
+    String webRequestBody = objectMapper.writeValueAsString(
+        [
+            cargoIdentifier: cargoIdentifier,
+            routeSpecification: [
+                originLocation: "HRRJK", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
+            ]
+        ]
+    )
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -251,8 +296,20 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
   void "should fail when cargo can not be sent to destination location - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
     given:
+    Instant currentTime = Instant.now()
+    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
+    Instant departureLatestTime = currentTime + Duration.ofHours(2)
+    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
+
     String cargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, routeSpecification: [originLocation: "NLRTM", destinationLocation: "HRZAG"]])
+    String webRequestBody = objectMapper.writeValueAsString(
+        [
+            cargoIdentifier: cargoIdentifier,
+            routeSpecification: [
+                originLocation: "NLRTM", destinationLocation: "HRZAG", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
+            ]
+        ]
+    )
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -301,8 +358,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
   void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguageParam]"() {
     given:
-    String cargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: cargoIdentifier, routeSpecification: [originLocation: "HRRJK", destinationLocation: "HRRJK"]])
+    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: null, routeSpecification: null])
 
     when:
     MvcResult mvcResult = mockMvc.perform(

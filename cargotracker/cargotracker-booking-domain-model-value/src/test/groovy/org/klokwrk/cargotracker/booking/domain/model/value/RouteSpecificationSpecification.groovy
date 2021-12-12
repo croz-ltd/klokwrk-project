@@ -18,7 +18,13 @@
 package org.klokwrk.cargotracker.booking.domain.model.value
 
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
+import org.klokwrk.lang.groovy.misc.InstantUtils
 import spock.lang.Specification
+
+import java.time.Clock
+import java.time.Duration
+import java.time.Instant
+import java.time.ZoneOffset
 
 class RouteSpecificationSpecification extends Specification {
   static Map<String, Location> locationSampleMap = [
@@ -34,32 +40,65 @@ class RouteSpecificationSpecification extends Specification {
       "BEBRU": Location.create("BEBRU", "Brussel", "Belgium", "1234----", "5050N 00420E", PortCapabilities.RIVER_PORT_CAPABILITIES),
   ]
 
+  static Clock clock = Clock.fixed(Instant.parse("2021-12-07T12:00:00Z"), ZoneOffset.UTC)
+  static Instant currentInstantRounded = Instant.now(clock)
+  static Instant currentInstantRoundedAndOneHour = currentInstantRounded + Duration.ofHours(1)
+  static Instant currentInstantRoundedAndTwoHours = currentInstantRounded + Duration.ofHours(2)
+  static Instant currentInstantRoundedAndThreeHours = currentInstantRounded + Duration.ofHours(3)
+
   void "map constructor should work for correct input params"() {
     when:
-    RouteSpecification routeSpecification = new RouteSpecification(originLocation: locationSampleMap["HRRJK"], destinationLocation: locationSampleMap["NLRTM"])
+    RouteSpecification routeSpecification = new RouteSpecification(
+        originLocation: locationSampleMap["HRRJK"], destinationLocation: locationSampleMap["NLRTM"],
+        creationTime: currentInstantRounded,
+        departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam,
+        arrivalLatestTime: arrivalLatestTimeParam
+    )
 
     then:
     routeSpecification.originLocation.unLoCode.code == "HRRJK"
     routeSpecification.destinationLocation.unLoCode.code == "NLRTM"
+    routeSpecification.creationTime == currentInstantRounded
+    routeSpecification.departureEarliestTime == departureEarliestTimeParam
+    routeSpecification.departureLatestTime == departureLatestTimeParam
+
+    where:
+    departureEarliestTimeParam      | departureLatestTimeParam         | arrivalLatestTimeParam
+    currentInstantRoundedAndOneHour | currentInstantRoundedAndTwoHours | currentInstantRoundedAndThreeHours
+    currentInstantRoundedAndOneHour | currentInstantRoundedAndOneHour  | currentInstantRoundedAndThreeHours
   }
 
-  void "map constructor should fail for invalid input params"() {
+  void "map constructor should fail for invalid null params"() {
     when:
-    new RouteSpecification(originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+    new RouteSpecification(
+        originLocation: originLocationParam, destinationLocation: destinationLocationParam,
+        creationTime: creationTimeParam,
+        departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam,
+        arrivalLatestTime: arrivalLatestTimeParam
+    )
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message.contains(messagePartParam)
+    assertionError.message.contains("notNullValue")
 
     where:
-    originLocationParam        | destinationLocationParam   | messagePartParam
-    null                       | locationSampleMap["HRRJK"] | "notNullValue"
-    locationSampleMap["HRRJK"] | null                       | "notNullValue"
+    originLocationParam        | destinationLocationParam   | creationTimeParam     | departureEarliestTimeParam      | departureLatestTimeParam         | arrivalLatestTimeParam
+    null                       | locationSampleMap["HRRJK"] | currentInstantRounded | currentInstantRoundedAndOneHour | currentInstantRoundedAndTwoHours | currentInstantRoundedAndThreeHours
+    locationSampleMap["HRRJK"] | null                       | currentInstantRounded | currentInstantRoundedAndOneHour | currentInstantRoundedAndTwoHours | currentInstantRoundedAndThreeHours
+    locationSampleMap["HRRJK"] | locationSampleMap["NLRTM"] | null                  | currentInstantRoundedAndOneHour | currentInstantRoundedAndTwoHours | currentInstantRoundedAndThreeHours
+    locationSampleMap["HRRJK"] | locationSampleMap["NLRTM"] | currentInstantRounded | null                            | currentInstantRoundedAndTwoHours | currentInstantRoundedAndThreeHours
+    locationSampleMap["HRRJK"] | locationSampleMap["NLRTM"] | currentInstantRounded | currentInstantRoundedAndOneHour | null                             | currentInstantRoundedAndThreeHours
+    locationSampleMap["HRRJK"] | locationSampleMap["NLRTM"] | currentInstantRounded | currentInstantRoundedAndOneHour | currentInstantRoundedAndTwoHours | null
   }
 
-  void "map constructor should fail for input params violating business rules"() {
+  void "map constructor should fail for location input params violating business rules"() {
     when:
-    new RouteSpecification(originLocation: originLocationParam, destinationLocation: destinationLocationParam)
+    new RouteSpecification(
+        originLocation: originLocationParam, destinationLocation: destinationLocationParam,
+        creationTime: currentInstantRounded,
+        departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
+        arrivalLatestTime: currentInstantRoundedAndThreeHours
+    )
 
     then:
     DomainException domainException = thrown()
@@ -75,32 +114,104 @@ class RouteSpecificationSpecification extends Specification {
     locationSampleMap["HRZAG"] | locationSampleMap["HRRJK"] | "routeSpecification.cannotRouteCargoFromOriginToDestination"
   }
 
+  void "map constructor should fail for departure time input params violating business rules"() {
+    when:
+    new RouteSpecification(
+        originLocation: locationSampleMap["HRRJK"], destinationLocation: locationSampleMap["NLRTM"],
+        creationTime: currentInstantRounded,
+        departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam,
+        arrivalLatestTime: currentInstantRoundedAndThreeHours
+    )
+
+    then:
+    DomainException domainException = thrown()
+    domainException.violationInfo.violationCode.code == "400"
+    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+
+    where:
+    departureEarliestTimeParam                  | departureLatestTimeParam                    | violationCodeKeyParam
+    currentInstantRounded                       | currentInstantRoundedAndTwoHours            | "routeSpecification.departureEarliestTime.notInFuture"
+    currentInstantRounded - Duration.ofHours(1) | currentInstantRoundedAndTwoHours            | "routeSpecification.departureEarliestTime.notInFuture"
+    currentInstantRoundedAndOneHour             | currentInstantRounded                       | "routeSpecification.departureLatestTime.notInFuture"
+    currentInstantRoundedAndOneHour             | currentInstantRounded - Duration.ofHours(1) | "routeSpecification.departureLatestTime.notInFuture"
+    currentInstantRounded + Duration.ofHours(5) | currentInstantRounded + Duration.ofHours(4) | "routeSpecification.departureEarliestTime.afterDepartureLatestTime"
+
+    and:
+    currentInstantRounded + Duration.ofMinutes(1)                         | currentInstantRoundedAndOneHour | "routeSpecification.departureEarliestTime.notInHours"
+    currentInstantRounded + Duration.ofSeconds(1)                         | currentInstantRoundedAndOneHour | "routeSpecification.departureEarliestTime.notInHours"
+    currentInstantRounded + Duration.ofMinutes(1) + Duration.ofSeconds(1) | currentInstantRoundedAndOneHour | "routeSpecification.departureEarliestTime.notInHours"
+
+    and:
+    currentInstantRoundedAndOneHour | currentInstantRoundedAndOneHour + Duration.ofMinutes(1)                         | "routeSpecification.departureLatestTime.notInHours"
+    currentInstantRoundedAndOneHour | currentInstantRoundedAndOneHour + Duration.ofSeconds(1)                         | "routeSpecification.departureLatestTime.notInHours"
+    currentInstantRoundedAndOneHour | currentInstantRoundedAndOneHour + Duration.ofMinutes(1) + Duration.ofSeconds(1) | "routeSpecification.departureLatestTime.notInHours"
+  }
+
+  void "map constructor should fail for arrival time input params violating business rules"() {
+    when:
+    new RouteSpecification(
+        originLocation: locationSampleMap["HRRJK"], destinationLocation: locationSampleMap["NLRTM"],
+        creationTime: currentInstantRounded,
+        departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
+        arrivalLatestTime: arrivalLatestTimeParam
+    )
+
+    then:
+    DomainException domainException = thrown()
+    domainException.violationInfo.violationCode.code == "400"
+    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+
+    where:
+    arrivalLatestTimeParam                                                | violationCodeKeyParam
+    currentInstantRounded                                                 | "routeSpecification.arrivalLatestTime.notInFuture"
+    currentInstantRounded + Duration.ofMinutes(1)                         | "routeSpecification.arrivalLatestTime.notInHours"
+    currentInstantRounded + Duration.ofSeconds(1)                         | "routeSpecification.arrivalLatestTime.notInHours"
+    currentInstantRounded + Duration.ofMinutes(1) + Duration.ofSeconds(1) | "routeSpecification.arrivalLatestTime.notInHours"
+    currentInstantRoundedAndTwoHours                                      | "routeSpecification.arrivalLatestTime.beforeDepartureLatestTime"
+    currentInstantRoundedAndTwoHours - Duration.ofHours(1)                | "routeSpecification.arrivalLatestTime.beforeDepartureLatestTime"
+  }
+
   void "create() factory method should work for correct input params"() {
     when:
-    RouteSpecification routeSpecification = RouteSpecification.create(locationSampleMap["HRRJK"], locationSampleMap["NLRTM"])
+    RouteSpecification routeSpecification = RouteSpecification.create(
+        locationSampleMap["HRRJK"], locationSampleMap["NLRTM"], departureEarliestTimeParam, departureLatestTimeParam, arrivalLatestTimeParam, clock
+    )
 
     then:
     routeSpecification.originLocation.unLoCode.code == "HRRJK"
     routeSpecification.destinationLocation.unLoCode.code == "NLRTM"
+    routeSpecification.creationTime == currentInstantRounded
+    routeSpecification.departureEarliestTime == InstantUtils.roundUpInstantToTheHour(departureEarliestTimeParam)
+    routeSpecification.departureLatestTime == InstantUtils.roundUpInstantToTheHour(departureLatestTimeParam)
+
+    where:
+    departureEarliestTimeParam                    | departureLatestTimeParam                                            | arrivalLatestTimeParam
+    currentInstantRoundedAndOneHour               | currentInstantRoundedAndTwoHours                                    | currentInstantRoundedAndThreeHours
+    currentInstantRoundedAndOneHour               | currentInstantRoundedAndOneHour                                     | currentInstantRoundedAndThreeHours
+    currentInstantRounded + Duration.ofSeconds(1) | currentInstantRounded + Duration.ofSeconds(1) + Duration.ofHours(1) | currentInstantRoundedAndThreeHours
+    currentInstantRounded + Duration.ofSeconds(1) | currentInstantRounded + Duration.ofSeconds(1)                       | currentInstantRoundedAndThreeHours
   }
 
-  void "create() factory method should fail for invalid input params"() {
+  void "create() factory method should fail for invalid null input params"() {
     when:
-    RouteSpecification.create(originLocationParam, destinationLocationParam)
+    RouteSpecification.create(originLocationParam, destinationLocationParam, departureEarliestTimeParam, departureLatestTimeParam, arrivalLatestTimeParam, clock)
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message.contains(errorMessagePartParam)
+    assertionError.message.contains("notNullValue")
 
     where:
-    originLocationParam        | destinationLocationParam   | errorMessagePartParam
-    null                       | locationSampleMap["HRRJK"] | "notNullValue"
-    locationSampleMap["HRRJK"] | null                       | "notNullValue"
+    originLocationParam        | destinationLocationParam   | departureEarliestTimeParam      | departureLatestTimeParam         | arrivalLatestTimeParam
+    null                       | locationSampleMap["HRRJK"] | currentInstantRoundedAndOneHour | currentInstantRoundedAndTwoHours | currentInstantRoundedAndThreeHours
+    locationSampleMap["HRRJK"] | null                       | currentInstantRoundedAndOneHour | currentInstantRoundedAndTwoHours | currentInstantRoundedAndThreeHours
+    locationSampleMap["HRRJK"] | locationSampleMap["NLRTM"] | null                            | currentInstantRoundedAndTwoHours | currentInstantRoundedAndThreeHours
+    locationSampleMap["HRRJK"] | locationSampleMap["NLRTM"] | currentInstantRoundedAndOneHour | null                             | currentInstantRoundedAndThreeHours
+    locationSampleMap["HRRJK"] | locationSampleMap["NLRTM"] | currentInstantRoundedAndOneHour | currentInstantRoundedAndTwoHours | null
   }
 
-  void "create() factory method should fail for input params violating business rules"() {
+  void "create() factory method should fail for location input params violating business rules"() {
     when:
-    RouteSpecification.create(originLocationParam, destinationLocationParam)
+    RouteSpecification.create(originLocationParam, destinationLocationParam, currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours, currentInstantRoundedAndThreeHours, clock)
 
     then:
     DomainException domainException = thrown()
@@ -113,5 +224,94 @@ class RouteSpecificationSpecification extends Specification {
     locationSampleMap["HRRJK"] | Location.UNKNOWN_LOCATION  | "routeSpecification.unknownDestinationLocation"
     locationSampleMap["HRRJK"] | locationSampleMap["HRRJK"] | "routeSpecification.originAndDestinationLocationAreEqual"
     locationSampleMap["HRRJK"] | locationSampleMap["HRZAG"] | "routeSpecification.cannotRouteCargoFromOriginToDestination"
+    locationSampleMap["HRZAG"] | locationSampleMap["HRRJK"] | "routeSpecification.cannotRouteCargoFromOriginToDestination"
+  }
+
+  void "create() factory method should work for departure time input params not rounded on hours"() {
+    when:
+    RouteSpecification routeSpecification = RouteSpecification.create(
+        locationSampleMap["HRRJK"], locationSampleMap["NLRTM"], departureEarliestTimeParam, departureLatestTimeParam, currentInstantRoundedAndThreeHours, clock
+    )
+
+    then:
+    routeSpecification.departureEarliestTime == currentInstantRoundedAndOneHour
+    routeSpecification.departureLatestTime == currentInstantRoundedAndTwoHours
+
+    where:
+    departureEarliestTimeParam                                            | departureLatestTimeParam
+    currentInstantRounded + Duration.ofMinutes(1)                         | currentInstantRoundedAndTwoHours
+    currentInstantRounded + Duration.ofSeconds(1)                         | currentInstantRoundedAndTwoHours
+    currentInstantRounded + Duration.ofMinutes(1) + Duration.ofSeconds(1) | currentInstantRoundedAndTwoHours
+
+    and:
+    currentInstantRoundedAndOneHour | currentInstantRoundedAndOneHour + Duration.ofMinutes(1)
+    currentInstantRoundedAndOneHour | currentInstantRoundedAndOneHour + Duration.ofSeconds(1)
+    currentInstantRoundedAndOneHour | currentInstantRoundedAndOneHour + Duration.ofMinutes(1) + Duration.ofSeconds(1)
+
+    and:
+    currentInstantRounded + Duration.ofMinutes(1)                         | currentInstantRoundedAndOneHour + Duration.ofMinutes(1)
+    currentInstantRounded + Duration.ofSeconds(1)                         | currentInstantRoundedAndOneHour + Duration.ofSeconds(1)
+    currentInstantRounded + Duration.ofMinutes(1) + Duration.ofSeconds(1) | currentInstantRoundedAndOneHour + Duration.ofMinutes(1) + Duration.ofSeconds(1)
+  }
+
+  void "create() factory method should fail for departure time input params violating business rules"() {
+    when:
+    RouteSpecification.create(
+        locationSampleMap["HRRJK"], locationSampleMap["NLRTM"],
+        departureEarliestTimeParam, departureLatestTimeParam,
+        currentInstantRoundedAndThreeHours, clock
+    )
+
+    then:
+    DomainException domainException = thrown()
+    domainException.violationInfo.violationCode.code == "400"
+    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+
+    where:
+    departureEarliestTimeParam                  | departureLatestTimeParam                    | violationCodeKeyParam
+    currentInstantRounded                       | currentInstantRoundedAndTwoHours            | "routeSpecification.departureEarliestTime.notInFuture"
+    currentInstantRounded - Duration.ofHours(1) | currentInstantRoundedAndTwoHours            | "routeSpecification.departureEarliestTime.notInFuture"
+    currentInstantRoundedAndOneHour             | currentInstantRounded                       | "routeSpecification.departureLatestTime.notInFuture"
+    currentInstantRoundedAndOneHour             | currentInstantRounded - Duration.ofHours(1) | "routeSpecification.departureLatestTime.notInFuture"
+    currentInstantRounded + Duration.ofHours(5) | currentInstantRounded + Duration.ofHours(4) | "routeSpecification.departureEarliestTime.afterDepartureLatestTime"
+  }
+
+  void "create() factory method should work for arrival time input params not rounded on hours"() {
+    when:
+    RouteSpecification routeSpecification = RouteSpecification.create(
+        locationSampleMap["HRRJK"], locationSampleMap["NLRTM"],
+        currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours,
+        arrivalLatetsTimeParam, clock
+    )
+
+    then:
+    routeSpecification.departureEarliestTime == currentInstantRoundedAndOneHour
+    routeSpecification.departureLatestTime == currentInstantRoundedAndTwoHours
+
+    where:
+    arrivalLatetsTimeParam                                                           | _
+    currentInstantRoundedAndTwoHours + Duration.ofMinutes(1)                         | _
+    currentInstantRoundedAndTwoHours + Duration.ofSeconds(1)                         | _
+    currentInstantRoundedAndTwoHours + Duration.ofMinutes(1) + Duration.ofSeconds(1) | _
+  }
+
+  void "create() factory method should work for arrival time input params violating business rules"() {
+    when:
+    RouteSpecification.create(
+        locationSampleMap["HRRJK"], locationSampleMap["NLRTM"],
+        currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours,
+        arrivalLatestTimeParam, clock
+    )
+
+    then:
+    DomainException domainException = thrown()
+    domainException.violationInfo.violationCode.code == "400"
+    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+
+    where:
+    arrivalLatestTimeParam                                                | violationCodeKeyParam
+    currentInstantRounded                                                 | "routeSpecification.arrivalLatestTime.notInFuture"
+    currentInstantRoundedAndTwoHours                                      | "routeSpecification.arrivalLatestTime.beforeDepartureLatestTime"
+    currentInstantRoundedAndTwoHours - Duration.ofHours(1)                | "routeSpecification.arrivalLatestTime.beforeDepartureLatestTime"
   }
 }

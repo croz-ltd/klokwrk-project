@@ -24,6 +24,10 @@ import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 
+import java.time.Clock
+import java.time.Duration
+import java.time.Instant
+
 /**
  * Contains test data fixtures for {@link BookCargoCommand}.
  */
@@ -40,10 +44,15 @@ class BookCargoCommandFixtures {
   /**
    * Creates valid command where origin and destination locations form supported route.
    */
-  static BookCargoCommand commandValidRouteSpecification(String cargoIdentifier = UUID.randomUUID()) {
+  static BookCargoCommand commandValidRouteSpecification(String cargoIdentifier = UUID.randomUUID(), Clock clock = Clock.systemUTC()) {
+    Instant currentTime = Instant.now(clock)
+    Instant currentTimeAndOneHour = currentTime + Duration.ofHours(1)
+    Instant currentTimeAndTwoHours = currentTime + Duration.ofHours(2)
+    Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
+
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
         cargoId: CargoId.create(cargoIdentifier),
-        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM)
+        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock)
     )
 
     return bookCargoCommand
