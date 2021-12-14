@@ -128,6 +128,18 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   }
 
   @RestoreSystemProperties
+  void "should not accept case-insensitive enum names when configured so"() {
+    given:
+    System.setProperty("klokwrk.jackson.customizer.essential.mapper.acceptCaseInsensitiveEnums", "false")
+    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
+
+    expect:
+    //noinspection GroovyPointlessBoolean
+    objectMapper.isEnabled(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS) == false
+  }
+
+  @RestoreSystemProperties
   void "should not allow json comments when configured so"() {
     given:
     System.setProperty("klokwrk.jackson.customizer.essential.deserialization.allowJsonComments", "false")

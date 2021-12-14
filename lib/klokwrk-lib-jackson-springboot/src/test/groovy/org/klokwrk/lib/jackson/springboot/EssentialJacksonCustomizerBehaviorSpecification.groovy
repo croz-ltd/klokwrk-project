@@ -34,6 +34,49 @@ import java.time.ZonedDateTime
 
 @JsonTest
 class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
+  @SuppressWarnings("CodeNarc.UnnecessaryTransientModifier")
+  static class MyBeanWithTransientProperties {
+    transient String first
+    String last
+
+    String getFullName() {
+      return "$first $last"
+    }
+  }
+
+  static class MyBean {
+    String first
+    String last
+  }
+
+  static class MyBeanWithDefaultPropertyValues {
+    String first = "someFirst"
+    String last = "someLast"
+  }
+
+  static class MyBeanWithArray {
+    String first
+    String last
+    String[] nameList
+  }
+
+  static class MyBeanWithTimeStamps {
+    Date legacyDate
+    Instant instant
+    LocalDateTime localDateTime
+    OffsetDateTime offsetDateTime
+    ZonedDateTime zonedDateTime
+  }
+
+  static enum MyEnum {
+    ONE, TWO
+  }
+
+  static class MyBeanWithEnum {
+    String myName
+    MyEnum myEnum
+  }
+
   @Autowired
   ObjectMapper objectMapper
 
@@ -57,16 +100,6 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     cargoIdentifierStringValue | _
     '""'                       | _
     '"    "'                   | _
-  }
-
-  @SuppressWarnings("CodeNarc.UnnecessaryTransientModifier")
-  static class MyBeanWithTransientProperties {
-    transient String first
-    String last
-
-    String getFullName() {
-      return "$first $last"
-    }
   }
 
   void "deserialization - should not deserialize transient properties"() {
@@ -104,11 +137,6 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     deserializedMap.cargoIdentifier == "someIdentifier"
   }
 
-  static class MyBean {
-    String first
-    String last
-  }
-
   void "deserialization - should not fail for unknown properties"() {
     given:
     String stringToDeserialize = """
@@ -124,11 +152,6 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     then:
     myBean.first == "someFirst"
     myBean.last == null
-  }
-
-  static class MyBeanWithDefaultPropertyValues {
-    String first = "someFirst"
-    String last = "someLast"
   }
 
   void "deserialization - should not deserialize null values"() {
@@ -159,12 +182,6 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     objectMapper.deserializationConfig.defaultSetterInfo != JsonSetter.Value.forValueNulls(Nulls.SKIP)
   }
 
-  static class MyBeanWithArray {
-    String first
-    String last
-    String[] nameList
-  }
-
   void "deserialization - should deserialize single value into an array"() {
     given:
     String stringToDeserialize = """
@@ -183,14 +200,6 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     myBeanWithArray.last == "someLast"
     myBeanWithArray.nameList.size() == 1
     myBeanWithArray.nameList[0] == "singleNameInList"
-  }
-
-  static class MyBeanWithTimeStamps {
-    Date legacyDate
-    Instant instant
-    LocalDateTime localDateTime
-    OffsetDateTime offsetDateTime
-    ZonedDateTime zonedDateTime
   }
 
   void "deserialization - timestamp types should work as expected"() {
@@ -218,6 +227,28 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     myBeanWithTimeStamps.localDateTime.isEqual(LocalDateTime.now(clock))
     myBeanWithTimeStamps.offsetDateTime.isEqual(OffsetDateTime.now(clock))
     myBeanWithTimeStamps.zonedDateTime.isEqual(ZonedDateTime.now(clock))
+  }
+
+  void "deserialization - should be case-insensitive about enum names"() {
+    given:
+    String stringToDeserialize = """
+      {
+        "myName": "someName",
+        "myEnum": "${ myEnumStringValueParam }"
+      }
+      """
+
+    when:
+    MyBeanWithEnum myBeanWithEnum = objectMapper.readValue(stringToDeserialize, MyBeanWithEnum)
+
+    then:
+    myBeanWithEnum.myName == "someName"
+    myBeanWithEnum.myEnum == MyEnum.ONE
+
+    where:
+    myEnumStringValueParam | _
+    "one"                  | _
+    "ONE"                  | _
   }
 
   @SuppressWarnings("GroovyPointlessBoolean")
@@ -301,5 +332,16 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     serializedString.contains(/"localDateTime":"2020-04-04T22:35:35.654321"/)
     serializedString.contains(/"offsetDateTime":"2020-04-04T22:35:35.654321+02:00"/)
     serializedString.contains(/"zonedDateTime":"2020-04-04T22:35:35.654321+02:00"/)
+  }
+
+  void "serialization - should work with enums as expected"() {
+    given:
+    MyBeanWithEnum myBeanWithEnum = new MyBeanWithEnum(myName: "someName", myEnum: MyEnum.TWO)
+
+    when:
+    String serializedString = objectMapper.writeValueAsString(myBeanWithEnum)
+
+    then:
+    serializedString.contains(/"myEnum":"TWO"/)
   }
 }

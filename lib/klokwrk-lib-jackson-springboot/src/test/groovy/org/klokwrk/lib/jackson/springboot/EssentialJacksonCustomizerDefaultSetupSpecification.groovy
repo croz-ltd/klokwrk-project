@@ -67,9 +67,10 @@ class EssentialJacksonCustomizerDefaultSetupSpecification extends Specification 
     objectMapper.isEnabled(mapperFeature) == isEnabled
 
     where:
-    mapperFeature                             | isEnabled
-    MapperFeature.PROPAGATE_TRANSIENT_MARKER  | true
-    MapperFeature.REQUIRE_SETTERS_FOR_GETTERS | true
+    mapperFeature                               | isEnabled
+    MapperFeature.PROPAGATE_TRANSIENT_MARKER    | true
+    MapperFeature.REQUIRE_SETTERS_FOR_GETTERS   | true
+    MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS | true
   }
 
   void "objectMapper - should have default json parser features configured - #jsonParserFeature - #isEnabled"() {

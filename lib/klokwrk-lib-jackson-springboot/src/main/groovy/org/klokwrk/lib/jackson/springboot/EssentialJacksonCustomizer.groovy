@@ -44,8 +44,9 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
  * <p/>
  * EssentialJacksonCustomizer configures following defaults:
  * <ul>
- *   <li>transient fields and properties are ignored for de/serialization ({@ code MapperFeature.PROPAGATE_TRANSIENT_MARKER = true})</li>
- *   <li>read-only (a.k.a. getter-only or derived) properties are ignored for de/serialization ({@ code MapperFeature.REQUIRE_SETTERS_FOR_GETTERS = true})</li>
+ *   <li>transient fields and properties are ignored for de/serialization ({@code MapperFeature.PROPAGATE_TRANSIENT_MARKER = true})</li>
+ *   <li>read-only (a.k.a. getter-only or derived) properties are ignored for de/serialization ({@code MapperFeature.REQUIRE_SETTERS_FOR_GETTERS = true})</li>
+ *   <li>enum names are case-insensitive for deserialization ({@code MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS = true})</li>
  *   <li>serialization - adds {@link GStringSerializer} serializer</li>
  *   <li>serialization - null values are skipped ({@code serializationInclusion = JsonInclude.Include.NON_NULL})</li>
  *   <li>deserialization - adds {@link StringSanitizingDeserializer} deserializer</li>
@@ -90,6 +91,10 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
 
     if (essentialJacksonCustomizerConfigurationProperties.mapper.ignoreReadOnly == true) {
       myFeatureToEnableList << MapperFeature.REQUIRE_SETTERS_FOR_GETTERS
+    }
+
+    if (essentialJacksonCustomizerConfigurationProperties.mapper.acceptCaseInsensitiveEnums == true) {
+      myFeatureToEnableList << MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS
     }
 
     if (essentialJacksonCustomizerConfigurationProperties.deserialization.allowJsonComments == true) {

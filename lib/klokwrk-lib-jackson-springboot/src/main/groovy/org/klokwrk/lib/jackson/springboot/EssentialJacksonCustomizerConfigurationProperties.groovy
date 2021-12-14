@@ -106,5 +106,10 @@ class EssentialJacksonCustomizerConfigurationProperties {
      * By default read-only properties (a.k.a. getter-only or derived properties) are ignored. Set to {@code false} to disable this behavior.
      */
     Boolean ignoreReadOnly = true
+
+    /**
+     * By default enum names are treated as case insensitive. Set to {@code false} to disable this behavior.
+     */
+    Boolean acceptCaseInsensitiveEnums = true
   }
 }
