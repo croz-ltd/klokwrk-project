@@ -117,7 +117,15 @@ class ResponseFormattingSpringMvcExceptionHandler extends ResponseEntityExceptio
     String logUuid = null
     if (httpStatus.is5xxServerError()) {
       logUuid = UUID.randomUUID()
-      log.error("SpringMvc exception occured [uuid: ${ logUuid }, SpringMvcExceptionClass: ${ springMvcException.getClass().name }]", springMvcException)
+      log.error("SpringMvc exception occured at the server [uuid: ${ logUuid }, SpringMvcExceptionClass: ${ springMvcException.getClass().name }]", springMvcException)
+    }
+
+    if (httpStatus.is4xxClientError()) {
+      logUuid = UUID.randomUUID()
+      log.warn(
+          "Invalid client request caused SpringMvc exception to occur [uuid: ${ logUuid }, SpringMvcExceptionClass: ${ springMvcException.getClass().name }, " +
+          "exceptionMessage: ${ springMvcException.message }]"
+      )
     }
 
     Locale locale = webRequest.locale

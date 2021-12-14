@@ -389,10 +389,11 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     verifyAll(responseContentMap.metaData.violation as Map) {
-      size() == 3
+      size() == 4
       code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
       message == violationMessageParam
       type == ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase()
+      logUuid
     }
 
     verifyAll(responseContentMap.payload as Map) {

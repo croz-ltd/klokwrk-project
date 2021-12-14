@@ -258,10 +258,11 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
     }
 
     verifyAll(responseContentMap.metaData.violation as Map) {
-      it.size() == 3
+      it.size() == 4
       code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
       message == myViolationMessage
       type == ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase()
+      logUuid
     }
 
     verifyAll(responseContentMap.payload as Map) {
