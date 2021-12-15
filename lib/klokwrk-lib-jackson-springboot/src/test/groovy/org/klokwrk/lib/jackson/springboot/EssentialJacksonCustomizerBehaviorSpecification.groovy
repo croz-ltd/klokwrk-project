@@ -23,7 +23,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.json.JsonTest
 import spock.lang.Specification
+import tech.units.indriya.quantity.Quantities
+import tech.units.indriya.unit.Units
 
+import javax.measure.Quantity
+import javax.measure.quantity.Mass
 import java.text.SimpleDateFormat
 import java.time.Clock
 import java.time.Instant
@@ -75,6 +79,12 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
   static class MyBeanWithEnum {
     String myName
     MyEnum myEnum
+  }
+
+  static class MyBeanWithQuantity {
+    String name
+    Quantity<Mass> weight
+    Quantity length
   }
 
   @Autowired
@@ -251,6 +261,28 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     "ONE"                  | _
   }
 
+  void "deserialization - should deserialize uom Quantity"() {
+    given:
+    String stringToDeserialize = """
+      {
+        "name": "someName",
+        "weight": {
+          "value": 1234,
+          "unit": "kg"
+        },
+        "length": "456 m"
+      }
+      """
+
+    when:
+    MyBeanWithQuantity myBeanWithQuantity = objectMapper.readValue(stringToDeserialize, MyBeanWithQuantity)
+
+    then:
+    myBeanWithQuantity.name == "someName"
+    myBeanWithQuantity.weight == Quantities.getQuantity(1234, Units.KILOGRAM)
+    myBeanWithQuantity.length == Quantities.getQuantity(456, Units.METRE)
+  }
+
   @SuppressWarnings("GroovyPointlessBoolean")
   void "serialization - should serialize only non-null values"() {
     given:
@@ -343,5 +375,16 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
 
     then:
     serializedString.contains(/"myEnum":"TWO"/)
+  }
+
+  void "serialization - should serialize uom Quantity"() {
+    given:
+    MyBeanWithQuantity myBeanWithQuantity = new MyBeanWithQuantity(name: "someName", weight: Quantities.getQuantity(1234, Units.KILOGRAM), length: Quantities.getQuantity(456, Units.METRE))
+
+    when:
+    String serializedString = objectMapper.writeValueAsString(myBeanWithQuantity)
+
+    then:
+    serializedString == /{"name":"someName","weight":{"value":1234,"unit":"kg"},"length":{"value":456,"unit":"m"}}/
   }
 }

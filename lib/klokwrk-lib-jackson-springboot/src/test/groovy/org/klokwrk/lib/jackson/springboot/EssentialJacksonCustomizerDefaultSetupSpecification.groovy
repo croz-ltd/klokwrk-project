@@ -32,10 +32,14 @@ import com.fasterxml.jackson.databind.deser.Deserializers
 import com.fasterxml.jackson.databind.ser.BeanSerializerFactory
 import com.fasterxml.jackson.databind.ser.Serializers
 import org.klokwrk.lib.jackson.databind.deser.StringSanitizingDeserializer
+import org.klokwrk.lib.jackson.databind.deser.UomQuantityDeserializer
 import org.klokwrk.lib.jackson.databind.ser.GStringSerializer
+import org.klokwrk.lib.jackson.databind.ser.UomQuantitySerializer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.json.JsonTest
 import spock.lang.Specification
+
+import javax.measure.Quantity
 
 @JsonTest
 class EssentialJacksonCustomizerDefaultSetupSpecification extends Specification {
@@ -98,10 +102,12 @@ class EssentialJacksonCustomizerDefaultSetupSpecification extends Specification 
       deserializers.findBeanDeserializer(objectMapper.constructType(String), null, null)
     }) as Deserializers
 
-    JsonDeserializer jsonDeserializer = jsonDeserializers.findBeanDeserializer(objectMapper.constructType(String), null, null)
+    JsonDeserializer stringSanitizingJsonDeserializer = jsonDeserializers.findBeanDeserializer(objectMapper.constructType(String), null, null)
+    JsonDeserializer uomQuantityJsonDeserializer = jsonDeserializers.findBeanDeserializer(objectMapper.constructType(Quantity), null, null)
 
     expect:
-    jsonDeserializer instanceof StringSanitizingDeserializer
+    stringSanitizingJsonDeserializer instanceof StringSanitizingDeserializer
+    uomQuantityJsonDeserializer instanceof UomQuantityDeserializer
   }
 
   void "objectMapper - should have default GStringSerializer configured"() {
@@ -110,9 +116,11 @@ class EssentialJacksonCustomizerDefaultSetupSpecification extends Specification 
       serializers.findSerializer(null, objectMapper.constructType(GString), null)
     }) as Serializers
 
-    JsonSerializer jsonSerializer = jsonSerializers.findSerializer(null, objectMapper.constructType(GString), null)
+    JsonSerializer gStringJsonSerializer = jsonSerializers.findSerializer(null, objectMapper.constructType(GString), null)
+    JsonSerializer uomQuantityJsonSerializer = jsonSerializers.findSerializer(null, objectMapper.constructType(Quantity), null)
 
     expect:
-    jsonSerializer instanceof GStringSerializer
+    gStringJsonSerializer instanceof GStringSerializer
+    uomQuantityJsonSerializer instanceof UomQuantitySerializer
   }
 }

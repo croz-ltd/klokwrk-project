@@ -38,6 +38,8 @@ import org.springframework.test.context.support.DefaultBootstrapContext
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
 
+import javax.measure.Quantity
+
 @JsonTest
 class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
 
@@ -88,6 +90,21 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   }
 
   @RestoreSystemProperties
+  void "should not add UomQuantityDeserializer when configured so"() {
+    System.setProperty("klokwrk.jackson.customizer.essential.deserialization.uomQuantityDeserializer.enabled", "false")
+    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
+
+    when:
+    Deserializers jsonDeserializers = (objectMapper.deserializationContext.factory as BeanDeserializerFactory).factoryConfig.deserializers().find({ Deserializers deserializers ->
+      deserializers.findBeanDeserializer(objectMapper.constructType(Quantity), null, null)
+    }) as Deserializers
+
+    then:
+    jsonDeserializers == null
+  }
+
+  @RestoreSystemProperties
   void "should not add GStringSerializer when configured so"() {
     given:
     System.setProperty("klokwrk.jackson.customizer.essential.serialization.gStringSerializer.enabled", "false")
@@ -97,6 +114,22 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
     when:
     Serializers jsonSerializers = (objectMapper.serializerFactory as BeanSerializerFactory).factoryConfig.serializers().find({ Serializers serializers ->
       serializers.findSerializer(null, objectMapper.constructType(GString), null)
+    }) as Serializers
+
+    then:
+    jsonSerializers == null
+  }
+
+  @RestoreSystemProperties
+  void "should not add UomQuantitySerializer when configured so"() {
+    given:
+    System.setProperty("klokwrk.jackson.customizer.essential.serialization.uomQuantitySerializer.enabled", "false")
+    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
+
+    when:
+    Serializers jsonSerializers = (objectMapper.serializerFactory as BeanSerializerFactory).factoryConfig.serializers().find({ Serializers serializers ->
+      serializers.findSerializer(null, objectMapper.constructType(Quantity), null)
     }) as Serializers
 
     then:

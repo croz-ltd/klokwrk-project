@@ -57,6 +57,14 @@ class EssentialJacksonCustomizerConfigurationProperties {
       Boolean enabled = true
     }
 
+    UomQuantityDeserializer uomQuantityDeserializer = new UomQuantityDeserializer()
+    class UomQuantityDeserializer {
+      /**
+       * By default UomQuantityDeserializer is enabled. Set to {@code false} to disable it.
+       */
+      Boolean enabled = true
+    }
+
     /**
      * By default json comments are allowed. Set to {@code false} to disable this behavior.
      */
@@ -85,6 +93,14 @@ class EssentialJacksonCustomizerConfigurationProperties {
     class GStringSerializer {
       /**
        * By default GStringSerializer is enabled. Set to {@code false} to disable it.
+       */
+      Boolean enabled = true
+    }
+
+    UomQuantitySerializer uomQuantitySerializer = new UomQuantitySerializer()
+    class UomQuantitySerializer {
+      /**
+       * By default UomQuantitySerializer is enabled. Set to {@code false} to disable it.
        */
       Boolean enabled = true
     }
