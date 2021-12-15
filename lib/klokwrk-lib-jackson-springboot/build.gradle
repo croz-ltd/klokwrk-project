@@ -36,6 +36,7 @@ dependencies {
   implementation "com.fasterxml.jackson.core:jackson-annotations"
   implementation "com.fasterxml.jackson.core:jackson-core"
   implementation "com.fasterxml.jackson.core:jackson-databind"
+  implementation "javax.measure:unit-api"
   implementation "org.codehaus.groovy:groovy"
   implementation "org.springframework:spring-web"
   implementation "org.springframework.boot:spring-boot-autoconfigure"
@@ -46,6 +47,7 @@ dependencies {
   testImplementation "org.springframework.boot:spring-boot-starter-json"
   testImplementation "org.springframework.boot:spring-boot-test"
   testImplementation "org.springframework.boot:spring-boot-test-autoconfigure"
+  testImplementation "tech.units:indriya"
 
   testRuntimeOnly "com.jayway.jsonpath:json-path"
 }

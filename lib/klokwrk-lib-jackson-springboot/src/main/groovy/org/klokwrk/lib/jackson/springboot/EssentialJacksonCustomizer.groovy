@@ -28,7 +28,9 @@ import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
 import org.klokwrk.lib.jackson.databind.deser.StringSanitizingDeserializer
+import org.klokwrk.lib.jackson.databind.deser.UomQuantityDeserializer
 import org.klokwrk.lib.jackson.databind.ser.GStringSerializer
+import org.klokwrk.lib.jackson.databind.ser.UomQuantitySerializer
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
@@ -47,9 +49,9 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
  *   <li>transient fields and properties are ignored for de/serialization ({@code MapperFeature.PROPAGATE_TRANSIENT_MARKER = true})</li>
  *   <li>read-only (a.k.a. getter-only or derived) properties are ignored for de/serialization ({@code MapperFeature.REQUIRE_SETTERS_FOR_GETTERS = true})</li>
  *   <li>enum names are case-insensitive for deserialization ({@code MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS = true})</li>
- *   <li>serialization - adds {@link GStringSerializer} serializer</li>
+ *   <li>serialization - adds {@link GStringSerializer} and {@link UomQuantitySerializer} serializers</li>
  *   <li>serialization - null values are skipped ({@code serializationInclusion = JsonInclude.Include.NON_NULL})</li>
- *   <li>deserialization - adds {@link StringSanitizingDeserializer} deserializer</li>
+ *   <li>deserialization - adds {@link StringSanitizingDeserializer} and {@link UomQuantityDeserializer} deserializers</li>
  *   <li>deserialization - json comments are allowed ({@code JsonParser.Feature.ALLOW_COMMENTS = true})</li>
  *   <li>deserialization - single values are accepted into array ({@code DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY = true})</li>
  *   <li>deserialization - failing on unknown properties is disabled ({@code DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES = false})</li>
@@ -78,9 +80,17 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
       myDeserializerList << new StringSanitizingDeserializer()
     }
 
+    if (essentialJacksonCustomizerConfigurationProperties.deserialization.uomQuantityDeserializer.enabled == true) {
+      myDeserializerList << new UomQuantityDeserializer()
+    }
+
     List<JsonSerializer> mySerializerList = []
     if (essentialJacksonCustomizerConfigurationProperties.serialization.gStringSerializer.enabled == true) {
       mySerializerList << new GStringSerializer()
+    }
+
+    if (essentialJacksonCustomizerConfigurationProperties.serialization.uomQuantitySerializer.enabled == true) {
+      mySerializerList << new UomQuantitySerializer()
     }
 
     List<Object> myFeatureToEnableList = []
