@@ -59,9 +59,11 @@ dependencies {
     api "com.google.jimfs:jimfs:$jimfsVersion"
     api "com.tngtech.archunit:archunit-junit5:$archUnitVersion"
     api "io.github.classgraph:classgraph:$classGraphVersion"
+    api "javax.measure:unit-api:$uomApiVersion"
     api "net.ttddyy:datasource-proxy:$dataSourceProxyVersion"
     api "org.spockframework:spock-core:$spockVersion"
     api "org.spockframework:spock-spring:$spockVersion"
+    api "tech.units:indriya:$uomReferenceImplementationVersion"
     api "uk.org.lidalia:slf4j-test:$slf4jTestVersion"
 
     api "org.codenarc:CodeNarc:$codeNarcVersion"
