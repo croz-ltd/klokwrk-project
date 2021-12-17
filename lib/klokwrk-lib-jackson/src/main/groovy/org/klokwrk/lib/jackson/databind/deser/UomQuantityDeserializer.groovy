@@ -10,7 +10,8 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import groovy.transform.CompileStatic
-import tech.units.indriya.format.SimpleQuantityFormat
+import tech.units.indriya.format.FormatBehavior
+import tech.units.indriya.format.NumberDelimiterQuantityFormat
 import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.UnitDimension
 
@@ -40,7 +41,14 @@ class UomQuantityDeserializer extends StdDeserializer<Quantity> implements Conte
     JsonNode jsonNode = jsonParser.readValueAsTree() as JsonNode
 
     if (jsonNode.isTextual() && (jsonNode.textValue().trim() != "")) {
-      Quantity quantityParsed = SimpleQuantityFormat.instance.parse(jsonNode.textValue().trim())
+      NumberDelimiterQuantityFormat numberDelimiterQuantityFormat = NumberDelimiterQuantityFormat.getInstance(FormatBehavior.LOCALE_SENSITIVE)
+      Quantity quantityParsed
+      try {
+        quantityParsed = numberDelimiterQuantityFormat.parse(jsonNode.textValue().trim())
+      }
+      catch (Exception e) {
+        throw new MeasurementParseException("Failed to parse Quantity from '${ jsonNode }'. Cause message: ${ e.message }")
+      }
 
       if (unitType == null) {
         return quantityParsed
@@ -62,7 +70,14 @@ class UomQuantityDeserializer extends StdDeserializer<Quantity> implements Conte
       Boolean isUnitJsonNodeValid = unitJsonNode.isTextual() && (unitJsonNode.textValue().trim() != "")
 
       if (isValueJsonNodeValid && isUnitJsonNodeValid) {
-        Quantity<? extends Quantity> quantityParsed = SimpleQuantityFormat.instance.parse("${valueJsonNode.asText().trim()} ${unitJsonNode.textValue().trim()}")
+        NumberDelimiterQuantityFormat numberDelimiterQuantityFormat = NumberDelimiterQuantityFormat.getInstance(FormatBehavior.LOCALE_SENSITIVE)
+        Quantity<? extends Quantity> quantityParsed
+        try {
+          quantityParsed = numberDelimiterQuantityFormat.parse("${valueJsonNode.asText().trim()} ${unitJsonNode.textValue().trim()}")
+        }
+        catch (Exception e) {
+          throw new MeasurementParseException("Failed to parse Quantity from '${ jsonNode }'. Cause message: ${ e.message }")
+        }
 
         Boolean isScaleJsonNodeValid = (scaleJsonNode != null) && scaleJsonNode.isTextual() && (scaleJsonNode.textValue().trim() != "")
         if (isScaleJsonNodeValid == Boolean.TRUE) {

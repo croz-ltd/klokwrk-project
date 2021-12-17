@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import groovy.transform.CompileStatic
+import tech.units.indriya.format.LocalUnitFormat
 
 import javax.measure.Quantity
 
@@ -16,10 +17,12 @@ class UomQuantitySerializer extends StdSerializer<Quantity> {
 
   @Override
   void serialize(Quantity quantity, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+    LocalUnitFormat localUnitFormat = LocalUnitFormat.instance
+
     jsonGenerator.writeStartObject()
     jsonGenerator.writeFieldName("value")
     jsonGenerator.writeNumber(quantity.value.toString())
-    jsonGenerator.writeStringField("unit", quantity.unit.toString())
+    jsonGenerator.writeStringField("unit", localUnitFormat.format(quantity.unit))
 
     if (quantity.scale != Quantity.Scale.ABSOLUTE) {
       jsonGenerator.writeStringField("scale", quantity.scale.name())

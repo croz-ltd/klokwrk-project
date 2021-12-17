@@ -192,6 +192,32 @@ class UomQuantityDeserializerSpecification extends Specification {
     absoluteTemperature.temperature.add(absoluteTemperature.temperature) == Quantities.getQuantity(283.15, Units.CELSIUS)
   }
 
+  void "should work for temperature quantity with all supported Celsius unit encodings"() {
+    given:
+    String temperatureStringToDeserialize = """
+      {
+        "temperature": {
+          "value": 5,
+          "unit": $unitStringParam
+        }
+      }
+      """
+
+    when:
+    MyBeanWithTemperatureQuantity temperatureQuantity = objectMapper.readValue(temperatureStringToDeserialize, MyBeanWithTemperatureQuantity)
+
+    then:
+    temperatureQuantity.temperature.unit == Units.CELSIUS
+
+    where:
+    unitStringParam | _
+    /"℃"/           | _
+    /"\u2103"/      | _ // same as the previous row
+    /"°C"/          | _
+    /"\u00b0C"/     | _ // same as the previous row
+    /"Celsius"/     | _
+  }
+
   void "should work for quantity given as an object - raw quantity"() {
     given:
     String stringToDeserialize = """
@@ -336,7 +362,7 @@ class UomQuantityDeserializerSpecification extends Specification {
 
     then:
     JsonMappingException jsonMappingException = thrown()
-    jsonMappingException.message.startsWith("Failed to parse number-literal 'abc'.")
+    jsonMappingException.message.startsWith(/Failed to parse Quantity from '"abc kg"'./)
     jsonMappingException.cause instanceof MeasurementParseException
   }
 
@@ -375,7 +401,7 @@ class UomQuantityDeserializerSpecification extends Specification {
 
     then:
     JsonMappingException jsonMappingException = thrown()
-    jsonMappingException.message.startsWith("Parse Error")
+    jsonMappingException.message.startsWith(/Failed to parse Quantity from '"123 abc"'./)
     jsonMappingException.cause instanceof MeasurementParseException
   }
 
@@ -396,7 +422,7 @@ class UomQuantityDeserializerSpecification extends Specification {
 
     then:
     JsonMappingException jsonMappingException = thrown()
-    jsonMappingException.message.startsWith("Parse Error")
+    jsonMappingException.message.startsWith(/Failed to parse Quantity from '{"value":1234,"unit":"abc"}'./)
     jsonMappingException.cause instanceof MeasurementParseException
   }
 }

@@ -8,6 +8,7 @@ import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
+import javax.measure.quantity.Temperature
 
 class UomQuantitySerializerSpecification extends Specification {
   static class MyBeanTypedQuantity {
@@ -18,6 +19,11 @@ class UomQuantitySerializerSpecification extends Specification {
   static class MyBeanRawQuantity {
     String otherName
     Quantity length
+  }
+
+  static class MyBeanWithTemperatureQuantity {
+    String name
+    Quantity<Temperature> temperature
   }
 
   ObjectMapper objectMapper
@@ -91,5 +97,17 @@ class UomQuantitySerializerSpecification extends Specification {
     -1                 | -1
     -1.0               | -1
     -1.01              | -1.01
+  }
+
+  void "should serialize typed temperature quantity in Celsius as expected"() {
+    given:
+    MyBeanWithTemperatureQuantity myBeanWithTemperatureQuantity = new MyBeanWithTemperatureQuantity(name: "someName", temperature: Quantities.getQuantity(10, Units.CELSIUS))
+
+    when:
+    String serializedString = objectMapper.writeValueAsString(myBeanWithTemperatureQuantity)
+
+    then:
+    // Here we are expecting two character sequence '\u00B0' + 'C' (as in °C) instead of just '\u2103' character (as in ℃)
+    serializedString.contains(/"temperature":{"value":10,"unit":"°C"}/)
   }
 }
