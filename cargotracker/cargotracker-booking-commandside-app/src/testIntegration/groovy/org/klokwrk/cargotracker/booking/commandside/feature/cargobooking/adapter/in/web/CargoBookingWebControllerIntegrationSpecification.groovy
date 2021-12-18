@@ -71,6 +71,10 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
                 originLocation: "NLRTM", destinationLocation: "HRRJK",
                 departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
                 arrivalLatestTime: arrivalLatestTime
+            ],
+            commodityInfo: [
+                type: "dry",
+                weightInKilograms: 1000
             ]
         ]
     )
@@ -104,9 +108,10 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     verifyAll(responseContentMap.payload as Map) {
-      size() == 2
+      size() == 3
       cargoId.identifier == myCargoIdentifier
       routeSpecification
+      commodityInfo
     }
 
     verifyAll(responseContentMap.payload.routeSpecification as Map) {
@@ -158,6 +163,16 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
       portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
     }
 
+    verifyAll(responseContentMap.payload.commodityInfo as Map) {
+      size() == 2
+
+      type == "DRY"
+
+      weight.value == 1000
+      weight.unit.name == "Kilogram"
+      weight.unit.symbol == "kg"
+    }
+
     where:
     acceptLanguageParam | localeStringParam
     "hr-HR"             | "hr_HR"
@@ -171,7 +186,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     String webRequestBody = objectMapper.writeValueAsString(
         [
             cargoIdentifier: cargoIdentifier,
-            routeSpecification: [originLocation: null, destinationLocation: null, departureEarliestTime: null, departureLatestTime: null, arrivalLatestTime: null]
+            routeSpecification: [originLocation: null, destinationLocation: null, departureEarliestTime: null, departureLatestTime: null, arrivalLatestTime: null],
+            commodityInfo: [type: "dry", weightInKilograms: 1000]
         ]
     )
 
@@ -245,7 +261,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
             cargoIdentifier: cargoIdentifier,
             routeSpecification: [
                 originLocation: "HRRJK", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
-            ]
+            ],
+            commodityInfo: [type: "dry", weightInKilograms: 1000]
         ]
     )
 
@@ -307,7 +324,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
             cargoIdentifier: cargoIdentifier,
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRZAG", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
-            ]
+            ],
+            commodityInfo: [type: "dry", weightInKilograms: 1000]
         ]
     )
 

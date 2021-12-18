@@ -116,7 +116,9 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         "org.codehaus.groovy..",
         "groovy..",
 
-        "org.hamcrest"
+        "javax.measure..",
+        "org.hamcrest",
+        "tech.units.indriya.."
     ]
 
     String[] cargotrackerBookingCommandsideAppFeaturePackages = ["org.klokwrk.cargotracker.booking.commandside.feature.."]
