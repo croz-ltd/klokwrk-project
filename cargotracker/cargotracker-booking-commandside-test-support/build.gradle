@@ -34,6 +34,7 @@ dependencies {
   implementation project(":klokwrk-lang-groovy")
 
   implementation "com.tngtech.archunit:archunit-junit5"
+  implementation "javax.measure:unit-api"
   implementation "org.codehaus.groovy:groovy"
   implementation "org.testcontainers:testcontainers"
 }

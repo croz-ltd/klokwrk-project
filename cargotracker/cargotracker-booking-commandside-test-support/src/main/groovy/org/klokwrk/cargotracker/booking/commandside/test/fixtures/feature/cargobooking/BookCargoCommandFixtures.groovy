@@ -20,6 +20,8 @@ package org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargo
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
@@ -52,7 +54,8 @@ class BookCargoCommandFixtures {
 
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
         cargoId: CargoId.create(cargoIdentifier),
-        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock)
+        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
+        commodityInfo: CommodityInfo.create(CommodityType.DRY, 1000, null)
     )
 
     return bookCargoCommand
