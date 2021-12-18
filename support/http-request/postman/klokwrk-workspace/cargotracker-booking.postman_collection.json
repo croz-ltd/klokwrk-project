@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b2669363-87fc-4805-ba3f-84c982ca9888",
+		"_postman_id": "e924834c-88e5-4199-a417-2aefac4c651d",
 		"name": "cargotracker-booking",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -21,19 +21,7 @@
 											"listen": "prerequest",
 											"script": {
 												"exec": [
-													"var currentTimeAndOneHour = new Date();",
-													"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
-													"",
-													"var currentTimeAndTwoHours = new Date();",
-													"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
-													"",
-													"var currentTimeAndThreeHours = new Date();",
-													"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
-													"",
-													"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
-													"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
-													"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
-													""
+													"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
 												],
 												"type": "text/javascript"
 											}
@@ -42,17 +30,9 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
-													"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
-													"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
-													"",
-													"if (pm.response.to.have.status(200)) {",
-													"    var receivedCargoIdentifier = pm.response.json().payload.cargoId.identifier",
-													"    pm.collectionVariables.set(\"execution_receivedCargoIdentifier\", receivedCargoIdentifier)",
-													"}",
-													"",
-													"postman.setNextRequest(null);",
-													""
+													"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+													"pm.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible(pm.response, pm.collectionVariables);",
+													"postman.setNextRequest(null);"
 												],
 												"type": "text/javascript"
 											}
@@ -107,19 +87,7 @@
 											"listen": "prerequest",
 											"script": {
 												"exec": [
-													"var currentTimeAndOneHour = new Date();",
-													"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
-													"",
-													"var currentTimeAndTwoHours = new Date();",
-													"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
-													"",
-													"var currentTimeAndThreeHours = new Date();",
-													"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
-													"",
-													"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
-													"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
-													"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
-													""
+													"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
 												],
 												"type": "text/javascript"
 											}
@@ -128,15 +96,8 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
-													"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
-													"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
-													"",
-													"if (pm.response.to.have.status(200)) {",
-													"    var receivedCargoIdentifier = pm.response.json().payload.cargoId.identifier",
-													"    pm.collectionVariables.set(\"execution_receivedCargoIdentifier\", receivedCargoIdentifier)",
-													"}",
-													"",
+													"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+													"pm.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible(pm.response, pm.collectionVariables);",
 													"postman.setNextRequest(null);"
 												],
 												"type": "text/javascript"
@@ -192,19 +153,7 @@
 											"listen": "prerequest",
 											"script": {
 												"exec": [
-													"var currentTimeAndOneHour = new Date();",
-													"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
-													"",
-													"var currentTimeAndTwoHours = new Date();",
-													"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
-													"",
-													"var currentTimeAndThreeHours = new Date();",
-													"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
-													"",
-													"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
-													"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
-													"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
-													""
+													"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
 												],
 												"type": "text/javascript"
 											}
@@ -213,17 +162,9 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
-													"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
-													"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
-													"",
-													"if (pm.response.to.have.status(200)) {",
-													"    var receivedCargoIdentifier = pm.response.json().payload.cargoId.identifier",
-													"    pm.collectionVariables.set(\"execution_receivedCargoIdentifier\", receivedCargoIdentifier)",
-													"}",
-													"",
-													"postman.setNextRequest(null);",
-													""
+													"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+													"pm.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible(pm.response, pm.collectionVariables);",
+													"postman.setNextRequest(null);"
 												],
 												"type": "text/javascript"
 											}
@@ -278,19 +219,7 @@
 											"listen": "prerequest",
 											"script": {
 												"exec": [
-													"var currentTimeAndOneHour = new Date();",
-													"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
-													"",
-													"var currentTimeAndTwoHours = new Date();",
-													"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
-													"",
-													"var currentTimeAndThreeHours = new Date();",
-													"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
-													"",
-													"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
-													"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
-													"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
-													""
+													"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
 												],
 												"type": "text/javascript"
 											}
@@ -299,17 +228,9 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
-													"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
-													"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
-													"",
-													"if (pm.response.to.have.status(200)) {",
-													"    var receivedCargoIdentifier = pm.response.json().payload.cargoId.identifier",
-													"    pm.collectionVariables.set(\"execution_receivedCargoIdentifier\", receivedCargoIdentifier)",
-													"}",
-													"",
-													"postman.setNextRequest(null);",
-													""
+													"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+													"pm.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible(pm.response, pm.collectionVariables);",
+													"postman.setNextRequest(null);"
 												],
 												"type": "text/javascript"
 											}
@@ -364,19 +285,7 @@
 											"listen": "prerequest",
 											"script": {
 												"exec": [
-													"var currentTimeAndOneHour = new Date();",
-													"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
-													"",
-													"var currentTimeAndTwoHours = new Date();",
-													"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
-													"",
-													"var currentTimeAndThreeHours = new Date();",
-													"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
-													"",
-													"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
-													"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
-													"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
-													""
+													"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
 												],
 												"type": "text/javascript"
 											}
@@ -385,17 +294,9 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
-													"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
-													"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
-													"",
-													"if (pm.response.to.have.status(200)) {",
-													"    var receivedCargoIdentifier = pm.response.json().payload.cargoId.identifier",
-													"    pm.collectionVariables.set(\"execution_receivedCargoIdentifier\", receivedCargoIdentifier)",
-													"}",
-													"",
-													"postman.setNextRequest(null);",
-													""
+													"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+													"pm.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible(pm.response, pm.collectionVariables);",
+													"postman.setNextRequest(null);"
 												],
 												"type": "text/javascript"
 											}
@@ -670,19 +571,7 @@
 											"listen": "prerequest",
 											"script": {
 												"exec": [
-													"var currentTimeAndOneHour = new Date();",
-													"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
-													"",
-													"var currentTimeAndTwoHours = new Date();",
-													"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
-													"",
-													"var currentTimeAndThreeHours = new Date();",
-													"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
-													"",
-													"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
-													"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
-													"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
-													""
+													"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
 												],
 												"type": "text/javascript"
 											}
@@ -691,10 +580,7 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
-													"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
-													"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
-													"",
+													"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
 													"postman.setNextRequest(null);"
 												],
 												"type": "text/javascript"
@@ -750,19 +636,7 @@
 											"listen": "prerequest",
 											"script": {
 												"exec": [
-													"var currentTimeAndOneHour = new Date();",
-													"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
-													"",
-													"var currentTimeAndTwoHours = new Date();",
-													"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
-													"",
-													"var currentTimeAndThreeHours = new Date();",
-													"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
-													"",
-													"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
-													"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
-													"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
-													""
+													"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
 												],
 												"type": "text/javascript"
 											}
@@ -771,10 +645,7 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
-													"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
-													"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
-													"",
+													"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
 													"postman.setNextRequest(null);"
 												],
 												"type": "text/javascript"
@@ -1166,19 +1037,7 @@
 									"listen": "prerequest",
 									"script": {
 										"exec": [
-											"var currentTimeAndOneHour = new Date();",
-											"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
-											"",
-											"var currentTimeAndTwoHours = new Date();",
-											"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
-											"",
-											"var currentTimeAndThreeHours = new Date();",
-											"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
-											"",
-											"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
-											"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
-											"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
-											""
+											"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
 										],
 										"type": "text/javascript"
 									}
@@ -1187,14 +1046,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
-											"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
-											"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
-											"",
-											"if (pm.response.to.have.status(200)) {",
-											"    var receivedCargoIdentifier = pm.response.json().payload.cargoId.identifier",
-											"    pm.collectionVariables.set(\"execution_receivedCargoIdentifier\", receivedCargoIdentifier)",
-											"}",
+											"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+											"pm.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible(pm.response, pm.collectionVariables);",
 											"",
 											"pm.test(\"cargo created\", function () {",
 											"    pm.expect(pm.response.json().payload.cargoId.identifier).to.not.null;",
@@ -1316,19 +1169,7 @@
 									"listen": "prerequest",
 									"script": {
 										"exec": [
-											"var currentTimeAndOneHour = new Date();",
-											"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
-											"",
-											"var currentTimeAndTwoHours = new Date();",
-											"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
-											"",
-											"var currentTimeAndThreeHours = new Date();",
-											"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
-											"",
-											"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
-											"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
-											"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
-											""
+											"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
 										],
 										"type": "text/javascript"
 									}
@@ -1337,14 +1178,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
-											"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
-											"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
-											"",
-											"if (pm.response.to.have.status(200)) {",
-											"    var receivedCargoIdentifier = pm.response.json().payload.cargoId.identifier",
-											"    pm.collectionVariables.set(\"execution_receivedCargoIdentifier\", receivedCargoIdentifier)",
-											"}",
+											"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+											"pm.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible(pm.response, pm.collectionVariables);",
 											"",
 											"pm.test(\"cargo created\", function () {",
 											"    pm.expect(pm.response.json().payload.cargoId.identifier).to.not.null;",
@@ -1470,6 +1305,35 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
+					"Object.prototype.klokwrk_cargotracker_booking = Object.create(null);",
+					"",
+					"Object.prototype.klokwrk_cargotracker_booking.setCurrentTimeVariables = function(variableScope) {",
+					"    var currentTimeAndOneHour = new Date();",
+					"    currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
+					"",
+					"    var currentTimeAndTwoHours = new Date();",
+					"    currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
+					"",
+					"    var currentTimeAndThreeHours = new Date();",
+					"    currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
+					"",
+					"    variableScope.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
+					"    variableScope.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
+					"    variableScope.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
+					"};",
+					"",
+					"Object.prototype.klokwrk_cargotracker_booking.unsetCurrentTimeVariables = function(variableScope) {",
+					"    variableScope.unset(\"currentTimeAndOneHour\");",
+					"    variableScope.unset(\"currentTimeAndTwoHours\");",
+					"    variableScope.unset(\"currentTimeAndThreeHours\");",
+					"}",
+					"",
+					"Object.prototype.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible = function(response, variableScope) {",
+					"    if (response.to.have.status(200)) {",
+					"        var receivedCargoIdentifier = response.json().payload.cargoId.identifier",
+					"        variableScope.set(\"execution_receivedCargoIdentifier\", receivedCargoIdentifier)",
+					"    }",
+					"}",
 					""
 				]
 			}
