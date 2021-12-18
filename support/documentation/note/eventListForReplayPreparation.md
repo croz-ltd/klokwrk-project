@@ -11,6 +11,9 @@
 
       http://localhost:8024/v1/events?timeout=3600&trackingToken=0
 
+- Make sure the charset of the output is set to UTF-8 (execute "document.characterSet" from chrome console). If not, the easiest way is to use related Chrome plugin like this one:
+  https://chrome.google.com/webstore/detail/set-character-encoding/bpojelgakakmcfmjfilgdlmhefphglae
+
 - same as previous but with some defaults specified explicitly
 
       http://localhost:8024/v1/events?allowSnapshots=true&initialSequence=0&timeout=3600&trackingToken=0

@@ -45,6 +45,11 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
             "departureEarliestTime": "${ departureEarliestTime }",
             "departureLatestTime": "${ departureLatestTime }",
             "arrivalLatestTime": "${ arrivalLatestTime }"
+          },
+          "commodityInfo": {
+            "type": "chilled",
+            "weightInKilograms": 1000,
+            "storageTemperatureInCelsius": 5
           }
         }
         """
@@ -90,6 +95,10 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
             "departureEarliestTime": "${ departureEarliestTime }",
             "departureLatestTime": "${ departureLatestTime }",
             "arrivalLatestTime": "${ arrivalLatestTime }"
+          },
+          "commodityInfo": {
+            "type": "dry",
+            "weightInKilograms": 1000
           }
         }
         """
@@ -164,6 +173,11 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
             "departureEarliestTime": "${ departureEarliestTime }",
             "departureLatestTime": "${ departureLatestTime }",
             "arrivalLatestTime": "${ arrivalLatestTime }"
+          },
+          "commodityInfo": {
+            "type": "chilled",
+            "weightInKilograms": 1000,
+            "storageTemperatureInCelsius": 5
           }
         }
         """
