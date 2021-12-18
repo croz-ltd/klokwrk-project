@@ -28,6 +28,7 @@ dependencies {
   implementation project(":cargotracker-lib-domain-model-event")
   implementation project(":klokwrk-lang-groovy")
 
+  implementation "javax.measure:unit-api"
   implementation "org.codehaus.groovy:groovy"
 
   testImplementation "org.spockframework:spock-core"

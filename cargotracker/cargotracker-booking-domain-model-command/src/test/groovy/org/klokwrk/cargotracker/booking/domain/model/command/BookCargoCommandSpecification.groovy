@@ -1,6 +1,8 @@
 package org.klokwrk.cargotracker.booking.domain.model.command
 
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
@@ -29,13 +31,15 @@ class BookCargoCommandSpecification extends Specification {
   static RouteSpecification validRouteSpecification = RouteSpecification.create(
       locationSampleMap["NLRTM"], locationSampleMap["DEHAM"], currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours, currentInstantRoundedAndThreeHours, clock
   )
+  static CommodityInfo validCommodityInfo = CommodityInfo.create(CommodityType.DRY, 1000, null)
 
   void "map constructor should work for correct input params"() {
     when:
     CargoId cargoId = CargoId.createWithGeneratedIdentifier()
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
         cargoId: cargoId,
-        routeSpecification: validRouteSpecification
+        routeSpecification: validRouteSpecification,
+        commodityInfo: validCommodityInfo
     )
 
     then:
@@ -52,16 +56,17 @@ class BookCargoCommandSpecification extends Specification {
 
   void "map constructor should fail for null input params"() {
     when:
-    new BookCargoCommand(cargoId: cargoIdParam, routeSpecification: routeSpecificationParam)
+    new BookCargoCommand(cargoId: cargoIdParam, routeSpecification: routeSpecificationParam, commodityInfo: commodityInfoParam)
 
     then:
     AssertionError assertionError = thrown()
     assertionError.message.contains(messagePartParam)
 
     where:
-    cargoIdParam                            | routeSpecificationParam | messagePartParam
-    null                                    | validRouteSpecification | "notNullValue"
-    CargoId.createWithGeneratedIdentifier() | null                    | "notNullValue"
+    cargoIdParam                            | routeSpecificationParam | commodityInfoParam | messagePartParam
+    null                                    | validRouteSpecification | validCommodityInfo | "notNullValue"
+    CargoId.createWithGeneratedIdentifier() | null                    | validCommodityInfo | "notNullValue"
+    CargoId.createWithGeneratedIdentifier() | validRouteSpecification | null               | "notNullValue"
   }
 
   void "map constructor should fail when some of business rules are not satisfied"() {
@@ -72,7 +77,8 @@ class BookCargoCommandSpecification extends Specification {
             originLocationParam, destinationLocationParam,
             currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours,
             currentInstantRoundedAndThreeHours, clock
-        )
+        ),
+        commodityInfo: validCommodityInfo
     )
 
     then:

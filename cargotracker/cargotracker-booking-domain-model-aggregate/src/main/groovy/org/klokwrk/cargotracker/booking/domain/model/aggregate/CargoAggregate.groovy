@@ -30,6 +30,7 @@ import org.axonframework.spring.stereotype.Aggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
@@ -42,6 +43,7 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply
 class CargoAggregate {
   CargoId cargoId
   RouteSpecification routeSpecification
+  CommodityInfo commodityInfo
 
   @AggregateIdentifier
   String getAggregateIdentifier() {
@@ -60,5 +62,6 @@ class CargoAggregate {
   void onCargoBookedEvent(CargoBookedEvent cargoBookedEvent) {
     cargoId = cargoBookedEvent.cargoId
     routeSpecification = cargoBookedEvent.routeSpecification
+    commodityInfo = cargoBookedEvent.commodityInfo
   }
 }

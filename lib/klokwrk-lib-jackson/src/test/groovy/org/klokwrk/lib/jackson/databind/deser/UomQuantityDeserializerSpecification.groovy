@@ -65,6 +65,29 @@ class UomQuantityDeserializerSpecification extends Specification {
     "1234000 g"         | _
   }
 
+  void "should work for temperature quantity given as a string with all supported Celsius unit encodings"() {
+    given:
+    String temperatureStringToDeserialize = """
+      {
+        "temperature": "5 $unitStringParam"
+      }
+      """
+
+    when:
+    MyBeanWithTemperatureQuantity temperatureQuantity = objectMapper.readValue(temperatureStringToDeserialize, MyBeanWithTemperatureQuantity)
+
+    then:
+    temperatureQuantity.temperature.unit == Units.CELSIUS
+
+    where:
+    unitStringParam | _
+    /℃/             | _
+    /\u2103/        | _ // same as the previous row
+    /°C/            | _
+    /\u00b0C/       | _ // same as the previous row
+    /Celsius/       | _
+  }
+
   void "should work for quantity given as a string - raw quantity"() {
     given:
     String stringToDeserialize = """
@@ -91,7 +114,7 @@ class UomQuantityDeserializerSpecification extends Specification {
     "123400 cm"         | _
   }
 
-  void "should work for quantity given as an object - typed quantity"() {
+  void "should work for quantity given as an object with unit string - typed quantity"() {
     given:
     String stringToDeserialize = """
       {
@@ -120,7 +143,50 @@ class UomQuantityDeserializerSpecification extends Specification {
     1_234_000          | "g"
   }
 
-  void "should work for quantity given as an object - typed quantity with scale"() {
+  void "should work for quantity given as an object with unit object - typed quantity"() {
+    given:
+    String stringToDeserialize = """
+      {
+        "name": "someName",
+        "weight": {
+          "value": $quantityValueParam,
+          "unit": {
+            $quantityUnitObjectParam
+          }
+        }
+      }
+      """
+
+    when:
+    MyBeanTypedQuantity deserializedMyBean = objectMapper.readValue(stringToDeserialize, MyBeanTypedQuantity)
+
+    then:
+    deserializedMyBean.name == "someName"
+    deserializedMyBean.weight == Quantities.getQuantity(1234, Units.KILOGRAM)
+    deserializedMyBean.weight.scale == Quantity.Scale.ABSOLUTE
+
+    where:
+    quantityValueParam | quantityUnitObjectParam
+    1_234              | /"name":"Kilogram"/
+    1_234              | /"name":"Kilogram "/
+    1_234              | /"name":" Kilogram"/
+    1_234              | /"name":" Kilogram "/
+
+    1_234              | /"symbol":"kg"/
+    1_234              | /"symbol":"kg "/
+    1_234              | /"symbol":" kg"/
+    1_234              | /"symbol":" kg "/
+    1_234_000          | /"symbol":"g"/
+
+    // Symbol is taken first and if known, name is not considered
+    1_234              | /"name":"Kilogram","symbol":"kg"/
+    1_234              | /"name":"NonExisting","symbol":"kg"/
+    1_234              | /"name":"","symbol":"kg"/
+    1_234              | /"name":"   ","symbol":"kg"/
+    1_234_000          | /"name":"Whatever","symbol":"g"/
+  }
+
+  void "should work for quantity given as an object with unit string - typed quantity with scale"() {
     given:
     String stringToDeserialize = """
       {
@@ -162,7 +228,7 @@ class UomQuantityDeserializerSpecification extends Specification {
     /"reLATive"/             | Quantity.Scale.RELATIVE
   }
 
-  void "should work for quantity given as an object - typed quantity with scale and calculation"() {
+  void "should work for quantity given as an object with unit string - typed quantity with scale and calculation"() {
     given:
     String absoluteTemperatureStringToDeserialize = """
       {
@@ -192,7 +258,61 @@ class UomQuantityDeserializerSpecification extends Specification {
     absoluteTemperature.temperature.add(absoluteTemperature.temperature) == Quantities.getQuantity(283.15, Units.CELSIUS)
   }
 
-  void "should work for quantity given as an object - raw quantity"() {
+  void "should work for temperature quantity given as an object with unit string and with all supported Celsius unit encodings"() {
+    given:
+    String temperatureStringToDeserialize = """
+      {
+        "temperature": {
+          "value": 5,
+          "unit": $unitStringParam
+        }
+      }
+      """
+
+    when:
+    MyBeanWithTemperatureQuantity temperatureQuantity = objectMapper.readValue(temperatureStringToDeserialize, MyBeanWithTemperatureQuantity)
+
+    then:
+    temperatureQuantity.temperature.unit == Units.CELSIUS
+
+    where:
+    unitStringParam | _
+    /"℃"/           | _
+    /"\u2103"/      | _ // same as the previous row
+    /"°C"/          | _
+    /"\u00b0C"/     | _ // same as the previous row
+    /"Celsius"/     | _
+  }
+
+  void "should work for temperature quantity given as an object with unit object and with all supported Celsius unit encodings"() {
+    given:
+    String temperatureStringToDeserialize = """
+      {
+        "temperature": {
+          "value": 5,
+          "unit": $unitStringParam
+        }
+      }
+      """
+
+    when:
+    MyBeanWithTemperatureQuantity temperatureQuantity = objectMapper.readValue(temperatureStringToDeserialize, MyBeanWithTemperatureQuantity)
+
+    then:
+    temperatureQuantity.temperature.unit == Units.CELSIUS
+
+    where:
+    unitStringParam        | _
+    /{"symbol":"℃"}/       | _
+    /{"symbol":"\u2103"}/  | _ // same as the previous row
+    /{"symbol":"°C"}/      | _
+    /{"symbol":"\u00b0C"}/ | _ // same as the previous row
+    /{"symbol":"Celsius"}/ | _
+
+    /{"name":"Celsius"}/   | _
+  }
+
+  void "should work for quantity given as an object with unit string - raw quantity"() {
     given:
     String stringToDeserialize = """
       {
@@ -221,7 +341,43 @@ class UomQuantityDeserializerSpecification extends Specification {
     123_400            | "cm"
   }
 
-  void "should work for quantity given as an object - raw quantity with scale"() {
+  void "should work for quantity given as an object with unit object - raw quantity"() {
+    given:
+    String stringToDeserialize = """
+      {
+        "otherName": "someName",
+        "length": {
+          "value": $quantityValueParam,
+          "unit": $quantityUnitParam
+        }
+      }
+      """
+
+    when:
+    MyBeanRawQuantity deserializedMyBean = objectMapper.readValue(stringToDeserialize, MyBeanRawQuantity)
+
+    then:
+    deserializedMyBean.otherName == "someName"
+    deserializedMyBean.length == Quantities.getQuantity(1234, Units.METRE)
+    deserializedMyBean.length.scale == Quantity.Scale.ABSOLUTE
+
+    where:
+    quantityValueParam | quantityUnitParam
+    1_234              | /{"symbol":"m"}/
+    1_234              | /{"symbol":" m"}/
+    1_234              | /{"symbol":"m "}/
+    1_234              | /{"symbol":" m "}/
+    123_400            | /{"symbol":"cm"}/
+
+    1_234              | /{"name":"Metre"}/
+
+    1_234              | /{"name":"Metre","symbol":"m"}/
+    1_234              | /{"name":"Metre","symbol":""}/
+    1_234              | /{"name":"Metre","symbol":" "}/
+    1_234              | /{"name":"Whatever","symbol":"m"}/
+  }
+
+  void "should work for quantity given as an object with unit string - raw quantity with scale"() {
     given:
     String stringToDeserialize = """
       {
@@ -336,11 +492,11 @@ class UomQuantityDeserializerSpecification extends Specification {
 
     then:
     JsonMappingException jsonMappingException = thrown()
-    jsonMappingException.message.startsWith("Failed to parse number-literal 'abc'.")
+    jsonMappingException.message.startsWith(/Failed to parse Quantity from '"abc kg"'./)
     jsonMappingException.cause instanceof MeasurementParseException
   }
 
-  void "should throw for non parsable values - typed quantity as object"() {
+  void "should throw for non parsable values - typed quantity as object with unit string"() {
     given:
     String stringToDeserialize = """
       {
@@ -375,11 +531,11 @@ class UomQuantityDeserializerSpecification extends Specification {
 
     then:
     JsonMappingException jsonMappingException = thrown()
-    jsonMappingException.message.startsWith("Parse Error")
+    jsonMappingException.message.startsWith(/Failed to parse Quantity from '"123 abc"'./)
     jsonMappingException.cause instanceof MeasurementParseException
   }
 
-  void "should throw for unknown unit - typed quantity as object"() {
+  void "should throw for unknown unit - typed quantity as object with unit string"() {
     given:
     String stringToDeserialize = """
       {
@@ -396,7 +552,44 @@ class UomQuantityDeserializerSpecification extends Specification {
 
     then:
     JsonMappingException jsonMappingException = thrown()
-    jsonMappingException.message.startsWith("Parse Error")
+    jsonMappingException.message.startsWith(/Failed to parse Quantity from '{"value":1234,"unit":"abc"}'./)
     jsonMappingException.cause instanceof MeasurementParseException
+  }
+
+  void "should throw for unknown unit - typed quantity as object with unit object"() {
+    given:
+    String stringToDeserialize = """
+      {
+        "name": "someName",
+        "weight": {
+          "value": 1234,
+          "unit": $unitObjectParam
+        }
+      }
+      """
+
+    when:
+    objectMapper.readValue(stringToDeserialize, MyBeanTypedQuantity)
+
+    then:
+    JsonMappingException jsonMappingException = thrown()
+    jsonMappingException.message.startsWith(/Failed to parse Quantity from '{"value":1234,"unit":{/)
+    jsonMappingException.message.contains(exceptionMessagePartParam)
+    jsonMappingException.cause instanceof MeasurementParseException
+
+    where:
+    unitObjectParam      | exceptionMessagePartParam
+    /{}/                 | /{}/
+
+    /{"symbol":null}/    | /null/
+    /{"symbol":[]}/      | /[]/
+    /{"symbol":[123]}/   | /[123]/
+    /{"symbol":["123"]}/ | /["123"]/
+    /{"symbol":"abc"}/   | /unit symbol 'abc' is not supported/
+
+    /{"name":"abc"}/     | /unit name 'abc' is not supported/
+    /{"name":""}/        | /"name":""/
+    /{"name":" "}/       | /"name":" "/
+    /{"name":123}/       | /"name":123/
   }
 }

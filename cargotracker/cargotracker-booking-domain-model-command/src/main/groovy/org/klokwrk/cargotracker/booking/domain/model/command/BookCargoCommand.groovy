@@ -20,6 +20,7 @@ package org.klokwrk.cargotracker.booking.domain.model.command
 import groovy.transform.CompileStatic
 import groovy.transform.Generated
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
@@ -35,12 +36,14 @@ import static org.hamcrest.Matchers.notNullValue
 class BookCargoCommand implements BaseCreateCommand, PostMapConstructorCheckable {
   CargoId cargoId
   RouteSpecification routeSpecification
+  CommodityInfo commodityInfo
 
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     // Here we are comply to the validation ordering as explained in ADR-0013.
     requireMatch(cargoId, notNullValue())
     requireMatch(routeSpecification, notNullValue())
+    requireMatch(commodityInfo, notNullValue())
 
     // Since they are pretty closely related to particular use-cases, commands can check for use-case-specific constraints (in contrast with, for example, value objects that are not
     // use-case-specific).

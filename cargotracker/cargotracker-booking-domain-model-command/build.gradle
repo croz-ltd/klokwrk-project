@@ -31,6 +31,7 @@ dependencies {
   implementation project(":klokwrk-lang-groovy-contracts-match")
   implementation project(":klokwrk-lang-groovy-contracts-simple")
 
+  implementation "javax.measure:unit-api"
   implementation("org.axonframework:axon-modelling") { transitive(false) }
   implementation "org.codehaus.groovy:groovy"
   implementation "org.codehaus.groovy:groovy-macro"

@@ -127,6 +127,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     then:
     myBeanWithTransientProperties.first == null
     myBeanWithTransientProperties.last == "someLast"
+    myBeanWithTransientProperties.fullName == "null someLast"
   }
 
   void "deserialization - should allow comments in JSON"() {
@@ -385,6 +386,6 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     String serializedString = objectMapper.writeValueAsString(myBeanWithQuantity)
 
     then:
-    serializedString == /{"name":"someName","weight":{"value":1234,"unit":"kg"},"length":{"value":456,"unit":"m"}}/
+    serializedString == /{"name":"someName","weight":{"value":1234,"unit":{"name":"Kilogram","symbol":"kg"}},"length":{"value":456,"unit":{"name":"Metre","symbol":"m"}}}/
   }
 }

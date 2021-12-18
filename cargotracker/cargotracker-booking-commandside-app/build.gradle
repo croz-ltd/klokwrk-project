@@ -45,6 +45,7 @@ dependencies {
   implementation project(":klokwrk-lang-groovy-contracts-simple")
 
   implementation "io.opentracing.contrib:opentracing-spring-cloud-starter"
+  implementation "javax.measure:unit-api"
   implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
   implementation "org.codehaus.groovy:groovy"
@@ -53,6 +54,7 @@ dependencies {
   implementation "org.springframework.boot:spring-boot-starter-actuator"
   implementation "org.springframework.boot:spring-boot-starter-validation"
   implementation "org.springframework.boot:spring-boot-starter-web"
+  implementation "tech.units:indriya"
 
   runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
 

@@ -59,4 +59,8 @@ class BookCargoCommandRequest {
   @Valid
   @NotNull(groups = [Level1])
   RouteSpecificationData routeSpecification
+
+  @Valid
+  @NotNull(groups = [Level1])
+  CommodityInfoData commodityInfo
 }

@@ -28,10 +28,12 @@ import org.axonframework.messaging.unitofwork.UnitOfWork
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandPortIn
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CommodityInfoData
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.RouteSpecificationData
 import org.klokwrk.cargotracker.booking.commandside.infrastructure.springbootconfig.SpringBootConfig
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.lib.boundary.api.application.exception.RemoteHandlerException
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
@@ -67,7 +69,8 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
             originLocation: "NLRTM", destinationLocation: "HRRJK",
             departureEarliestTime: currentInstantAndOneHour, departureLatestTime: currentInstantAndTwoHours,
             arrivalLatestTime: currentInstantAndThreeHours
-        )
+        ),
+        commodityInfo: new CommodityInfoData(type: CommodityType.DRY, weightInKilograms: 1000)
     )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
@@ -82,11 +85,24 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     bookCargoCommandResponseMetadata.isEmpty()
     verifyAll(bookCargoCommandResponsePayload) {
       cargoId.identifier == myCargoIdentifier
-      routeSpecification.originLocation.name == "Rotterdam"
-      routeSpecification.destinationLocation.name == "Rijeka"
-      routeSpecification.departureEarliestTime == currentInstantRoundedAndOneHour
-      routeSpecification.departureLatestTime == currentInstantRoundedAndTwoHours
-      routeSpecification.arrivalLatestTime == currentInstantRoundedAndThreeHours
+
+      routeSpecification.with {
+        originLocation.name == "Rotterdam"
+        destinationLocation.name == "Rijeka"
+        departureEarliestTime == currentInstantRoundedAndOneHour
+        departureLatestTime == currentInstantRoundedAndTwoHours
+        arrivalLatestTime == currentInstantRoundedAndThreeHours
+      }
+
+      commodityInfo.with {
+        size() == 2
+
+        type == "DRY"
+
+        weight.value == 1000
+        weight.unit.name == "Kilogram"
+        weight.unit.symbol == "kg"
+      }
     }
   }
 
@@ -116,7 +132,8 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
             originLocation: "NLRTM", destinationLocation: "HRRJK",
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
             arrivalLatestTime: Instant.now() + Duration.ofHours(2),
-        )
+        ),
+        commodityInfo: new CommodityInfoData(type: CommodityType.DRY, weightInKilograms: 1000)
     )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
@@ -171,7 +188,8 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
             originLocation: "NLRTM", destinationLocation: "HRRJK",
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
             arrivalLatestTime: Instant.now() + Duration.ofHours(2)
-        )
+        ),
+        commodityInfo: new CommodityInfoData(type: CommodityType.DRY, weightInKilograms: 1000)
     )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 

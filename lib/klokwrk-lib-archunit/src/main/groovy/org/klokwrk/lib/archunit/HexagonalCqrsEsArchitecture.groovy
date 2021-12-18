@@ -281,11 +281,13 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
         .layer(ADAPTER_OUTBOUND_LAYER).definedBy(adapterOutboundPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
         .layer(ADAPTER_PROJECTION_LAYER).definedBy(adapterProjectionPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
 
-        // For now, access to DOMAIN_VALUE_LAYER is forbidden for APPLICATION_INBOUND_PORT_LAYER and ADAPTER_INBOUND_LAYER. Will see how this goes.
+        // We are allowing access to DOMAIN_VALUE_LAYER for APPLICATION_INBOUND_PORT_LAYER and ADAPTER_INBOUND_LAYER. This might require creation of domain specific (or at least, closer to domain)
+        // JSON deserializers/serializers and validation constraints
         .whereLayer(DOMAIN_VALUE_LAYER)
             .mayOnlyBeAccessedByLayers(
-                DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_AGGREGATE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER, APPLICATION_SERVICE_LAYER,
-                ADAPTER_OUTBOUND_LAYER, ADAPTER_PROJECTION_LAYER
+                DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_AGGREGATE_LAYER,
+                APPLICATION_INBOUND_PORT_LAYER, APPLICATION_OUTBOUND_PORT_LAYER, APPLICATION_SERVICE_LAYER,
+                ADAPTER_INBOUND_LAYER, ADAPTER_OUTBOUND_LAYER, ADAPTER_PROJECTION_LAYER
             )
         .whereLayer(DOMAIN_EVENT_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER, ADAPTER_PROJECTION_LAYER)
         .whereLayer(DOMAIN_COMMAND_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER)
@@ -319,9 +321,14 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
         .layer(ADAPTER_INBOUND_LAYER).definedBy(adapterInboundPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
         .optionalLayer(ADAPTER_OUTBOUND_LAYER).definedBy(adapterOutboundPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
 
-        // For now, access to DOMAIN_VALUE_LAYER is forbidden for APPLICATION_INBOUND_PORT_LAYER and ADAPTER_INBOUND_LAYER. Will see how this goes.
+        // We are allowing access to DOMAIN_VALUE_LAYER for APPLICATION_INBOUND_PORT_LAYER and ADAPTER_INBOUND_LAYER. This might require creation of domain specific (or at least, closer to domain)
+        // JSON deserializers/serializers and validation constraints
         .whereLayer(DOMAIN_VALUE_LAYER)
-            .mayOnlyBeAccessedByLayers(DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER, ADAPTER_OUTBOUND_LAYER)
+            .mayOnlyBeAccessedByLayers(
+                DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_AGGREGATE_LAYER,
+                APPLICATION_INBOUND_PORT_LAYER, APPLICATION_SERVICE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER,
+                ADAPTER_INBOUND_LAYER, ADAPTER_OUTBOUND_LAYER
+            )
         .whereLayer(DOMAIN_EVENT_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER)
         .whereLayer(DOMAIN_COMMAND_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER)
         .whereLayer(DOMAIN_AGGREGATE_LAYER).mayOnlyBeAccessedByLayers(APPLICATION_SERVICE_LAYER)
