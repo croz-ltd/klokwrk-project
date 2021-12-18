@@ -77,7 +77,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  }\n}\n",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"dry\",\n    \"weightInKilograms\": 50500\n  }\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -162,7 +162,265 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  }\n}\n",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"dry\",\n    \"weightInKilograms\": 50500\n  }\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-commandside}}",
+											"path": [
+												"cargotracker-booking-commandside",
+												"cargo-booking",
+												"book-cargo"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "book-cargo, success, hr, dry",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var currentTimeAndOneHour = new Date();",
+													"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
+													"",
+													"var currentTimeAndTwoHours = new Date();",
+													"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
+													"",
+													"var currentTimeAndThreeHours = new Date();",
+													"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
+													"",
+													"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
+													"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
+													"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
+													"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
+													"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
+													"",
+													"if (pm.response.to.have.status(200)) {",
+													"    var receivedCargoIdentifier = pm.response.json().payload.cargoId.identifier",
+													"    pm.collectionVariables.set(\"execution_receivedCargoIdentifier\", receivedCargoIdentifier)",
+													"}",
+													"",
+													"postman.setNextRequest(null);",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "hr",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"dry\",\n    \"weightInKilograms\": 50500\n  }\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-commandside}}",
+											"path": [
+												"cargotracker-booking-commandside",
+												"cargo-booking",
+												"book-cargo"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "book-cargo, success, hr, chilled",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var currentTimeAndOneHour = new Date();",
+													"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
+													"",
+													"var currentTimeAndTwoHours = new Date();",
+													"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
+													"",
+													"var currentTimeAndThreeHours = new Date();",
+													"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
+													"",
+													"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
+													"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
+													"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
+													"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
+													"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
+													"",
+													"if (pm.response.to.have.status(200)) {",
+													"    var receivedCargoIdentifier = pm.response.json().payload.cargoId.identifier",
+													"    pm.collectionVariables.set(\"execution_receivedCargoIdentifier\", receivedCargoIdentifier)",
+													"}",
+													"",
+													"postman.setNextRequest(null);",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "hr",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"chilled\",\n    \"weightInKilograms\": 1500,\n    \"storageTemperatureInCelsius\": 5\n  }\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-commandside}}",
+											"path": [
+												"cargotracker-booking-commandside",
+												"cargo-booking",
+												"book-cargo"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "book-cargo, success, hr, frozen",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var currentTimeAndOneHour = new Date();",
+													"currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
+													"",
+													"var currentTimeAndTwoHours = new Date();",
+													"currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
+													"",
+													"var currentTimeAndThreeHours = new Date();",
+													"currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
+													"",
+													"pm.collectionVariables.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
+													"pm.collectionVariables.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
+													"pm.collectionVariables.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.collectionVariables.unset(\"currentTimeAndOneHour\");",
+													"pm.collectionVariables.unset(\"currentTimeAndTwoHours\");",
+													"pm.collectionVariables.unset(\"currentTimeAndThreeHours\");",
+													"",
+													"if (pm.response.to.have.status(200)) {",
+													"    var receivedCargoIdentifier = pm.response.json().payload.cargoId.identifier",
+													"    pm.collectionVariables.set(\"execution_receivedCargoIdentifier\", receivedCargoIdentifier)",
+													"}",
+													"",
+													"postman.setNextRequest(null);",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "hr",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"frozen\",\n    \"weightInKilograms\": 10500,\n    \"storageTemperatureInCelsius\": -5\n  }\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -217,7 +475,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": null\n}",
+											"raw": "{\n  \"routeSpecification\": null,\n  \"commodityInfo\": null\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -272,7 +530,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": null\n}",
+											"raw": "{\n  \"routeSpecification\": null,\n  \"commodityInfo\": null\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -327,7 +585,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": null,\n    \"destinationLocation\": null\n  }\n}",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": null,\n    \"destinationLocation\": null\n  },\n  \"commodityInfo\": null\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -382,7 +640,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": null,\n    \"destinationLocation\": null\n  }\n}",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": null,\n    \"destinationLocation\": null\n  },\n  \"commodityInfo\": null\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -462,7 +720,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  }\n}\n",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"dry\",\n    \"weightInKilograms\": 50500\n  }\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -542,7 +800,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  }\n}\n",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"dry\",\n    \"weightInKilograms\": 50500\n  }  \n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -969,7 +1227,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  }\n}\n",
+									"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"dry\",\n    \"weightInKilograms\": 50500\n  }  \n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1119,7 +1377,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  }\n}\n",
+									"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"dry\",\n    \"weightInKilograms\": 50500\n  }  \n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
