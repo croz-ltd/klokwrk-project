@@ -88,6 +88,10 @@ class CommodityInfo implements PostMapConstructorCheckable {
 
   private void requireStorageTemperatureForCertainCommodityTypes(Quantity<Temperature> storageTemperature, CommodityType commodityType) {
     if (storageTemperature == null) {
+      if (commodityType == CommodityType.AIR_COOLED) {
+        throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("commodityInfo.storageTemperatureRequiredForAirCooledCommodityType"))
+      }
+
       if (commodityType == CommodityType.CHILLED) {
         throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("commodityInfo.storageTemperatureRequiredForChilledCommodityType"))
       }
@@ -107,6 +111,10 @@ class CommodityInfo implements PostMapConstructorCheckable {
       }
 
       Boolean isStorageTemperatureAllowed = commodityType.isStorageTemperatureAllowed(storageTemperature)
+      if (commodityType == CommodityType.AIR_COOLED && !isStorageTemperatureAllowed) {
+        throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("commodityInfo.storageTemperatureNotInAllowedRangeForAirCooledCommodityType"))
+      }
+
       if (commodityType == CommodityType.CHILLED && !isStorageTemperatureAllowed) {
         throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("commodityInfo.storageTemperatureNotInAllowedRangeForChilledCommodityType"))
       }

@@ -43,7 +43,7 @@ class CommodityInfoData {
    * Storage temperature in Celsius degree.
    * <p/>
    * Some commodity types require specification of storage temperature. For such commodity types {@code storageTemperatureInCelsius} must not be {@code null}. For all other commodity types in has to
-   * be {@code null}.
+   * be {@code null}. This commodity type related constraint is not validated here, but rather in domain logic.
    * <p/>
    * When specified, the allowed range is between -35 and 35 Celsius inclusive. This is dictated by the maximum temperature range of the reefer container in which related commodity types will be
    * transported.

@@ -7,7 +7,7 @@ import tech.units.indriya.unit.Units
 class CommodityTypeSpecification extends Specification {
   void "should have right count of elements"() {
     expect:
-    CommodityType.values().size() == 3
+    CommodityType.values().size() == 4
   }
 
   void "isStorageTemperatureAllowed method should work as expected"() {
@@ -21,21 +21,27 @@ class CommodityTypeSpecification extends Specification {
     isTemperatureAllowed == isTemperatureAllowedParam
 
     where:
-    commodityTypeNameParam       | storageTemperatureNumberParam | isTemperatureAllowedParam
-    CommodityType.DRY.name()     | 0                             | true
-    CommodityType.DRY.name()     | -100                          | true
-    CommodityType.DRY.name()     | 100                           | true
+    commodityTypeNameParam          | storageTemperatureNumberParam | isTemperatureAllowedParam
+    CommodityType.DRY.name()        | 0                             | true
+    CommodityType.DRY.name()        | -100                          | true
+    CommodityType.DRY.name()        | 100                           | true
 
-    CommodityType.CHILLED.name() | -1                            | false
-    CommodityType.CHILLED.name() | 0                             | true
-    CommodityType.CHILLED.name() | 5                             | true
-    CommodityType.CHILLED.name() | 8                             | true
-    CommodityType.CHILLED.name() | 9                             | false
+    CommodityType.AIR_COOLED.name() | 1                             | false
+    CommodityType.AIR_COOLED.name() | 2                             | true
+    CommodityType.AIR_COOLED.name() | 10                            | true
+    CommodityType.AIR_COOLED.name() | 12                            | true
+    CommodityType.AIR_COOLED.name() | 13                            | false
 
-    CommodityType.FROZEN.name()  | -36                           | false
-    CommodityType.FROZEN.name()  | -35                           | true
-    CommodityType.FROZEN.name()  | -10                           | true
-    CommodityType.FROZEN.name()  | -1                            | true
-    CommodityType.FROZEN.name()  | 0                             | false
+    CommodityType.CHILLED.name()    | -3                            | false
+    CommodityType.CHILLED.name()    | -2                            | true
+    CommodityType.CHILLED.name()    | 5                             | true
+    CommodityType.CHILLED.name()    | 6                             | true
+    CommodityType.CHILLED.name()    | 7                             | false
+
+    CommodityType.FROZEN.name()     | -21                           | false
+    CommodityType.FROZEN.name()     | -20                           | true
+    CommodityType.FROZEN.name()     | -10                           | true
+    CommodityType.FROZEN.name()     | -8                            | true
+    CommodityType.FROZEN.name()     | -7                            | false
   }
 }
