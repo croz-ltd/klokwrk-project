@@ -53,7 +53,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
       departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
       arrivalLatestTime: currentInstantRoundedAndThreeHours
   )
-  static CommodityInfoData validCommodityInfoData = new CommodityInfoData(type: CommodityType.DRY, weightInKilograms: 1000, storageTemperatureInCelsius: null)
+  static CommodityInfoData validCommodityInfoData = new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null)
 
   CargoBookingFactoryService cargoBookingFactoryService
   LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut
@@ -233,7 +233,9 @@ class CargoBookingFactoryServiceSpecification extends Specification {
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
             arrivalLatestTime: currentInstantRoundedAndThreeHours
         ),
-        commodityInfo: new CommodityInfo(type: CommodityType.CHILLED, weight: Quantities.getQuantity(1000, Units.KILOGRAM), storageTemperature: Quantities.getQuantity(5, Units.CELSIUS))
+        commodityInfo: new CommodityInfo(
+            commodityType: CommodityType.CHILLED, totalWeight: Quantities.getQuantity(1000, Units.KILOGRAM), requestedStorageTemperature: Quantities.getQuantity(5, Units.CELSIUS)
+        )
     )
 
     when:
@@ -306,15 +308,15 @@ class CargoBookingFactoryServiceSpecification extends Specification {
       ]
 
       commodityInfo == [
-          type: "CHILLED",
-          weight: [
+          commodityType: "CHILLED",
+          totalWeight: [
               value: 1000,
               unit: [
                   name: "Kilogram",
                   symbol: "kg"
               ]
           ],
-          storageTemperature: [
+          requestedStorageTemperature: [
               value: 5,
               unit: [
                   name: "Celsius",

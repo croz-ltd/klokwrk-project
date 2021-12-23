@@ -70,7 +70,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
             departureEarliestTime: currentInstantAndOneHour, departureLatestTime: currentInstantAndTwoHours,
             arrivalLatestTime: currentInstantAndThreeHours
         ),
-        commodityInfo: new CommodityInfoData(type: CommodityType.DRY, weightInKilograms: 1000)
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000)
     )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
@@ -97,11 +97,11 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
       commodityInfo.with {
         size() == 2
 
-        type == "DRY"
+        commodityType == "DRY"
 
-        weight.value == 1000
-        weight.unit.name == "Kilogram"
-        weight.unit.symbol == "kg"
+        totalWeight.value == 1000
+        totalWeight.unit.name == "Kilogram"
+        totalWeight.unit.symbol == "kg"
       }
     }
   }
@@ -133,7 +133,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
             arrivalLatestTime: Instant.now() + Duration.ofHours(2),
         ),
-        commodityInfo: new CommodityInfoData(type: CommodityType.DRY, weightInKilograms: 1000)
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000)
     )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
@@ -189,7 +189,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
             arrivalLatestTime: Instant.now() + Duration.ofHours(2)
         ),
-        commodityInfo: new CommodityInfoData(type: CommodityType.DRY, weightInKilograms: 1000)
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000)
     )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 

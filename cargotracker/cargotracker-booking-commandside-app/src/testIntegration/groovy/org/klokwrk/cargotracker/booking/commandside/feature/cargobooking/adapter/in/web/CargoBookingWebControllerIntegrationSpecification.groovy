@@ -73,8 +73,8 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
                 arrivalLatestTime: arrivalLatestTime
             ],
             commodityInfo: [
-                type: "dry",
-                weightInKilograms: 1000
+                commodityType: "dry",
+                totalWeightInKilograms: 1000
             ]
         ]
     )
@@ -166,11 +166,11 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     verifyAll(responseContentMap.payload.commodityInfo as Map) {
       size() == 2
 
-      type == "DRY"
+      commodityType == "DRY"
 
-      weight.value == 1000
-      weight.unit.name == "Kilogram"
-      weight.unit.symbol == "kg"
+      totalWeight.value == 1000
+      totalWeight.unit.name == "Kilogram"
+      totalWeight.unit.symbol == "kg"
     }
 
     where:
@@ -187,7 +187,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
         [
             cargoIdentifier: cargoIdentifier,
             routeSpecification: [originLocation: null, destinationLocation: null, departureEarliestTime: null, departureLatestTime: null, arrivalLatestTime: null],
-            commodityInfo: [type: "dry", weightInKilograms: 1000]
+            commodityInfo: [commodityType: "dry", totalWeightInKilograms: 1000]
         ]
     )
 
@@ -262,7 +262,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
             routeSpecification: [
                 originLocation: "HRRJK", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [type: "dry", weightInKilograms: 1000]
+            commodityInfo: [commodityType: "dry", totalWeightInKilograms: 1000]
         ]
     )
 
@@ -325,7 +325,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRZAG", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [type: "dry", weightInKilograms: 1000]
+            commodityInfo: [commodityType: "dry", totalWeightInKilograms: 1000]
         ]
     )
 

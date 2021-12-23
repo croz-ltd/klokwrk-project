@@ -41,7 +41,7 @@ class BookCargoCommandRequestSpecification extends Specification {
       departureEarliestTime: Instant.now(), departureLatestTime: Instant.now(),
       arrivalLatestTime: Instant.now()
   )
-  static CommodityInfoData validCommodityInfoData = new CommodityInfoData(type: CommodityType.DRY, weightInKilograms: 1000, storageTemperatureInCelsius: null)
+  static CommodityInfoData validCommodityInfoData = new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null)
 
   @Shared
   ValidationService validationService
@@ -76,7 +76,7 @@ class BookCargoCommandRequestSpecification extends Specification {
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: validCargoIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(type: CommodityType.DRY, weightInKilograms: weightInKilogramsParam, storageTemperatureInCelsius: null)
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: weightInKilogramsParam, requestedStorageTemperatureInCelsius: null)
     )
 
     when:
@@ -97,7 +97,7 @@ class BookCargoCommandRequestSpecification extends Specification {
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: validCargoIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(type: CommodityType.CHILLED, weightInKilograms: 1000, storageTemperatureInCelsius: storageTemperatureInCelsiusParam)
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.CHILLED, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: storageTemperatureInCelsiusParam)
     )
 
     when:
@@ -108,8 +108,8 @@ class BookCargoCommandRequestSpecification extends Specification {
 
     where:
     storageTemperatureInCelsiusParam | _
-    -35                              | _
-    35                               | _
+    -30                              | _
+    30                               | _
   }
 
   void "should not pass validation for invalid cargoIdentifier"() {
@@ -242,12 +242,12 @@ class BookCargoCommandRequestSpecification extends Specification {
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == NotNull
   }
 
-  void "should not pass validation for invalid type data in CommodityInfoData"() {
+  void "should not pass validation for invalid commodityType data in CommodityInfoData"() {
     given:
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: validCargoIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(type: null, weightInKilograms: 1000, storageTemperatureInCelsius: null)
+        commodityInfo: new CommodityInfoData(commodityType: null, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null)
     )
 
     when:
@@ -257,16 +257,16 @@ class BookCargoCommandRequestSpecification extends Specification {
     ConstraintViolationException constraintViolationException = thrown()
 
     constraintViolationException.constraintViolations.size() == 1
-    constraintViolationException.constraintViolations[0].propertyPath.toString() == "commodityInfo.type"
+    constraintViolationException.constraintViolations[0].propertyPath.toString() == "commodityInfo.commodityType"
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == NotNull
   }
 
-  void "should not pass validation for invalid weightInKilograms data in CommodityInfoData"() {
+  void "should not pass validation for invalid totalWeightInKilograms data in CommodityInfoData"() {
     given:
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: validCargoIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(type: CommodityType.DRY, weightInKilograms: weightInKilogramsParam, storageTemperatureInCelsius: null)
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: weightInKilogramsParam, requestedStorageTemperatureInCelsius: null)
     )
 
     when:
@@ -276,7 +276,7 @@ class BookCargoCommandRequestSpecification extends Specification {
     ConstraintViolationException constraintViolationException = thrown()
 
     constraintViolationException.constraintViolations.size() == 1
-    constraintViolationException.constraintViolations[0].propertyPath.toString() == "commodityInfo.weightInKilograms"
+    constraintViolationException.constraintViolations[0].propertyPath.toString() == "commodityInfo.totalWeightInKilograms"
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
@@ -285,12 +285,12 @@ class BookCargoCommandRequestSpecification extends Specification {
     0                      | Min
   }
 
-  void "should not pass validation for invalid storageTemperatureInCelsius data in CommodityInfoData"() {
+  void "should not pass validation for invalid requestedStorageTemperatureInCelsius data in CommodityInfoData"() {
     given:
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: validCargoIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(type: CommodityType.CHILLED, weightInKilograms: 1000, storageTemperatureInCelsius: storageTemperatureInCelsiusParam)
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.CHILLED, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: storageTemperatureInCelsiusParam)
     )
 
     when:
@@ -300,12 +300,12 @@ class BookCargoCommandRequestSpecification extends Specification {
     ConstraintViolationException constraintViolationException = thrown()
 
     constraintViolationException.constraintViolations.size() == 1
-    constraintViolationException.constraintViolations[0].propertyPath.toString() == "commodityInfo.storageTemperatureInCelsius"
+    constraintViolationException.constraintViolations[0].propertyPath.toString() == "commodityInfo.requestedStorageTemperatureInCelsius"
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
     storageTemperatureInCelsiusParam | constraintTypeParam
-    -36                              | Min
-    36                               | Max
+    -31                              | Min
+    31                               | Max
   }
 }

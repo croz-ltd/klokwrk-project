@@ -6,7 +6,6 @@ import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
 import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.quantity.QuantityRange
 import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
@@ -16,7 +15,7 @@ import javax.measure.quantity.Temperature
 import static org.hamcrest.Matchers.notNullValue
 
 /**
- * Describes commodity carried by the cargo.
+ * Describes commodity characteristics.
  */
 @KwrkImmutable(knownImmutableClasses = [Quantity])
 @CompileStatic
@@ -24,43 +23,59 @@ class CommodityInfo implements PostMapConstructorCheckable {
   /**
    * Type of commodity.
    * <p/>
-   * Only a single commodity type is allowed for the whole cargo.
-   * <p/>
    * Must not be {@code null}.
    */
-  CommodityType type
+  CommodityType commodityType
 
   /**
    * Total commodity weight.
    * <p/>
-   * It might cause spreading commodities over multiple containers.
+   * This weight might exceed what a single container can carry (in that case, multiple containers will be allocated for this commodity info).
    * <p/>
    * Must not be {@code null}, and must be at least 1 kg or greater. Do note it does not have to be specified in kilograms.
    */
-  Quantity<Mass> weight
+  Quantity<Mass> totalWeight
 
   /**
-   * Storage temperature that commodity requires during transportation.
+   * Requested storage temperature for a commodity.
    * <p/>
-   * It might cause requiring different types of containers, i.e. reefer container.
+   * Whether it is required or not depends on the commodity type. If required, it must be inside of temperature range boundaries of the corresponding commodity type.
    * <p/>
-   * Whether it is required or not, depends on commodity type. For example, it must not be specified for {@code DRY} commodity type, but it must be specified for {@code CHILLED} commodity type.
-   * Commodity type also determines allowed temperature range.
-   * <p/>
-   * When specified, storage temperature must not be outside of a range supported by reefer container: [-35, 35] Celsius inclusive.
+   * When using factory {@code create()} methods, if not provided, the requested storage temperature is populated from the recommended storage temperature of the corresponding commodity type.
    */
-  Quantity<Temperature> storageTemperature
+  Quantity<Temperature> requestedStorageTemperature
 
-  static CommodityInfo create(CommodityType type, Quantity<Mass> weight, Quantity<Temperature> storageTemperature) {
-    CommodityInfo commodityInfo = new CommodityInfo(type: type, weight: weight, storageTemperature: storageTemperature)
+  static CommodityInfo create(CommodityType commodityType, Quantity<Mass> weight) {
+    CommodityInfo commodityInfo = create(commodityType, weight, null)
     return commodityInfo
   }
 
-  static CommodityInfo create(CommodityType type, Integer weightInKilograms, Integer storageTemperatureInCelsius) {
+  /**
+   * The main factory method for creating {@code CommodityInfo} instance (all other {@code create()} factory methods delegate to this one).
+   * <p/>
+   * The only optional parameter (can be provided as {@code null}) is {@code requestedStorageTemperature}. When {@code null}, the actual {code requestedStorageTemperature} of the instance is set to
+   * the {@code recommendedStorageTemperature} of provided {@code commodityType}. Note that the {@code recommendedStorageTemperature} of {@code commodityType} can be {@code null}.
+   */
+  static CommodityInfo create(CommodityType commodityType, Quantity<Mass> weight, Quantity<Temperature> requestedStorageTemperature) {
+    Quantity<Temperature> requestedStorageTemperatureToUse = requestedStorageTemperature
+    if (requestedStorageTemperature == null && commodityType != null) {
+      requestedStorageTemperatureToUse = commodityType.recommendedStorageTemperature
+    }
+
+    CommodityInfo commodityInfo = new CommodityInfo(commodityType: commodityType, totalWeight: weight, requestedStorageTemperature: requestedStorageTemperatureToUse)
+    return commodityInfo
+  }
+
+  static CommodityInfo create(CommodityType commodityType, Integer weightInKilograms) {
+    CommodityInfo commodityInfo = create(commodityType, weightInKilograms, null)
+    return commodityInfo
+  }
+
+  static CommodityInfo create(CommodityType commodityType, Integer weightInKilograms, Integer requestedStorageTemperatureInCelsius) {
     CommodityInfo commodityInfo = create(
-        type,
+        commodityType,
         Quantities.getQuantity(weightInKilograms, Units.KILOGRAM),
-        storageTemperatureInCelsius == null ? null : Quantities.getQuantity(storageTemperatureInCelsius, Units.CELSIUS)
+        requestedStorageTemperatureInCelsius == null ? null : Quantities.getQuantity(requestedStorageTemperatureInCelsius, Units.CELSIUS)
     )
 
     return commodityInfo
@@ -68,60 +83,42 @@ class CommodityInfo implements PostMapConstructorCheckable {
 
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
-    requireMatch(type, notNullValue())
-    requireMatch(weight, notNullValue())
+    requireMatch(commodityType, notNullValue())
+    requireMatch(totalWeight, notNullValue())
 
-    requireTrue(Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(weight))
+    requireTrue(Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(totalWeight))
+    requireTrue(requireRequestedStorageTemperatureWhenNeeded(requestedStorageTemperature, commodityType))
 
-    requireMissingStorageTemperatureForCertainCommodityTypes(storageTemperature, type)
-    requireStorageTemperatureForCertainCommodityTypes(storageTemperature, type)
-    requireStorageTemperatureInAllowedRange(storageTemperature, type)
+    requireRequestedStorageTemperatureInAllowedRange(requestedStorageTemperature, commodityType)
   }
 
-  private void requireMissingStorageTemperatureForCertainCommodityTypes(Quantity<Temperature> storageTemperature, CommodityType commodityType) {
-    if (storageTemperature != null) {
-      if (commodityType == CommodityType.DRY) {
-        throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("commodityInfo.storageTemperatureNotAllowedForDryCommodityType"))
-      }
+  private Boolean requireRequestedStorageTemperatureWhenNeeded(Quantity<Temperature> requestedStorageTemperature, CommodityType commodityType) {
+    if (commodityType.containerFeaturesType.isContainerTemperatureControlled() && requestedStorageTemperature == null) {
+      return false
     }
+
+    return true
   }
 
-  private void requireStorageTemperatureForCertainCommodityTypes(Quantity<Temperature> storageTemperature, CommodityType commodityType) {
-    if (storageTemperature == null) {
-      if (commodityType == CommodityType.AIR_COOLED) {
-        throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("commodityInfo.storageTemperatureRequiredForAirCooledCommodityType"))
+  private void requireRequestedStorageTemperatureInAllowedRange(Quantity<Temperature> requestedStorageTemperature, CommodityType commodityType) {
+    if (commodityType.isStorageTemperatureLimited() && (!commodityType.isStorageTemperatureAllowed(requestedStorageTemperature))) {
+      String messageKey
+      switch (commodityType) {
+        case CommodityType.AIR_COOLED:
+          messageKey = "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForAirCooledCommodityType"
+          break
+        case CommodityType.CHILLED:
+          messageKey = "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForChilledCommodityType"
+          break
+        case CommodityType.FROZEN:
+          messageKey = "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
+          break
+        default:
+          // As we are switching over enum values, just make sure that we are not missing some of them.
+          throw new AssertionError("Unexpected CommodityType value: [value: ${ commodityType.name() }]", null)
       }
 
-      if (commodityType == CommodityType.CHILLED) {
-        throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("commodityInfo.storageTemperatureRequiredForChilledCommodityType"))
-      }
-
-      if (commodityType == CommodityType.FROZEN) {
-        throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("commodityInfo.storageTemperatureRequiredForFrozenCommodityType"))
-      }
-    }
-  }
-
-  private void requireStorageTemperatureInAllowedRange(Quantity<Temperature> storageTemperature, CommodityType commodityType) {
-    if (storageTemperature != null) {
-      // [-35, +35] celsius is a temperature range supported by reefer container
-      QuantityRange<Temperature> storageTemperatureRange = QuantityRange.of(Quantities.getQuantity(-35, Units.CELSIUS), Quantities.getQuantity(35, Units.CELSIUS))
-      if (!storageTemperatureRange.contains(storageTemperature)) {
-        throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("commodityInfo.storageTemperatureNotInAllowedRange"))
-      }
-
-      Boolean isStorageTemperatureAllowed = commodityType.isStorageTemperatureAllowed(storageTemperature)
-      if (commodityType == CommodityType.AIR_COOLED && !isStorageTemperatureAllowed) {
-        throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("commodityInfo.storageTemperatureNotInAllowedRangeForAirCooledCommodityType"))
-      }
-
-      if (commodityType == CommodityType.CHILLED && !isStorageTemperatureAllowed) {
-        throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("commodityInfo.storageTemperatureNotInAllowedRangeForChilledCommodityType"))
-      }
-
-      if (commodityType == CommodityType.FROZEN && !isStorageTemperatureAllowed) {
-        throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("commodityInfo.storageTemperatureNotInAllowedRangeForFrozenCommodityType"))
-      }
+      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey(messageKey))
     }
   }
 }

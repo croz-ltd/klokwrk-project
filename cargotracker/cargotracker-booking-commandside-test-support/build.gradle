@@ -37,4 +37,5 @@ dependencies {
   implementation "javax.measure:unit-api"
   implementation "org.codehaus.groovy:groovy"
   implementation "org.testcontainers:testcontainers"
+  implementation "tech.units:indriya"
 }

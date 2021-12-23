@@ -4,15 +4,20 @@ import spock.lang.Specification
 import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.Units
 
+import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.AIR_COOLED
+import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.CHILLED
+import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.DRY
+import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.FROZEN
+
 class CommodityTypeSpecification extends Specification {
-  void "should have right count of elements"() {
+  void "should have expected enum size"() {
     expect:
     CommodityType.values().size() == 4
   }
 
   void "isStorageTemperatureAllowed method should work as expected"() {
     given:
-    CommodityType commodityType = CommodityType.valueOf(commodityTypeNameParam)
+    CommodityType commodityType = commodityTypeParam
 
     when:
     Boolean isTemperatureAllowed = commodityType.isStorageTemperatureAllowed(Quantities.getQuantity(storageTemperatureNumberParam, Units.CELSIUS))
@@ -21,27 +26,60 @@ class CommodityTypeSpecification extends Specification {
     isTemperatureAllowed == isTemperatureAllowedParam
 
     where:
-    commodityTypeNameParam          | storageTemperatureNumberParam | isTemperatureAllowedParam
-    CommodityType.DRY.name()        | 0                             | true
-    CommodityType.DRY.name()        | -100                          | true
-    CommodityType.DRY.name()        | 100                           | true
+    commodityTypeParam | storageTemperatureNumberParam | isTemperatureAllowedParam
+    DRY                | 0                             | true
+    DRY                | -100                          | true
+    DRY                | 100                           | true
 
-    CommodityType.AIR_COOLED.name() | 1                             | false
-    CommodityType.AIR_COOLED.name() | 2                             | true
-    CommodityType.AIR_COOLED.name() | 10                            | true
-    CommodityType.AIR_COOLED.name() | 12                            | true
-    CommodityType.AIR_COOLED.name() | 13                            | false
+    AIR_COOLED         | 1                             | false
+    AIR_COOLED         | 2                             | true
+    AIR_COOLED         | 10                            | true
+    AIR_COOLED         | 12                            | true
+    AIR_COOLED         | 13                            | false
 
-    CommodityType.CHILLED.name()    | -3                            | false
-    CommodityType.CHILLED.name()    | -2                            | true
-    CommodityType.CHILLED.name()    | 5                             | true
-    CommodityType.CHILLED.name()    | 6                             | true
-    CommodityType.CHILLED.name()    | 7                             | false
+    CHILLED            | -3                            | false
+    CHILLED            | -2                            | true
+    CHILLED            | 5                             | true
+    CHILLED            | 6                             | true
+    CHILLED            | 7                             | false
 
-    CommodityType.FROZEN.name()     | -21                           | false
-    CommodityType.FROZEN.name()     | -20                           | true
-    CommodityType.FROZEN.name()     | -10                           | true
-    CommodityType.FROZEN.name()     | -8                            | true
-    CommodityType.FROZEN.name()     | -7                            | false
+    FROZEN             | -21                           | false
+    FROZEN             | -20                           | true
+    FROZEN             | -10                           | true
+    FROZEN             | -8                            | true
+    FROZEN             | -7                            | false
+  }
+
+  @SuppressWarnings('GroovyPointlessBoolean')
+  void "isStorageTemperatureAllowed method should work for null param as expected"() {
+    given:
+    CommodityType commodityType = commodityTypeParam as CommodityType
+
+    when:
+    commodityType.isStorageTemperatureAllowed(null)
+
+    then:
+    thrown(AssertionError)
+
+    where:
+    commodityTypeParam << CommodityType.values()
+  }
+
+  void "isStorageTemperatureLimited method should work as expected"() {
+    given:
+    CommodityType commodityType = commodityTypeParam as CommodityType
+
+    when:
+    Boolean result = commodityType.isStorageTemperatureLimited()
+
+    then:
+    result == resultParam
+
+    where:
+    commodityTypeParam | resultParam
+    DRY                | false
+    AIR_COOLED         | true
+    CHILLED            | true
+    FROZEN             | true
   }
 }

@@ -20,15 +20,14 @@ import javax.validation.constraints.NotNull
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
-@CompileStatic
 class CommodityInfoData {
   /**
-   * Commodity type as defined by {@link CommodityType} enum.
+   * Commodity type defined as the value of {@link CommodityType} enum.
    * <p/>
    * Not {@code null}.
    */
   @NotNull(groups = [Level1])
-  CommodityType type
+  CommodityType commodityType
 
   /**
    * Commodity total weight in kilograms.
@@ -37,18 +36,17 @@ class CommodityInfoData {
    */
   @Min(value = 1L, groups = [Level2])
   @NotNull(groups = [Level1])
-  Integer weightInKilograms
+  Integer totalWeightInKilograms
 
   /**
-   * Storage temperature in Celsius degree.
+   * The requested storage temperature in Celsius degree.
    * <p/>
-   * Some commodity types require specification of storage temperature. For such commodity types {@code storageTemperatureInCelsius} must not be {@code null}. For all other commodity types in has to
-   * be {@code null}. This commodity type related constraint is not validated here, but rather in domain logic.
+   * Definite storage temperature validation is done by business logic, and it depends on the supported temperature range of the selected commodity type.
    * <p/>
-   * When specified, the allowed range is between -35 and 35 Celsius inclusive. This is dictated by the maximum temperature range of the reefer container in which related commodity types will be
-   * transported.
+   * Here we are just validating a sensible storage temperature range of [-30, 30] Celsius inclusively to avoid accepting completely unbounded integers. The range chosen here is equal to the
+   * supported range of reefer containers.
    */
-  @Max(value = 35L, groups = [Level2])
-  @Min(value = -35L, groups = [Level2])
-  Integer storageTemperatureInCelsius
+  @Max(value = 30L, groups = [Level2])
+  @Min(value = -30L, groups = [Level2])
+  Integer requestedStorageTemperatureInCelsius
 }

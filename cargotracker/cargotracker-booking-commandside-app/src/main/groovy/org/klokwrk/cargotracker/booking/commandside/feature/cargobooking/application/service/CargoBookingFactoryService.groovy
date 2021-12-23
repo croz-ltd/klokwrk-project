@@ -72,7 +72,8 @@ class CargoBookingFactoryService {
             bookCargoCommandRequest.routeSpecification.arrivalLatestTime, clock
         ),
         commodityInfo: CommodityInfo.create(
-            bookCargoCommandRequest.commodityInfo.type, bookCargoCommandRequest.commodityInfo.weightInKilograms, bookCargoCommandRequest.commodityInfo.storageTemperatureInCelsius
+            bookCargoCommandRequest.commodityInfo.commodityType, bookCargoCommandRequest.commodityInfo.totalWeightInKilograms,
+            bookCargoCommandRequest.commodityInfo.requestedStorageTemperatureInCelsius
         )
     )
 
@@ -105,26 +106,26 @@ class CargoBookingFactoryService {
     Map<String, ?> destinationLocationMap = createMapFromLocation(cargoAggregate.routeSpecification.destinationLocation)
 
     Map<String, ?> commodityInfoMap = [
-        type: cargoAggregate.commodityInfo.type.name(),
-        weight: [
-            value: cargoAggregate.commodityInfo.weight.value,
+        commodityType: cargoAggregate.commodityInfo.commodityType.name(),
+        totalWeight: [
+            value: cargoAggregate.commodityInfo.totalWeight.value,
             unit: [
-                name: cargoAggregate.commodityInfo.weight.unit.name,
-                symbol: cargoAggregate.commodityInfo.weight.unit.symbol
+                name: cargoAggregate.commodityInfo.totalWeight.unit.name,
+                symbol: cargoAggregate.commodityInfo.totalWeight.unit.symbol
             ]
         ]
     ]
 
-    if (cargoAggregate.commodityInfo.storageTemperature != null) {
-      Map<String, ?> storageTemperatureMap = [
-          value: cargoAggregate.commodityInfo.storageTemperature?.value,
+    if (cargoAggregate.commodityInfo.requestedStorageTemperature != null) {
+      Map<String, ?> requestedStorageTemperatureMap = [
+          value: cargoAggregate.commodityInfo.requestedStorageTemperature?.value,
           unit: [
-              name: cargoAggregate.commodityInfo.storageTemperature?.unit?.name,
-              symbol: cargoAggregate.commodityInfo.storageTemperature ? LocalUnitFormat.instance.format(cargoAggregate.commodityInfo.storageTemperature.unit) : null
+              name: cargoAggregate.commodityInfo.requestedStorageTemperature?.unit?.name,
+              symbol: cargoAggregate.commodityInfo.requestedStorageTemperature ? LocalUnitFormat.instance.format(cargoAggregate.commodityInfo.requestedStorageTemperature.unit) : null
           ]
       ]
 
-      commodityInfoMap.put("storageTemperature", storageTemperatureMap)
+      commodityInfoMap.put("requestedStorageTemperature", requestedStorageTemperatureMap)
     }
 
     BookCargoCommandResponse bookCargoCommandResponse = new BookCargoCommandResponse(

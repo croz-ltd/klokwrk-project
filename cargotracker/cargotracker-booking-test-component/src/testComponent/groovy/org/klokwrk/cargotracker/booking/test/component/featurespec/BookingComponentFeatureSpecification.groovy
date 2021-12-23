@@ -47,9 +47,9 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
             "arrivalLatestTime": "${ arrivalLatestTime }"
           },
           "commodityInfo": {
-            "type": "chilled",
-            "weightInKilograms": 1000,
-            "storageTemperatureInCelsius": 5
+            "commodityType": "chilled",
+            "totalWeightInKilograms": 1000,
+            "requestedStorageTemperatureInCelsius": 5
           }
         }
         """
@@ -97,8 +97,8 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
             "arrivalLatestTime": "${ arrivalLatestTime }"
           },
           "commodityInfo": {
-            "type": "dry",
-            "weightInKilograms": 1000
+            "commodityType": "dry",
+            "totalWeightInKilograms": 1000
           }
         }
         """
@@ -175,9 +175,9 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
             "arrivalLatestTime": "${ arrivalLatestTime }"
           },
           "commodityInfo": {
-            "type": "chilled",
-            "weightInKilograms": 1000,
-            "storageTemperatureInCelsius": 5
+            "commodityType": "chilled",
+            "totalWeightInKilograms": 1000,
+            "requestedStorageTemperatureInCelsius": 5
           }
         }
         """
