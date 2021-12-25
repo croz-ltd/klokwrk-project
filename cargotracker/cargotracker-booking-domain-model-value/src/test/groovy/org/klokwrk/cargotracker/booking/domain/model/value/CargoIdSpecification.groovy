@@ -52,6 +52,8 @@ class CargoIdSpecification extends Specification {
 
     where:
     uuidStringParam                        | _
+    null                                   | _
+    ""                                     | _
     UUID.randomUUID().toString()           | _
     "00000000-0000-4000-8000-000000000000" | _
     "00000000-0000-4000-9000-000000000001" | _
