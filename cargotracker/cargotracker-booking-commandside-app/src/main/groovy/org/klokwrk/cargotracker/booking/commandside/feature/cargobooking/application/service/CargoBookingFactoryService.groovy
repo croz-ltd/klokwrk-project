@@ -118,10 +118,10 @@ class CargoBookingFactoryService {
 
     if (cargoAggregate.commodityInfo.requestedStorageTemperature != null) {
       Map<String, ?> requestedStorageTemperatureMap = [
-          value: cargoAggregate.commodityInfo.requestedStorageTemperature?.value,
+          value: cargoAggregate.commodityInfo.requestedStorageTemperature.value,
           unit: [
-              name: cargoAggregate.commodityInfo.requestedStorageTemperature?.unit?.name,
-              symbol: cargoAggregate.commodityInfo.requestedStorageTemperature ? LocalUnitFormat.instance.format(cargoAggregate.commodityInfo.requestedStorageTemperature.unit) : null
+              name: cargoAggregate.commodityInfo.requestedStorageTemperature.unit.name,
+              symbol: LocalUnitFormat.instance.format(cargoAggregate.commodityInfo.requestedStorageTemperature.unit)
           ]
       ]
 
