@@ -27,6 +27,7 @@ class CommodityInfoSpecification extends Specification {
     where:
     commodityTypeParam | requestedStorageTemperatureParam
     DRY                | getQuantity(25, CELSIUS)
+    DRY                | null
 
     AIR_COOLED         | getQuantity(2, CELSIUS)
     AIR_COOLED         | getQuantity(8, CELSIUS)
@@ -74,7 +75,8 @@ class CommodityInfoSpecification extends Specification {
     new CommodityInfo(commodityType: commodityTypeParam, totalWeight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
 
     then:
-    thrown(AssertionError)
+    AssertionError assertionError = thrown()
+    assertionError.message.contains("boolean condition is false - [condition: this.isRequestedStorageTemperatureAvailableWhenNeeded(requestedStorageTemperature, commodityType)]")
 
     where:
     commodityTypeParam | requestedStorageTemperatureParam

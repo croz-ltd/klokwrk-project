@@ -15,7 +15,7 @@ import javax.measure.quantity.Temperature
 import static org.hamcrest.Matchers.notNullValue
 
 /**
- * Describes commodity characteristics.
+ * Describes commodity characteristics at the cargo booking level.
  */
 @KwrkImmutable(knownImmutableClasses = [Quantity])
 @CompileStatic
@@ -87,12 +87,12 @@ class CommodityInfo implements PostMapConstructorCheckable {
     requireMatch(totalWeight, notNullValue())
 
     requireTrue(Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(totalWeight))
-    requireTrue(requireRequestedStorageTemperatureWhenNeeded(requestedStorageTemperature, commodityType))
+    requireTrue(isRequestedStorageTemperatureAvailableWhenNeeded(requestedStorageTemperature, commodityType))
 
     requireRequestedStorageTemperatureInAllowedRange(requestedStorageTemperature, commodityType)
   }
 
-  private Boolean requireRequestedStorageTemperatureWhenNeeded(Quantity<Temperature> requestedStorageTemperature, CommodityType commodityType) {
+  private Boolean isRequestedStorageTemperatureAvailableWhenNeeded(Quantity<Temperature> requestedStorageTemperature, CommodityType commodityType) {
     if (commodityType.containerFeaturesType.isContainerTemperatureControlled() && requestedStorageTemperature == null) {
       return false
     }
