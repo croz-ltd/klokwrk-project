@@ -11,10 +11,12 @@ class InstantUtils {
   /**
    * For instants with minutes, seconds or nanos different from 0, rounds up an instant to the next hour. Otherwise returns the same instant.
    * <p/>
-   * Requires non-null input.
+   * For {@code null} parameter, returns {@code null}.
    */
   static Instant roundUpInstantToTheHour(Instant instantToRoundUp) {
-    assert instantToRoundUp != null
+    if (instantToRoundUp == null) {
+      return instantToRoundUp
+    }
 
     Instant truncatedToTheHour = instantToRoundUp.truncatedTo(ChronoUnit.HOURS)
     if (truncatedToTheHour.isBefore(instantToRoundUp)) {

@@ -92,9 +92,9 @@ class RouteSpecification implements PostMapConstructorCheckable {
   static RouteSpecification create(
       Location originLocation, Location destinationLocation, Instant departureEarliestTime, Instant departureLatestTime, Instant arrivalLatestTime, Clock clock = Clock.systemUTC())
   {
-    Instant departureEarliestTimeToUse = departureEarliestTime ? InstantUtils.roundUpInstantToTheHour(departureEarliestTime) : null
-    Instant departureLatestTimeToUse = departureLatestTime ? InstantUtils.roundUpInstantToTheHour(departureLatestTime) : null
-    Instant arrivalLatestTimeToUse = arrivalLatestTime ? InstantUtils.roundUpInstantToTheHour(arrivalLatestTime) : null
+    Instant departureEarliestTimeToUse = InstantUtils.roundUpInstantToTheHour(departureEarliestTime)
+    Instant departureLatestTimeToUse = InstantUtils.roundUpInstantToTheHour(departureLatestTime)
+    Instant arrivalLatestTimeToUse = InstantUtils.roundUpInstantToTheHour(arrivalLatestTime)
 
     RouteSpecification createdRouteSpecification = new RouteSpecification(
         originLocation: originLocation, destinationLocation: destinationLocation, creationTime: Instant.now(clock),

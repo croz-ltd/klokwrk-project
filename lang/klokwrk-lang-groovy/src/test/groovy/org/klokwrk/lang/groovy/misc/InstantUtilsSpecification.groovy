@@ -9,12 +9,12 @@ import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 
 class InstantUtilsSpecification extends Specification {
-  void "roundUpInstantToTheHour - should throw for null input"() {
+  void "roundUpInstantToTheHour - should return null for null parameter"() {
     when:
-    InstantUtils.roundUpInstantToTheHour(null)
+    Instant roundedInstant = InstantUtils.roundUpInstantToTheHour(null)
 
     then:
-    thrown(AssertionError)
+    roundedInstant == null
   }
 
   void "roundUpInstantToTheHour - should not round up for already rounded instant"() {
