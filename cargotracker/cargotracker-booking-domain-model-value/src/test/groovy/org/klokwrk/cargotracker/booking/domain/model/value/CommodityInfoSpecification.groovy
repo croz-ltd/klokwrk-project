@@ -1,10 +1,13 @@
 package org.klokwrk.cargotracker.booking.domain.model.value
 
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
+import org.objenesis.ObjenesisHelper
 import spock.lang.Specification
+import tech.units.indriya.quantity.QuantityRange
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
+import java.lang.reflect.Field
 
 import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.CHILLED
 import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.AIR_COOLED
@@ -104,6 +107,34 @@ class CommodityInfoSpecification extends Specification {
 
     FROZEN             | getQuantity(-21, CELSIUS)        | "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
     FROZEN             | getQuantity(-7, CELSIUS)         | "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
+  }
+
+  // adapted from https://stackoverflow.com/questions/5323505/mocking-java-enum-to-add-a-value-to-test-fail-case/57825724#57825724
+  void "map constructor requestedStorageTemperature check should fail for non existing commodityType"() {
+    given:
+    Closure<Field> makeAccessibleField = { Class clazz, String fieldName ->
+      Field result = clazz.getDeclaredField(fieldName)
+      result.accessible = true
+      return result
+    }
+
+    CommodityType nonExistentEnumValue = ObjenesisHelper.newInstance(CommodityType)
+    makeAccessibleField.curry(Enum).with {
+      it("name").set(nonExistentEnumValue, "NON_EXISTENT_ENUM_VALUE")
+    }
+
+    makeAccessibleField.curry(CommodityType).with {
+      it("containerFeaturesType").set(nonExistentEnumValue, ContainerFeaturesType.FEATURES_ISO_R1_STANDARD_REEFER)
+      it("recommendedStorageTemperature").set(nonExistentEnumValue, getQuantity(6, CELSIUS))
+      it("storageTemperatureRange").set(nonExistentEnumValue, QuantityRange.of(getQuantity(2, CELSIUS), getQuantity(12, CELSIUS)))
+    }
+
+    when:
+    new CommodityInfo(commodityType: nonExistentEnumValue, totalWeight: getQuantity(1, KILOGRAM), requestedStorageTemperature: getQuantity(50, CELSIUS))
+
+    then:
+    AssertionError assertionError = thrown()
+    assertionError.message == "Unexpected CommodityType value: [value: NON_EXISTENT_ENUM_VALUE]"
   }
 
   void "create(CommodityType, Quantity, Quantity) factory method should work for correct input params"() {

@@ -61,6 +61,7 @@ dependencies {
     api "io.github.classgraph:classgraph:$classGraphVersion"
     api "javax.measure:unit-api:$uomApiVersion"
     api "net.ttddyy:datasource-proxy:$dataSourceProxyVersion"
+    api "org.objenesis:objenesis:$objenesisVersion"
     api "org.spockframework:spock-core:$spockVersion"
     api "org.spockframework:spock-spring:$spockVersion"
     api "tech.units:indriya:$uomReferenceImplementationVersion"
