@@ -29,7 +29,7 @@ import picocli.CommandLine.IVersionProvider
 class PropertiesVersionProvider implements IVersionProvider {
   @Override
   String[] getVersion() throws Exception {
-    URL url = getClass().getResource("/version.properties")
+    URL url = getClass().getResource(fetchVersionPropertiesPath())
     if (!url) {
       return ["Version info is not available."] as String[]
     }
@@ -40,5 +40,9 @@ class PropertiesVersionProvider implements IVersionProvider {
     }
 
     return ["${ properties["moduleName"] } ${ properties["moduleVersion"] }"] as String[]
+  }
+
+  String fetchVersionPropertiesPath() {
+    return "/version.properties"
   }
 }
