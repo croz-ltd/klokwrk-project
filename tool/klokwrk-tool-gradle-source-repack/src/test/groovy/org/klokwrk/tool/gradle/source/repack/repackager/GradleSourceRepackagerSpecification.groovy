@@ -28,6 +28,10 @@ import spock.lang.Specification
 
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.zip.ZipEntry
+import java.util.zip.ZipException
+import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
 
 class GradleSourceRepackagerSpecification extends Specification {
   void "should fail when Gradle distribution does not exist"() {
@@ -128,5 +132,26 @@ class GradleSourceRepackagerSpecification extends Specification {
     Level.WARN       | false
     Level.DEBUG      | true
     Level.TRACE      | true
+  }
+
+  void "repackageZipEntry() method should throw for unexpected message of ZipException"() {
+    given: "slimmed Gradle distribution zip"
+    ClassPathResourceLoader loader = new ResourceResolver().getLoader(ClassPathResourceLoader).get()
+    File testSlimGradleDistributionFile = new File(loader.getResource("classpath:testFiles/slim-gradle-6.7.1-all.zip").get().file)
+
+    and: "something"
+    ZipFile originalZipFile = new ZipFile(testSlimGradleDistributionFile.absolutePath)
+    ZipEntry originalZipEntry = new ZipEntry("some original zip entry name")
+    String targetZipEntryName = "some target zip entry name"
+
+    ZipOutputStream targetZipOutputStreamStub = Stub()
+    targetZipOutputStreamStub.putNextEntry(_ as ZipEntry) >> { throw new ZipException("unexpected message") }
+
+    when:
+    GradleSourceRepackager.repackageZipEntry(originalZipFile, originalZipEntry, targetZipOutputStreamStub, targetZipEntryName)
+
+    then:
+    ZipException zipException = thrown()
+    zipException.message == "unexpected message"
   }
 }

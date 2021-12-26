@@ -54,7 +54,7 @@ class GradleSourceRepackager {
     repackageZipFile(repackagerInfo, countOfTargetZipEntries)
   }
 
-  private static Long calculateCountOfTargetZipEntries(GradleSourceRepackagerInfo repackagerInfo) {
+  protected static Long calculateCountOfTargetZipEntries(GradleSourceRepackagerInfo repackagerInfo) {
     Long countOfTargetZipEntries = null
     new ZipFile(repackagerInfo.gradleDistributionZipFilePath).withCloseable { ZipFile zipFile ->
       countOfTargetZipEntries = zipFile
@@ -68,7 +68,7 @@ class GradleSourceRepackager {
     return countOfTargetZipEntries
   }
 
-  private static String calculateTargetZipEntryName(String gradleDistributionSrcDirPath, ZipEntry originalZipEntry) {
+  protected static String calculateTargetZipEntryName(String gradleDistributionSrcDirPath, ZipEntry originalZipEntry) {
     String sourceZipEntryFullName = originalZipEntry.name
     String sourceZipEntryWithoutPrefix = sourceZipEntryFullName - gradleDistributionSrcDirPath
 
@@ -77,10 +77,10 @@ class GradleSourceRepackager {
   }
 
   @SuppressWarnings("CodeNarc.Indentation")
-  private static void repackageZipFile(GradleSourceRepackagerInfo repackagerInfo, Long countOfTargetZipEntries) {
+  protected static void repackageZipFile(GradleSourceRepackagerInfo repackagerInfo, Long countOfTargetZipEntries) {
     new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(repackagerInfo.gradleApiSourcesFilePath))).withCloseable { ZipOutputStream targetZipOutputStream ->
       new ZipFile(repackagerInfo.gradleDistributionZipFilePath).withCloseable { ZipFile originalZipFile ->
-        Long zipEntriesProcessedCount = new Long(0)
+        Long zipEntriesProcessedCount = Long.valueOf(0)
         originalZipFile
             .stream()
             .filter({ ZipEntry zipEntry -> !zipEntry.isDirectory() && zipEntry.name.startsWith(repackagerInfo.gradleDistributionSrcDirPath) })
@@ -111,7 +111,7 @@ class GradleSourceRepackager {
     }
   }
 
-  private static String repackageZipEntry(ZipFile originalZipFile, ZipEntry originalZipEntry, ZipOutputStream targetZipOutputStream, String targetZipEntryName) {
+  protected static String repackageZipEntry(ZipFile originalZipFile, ZipEntry originalZipEntry, ZipOutputStream targetZipOutputStream, String targetZipEntryName) {
     String skippedMessage = null
     originalZipFile.getInputStream(originalZipEntry).withCloseable { InputStream inputStream ->
       try {
