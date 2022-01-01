@@ -20,6 +20,7 @@ package org.klokwrk.cargotracker.booking.domain.model.command
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
+import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
@@ -49,6 +50,7 @@ class BookCargoCommandSpecification extends Specification {
       locationSampleMap["NLRTM"], locationSampleMap["DEHAM"], currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours, currentInstantRoundedAndThreeHours, clock
   )
   static CommodityInfo validCommodityInfo = CommodityInfo.create(CommodityType.DRY, 1000, null)
+  static ContainerDimensionType validContainerDimensionType = ContainerDimensionType.DIMENSION_ISO_22
 
   void "map constructor should work for correct input params"() {
     when:
@@ -56,7 +58,8 @@ class BookCargoCommandSpecification extends Specification {
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
         cargoId: cargoId,
         routeSpecification: validRouteSpecification,
-        commodityInfo: validCommodityInfo
+        commodityInfo: validCommodityInfo,
+        containerDimensionType: validContainerDimensionType
     )
 
     then:
@@ -73,29 +76,28 @@ class BookCargoCommandSpecification extends Specification {
 
   void "map constructor should fail for null input params"() {
     when:
-    new BookCargoCommand(cargoId: cargoIdParam, routeSpecification: routeSpecificationParam, commodityInfo: commodityInfoParam)
+    new BookCargoCommand(cargoId: cargoIdParam, routeSpecification: routeSpecificationParam, commodityInfo: commodityInfoParam, containerDimensionType: containerDimensionTypeParam)
 
     then:
     AssertionError assertionError = thrown()
     assertionError.message.contains(messagePartParam)
 
     where:
-    cargoIdParam                            | routeSpecificationParam | commodityInfoParam | messagePartParam
-    null                                    | validRouteSpecification | validCommodityInfo | "notNullValue"
-    CargoId.createWithGeneratedIdentifier() | null                    | validCommodityInfo | "notNullValue"
-    CargoId.createWithGeneratedIdentifier() | validRouteSpecification | null               | "notNullValue"
+    cargoIdParam                            | routeSpecificationParam | commodityInfoParam | containerDimensionTypeParam | messagePartParam
+    null                                    | validRouteSpecification | validCommodityInfo | validContainerDimensionType | "notNullValue"
+    CargoId.createWithGeneratedIdentifier() | null                    | validCommodityInfo | validContainerDimensionType | "notNullValue"
+    CargoId.createWithGeneratedIdentifier() | validRouteSpecification | null               | validContainerDimensionType | "notNullValue"
+    CargoId.createWithGeneratedIdentifier() | validRouteSpecification | validCommodityInfo | null                        | "notNullValue"
   }
 
-  void "map constructor should fail when some of business rules are not satisfied"() {
+  void "map constructor should fail when some of business rules of routeSpecification are not satisfied"() {
     when:
     new BookCargoCommand(
-        cargoId: cargoIdParam,
         routeSpecification: RouteSpecification.create(
             originLocationParam, destinationLocationParam,
             currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours,
             currentInstantRoundedAndThreeHours, clock
-        ),
-        commodityInfo: validCommodityInfo
+        )
     )
 
     then:

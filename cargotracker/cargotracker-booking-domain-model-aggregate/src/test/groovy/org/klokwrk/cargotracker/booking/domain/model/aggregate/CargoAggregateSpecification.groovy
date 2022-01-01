@@ -23,10 +23,16 @@ import org.axonframework.test.aggregate.TestExecutor
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.BookCargoCommandFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.CargoBookedEventFixtures
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
+import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
+import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
 import spock.lang.Specification
+import tech.units.indriya.quantity.Quantities
+import tech.units.indriya.unit.Units
 
 class CargoAggregateSpecification extends Specification {
-
   AggregateTestFixture aggregateTestFixture
 
   void setup() {
@@ -45,5 +51,58 @@ class CargoAggregateSpecification extends Specification {
     cargoAggregateResultValidator
         .expectSuccessfulHandlerExecution()
         .expectEvents(CargoBookedEventFixtures.eventValidForCommand(bookCargoCommand))
+  }
+
+  void "should work with acceptable commodity"() {
+    given:
+    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandValidCommodityInfo()
+    TestExecutor<CargoAggregate> cargoAggregateTestExecutor = aggregateTestFixture.givenNoPriorActivity()
+
+    Commodity expectedCommodity = new Commodity(
+        containerType: ContainerType.TYPE_ISO_22G1,
+        commodityInfo: bookCargoCommand.commodityInfo,
+        maxAllowedWeightPerContainer: Quantities.getQuantity(23_750, Units.KILOGRAM),
+        maxRecommendedWeightPerContainer: Quantities.getQuantity(10_000, Units.KILOGRAM),
+        containerCount: 1
+    )
+
+    CargoBookedEvent expectedCargoBookedEvent = new CargoBookedEvent(
+        cargoId: bookCargoCommand.cargoId,
+        routeSpecification: bookCargoCommand.routeSpecification,
+        commodity: expectedCommodity,
+        bookingTotalCommodityWeight: Quantities.getQuantity(10_000, Units.KILOGRAM),
+        bookingTotalContainerCount: 1
+    )
+
+    when:
+    ResultValidator<CargoAggregate> cargoAggregateResultValidator = cargoAggregateTestExecutor.when(bookCargoCommand)
+
+    then:
+    cargoAggregateResultValidator.expectEvents(expectedCargoBookedEvent)
+
+    verifyAll(cargoAggregateResultValidator.state.get().wrappedAggregate.aggregateRoot as CargoAggregate, {
+      cargoId == bookCargoCommand.cargoId
+      routeSpecification == bookCargoCommand.routeSpecification
+      bookingOfferCommodities.totalCommodityWeight == Quantities.getQuantity(10_000, Units.KILOGRAM)
+      bookingOfferCommodities.totalContainerCount == 1
+      bookingOfferCommodities.commodityTypeToCommodityMap.size() == 1
+      bookingOfferCommodities.commodityTypeToCommodityMap[CommodityType.DRY] == expectedCommodity
+    })
+  }
+
+  void "should fail when commodity cannot be accepted"() {
+    given:
+    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandInvalidCommodityInfo()
+    TestExecutor<CargoAggregate> cargoAggregateTestExecutor = aggregateTestFixture.givenNoPriorActivity()
+
+    when:
+    ResultValidator<CargoAggregate> cargoAggregateResultValidator = cargoAggregateTestExecutor.when(bookCargoCommand)
+
+    then:
+    cargoAggregateResultValidator
+        .expectException(CommandException)
+        .expectExceptionMessage("Bad Request")
+
+    (cargoAggregateResultValidator.actualException as CommandException).violationInfo.violationCode.codeKey == "cargoAggregate.bookingOfferCommodities.cannotAcceptCommodity"
   }
 }

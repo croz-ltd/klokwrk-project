@@ -75,8 +75,12 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     given:
     String[] thirdPartyDependencyAllPackages = [
         "java..",
+
         "org.codehaus.groovy..",
         "groovy..",
+
+        "javax.measure..",
+        "tech.units.indriya..",
 
         "org.axonframework.modelling.command.."
     ]

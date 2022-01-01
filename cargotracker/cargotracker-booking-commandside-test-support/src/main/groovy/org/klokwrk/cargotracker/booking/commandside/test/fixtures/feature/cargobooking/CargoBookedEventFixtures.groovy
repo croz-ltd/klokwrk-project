@@ -20,6 +20,12 @@ package org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargo
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
+import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
+import tech.units.indriya.quantity.Quantities
+import tech.units.indriya.unit.Units
 
 /**
  * Contains test data fixtures for {@link CargoBookedEvent}.
@@ -41,7 +47,23 @@ class CargoBookedEventFixtures {
    * Used implementation is the same as when aggregate creates event from command.
    */
   static CargoBookedEvent eventValidForCommand(BookCargoCommand bookCargoCommand) {
-    CargoBookedEvent cargoBookedEvent = new CargoBookedEvent(bookCargoCommand.properties)
+    CommodityInfo commodityInfo = CommodityInfo.create(CommodityType.DRY, 1_000)
+    Commodity commodity = new Commodity(
+        containerType: ContainerType.TYPE_ISO_22G1,
+        commodityInfo: commodityInfo,
+        maxAllowedWeightPerContainer: Quantities.getQuantity(23_750, Units.KILOGRAM),
+        maxRecommendedWeightPerContainer: Quantities.getQuantity(1_000, Units.KILOGRAM),
+        containerCount: 1
+    )
+
+    CargoBookedEvent cargoBookedEvent = new CargoBookedEvent(
+        cargoId: bookCargoCommand.cargoId,
+        routeSpecification: bookCargoCommand.routeSpecification,
+        commodity: commodity,
+        bookingTotalCommodityWeight: Quantities.getQuantity(1_000, Units.KILOGRAM),
+        bookingTotalContainerCount: 1
+    )
+
     return cargoBookedEvent
   }
 }
