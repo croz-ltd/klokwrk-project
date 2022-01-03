@@ -15,18 +15,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in
+package org.klokwrk.cargotracker.booking.domain.model.value
 
 import groovy.transform.CompileStatic
-import groovy.transform.MapConstructor
-import groovy.transform.PropertyOptions
-import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
-@PropertyOptions(propertyHandler = RelaxedPropertyHandler)
-@MapConstructor
+/**
+ * Enumerates widths of a container.
+ * <p/>
+ * The second size-code character of ISO 6346 standard encodes both height and width. Characters of 0 through 9 correspond to the 8-feet width, while the rest correspond to the larger width
+ * <b>ranges</b>.
+ * <p/>
+ * Here we use widths constants with names independent from the second size-code character from the standard. That way, we can potentially combine non-common widths expressed here with heights at the
+ * higher level of {@code ContainerDimensionType}.
+ *
+ * @see ContainerDimensionType
+ * @see ContainerHeightType
+ */
 @CompileStatic
-class BookCargoCommandResponse {
-  Map<String, ?> cargoId
-  Map<String, ?> routeSpecification
-  Map<String, ?> bookingOfferCommodities
+enum ContainerWidthType {
+  /**
+   * Standard 8 feet width.
+   */
+  WIDTH_ISO_STANDARD
 }

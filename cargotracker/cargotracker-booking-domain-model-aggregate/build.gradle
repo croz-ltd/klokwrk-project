@@ -32,11 +32,13 @@ dependencies {
   implementation project(":cargotracker-lib-domain-model-event")
   implementation project(":klokwrk-lang-groovy")
 
+  implementation "javax.measure:unit-api"
   implementation "org.axonframework:axon-eventsourcing"
   implementation "org.axonframework:axon-messaging"
   implementation "org.axonframework:axon-modelling"
   implementation "org.axonframework:axon-spring"
   implementation "org.codehaus.groovy:groovy"
+  implementation "tech.units:indriya"
 
   testImplementation project(":cargotracker-booking-commandside-test-support")
 

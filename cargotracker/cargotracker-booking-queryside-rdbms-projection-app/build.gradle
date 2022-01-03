@@ -40,6 +40,7 @@ dependencies {
   // java.lang.NoClassDefFoundError id thrown for PostMapConstructorCheckable class.
   implementation project(":klokwrk-lang-groovy")
 
+  implementation "javax.measure:unit-api"
   implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.codehaus.groovy:groovy"
   implementation "org.springframework.boot:spring-boot-starter-actuator"

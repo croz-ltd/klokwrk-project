@@ -22,6 +22,7 @@ import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
+import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
@@ -55,7 +56,40 @@ class BookCargoCommandFixtures {
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
         cargoId: CargoId.create(cargoIdentifier),
         routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
-        commodityInfo: CommodityInfo.create(CommodityType.DRY, 1000, null)
+        commodityInfo: CommodityInfo.create(CommodityType.DRY, 1000),
+        containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
+    )
+
+    return bookCargoCommand
+  }
+
+  static BookCargoCommand commandValidCommodityInfo(String cargoIdentifier = UUID.randomUUID(), Clock clock = Clock.systemUTC()) {
+    Instant currentTime = Instant.now(clock)
+    Instant currentTimeAndOneHour = currentTime + Duration.ofHours(1)
+    Instant currentTimeAndTwoHours = currentTime + Duration.ofHours(2)
+    Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
+
+    BookCargoCommand bookCargoCommand = new BookCargoCommand(
+        cargoId: CargoId.create(cargoIdentifier),
+        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
+        commodityInfo: CommodityInfo.create(CommodityType.DRY, 10_000),
+        containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
+    )
+
+    return bookCargoCommand
+  }
+
+  static BookCargoCommand commandInvalidCommodityInfo(String cargoIdentifier = UUID.randomUUID(), Clock clock = Clock.systemUTC()) {
+    Instant currentTime = Instant.now(clock)
+    Instant currentTimeAndOneHour = currentTime + Duration.ofHours(1)
+    Instant currentTimeAndTwoHours = currentTime + Duration.ofHours(2)
+    Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
+
+    BookCargoCommand bookCargoCommand = new BookCargoCommand(
+        cargoId: CargoId.create(cargoIdentifier),
+        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
+        commodityInfo: CommodityInfo.create(CommodityType.DRY, 5001 * 25_000),
+        containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
     )
 
     return bookCargoCommand

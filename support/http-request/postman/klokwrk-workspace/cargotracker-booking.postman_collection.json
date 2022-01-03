@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e924834c-88e5-4199-a417-2aefac4c651d",
+		"_postman_id": "60bca277-7d90-4b0c-8376-78b185d425ca",
 		"name": "cargotracker-booking",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -57,7 +57,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"dry\",\n    \"weightInKilograms\": 50500\n  }\n}\n",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -123,7 +123,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"dry\",\n    \"weightInKilograms\": 50500\n  }\n}\n",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -189,7 +189,73 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"dry\",\n    \"weightInKilograms\": 50500\n  }\n}\n",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"port": "{{port-commandside}}",
+											"path": [
+												"cargotracker-booking-commandside",
+												"cargo-booking",
+												"book-cargo"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "book-cargo, success, hr, air_cooled",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+													"pm.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible(pm.response, pm.collectionVariables);",
+													"postman.setNextRequest(null);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Charset",
+												"value": "utf-8",
+												"type": "text"
+											},
+											{
+												"key": "Accept-Language",
+												"value": "hr",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"air_cooled\",\n    \"totalWeightInKilograms\": 1500,\n    \"requestedStorageTemperatureInCelsius\": 10\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -255,7 +321,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"chilled\",\n    \"weightInKilograms\": 1500,\n    \"storageTemperatureInCelsius\": 5\n  }\n}\n",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"chilled\",\n    \"totalWeightInKilograms\": 1500,\n    \"requestedStorageTemperatureInCelsius\": 5\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -321,7 +387,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"frozen\",\n    \"weightInKilograms\": 10500,\n    \"storageTemperatureInCelsius\": -5\n  }\n}\n",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"frozen\",\n    \"totalWeightInKilograms\": 10500,\n    \"requestedStorageTemperatureInCelsius\": -10\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -606,7 +672,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"dry\",\n    \"weightInKilograms\": 50500\n  }\n}\n",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -671,7 +737,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"dry\",\n    \"weightInKilograms\": 50500\n  }  \n}\n",
+											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1080,7 +1146,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"dry\",\n    \"weightInKilograms\": 50500\n  }  \n}\n",
+									"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1212,7 +1278,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"type\": \"dry\",\n    \"weightInKilograms\": 50500\n  }  \n}\n",
+									"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1360,6 +1426,10 @@
 		{
 			"key": "port-queryside",
 			"value": "8084"
+		},
+		{
+			"key": "execution_receivedCargoIdentifier",
+			"value": ""
 		}
 	]
 }

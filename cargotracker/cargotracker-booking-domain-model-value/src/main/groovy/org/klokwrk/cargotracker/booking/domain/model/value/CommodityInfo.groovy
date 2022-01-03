@@ -28,11 +28,12 @@ import tech.units.indriya.unit.Units
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
 import javax.measure.quantity.Temperature
+import java.math.RoundingMode
 
 import static org.hamcrest.Matchers.notNullValue
 
 /**
- * Describes commodity characteristics at the cargo booking level.
+ * Encapsulates the base attributes for a {@link Commodity}.
  */
 @KwrkImmutable(knownImmutableClasses = [Quantity])
 @CompileStatic
@@ -47,9 +48,10 @@ class CommodityInfo implements PostMapConstructorCheckable {
   /**
    * Total commodity weight.
    * <p/>
-   * This weight might exceed what a single container can carry (in that case, multiple containers will be allocated for this commodity info).
+   * This weight might exceed what a single container can carry (in that case, multiple containers will be allocated based on this commodity info).
    * <p/>
-   * Must not be {@code null}, and must be at least 1 kg or greater. Do note it does not have to be specified in kilograms.
+   * Must not be {@code null}, and must be at least 1 kg or greater. It must be specified in kilogram units and a value must be the whole number.
+   * For conversion from other {@code Mass} units, and for a conversion of decimal numbers, use {@code create()} factory methods.
    */
   Quantity<Mass> totalWeight
 
@@ -79,7 +81,10 @@ class CommodityInfo implements PostMapConstructorCheckable {
       requestedStorageTemperatureToUse = commodityType.recommendedStorageTemperature
     }
 
-    CommodityInfo commodityInfo = new CommodityInfo(commodityType: commodityType, totalWeight: weight, requestedStorageTemperature: requestedStorageTemperatureToUse)
+    BigDecimal weightValueToUse = weight.to(Units.KILOGRAM).value.toBigDecimal().setScale(0, RoundingMode.UP)
+    Quantity<Mass> weightToUse = Quantities.getQuantity(weightValueToUse, Units.KILOGRAM)
+
+    CommodityInfo commodityInfo = new CommodityInfo(commodityType: commodityType, totalWeight: weightToUse, requestedStorageTemperature: requestedStorageTemperatureToUse)
     return commodityInfo
   }
 
@@ -104,8 +109,10 @@ class CommodityInfo implements PostMapConstructorCheckable {
     requireMatch(totalWeight, notNullValue())
 
     requireTrue(Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(totalWeight))
-    requireTrue(isRequestedStorageTemperatureAvailableWhenNeeded(requestedStorageTemperature, commodityType))
+    requireTrue(totalWeight.unit == Units.KILOGRAM)
+    requireTrue(totalWeight.value.toBigDecimal().scale() == 0)
 
+    requireTrue(isRequestedStorageTemperatureAvailableWhenNeeded(requestedStorageTemperature, commodityType))
     requireRequestedStorageTemperatureInAllowedRange(requestedStorageTemperature, commodityType)
   }
 

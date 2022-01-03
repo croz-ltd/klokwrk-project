@@ -15,18 +15,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in
+package org.klokwrk.cargotracker.booking.domain.model.value
 
 import groovy.transform.CompileStatic
-import groovy.transform.MapConstructor
-import groovy.transform.PropertyOptions
-import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
-@PropertyOptions(propertyHandler = RelaxedPropertyHandler)
-@MapConstructor
+/**
+ * Enumerates lengths of a container.
+ * <p/>
+ * We are using some ISO 6346 lengths here, but we are not constrained to use only those.
+ * <p/>
+ * Useful references:
+ * <ul>
+ * <li>https://en.wikipedia.org/wiki/ISO_6346</li>
+ * <li>https://www.bic-code.org/wp-content/uploads/2018/01/SizeAndType-Table1-3.pdf</li>
+ * <li>https://www.discovercontainers.com/shipping-container-dimensions/</li>
+ * <li>http://shipping-container-info.com/size-type-info/</li>
+ * </ul>
+ */
 @CompileStatic
-class BookCargoCommandResponse {
-  Map<String, ?> cargoId
-  Map<String, ?> routeSpecification
-  Map<String, ?> bookingOfferCommodities
+enum ContainerLengthType {
+  /**
+   * 10 feet.
+   */
+  LENGTH_ISO_1,
+
+  /**
+   * 20 feet.
+   */
+  LENGTH_ISO_2,
+
+  /**
+   * 40 feet.
+   */
+  LENGTH_ISO_4,
+
+  /**
+   * 45 feet.
+   */
+  LENGTH_ISO_L
 }

@@ -42,6 +42,7 @@ class BookCargoCommandRequestSpecification extends Specification {
       arrivalLatestTime: Instant.now()
   )
   static CommodityInfoData validCommodityInfoData = new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null)
+  static String validContainerDimensionTypeData = "DIMENSION_ISO_22"
 
   @Shared
   ValidationService validationService
@@ -56,7 +57,8 @@ class BookCargoCommandRequestSpecification extends Specification {
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: cargoIdentifierParam,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: validCommodityInfoData
+        commodityInfo: validCommodityInfoData,
+        containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
@@ -76,7 +78,8 @@ class BookCargoCommandRequestSpecification extends Specification {
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: validCargoIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: weightInKilogramsParam, requestedStorageTemperatureInCelsius: null)
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: weightInKilogramsParam, requestedStorageTemperatureInCelsius: null),
+        containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
@@ -97,7 +100,8 @@ class BookCargoCommandRequestSpecification extends Specification {
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: validCargoIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.CHILLED, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: storageTemperatureInCelsiusParam)
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.CHILLED, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: storageTemperatureInCelsiusParam),
+        containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
@@ -117,7 +121,8 @@ class BookCargoCommandRequestSpecification extends Specification {
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: cargoIdentifierParam,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: validCommodityInfoData
+        commodityInfo: validCommodityInfoData,
+        containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
@@ -142,7 +147,8 @@ class BookCargoCommandRequestSpecification extends Specification {
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: validCargoIdentifier,
         routeSpecification: null,
-        commodityInfo: validCommodityInfoData
+        commodityInfo: validCommodityInfoData,
+        containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
@@ -165,7 +171,8 @@ class BookCargoCommandRequestSpecification extends Specification {
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now(),
             arrivalLatestTime: Instant.now()
         ),
-        commodityInfo: validCommodityInfoData
+        commodityInfo: validCommodityInfoData,
+        containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
@@ -200,7 +207,8 @@ class BookCargoCommandRequestSpecification extends Specification {
             departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam,
             arrivalLatestTime: Instant.now()
         ),
-        commodityInfo: validCommodityInfoData
+        commodityInfo: validCommodityInfoData,
+        containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
@@ -228,7 +236,8 @@ class BookCargoCommandRequestSpecification extends Specification {
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now(),
             arrivalLatestTime: null
         ),
-        commodityInfo: validCommodityInfoData
+        commodityInfo: validCommodityInfoData,
+        containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
@@ -247,7 +256,8 @@ class BookCargoCommandRequestSpecification extends Specification {
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: validCargoIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(commodityType: null, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null)
+        commodityInfo: new CommodityInfoData(commodityType: null, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null),
+        containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
@@ -266,7 +276,8 @@ class BookCargoCommandRequestSpecification extends Specification {
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: validCargoIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: weightInKilogramsParam, requestedStorageTemperatureInCelsius: null)
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: weightInKilogramsParam, requestedStorageTemperatureInCelsius: null),
+        containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
@@ -290,7 +301,8 @@ class BookCargoCommandRequestSpecification extends Specification {
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: validCargoIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.CHILLED, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: storageTemperatureInCelsiusParam)
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.CHILLED, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: storageTemperatureInCelsiusParam),
+        containerDimensionType: validContainerDimensionTypeData
     )
 
     when:

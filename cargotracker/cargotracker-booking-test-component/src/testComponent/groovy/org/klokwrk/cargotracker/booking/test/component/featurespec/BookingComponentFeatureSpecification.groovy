@@ -50,7 +50,8 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
             "commodityType": "chilled",
             "totalWeightInKilograms": 1000,
             "requestedStorageTemperatureInCelsius": 5
-          }
+          },
+          "containerDimensionType": "DIMENSION_ISO_22"
         }
         """
 
@@ -99,7 +100,8 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
           "commodityInfo": {
             "commodityType": "dry",
             "totalWeightInKilograms": 1000
-          }
+          },
+          "containerDimensionType": "DIMENSION_ISO_22"
         }
         """
 
@@ -178,7 +180,8 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
             "commodityType": "chilled",
             "totalWeightInKilograms": 1000,
             "requestedStorageTemperatureInCelsius": 5
-          }
+          },
+          "containerDimensionType": "DIMENSION_ISO_22"
         }
         """
 

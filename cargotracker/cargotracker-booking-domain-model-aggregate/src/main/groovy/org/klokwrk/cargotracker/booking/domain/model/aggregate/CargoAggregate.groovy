@@ -30,9 +30,22 @@ import org.axonframework.spring.stereotype.Aggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
+import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import tech.units.indriya.quantity.Quantities
+import tech.units.indriya.unit.Units
+
+import javax.measure.Quantity
+import javax.measure.Unit
+import javax.measure.quantity.Mass
+import java.math.MathContext
+import java.math.RoundingMode
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply
 
@@ -43,7 +56,71 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply
 class CargoAggregate {
   CargoId cargoId
   RouteSpecification routeSpecification
-  CommodityInfo commodityInfo
+  BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
+
+  // TODO dmurat: extract this method into factory service
+  private static Commodity calculateCommodity(ContainerDimensionType containerDimensionType, CommodityInfo commodityInfo) {
+    ContainerType containerType = ContainerType.find(containerDimensionType, commodityInfo.commodityType.containerFeaturesType)
+
+    // TODO dmurat: max allowed weight per container policy.
+    //              Extract this logic in domain service behind AllowedCommodityWeightPerContainerPolicy.allowedWeight(ContainerType) interface
+    Quantity<Mass> commodityMaxAllowedWeightPerContainerPerPolicyInKilograms = toQuantityPercent(95, containerType.maxCommodityWeight, Units.KILOGRAM, RoundingMode.DOWN)
+
+    BigDecimal commodityTotalWeightValueInKilograms = commodityInfo.totalWeight.value
+
+    MathContext mathContext = new MathContext(7, RoundingMode.HALF_UP)
+    Integer commodityContainerCount = commodityTotalWeightValueInKilograms
+        .divide(commodityMaxAllowedWeightPerContainerPerPolicyInKilograms.value.toBigDecimal(), mathContext)
+        .setScale(0, RoundingMode.UP)
+        .toInteger()
+
+    // TODO dmurat: evaluate if we need this policy too
+    // max container count per commodity type policy
+    // very similar policy we have in BookingOfferCommodities.canAcceptCommodity(). But there it is cumulative across thw whole BookingOffer.
+    // will comment for now, and rely on cumulative policy only. Maybe introduce later
+//    if (commodityContainerCount > 5000) {
+//      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey("cargoAggregate.commodityContainerCountTooHigh"))
+//    }
+
+    Integer commodityMaxRecommendedWeightPerContainerValueInKilograms = commodityTotalWeightValueInKilograms
+        .divide(commodityContainerCount.toBigDecimal(), mathContext)
+        .setScale(0, RoundingMode.UP)
+        .toInteger()
+
+    Quantity<Mass> commodityMaxRecommendedWeightPerContainer = Quantities.getQuantity(commodityMaxRecommendedWeightPerContainerValueInKilograms, Units.KILOGRAM)
+
+    Commodity commodity = new Commodity(
+        containerType: ContainerType.find(containerDimensionType, commodityInfo.commodityType.containerFeaturesType),
+        commodityInfo: commodityInfo,
+        maxAllowedWeightPerContainer: commodityMaxAllowedWeightPerContainerPerPolicyInKilograms,
+        maxRecommendedWeightPerContainer: commodityMaxRecommendedWeightPerContainer,
+        containerCount: commodityContainerCount
+    )
+
+    return commodity
+  }
+
+  // to be extracted in policy (domain service)
+  private static <T extends Quantity<T>> Quantity<T> toQuantityPercent(Integer percent, Quantity<T> quantity, Unit<T> targetUnit = null, RoundingMode roundingMode = RoundingMode.HALF_UP) {
+    if (percent == null) {
+      return null
+    }
+
+    if (quantity == null) {
+      return null
+    }
+
+    Unit<T> targetUnitToUse = targetUnit
+    if (targetUnit == null) {
+      targetUnitToUse = quantity.unit
+    }
+
+    Quantity<T> quantityInTargetUnit = quantity.to(targetUnitToUse)
+    BigDecimal percentValueRounded = ((quantityInTargetUnit.value * percent / 100) as BigDecimal).setScale(0, roundingMode)
+
+    Quantity<T> quantity90PercentRounded = Quantities.getQuantity(percentValueRounded.toBigInteger(), targetUnitToUse)
+    return quantity90PercentRounded
+  }
 
   @AggregateIdentifier
   String getAggregateIdentifier() {
@@ -54,7 +131,31 @@ class CargoAggregate {
   @CommandHandler
   @CreationPolicy(AggregateCreationPolicy.ALWAYS)
   CargoAggregate bookCargo(BookCargoCommand bookCargoCommand, MetaData metaData) {
-    apply(new CargoBookedEvent(bookCargoCommand.properties), metaData)
+    Commodity commodity = calculateCommodity(bookCargoCommand.containerDimensionType, bookCargoCommand.commodityInfo)
+
+    // Check for container count per commodity type.
+    // The largest ship in the world can carry 24000 containers. We should limit container count to the max of 5000 per a single booking, for example.
+    // We can have two different policies here. One for limiting container count per commodity type, and another one for limiting container count for booking.
+    // In a simpler case, both policies can be the same. In that case with a single commodity type we can allocate complete booking capacity.
+    if (!bookingOfferCommodities.canAcceptCommodity(commodity)) { // TODO dmurat: container count per booking policy
+      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey("cargoAggregate.bookingOfferCommodities.cannotAcceptCommodity"))
+    }
+
+    // Note: cannot store here directly as state change should happen in event sourcing handler.
+    //       Alternative is to publish two events (second one applied after the first one updates the state), but we do not want that.
+    Tuple2<Quantity<Mass>, Integer> preCalculatedTotals = bookingOfferCommodities.preCalculateTotals(commodity)
+    Quantity<Mass> bookingTotalCommodityWeight = preCalculatedTotals.v1
+    Integer bookingTotalContainerCount = preCalculatedTotals.v2
+
+    CargoBookedEvent cargoBookedEvent = new CargoBookedEvent(
+        cargoId: bookCargoCommand.cargoId,
+        routeSpecification: bookCargoCommand.routeSpecification,
+        commodity: commodity,
+        bookingTotalCommodityWeight: bookingTotalCommodityWeight,
+        bookingTotalContainerCount: bookingTotalContainerCount
+    )
+
+    apply(cargoBookedEvent, metaData)
     return this
   }
 
@@ -62,6 +163,6 @@ class CargoAggregate {
   void onCargoBookedEvent(CargoBookedEvent cargoBookedEvent) {
     cargoId = cargoBookedEvent.cargoId
     routeSpecification = cargoBookedEvent.routeSpecification
-    commodityInfo = cargoBookedEvent.commodityInfo
+    bookingOfferCommodities.storeCommodity(cargoBookedEvent.commodity)
   }
 }

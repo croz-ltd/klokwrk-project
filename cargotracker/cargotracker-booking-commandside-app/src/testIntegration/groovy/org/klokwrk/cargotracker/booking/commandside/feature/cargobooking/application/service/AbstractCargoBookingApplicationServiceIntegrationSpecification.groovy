@@ -33,13 +33,19 @@ import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applica
 import org.klokwrk.cargotracker.booking.commandside.infrastructure.springbootconfig.SpringBootConfig
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
+import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferCommodities
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
+import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 import org.klokwrk.cargotracker.lib.boundary.api.application.exception.RemoteHandlerException
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
 import org.klokwrk.lang.groovy.misc.InstantUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import tech.units.indriya.quantity.Quantities
+import tech.units.indriya.unit.Units
 
 import java.time.Duration
 import java.time.Instant
@@ -70,9 +76,19 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
             departureEarliestTime: currentInstantAndOneHour, departureLatestTime: currentInstantAndTwoHours,
             arrivalLatestTime: currentInstantAndThreeHours
         ),
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000)
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000),
+        containerDimensionType: "DIMENSION_ISO_22"
     )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
+
+    BookingOfferCommodities expectedBookingOfferCommodities = new BookingOfferCommodities()
+    expectedBookingOfferCommodities.storeCommodity(new Commodity(
+        containerType: ContainerType.TYPE_ISO_22G1,
+        commodityInfo: CommodityInfo.create(CommodityType.DRY, 1000),
+        maxAllowedWeightPerContainer: Quantities.getQuantity(23_750, Units.KILOGRAM),
+        maxRecommendedWeightPerContainer: Quantities.getQuantity(1000, Units.KILOGRAM),
+        containerCount: 1
+    ))
 
     when:
     OperationResponse<BookCargoCommandResponse> bookCargoCommandOperationResponse =
@@ -94,14 +110,12 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
         arrivalLatestTime == currentInstantRoundedAndThreeHours
       }
 
-      commodityInfo.with {
-        size() == 2
+      bookingOfferCommodities.with {
+        size() == 3
 
-        commodityType == "DRY"
-
-        totalWeight.value == 1000
-        totalWeight.unit.name == "Kilogram"
-        totalWeight.unit.symbol == "kg"
+        commodityTypeToCommodityMap == expectedBookingOfferCommodities.commodityTypeToCommodityMap
+        totalCommodityWeight == Quantities.getQuantity(1000, Units.KILOGRAM)
+        totalContainerCount == 1
       }
     }
   }
@@ -133,7 +147,8 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
             arrivalLatestTime: Instant.now() + Duration.ofHours(2),
         ),
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000)
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000),
+        containerDimensionType: "DIMENSION_ISO_22"
     )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
@@ -189,7 +204,8 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
             arrivalLatestTime: Instant.now() + Duration.ofHours(2)
         ),
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000)
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000),
+        containerDimensionType: "DIMENSION_ISO_22"
     )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 

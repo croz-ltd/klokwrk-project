@@ -21,6 +21,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.Generated
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
@@ -37,6 +38,7 @@ class BookCargoCommand implements BaseCreateCommand, PostMapConstructorCheckable
   CargoId cargoId
   RouteSpecification routeSpecification
   CommodityInfo commodityInfo
+  ContainerDimensionType containerDimensionType
 
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
@@ -44,6 +46,7 @@ class BookCargoCommand implements BaseCreateCommand, PostMapConstructorCheckable
     requireMatch(cargoId, notNullValue())
     requireMatch(routeSpecification, notNullValue())
     requireMatch(commodityInfo, notNullValue())
+    requireMatch(containerDimensionType, notNullValue())
 
     // Since they are pretty closely related to particular use-cases, commands can check for use-case-specific constraints (in contrast with, for example, value objects that are not
     // use-case-specific).
