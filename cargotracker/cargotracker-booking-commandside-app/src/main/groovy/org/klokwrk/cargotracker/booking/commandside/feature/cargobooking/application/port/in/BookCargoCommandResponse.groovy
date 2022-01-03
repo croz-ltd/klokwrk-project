@@ -28,5 +28,5 @@ import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 class BookCargoCommandResponse {
   Map<String, ?> cargoId
   Map<String, ?> routeSpecification
-  Map<String, ?> commodityInfo
+  Map<String, ?> bookingOfferCommodities
 }

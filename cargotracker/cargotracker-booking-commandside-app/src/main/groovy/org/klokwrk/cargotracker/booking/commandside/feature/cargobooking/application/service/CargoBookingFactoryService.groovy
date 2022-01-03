@@ -29,7 +29,6 @@ import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilityType
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.springframework.stereotype.Service
-import tech.units.indriya.format.LocalUnitFormat
 
 import java.time.Clock
 
@@ -74,7 +73,8 @@ class CargoBookingFactoryService {
         commodityInfo: CommodityInfo.create(
             bookCargoCommandRequest.commodityInfo.commodityType, bookCargoCommandRequest.commodityInfo.totalWeightInKilograms,
             bookCargoCommandRequest.commodityInfo.requestedStorageTemperatureInCelsius
-        )
+        ),
+        containerDimensionType: bookCargoCommandRequest.containerDimensionType
     )
 
     return bookCargoCommand
@@ -105,29 +105,6 @@ class CargoBookingFactoryService {
     Map<String, ?> originLocationMap = createMapFromLocation(cargoAggregate.routeSpecification.originLocation)
     Map<String, ?> destinationLocationMap = createMapFromLocation(cargoAggregate.routeSpecification.destinationLocation)
 
-    Map<String, ?> commodityInfoMap = [
-        commodityType: cargoAggregate.commodityInfo.commodityType.name(),
-        totalWeight: [
-            value: cargoAggregate.commodityInfo.totalWeight.value,
-            unit: [
-                name: cargoAggregate.commodityInfo.totalWeight.unit.name,
-                symbol: cargoAggregate.commodityInfo.totalWeight.unit.symbol
-            ]
-        ]
-    ]
-
-    if (cargoAggregate.commodityInfo.requestedStorageTemperature != null) {
-      Map<String, ?> requestedStorageTemperatureMap = [
-          value: cargoAggregate.commodityInfo.requestedStorageTemperature.value,
-          unit: [
-              name: cargoAggregate.commodityInfo.requestedStorageTemperature.unit.name,
-              symbol: LocalUnitFormat.instance.format(cargoAggregate.commodityInfo.requestedStorageTemperature.unit)
-          ]
-      ]
-
-      commodityInfoMap.put("requestedStorageTemperature", requestedStorageTemperatureMap)
-    }
-
     BookCargoCommandResponse bookCargoCommandResponse = new BookCargoCommandResponse(
         cargoId: [identifier: cargoAggregate.cargoId.identifier],
         routeSpecification: [
@@ -135,7 +112,11 @@ class CargoBookingFactoryService {
             departureEarliestTime: cargoAggregate.routeSpecification.departureEarliestTime, departureLatestTime: cargoAggregate.routeSpecification.departureLatestTime,
             arrivalLatestTime: cargoAggregate.routeSpecification.arrivalLatestTime
         ],
-        commodityInfo: commodityInfoMap
+        bookingOfferCommodities: [
+            commodityTypeToCommodityMap: cargoAggregate.bookingOfferCommodities.commodityTypeToCommodityMap,
+            totalCommodityWeight: cargoAggregate.bookingOfferCommodities.totalCommodityWeight,
+            totalContainerCount: cargoAggregate.bookingOfferCommodities.totalContainerCount
+        ]
     )
 
     return bookCargoCommandResponse

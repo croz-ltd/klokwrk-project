@@ -23,11 +23,14 @@ import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applica
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CommodityInfoData
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.RouteSpecificationData
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.LocationByUnLoCodeQueryPortOut
+import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferCommodities
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.CargoAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
+import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
@@ -54,6 +57,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
       arrivalLatestTime: currentInstantRoundedAndThreeHours
   )
   static CommodityInfoData validCommodityInfoData = new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null)
+  static String validContainerDimensionData = "DIMENSION_ISO_22"
 
   CargoBookingFactoryService cargoBookingFactoryService
   LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut
@@ -161,7 +165,9 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
   void "createBookCargoCommand - should work for unspecified cargo identifier"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(routeSpecification: validRouteSpecificationData, commodityInfo: validCommodityInfoData)
+    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+        routeSpecification: validRouteSpecificationData, commodityInfo: validCommodityInfoData, containerDimensionType: validContainerDimensionData
+    )
 
     when:
     BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
@@ -185,7 +191,8 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
         cargoIdentifier: cargoIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: validCommodityInfoData
+        commodityInfo: validCommodityInfoData,
+        containerDimensionType: validContainerDimensionData
     )
 
     when:
@@ -225,6 +232,15 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     Location myOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRRJK")
     Location myDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("NLRTM")
 
+    BookingOfferCommodities expectedBookingOfferCommodities = new BookingOfferCommodities()
+    expectedBookingOfferCommodities.storeCommodity(new Commodity(
+        containerType: ContainerType.TYPE_ISO_22G1,
+        commodityInfo: CommodityInfo.create(CommodityType.DRY, 1000),
+        maxAllowedWeightPerContainer: Quantities.getQuantity(23_750, Units.KILOGRAM),
+        maxRecommendedWeightPerContainer: Quantities.getQuantity(1000, Units.KILOGRAM),
+        containerCount: 1
+    ))
+
     CargoAggregate cargoAggregate = new CargoAggregate(
         cargoId: CargoId.create(myCargoIdentifier),
         routeSpecification: new RouteSpecification(
@@ -233,9 +249,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
             arrivalLatestTime: currentInstantRoundedAndThreeHours
         ),
-        commodityInfo: new CommodityInfo(
-            commodityType: CommodityType.CHILLED, totalWeight: Quantities.getQuantity(1000, Units.KILOGRAM), requestedStorageTemperature: Quantities.getQuantity(5, Units.CELSIUS)
-        )
+        bookingOfferCommodities: expectedBookingOfferCommodities
     )
 
     when:
@@ -243,11 +257,11 @@ class CargoBookingFactoryServiceSpecification extends Specification {
 
     then:
     verifyAll(bookCargoCommandResponse) {
-      cargoId == [
+      it.cargoId == [
           identifier: myCargoIdentifier
       ]
 
-      routeSpecification == [
+      it.routeSpecification == [
           originLocation: [
               name: "Rijeka",
               countryName: "Croatia",
@@ -307,22 +321,10 @@ class CargoBookingFactoryServiceSpecification extends Specification {
           arrivalLatestTime: currentInstantRoundedAndThreeHours
       ]
 
-      commodityInfo == [
-          commodityType: "CHILLED",
-          totalWeight: [
-              value: 1000,
-              unit: [
-                  name: "Kilogram",
-                  symbol: "kg"
-              ]
-          ],
-          requestedStorageTemperature: [
-              value: 5,
-              unit: [
-                  name: "Celsius",
-                  symbol: "°C"
-              ]
-          ]
+      it.bookingOfferCommodities == [
+          commodityTypeToCommodityMap: expectedBookingOfferCommodities.commodityTypeToCommodityMap,
+          totalCommodityWeight: Quantities.getQuantity(1000, Units.KILOGRAM),
+          totalContainerCount: 1
       ]
     }
   }
