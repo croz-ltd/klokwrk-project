@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.domain.model.command
 
 import groovy.transform.CompileStatic
 import groovy.transform.Generated
-import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
+import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
@@ -35,7 +35,7 @@ import static org.hamcrest.Matchers.notNullValue
 @KwrkImmutable
 @CompileStatic
 class BookCargoCommand implements BaseCreateCommand, PostMapConstructorCheckable {
-  CargoId cargoId
+  BookingOfferId cargoId
   RouteSpecification routeSpecification
   CommodityInfo commodityInfo
   ContainerDimensionType containerDimensionType

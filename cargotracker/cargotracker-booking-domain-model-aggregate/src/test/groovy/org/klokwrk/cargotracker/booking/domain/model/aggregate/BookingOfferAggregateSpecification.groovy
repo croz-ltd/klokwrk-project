@@ -81,7 +81,7 @@ class BookingOfferAggregateSpecification extends Specification {
     resultValidator.expectEvents(expectedCargoBookedEvent)
 
     verifyAll(resultValidator.state.get().wrappedAggregate.aggregateRoot as BookingOfferAggregate, {
-      cargoId == bookCargoCommand.cargoId
+      bookingOfferId == bookCargoCommand.cargoId
       routeSpecification == bookCargoCommand.routeSpecification
       bookingOfferCommodities.totalCommodityWeight == Quantities.getQuantity(10_000, Units.KILOGRAM)
       bookingOfferCommodities.totalContainerCount == 1

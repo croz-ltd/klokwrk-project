@@ -29,7 +29,7 @@ import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
-import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
+import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
@@ -54,7 +54,7 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply
 @Aggregate
 @CompileStatic
 class BookingOfferAggregate {
-  CargoId cargoId
+  BookingOfferId bookingOfferId
   RouteSpecification routeSpecification
   BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
@@ -125,7 +125,7 @@ class BookingOfferAggregate {
   @AggregateIdentifier
   String getAggregateIdentifier() {
     // Note: Must use null safe navigation here as cargoId might be null when first command is not successful (and axon requires aggregate identifier for further processing)
-    return cargoId?.identifier
+    return bookingOfferId?.identifier
   }
 
   @CommandHandler
@@ -161,7 +161,7 @@ class BookingOfferAggregate {
 
   @EventSourcingHandler
   void onCargoBookedEvent(CargoBookedEvent cargoBookedEvent) {
-    cargoId = cargoBookedEvent.cargoId
+    bookingOfferId = cargoBookedEvent.cargoId
     routeSpecification = cargoBookedEvent.routeSpecification
     bookingOfferCommodities.storeCommodity(cargoBookedEvent.commodity)
   }

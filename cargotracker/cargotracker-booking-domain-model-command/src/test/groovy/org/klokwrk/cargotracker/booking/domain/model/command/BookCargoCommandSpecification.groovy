@@ -17,7 +17,7 @@
  */
 package org.klokwrk.cargotracker.booking.domain.model.command
 
-import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
+import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
@@ -54,9 +54,9 @@ class BookCargoCommandSpecification extends Specification {
 
   void "map constructor should work for correct input params"() {
     when:
-    CargoId cargoId = CargoId.createWithGeneratedIdentifier()
+    BookingOfferId bookingOfferId = BookingOfferId.createWithGeneratedIdentifier()
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
-        cargoId: cargoId,
+        cargoId: bookingOfferId,
         routeSpecification: validRouteSpecification,
         commodityInfo: validCommodityInfo,
         containerDimensionType: validContainerDimensionType
@@ -76,18 +76,18 @@ class BookCargoCommandSpecification extends Specification {
 
   void "map constructor should fail for null input params"() {
     when:
-    new BookCargoCommand(cargoId: cargoIdParam, routeSpecification: routeSpecificationParam, commodityInfo: commodityInfoParam, containerDimensionType: containerDimensionTypeParam)
+    new BookCargoCommand(cargoId: bookingOfferIdParam, routeSpecification: routeSpecificationParam, commodityInfo: commodityInfoParam, containerDimensionType: containerDimensionTypeParam)
 
     then:
     AssertionError assertionError = thrown()
     assertionError.message.contains(messagePartParam)
 
     where:
-    cargoIdParam                            | routeSpecificationParam | commodityInfoParam | containerDimensionTypeParam | messagePartParam
-    null                                    | validRouteSpecification | validCommodityInfo | validContainerDimensionType | "notNullValue"
-    CargoId.createWithGeneratedIdentifier() | null                    | validCommodityInfo | validContainerDimensionType | "notNullValue"
-    CargoId.createWithGeneratedIdentifier() | validRouteSpecification | null               | validContainerDimensionType | "notNullValue"
-    CargoId.createWithGeneratedIdentifier() | validRouteSpecification | validCommodityInfo | null                        | "notNullValue"
+    bookingOfferIdParam                            | routeSpecificationParam | commodityInfoParam | containerDimensionTypeParam | messagePartParam
+    null                                           | validRouteSpecification | validCommodityInfo | validContainerDimensionType | "notNullValue"
+    BookingOfferId.createWithGeneratedIdentifier() | null                    | validCommodityInfo | validContainerDimensionType | "notNullValue"
+    BookingOfferId.createWithGeneratedIdentifier() | validRouteSpecification | null               | validContainerDimensionType | "notNullValue"
+    BookingOfferId.createWithGeneratedIdentifier() | validRouteSpecification | validCommodityInfo | null                        | "notNullValue"
   }
 
   void "map constructor should fail when some of business rules of routeSpecification are not satisfied"() {
@@ -108,8 +108,8 @@ class BookCargoCommandSpecification extends Specification {
     domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
 
     where:
-    cargoIdParam                            | originLocationParam        | destinationLocationParam   | violationCodeKeyParam
-    CargoId.createWithGeneratedIdentifier() | locationSampleMap["NLRTM"] | locationSampleMap["NLRTM"] | "routeSpecification.originAndDestinationLocationAreEqual"
-    CargoId.createWithGeneratedIdentifier() | locationSampleMap["NLRTM"] | locationSampleMap["HRZAG"] | "routeSpecification.cannotRouteCargoFromOriginToDestination"
+    originLocationParam        | destinationLocationParam   | violationCodeKeyParam
+    locationSampleMap["NLRTM"] | locationSampleMap["NLRTM"] | "routeSpecification.originAndDestinationLocationAreEqual"
+    locationSampleMap["NLRTM"] | locationSampleMap["HRZAG"] | "routeSpecification.cannotRouteCargoFromOriginToDestination"
   }
 }

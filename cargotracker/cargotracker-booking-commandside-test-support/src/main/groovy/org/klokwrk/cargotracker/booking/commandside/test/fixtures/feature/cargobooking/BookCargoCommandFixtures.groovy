@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargo
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
-import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
+import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
@@ -54,7 +54,7 @@ class BookCargoCommandFixtures {
     Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
-        cargoId: CargoId.create(cargoIdentifier),
+        cargoId: BookingOfferId.create(cargoIdentifier),
         routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
         commodityInfo: CommodityInfo.create(CommodityType.DRY, 1000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
@@ -70,7 +70,7 @@ class BookCargoCommandFixtures {
     Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
-        cargoId: CargoId.create(cargoIdentifier),
+        cargoId: BookingOfferId.create(cargoIdentifier),
         routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
         commodityInfo: CommodityInfo.create(CommodityType.DRY, 10_000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
@@ -86,7 +86,7 @@ class BookCargoCommandFixtures {
     Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
-        cargoId: CargoId.create(cargoIdentifier),
+        cargoId: BookingOfferId.create(cargoIdentifier),
         routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
         commodityInfo: CommodityInfo.create(CommodityType.DRY, 5001 * 25_000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22

@@ -23,7 +23,7 @@ import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applica
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.LocationByUnLoCodeQueryPortOut
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
-import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
+import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilityType
@@ -64,7 +64,7 @@ class CargoBookingFactoryService {
     Location resolvedDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.routeSpecification.destinationLocation)
 
     BookCargoCommand bookCargoCommand = new BookCargoCommand(
-        cargoId: CargoId.createWithGeneratedIdentifierIfNeeded(bookCargoCommandRequest.cargoIdentifier),
+        cargoId: BookingOfferId.createWithGeneratedIdentifierIfNeeded(bookCargoCommandRequest.cargoIdentifier),
         routeSpecification: RouteSpecification.create(
             resolvedOriginLocation, resolvedDestinationLocation,
             bookCargoCommandRequest.routeSpecification.departureEarliestTime, bookCargoCommandRequest.routeSpecification.departureLatestTime,
@@ -106,7 +106,7 @@ class CargoBookingFactoryService {
     Map<String, ?> destinationLocationMap = createMapFromLocation(bookingOfferAggregate.routeSpecification.destinationLocation)
 
     BookCargoCommandResponse bookCargoCommandResponse = new BookCargoCommandResponse(
-        cargoId: [identifier: bookingOfferAggregate.cargoId.identifier],
+        cargoId: [identifier: bookingOfferAggregate.bookingOfferId.identifier],
         routeSpecification: [
             originLocation: originLocationMap, destinationLocation: destinationLocationMap,
             departureEarliestTime: bookingOfferAggregate.routeSpecification.departureEarliestTime, departureLatestTime: bookingOfferAggregate.routeSpecification.departureLatestTime,

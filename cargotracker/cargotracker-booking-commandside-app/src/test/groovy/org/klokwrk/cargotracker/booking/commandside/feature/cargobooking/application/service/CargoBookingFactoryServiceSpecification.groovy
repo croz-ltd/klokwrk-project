@@ -26,7 +26,7 @@ import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applica
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferCommodities
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
-import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
+import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
@@ -242,7 +242,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     ))
 
     BookingOfferAggregate bookingOfferAggregate = new BookingOfferAggregate(
-        cargoId: CargoId.create(myCargoIdentifier),
+        bookingOfferId: BookingOfferId.create(myCargoIdentifier),
         routeSpecification: new RouteSpecification(
             originLocation: myOriginLocation, destinationLocation: myDestinationLocation,
             creationTime: currentInstantRounded,
