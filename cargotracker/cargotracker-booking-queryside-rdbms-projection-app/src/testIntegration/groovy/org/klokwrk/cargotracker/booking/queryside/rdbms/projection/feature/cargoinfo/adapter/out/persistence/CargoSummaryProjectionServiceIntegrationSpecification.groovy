@@ -23,7 +23,7 @@ import org.axonframework.eventhandling.GenericDomainEventMessage
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataConstant
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.CargoBookedEventFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
-import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
+import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.test.base.AbstractRdbmsProjectionIntegrationSpecification
 import org.klokwrk.cargotracker.booking.queryside.test.axon.GenericDomainEventMessageFactory
 import org.klokwrk.cargotracker.booking.queryside.test.feature.cargoinfo.sql.CargoSummarySqlHelper
@@ -59,10 +59,12 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
     given:
     Long startingCargoSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
 
-    CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidRouteSpecification()
-    String cargoIdentifier = cargoBookedEvent.cargoId.identifier
+    BookingOfferCreatedEvent bookingOfferCreatedEvent = CargoBookedEventFixtures.eventValidRouteSpecification()
+    String cargoIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
 
-    GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(cargoBookedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
+    GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage =
+        GenericDomainEventMessageFactory.createEventMessage(bookingOfferCreatedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
+
     eventBus.publish(genericDomainEventMessage)
 
     expect:
@@ -85,10 +87,10 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
     given:
     Long startingCargoSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
 
-    CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidRouteSpecification()
-    String cargoIdentifier = cargoBookedEvent.cargoId.identifier
+    BookingOfferCreatedEvent bookingOfferCreatedEvent = CargoBookedEventFixtures.eventValidRouteSpecification()
+    String cargoIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
 
-    GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(cargoBookedEvent, [:])
+    GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(bookingOfferCreatedEvent, [:])
     eventBus.publish(genericDomainEventMessage)
 
     expect:

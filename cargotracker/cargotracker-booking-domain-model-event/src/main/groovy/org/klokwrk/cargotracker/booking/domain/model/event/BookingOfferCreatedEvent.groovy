@@ -29,14 +29,14 @@ import javax.measure.quantity.Mass
 
 @KwrkImmutable(knownImmutableClasses = [Quantity])
 @CompileStatic
-class CargoBookedEvent implements BaseEvent {
-  BookingOfferId cargoId
+class BookingOfferCreatedEvent implements BaseEvent {
+  BookingOfferId bookingOfferId
   RouteSpecification routeSpecification
   Commodity commodity
   Quantity<Mass> bookingTotalCommodityWeight
   Integer bookingTotalContainerCount
 
   String getAggregateIdentifier() {
-    return cargoId.identifier
+    return bookingOfferId.identifier
   }
 }

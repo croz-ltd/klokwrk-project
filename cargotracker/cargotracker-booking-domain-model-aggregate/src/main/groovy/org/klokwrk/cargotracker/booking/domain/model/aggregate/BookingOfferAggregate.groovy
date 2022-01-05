@@ -28,7 +28,7 @@ import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
-import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
+import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
@@ -147,22 +147,22 @@ class BookingOfferAggregate {
     Quantity<Mass> bookingTotalCommodityWeight = preCalculatedTotals.v1
     Integer bookingTotalContainerCount = preCalculatedTotals.v2
 
-    CargoBookedEvent cargoBookedEvent = new CargoBookedEvent(
-        cargoId: bookCargoCommand.cargoId,
+    BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
+        bookingOfferId: bookCargoCommand.cargoId,
         routeSpecification: bookCargoCommand.routeSpecification,
         commodity: commodity,
         bookingTotalCommodityWeight: bookingTotalCommodityWeight,
         bookingTotalContainerCount: bookingTotalContainerCount
     )
 
-    apply(cargoBookedEvent, metaData)
+    apply(bookingOfferCreatedEvent, metaData)
     return this
   }
 
   @EventSourcingHandler
-  void onCargoBookedEvent(CargoBookedEvent cargoBookedEvent) {
-    bookingOfferId = cargoBookedEvent.cargoId
-    routeSpecification = cargoBookedEvent.routeSpecification
-    bookingOfferCommodities.storeCommodity(cargoBookedEvent.commodity)
+  void onBookingOfferCreatedEvent(BookingOfferCreatedEvent bookingOfferCreatedEvent) {
+    bookingOfferId = bookingOfferCreatedEvent.bookingOfferId
+    routeSpecification = bookingOfferCreatedEvent.routeSpecification
+    bookingOfferCommodities.storeCommodity(bookingOfferCreatedEvent.commodity)
   }
 }

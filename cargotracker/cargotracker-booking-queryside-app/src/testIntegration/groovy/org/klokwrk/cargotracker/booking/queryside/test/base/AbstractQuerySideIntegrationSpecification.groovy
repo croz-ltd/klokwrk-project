@@ -25,7 +25,7 @@ import org.axonframework.eventhandling.GenericDomainEventMessage
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.CargoBookedEventFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.AxonServerTestcontainersFactory
-import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
+import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.queryside.test.axon.GenericDomainEventMessageFactory
 import org.klokwrk.cargotracker.booking.queryside.test.feature.cargoinfo.sql.CargoSummarySqlHelper
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
@@ -66,16 +66,20 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
     registry.add("spring.datasource.password", { postgresqlServer.password })
   }
 
-  static String publishAndWaitForProjectedCargoBookedEvent(EventBus eventBus, Sql groovySql, CargoBookedEvent cargoBookedEvent = CargoBookedEventFixtures.eventValidRouteSpecification()) {
+  static String publishAndWaitForProjectedCargoBookedEvent(
+      EventBus eventBus, Sql groovySql, BookingOfferCreatedEvent bookingOfferCreatedEvent = CargoBookedEventFixtures.eventValidRouteSpecification())
+  {
     Long startingCargoSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
-    String cargoIdentifier = cargoBookedEvent.cargoId.identifier
+    String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
 
-    GenericDomainEventMessage<CargoBookedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(cargoBookedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
+    GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage =
+        GenericDomainEventMessageFactory.createEventMessage(bookingOfferCreatedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
+
     eventBus.publish(genericDomainEventMessage)
 
     // Wait for projection to complete
     Awaitility.await().atMost(Duration.ofSeconds(10)).until({ CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql) == startingCargoSummaryRecordsCount + 1 })
 
-    return cargoIdentifier
+    return bookingOfferIdentifier
   }
 }

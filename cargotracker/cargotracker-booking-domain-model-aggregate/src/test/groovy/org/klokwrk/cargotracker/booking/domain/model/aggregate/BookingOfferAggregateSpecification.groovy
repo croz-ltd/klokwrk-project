@@ -23,7 +23,7 @@ import org.axonframework.test.aggregate.TestExecutor
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.BookCargoCommandFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.CargoBookedEventFixtures
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
-import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
+import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
@@ -66,8 +66,8 @@ class BookingOfferAggregateSpecification extends Specification {
         containerCount: 1
     )
 
-    CargoBookedEvent expectedCargoBookedEvent = new CargoBookedEvent(
-        cargoId: bookCargoCommand.cargoId,
+    BookingOfferCreatedEvent expectedBookingOfferCreatedEvent = new BookingOfferCreatedEvent(
+        bookingOfferId: bookCargoCommand.cargoId,
         routeSpecification: bookCargoCommand.routeSpecification,
         commodity: expectedCommodity,
         bookingTotalCommodityWeight: Quantities.getQuantity(10_000, Units.KILOGRAM),
@@ -78,7 +78,7 @@ class BookingOfferAggregateSpecification extends Specification {
     ResultValidator<BookingOfferAggregate> resultValidator = testExecutor.when(bookCargoCommand)
 
     then:
-    resultValidator.expectEvents(expectedCargoBookedEvent)
+    resultValidator.expectEvents(expectedBookingOfferCreatedEvent)
 
     verifyAll(resultValidator.state.get().wrappedAggregate.aggregateRoot as BookingOfferAggregate, {
       bookingOfferId == bookCargoCommand.cargoId

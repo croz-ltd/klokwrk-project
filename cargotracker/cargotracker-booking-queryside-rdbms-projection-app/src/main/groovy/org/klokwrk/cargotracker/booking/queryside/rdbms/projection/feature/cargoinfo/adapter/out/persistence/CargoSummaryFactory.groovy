@@ -19,17 +19,17 @@ package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.feature.carg
 
 import groovy.transform.CompileStatic
 import org.axonframework.eventhandling.DomainEventMessage
-import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
+import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.CargoSummaryJpaEntity
 import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDataConstant
 import org.klokwrk.lang.groovy.constant.CommonConstants
 
 @CompileStatic
 class CargoSummaryFactory {
-  static CargoSummaryJpaEntity createCargoSummaryJpaEntity(CargoBookedEvent cargoBookedEvent, DomainEventMessage domainEventMessage) {
-    String cargoIdentifier = cargoBookedEvent.cargoId.identifier
-    String originLocation = cargoBookedEvent.routeSpecification.originLocation.unLoCode.code
-    String destinationLocation = cargoBookedEvent.routeSpecification.destinationLocation.unLoCode.code
+  static CargoSummaryJpaEntity createCargoSummaryJpaEntity(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
+    String cargoIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
+    String originLocation = bookingOfferCreatedEvent.routeSpecification.originLocation.unLoCode.code
+    String destinationLocation = bookingOfferCreatedEvent.routeSpecification.destinationLocation.unLoCode.code
     Long aggregateVersion = domainEventMessage.sequenceNumber
 
     CargoSummaryJpaEntity cargoSummaryJpaEntity = new CargoSummaryJpaEntity(
