@@ -27,7 +27,7 @@ import static org.hamcrest.Matchers.is
 import static org.hamcrest.Matchers.not
 
 /**
- * Represents an identifier of {@code CargoAggregate} without any business meaning.
+ * Represents an identifier of {@code BookingOfferAggregate} without any business meaning.
  * <p/>
  * This identifier is used for technical purposes of identifying an aggregate in CQRS/ES system. With current implementation, an encapsulated string identifier must be parsable by
  * {@link UUID#fromString(java.lang.String)} method.

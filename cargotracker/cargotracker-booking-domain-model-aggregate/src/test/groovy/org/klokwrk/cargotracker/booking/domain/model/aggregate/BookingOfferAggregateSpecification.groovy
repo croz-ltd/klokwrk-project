@@ -32,23 +32,23 @@ import spock.lang.Specification
 import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.Units
 
-class CargoAggregateSpecification extends Specification {
+class BookingOfferAggregateSpecification extends Specification {
   AggregateTestFixture aggregateTestFixture
 
   void setup() {
-    aggregateTestFixture = new AggregateTestFixture(CargoAggregate)
+    aggregateTestFixture = new AggregateTestFixture(BookingOfferAggregate)
   }
 
   void "should work when origin and destination locations are both container ports at sea"() {
     given:
     BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandValidRouteSpecification()
-    TestExecutor<CargoAggregate> cargoAggregateTestExecutor = aggregateTestFixture.givenNoPriorActivity()
+    TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     when:
-    ResultValidator<CargoAggregate> cargoAggregateResultValidator = cargoAggregateTestExecutor.when(bookCargoCommand)
+    ResultValidator<BookingOfferAggregate> resultValidator = testExecutor.when(bookCargoCommand)
 
     then:
-    cargoAggregateResultValidator
+    resultValidator
         .expectSuccessfulHandlerExecution()
         .expectEvents(CargoBookedEventFixtures.eventValidForCommand(bookCargoCommand))
   }
@@ -56,7 +56,7 @@ class CargoAggregateSpecification extends Specification {
   void "should work with acceptable commodity"() {
     given:
     BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandValidCommodityInfo()
-    TestExecutor<CargoAggregate> cargoAggregateTestExecutor = aggregateTestFixture.givenNoPriorActivity()
+    TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     Commodity expectedCommodity = new Commodity(
         containerType: ContainerType.TYPE_ISO_22G1,
@@ -75,12 +75,12 @@ class CargoAggregateSpecification extends Specification {
     )
 
     when:
-    ResultValidator<CargoAggregate> cargoAggregateResultValidator = cargoAggregateTestExecutor.when(bookCargoCommand)
+    ResultValidator<BookingOfferAggregate> resultValidator = testExecutor.when(bookCargoCommand)
 
     then:
-    cargoAggregateResultValidator.expectEvents(expectedCargoBookedEvent)
+    resultValidator.expectEvents(expectedCargoBookedEvent)
 
-    verifyAll(cargoAggregateResultValidator.state.get().wrappedAggregate.aggregateRoot as CargoAggregate, {
+    verifyAll(resultValidator.state.get().wrappedAggregate.aggregateRoot as BookingOfferAggregate, {
       cargoId == bookCargoCommand.cargoId
       routeSpecification == bookCargoCommand.routeSpecification
       bookingOfferCommodities.totalCommodityWeight == Quantities.getQuantity(10_000, Units.KILOGRAM)
@@ -93,16 +93,16 @@ class CargoAggregateSpecification extends Specification {
   void "should fail when commodity cannot be accepted"() {
     given:
     BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandInvalidCommodityInfo()
-    TestExecutor<CargoAggregate> cargoAggregateTestExecutor = aggregateTestFixture.givenNoPriorActivity()
+    TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     when:
-    ResultValidator<CargoAggregate> cargoAggregateResultValidator = cargoAggregateTestExecutor.when(bookCargoCommand)
+    ResultValidator<BookingOfferAggregate> resultValidator = testExecutor.when(bookCargoCommand)
 
     then:
-    cargoAggregateResultValidator
+    resultValidator
         .expectException(CommandException)
         .expectExceptionMessage("Bad Request")
 
-    (cargoAggregateResultValidator.actualException as CommandException).violationInfo.violationCode.codeKey == "cargoAggregate.bookingOfferCommodities.cannotAcceptCommodity"
+    (resultValidator.actualException as CommandException).violationInfo.violationCode.codeKey == "bookingOfferAggregate.bookingOfferCommodities.cannotAcceptCommodity"
   }
 }

@@ -27,9 +27,9 @@ import javax.measure.Quantity
 import javax.measure.quantity.Mass
 
 /**
- * Handles commodities at the {@link CargoAggregate} level.
+ * Handles commodities at the {@link BookingOfferAggregate} level.
  * <p/>
- * Encapsulates invariant checks and access to the internal {@link CommodityType} to {@link Commodity} map. Therefore, at the {@code CargoAggregate} level, we can have only a single
+ * Encapsulates invariant checks and access to the internal {@link CommodityType} to {@link Commodity} map. Therefore, at the {@code BookingOfferAggregate} level, we can have only a single
  * {@link Commodity} for each {@link CommodityType}.
  */
 @CompileStatic
@@ -53,7 +53,7 @@ class BookingOfferCommodities {
 
   // TODO dmurat: container count per booking policy
   /**
-   * Checks if we can accept the {@link Commodity} at the {@link CargoAggregate} level.
+   * Checks if we can accept the {@link Commodity} at the {@link BookingOfferAggregate} level.
    * <p/>
    * We should use this method from the aggregate's command handler to check if it is valid to add the {@code Commodity} instance to the aggregate state. Actual state change happens later in the
    * event sourcing handler. Note that we cannot make this check in the event sourcing handler because it must make changes unconditionally to support rehydration from past events.

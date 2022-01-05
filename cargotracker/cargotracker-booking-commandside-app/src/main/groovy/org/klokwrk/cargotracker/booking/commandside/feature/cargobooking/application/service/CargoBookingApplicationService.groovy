@@ -22,7 +22,7 @@ import org.axonframework.commandhandling.gateway.CommandGateway
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandPortIn
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
-import org.klokwrk.cargotracker.booking.domain.model.aggregate.CargoAggregate
+import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
@@ -51,8 +51,8 @@ class CargoBookingApplicationService implements BookCargoCommandPortIn {
     validationService.validate(bookCargoCommandOperationRequest.payload)
 
     BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandOperationRequest.payload)
-    CargoAggregate cargoAggregate = commandGatewayAdapter.sendAndWait(bookCargoCommand, bookCargoCommandOperationRequest.metaData)
+    BookingOfferAggregate bookingOfferAggregate = commandGatewayAdapter.sendAndWait(bookCargoCommand, bookCargoCommandOperationRequest.metaData)
 
-    return new OperationResponse(payload: cargoBookingFactoryService.createBookCargoCommandResponse(cargoAggregate))
+    return new OperationResponse(payload: cargoBookingFactoryService.createBookCargoCommandResponse(bookingOfferAggregate))
   }
 }

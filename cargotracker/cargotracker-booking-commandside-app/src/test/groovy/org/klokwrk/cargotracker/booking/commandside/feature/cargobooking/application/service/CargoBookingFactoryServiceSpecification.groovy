@@ -24,7 +24,7 @@ import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applica
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.RouteSpecificationData
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.LocationByUnLoCodeQueryPortOut
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferCommodities
-import org.klokwrk.cargotracker.booking.domain.model.aggregate.CargoAggregate
+import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
@@ -241,7 +241,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
         containerCount: 1
     ))
 
-    CargoAggregate cargoAggregate = new CargoAggregate(
+    BookingOfferAggregate bookingOfferAggregate = new BookingOfferAggregate(
         cargoId: CargoId.create(myCargoIdentifier),
         routeSpecification: new RouteSpecification(
             originLocation: myOriginLocation, destinationLocation: myDestinationLocation,
@@ -253,7 +253,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     )
 
     when:
-    BookCargoCommandResponse bookCargoCommandResponse = cargoBookingFactoryService.createBookCargoCommandResponse(cargoAggregate)
+    BookCargoCommandResponse bookCargoCommandResponse = cargoBookingFactoryService.createBookCargoCommandResponse(bookingOfferAggregate)
 
     then:
     verifyAll(bookCargoCommandResponse) {

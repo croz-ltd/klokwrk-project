@@ -53,7 +53,7 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply
 @MapConstructor(noArg = true)
 @Aggregate
 @CompileStatic
-class CargoAggregate {
+class BookingOfferAggregate {
   CargoId cargoId
   RouteSpecification routeSpecification
   BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
@@ -79,7 +79,7 @@ class CargoAggregate {
     // very similar policy we have in BookingOfferCommodities.canAcceptCommodity(). But there it is cumulative across thw whole BookingOffer.
     // will comment for now, and rely on cumulative policy only. Maybe introduce later
 //    if (commodityContainerCount > 5000) {
-//      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey("cargoAggregate.commodityContainerCountTooHigh"))
+//      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey("bookingOfferAggregate.commodityContainerCountTooHigh"))
 //    }
 
     Integer commodityMaxRecommendedWeightPerContainerValueInKilograms = commodityTotalWeightValueInKilograms
@@ -130,7 +130,7 @@ class CargoAggregate {
 
   @CommandHandler
   @CreationPolicy(AggregateCreationPolicy.ALWAYS)
-  CargoAggregate bookCargo(BookCargoCommand bookCargoCommand, MetaData metaData) {
+  BookingOfferAggregate createBookingOffer(BookCargoCommand bookCargoCommand, MetaData metaData) {
     Commodity commodity = calculateCommodity(bookCargoCommand.containerDimensionType, bookCargoCommand.commodityInfo)
 
     // Check for container count per commodity type.
@@ -138,7 +138,7 @@ class CargoAggregate {
     // We can have two different policies here. One for limiting container count per commodity type, and another one for limiting container count for booking.
     // In a simpler case, both policies can be the same. In that case with a single commodity type we can allocate complete booking capacity.
     if (!bookingOfferCommodities.canAcceptCommodity(commodity)) { // TODO dmurat: container count per booking policy
-      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey("cargoAggregate.bookingOfferCommodities.cannotAcceptCommodity"))
+      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey("bookingOfferAggregate.bookingOfferCommodities.cannotAcceptCommodity"))
     }
 
     // Note: cannot store here directly as state change should happen in event sourcing handler.

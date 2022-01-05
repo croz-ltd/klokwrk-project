@@ -21,7 +21,7 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.LocationByUnLoCodeQueryPortOut
-import org.klokwrk.cargotracker.booking.domain.model.aggregate.CargoAggregate
+import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
@@ -81,10 +81,10 @@ class CargoBookingFactoryService {
   }
 
   /**
-   * Creates {@link BookCargoCommandResponse} from supplied {@link CargoAggregate} instance.
+   * Creates {@link BookCargoCommandResponse} from supplied {@link org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate} instance.
    */
-  BookCargoCommandResponse createBookCargoCommandResponse(CargoAggregate cargoAggregate) {
-    requireMatch(cargoAggregate, notNullValue())
+  BookCargoCommandResponse createBookCargoCommandResponse(BookingOfferAggregate bookingOfferAggregate) {
+    requireMatch(bookingOfferAggregate, notNullValue())
 
     // NOTE: A direct synchronous returning of aggregate state, as is done here, is considered an anti-pattern and should be avoided in general. However, there are situations where it might be
     //       helpful, but please consider best-practice alternatives first, like using queryside or subscription queries.
@@ -102,20 +102,20 @@ class CargoBookingFactoryService {
     //
     //       If clients still decide to use direct responses from aggregate for gaining data, they should be aware of consequences and have a robust suite of regression tests in place.
 
-    Map<String, ?> originLocationMap = createMapFromLocation(cargoAggregate.routeSpecification.originLocation)
-    Map<String, ?> destinationLocationMap = createMapFromLocation(cargoAggregate.routeSpecification.destinationLocation)
+    Map<String, ?> originLocationMap = createMapFromLocation(bookingOfferAggregate.routeSpecification.originLocation)
+    Map<String, ?> destinationLocationMap = createMapFromLocation(bookingOfferAggregate.routeSpecification.destinationLocation)
 
     BookCargoCommandResponse bookCargoCommandResponse = new BookCargoCommandResponse(
-        cargoId: [identifier: cargoAggregate.cargoId.identifier],
+        cargoId: [identifier: bookingOfferAggregate.cargoId.identifier],
         routeSpecification: [
             originLocation: originLocationMap, destinationLocation: destinationLocationMap,
-            departureEarliestTime: cargoAggregate.routeSpecification.departureEarliestTime, departureLatestTime: cargoAggregate.routeSpecification.departureLatestTime,
-            arrivalLatestTime: cargoAggregate.routeSpecification.arrivalLatestTime
+            departureEarliestTime: bookingOfferAggregate.routeSpecification.departureEarliestTime, departureLatestTime: bookingOfferAggregate.routeSpecification.departureLatestTime,
+            arrivalLatestTime: bookingOfferAggregate.routeSpecification.arrivalLatestTime
         ],
         bookingOfferCommodities: [
-            commodityTypeToCommodityMap: cargoAggregate.bookingOfferCommodities.commodityTypeToCommodityMap,
-            totalCommodityWeight: cargoAggregate.bookingOfferCommodities.totalCommodityWeight,
-            totalContainerCount: cargoAggregate.bookingOfferCommodities.totalContainerCount
+            commodityTypeToCommodityMap: bookingOfferAggregate.bookingOfferCommodities.commodityTypeToCommodityMap,
+            totalCommodityWeight: bookingOfferAggregate.bookingOfferCommodities.totalCommodityWeight,
+            totalContainerCount: bookingOfferAggregate.bookingOfferCommodities.totalContainerCount
         ]
     )
 
