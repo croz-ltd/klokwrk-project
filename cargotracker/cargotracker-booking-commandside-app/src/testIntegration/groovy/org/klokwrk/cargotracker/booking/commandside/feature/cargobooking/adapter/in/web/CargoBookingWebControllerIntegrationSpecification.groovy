@@ -82,7 +82,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-booking/book-cargo")
+        post("/cargo-booking/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -110,7 +110,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     verifyAll(responseContentMap.payload as Map) {
       size() == 3
-      cargoId.identifier == myBookingOfferIdentifier
+      bookingOfferId.identifier == myBookingOfferIdentifier
       routeSpecification
       bookingOfferCommodities
     }
@@ -230,7 +230,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-booking/book-cargo")
+        post("/cargo-booking/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -306,7 +306,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-booking/book-cargo")
+        post("/cargo-booking/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -370,7 +370,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-booking/book-cargo")
+        post("/cargo-booking/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -434,7 +434,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-booking/book-cargo")
+        post("/cargo-booking/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -468,11 +468,11 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
   void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguageParam]"() {
     given:
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: null, routeSpecification: null])
+    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: null, routeSpecification: null])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        put("/cargo-booking/book-cargo")
+        put("/cargo-booking/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)

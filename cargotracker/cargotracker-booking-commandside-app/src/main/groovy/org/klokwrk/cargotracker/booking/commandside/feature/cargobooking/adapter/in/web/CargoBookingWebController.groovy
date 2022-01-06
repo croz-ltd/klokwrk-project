@@ -38,7 +38,7 @@ class CargoBookingWebController {
     this.createBookingOfferCommandPortIn = createBookingOfferCommandPortIn
   }
 
-  @PostMapping("/book-cargo")
+  @PostMapping("/create-booking-offer")
   OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommand(
       @RequestBody CreateBookingOfferCommandWebRequest createBookingOfferCommandWebRequest, HttpServletRequest httpServletRequest)
   {
