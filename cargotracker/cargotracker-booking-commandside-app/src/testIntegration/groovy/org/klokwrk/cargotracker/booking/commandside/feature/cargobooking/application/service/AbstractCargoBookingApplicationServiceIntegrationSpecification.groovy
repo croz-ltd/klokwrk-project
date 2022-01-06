@@ -25,7 +25,7 @@ import org.axonframework.commandhandling.CommandBus
 import org.axonframework.common.Registration
 import org.axonframework.messaging.InterceptorChain
 import org.axonframework.messaging.unitofwork.UnitOfWork
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandPortIn
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandPortIn
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CommodityInfoData
@@ -52,7 +52,7 @@ import java.time.Instant
 
 abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
   @Autowired
-  BookCargoCommandPortIn bookCargoCommandPortIn
+  CreateBookingOfferCommandPortIn createBookingOfferCommandPortIn
 
   @Autowired
   CommandBus commandBus
@@ -92,7 +92,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
 
     when:
     OperationResponse<BookCargoCommandResponse> bookCargoCommandOperationResponse =
-        bookCargoCommandPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoCommandRequest, metaData: requestMetadataMap))
+        createBookingOfferCommandPortIn.createBookingOfferCommand(new OperationRequest<>(payload: bookCargoCommandRequest, metaData: requestMetadataMap))
 
     BookCargoCommandResponse bookCargoCommandResponsePayload = bookCargoCommandOperationResponse.payload
     Map bookCargoCommandResponseMetadata = bookCargoCommandOperationResponse.metaData
@@ -154,7 +154,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
 
     when:
     OperationResponse<BookCargoCommandResponse> bookCargoCommandOperationResponse =
-        bookCargoCommandPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoCommandRequest, metaData: requestMetadataMap))
+        createBookingOfferCommandPortIn.createBookingOfferCommand(new OperationRequest<>(payload: bookCargoCommandRequest, metaData: requestMetadataMap))
 
     BookCargoCommandResponse bookCargoCommandResponsePayload = bookCargoCommandOperationResponse.payload
     Map bookCargoCommandResponseMetadata = bookCargoCommandOperationResponse.metaData
@@ -210,7 +210,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
-    bookCargoCommandPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoCommandRequest, metaData: requestMetadataMap))
+    createBookingOfferCommandPortIn.createBookingOfferCommand(new OperationRequest<>(payload: bookCargoCommandRequest, metaData: requestMetadataMap))
 
     then:
     thrown(RemoteHandlerException)

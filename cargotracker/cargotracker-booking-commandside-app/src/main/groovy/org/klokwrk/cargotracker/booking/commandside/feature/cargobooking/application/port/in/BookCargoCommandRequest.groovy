@@ -34,7 +34,7 @@ import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
 /**
- * Request DTO parameter for {@code bookCargoCommand} operation from {@link BookCargoCommandPortIn} inbound port interface.
+ * Request DTO parameter for {@code createBookingOfferCommand} operation from {@link CreateBookingOfferCommandPortIn} inbound port interface.
  * <p/>
  * References:
  * <ul>

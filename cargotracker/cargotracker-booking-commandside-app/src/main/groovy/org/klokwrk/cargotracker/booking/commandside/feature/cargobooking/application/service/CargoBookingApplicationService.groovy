@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applic
 
 import groovy.transform.CompileStatic
 import org.axonframework.commandhandling.gateway.CommandGateway
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandPortIn
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandPortIn
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
@@ -34,7 +34,7 @@ import static org.hamcrest.Matchers.notNullValue
 
 @Service
 @CompileStatic
-class CargoBookingApplicationService implements BookCargoCommandPortIn {
+class CargoBookingApplicationService implements CreateBookingOfferCommandPortIn {
   private final CargoBookingFactoryService cargoBookingFactoryService
   private final CommandGatewayAdapter commandGatewayAdapter
   private final ValidationService validationService
@@ -46,7 +46,7 @@ class CargoBookingApplicationService implements BookCargoCommandPortIn {
   }
 
   @Override
-  OperationResponse<BookCargoCommandResponse> bookCargoCommand(OperationRequest<BookCargoCommandRequest> bookCargoCommandOperationRequest) {
+  OperationResponse<BookCargoCommandResponse> createBookingOfferCommand(OperationRequest<BookCargoCommandRequest> bookCargoCommandOperationRequest) {
     requireMatch(bookCargoCommandOperationRequest, notNullValue())
     validationService.validate(bookCargoCommandOperationRequest.payload)
 
