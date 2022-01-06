@@ -22,7 +22,7 @@ import org.axonframework.test.aggregate.ResultValidator
 import org.axonframework.test.aggregate.TestExecutor
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.BookCargoCommandFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.CargoBookedEventFixtures
-import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
+import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
@@ -41,48 +41,48 @@ class BookingOfferAggregateSpecification extends Specification {
 
   void "should work when origin and destination locations are both container ports at sea"() {
     given:
-    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandValidRouteSpecification()
+    CreateBookingOfferCommand createBookingOfferCommand = BookCargoCommandFixtures.commandValidRouteSpecification()
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     when:
-    ResultValidator<BookingOfferAggregate> resultValidator = testExecutor.when(bookCargoCommand)
+    ResultValidator<BookingOfferAggregate> resultValidator = testExecutor.when(createBookingOfferCommand)
 
     then:
     resultValidator
         .expectSuccessfulHandlerExecution()
-        .expectEvents(CargoBookedEventFixtures.eventValidForCommand(bookCargoCommand))
+        .expectEvents(CargoBookedEventFixtures.eventValidForCommand(createBookingOfferCommand))
   }
 
   void "should work with acceptable commodity"() {
     given:
-    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandValidCommodityInfo()
+    CreateBookingOfferCommand createBookingOfferCommand = BookCargoCommandFixtures.commandValidCommodityInfo()
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     Commodity expectedCommodity = new Commodity(
         containerType: ContainerType.TYPE_ISO_22G1,
-        commodityInfo: bookCargoCommand.commodityInfo,
+        commodityInfo: createBookingOfferCommand.commodityInfo,
         maxAllowedWeightPerContainer: Quantities.getQuantity(23_750, Units.KILOGRAM),
         maxRecommendedWeightPerContainer: Quantities.getQuantity(10_000, Units.KILOGRAM),
         containerCount: 1
     )
 
     BookingOfferCreatedEvent expectedBookingOfferCreatedEvent = new BookingOfferCreatedEvent(
-        bookingOfferId: bookCargoCommand.cargoId,
-        routeSpecification: bookCargoCommand.routeSpecification,
+        bookingOfferId: createBookingOfferCommand.bookingOfferId,
+        routeSpecification: createBookingOfferCommand.routeSpecification,
         commodity: expectedCommodity,
         bookingTotalCommodityWeight: Quantities.getQuantity(10_000, Units.KILOGRAM),
         bookingTotalContainerCount: 1
     )
 
     when:
-    ResultValidator<BookingOfferAggregate> resultValidator = testExecutor.when(bookCargoCommand)
+    ResultValidator<BookingOfferAggregate> resultValidator = testExecutor.when(createBookingOfferCommand)
 
     then:
     resultValidator.expectEvents(expectedBookingOfferCreatedEvent)
 
     verifyAll(resultValidator.state.get().wrappedAggregate.aggregateRoot as BookingOfferAggregate, {
-      bookingOfferId == bookCargoCommand.cargoId
-      routeSpecification == bookCargoCommand.routeSpecification
+      bookingOfferId == createBookingOfferCommand.bookingOfferId
+      routeSpecification == createBookingOfferCommand.routeSpecification
       bookingOfferCommodities.totalCommodityWeight == Quantities.getQuantity(10_000, Units.KILOGRAM)
       bookingOfferCommodities.totalContainerCount == 1
       bookingOfferCommodities.commodityTypeToCommodityMap.size() == 1
@@ -92,11 +92,11 @@ class BookingOfferAggregateSpecification extends Specification {
 
   void "should fail when commodity cannot be accepted"() {
     given:
-    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandInvalidCommodityInfo()
+    CreateBookingOfferCommand createBookingOfferCommand = BookCargoCommandFixtures.commandInvalidCommodityInfo()
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     when:
-    ResultValidator<BookingOfferAggregate> resultValidator = testExecutor.when(bookCargoCommand)
+    ResultValidator<BookingOfferAggregate> resultValidator = testExecutor.when(createBookingOfferCommand)
 
     then:
     resultValidator

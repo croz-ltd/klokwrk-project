@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
+import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
@@ -36,8 +36,8 @@ class CargoBookedEventFixtures {
    * Creates valid event where origin and destination locations form supported route.
    */
   static BookingOfferCreatedEvent eventValidRouteSpecification(String cargoIdentifier = UUID.randomUUID()) {
-    BookCargoCommand bookCargoCommand = BookCargoCommandFixtures.commandValidRouteSpecification(cargoIdentifier)
-    BookingOfferCreatedEvent bookingOfferCreatedEvent = eventValidForCommand(bookCargoCommand)
+    CreateBookingOfferCommand createBookingOfferCommand = BookCargoCommandFixtures.commandValidRouteSpecification(cargoIdentifier)
+    BookingOfferCreatedEvent bookingOfferCreatedEvent = eventValidForCommand(createBookingOfferCommand)
     return bookingOfferCreatedEvent
   }
 
@@ -46,7 +46,7 @@ class CargoBookedEventFixtures {
    * <p/>
    * Used implementation is the same as when aggregate creates event from command.
    */
-  static BookingOfferCreatedEvent eventValidForCommand(BookCargoCommand bookCargoCommand) {
+  static BookingOfferCreatedEvent eventValidForCommand(CreateBookingOfferCommand createBookingOfferCommand) {
     CommodityInfo commodityInfo = CommodityInfo.create(CommodityType.DRY, 1_000)
     Commodity commodity = new Commodity(
         containerType: ContainerType.TYPE_ISO_22G1,
@@ -57,8 +57,8 @@ class CargoBookedEventFixtures {
     )
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
-        bookingOfferId: bookCargoCommand.cargoId,
-        routeSpecification: bookCargoCommand.routeSpecification,
+        bookingOfferId: createBookingOfferCommand.bookingOfferId,
+        routeSpecification: createBookingOfferCommand.routeSpecification,
         commodity: commodity,
         bookingTotalCommodityWeight: Quantities.getQuantity(1_000, Units.KILOGRAM),
         bookingTotalContainerCount: 1

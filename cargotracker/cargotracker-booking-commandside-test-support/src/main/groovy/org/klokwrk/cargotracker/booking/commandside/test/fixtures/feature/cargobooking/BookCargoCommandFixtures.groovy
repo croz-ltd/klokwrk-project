@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
+import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
@@ -32,7 +32,7 @@ import java.time.Duration
 import java.time.Instant
 
 /**
- * Contains test data fixtures for {@link BookCargoCommand}.
+ * Contains test data fixtures for {@link CreateBookingOfferCommand}.
  */
 @CompileStatic
 class BookCargoCommandFixtures {
@@ -47,51 +47,51 @@ class BookCargoCommandFixtures {
   /**
    * Creates valid command where origin and destination locations form supported route.
    */
-  static BookCargoCommand commandValidRouteSpecification(String cargoIdentifier = UUID.randomUUID(), Clock clock = Clock.systemUTC()) {
+  static CreateBookingOfferCommand commandValidRouteSpecification(String bookingOfferIdentifier = UUID.randomUUID(), Clock clock = Clock.systemUTC()) {
     Instant currentTime = Instant.now(clock)
     Instant currentTimeAndOneHour = currentTime + Duration.ofHours(1)
     Instant currentTimeAndTwoHours = currentTime + Duration.ofHours(2)
     Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
-    BookCargoCommand bookCargoCommand = new BookCargoCommand(
-        cargoId: BookingOfferId.create(cargoIdentifier),
+    CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
+        bookingOfferId: BookingOfferId.create(bookingOfferIdentifier),
         routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
         commodityInfo: CommodityInfo.create(CommodityType.DRY, 1000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
     )
 
-    return bookCargoCommand
+    return createBookingOfferCommand
   }
 
-  static BookCargoCommand commandValidCommodityInfo(String cargoIdentifier = UUID.randomUUID(), Clock clock = Clock.systemUTC()) {
+  static CreateBookingOfferCommand commandValidCommodityInfo(String bookingOfferIdentifier = UUID.randomUUID(), Clock clock = Clock.systemUTC()) {
     Instant currentTime = Instant.now(clock)
     Instant currentTimeAndOneHour = currentTime + Duration.ofHours(1)
     Instant currentTimeAndTwoHours = currentTime + Duration.ofHours(2)
     Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
-    BookCargoCommand bookCargoCommand = new BookCargoCommand(
-        cargoId: BookingOfferId.create(cargoIdentifier),
+    CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
+        bookingOfferId: BookingOfferId.create(bookingOfferIdentifier),
         routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
         commodityInfo: CommodityInfo.create(CommodityType.DRY, 10_000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
     )
 
-    return bookCargoCommand
+    return createBookingOfferCommand
   }
 
-  static BookCargoCommand commandInvalidCommodityInfo(String cargoIdentifier = UUID.randomUUID(), Clock clock = Clock.systemUTC()) {
+  static CreateBookingOfferCommand commandInvalidCommodityInfo(String cargoIdentifier = UUID.randomUUID(), Clock clock = Clock.systemUTC()) {
     Instant currentTime = Instant.now(clock)
     Instant currentTimeAndOneHour = currentTime + Duration.ofHours(1)
     Instant currentTimeAndTwoHours = currentTime + Duration.ofHours(2)
     Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
-    BookCargoCommand bookCargoCommand = new BookCargoCommand(
-        cargoId: BookingOfferId.create(cargoIdentifier),
+    CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
+        bookingOfferId: BookingOfferId.create(cargoIdentifier),
         routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
         commodityInfo: CommodityInfo.create(CommodityType.DRY, 5001 * 25_000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
     )
 
-    return bookCargoCommand
+    return createBookingOfferCommand
   }
 }

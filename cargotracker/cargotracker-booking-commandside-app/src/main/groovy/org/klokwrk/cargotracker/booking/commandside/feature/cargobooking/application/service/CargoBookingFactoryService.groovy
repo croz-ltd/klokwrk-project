@@ -22,7 +22,7 @@ import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applica
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.LocationByUnLoCodeQueryPortOut
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
-import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
+import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
@@ -51,9 +51,9 @@ class CargoBookingFactoryService {
   }
 
   /**
-   * Creates {@link BookCargoCommand} from supplied {@link BookCargoCommandRequest} instance.
+   * Creates {@link CreateBookingOfferCommand} from supplied {@link BookCargoCommandRequest} instance.
    */
-  BookCargoCommand createBookCargoCommand(BookCargoCommandRequest bookCargoCommandRequest) {
+  CreateBookingOfferCommand makeCreateBookingOfferCommand(BookCargoCommandRequest bookCargoCommandRequest) {
     requireMatch(bookCargoCommandRequest, notNullValue())
 
     // NOTE: Since commands are immutable objects, the command's data and objects should be in their fully valid state after the command is constructed.
@@ -63,8 +63,8 @@ class CargoBookingFactoryService {
     Location resolvedOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.routeSpecification.originLocation)
     Location resolvedDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.routeSpecification.destinationLocation)
 
-    BookCargoCommand bookCargoCommand = new BookCargoCommand(
-        cargoId: BookingOfferId.createWithGeneratedIdentifierIfNeeded(bookCargoCommandRequest.cargoIdentifier),
+    CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
+        bookingOfferId: BookingOfferId.createWithGeneratedIdentifierIfNeeded(bookCargoCommandRequest.cargoIdentifier),
         routeSpecification: RouteSpecification.create(
             resolvedOriginLocation, resolvedDestinationLocation,
             bookCargoCommandRequest.routeSpecification.departureEarliestTime, bookCargoCommandRequest.routeSpecification.departureLatestTime,
@@ -77,7 +77,7 @@ class CargoBookingFactoryService {
         containerDimensionType: bookCargoCommandRequest.containerDimensionType
     )
 
-    return bookCargoCommand
+    return createBookingOfferCommand
   }
 
   /**

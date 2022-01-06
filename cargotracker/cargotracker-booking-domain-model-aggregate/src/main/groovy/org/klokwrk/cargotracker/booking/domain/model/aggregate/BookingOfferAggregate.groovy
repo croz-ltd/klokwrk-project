@@ -27,7 +27,7 @@ import org.axonframework.modelling.command.AggregateCreationPolicy
 import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
-import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
+import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
@@ -130,8 +130,8 @@ class BookingOfferAggregate {
 
   @CommandHandler
   @CreationPolicy(AggregateCreationPolicy.ALWAYS)
-  BookingOfferAggregate createBookingOffer(BookCargoCommand bookCargoCommand, MetaData metaData) {
-    Commodity commodity = calculateCommodity(bookCargoCommand.containerDimensionType, bookCargoCommand.commodityInfo)
+  BookingOfferAggregate createBookingOffer(CreateBookingOfferCommand createBookingOfferCommand, MetaData metaData) {
+    Commodity commodity = calculateCommodity(createBookingOfferCommand.containerDimensionType, createBookingOfferCommand.commodityInfo)
 
     // Check for container count per commodity type.
     // The largest ship in the world can carry 24000 containers. We should limit container count to the max of 5000 per a single booking, for example.
@@ -148,8 +148,8 @@ class BookingOfferAggregate {
     Integer bookingTotalContainerCount = preCalculatedTotals.v2
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
-        bookingOfferId: bookCargoCommand.cargoId,
-        routeSpecification: bookCargoCommand.routeSpecification,
+        bookingOfferId: createBookingOfferCommand.bookingOfferId,
+        routeSpecification: createBookingOfferCommand.routeSpecification,
         commodity: commodity,
         bookingTotalCommodityWeight: bookingTotalCommodityWeight,
         bookingTotalContainerCount: bookingTotalContainerCount
