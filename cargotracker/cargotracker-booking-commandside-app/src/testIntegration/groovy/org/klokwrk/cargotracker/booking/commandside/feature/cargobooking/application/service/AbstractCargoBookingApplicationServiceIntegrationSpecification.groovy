@@ -26,7 +26,7 @@ import org.axonframework.common.Registration
 import org.axonframework.messaging.InterceptorChain
 import org.axonframework.messaging.unitofwork.UnitOfWork
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandPortIn
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CommodityInfoData
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.RouteSpecificationData
@@ -91,16 +91,16 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     ))
 
     when:
-    OperationResponse<BookCargoCommandResponse> bookCargoCommandOperationResponse =
+    OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommandOperationResponse =
         createBookingOfferCommandPortIn.createBookingOfferCommand(new OperationRequest<>(payload: createBookingOfferCommandRequest, metaData: requestMetadataMap))
 
-    BookCargoCommandResponse bookCargoCommandResponsePayload = bookCargoCommandOperationResponse.payload
-    Map bookCargoCommandResponseMetadata = bookCargoCommandOperationResponse.metaData
+    CreateBookingOfferCommandResponse createBookingOfferCommandResponsePayload = createBookingOfferCommandOperationResponse.payload
+    Map createBookingOfferCommandResponseMetadata = createBookingOfferCommandOperationResponse.metaData
 
     then:
-    bookCargoCommandResponseMetadata.isEmpty()
-    verifyAll(bookCargoCommandResponsePayload) {
-      cargoId.identifier == myBookingOfferIdentifier
+    createBookingOfferCommandResponseMetadata.isEmpty()
+    verifyAll(createBookingOfferCommandResponsePayload) {
+      bookingOfferId.identifier == myBookingOfferIdentifier
 
       routeSpecification.with {
         originLocation.name == "Rotterdam"
@@ -153,16 +153,16 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
-    OperationResponse<BookCargoCommandResponse> bookCargoCommandOperationResponse =
+    OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommandOperationResponse =
         createBookingOfferCommandPortIn.createBookingOfferCommand(new OperationRequest<>(payload: createBookingOfferCommandRequest, metaData: requestMetadataMap))
 
-    BookCargoCommandResponse bookCargoCommandResponsePayload = bookCargoCommandOperationResponse.payload
-    Map bookCargoCommandResponseMetadata = bookCargoCommandOperationResponse.metaData
+    CreateBookingOfferCommandResponse createBookingOfferCommandResponsePayload = createBookingOfferCommandOperationResponse.payload
+    Map createBookingOfferCommandResponseMetadata = createBookingOfferCommandOperationResponse.metaData
     List<ILoggingEvent> loggingEventList = listAppender.list
 
     then:
-    bookCargoCommandResponseMetadata.isEmpty()
-    bookCargoCommandResponsePayload.cargoId.identifier == myBookingOfferIdentifier
+    createBookingOfferCommandResponseMetadata.isEmpty()
+    createBookingOfferCommandResponsePayload.bookingOfferId.identifier == myBookingOfferIdentifier
 
     loggingEventList.size() == 1
     loggingEventList[0].level == Level.INFO

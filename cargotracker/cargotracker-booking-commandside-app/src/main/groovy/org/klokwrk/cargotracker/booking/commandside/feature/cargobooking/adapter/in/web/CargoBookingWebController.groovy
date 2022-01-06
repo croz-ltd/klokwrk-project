@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapte
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandPortIn
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandResponse
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -39,10 +39,12 @@ class CargoBookingWebController {
   }
 
   @PostMapping("/book-cargo")
-  OperationResponse<BookCargoCommandResponse> createBookingOfferCommand(@RequestBody CreateBookingOfferCommandWebRequest createBookingOfferCommandWebRequest, HttpServletRequest httpServletRequest) {
-    OperationResponse<BookCargoCommandResponse> bookCargoCommandResponse =
+  OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommand(
+      @RequestBody CreateBookingOfferCommandWebRequest createBookingOfferCommandWebRequest, HttpServletRequest httpServletRequest)
+  {
+    OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommandResponse =
         createBookingOfferCommandPortIn.createBookingOfferCommand(CargoBookingWebAssembler.toCreateBookingOfferCommandOperationRequest(createBookingOfferCommandWebRequest, httpServletRequest))
 
-    return bookCargoCommandResponse
+    return createBookingOfferCommandResponse
   }
 }

@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applic
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandRequest
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.LocationByUnLoCodeQueryPortOut
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
@@ -81,9 +81,9 @@ class CargoBookingFactoryService {
   }
 
   /**
-   * Creates {@link BookCargoCommandResponse} from supplied {@link org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate} instance.
+   * Creates {@link CreateBookingOfferCommandResponse} from supplied {@link BookingOfferAggregate} instance.
    */
-  BookCargoCommandResponse createBookCargoCommandResponse(BookingOfferAggregate bookingOfferAggregate) {
+  CreateBookingOfferCommandResponse makeCreateBookingOfferCommandResponse(BookingOfferAggregate bookingOfferAggregate) {
     requireMatch(bookingOfferAggregate, notNullValue())
 
     // NOTE: A direct synchronous returning of aggregate state, as is done here, is considered an anti-pattern and should be avoided in general. However, there are situations where it might be
@@ -105,8 +105,8 @@ class CargoBookingFactoryService {
     Map<String, ?> originLocationMap = createMapFromLocation(bookingOfferAggregate.routeSpecification.originLocation)
     Map<String, ?> destinationLocationMap = createMapFromLocation(bookingOfferAggregate.routeSpecification.destinationLocation)
 
-    BookCargoCommandResponse bookCargoCommandResponse = new BookCargoCommandResponse(
-        cargoId: [identifier: bookingOfferAggregate.bookingOfferId.identifier],
+    CreateBookingOfferCommandResponse createBookingOfferCommandResponse = new CreateBookingOfferCommandResponse(
+        bookingOfferId: [identifier: bookingOfferAggregate.bookingOfferId.identifier],
         routeSpecification: [
             originLocation: originLocationMap, destinationLocation: destinationLocationMap,
             departureEarliestTime: bookingOfferAggregate.routeSpecification.departureEarliestTime, departureLatestTime: bookingOfferAggregate.routeSpecification.departureLatestTime,
@@ -119,7 +119,7 @@ class CargoBookingFactoryService {
         ]
     )
 
-    return bookCargoCommandResponse
+    return createBookingOfferCommandResponse
   }
 
   /**

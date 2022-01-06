@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.service
 
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapter.out.remoting.InMemoryLocationRegistryService
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CommodityInfoData
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.RouteSpecificationData
@@ -228,7 +228,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
   @SuppressWarnings("CodeNarc.MethodSize")
   void "createBookCargoCommandResponse - should create expected response"() {
     given:
-    String myCargoIdentifier = UUID.randomUUID()
+    String myBookingOfferIdentifier = UUID.randomUUID()
     Location myOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRRJK")
     Location myDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("NLRTM")
 
@@ -242,7 +242,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     ))
 
     BookingOfferAggregate bookingOfferAggregate = new BookingOfferAggregate(
-        bookingOfferId: BookingOfferId.create(myCargoIdentifier),
+        bookingOfferId: BookingOfferId.create(myBookingOfferIdentifier),
         routeSpecification: new RouteSpecification(
             originLocation: myOriginLocation, destinationLocation: myDestinationLocation,
             creationTime: currentInstantRounded,
@@ -253,12 +253,12 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     )
 
     when:
-    BookCargoCommandResponse bookCargoCommandResponse = cargoBookingFactoryService.createBookCargoCommandResponse(bookingOfferAggregate)
+    CreateBookingOfferCommandResponse createBookingOfferCommandResponse = cargoBookingFactoryService.makeCreateBookingOfferCommandResponse(bookingOfferAggregate)
 
     then:
-    verifyAll(bookCargoCommandResponse) {
-      it.cargoId == [
-          identifier: myCargoIdentifier
+    verifyAll(createBookingOfferCommandResponse) {
+      it.bookingOfferId == [
+          identifier: myBookingOfferIdentifier
       ]
 
       it.routeSpecification == [
