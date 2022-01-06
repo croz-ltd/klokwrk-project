@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applic
 import groovy.transform.CompileStatic
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandPortIn
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
@@ -46,12 +46,12 @@ class CargoBookingApplicationService implements CreateBookingOfferCommandPortIn 
   }
 
   @Override
-  OperationResponse<BookCargoCommandResponse> createBookingOfferCommand(OperationRequest<BookCargoCommandRequest> bookCargoCommandOperationRequest) {
-    requireMatch(bookCargoCommandOperationRequest, notNullValue())
-    validationService.validate(bookCargoCommandOperationRequest.payload)
+  OperationResponse<BookCargoCommandResponse> createBookingOfferCommand(OperationRequest<CreateBookingOfferCommandRequest> createBookingOfferCommandOperationRequest) {
+    requireMatch(createBookingOfferCommandOperationRequest, notNullValue())
+    validationService.validate(createBookingOfferCommandOperationRequest.payload)
 
-    CreateBookingOfferCommand createBookingOfferCommand = cargoBookingFactoryService.makeCreateBookingOfferCommand(bookCargoCommandOperationRequest.payload)
-    BookingOfferAggregate bookingOfferAggregate = commandGatewayAdapter.sendAndWait(createBookingOfferCommand, bookCargoCommandOperationRequest.metaData)
+    CreateBookingOfferCommand createBookingOfferCommand = cargoBookingFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandOperationRequest.payload)
+    BookingOfferAggregate bookingOfferAggregate = commandGatewayAdapter.sendAndWait(createBookingOfferCommand, createBookingOfferCommandOperationRequest.metaData)
 
     return new OperationResponse(payload: cargoBookingFactoryService.createBookCargoCommandResponse(bookingOfferAggregate))
   }

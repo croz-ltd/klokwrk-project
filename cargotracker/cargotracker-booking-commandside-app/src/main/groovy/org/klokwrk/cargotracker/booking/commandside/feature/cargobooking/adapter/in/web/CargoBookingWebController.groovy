@@ -39,9 +39,9 @@ class CargoBookingWebController {
   }
 
   @PostMapping("/book-cargo")
-  OperationResponse<BookCargoCommandResponse> bookCargoCommand(@RequestBody BookCargoCommandWebRequest bookCargoCommandWebRequest, HttpServletRequest httpServletRequest) {
+  OperationResponse<BookCargoCommandResponse> createBookingOfferCommand(@RequestBody CreateBookingOfferCommandWebRequest createBookingOfferCommandWebRequest, HttpServletRequest httpServletRequest) {
     OperationResponse<BookCargoCommandResponse> bookCargoCommandResponse =
-        createBookingOfferCommandPortIn.createBookingOfferCommand(CargoBookingWebAssembler.toBookCargoCommandOperationRequest(bookCargoCommandWebRequest, httpServletRequest))
+        createBookingOfferCommandPortIn.createBookingOfferCommand(CargoBookingWebAssembler.toCreateBookingOfferCommandOperationRequest(createBookingOfferCommandWebRequest, httpServletRequest))
 
     return bookCargoCommandResponse
   }

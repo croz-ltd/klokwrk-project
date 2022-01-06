@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.service
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.LocationByUnLoCodeQueryPortOut
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
@@ -51,30 +51,30 @@ class CargoBookingFactoryService {
   }
 
   /**
-   * Creates {@link CreateBookingOfferCommand} from supplied {@link BookCargoCommandRequest} instance.
+   * Creates {@link CreateBookingOfferCommand} from supplied {@link CreateBookingOfferCommandRequest} instance.
    */
-  CreateBookingOfferCommand makeCreateBookingOfferCommand(BookCargoCommandRequest bookCargoCommandRequest) {
-    requireMatch(bookCargoCommandRequest, notNullValue())
+  CreateBookingOfferCommand makeCreateBookingOfferCommand(CreateBookingOfferCommandRequest createBookingOfferCommandRequest) {
+    requireMatch(createBookingOfferCommandRequest, notNullValue())
 
     // NOTE: Since commands are immutable objects, the command's data and objects should be in their fully valid state after the command is constructed.
     //       While creating a command, we sometimes have to resolve data from external services. The domain facade is an excellent choice for such activities. In this example, we resolve Location
     //       registry data (a.k.a. master data) from the outbound adapter.
 
-    Location resolvedOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.routeSpecification.originLocation)
-    Location resolvedDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(bookCargoCommandRequest.routeSpecification.destinationLocation)
+    Location resolvedOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(createBookingOfferCommandRequest.routeSpecification.originLocation)
+    Location resolvedDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(createBookingOfferCommandRequest.routeSpecification.destinationLocation)
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
-        bookingOfferId: BookingOfferId.createWithGeneratedIdentifierIfNeeded(bookCargoCommandRequest.cargoIdentifier),
+        bookingOfferId: BookingOfferId.createWithGeneratedIdentifierIfNeeded(createBookingOfferCommandRequest.bookingOfferIdentifier),
         routeSpecification: RouteSpecification.create(
             resolvedOriginLocation, resolvedDestinationLocation,
-            bookCargoCommandRequest.routeSpecification.departureEarliestTime, bookCargoCommandRequest.routeSpecification.departureLatestTime,
-            bookCargoCommandRequest.routeSpecification.arrivalLatestTime, clock
+            createBookingOfferCommandRequest.routeSpecification.departureEarliestTime, createBookingOfferCommandRequest.routeSpecification.departureLatestTime,
+            createBookingOfferCommandRequest.routeSpecification.arrivalLatestTime, clock
         ),
         commodityInfo: CommodityInfo.create(
-            bookCargoCommandRequest.commodityInfo.commodityType, bookCargoCommandRequest.commodityInfo.totalWeightInKilograms,
-            bookCargoCommandRequest.commodityInfo.requestedStorageTemperatureInCelsius
+            createBookingOfferCommandRequest.commodityInfo.commodityType, createBookingOfferCommandRequest.commodityInfo.totalWeightInKilograms,
+            createBookingOfferCommandRequest.commodityInfo.requestedStorageTemperatureInCelsius
         ),
-        containerDimensionType: bookCargoCommandRequest.containerDimensionType
+        containerDimensionType: createBookingOfferCommandRequest.containerDimensionType
     )
 
     return createBookingOfferCommand
