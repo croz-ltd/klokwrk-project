@@ -39,7 +39,7 @@ import javax.sql.DataSource
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbmsProjectionIntegrationSpecification {
+class BookingOfferSummaryProjectionServiceIntegrationSpecification extends AbstractRdbmsProjectionIntegrationSpecification {
 
   @TestConfiguration
   static class TestSpringBootConfiguration {
@@ -57,10 +57,10 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
 
   void "should work for event message with metadata"() {
     given:
-    Long startingCargoSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
+    Long startingBookingOfferSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = CargoBookedEventFixtures.eventValidRouteSpecification()
-    String cargoIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
+    String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage =
         GenericDomainEventMessageFactory.createEventMessage(bookingOfferCreatedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
@@ -69,11 +69,11 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
 
     expect:
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
-      CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql) == startingCargoSummaryRecordsCount + 1
-      verifyAll(CargoSummarySqlHelper.selectCargoSummaryRecord(groovySql, cargoIdentifier)) {
+      CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
+      verifyAll(CargoSummarySqlHelper.selectCargoSummaryRecord(groovySql, bookingOfferIdentifier)) {
         size() == 7
         id >= 0
-        booking_offer_identifier == cargoIdentifier
+        booking_offer_identifier == bookingOfferIdentifier
         origin_location == "HRRJK"
         destination_location == "NLRTM"
         aggregate_version == 0
@@ -85,21 +85,21 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
 
   void "should work for event message without metadata"() {
     given:
-    Long startingCargoSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
+    Long startingBookingOfferSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = CargoBookedEventFixtures.eventValidRouteSpecification()
-    String cargoIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
+    String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(bookingOfferCreatedEvent, [:])
     eventBus.publish(genericDomainEventMessage)
 
     expect:
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
-      CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql) == startingCargoSummaryRecordsCount + 1
-      verifyAll(CargoSummarySqlHelper.selectCargoSummaryRecord(groovySql, cargoIdentifier)) {
+      CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
+      verifyAll(CargoSummarySqlHelper.selectCargoSummaryRecord(groovySql, bookingOfferIdentifier)) {
         size() == 7
         id >= 0
-        booking_offer_identifier == cargoIdentifier
+        booking_offer_identifier == bookingOfferIdentifier
         origin_location == "HRRJK"
         destination_location == "NLRTM"
         aggregate_version == 0

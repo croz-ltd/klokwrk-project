@@ -28,15 +28,15 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 @CompileStatic
-class CargoSummaryProjectionService {
+class BookingOfferSummaryProjectionService {
   private final BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository
 
-  CargoSummaryProjectionService(BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository) {
+  BookingOfferSummaryProjectionService(BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository) {
     this.bookingOfferSummaryJpaRepository = bookingOfferSummaryJpaRepository
   }
 
   @EventHandler
-  void onCargoBookedEvent(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
+  void onBookingOfferCreatedEvent(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
     bookingOfferSummaryJpaRepository.save(BookingOfferSummaryJpaEntityFactory.createBookingOfferSummaryJpaEntity(bookingOfferCreatedEvent, domainEventMessage))
   }
 }
