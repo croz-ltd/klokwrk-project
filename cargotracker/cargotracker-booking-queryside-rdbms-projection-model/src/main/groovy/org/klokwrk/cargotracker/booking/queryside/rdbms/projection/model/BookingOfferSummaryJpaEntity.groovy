@@ -34,14 +34,14 @@ import javax.persistence.Table
 @MapConstructor(noArg = true)
 @Entity
 @CompileStatic
-@Table(name = "cargo_summary")
-class CargoSummaryJpaEntity {
+@Table(name = "booking_offer_summary")
+class BookingOfferSummaryJpaEntity {
   @Id
-  @GeneratedValue(generator = "cargoSummarySequenceGenerator", strategy = GenerationType.SEQUENCE)
-  @SequenceGenerator(name = "cargoSummarySequenceGenerator", sequenceName = "cargo_summary_sequence", initialValue = 1, allocationSize = 50)
+  @GeneratedValue(generator = "bookingOfferSummarySequenceGenerator", strategy = GenerationType.SEQUENCE)
+  @SequenceGenerator(name = "bookingOfferSummarySequenceGenerator", sequenceName = "booking_offer_summary_sequence", initialValue = 1, allocationSize = 50)
   Long id
 
-  @Column(nullable = false, columnDefinition="char(36)") String cargoIdentifier
+  @Column(nullable = false, columnDefinition="char(36)") String bookingOfferIdentifier
   @Column(nullable = false) String originLocation
   @Column(nullable = false) String destinationLocation
 

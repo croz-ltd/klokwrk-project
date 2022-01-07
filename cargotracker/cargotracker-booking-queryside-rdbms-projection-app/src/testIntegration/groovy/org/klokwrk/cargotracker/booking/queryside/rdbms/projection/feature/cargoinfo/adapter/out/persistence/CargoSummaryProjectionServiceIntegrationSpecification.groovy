@@ -73,7 +73,7 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
       verifyAll(CargoSummarySqlHelper.selectCargoSummaryRecord(groovySql, cargoIdentifier)) {
         size() == 7
         id >= 0
-        cargo_identifier == cargoIdentifier
+        booking_offer_identifier == cargoIdentifier
         origin_location == "HRRJK"
         destination_location == "NLRTM"
         aggregate_version == 0
@@ -99,7 +99,7 @@ class CargoSummaryProjectionServiceIntegrationSpecification extends AbstractRdbm
       verifyAll(CargoSummarySqlHelper.selectCargoSummaryRecord(groovySql, cargoIdentifier)) {
         size() == 7
         id >= 0
-        cargo_identifier == cargoIdentifier
+        booking_offer_identifier == cargoIdentifier
         origin_location == "HRRJK"
         destination_location == "NLRTM"
         aggregate_version == 0
