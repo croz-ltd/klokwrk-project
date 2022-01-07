@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.adapter.in.web
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryPortIn
+import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
@@ -33,15 +33,17 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/cargo-info")
 class CargoInfoWebController {
-  private final CargoSummaryQueryPortIn cargoSummaryQueryPortIn
+  private final BookingOfferSummaryQueryPortIn bookingOfferSummaryQueryPortIn
 
-  CargoInfoWebController(CargoSummaryQueryPortIn cargoSummaryQueryPortIn) {
-    this.cargoSummaryQueryPortIn = cargoSummaryQueryPortIn
+  CargoInfoWebController(BookingOfferSummaryQueryPortIn bookingOfferSummaryQueryPortIn) {
+    this.bookingOfferSummaryQueryPortIn = bookingOfferSummaryQueryPortIn
   }
 
   @PostMapping("/cargo-summary")
   OperationResponse<BookingOfferSummaryQueryResponse> cargoSummaryQuery(@RequestBody BookingOfferSummaryQueryWebRequest webRequest, Locale locale) {
-    OperationResponse<BookingOfferSummaryQueryResponse> bookingOfferSummary = cargoSummaryQueryPortIn.cargoSummaryQuery(createOperationRequest(webRequest, BookingOfferSummaryQueryRequest, locale))
+    OperationResponse<BookingOfferSummaryQueryResponse> bookingOfferSummary =
+        bookingOfferSummaryQueryPortIn.bookingOfferSummaryQuery(createOperationRequest(webRequest, BookingOfferSummaryQueryRequest, locale))
+
     return bookingOfferSummary
   }
 

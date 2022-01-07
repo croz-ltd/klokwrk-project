@@ -22,6 +22,6 @@ import org.klokwrk.cargotracker.lib.boundary.api.application.operation.Operation
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
 
 @CompileStatic
-interface CargoSummaryQueryPortIn {
-  OperationResponse<BookingOfferSummaryQueryResponse> cargoSummaryQuery(OperationRequest<BookingOfferSummaryQueryRequest> bookingOfferSummaryQueryOperationRequest)
+interface BookingOfferSummaryQueryPortIn {
+  OperationResponse<BookingOfferSummaryQueryResponse> bookingOfferSummaryQuery(OperationRequest<BookingOfferSummaryQueryRequest> bookingOfferSummaryQueryOperationRequest)
 }

@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application
 
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
-import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryPortIn
+import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.test.base.AbstractQuerySideIntegrationSpecification
@@ -55,7 +55,7 @@ class CargoInfoApplicationServiceIntegrationSpecification extends AbstractQueryS
   Sql groovySql
 
   @Autowired
-  CargoSummaryQueryPortIn cargoSummaryQueryPortIn
+  BookingOfferSummaryQueryPortIn bookingOfferSummaryQueryPortIn
 
   void "should work for correct request - [locale: #localeParam]"() {
     given:
@@ -68,7 +68,7 @@ class CargoInfoApplicationServiceIntegrationSpecification extends AbstractQueryS
     )
 
     when:
-    OperationResponse<BookingOfferSummaryQueryResponse> operationResponse = cargoSummaryQueryPortIn.cargoSummaryQuery(operationRequest)
+    OperationResponse<BookingOfferSummaryQueryResponse> operationResponse = bookingOfferSummaryQueryPortIn.bookingOfferSummaryQuery(operationRequest)
 
     then:
     verifyAll(operationResponse.payload) {
@@ -100,7 +100,7 @@ class CargoInfoApplicationServiceIntegrationSpecification extends AbstractQueryS
     )
 
     when:
-    cargoSummaryQueryPortIn.cargoSummaryQuery(operationRequest)
+    bookingOfferSummaryQueryPortIn.bookingOfferSummaryQuery(operationRequest)
 
     then:
     QueryException queryException = thrown()
