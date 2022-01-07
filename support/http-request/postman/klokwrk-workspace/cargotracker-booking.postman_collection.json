@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "60bca277-7d90-4b0c-8376-78b185d425ca",
+		"_postman_id": "890c494b-7391-42ac-9fa1-964ae51f449a",
 		"name": "cargotracker-booking",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -15,750 +15,755 @@
 							"name": "cargo-booking",
 							"item": [
 								{
-									"name": "book-cargo, success, hr",
-									"event": [
+									"name": "create-booking-offer",
+									"item": [
 										{
-											"listen": "prerequest",
-											"script": {
-												"exec": [
-													"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-													"pm.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible(pm.response, pm.collectionVariables);",
-													"postman.setNextRequest(null);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"disabledSystemHeaders": {}
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
-											},
-											{
-												"key": "Accept-Language",
-												"value": "hr",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
-											"options": {
-												"raw": {
-													"language": "json"
+											"name": "ok, hr",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
 												}
-											}
-										},
-										"url": {
-											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
 											],
-											"port": "{{port-commandside}}",
-											"path": [
-												"cargotracker-booking-commandside",
-												"cargo-booking",
-												"book-cargo"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "book-cargo, success, en",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"exec": [
-													"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-													"pm.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible(pm.response, pm.collectionVariables);",
-													"postman.setNextRequest(null);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"disabledSystemHeaders": {}
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {}
 											},
-											{
-												"key": "Accept-Language",
-												"value": "en",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
-											"options": {
-												"raw": {
-													"language": "json"
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "hr",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/create-booking-offer",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-commandside}}",
+													"path": [
+														"cargotracker-booking-commandside",
+														"cargo-booking",
+														"create-booking-offer"
+													]
 												}
-											}
-										},
-										"url": {
-											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"port": "{{port-commandside}}",
-											"path": [
-												"cargotracker-booking-commandside",
-												"cargo-booking",
-												"book-cargo"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "book-cargo, success, hr, dry",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"exec": [
-													"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-													"pm.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible(pm.response, pm.collectionVariables);",
-													"postman.setNextRequest(null);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"disabledSystemHeaders": {}
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
 											},
-											{
-												"key": "Accept-Language",
-												"value": "hr",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
-											"options": {
-												"raw": {
-													"language": "json"
+											"response": []
+										},
+										{
+											"name": "ok, en",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
 												}
-											}
-										},
-										"url": {
-											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
 											],
-											"port": "{{port-commandside}}",
-											"path": [
-												"cargotracker-booking-commandside",
-												"cargo-booking",
-												"book-cargo"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "book-cargo, success, hr, air_cooled",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"exec": [
-													"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-													"pm.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible(pm.response, pm.collectionVariables);",
-													"postman.setNextRequest(null);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"disabledSystemHeaders": {}
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {}
 											},
-											{
-												"key": "Accept-Language",
-												"value": "hr",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"air_cooled\",\n    \"totalWeightInKilograms\": 1500,\n    \"requestedStorageTemperatureInCelsius\": 10\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
-											"options": {
-												"raw": {
-													"language": "json"
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "en",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/create-booking-offer",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-commandside}}",
+													"path": [
+														"cargotracker-booking-commandside",
+														"cargo-booking",
+														"create-booking-offer"
+													]
 												}
-											}
-										},
-										"url": {
-											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"port": "{{port-commandside}}",
-											"path": [
-												"cargotracker-booking-commandside",
-												"cargo-booking",
-												"book-cargo"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "book-cargo, success, hr, chilled",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"exec": [
-													"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-													"pm.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible(pm.response, pm.collectionVariables);",
-													"postman.setNextRequest(null);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"disabledSystemHeaders": {}
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
 											},
-											{
-												"key": "Accept-Language",
-												"value": "hr",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"chilled\",\n    \"totalWeightInKilograms\": 1500,\n    \"requestedStorageTemperatureInCelsius\": 5\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
-											"options": {
-												"raw": {
-													"language": "json"
+											"response": []
+										},
+										{
+											"name": "ok, hr, dry",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
 												}
-											}
-										},
-										"url": {
-											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
 											],
-											"port": "{{port-commandside}}",
-											"path": [
-												"cargotracker-booking-commandside",
-												"cargo-booking",
-												"book-cargo"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "book-cargo, success, hr, frozen",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"exec": [
-													"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-													"pm.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible(pm.response, pm.collectionVariables);",
-													"postman.setNextRequest(null);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"disabledSystemHeaders": {}
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {}
 											},
-											{
-												"key": "Accept-Language",
-												"value": "hr",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"frozen\",\n    \"totalWeightInKilograms\": 10500,\n    \"requestedStorageTemperatureInCelsius\": -10\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"port": "{{port-commandside}}",
-											"path": [
-												"cargotracker-booking-commandside",
-												"cargo-booking",
-												"book-cargo"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "book-cargo, validation failure, top level, hr",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"postman.setNextRequest(null);"
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "hr",
+														"type": "text"
+													}
 												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"disabledSystemHeaders": {}
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/create-booking-offer",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-commandside}}",
+													"path": [
+														"cargotracker-booking-commandside",
+														"cargo-booking",
+														"create-booking-offer"
+													]
+												}
 											},
-											{
-												"key": "Accept-Language",
-												"value": "hr-HR",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": null,\n  \"commodityInfo\": null\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
+											"response": []
 										},
-										"url": {
-											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"port": "{{port-commandside}}",
-											"path": [
-												"cargotracker-booking-commandside",
-												"cargo-booking",
-												"book-cargo"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "book-cargo, validation failure, top level, en",
-									"event": [
 										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"postman.setNextRequest(null);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"disabledSystemHeaders": {}
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
+											"name": "ok, hr, air_cooled",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {}
 											},
-											{
-												"key": "Accept-Language",
-												"value": "en",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": null,\n  \"commodityInfo\": null\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"port": "{{port-commandside}}",
-											"path": [
-												"cargotracker-booking-commandside",
-												"cargo-booking",
-												"book-cargo"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "book-cargo, validation failure, nested level, hr",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"postman.setNextRequest(null);"
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "hr",
+														"type": "text"
+													}
 												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"disabledSystemHeaders": {}
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"air_cooled\",\n    \"totalWeightInKilograms\": 1500,\n    \"requestedStorageTemperatureInCelsius\": 10\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/create-booking-offer",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-commandside}}",
+													"path": [
+														"cargotracker-booking-commandside",
+														"cargo-booking",
+														"create-booking-offer"
+													]
+												}
 											},
-											{
-												"key": "Accept-Language",
-												"value": "hr-HR",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": null,\n    \"destinationLocation\": null\n  },\n  \"commodityInfo\": null\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
+											"response": []
 										},
-										"url": {
-											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"port": "{{port-commandside}}",
-											"path": [
-												"cargotracker-booking-commandside",
-												"cargo-booking",
-												"book-cargo"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "book-cargo, validation failure, nested level, en",
-									"event": [
 										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"postman.setNextRequest(null);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"disabledSystemHeaders": {}
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
+											"name": "ok, hr, chilled",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {}
 											},
-											{
-												"key": "Accept-Language",
-												"value": "en",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": null,\n    \"destinationLocation\": null\n  },\n  \"commodityInfo\": null\n}",
-											"options": {
-												"raw": {
-													"language": "json"
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "hr",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"chilled\",\n    \"totalWeightInKilograms\": 1500,\n    \"requestedStorageTemperatureInCelsius\": 5\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/create-booking-offer",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-commandside}}",
+													"path": [
+														"cargotracker-booking-commandside",
+														"cargo-booking",
+														"create-booking-offer"
+													]
 												}
-											}
-										},
-										"url": {
-											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"port": "{{port-commandside}}",
-											"path": [
-												"cargotracker-booking-commandside",
-												"cargo-booking",
-												"book-cargo"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "book-cargo, domain failure, hr",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"exec": [
-													"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-													"postman.setNextRequest(null);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"disabledSystemHeaders": {}
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
 											},
-											{
-												"key": "Accept-Language",
-												"value": "hr",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
-											"options": {
-												"raw": {
-													"language": "json"
+											"response": []
+										},
+										{
+											"name": "ok, hr, frozen",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
 												}
-											}
-										},
-										"url": {
-											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
 											],
-											"port": "{{port-commandside}}",
-											"path": [
-												"cargotracker-booking-commandside",
-												"cargo-booking",
-												"book-cargo"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "book-cargo, domain failure, en",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"exec": [
-													"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-													"postman.setNextRequest(null);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"disabledSystemHeaders": {}
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {}
 											},
-											{
-												"key": "Accept-Language",
-												"value": "en",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
-											"options": {
-												"raw": {
-													"language": "json"
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "hr",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"frozen\",\n    \"totalWeightInKilograms\": 10500,\n    \"requestedStorageTemperatureInCelsius\": -10\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/create-booking-offer",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-commandside}}",
+													"path": [
+														"cargotracker-booking-commandside",
+														"cargo-booking",
+														"create-booking-offer"
+													]
 												}
-											}
+											},
+											"response": []
 										},
-										"url": {
-											"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
+										{
+											"name": "nok, validation root, hr",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
+												}
 											],
-											"port": "{{port-commandside}}",
-											"path": [
-												"cargotracker-booking-commandside",
-												"cargo-booking",
-												"book-cargo"
-											]
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "hr-HR",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"routeSpecification\": null,\n  \"commodityInfo\": null\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/create-booking-offer",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-commandside}}",
+													"path": [
+														"cargotracker-booking-commandside",
+														"cargo-booking",
+														"create-booking-offer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "nok, validation root, en",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "en",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"routeSpecification\": null,\n  \"commodityInfo\": null\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/create-booking-offer",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-commandside}}",
+													"path": [
+														"cargotracker-booking-commandside",
+														"cargo-booking",
+														"create-booking-offer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "nok, validation nested, hr",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "hr-HR",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": null,\n    \"destinationLocation\": null\n  },\n  \"commodityInfo\": null\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/create-booking-offer",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-commandside}}",
+													"path": [
+														"cargotracker-booking-commandside",
+														"cargo-booking",
+														"create-booking-offer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "nok, validation nested, en",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "en",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": null,\n    \"destinationLocation\": null\n  },\n  \"commodityInfo\": null\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/create-booking-offer",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-commandside}}",
+													"path": [
+														"cargotracker-booking-commandside",
+														"cargo-booking",
+														"create-booking-offer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "nok, domain, hr",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "hr",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/create-booking-offer",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-commandside}}",
+													"path": [
+														"cargotracker-booking-commandside",
+														"cargo-booking",
+														"create-booking-offer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "nok, domain, en",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "en",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"commodityInfo\": {\n    \"commodityType\": \"dry\",\n    \"totalWeightInKilograms\": 50500\n  },\n  \"containerDimensionType\": \"DIMENSION_ISO_22\"\n}\n",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/create-booking-offer",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-commandside}}",
+													"path": [
+														"cargotracker-booking-commandside",
+														"cargo-booking",
+														"create-booking-offer"
+													]
+												}
+											},
+											"response": []
 										}
-									},
-									"response": []
+									]
 								}
 							]
 						}
@@ -771,318 +776,323 @@
 							"name": "cargo-info",
 							"item": [
 								{
-									"name": "cargo-summary, success, hr",
-									"event": [
+									"name": "booking-offer-summary",
+									"item": [
 										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"postman.setNextRequest(null);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
-											},
-											{
-												"key": "Accept-Language",
-												"value": "hr",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"cargoIdentifier\": \"{{execution_receivedCargoIdentifier}}\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
+											"name": "ok, hr",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
 												}
-											}
-										},
-										"url": {
-											"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/cargo-summary",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
 											],
-											"port": "{{port-queryside}}",
-											"path": [
-												"cargotracker-booking-queryside",
-												"cargo-info",
-												"cargo-summary"
-											]
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "hr",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/booking-offer-summary",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-queryside}}",
+													"path": [
+														"cargotracker-booking-queryside",
+														"cargo-info",
+														"booking-offer-summary"
+													]
+												},
+												"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
+											},
+											"response": []
 										},
-										"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
-									},
-									"response": []
-								},
-								{
-									"name": "cargo-summary, success, en",
-									"event": [
 										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"postman.setNextRequest(null);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
-											},
-											{
-												"key": "Accept-Language",
-												"value": "en",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"cargoIdentifier\": \"{{execution_receivedCargoIdentifier}}\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
+											"name": "ok, en",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
 												}
-											}
-										},
-										"url": {
-											"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/cargo-summary",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
 											],
-											"port": "{{port-queryside}}",
-											"path": [
-												"cargotracker-booking-queryside",
-												"cargo-info",
-												"cargo-summary"
-											]
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "en",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/booking-offer-summary",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-queryside}}",
+													"path": [
+														"cargotracker-booking-queryside",
+														"cargo-info",
+														"booking-offer-summary"
+													]
+												},
+												"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
+											},
+											"response": []
 										},
-										"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
-									},
-									"response": []
-								},
-								{
-									"name": "cargo-summary, validation failure, hr",
-									"event": [
 										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"postman.setNextRequest(null);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
-											},
-											{
-												"key": "Accept-Language",
-												"value": "hr",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"cargoIdentifier\": null\n}",
-											"options": {
-												"raw": {
-													"language": "json"
+											"name": "nok, validation, hr",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
 												}
-											}
-										},
-										"url": {
-											"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/cargo-summary",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
 											],
-											"port": "{{port-queryside}}",
-											"path": [
-												"cargotracker-booking-queryside",
-												"cargo-info",
-												"cargo-summary"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "cargo-summary, validation failure, en",
-									"event": [
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "hr",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"bookingOfferIdentifier\": null\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/booking-offer-summary",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-queryside}}",
+													"path": [
+														"cargotracker-booking-queryside",
+														"cargo-info",
+														"booking-offer-summary"
+													]
+												}
+											},
+											"response": []
+										},
 										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"postman.setNextRequest(null);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
-											},
-											{
-												"key": "Accept-Language",
-												"value": "en",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"cargoIdentifier\": null\n}",
-											"options": {
-												"raw": {
-													"language": "json"
+											"name": "nok, validation, en",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
 												}
-											}
-										},
-										"url": {
-											"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/cargo-summary",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
 											],
-											"port": "{{port-queryside}}",
-											"path": [
-												"cargotracker-booking-queryside",
-												"cargo-info",
-												"cargo-summary"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "cargo-summary, not-found, hr",
-									"event": [
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "en",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"bookingOfferIdentifier\": null\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/booking-offer-summary",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-queryside}}",
+													"path": [
+														"cargotracker-booking-queryside",
+														"cargo-info",
+														"booking-offer-summary"
+													]
+												}
+											},
+											"response": []
+										},
 										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"postman.setNextRequest(null);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
-											},
-											{
-												"key": "Accept-Language",
-												"value": "hr",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"cargoIdentifier\": \"{{$randomUUID}}\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
+											"name": "nok, domain not-found, hr",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
 												}
-											}
-										},
-										"url": {
-											"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/cargo-summary",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
 											],
-											"port": "{{port-queryside}}",
-											"path": [
-												"cargotracker-booking-queryside",
-												"cargo-info",
-												"cargo-summary"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "cargo-summary, not-found, en",
-									"event": [
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "hr",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"bookingOfferIdentifier\": \"{{$randomUUID}}\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/booking-offer-summary",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-queryside}}",
+													"path": [
+														"cargotracker-booking-queryside",
+														"cargo-info",
+														"booking-offer-summary"
+													]
+												}
+											},
+											"response": []
+										},
 										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"postman.setNextRequest(null);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept-Charset",
-												"value": "utf-8",
-												"type": "text"
-											},
-											{
-												"key": "Accept-Language",
-												"value": "en",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"cargoIdentifier\": \"{{$randomUUID}}\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
+											"name": "nok, domain not-found, en",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
 												}
-											}
-										},
-										"url": {
-											"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/cargo-summary",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
 											],
-											"port": "{{port-queryside}}",
-											"path": [
-												"cargotracker-booking-queryside",
-												"cargo-info",
-												"cargo-summary"
-											]
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "en",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"bookingOfferIdentifier\": \"{{$randomUUID}}\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/booking-offer-summary",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-queryside}}",
+													"path": [
+														"cargotracker-booking-queryside",
+														"cargo-info",
+														"booking-offer-summary"
+													]
+												}
+											},
+											"response": []
 										}
-									},
-									"response": []
+									]
 								}
 							]
 						}
@@ -1094,10 +1104,10 @@
 			"name": "scenarios",
 			"item": [
 				{
-					"name": "Create cargo and view summary",
+					"name": "create-booking-offer and view summary",
 					"item": [
 						{
-							"name": "book-cargo, success, hr",
+							"name": "create-booking-offer, ok, hr",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -1113,10 +1123,10 @@
 									"script": {
 										"exec": [
 											"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-											"pm.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible(pm.response, pm.collectionVariables);",
+											"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
 											"",
-											"pm.test(\"cargo created\", function () {",
-											"    pm.expect(pm.response.json().payload.cargoId.identifier).to.not.null;",
+											"pm.test(\"booking offer created\", function () {",
+											"    pm.expect(pm.response.json().payload.bookingOfferId.identifier).to.not.null;",
 											"});",
 											"",
 											"pm.test(\"locale is hr\", function () {",
@@ -1154,7 +1164,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
+									"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/create-booking-offer",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -1163,14 +1173,14 @@
 									"path": [
 										"cargotracker-booking-commandside",
 										"cargo-booking",
-										"book-cargo"
+										"create-booking-offer"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "cargo-summary, success, hr",
+							"name": "booking-offer-summary, ok, hr",
 							"event": [
 								{
 									"listen": "test",
@@ -1204,7 +1214,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"cargoIdentifier\": \"{{execution_receivedCargoIdentifier}}\"\n}",
+									"raw": "{\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1212,7 +1222,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/cargo-summary",
+									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/booking-offer-summary",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -1221,7 +1231,7 @@
 									"path": [
 										"cargotracker-booking-queryside",
 										"cargo-info",
-										"cargo-summary"
+										"booking-offer-summary"
 									]
 								},
 								"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
@@ -1229,7 +1239,7 @@
 							"response": []
 						},
 						{
-							"name": "book-cargo, success, en",
+							"name": "create-booking-offer, ok, en",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -1245,10 +1255,10 @@
 									"script": {
 										"exec": [
 											"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-											"pm.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible(pm.response, pm.collectionVariables);",
+											"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
 											"",
-											"pm.test(\"cargo created\", function () {",
-											"    pm.expect(pm.response.json().payload.cargoId.identifier).to.not.null;",
+											"pm.test(\"booking offer created\", function () {",
+											"    pm.expect(pm.response.json().payload.bookingOfferId.identifier).to.not.null;",
 											"});",
 											"",
 											"pm.test(\"locale is en\", function () {",
@@ -1286,7 +1296,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/book-cargo",
+									"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/cargo-booking/create-booking-offer",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -1295,21 +1305,21 @@
 									"path": [
 										"cargotracker-booking-commandside",
 										"cargo-booking",
-										"book-cargo"
+										"create-booking-offer"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "cargo-summary, success, en",
+							"name": "booking-offer-summary, ok, en",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
 											"pm.test(\"summary received\", function () {",
-											"    pm.expect(pm.response.json().payload.cargoIdentifier).to.not.null;",
+											"    pm.expect(pm.response.json().payload.bookingOfferIdentifier).to.not.null;",
 											"});",
 											"",
 											"pm.test(\"locale is en\", function () {",
@@ -1336,7 +1346,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"cargoIdentifier\": \"{{execution_receivedCargoIdentifier}}\"\n}",
+									"raw": "{\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1344,7 +1354,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/cargo-summary",
+									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/cargo-info/booking-offer-summary",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -1353,7 +1363,7 @@
 									"path": [
 										"cargotracker-booking-queryside",
 										"cargo-info",
-										"cargo-summary"
+										"booking-offer-summary"
 									]
 								},
 								"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
@@ -1394,10 +1404,10 @@
 					"    variableScope.unset(\"currentTimeAndThreeHours\");",
 					"}",
 					"",
-					"Object.prototype.klokwrk_cargotracker_booking.setReceivedCargoIdentifierIfPossible = function(response, variableScope) {",
+					"Object.prototype.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible = function(response, variableScope) {",
 					"    if (response.to.have.status(200)) {",
-					"        var receivedCargoIdentifier = response.json().payload.cargoId.identifier",
-					"        variableScope.set(\"execution_receivedCargoIdentifier\", receivedCargoIdentifier)",
+					"        var receivedBookingOfferIdentifier = response.json().payload.bookingOfferId.identifier",
+					"        variableScope.set(\"execution_receivedBookingOfferIdentifier\", receivedBookingOfferIdentifier)",
 					"    }",
 					"}",
 					""
@@ -1426,10 +1436,6 @@
 		{
 			"key": "port-queryside",
 			"value": "8084"
-		},
-		{
-			"key": "execution_receivedCargoIdentifier",
-			"value": ""
 		}
 	]
 }
