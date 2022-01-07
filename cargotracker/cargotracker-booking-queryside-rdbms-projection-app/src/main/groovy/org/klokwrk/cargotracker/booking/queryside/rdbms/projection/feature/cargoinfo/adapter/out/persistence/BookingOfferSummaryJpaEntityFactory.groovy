@@ -25,8 +25,8 @@ import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDa
 import org.klokwrk.lang.groovy.constant.CommonConstants
 
 @CompileStatic
-class CargoSummaryFactory {
-  static BookingOfferSummaryJpaEntity createCargoSummaryJpaEntity(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
+class BookingOfferSummaryJpaEntityFactory {
+  static BookingOfferSummaryJpaEntity createBookingOfferSummaryJpaEntity(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
     String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
     String originLocation = bookingOfferCreatedEvent.routeSpecification.originLocation.unLoCode.code
     String destinationLocation = bookingOfferCreatedEvent.routeSpecification.destinationLocation.unLoCode.code

@@ -37,6 +37,6 @@ class CargoSummaryProjectionService {
 
   @EventHandler
   void onCargoBookedEvent(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
-    bookingOfferSummaryJpaRepository.save(CargoSummaryFactory.createCargoSummaryJpaEntity(bookingOfferCreatedEvent, domainEventMessage))
+    bookingOfferSummaryJpaRepository.save(BookingOfferSummaryJpaEntityFactory.createBookingOfferSummaryJpaEntity(bookingOfferCreatedEvent, domainEventMessage))
   }
 }
