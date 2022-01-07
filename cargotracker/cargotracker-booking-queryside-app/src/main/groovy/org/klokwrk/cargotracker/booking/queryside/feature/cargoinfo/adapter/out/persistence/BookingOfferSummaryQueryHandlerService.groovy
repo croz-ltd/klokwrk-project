@@ -28,7 +28,7 @@ import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.springframework.stereotype.Service
 
 /**
- * Implements cargo summary query handling.
+ * Implements query handling related to booking offer summary.
  * <p/>
  * Do note that there is no point for marking this class/method with <code>Transactional</code> annotations. Transaction is under control of Axon's <code>SpringTransactionManager</code> which does
  * not supports <code>Transactional</code> annotation. Rather <code>SpringTransactionManager</code> uses a single <code>TransactionDefinition</code> for all its message handlers.
@@ -40,10 +40,10 @@ import org.springframework.stereotype.Service
  */
 @Service
 @CompileStatic
-class CargoSummaryQueryHandlerService {
+class BookingOfferSummaryQueryHandlerService {
   private final BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository
 
-  CargoSummaryQueryHandlerService(BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository) {
+  BookingOfferSummaryQueryHandlerService(BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository) {
     this.bookingOfferSummaryJpaRepository = bookingOfferSummaryJpaRepository
   }
 
