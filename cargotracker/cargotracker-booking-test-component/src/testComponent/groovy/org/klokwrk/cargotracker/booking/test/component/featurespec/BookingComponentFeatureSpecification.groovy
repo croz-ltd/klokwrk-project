@@ -149,7 +149,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
       // then:
       queryResponseStatusCode == 200
-      queryResponseJson.payload.cargoIdentifier == commandResponseBookingOfferIdentifier
+      queryResponseJson.payload.bookingOfferIdentifier == commandResponseBookingOfferIdentifier
     }
 
     where:

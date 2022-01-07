@@ -21,7 +21,7 @@ import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryGateway
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ResponseMetaData
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
@@ -43,16 +43,16 @@ class CargoInfoApplicationService implements CargoSummaryQueryPortIn {
   }
 
   @Override
-  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(OperationRequest<BookingOfferSummaryQueryRequest> bookingOfferSummaryQueryOperationRequest) {
+  OperationResponse<BookingOfferSummaryQueryResponse> cargoSummaryQuery(OperationRequest<BookingOfferSummaryQueryRequest> bookingOfferSummaryQueryOperationRequest) {
     requireMatch(bookingOfferSummaryQueryOperationRequest, notNullValue())
     validationService.validate(bookingOfferSummaryQueryOperationRequest.payload)
 
-    CargoSummaryQueryResponse cargoSummaryQueryResponse = queryGatewayAdapter.query(bookingOfferSummaryQueryOperationRequest, CargoSummaryQueryResponse)
-    return cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(cargoSummaryQueryResponse)
+    BookingOfferSummaryQueryResponse bookingOfferSummaryQueryResponse = queryGatewayAdapter.query(bookingOfferSummaryQueryOperationRequest, BookingOfferSummaryQueryResponse)
+    return cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(bookingOfferSummaryQueryResponse)
   }
 
-  protected OperationResponse<CargoSummaryQueryResponse> cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(CargoSummaryQueryResponse cargoSummaryQueryResponse) {
+  protected OperationResponse<BookingOfferSummaryQueryResponse> cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(BookingOfferSummaryQueryResponse bookingOfferSummaryQueryResponse) {
     ResponseMetaData responseMetaData = ResponseMetaData.createBasicInfoResponseMetaData()
-    return new OperationResponse<CargoSummaryQueryResponse>(payload: cargoSummaryQueryResponse, metaData: responseMetaData.propertiesFiltered)
+    return new OperationResponse<BookingOfferSummaryQueryResponse>(payload: bookingOfferSummaryQueryResponse, metaData: responseMetaData.propertiesFiltered)
   }
 }

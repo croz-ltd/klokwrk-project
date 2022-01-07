@@ -21,7 +21,7 @@ import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.test.base.AbstractQuerySideIntegrationSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
@@ -68,11 +68,11 @@ class CargoInfoApplicationServiceIntegrationSpecification extends AbstractQueryS
     )
 
     when:
-    OperationResponse<CargoSummaryQueryResponse> operationResponse = cargoSummaryQueryPortIn.cargoSummaryQuery(operationRequest)
+    OperationResponse<BookingOfferSummaryQueryResponse> operationResponse = cargoSummaryQueryPortIn.cargoSummaryQuery(operationRequest)
 
     then:
     verifyAll(operationResponse.payload) {
-      cargoIdentifier == myBookingOfferIdentifier
+      bookingOfferIdentifier == myBookingOfferIdentifier
       aggregateVersion == 0
       originLocation == "HRRJK"
       destinationLocation == "NLRTM"

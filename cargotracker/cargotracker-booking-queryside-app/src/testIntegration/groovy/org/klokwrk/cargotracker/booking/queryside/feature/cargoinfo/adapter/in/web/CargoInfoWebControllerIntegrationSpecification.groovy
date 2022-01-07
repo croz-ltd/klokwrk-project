@@ -105,7 +105,7 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
     }
 
     verifyAll(responseContentMap.payload as Map) {
-      cargoIdentifier == myBookingOfferIdentifier
+      bookingOfferIdentifier == myBookingOfferIdentifier
       aggregateVersion == 0
       originLocation == "HRRJK"
       destinationLocation == "NLRTM"

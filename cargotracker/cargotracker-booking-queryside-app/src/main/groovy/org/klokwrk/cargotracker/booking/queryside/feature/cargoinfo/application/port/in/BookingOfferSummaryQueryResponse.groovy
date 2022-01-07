@@ -25,8 +25,8 @@ import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
-class CargoSummaryQueryResponse {
-  String cargoIdentifier
+class BookingOfferSummaryQueryResponse {
+  String bookingOfferIdentifier
   Long aggregateVersion
 
   String originLocation

@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.adapter.out
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryHandler
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.BookingOfferSummaryJpaEntity
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.BookingOfferSummaryJpaRepository
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
@@ -48,15 +48,14 @@ class BookingOfferSummaryQueryHandlerService {
   }
 
   @QueryHandler
-  CargoSummaryQueryResponse handleCargoSummaryQueryRequest(BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest) {
+  BookingOfferSummaryQueryResponse handleBookingOfferSummaryQueryRequest(BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest) {
     BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = bookingOfferSummaryJpaRepository.findByBookingOfferIdentifier(bookingOfferSummaryQueryRequest.bookingOfferIdentifier)
 
     if (!bookingOfferSummaryJpaEntity) {
       throw new QueryException(ViolationInfo.NOT_FOUND)
     }
 
-    CargoSummaryQueryResponse cargoSummaryQueryResponse = new CargoSummaryQueryResponse(bookingOfferSummaryJpaEntity.properties)
-    cargoSummaryQueryResponse.cargoIdentifier = bookingOfferSummaryJpaEntity.bookingOfferIdentifier
-    return cargoSummaryQueryResponse
+    BookingOfferSummaryQueryResponse bookingOfferSummaryQueryResponse = new BookingOfferSummaryQueryResponse(bookingOfferSummaryJpaEntity.properties)
+    return bookingOfferSummaryQueryResponse
   }
 }
