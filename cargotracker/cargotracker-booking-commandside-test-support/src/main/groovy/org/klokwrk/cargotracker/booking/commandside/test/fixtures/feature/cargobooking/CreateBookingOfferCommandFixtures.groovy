@@ -35,7 +35,7 @@ import java.time.Instant
  * Contains test data fixtures for {@link CreateBookingOfferCommand}.
  */
 @CompileStatic
-class BookCargoCommandFixtures {
+class CreateBookingOfferCommandFixtures {
   static final Map<String, Location> LOCATION_SAMPLE_MAP = [
       "HRKRK": Location.create("HRKRK", "Krk", "Croatia", "1-3-----", "4502N 01435E", PortCapabilities.SEA_PORT_CAPABILITIES),
       "HRRJK": Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),

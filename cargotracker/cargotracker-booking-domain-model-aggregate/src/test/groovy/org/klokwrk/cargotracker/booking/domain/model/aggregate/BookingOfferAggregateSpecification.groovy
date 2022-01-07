@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.domain.model.aggregate
 import org.axonframework.test.aggregate.AggregateTestFixture
 import org.axonframework.test.aggregate.ResultValidator
 import org.axonframework.test.aggregate.TestExecutor
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.BookCargoCommandFixtures
+import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.CreateBookingOfferCommandFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.CargoBookedEventFixtures
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
@@ -41,7 +41,7 @@ class BookingOfferAggregateSpecification extends Specification {
 
   void "should work when origin and destination locations are both container ports at sea"() {
     given:
-    CreateBookingOfferCommand createBookingOfferCommand = BookCargoCommandFixtures.commandValidRouteSpecification()
+    CreateBookingOfferCommand createBookingOfferCommand = CreateBookingOfferCommandFixtures.commandValidRouteSpecification()
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     when:
@@ -55,7 +55,7 @@ class BookingOfferAggregateSpecification extends Specification {
 
   void "should work with acceptable commodity"() {
     given:
-    CreateBookingOfferCommand createBookingOfferCommand = BookCargoCommandFixtures.commandValidCommodityInfo()
+    CreateBookingOfferCommand createBookingOfferCommand = CreateBookingOfferCommandFixtures.commandValidCommodityInfo()
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     Commodity expectedCommodity = new Commodity(
@@ -92,7 +92,7 @@ class BookingOfferAggregateSpecification extends Specification {
 
   void "should fail when commodity cannot be accepted"() {
     given:
-    CreateBookingOfferCommand createBookingOfferCommand = BookCargoCommandFixtures.commandInvalidCommodityInfo()
+    CreateBookingOfferCommand createBookingOfferCommand = CreateBookingOfferCommandFixtures.commandInvalidCommodityInfo()
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
 
     when:

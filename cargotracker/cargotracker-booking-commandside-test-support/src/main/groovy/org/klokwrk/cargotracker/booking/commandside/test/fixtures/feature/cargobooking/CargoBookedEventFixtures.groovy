@@ -36,7 +36,7 @@ class CargoBookedEventFixtures {
    * Creates valid event where origin and destination locations form supported route.
    */
   static BookingOfferCreatedEvent eventValidRouteSpecification(String cargoIdentifier = UUID.randomUUID()) {
-    CreateBookingOfferCommand createBookingOfferCommand = BookCargoCommandFixtures.commandValidRouteSpecification(cargoIdentifier)
+    CreateBookingOfferCommand createBookingOfferCommand = CreateBookingOfferCommandFixtures.commandValidRouteSpecification(cargoIdentifier)
     BookingOfferCreatedEvent bookingOfferCreatedEvent = eventValidForCommand(createBookingOfferCommand)
     return bookingOfferCreatedEvent
   }
