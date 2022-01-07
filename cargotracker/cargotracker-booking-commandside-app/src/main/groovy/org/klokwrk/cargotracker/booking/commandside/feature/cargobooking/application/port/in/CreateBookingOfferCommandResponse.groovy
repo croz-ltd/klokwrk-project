@@ -15,13 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in
+package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
-import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
+import groovy.transform.MapConstructor
+import groovy.transform.PropertyOptions
+import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
+@PropertyOptions(propertyHandler = RelaxedPropertyHandler)
+@MapConstructor
 @CompileStatic
-interface CargoSummaryQueryPortIn {
-  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(OperationRequest<CargoSummaryQueryRequest> cargoSummaryQueryOperationRequest)
+class CreateBookingOfferCommandResponse {
+  Map<String, ?> bookingOfferId
+  Map<String, ?> routeSpecification
+  Map<String, ?> bookingOfferCommodities
 }

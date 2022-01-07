@@ -396,6 +396,7 @@ ruleset {
   ConfusingMethodName
   FactoryMethodName {
     regex = /(build.*|make.*)/
+    enabled = false
   }
   FieldName {
     ignoreFieldNames = "serialVersionUID,log,logger"

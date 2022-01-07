@@ -34,7 +34,7 @@ import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
 /**
- * Request DTO parameter for {@code bookCargoCommand} operation from {@link BookCargoCommandPortIn} inbound port interface.
+ * Request DTO parameter for {@code createBookingOfferCommand} operation from {@link CreateBookingOfferCommandPortIn} inbound port interface.
  * <p/>
  * References:
  * <ul>
@@ -42,20 +42,20 @@ import javax.validation.constraints.Size
  *   <li>https://stackoverflow.com/questions/5571231/control-validation-annotations-order/66264530#66264530</li>
  * </ul>
  */
-@GroupSequence([BookCargoCommandRequest, Level1, Level2, Level3])
+@GroupSequence([CreateBookingOfferCommandRequest, Level1, Level2, Level3])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
-class BookCargoCommandRequest {
+class CreateBookingOfferCommandRequest {
   /**
-   * Optional identifier of a cargo to book.
+   * Optional identifier of a booking offer to be created.
    * <p/>
    * Can be null. If specified, must not be blank and must be in random uuid format.
    */
   @RandomUuidFormatConstraint(groups = [Level3])
   @Size(min = 36, max = 36, groups = [Level2])
   @NotBlankWhenNullableConstraint(groups = [Level1])
-  String cargoIdentifier
+  String bookingOfferIdentifier
 
   @Valid
   @NotNull(groups = [Level1])

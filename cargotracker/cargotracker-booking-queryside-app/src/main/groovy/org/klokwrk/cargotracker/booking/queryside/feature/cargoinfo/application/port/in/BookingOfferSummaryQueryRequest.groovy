@@ -31,17 +31,17 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
 /**
- * Request DTO parameter for {@code cargoSummaryQuery} operation from {@link CargoSummaryQueryPortIn} inbound port interface.
+ * Request DTO parameter for {@code bookingOfferSummaryQuery} operation from {@link BookingOfferSummaryQueryPortIn} inbound port interface.
  * <p/>
  * Here we are comply to the validation ordering as explained in ADR-0013.
  */
-@GroupSequence([CargoSummaryQueryRequest, Level1, Level2, Level3])
+@GroupSequence([BookingOfferSummaryQueryRequest, Level1, Level2, Level3])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
-class CargoSummaryQueryRequest {
+class BookingOfferSummaryQueryRequest {
   /**
-   * Identifier of a cargo.
+   * Identifier of a booking offer.
    * <p/>
    * Not null and not blank. Must be in random uuid format.
    * <p/>
@@ -50,5 +50,5 @@ class CargoSummaryQueryRequest {
   @RandomUuidFormatConstraint(groups = [Level3])
   @Size(min = 36, max = 36, groups = [Level2])
   @NotBlank(groups = [Level1])
-  String cargoIdentifier
+  String bookingOfferIdentifier
 }

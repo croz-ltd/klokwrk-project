@@ -19,11 +19,11 @@ package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.applic
 
 import groovy.transform.CompileStatic
 import org.axonframework.commandhandling.gateway.CommandGateway
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandPortIn
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
-import org.klokwrk.cargotracker.booking.domain.model.aggregate.CargoAggregate
-import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandPortIn
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandRequest
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandResponse
+import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
+import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
@@ -34,7 +34,7 @@ import static org.hamcrest.Matchers.notNullValue
 
 @Service
 @CompileStatic
-class CargoBookingApplicationService implements BookCargoCommandPortIn {
+class CargoBookingApplicationService implements CreateBookingOfferCommandPortIn {
   private final CargoBookingFactoryService cargoBookingFactoryService
   private final CommandGatewayAdapter commandGatewayAdapter
   private final ValidationService validationService
@@ -46,13 +46,13 @@ class CargoBookingApplicationService implements BookCargoCommandPortIn {
   }
 
   @Override
-  OperationResponse<BookCargoCommandResponse> bookCargoCommand(OperationRequest<BookCargoCommandRequest> bookCargoCommandOperationRequest) {
-    requireMatch(bookCargoCommandOperationRequest, notNullValue())
-    validationService.validate(bookCargoCommandOperationRequest.payload)
+  OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommand(OperationRequest<CreateBookingOfferCommandRequest> createBookingOfferCommandOperationRequest) {
+    requireMatch(createBookingOfferCommandOperationRequest, notNullValue())
+    validationService.validate(createBookingOfferCommandOperationRequest.payload)
 
-    BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandOperationRequest.payload)
-    CargoAggregate cargoAggregate = commandGatewayAdapter.sendAndWait(bookCargoCommand, bookCargoCommandOperationRequest.metaData)
+    CreateBookingOfferCommand createBookingOfferCommand = cargoBookingFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandOperationRequest.payload)
+    BookingOfferAggregate bookingOfferAggregate = commandGatewayAdapter.sendAndWait(createBookingOfferCommand, createBookingOfferCommandOperationRequest.metaData)
 
-    return new OperationResponse(payload: cargoBookingFactoryService.createBookCargoCommandResponse(cargoAggregate))
+    return new OperationResponse(payload: cargoBookingFactoryService.makeCreateBookingOfferCommandResponse(bookingOfferAggregate))
   }
 }

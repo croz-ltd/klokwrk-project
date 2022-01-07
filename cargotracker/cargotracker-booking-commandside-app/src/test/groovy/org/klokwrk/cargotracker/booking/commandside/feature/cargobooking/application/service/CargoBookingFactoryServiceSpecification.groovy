@@ -18,15 +18,15 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.service
 
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapter.out.remoting.InMemoryLocationRegistryService
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CommodityInfoData
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.RouteSpecificationData
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.out.LocationByUnLoCodeQueryPortOut
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferCommodities
-import org.klokwrk.cargotracker.booking.domain.model.aggregate.CargoAggregate
-import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
-import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
+import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
+import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
+import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
@@ -67,17 +67,17 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     cargoBookingFactoryService = new CargoBookingFactoryService(locationByUnLoCodeQueryPortOut, Optional.of(clock))
   }
 
-  void "createBookCargoCommand - should throw for passed null"() {
+  void "makeCreateBookingOfferCommand - should throw for passed null"() {
     when:
-    cargoBookingFactoryService.createBookCargoCommand(null)
+    cargoBookingFactoryService.makeCreateBookingOfferCommand(null)
 
     then:
     thrown(AssertionError)
   }
 
-  void "createBookCargoCommand - should fail for invalid locations in RouteSpecificationData"() {
+  void "makeCreateBookingOfferCommand - should fail for invalid locations in RouteSpecificationData"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         routeSpecification: new RouteSpecificationData(
             originLocation: originLocationParam, destinationLocation: destinationLocationParam,
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
@@ -87,7 +87,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     )
 
     when:
-    cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
+    cargoBookingFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     DomainException domainException = thrown()
@@ -104,9 +104,9 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     "HRRJK"             | "HRZAG"                  | "routeSpecification.cannotRouteCargoFromOriginToDestination"
   }
 
-  void "createBookCargoCommand - should fail for invalid departure instants in RouteSpecificationData"() {
+  void "makeCreateBookingOfferCommand - should fail for invalid departure instants in RouteSpecificationData"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         routeSpecification: new RouteSpecificationData(
             originLocation: "HRRJK", destinationLocation: "NLRTM",
             departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam,
@@ -116,7 +116,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     )
 
     when:
-    cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
+    cargoBookingFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     DomainException domainException = thrown()
@@ -134,9 +134,9 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     currentInstantRoundedAndOneHour + Duration.ofHours(1) | currentInstantRoundedAndOneHour             | "routeSpecification.departureEarliestTime.afterDepartureLatestTime"
   }
 
-  void "createBookCargoCommand - should fail for invalid arrival instant in RouteSpecificationData"() {
+  void "makeCreateBookingOfferCommand - should fail for invalid arrival instant in RouteSpecificationData"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         routeSpecification: new RouteSpecificationData(
             originLocation: "HRRJK", destinationLocation: "NLRTM",
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
@@ -146,7 +146,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     )
 
     when:
-    cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
+    cargoBookingFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     DomainException domainException = thrown()
@@ -163,20 +163,20 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     currentInstantRoundedAndTwoHours - Duration.ofMinutes(1) | "routeSpecification.arrivalLatestTime.beforeDepartureLatestTime"
   }
 
-  void "createBookCargoCommand - should work for unspecified cargo identifier"() {
+  void "makeCreateBookingOfferCommand - should work for unspecified cargo identifier"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         routeSpecification: validRouteSpecificationData, commodityInfo: validCommodityInfoData, containerDimensionType: validContainerDimensionData
     )
 
     when:
-    BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
+    CreateBookingOfferCommand createBookingOfferCommand = cargoBookingFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
-    verifyAll(bookCargoCommand) {
+    verifyAll(createBookingOfferCommand) {
       aggregateIdentifier
-      cargoId
-      cargoId.identifier
+      bookingOfferId
+      bookingOfferId.identifier
       routeSpecification.originLocation.unLoCode.code == "HRRJK"
       routeSpecification.destinationLocation.unLoCode.code == "NLRTM"
       routeSpecification.departureEarliestTime == currentInstantRoundedAndOneHour
@@ -185,23 +185,23 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     }
   }
 
-  void "createBookCargoCommand - should work for specified cargo identifier"() {
+  void "makeCreateBookingOfferCommand - should work for specified cargo identifier"() {
     given:
-    String cargoIdentifier = UUID.randomUUID()
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        cargoIdentifier: cargoIdentifier,
+    String bookingOfferIdentifier = UUID.randomUUID()
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: bookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
         commodityInfo: validCommodityInfoData,
         containerDimensionType: validContainerDimensionData
     )
 
     when:
-    BookCargoCommand bookCargoCommand = cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
+    CreateBookingOfferCommand createBookingOfferCommand = cargoBookingFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
-    verifyAll(bookCargoCommand) {
-      aggregateIdentifier == cargoIdentifier
-      cargoId.identifier == cargoIdentifier
+    verifyAll(createBookingOfferCommand) {
+      aggregateIdentifier == bookingOfferIdentifier
+      bookingOfferId.identifier == bookingOfferIdentifier
       routeSpecification.originLocation.unLoCode.code == "HRRJK"
       routeSpecification.destinationLocation.unLoCode.code == "NLRTM"
       routeSpecification.departureEarliestTime == currentInstantRoundedAndOneHour
@@ -210,16 +210,16 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     }
   }
 
-  void "createBookCargoCommand - should throw for specified cargo identifier in invalid format"() {
+  void "makeCreateBookingOfferCommand - should throw for specified cargo identifier in invalid format"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        cargoIdentifier: "invalid",
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: "invalid",
         routeSpecification: validRouteSpecificationData,
         commodityInfo: validCommodityInfoData
     )
 
     when:
-    cargoBookingFactoryService.createBookCargoCommand(bookCargoCommandRequest)
+    cargoBookingFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     thrown(AssertionError)
@@ -228,7 +228,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
   @SuppressWarnings("CodeNarc.MethodSize")
   void "createBookCargoCommandResponse - should create expected response"() {
     given:
-    String myCargoIdentifier = UUID.randomUUID()
+    String myBookingOfferIdentifier = UUID.randomUUID()
     Location myOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRRJK")
     Location myDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("NLRTM")
 
@@ -241,8 +241,8 @@ class CargoBookingFactoryServiceSpecification extends Specification {
         containerCount: 1
     ))
 
-    CargoAggregate cargoAggregate = new CargoAggregate(
-        cargoId: CargoId.create(myCargoIdentifier),
+    BookingOfferAggregate bookingOfferAggregate = new BookingOfferAggregate(
+        bookingOfferId: BookingOfferId.create(myBookingOfferIdentifier),
         routeSpecification: new RouteSpecification(
             originLocation: myOriginLocation, destinationLocation: myDestinationLocation,
             creationTime: currentInstantRounded,
@@ -253,12 +253,12 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     )
 
     when:
-    BookCargoCommandResponse bookCargoCommandResponse = cargoBookingFactoryService.createBookCargoCommandResponse(cargoAggregate)
+    CreateBookingOfferCommandResponse createBookingOfferCommandResponse = cargoBookingFactoryService.makeCreateBookingOfferCommandResponse(bookingOfferAggregate)
 
     then:
-    verifyAll(bookCargoCommandResponse) {
-      it.cargoId == [
-          identifier: myCargoIdentifier
+    verifyAll(createBookingOfferCommandResponse) {
+      it.bookingOfferId == [
+          identifier: myBookingOfferIdentifier
       ]
 
       it.routeSpecification == [

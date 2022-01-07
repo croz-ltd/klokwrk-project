@@ -15,10 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model
+package org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.adapter.in.web
 
-import org.springframework.data.jpa.repository.JpaRepository
+import groovy.transform.CompileStatic
+import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryRequest
 
-interface CargoSummaryJpaRepository extends JpaRepository<CargoSummaryJpaEntity, Long> {
-  CargoSummaryJpaEntity findByCargoIdentifier(String cargoIdentifier)
+// In general, in web interface we use BookingOfferSummaryQueryRequest directly, but BookingOfferSummaryQueryWebRequest can be used for adding additional properties that are only web specific and
+// handled in controller before sending BookingOfferSummaryQueryRequest into domain facade.
+@CompileStatic
+class BookingOfferSummaryQueryWebRequest extends BookingOfferSummaryQueryRequest {
 }

@@ -15,13 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in
+package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model
 
-import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
-import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
+import org.springframework.data.jpa.repository.JpaRepository
 
-@CompileStatic
-interface BookCargoCommandPortIn {
-  OperationResponse<BookCargoCommandResponse> bookCargoCommand(OperationRequest<BookCargoCommandRequest> bookCargoCommandOperationRequest)
+interface BookingOfferSummaryJpaRepository extends JpaRepository<BookingOfferSummaryJpaEntity, Long> {
+  BookingOfferSummaryJpaEntity findByBookingOfferIdentifier(String bookingOfferIdentifier)
 }

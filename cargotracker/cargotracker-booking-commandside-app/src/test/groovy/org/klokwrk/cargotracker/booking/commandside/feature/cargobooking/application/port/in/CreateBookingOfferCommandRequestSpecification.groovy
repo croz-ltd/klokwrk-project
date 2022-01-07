@@ -34,8 +34,8 @@ import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 import java.time.Instant
 
-class BookCargoCommandRequestSpecification extends Specification {
-  static String validCargoIdentifier = "00000000-0000-4000-8000-000000000000"
+class CreateBookingOfferCommandRequestSpecification extends Specification {
+  static String validBookingOfferIdentifier = "00000000-0000-4000-8000-000000000000"
   static RouteSpecificationData validRouteSpecificationData = new RouteSpecificationData(
       originLocation: "AAAAA", destinationLocation: "AAAAA",
       departureEarliestTime: Instant.now(), departureLatestTime: Instant.now(),
@@ -54,36 +54,36 @@ class BookCargoCommandRequestSpecification extends Specification {
 
   void "should pass validation for valid data"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        cargoIdentifier: cargoIdentifierParam,
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: bookingOfferIdentifierParam,
         routeSpecification: validRouteSpecificationData,
         commodityInfo: validCommodityInfoData,
         containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
-    validationService.validate(bookCargoCommandRequest)
+    validationService.validate(createBookingOfferCommandRequest)
 
     then:
     notThrown(ConstraintViolationException)
 
     where:
-    cargoIdentifierParam                   | _
+    bookingOfferIdentifierParam            | _
     null                                   | _
     "00000000-0000-4000-8000-000000000000" | _
   }
 
   void "should pass validation for weightInKilograms data in CommodityInfoData"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        cargoIdentifier: validCargoIdentifier,
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
         commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: weightInKilogramsParam, requestedStorageTemperatureInCelsius: null),
         containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
-    validationService.validate(bookCargoCommandRequest)
+    validationService.validate(createBookingOfferCommandRequest)
 
     then:
     notThrown(ConstraintViolationException)
@@ -97,15 +97,15 @@ class BookCargoCommandRequestSpecification extends Specification {
 
   void "should pass validation for storageTemperatureInCelsius data in CommodityInfoData"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        cargoIdentifier: validCargoIdentifier,
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
         commodityInfo: new CommodityInfoData(commodityType: CommodityType.CHILLED, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: storageTemperatureInCelsiusParam),
         containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
-    validationService.validate(bookCargoCommandRequest)
+    validationService.validate(createBookingOfferCommandRequest)
 
     then:
     notThrown(ConstraintViolationException)
@@ -116,17 +116,17 @@ class BookCargoCommandRequestSpecification extends Specification {
     30                               | _
   }
 
-  void "should not pass validation for invalid cargoIdentifier"() {
+  void "should not pass validation for invalid bookingOfferIdentifier"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        cargoIdentifier: cargoIdentifierParam,
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: bookingOfferIdentifierParam,
         routeSpecification: validRouteSpecificationData,
         commodityInfo: validCommodityInfoData,
         containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
-    validationService.validate(bookCargoCommandRequest)
+    validationService.validate(createBookingOfferCommandRequest)
 
     then:
     ConstraintViolationException constraintViolationException = thrown()
@@ -136,23 +136,23 @@ class BookCargoCommandRequestSpecification extends Specification {
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
-    cargoIdentifierParam                   | propertyPathParam | constraintTypeParam
-    ""                                     | "cargoIdentifier" | NotBlankWhenNullableConstraint
-    "123"                                  | "cargoIdentifier" | Size
-    "00000000=0000=0000=0000=000000000000" | "cargoIdentifier" | RandomUuidFormatConstraint
+    bookingOfferIdentifierParam            | propertyPathParam        | constraintTypeParam
+    ""                                     | "bookingOfferIdentifier" | NotBlankWhenNullableConstraint
+    "123"                                  | "bookingOfferIdentifier" | Size
+    "00000000=0000=0000=0000=000000000000" | "bookingOfferIdentifier" | RandomUuidFormatConstraint
   }
 
   void "should not pass validation for null routeSpecification"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        cargoIdentifier: validCargoIdentifier,
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: null,
         commodityInfo: validCommodityInfoData,
         containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
-    validationService.validate(bookCargoCommandRequest)
+    validationService.validate(createBookingOfferCommandRequest)
 
     then:
     ConstraintViolationException constraintViolationException = thrown()
@@ -164,8 +164,8 @@ class BookCargoCommandRequestSpecification extends Specification {
 
   void "should not pass validation for invalid locations data"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        cargoIdentifier: validCargoIdentifier,
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: new RouteSpecificationData(
             originLocation: originLocationParam, destinationLocation: destinationLocationParam,
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now(),
@@ -176,7 +176,7 @@ class BookCargoCommandRequestSpecification extends Specification {
     )
 
     when:
-    validationService.validate(bookCargoCommandRequest)
+    validationService.validate(createBookingOfferCommandRequest)
 
     then:
     ConstraintViolationException constraintViolationException = thrown()
@@ -200,8 +200,8 @@ class BookCargoCommandRequestSpecification extends Specification {
 
   void "should not pass validation for invalid departures instant data"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        cargoIdentifier: validCargoIdentifier,
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: new RouteSpecificationData(
             originLocation: "AAAAA", destinationLocation: "AAAAA",
             departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam,
@@ -212,7 +212,7 @@ class BookCargoCommandRequestSpecification extends Specification {
     )
 
     when:
-    validationService.validate(bookCargoCommandRequest)
+    validationService.validate(createBookingOfferCommandRequest)
 
     then:
     ConstraintViolationException constraintViolationException = thrown()
@@ -229,8 +229,8 @@ class BookCargoCommandRequestSpecification extends Specification {
 
   void "should not pass validation for invalid arrival instant data"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        cargoIdentifier: validCargoIdentifier,
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: new RouteSpecificationData(
             originLocation: "AAAAA", destinationLocation: "AAAAA",
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now(),
@@ -241,7 +241,7 @@ class BookCargoCommandRequestSpecification extends Specification {
     )
 
     when:
-    validationService.validate(bookCargoCommandRequest)
+    validationService.validate(createBookingOfferCommandRequest)
 
     then:
     ConstraintViolationException constraintViolationException = thrown()
@@ -253,15 +253,15 @@ class BookCargoCommandRequestSpecification extends Specification {
 
   void "should not pass validation for invalid commodityType data in CommodityInfoData"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        cargoIdentifier: validCargoIdentifier,
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
         commodityInfo: new CommodityInfoData(commodityType: null, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null),
         containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
-    validationService.validate(bookCargoCommandRequest)
+    validationService.validate(createBookingOfferCommandRequest)
 
     then:
     ConstraintViolationException constraintViolationException = thrown()
@@ -273,15 +273,15 @@ class BookCargoCommandRequestSpecification extends Specification {
 
   void "should not pass validation for invalid totalWeightInKilograms data in CommodityInfoData"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        cargoIdentifier: validCargoIdentifier,
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
         commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: weightInKilogramsParam, requestedStorageTemperatureInCelsius: null),
         containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
-    validationService.validate(bookCargoCommandRequest)
+    validationService.validate(createBookingOfferCommandRequest)
 
     then:
     ConstraintViolationException constraintViolationException = thrown()
@@ -298,15 +298,15 @@ class BookCargoCommandRequestSpecification extends Specification {
 
   void "should not pass validation for invalid requestedStorageTemperatureInCelsius data in CommodityInfoData"() {
     given:
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        cargoIdentifier: validCargoIdentifier,
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
         commodityInfo: new CommodityInfoData(commodityType: CommodityType.CHILLED, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: storageTemperatureInCelsiusParam),
         containerDimensionType: validContainerDimensionTypeData
     )
 
     when:
-    validationService.validate(bookCargoCommandRequest)
+    validationService.validate(createBookingOfferCommandRequest)
 
     then:
     ConstraintViolationException constraintViolationException = thrown()

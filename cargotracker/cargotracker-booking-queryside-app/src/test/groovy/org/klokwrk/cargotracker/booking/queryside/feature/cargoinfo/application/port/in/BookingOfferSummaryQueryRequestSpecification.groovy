@@ -27,7 +27,7 @@ import javax.validation.ConstraintViolationException
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
-class CargoSummaryQueryRequestSpecification extends Specification {
+class BookingOfferSummaryQueryRequestSpecification extends Specification {
   @Shared
   ValidationService validationService
 
@@ -38,37 +38,33 @@ class CargoSummaryQueryRequestSpecification extends Specification {
 
   void "should pass validation for valid data"() {
     given:
-    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(cargoIdentifier: cargoIdentifierParam)
+    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest = new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: "00000000-0000-4000-8000-000000000000")
 
     when:
-    validationService.validate(cargoSummaryQueryRequest)
+    validationService.validate(bookingOfferSummaryQueryRequest)
 
     then:
     notThrown(ConstraintViolationException)
-
-    where:
-    cargoIdentifierParam                   | _
-    "00000000-0000-4000-8000-000000000000" | _
   }
 
   void "should not pass validation for invalid data"() {
     given:
-    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(cargoIdentifier: cargoIdentifierParam)
+    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest = new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: bookingOfferIdentifierParam)
 
     when:
-    validationService.validate(cargoSummaryQueryRequest)
+    validationService.validate(bookingOfferSummaryQueryRequest)
 
     then:
     ConstraintViolationException constraintViolationException = thrown()
 
     constraintViolationException.constraintViolations.size() == 1
-    constraintViolationException.constraintViolations[0].propertyPath.toString() == propertyPathParam
+    constraintViolationException.constraintViolations[0].propertyPath.toString() == "bookingOfferIdentifier"
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
-    cargoIdentifierParam                   | propertyPathParam | constraintTypeParam
-    ""                                     | "cargoIdentifier" | NotBlank
-    "123"                                  | "cargoIdentifier" | Size
-    "00000000=0000=0000=0000=000000000000" | "cargoIdentifier" | RandomUuidFormatConstraint
+    bookingOfferIdentifierParam            | constraintTypeParam
+    ""                                     | NotBlank
+    "123"                                  | Size
+    "00000000=0000=0000=0000=000000000000" | RandomUuidFormatConstraint
   }
 }

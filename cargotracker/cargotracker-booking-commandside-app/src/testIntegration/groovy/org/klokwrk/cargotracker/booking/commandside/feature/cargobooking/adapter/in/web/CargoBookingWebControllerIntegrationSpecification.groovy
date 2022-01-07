@@ -63,10 +63,10 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
-    String myCargoIdentifier = UUID.randomUUID()
+    String myBookingOfferIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString(
         [
-            cargoIdentifier: myCargoIdentifier,
+            bookingOfferIdentifier: myBookingOfferIdentifier,
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK",
                 departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
@@ -82,7 +82,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-booking/book-cargo")
+        post("/cargo-booking/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -110,7 +110,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     verifyAll(responseContentMap.payload as Map) {
       size() == 3
-      cargoId.identifier == myCargoIdentifier
+      bookingOfferId.identifier == myBookingOfferIdentifier
       routeSpecification
       bookingOfferCommodities
     }
@@ -218,10 +218,10 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
   @SuppressWarnings("CodeNarc.AbcMetric")
   void "should return expected response when request is not valid - validation failure - [acceptLanguage: #acceptLanguageParam]"() {
     given:
-    String cargoIdentifier = UUID.randomUUID()
+    String bookingOfferIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString(
         [
-            cargoIdentifier: cargoIdentifier,
+            bookingOfferIdentifier: bookingOfferIdentifier,
             routeSpecification: [originLocation: null, destinationLocation: null, departureEarliestTime: null, departureLatestTime: null, arrivalLatestTime: null],
             commodityInfo: [commodityType: "dry", totalWeightInKilograms: 1000],
             containerDimensionType: "DIMENSION_ISO_22"
@@ -230,7 +230,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-booking/book-cargo")
+        post("/cargo-booking/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -266,7 +266,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
       size() == 2
-      root.type == "bookCargoCommandRequest"
+      root.type == "createBookingOfferCommandRequest"
       constraintViolations.size() == 5
       constraintViolations.find({ it.path == "routeSpecification.originLocation" }).type == "notBlank"
       constraintViolations.find({ it.path == "routeSpecification.destinationLocation" }).type == "notBlank"
@@ -292,10 +292,10 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
-    String cargoIdentifier = UUID.randomUUID()
+    String bookingOfferIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString(
         [
-            cargoIdentifier: cargoIdentifier,
+            bookingOfferIdentifier: bookingOfferIdentifier,
             routeSpecification: [
                 originLocation: "HRRJK", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
@@ -306,7 +306,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-booking/book-cargo")
+        post("/cargo-booking/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -356,10 +356,10 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
-    String cargoIdentifier = UUID.randomUUID()
+    String bookingOfferIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString(
         [
-            cargoIdentifier: cargoIdentifier,
+            bookingOfferIdentifier: bookingOfferIdentifier,
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRZAG", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
@@ -370,7 +370,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-booking/book-cargo")
+        post("/cargo-booking/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -420,10 +420,10 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
-    String cargoIdentifier = UUID.randomUUID()
+    String bookingOfferIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString(
         [
-            cargoIdentifier: cargoIdentifier,
+            bookingOfferIdentifier: bookingOfferIdentifier,
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
@@ -434,7 +434,7 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-booking/book-cargo")
+        post("/cargo-booking/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -468,11 +468,11 @@ class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandS
 
   void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguageParam]"() {
     given:
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: null, routeSpecification: null])
+    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: null, routeSpecification: null])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        put("/cargo-booking/book-cargo")
+        put("/cargo-booking/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)

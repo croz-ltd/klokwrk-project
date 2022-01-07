@@ -15,17 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapter.in.web
+package org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
+import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
+import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
 
-/**
- * Represents a web request for book cargo operation.
- * <p/>
- * Very often, web interface will use <code>BookCargoCommandRequest</code> directly. However, <code>BookCargoCommandWebRequest</code> can be used for handling additional properties that are only web
- * specific and should be handled in controller before sending the <code>BookCargoCommandRequest</code> into domain application layer.
- */
 @CompileStatic
-class BookCargoCommandWebRequest extends BookCargoCommandRequest {
+interface BookingOfferSummaryQueryPortIn {
+  OperationResponse<BookingOfferSummaryQueryResponse> bookingOfferSummaryQuery(OperationRequest<BookingOfferSummaryQueryRequest> bookingOfferSummaryQueryOperationRequest)
 }

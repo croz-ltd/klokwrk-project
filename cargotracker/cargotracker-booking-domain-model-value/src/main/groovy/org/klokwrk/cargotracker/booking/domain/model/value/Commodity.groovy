@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.notNullValue
 /**
  * Encapsulates all attributes for a commodity, including the assigned container type.
  * <p/>
- * All attributes can be calculated from {@link ContainerDimensionType} and {@link CommodityInfo}, as demonstrated in {@code CargoAggregate}.
+ * All attributes can be calculated from {@link ContainerDimensionType} and {@link CommodityInfo}, as demonstrated in {@code BookingOfferAggregate}.
  * <p/>
  * Attributes of {@code Quantity<Mass>} type must have {@code Units.KILOGRAM} unit and a whole number value.
  */

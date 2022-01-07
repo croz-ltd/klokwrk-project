@@ -19,16 +19,16 @@ package org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.adapter.out
 
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryHandler
-import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryResponse
-import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.CargoSummaryJpaEntity
-import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.CargoSummaryJpaRepository
+import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.BookingOfferSummaryJpaEntity
+import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.BookingOfferSummaryJpaRepository
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.springframework.stereotype.Service
 
 /**
- * Implements cargo summary query handling.
+ * Implements query handling related to booking offer summary.
  * <p/>
  * Do note that there is no point for marking this class/method with <code>Transactional</code> annotations. Transaction is under control of Axon's <code>SpringTransactionManager</code> which does
  * not supports <code>Transactional</code> annotation. Rather <code>SpringTransactionManager</code> uses a single <code>TransactionDefinition</code> for all its message handlers.
@@ -40,21 +40,22 @@ import org.springframework.stereotype.Service
  */
 @Service
 @CompileStatic
-class CargoSummaryQueryHandlerService {
-  private final CargoSummaryJpaRepository cargoSummaryJpaRepository
+class BookingOfferSummaryQueryHandlerService {
+  private final BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository
 
-  CargoSummaryQueryHandlerService(CargoSummaryJpaRepository cargoSummaryJpaRepository) {
-    this.cargoSummaryJpaRepository = cargoSummaryJpaRepository
+  BookingOfferSummaryQueryHandlerService(BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository) {
+    this.bookingOfferSummaryJpaRepository = bookingOfferSummaryJpaRepository
   }
 
   @QueryHandler
-  CargoSummaryQueryResponse handleCargoSummaryQueryRequest(CargoSummaryQueryRequest cargoSummaryQueryRequest) {
-    CargoSummaryJpaEntity cargoSummaryJpaEntity = cargoSummaryJpaRepository.findByCargoIdentifier(cargoSummaryQueryRequest.cargoIdentifier)
+  BookingOfferSummaryQueryResponse handleBookingOfferSummaryQueryRequest(BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest) {
+    BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = bookingOfferSummaryJpaRepository.findByBookingOfferIdentifier(bookingOfferSummaryQueryRequest.bookingOfferIdentifier)
 
-    if (!cargoSummaryJpaEntity) {
+    if (!bookingOfferSummaryJpaEntity) {
       throw new QueryException(ViolationInfo.NOT_FOUND)
     }
 
-    return new CargoSummaryQueryResponse(cargoSummaryJpaEntity.properties)
+    BookingOfferSummaryQueryResponse bookingOfferSummaryQueryResponse = new BookingOfferSummaryQueryResponse(bookingOfferSummaryJpaEntity.properties)
+    return bookingOfferSummaryQueryResponse
   }
 }

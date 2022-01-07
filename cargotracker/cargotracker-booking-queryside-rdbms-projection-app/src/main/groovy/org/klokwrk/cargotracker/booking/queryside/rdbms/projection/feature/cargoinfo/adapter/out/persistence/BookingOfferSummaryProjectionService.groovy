@@ -20,23 +20,23 @@ package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.feature.carg
 import groovy.transform.CompileStatic
 import org.axonframework.eventhandling.DomainEventMessage
 import org.axonframework.eventhandling.EventHandler
-import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
-import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.CargoSummaryJpaRepository
+import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
+import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.BookingOfferSummaryJpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
 @CompileStatic
-class CargoSummaryProjectionService {
-  private final CargoSummaryJpaRepository cargoSummaryJpaRepository
+class BookingOfferSummaryProjectionService {
+  private final BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository
 
-  CargoSummaryProjectionService(CargoSummaryJpaRepository cargoSummaryJpaRepository) {
-    this.cargoSummaryJpaRepository = cargoSummaryJpaRepository
+  BookingOfferSummaryProjectionService(BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository) {
+    this.bookingOfferSummaryJpaRepository = bookingOfferSummaryJpaRepository
   }
 
   @EventHandler
-  void onCargoBookedEvent(CargoBookedEvent cargoBookedEvent, DomainEventMessage domainEventMessage) {
-    cargoSummaryJpaRepository.save(CargoSummaryFactory.createCargoSummaryJpaEntity(cargoBookedEvent, domainEventMessage))
+  void onBookingOfferCreatedEvent(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
+    bookingOfferSummaryJpaRepository.save(BookingOfferSummaryJpaEntityFactory.createBookingOfferSummaryJpaEntity(bookingOfferCreatedEvent, domainEventMessage))
   }
 }

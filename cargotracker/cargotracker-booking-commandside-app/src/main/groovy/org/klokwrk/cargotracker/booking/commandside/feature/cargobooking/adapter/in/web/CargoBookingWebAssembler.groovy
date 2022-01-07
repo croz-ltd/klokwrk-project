@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.adapte
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFactory
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.web.util.ClientIpAddressExtractor
 
@@ -29,12 +29,14 @@ import javax.servlet.http.HttpServletRequest
 @CompileStatic
 class CargoBookingWebAssembler {
 
-  static OperationRequest<BookCargoCommandRequest> toBookCargoCommandOperationRequest(BookCargoCommandWebRequest bookCargoCommandWebRequest, HttpServletRequest httpServletRequest) {
+  static OperationRequest<CreateBookingOfferCommandRequest> toCreateBookingOfferCommandOperationRequest(
+      CreateBookingOfferCommandWebRequest createBookingOfferCommandWebRequest, HttpServletRequest httpServletRequest)
+  {
     Map metadataMap = WebMetaDataFactory.createMetaDataMapForWebBookingChannel(ClientIpAddressExtractor.extractClientIpAddress(httpServletRequest))
 
-    OperationRequest<BookCargoCommandRequest> bookCargoCommandOperationRequest =
-        new OperationRequest(payload: new BookCargoCommandRequest(bookCargoCommandWebRequest.properties), metaData: metadataMap)
+    OperationRequest<CreateBookingOfferCommandRequest> createBookingOfferCommandOperationRequest =
+        new OperationRequest(payload: new CreateBookingOfferCommandRequest(createBookingOfferCommandWebRequest.properties), metaData: metadataMap)
 
-    return bookCargoCommandOperationRequest
+    return createBookingOfferCommandOperationRequest
   }
 }

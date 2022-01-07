@@ -36,7 +36,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
     //noinspection HttpUrlsUsage
-    String commandCargoBookUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
+    String createBookingOfferCommandUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/create-booking-offer"
     String commandPostRequestBody = """
         {
           "routeSpecification": {
@@ -55,7 +55,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
         }
         """
 
-    Request commandRequest = Request.Post(commandCargoBookUrl)
+    Request commandRequest = Request.Post(createBookingOfferCommandUrl)
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
@@ -67,11 +67,11 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     Integer commandResponseStatusCode = commandResponse.statusLine.statusCode
 
     Object commandResponseJson = new JsonSlurper().parseText(commandResponse.entity.content.text)
-    String commandResponseCargoIdentifier = commandResponseJson.payload.cargoId.identifier
+    String commandResponseBookingOfferIdentifier = commandResponseJson.payload.bookingOfferId.identifier
 
     then:
     commandResponseStatusCode == 200
-    commandResponseCargoIdentifier
+    commandResponseBookingOfferIdentifier
 
     where:
     acceptLanguageHeaderParam | _
@@ -87,7 +87,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
     //noinspection HttpUrlsUsage
-    String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
+    String createBookingOfferCommandUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/create-booking-offer"
     String commandPostRequestBody = """
         {
           "routeSpecification": {
@@ -106,16 +106,16 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
         """
 
     //noinspection HttpUrlsUsage
-    String cargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-info/cargo-summary"
-    Closure<String> queryPostRequestBodyClosure = { String commandResponseCargoIdentifier ->
+    String bookingOfferSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-info/booking-offer-summary"
+    Closure<String> queryPostRequestBodyClosure = { String commandResponseBookingOfferIdentifier ->
       """
       {
-        "cargoIdentifier": "${ commandResponseCargoIdentifier }"
+        "bookingOfferIdentifier": "${ commandResponseBookingOfferIdentifier }"
       }
       """
     }
 
-    Request commandRequest = Request.Post(commandBookCargoUrl)
+    Request commandRequest = Request.Post(createBookingOfferCommandUrl)
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
@@ -127,20 +127,20 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     Integer commandResponseStatusCode = commandResponse.statusLine.statusCode
 
     Object commandResponseJson = new JsonSlurper().parseText(commandResponse.entity.content.text)
-    String commandResponseCargoIdentifier = commandResponseJson.payload.cargoId.identifier
+    String commandResponseBookingOfferIdentifier = commandResponseJson.payload.bookingOfferId.identifier
 
     then:
     commandResponseStatusCode == 200
-    commandResponseCargoIdentifier
+    commandResponseBookingOfferIdentifier
 
     new PollingConditions(timeout: 5, initialDelay: 0, delay: 0.05).eventually {
       // given
-      Request queryRequest = Request.Post(cargoSummaryQueryUrl)
+      Request queryRequest = Request.Post(bookingOfferSummaryQueryUrl)
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
                                     .addHeader("Accept-Language", acceptLanguageHeaderParam)
-                                    .bodyString(queryPostRequestBodyClosure(commandResponseCargoIdentifier), ContentType.APPLICATION_JSON)
+                                    .bodyString(queryPostRequestBodyClosure(commandResponseBookingOfferIdentifier), ContentType.APPLICATION_JSON)
 
       // when
       HttpResponse queryResponse = queryRequest.execute().returnResponse()
@@ -149,7 +149,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
       // then:
       queryResponseStatusCode == 200
-      queryResponseJson.payload.cargoIdentifier == commandResponseCargoIdentifier
+      queryResponseJson.payload.bookingOfferIdentifier == commandResponseBookingOfferIdentifier
     }
 
     where:
@@ -166,7 +166,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
     //noinspection HttpUrlsUsage
-    String commandBookCargoUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/book-cargo"
+    String createBookingOfferCommandUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/create-booking-offer"
     String commandPostRequestBody = """
         {
           "routeSpecification": {
@@ -185,7 +185,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
         }
         """
 
-    Request commandRequest = Request.Post(commandBookCargoUrl)
+    Request commandRequest = Request.Post(createBookingOfferCommandUrl)
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
@@ -212,14 +212,14 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
   void "query - should not find non-existing cargo: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
     //noinspection HttpUrlsUsage
-    String cargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-info/cargo-summary"
+    String bookingOfferSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-info/booking-offer-summary"
     String queryPostRequestBody = """
       {
-        "cargoIdentifier": "${ UUID.randomUUID() }"
+        "bookingOfferIdentifier": "${ UUID.randomUUID() }"
       }
       """
 
-    Request queryRequest = Request.Post(cargoSummaryQueryUrl)
+    Request queryRequest = Request.Post(bookingOfferSummaryQueryUrl)
                                   .addHeader("Content-Type", "application/json")
                                   .addHeader("Accept", "application/json")
                                   .addHeader("Accept-Charset", "utf-8")

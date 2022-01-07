@@ -19,10 +19,10 @@ package org.klokwrk.cargotracker.booking.domain.model.value
 
 import spock.lang.Specification
 
-class CargoIdSpecification extends Specification {
+class BookingOfferIdSpecification extends Specification {
   void "map constructor should work for valid arguments"() {
     expect:
-    new CargoId(identifier: identifierParam)
+    new BookingOfferId(identifier: identifierParam)
 
     where:
     identifierParam                        | _
@@ -34,7 +34,7 @@ class CargoIdSpecification extends Specification {
 
   void "map constructor should fail for invalid arguments"() {
     when:
-    new CargoId(identifier: identifierParam)
+    new BookingOfferId(identifier: identifierParam)
 
     then:
     AssertionError assertionError = thrown(AssertionError)
@@ -54,7 +54,7 @@ class CargoIdSpecification extends Specification {
 
   void "createWithGeneratedIdentifier() should produce valid CargoId"() {
     when:
-    CargoId.createWithGeneratedIdentifier()
+    BookingOfferId.createWithGeneratedIdentifier()
 
     then:
     noExceptionThrown()
@@ -62,7 +62,7 @@ class CargoIdSpecification extends Specification {
 
   void "createWithGeneratedIdentifierIfNeeded() should produce valid CargoId for valid parameter"() {
     when:
-    CargoId.createWithGeneratedIdentifierIfNeeded(uuidStringParam)
+    BookingOfferId.createWithGeneratedIdentifierIfNeeded(uuidStringParam)
 
     then:
     noExceptionThrown()
@@ -79,7 +79,7 @@ class CargoIdSpecification extends Specification {
 
   void "createWithGeneratedIdentifierIfNeeded() should fail for invalid parameter"() {
     when:
-    CargoId.createWithGeneratedIdentifierIfNeeded(uuidStringParam)
+    BookingOfferId.createWithGeneratedIdentifierIfNeeded(uuidStringParam)
 
     then:
     AssertionError assertionError = thrown(AssertionError)

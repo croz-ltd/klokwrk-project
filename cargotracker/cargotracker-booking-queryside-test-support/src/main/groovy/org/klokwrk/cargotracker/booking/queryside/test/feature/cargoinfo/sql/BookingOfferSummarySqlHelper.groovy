@@ -22,14 +22,16 @@ import groovy.sql.Sql
 import groovy.transform.CompileStatic
 
 @CompileStatic
-class CargoSummarySqlHelper {
-  static Long selectCurrentCargoSummaryRecordsCount(Sql groovySql) {
-    GroovyRowResult groovyRowResult = groovySql.firstRow("SELECT count(*) as recordsCount from cargo_summary")
+class BookingOfferSummarySqlHelper {
+  static Long selectCurrentBookingOfferSummaryRecordsCount(Sql groovySql) {
+    GroovyRowResult groovyRowResult = groovySql.firstRow("SELECT count(*) as recordsCount from booking_offer_summary")
     return groovyRowResult.recordsCount as Long
   }
 
-  static Map<String, ?> selectCargoSummaryRecord(Sql groovySql, String cargoIdentifier) {
-    List<GroovyRowResult> groovyRowResultList = groovySql.rows([cargoIdentifier: cargoIdentifier], "SELECT * from cargo_summary where cargo_identifier = :cargoIdentifier")
+  static Map<String, ?> selectBookingOfferSummaryRecord(Sql groovySql, String bookingOfferIdentifier) {
+    List<GroovyRowResult> groovyRowResultList =
+        groovySql.rows([bookingOfferIdentifier: bookingOfferIdentifier], "SELECT * from booking_offer_summary where booking_offer_identifier = :bookingOfferIdentifier")
+
     return groovyRowResultList[0] as Map<String, ?>
   }
 }

@@ -19,9 +19,9 @@ package org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application
 
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
-import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryPortIn
-import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryPortIn
+import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.test.base.AbstractQuerySideIntegrationSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
@@ -55,24 +55,24 @@ class CargoInfoApplicationServiceIntegrationSpecification extends AbstractQueryS
   Sql groovySql
 
   @Autowired
-  CargoSummaryQueryPortIn cargoSummaryQueryPortIn
+  BookingOfferSummaryQueryPortIn bookingOfferSummaryQueryPortIn
 
   void "should work for correct request - [locale: #localeParam]"() {
     given:
-    String myCargoIdentifier = publishAndWaitForProjectedCargoBookedEvent(eventBus, groovySql)
+    String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
 
-    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(cargoIdentifier: myCargoIdentifier)
-    OperationRequest<CargoSummaryQueryRequest> operationRequest = new OperationRequest(
-        payload: cargoSummaryQueryRequest,
+    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest = new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: myBookingOfferIdentifier)
+    OperationRequest<BookingOfferSummaryQueryRequest> operationRequest = new OperationRequest(
+        payload: bookingOfferSummaryQueryRequest,
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): localeParam]
     )
 
     when:
-    OperationResponse<CargoSummaryQueryResponse> operationResponse = cargoSummaryQueryPortIn.cargoSummaryQuery(operationRequest)
+    OperationResponse<BookingOfferSummaryQueryResponse> operationResponse = bookingOfferSummaryQueryPortIn.bookingOfferSummaryQuery(operationRequest)
 
     then:
     verifyAll(operationResponse.payload) {
-      cargoIdentifier == myCargoIdentifier
+      bookingOfferIdentifier == myBookingOfferIdentifier
       aggregateVersion == 0
       originLocation == "HRRJK"
       destinationLocation == "NLRTM"
@@ -91,16 +91,16 @@ class CargoInfoApplicationServiceIntegrationSpecification extends AbstractQueryS
     Locale.forLanguageTag("en")    | _
   }
 
-  void "should throw when CargoSummary cannot be found - [locale: #locale]"() {
+  void "should throw when booking offer summary cannot be found - [locale: #locale]"() {
     given:
-    CargoSummaryQueryRequest cargoSummaryQueryRequest = new CargoSummaryQueryRequest(cargoIdentifier: UUID.randomUUID())
-    OperationRequest<CargoSummaryQueryRequest> operationRequest = new OperationRequest(
-        payload: cargoSummaryQueryRequest,
+    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest = new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: UUID.randomUUID())
+    OperationRequest<BookingOfferSummaryQueryRequest> operationRequest = new OperationRequest(
+        payload: bookingOfferSummaryQueryRequest,
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): locale]
     )
 
     when:
-    cargoSummaryQueryPortIn.cargoSummaryQuery(operationRequest)
+    bookingOfferSummaryQueryPortIn.bookingOfferSummaryQuery(operationRequest)
 
     then:
     QueryException queryException = thrown()

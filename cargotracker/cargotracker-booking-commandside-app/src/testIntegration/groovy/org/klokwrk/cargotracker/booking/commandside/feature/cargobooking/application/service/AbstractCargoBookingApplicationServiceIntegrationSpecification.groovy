@@ -25,10 +25,10 @@ import org.axonframework.commandhandling.CommandBus
 import org.axonframework.common.Registration
 import org.axonframework.messaging.InterceptorChain
 import org.axonframework.messaging.unitofwork.UnitOfWork
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandPortIn
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandRequest
-import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.BookCargoCommandResponse
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandPortIn
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CommodityInfoData
+import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.cargobooking.application.port.in.RouteSpecificationData
 import org.klokwrk.cargotracker.booking.commandside.infrastructure.springbootconfig.SpringBootConfig
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
@@ -52,7 +52,7 @@ import java.time.Instant
 
 abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
   @Autowired
-  BookCargoCommandPortIn bookCargoCommandPortIn
+  CreateBookingOfferCommandPortIn createBookingOfferCommandPortIn
 
   @Autowired
   CommandBus commandBus
@@ -68,9 +68,9 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     Instant currentInstantRoundedAndTwoHours = InstantUtils.roundUpInstantToTheHour(currentInstantAndTwoHours)
     Instant currentInstantRoundedAndThreeHours = InstantUtils.roundUpInstantToTheHour(currentInstantAndThreeHours)
 
-    String myCargoIdentifier = UUID.randomUUID()
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        cargoIdentifier: myCargoIdentifier,
+    String myBookingOfferIdentifier = UUID.randomUUID()
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: myBookingOfferIdentifier,
         routeSpecification: new RouteSpecificationData(
             originLocation: "NLRTM", destinationLocation: "HRRJK",
             departureEarliestTime: currentInstantAndOneHour, departureLatestTime: currentInstantAndTwoHours,
@@ -91,16 +91,16 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     ))
 
     when:
-    OperationResponse<BookCargoCommandResponse> bookCargoCommandOperationResponse =
-        bookCargoCommandPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoCommandRequest, metaData: requestMetadataMap))
+    OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommandOperationResponse =
+        createBookingOfferCommandPortIn.createBookingOfferCommand(new OperationRequest<>(payload: createBookingOfferCommandRequest, metaData: requestMetadataMap))
 
-    BookCargoCommandResponse bookCargoCommandResponsePayload = bookCargoCommandOperationResponse.payload
-    Map bookCargoCommandResponseMetadata = bookCargoCommandOperationResponse.metaData
+    CreateBookingOfferCommandResponse createBookingOfferCommandResponsePayload = createBookingOfferCommandOperationResponse.payload
+    Map createBookingOfferCommandResponseMetadata = createBookingOfferCommandOperationResponse.metaData
 
     then:
-    bookCargoCommandResponseMetadata.isEmpty()
-    verifyAll(bookCargoCommandResponsePayload) {
-      cargoId.identifier == myCargoIdentifier
+    createBookingOfferCommandResponseMetadata.isEmpty()
+    verifyAll(createBookingOfferCommandResponsePayload) {
+      bookingOfferId.identifier == myBookingOfferIdentifier
 
       routeSpecification.with {
         originLocation.name == "Rotterdam"
@@ -139,9 +139,9 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
       return interceptorChain.proceed()
     })
 
-    String myCargoIdentifier = UUID.randomUUID()
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        cargoIdentifier: myCargoIdentifier,
+    String myBookingOfferIdentifier = UUID.randomUUID()
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: myBookingOfferIdentifier,
         routeSpecification: new RouteSpecificationData(
             originLocation: "NLRTM", destinationLocation: "HRRJK",
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
@@ -153,20 +153,20 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
-    OperationResponse<BookCargoCommandResponse> bookCargoCommandOperationResponse =
-        bookCargoCommandPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoCommandRequest, metaData: requestMetadataMap))
+    OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommandOperationResponse =
+        createBookingOfferCommandPortIn.createBookingOfferCommand(new OperationRequest<>(payload: createBookingOfferCommandRequest, metaData: requestMetadataMap))
 
-    BookCargoCommandResponse bookCargoCommandResponsePayload = bookCargoCommandOperationResponse.payload
-    Map bookCargoCommandResponseMetadata = bookCargoCommandOperationResponse.metaData
+    CreateBookingOfferCommandResponse createBookingOfferCommandResponsePayload = createBookingOfferCommandOperationResponse.payload
+    Map createBookingOfferCommandResponseMetadata = createBookingOfferCommandOperationResponse.metaData
     List<ILoggingEvent> loggingEventList = listAppender.list
 
     then:
-    bookCargoCommandResponseMetadata.isEmpty()
-    bookCargoCommandResponsePayload.cargoId.identifier == myCargoIdentifier
+    createBookingOfferCommandResponseMetadata.isEmpty()
+    createBookingOfferCommandResponsePayload.bookingOfferId.identifier == myBookingOfferIdentifier
 
     loggingEventList.size() == 1
     loggingEventList[0].level == Level.INFO
-    loggingEventList[0].formattedMessage.contains("Processing of Command [BookCargoCommand] resulted in an exception. Will retry 2 more time(s)...")
+    loggingEventList[0].formattedMessage.contains("Processing of Command [CreateBookingOfferCommand] resulted in an exception. Will retry 2 more time(s)...")
 
     cleanup:
     handlerInterceptorRegistration.close()
@@ -196,9 +196,9 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
       return interceptorChain.proceed()
     })
 
-    String cargoIdentifier = UUID.randomUUID()
-    BookCargoCommandRequest bookCargoCommandRequest = new BookCargoCommandRequest(
-        cargoIdentifier: cargoIdentifier,
+    String bookingOfferIdentifier = UUID.randomUUID()
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: bookingOfferIdentifier,
         routeSpecification: new RouteSpecificationData(
             originLocation: "NLRTM", destinationLocation: "HRRJK",
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
@@ -210,7 +210,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     when:
-    bookCargoCommandPortIn.bookCargoCommand(new OperationRequest<>(payload: bookCargoCommandRequest, metaData: requestMetadataMap))
+    createBookingOfferCommandPortIn.createBookingOfferCommand(new OperationRequest<>(payload: createBookingOfferCommandRequest, metaData: requestMetadataMap))
 
     then:
     thrown(RemoteHandlerException)
@@ -219,10 +219,10 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
       loggingEventList.size() == maxRetryCount + 1
 
       loggingEventList[0].level == Level.INFO
-      loggingEventList[0].formattedMessage.contains("Processing of Command [BookCargoCommand] resulted in an exception. Will retry 2 more time(s)...")
+      loggingEventList[0].formattedMessage.contains("Processing of Command [CreateBookingOfferCommand] resulted in an exception. Will retry 2 more time(s)...")
 
       loggingEventList[maxRetryCount].level == Level.INFO
-      loggingEventList[maxRetryCount].formattedMessage.contains("Processing of Command [BookCargoCommand] resulted in an exception 4 times. Giving up permanently.")
+      loggingEventList[maxRetryCount].formattedMessage.contains("Processing of Command [CreateBookingOfferCommand] resulted in an exception 4 times. Giving up permanently.")
     })
 
     cleanup:

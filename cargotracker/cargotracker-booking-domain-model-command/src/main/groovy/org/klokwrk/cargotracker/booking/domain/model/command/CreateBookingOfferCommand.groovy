@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.domain.model.command
 
 import groovy.transform.CompileStatic
 import groovy.transform.Generated
-import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
+import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
@@ -34,8 +34,8 @@ import static org.hamcrest.Matchers.notNullValue
 
 @KwrkImmutable
 @CompileStatic
-class BookCargoCommand implements BaseCreateCommand, PostMapConstructorCheckable {
-  CargoId cargoId
+class CreateBookingOfferCommand implements BaseCreateCommand, PostMapConstructorCheckable {
+  BookingOfferId bookingOfferId
   RouteSpecification routeSpecification
   CommodityInfo commodityInfo
   ContainerDimensionType containerDimensionType
@@ -43,7 +43,7 @@ class BookCargoCommand implements BaseCreateCommand, PostMapConstructorCheckable
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     // Here we are comply to the validation ordering as explained in ADR-0013.
-    requireMatch(cargoId, notNullValue())
+    requireMatch(bookingOfferId, notNullValue())
     requireMatch(routeSpecification, notNullValue())
     requireMatch(commodityInfo, notNullValue())
     requireMatch(containerDimensionType, notNullValue())
@@ -64,8 +64,8 @@ class BookCargoCommand implements BaseCreateCommand, PostMapConstructorCheckable
     // object. In fact, that concrete constraint is repeated in RouteSpecification, therefore the same constraint in command will never be violated as RouteSpecification is already constructed.
     // Still, we'll also leave constraint here for illustration purposes.
 
-    requireKnownLocation(routeSpecification.originLocation, "bookCargoCommand.originLocationUnknown")
-    requireKnownLocation(routeSpecification.destinationLocation, "bookCargoCommand.destinationLocationUnknown")
+    requireKnownLocation(routeSpecification.originLocation, "createBookingOfferCommand.originLocationUnknown")
+    requireKnownLocation(routeSpecification.destinationLocation, "createBookingOfferCommand.destinationLocationUnknown")
   }
 
   @Generated // To avoid unnecessary drop-down in code coverage (see the last paragraph in comment inside postMapConstructorCheck() method).
@@ -76,6 +76,6 @@ class BookCargoCommand implements BaseCreateCommand, PostMapConstructorCheckable
   }
 
   String getAggregateIdentifier() {
-    return cargoId.identifier
+    return bookingOfferId.identifier
   }
 }

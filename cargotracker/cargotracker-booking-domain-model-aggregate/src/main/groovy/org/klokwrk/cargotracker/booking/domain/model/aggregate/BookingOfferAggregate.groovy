@@ -27,9 +27,9 @@ import org.axonframework.modelling.command.AggregateCreationPolicy
 import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
-import org.klokwrk.cargotracker.booking.domain.model.command.BookCargoCommand
-import org.klokwrk.cargotracker.booking.domain.model.event.CargoBookedEvent
-import org.klokwrk.cargotracker.booking.domain.model.value.CargoId
+import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
+import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
+import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
@@ -53,8 +53,8 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply
 @MapConstructor(noArg = true)
 @Aggregate
 @CompileStatic
-class CargoAggregate {
-  CargoId cargoId
+class BookingOfferAggregate {
+  BookingOfferId bookingOfferId
   RouteSpecification routeSpecification
   BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
@@ -79,7 +79,7 @@ class CargoAggregate {
     // very similar policy we have in BookingOfferCommodities.canAcceptCommodity(). But there it is cumulative across thw whole BookingOffer.
     // will comment for now, and rely on cumulative policy only. Maybe introduce later
 //    if (commodityContainerCount > 5000) {
-//      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey("cargoAggregate.commodityContainerCountTooHigh"))
+//      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey("bookingOfferAggregate.commodityContainerCountTooHigh"))
 //    }
 
     Integer commodityMaxRecommendedWeightPerContainerValueInKilograms = commodityTotalWeightValueInKilograms
@@ -125,20 +125,20 @@ class CargoAggregate {
   @AggregateIdentifier
   String getAggregateIdentifier() {
     // Note: Must use null safe navigation here as cargoId might be null when first command is not successful (and axon requires aggregate identifier for further processing)
-    return cargoId?.identifier
+    return bookingOfferId?.identifier
   }
 
   @CommandHandler
   @CreationPolicy(AggregateCreationPolicy.ALWAYS)
-  CargoAggregate bookCargo(BookCargoCommand bookCargoCommand, MetaData metaData) {
-    Commodity commodity = calculateCommodity(bookCargoCommand.containerDimensionType, bookCargoCommand.commodityInfo)
+  BookingOfferAggregate createBookingOffer(CreateBookingOfferCommand createBookingOfferCommand, MetaData metaData) {
+    Commodity commodity = calculateCommodity(createBookingOfferCommand.containerDimensionType, createBookingOfferCommand.commodityInfo)
 
     // Check for container count per commodity type.
     // The largest ship in the world can carry 24000 containers. We should limit container count to the max of 5000 per a single booking, for example.
     // We can have two different policies here. One for limiting container count per commodity type, and another one for limiting container count for booking.
     // In a simpler case, both policies can be the same. In that case with a single commodity type we can allocate complete booking capacity.
     if (!bookingOfferCommodities.canAcceptCommodity(commodity)) { // TODO dmurat: container count per booking policy
-      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey("cargoAggregate.bookingOfferCommodities.cannotAcceptCommodity"))
+      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey("bookingOfferAggregate.bookingOfferCommodities.cannotAcceptCommodity"))
     }
 
     // Note: cannot store here directly as state change should happen in event sourcing handler.
@@ -147,22 +147,22 @@ class CargoAggregate {
     Quantity<Mass> bookingTotalCommodityWeight = preCalculatedTotals.v1
     Integer bookingTotalContainerCount = preCalculatedTotals.v2
 
-    CargoBookedEvent cargoBookedEvent = new CargoBookedEvent(
-        cargoId: bookCargoCommand.cargoId,
-        routeSpecification: bookCargoCommand.routeSpecification,
+    BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
+        bookingOfferId: createBookingOfferCommand.bookingOfferId,
+        routeSpecification: createBookingOfferCommand.routeSpecification,
         commodity: commodity,
         bookingTotalCommodityWeight: bookingTotalCommodityWeight,
         bookingTotalContainerCount: bookingTotalContainerCount
     )
 
-    apply(cargoBookedEvent, metaData)
+    apply(bookingOfferCreatedEvent, metaData)
     return this
   }
 
   @EventSourcingHandler
-  void onCargoBookedEvent(CargoBookedEvent cargoBookedEvent) {
-    cargoId = cargoBookedEvent.cargoId
-    routeSpecification = cargoBookedEvent.routeSpecification
-    bookingOfferCommodities.storeCommodity(cargoBookedEvent.commodity)
+  void onBookingOfferCreatedEvent(BookingOfferCreatedEvent bookingOfferCreatedEvent) {
+    bookingOfferId = bookingOfferCreatedEvent.bookingOfferId
+    routeSpecification = bookingOfferCreatedEvent.routeSpecification
+    bookingOfferCommodities.storeCommodity(bookingOfferCreatedEvent.commodity)
   }
 }
