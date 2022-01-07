@@ -21,7 +21,7 @@ import org.axonframework.test.aggregate.AggregateTestFixture
 import org.axonframework.test.aggregate.ResultValidator
 import org.axonframework.test.aggregate.TestExecutor
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.CreateBookingOfferCommandFixtures
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.CargoBookedEventFixtures
+import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.BookingOfferCreatedEventFixtures
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
@@ -50,7 +50,7 @@ class BookingOfferAggregateSpecification extends Specification {
     then:
     resultValidator
         .expectSuccessfulHandlerExecution()
-        .expectEvents(CargoBookedEventFixtures.eventValidForCommand(createBookingOfferCommand))
+        .expectEvents(BookingOfferCreatedEventFixtures.eventValidForCommand(createBookingOfferCommand))
   }
 
   void "should work with acceptable commodity"() {

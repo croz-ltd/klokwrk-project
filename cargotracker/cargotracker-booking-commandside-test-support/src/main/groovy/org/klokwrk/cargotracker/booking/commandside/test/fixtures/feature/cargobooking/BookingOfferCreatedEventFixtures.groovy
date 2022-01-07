@@ -31,7 +31,7 @@ import tech.units.indriya.unit.Units
  * Contains test data fixtures for {@link BookingOfferCreatedEvent}.
  */
 @CompileStatic
-class CargoBookedEventFixtures {
+class BookingOfferCreatedEventFixtures {
   /**
    * Creates valid event where origin and destination locations form supported route.
    */

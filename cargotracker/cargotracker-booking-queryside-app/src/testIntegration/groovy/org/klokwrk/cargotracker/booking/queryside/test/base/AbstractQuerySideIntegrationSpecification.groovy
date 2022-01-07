@@ -22,7 +22,7 @@ import groovy.sql.Sql
 import org.awaitility.Awaitility
 import org.axonframework.eventhandling.EventBus
 import org.axonframework.eventhandling.GenericDomainEventMessage
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.CargoBookedEventFixtures
+import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.BookingOfferCreatedEventFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.AxonServerTestcontainersFactory
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
@@ -67,7 +67,7 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
   }
 
   static String publishAndWaitForProjectedBookingOfferCreatedEvent(
-      EventBus eventBus, Sql groovySql, BookingOfferCreatedEvent bookingOfferCreatedEvent = CargoBookedEventFixtures.eventValidRouteSpecification())
+      EventBus eventBus, Sql groovySql, BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtures.eventValidRouteSpecification())
   {
     Long startingCargoSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
     String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
