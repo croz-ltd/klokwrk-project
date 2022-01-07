@@ -106,7 +106,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
         """
 
     //noinspection HttpUrlsUsage
-    String cargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-info/cargo-summary"
+    String bookingOfferSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-info/booking-offer-summary"
     Closure<String> queryPostRequestBodyClosure = { String commandResponseBookingOfferIdentifier ->
       """
       {
@@ -135,7 +135,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
     new PollingConditions(timeout: 5, initialDelay: 0, delay: 0.05).eventually {
       // given
-      Request queryRequest = Request.Post(cargoSummaryQueryUrl)
+      Request queryRequest = Request.Post(bookingOfferSummaryQueryUrl)
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
@@ -212,14 +212,14 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
   void "query - should not find non-existing cargo: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
     //noinspection HttpUrlsUsage
-    String cargoSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-info/cargo-summary"
+    String bookingOfferSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-info/booking-offer-summary"
     String queryPostRequestBody = """
       {
         "bookingOfferIdentifier": "${ UUID.randomUUID() }"
       }
       """
 
-    Request queryRequest = Request.Post(cargoSummaryQueryUrl)
+    Request queryRequest = Request.Post(bookingOfferSummaryQueryUrl)
                                   .addHeader("Content-Type", "application/json")
                                   .addHeader("Accept", "application/json")
                                   .addHeader("Accept-Charset", "utf-8")

@@ -39,8 +39,8 @@ class CargoInfoWebController {
     this.bookingOfferSummaryQueryPortIn = bookingOfferSummaryQueryPortIn
   }
 
-  @PostMapping("/cargo-summary")
-  OperationResponse<BookingOfferSummaryQueryResponse> cargoSummaryQuery(@RequestBody BookingOfferSummaryQueryWebRequest webRequest, Locale locale) {
+  @PostMapping("/booking-offer-summary")
+  OperationResponse<BookingOfferSummaryQueryResponse> bookingOfferSummaryQuery(@RequestBody BookingOfferSummaryQueryWebRequest webRequest, Locale locale) {
     OperationResponse<BookingOfferSummaryQueryResponse> bookingOfferSummary =
         bookingOfferSummaryQueryPortIn.bookingOfferSummaryQuery(createOperationRequest(webRequest, BookingOfferSummaryQueryRequest, locale))
 

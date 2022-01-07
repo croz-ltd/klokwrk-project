@@ -78,7 +78,7 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-info/cargo-summary")
+        post("/cargo-info/booking-offer-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -123,7 +123,7 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-info/cargo-summary")
+        post("/cargo-info/booking-offer-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -181,7 +181,7 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-info/cargo-summary")
+        post("/cargo-info/booking-offer-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -231,7 +231,7 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        put("/cargo-info/cargo-summary")
+        put("/cargo-info/booking-offer-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
