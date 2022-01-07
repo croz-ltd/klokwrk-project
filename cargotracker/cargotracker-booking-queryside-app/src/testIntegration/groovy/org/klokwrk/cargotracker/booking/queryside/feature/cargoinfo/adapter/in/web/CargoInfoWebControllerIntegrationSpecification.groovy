@@ -73,8 +73,8 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
 
   void "should work for correct request - [acceptLanguage: #acceptLanguage]"() {
     given:
-    String myCargoIdentifier = publishAndWaitForProjectedCargoBookedEvent(eventBus, groovySql)
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: myCargoIdentifier])
+    String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
+    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -105,7 +105,7 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
     }
 
     verifyAll(responseContentMap.payload as Map) {
-      cargoIdentifier == myCargoIdentifier
+      cargoIdentifier == myBookingOfferIdentifier
       aggregateVersion == 0
       originLocation == "HRRJK"
       destinationLocation == "NLRTM"
@@ -119,7 +119,7 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
 
   @SuppressWarnings("CodeNarc.AbcMetric")
   void "should return expected response when request is not valid - validation failure - [acceptLanguage: #acceptLanguage]"() {
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: null])
+    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: null])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -159,9 +159,9 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
 
     verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
       it.size() == 2
-      root.type == "cargoSummaryQueryRequest"
+      root.type == "bookingOfferSummaryQueryRequest"
       constraintViolations.size() == 1
-      constraintViolations.find({ it.path == "cargoIdentifier" }).type == "notBlank"
+      constraintViolations.find({ it.path == "bookingOfferIdentifier" }).type == "notBlank"
     }
 
     verifyAll(responseContentMap.payload as Map) {
@@ -176,8 +176,8 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
 
   void "should return expected response when CargoSummary cannot be found - domain failure - [acceptLanguage: #acceptLanguage]"() {
     given:
-    String myCargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: myCargoIdentifier])
+    String myBookingOfferIdentifier = UUID.randomUUID()
+    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -226,8 +226,8 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
 
   void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguage]"() {
     given:
-    String myCargoIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([cargoIdentifier: myCargoIdentifier])
+    String myBookingOfferIdentifier = UUID.randomUUID()
+    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier])
 
     when:
     MvcResult mvcResult = mockMvc.perform(

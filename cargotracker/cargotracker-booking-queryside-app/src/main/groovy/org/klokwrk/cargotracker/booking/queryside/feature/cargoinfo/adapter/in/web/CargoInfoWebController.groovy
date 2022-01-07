@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.adapter.in.
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryPortIn
-import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
@@ -40,13 +40,13 @@ class CargoInfoWebController {
   }
 
   @PostMapping("/cargo-summary")
-  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(@RequestBody CargoSummaryQueryWebRequest webRequest, Locale locale) {
-    OperationResponse<CargoSummaryQueryResponse> cargoSummary = cargoSummaryQueryPortIn.cargoSummaryQuery(createOperationRequest(webRequest, CargoSummaryQueryRequest, locale))
+  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(@RequestBody BookingOfferSummaryQueryWebRequest webRequest, Locale locale) {
+    OperationResponse<CargoSummaryQueryResponse> cargoSummary = cargoSummaryQueryPortIn.cargoSummaryQuery(createOperationRequest(webRequest, BookingOfferSummaryQueryRequest, locale))
     return cargoSummary
   }
 
   /**
-   * Creates {@link OperationRequest} from <code>webRequest</code> DTO.
+   * Creates {@link OperationRequest} from {@code webRequest} DTO.
    *
    * @param <P> Type of the {@link OperationRequest}'s payload.
    */

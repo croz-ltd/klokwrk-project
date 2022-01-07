@@ -18,10 +18,10 @@
 package org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.adapter.in.web
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryRequest
 
-// In general, in web interface we use CargoSummaryQueryRequest directly, but CargoSummaryQueryWebRequest can be used for adding additional properties that are only web specific and handled in
-// controller before sending CargoSummaryQueryRequest into domain facade.
+// In general, in web interface we use BookingOfferSummaryQueryRequest directly, but BookingOfferSummaryQueryWebRequest can be used for adding additional properties that are only web specific and
+// handled in controller before sending BookingOfferSummaryQueryRequest into domain facade.
 @CompileStatic
-class CargoSummaryQueryWebRequest extends CargoSummaryQueryRequest {
+class BookingOfferSummaryQueryWebRequest extends BookingOfferSummaryQueryRequest {
 }

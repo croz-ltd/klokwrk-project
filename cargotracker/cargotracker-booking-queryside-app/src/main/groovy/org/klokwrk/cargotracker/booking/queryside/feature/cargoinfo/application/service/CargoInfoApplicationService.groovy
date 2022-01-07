@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryGateway
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryPortIn
-import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.BookingOfferSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryResponse
 import org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ResponseMetaData
@@ -43,11 +43,11 @@ class CargoInfoApplicationService implements CargoSummaryQueryPortIn {
   }
 
   @Override
-  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(OperationRequest<CargoSummaryQueryRequest> cargoSummaryQueryOperationRequest) {
-    requireMatch(cargoSummaryQueryOperationRequest, notNullValue())
-    validationService.validate(cargoSummaryQueryOperationRequest.payload)
+  OperationResponse<CargoSummaryQueryResponse> cargoSummaryQuery(OperationRequest<BookingOfferSummaryQueryRequest> bookingOfferSummaryQueryOperationRequest) {
+    requireMatch(bookingOfferSummaryQueryOperationRequest, notNullValue())
+    validationService.validate(bookingOfferSummaryQueryOperationRequest.payload)
 
-    CargoSummaryQueryResponse cargoSummaryQueryResponse = queryGatewayAdapter.query(cargoSummaryQueryOperationRequest, CargoSummaryQueryResponse)
+    CargoSummaryQueryResponse cargoSummaryQueryResponse = queryGatewayAdapter.query(bookingOfferSummaryQueryOperationRequest, CargoSummaryQueryResponse)
     return cargoSummaryQueryOperationResponseFromCargoSummaryQueryResponse(cargoSummaryQueryResponse)
   }
 

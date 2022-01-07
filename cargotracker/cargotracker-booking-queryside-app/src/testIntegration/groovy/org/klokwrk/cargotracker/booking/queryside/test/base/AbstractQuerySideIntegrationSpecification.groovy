@@ -66,7 +66,7 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
     registry.add("spring.datasource.password", { postgresqlServer.password })
   }
 
-  static String publishAndWaitForProjectedCargoBookedEvent(
+  static String publishAndWaitForProjectedBookingOfferCreatedEvent(
       EventBus eventBus, Sql groovySql, BookingOfferCreatedEvent bookingOfferCreatedEvent = CargoBookedEventFixtures.eventValidRouteSpecification())
   {
     Long startingCargoSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
