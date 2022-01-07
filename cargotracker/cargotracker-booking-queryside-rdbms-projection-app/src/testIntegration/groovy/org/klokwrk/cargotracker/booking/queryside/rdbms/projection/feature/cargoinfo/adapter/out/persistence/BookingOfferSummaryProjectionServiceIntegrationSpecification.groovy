@@ -26,7 +26,7 @@ import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMe
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.test.base.AbstractRdbmsProjectionIntegrationSpecification
 import org.klokwrk.cargotracker.booking.queryside.test.axon.GenericDomainEventMessageFactory
-import org.klokwrk.cargotracker.booking.queryside.test.feature.cargoinfo.sql.CargoSummarySqlHelper
+import org.klokwrk.cargotracker.booking.queryside.test.feature.cargoinfo.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.lang.groovy.constant.CommonConstants
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -57,7 +57,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
 
   void "should work for event message with metadata"() {
     given:
-    Long startingBookingOfferSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
+    Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtures.eventValidRouteSpecification()
     String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
@@ -69,8 +69,8 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
 
     expect:
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
-      CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
-      verifyAll(CargoSummarySqlHelper.selectCargoSummaryRecord(groovySql, bookingOfferIdentifier)) {
+      BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
+      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
         size() == 7
         id >= 0
         booking_offer_identifier == bookingOfferIdentifier
@@ -85,7 +85,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
 
   void "should work for event message without metadata"() {
     given:
-    Long startingBookingOfferSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
+    Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtures.eventValidRouteSpecification()
     String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
@@ -95,8 +95,8 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
 
     expect:
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
-      CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
-      verifyAll(CargoSummarySqlHelper.selectCargoSummaryRecord(groovySql, bookingOfferIdentifier)) {
+      BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
+      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
         size() == 7
         id >= 0
         booking_offer_identifier == bookingOfferIdentifier

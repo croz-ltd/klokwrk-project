@@ -27,7 +27,7 @@ import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMe
 import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.AxonServerTestcontainersFactory
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.queryside.test.axon.GenericDomainEventMessageFactory
-import org.klokwrk.cargotracker.booking.queryside.test.feature.cargoinfo.sql.CargoSummarySqlHelper
+import org.klokwrk.cargotracker.booking.queryside.test.feature.cargoinfo.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsProjectionAppTestcontainersFactory
@@ -69,7 +69,7 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
   static String publishAndWaitForProjectedBookingOfferCreatedEvent(
       EventBus eventBus, Sql groovySql, BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtures.eventValidRouteSpecification())
   {
-    Long startingCargoSummaryRecordsCount = CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql)
+    Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
     String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage =
@@ -78,7 +78,7 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
     eventBus.publish(genericDomainEventMessage)
 
     // Wait for projection to complete
-    Awaitility.await().atMost(Duration.ofSeconds(10)).until({ CargoSummarySqlHelper.selectCurrentCargoSummaryRecordsCount(groovySql) == startingCargoSummaryRecordsCount + 1 })
+    Awaitility.await().atMost(Duration.ofSeconds(10)).until({ BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1 })
 
     return bookingOfferIdentifier
   }
