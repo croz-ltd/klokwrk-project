@@ -22,7 +22,7 @@ import org.axonframework.queryhandling.QueryHandler
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.cargoinfo.application.port.in.CargoSummaryQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.BookingOfferSummaryJpaEntity
-import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.CargoSummaryJpaRepository
+import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.BookingOfferSummaryJpaRepository
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.springframework.stereotype.Service
@@ -41,15 +41,15 @@ import org.springframework.stereotype.Service
 @Service
 @CompileStatic
 class CargoSummaryQueryHandlerService {
-  private final CargoSummaryJpaRepository cargoSummaryJpaRepository
+  private final BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository
 
-  CargoSummaryQueryHandlerService(CargoSummaryJpaRepository cargoSummaryJpaRepository) {
-    this.cargoSummaryJpaRepository = cargoSummaryJpaRepository
+  CargoSummaryQueryHandlerService(BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository) {
+    this.bookingOfferSummaryJpaRepository = bookingOfferSummaryJpaRepository
   }
 
   @QueryHandler
   CargoSummaryQueryResponse handleCargoSummaryQueryRequest(CargoSummaryQueryRequest cargoSummaryQueryRequest) {
-    BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = cargoSummaryJpaRepository.findByBookingOfferIdentifier(cargoSummaryQueryRequest.cargoIdentifier)
+    BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = bookingOfferSummaryJpaRepository.findByBookingOfferIdentifier(cargoSummaryQueryRequest.cargoIdentifier)
 
     if (!bookingOfferSummaryJpaEntity) {
       throw new QueryException(ViolationInfo.NOT_FOUND)

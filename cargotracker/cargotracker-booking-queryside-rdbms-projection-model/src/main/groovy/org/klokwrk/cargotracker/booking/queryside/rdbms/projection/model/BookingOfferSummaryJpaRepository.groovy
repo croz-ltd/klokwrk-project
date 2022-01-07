@@ -19,6 +19,6 @@ package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model
 
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface CargoSummaryJpaRepository extends JpaRepository<BookingOfferSummaryJpaEntity, Long> {
+interface BookingOfferSummaryJpaRepository extends JpaRepository<BookingOfferSummaryJpaEntity, Long> {
   BookingOfferSummaryJpaEntity findByBookingOfferIdentifier(String bookingOfferIdentifier)
 }
