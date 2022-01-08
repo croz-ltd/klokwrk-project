@@ -38,7 +38,7 @@ class DataSourceProxyBeanPostProcessorCustomSetupSpecification extends Specifica
    * <p/>
    * Should be used sparingly for performance reasons. It is much better to use standard Spring (Boot) means if appropriate.
    */
-  ApplicationContext createNewTestApplicationContext() {
+  ApplicationContext makeNewTestApplicationContext() {
     SpringBootTestContextBootstrapper contextBootstrapper = new SpringBootTestContextBootstrapper()
     contextBootstrapper.bootstrapContext = new DefaultBootstrapContext(DataSourceProxyBeanPostProcessorCustomSetupSpecification, new DefaultCacheAwareContextLoaderDelegate())
     MergedContextConfiguration contextConfiguration = contextBootstrapper.buildMergedContextConfiguration()
@@ -49,7 +49,7 @@ class DataSourceProxyBeanPostProcessorCustomSetupSpecification extends Specifica
 
   void "should be enabled by default"() {
     given:
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
 
     expect:
     //noinspection GroovyAssignabilityCheck,GrUnresolvedAccess
@@ -60,7 +60,7 @@ class DataSourceProxyBeanPostProcessorCustomSetupSpecification extends Specifica
   void "should be disabled when configured so"() {
     given:
     System.setProperty("klokwrk.datasourceproxy.enabled", "false")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
 
     expect:
     applicationContext.getBean("dataSource").properties.advisors == null
