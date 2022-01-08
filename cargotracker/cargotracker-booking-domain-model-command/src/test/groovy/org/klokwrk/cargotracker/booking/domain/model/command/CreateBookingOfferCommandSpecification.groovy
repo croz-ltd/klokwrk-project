@@ -54,7 +54,7 @@ class CreateBookingOfferCommandSpecification extends Specification {
 
   void "map constructor should work for correct input params"() {
     when:
-    BookingOfferId bookingOfferId = BookingOfferId.createWithGeneratedIdentifier()
+    BookingOfferId bookingOfferId = BookingOfferId.makeWithGeneratedIdentifier()
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
         bookingOfferId: bookingOfferId,
         routeSpecification: validRouteSpecification,
@@ -85,9 +85,9 @@ class CreateBookingOfferCommandSpecification extends Specification {
     where:
     bookingOfferIdParam                            | routeSpecificationParam | commodityInfoParam | containerDimensionTypeParam | messagePartParam
     null                                           | validRouteSpecification | validCommodityInfo | validContainerDimensionType | "notNullValue"
-    BookingOfferId.createWithGeneratedIdentifier() | null                    | validCommodityInfo | validContainerDimensionType | "notNullValue"
-    BookingOfferId.createWithGeneratedIdentifier() | validRouteSpecification | null               | validContainerDimensionType | "notNullValue"
-    BookingOfferId.createWithGeneratedIdentifier() | validRouteSpecification | validCommodityInfo | null                        | "notNullValue"
+    BookingOfferId.makeWithGeneratedIdentifier() | null                    | validCommodityInfo | validContainerDimensionType | "notNullValue"
+    BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | null               | validContainerDimensionType | "notNullValue"
+    BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | validCommodityInfo | null                        | "notNullValue"
   }
 
   void "map constructor should fail when some of business rules of routeSpecification are not satisfied"() {

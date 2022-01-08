@@ -54,7 +54,7 @@ class CreateBookingOfferCommandFixtures {
     Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
-        bookingOfferId: BookingOfferId.create(bookingOfferIdentifier),
+        bookingOfferId: BookingOfferId.make(bookingOfferIdentifier),
         routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
         commodityInfo: CommodityInfo.create(CommodityType.DRY, 1000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
@@ -70,7 +70,7 @@ class CreateBookingOfferCommandFixtures {
     Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
-        bookingOfferId: BookingOfferId.create(bookingOfferIdentifier),
+        bookingOfferId: BookingOfferId.make(bookingOfferIdentifier),
         routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
         commodityInfo: CommodityInfo.create(CommodityType.DRY, 10_000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
@@ -86,7 +86,7 @@ class CreateBookingOfferCommandFixtures {
     Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
-        bookingOfferId: BookingOfferId.create(cargoIdentifier),
+        bookingOfferId: BookingOfferId.make(cargoIdentifier),
         routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
         commodityInfo: CommodityInfo.create(CommodityType.DRY, 5001 * 25_000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22

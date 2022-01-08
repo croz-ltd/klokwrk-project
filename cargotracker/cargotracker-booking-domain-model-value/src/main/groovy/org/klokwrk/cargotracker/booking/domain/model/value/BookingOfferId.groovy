@@ -42,7 +42,7 @@ class BookingOfferId implements PostMapConstructorCheckable {
    *
    * @param uuidString String in UUID format. Must be parsable by {@link UUID#fromString(java.lang.String)} method.
    */
-  static BookingOfferId create(String uuidString) {
+  static BookingOfferId make(String uuidString) {
     return new BookingOfferId(identifier: uuidString)
   }
 
@@ -53,9 +53,9 @@ class BookingOfferId implements PostMapConstructorCheckable {
    *
    * @param uuidString String in UUID format. If not {@code null}, must be parsable by {@link UUID#fromString(java.lang.String)} method.
    */
-  static BookingOfferId createWithGeneratedIdentifier() {
+  static BookingOfferId makeWithGeneratedIdentifier() {
     String uuidStringToUse = UUID.randomUUID()
-    return create(uuidStringToUse)
+    return make(uuidStringToUse)
   }
 
   /**
@@ -65,9 +65,9 @@ class BookingOfferId implements PostMapConstructorCheckable {
    *
    * @param uuidString String in UUID format. If not {@code null} or empty string, must be parsable by {@link UUID#fromString(java.lang.String)} method.
    */
-  static BookingOfferId createWithGeneratedIdentifierIfNeeded(String uuidString) {
+  static BookingOfferId makeWithGeneratedIdentifierIfNeeded(String uuidString) {
     String uuidStringToUse = uuidString ?: UUID.randomUUID().toString()
-    return create(uuidStringToUse)
+    return make(uuidStringToUse)
   }
 
   @Override

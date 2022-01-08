@@ -52,17 +52,17 @@ class BookingOfferIdSpecification extends Specification {
     " ${ UUID.randomUUID() } " | "checkIfRandomUuid(identifier)"
   }
 
-  void "createWithGeneratedIdentifier() should produce valid CargoId"() {
+  void "makeWithGeneratedIdentifier() should produce valid CargoId"() {
     when:
-    BookingOfferId.createWithGeneratedIdentifier()
+    BookingOfferId.makeWithGeneratedIdentifier()
 
     then:
     noExceptionThrown()
   }
 
-  void "createWithGeneratedIdentifierIfNeeded() should produce valid CargoId for valid parameter"() {
+  void "makeWithGeneratedIdentifierIfNeeded() should produce valid CargoId for valid parameter"() {
     when:
-    BookingOfferId.createWithGeneratedIdentifierIfNeeded(uuidStringParam)
+    BookingOfferId.makeWithGeneratedIdentifierIfNeeded(uuidStringParam)
 
     then:
     noExceptionThrown()
@@ -77,9 +77,9 @@ class BookingOfferIdSpecification extends Specification {
     "11111111-1111-4111-A111-111111111111" | _
   }
 
-  void "createWithGeneratedIdentifierIfNeeded() should fail for invalid parameter"() {
+  void "makeWithGeneratedIdentifierIfNeeded() should fail for invalid parameter"() {
     when:
-    BookingOfferId.createWithGeneratedIdentifierIfNeeded(uuidStringParam)
+    BookingOfferId.makeWithGeneratedIdentifierIfNeeded(uuidStringParam)
 
     then:
     AssertionError assertionError = thrown(AssertionError)

@@ -64,7 +64,7 @@ class CargoBookingFactoryService {
     Location resolvedDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(createBookingOfferCommandRequest.routeSpecification.destinationLocation)
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
-        bookingOfferId: BookingOfferId.createWithGeneratedIdentifierIfNeeded(createBookingOfferCommandRequest.bookingOfferIdentifier),
+        bookingOfferId: BookingOfferId.makeWithGeneratedIdentifierIfNeeded(createBookingOfferCommandRequest.bookingOfferIdentifier),
         routeSpecification: RouteSpecification.create(
             resolvedOriginLocation, resolvedDestinationLocation,
             createBookingOfferCommandRequest.routeSpecification.departureEarliestTime, createBookingOfferCommandRequest.routeSpecification.departureLatestTime,

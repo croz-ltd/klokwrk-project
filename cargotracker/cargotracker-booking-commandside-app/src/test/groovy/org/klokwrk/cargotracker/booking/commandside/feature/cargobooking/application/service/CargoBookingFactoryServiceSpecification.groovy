@@ -242,7 +242,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     ))
 
     BookingOfferAggregate bookingOfferAggregate = new BookingOfferAggregate(
-        bookingOfferId: BookingOfferId.create(myBookingOfferIdentifier),
+        bookingOfferId: BookingOfferId.make(myBookingOfferIdentifier),
         routeSpecification: new RouteSpecification(
             originLocation: myOriginLocation, destinationLocation: myDestinationLocation,
             creationTime: currentInstantRounded,
