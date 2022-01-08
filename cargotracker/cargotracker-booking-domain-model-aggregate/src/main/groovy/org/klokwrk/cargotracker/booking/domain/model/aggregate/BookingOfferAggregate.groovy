@@ -128,6 +128,7 @@ class BookingOfferAggregate {
     return bookingOfferId?.identifier
   }
 
+  @SuppressWarnings("CodeNarc.FactoryMethodName")
   @CommandHandler
   @CreationPolicy(AggregateCreationPolicy.ALWAYS)
   BookingOfferAggregate createBookingOffer(CreateBookingOfferCommand createBookingOfferCommand, MetaData metaData) {

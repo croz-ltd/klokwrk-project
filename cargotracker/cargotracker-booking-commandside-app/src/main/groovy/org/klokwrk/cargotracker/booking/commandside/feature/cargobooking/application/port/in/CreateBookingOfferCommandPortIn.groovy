@@ -23,5 +23,6 @@ import org.klokwrk.cargotracker.lib.boundary.api.application.operation.Operation
 
 @CompileStatic
 interface CreateBookingOfferCommandPortIn {
+  @SuppressWarnings("CodeNarc.FactoryMethodName")
   OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommand(OperationRequest<CreateBookingOfferCommandRequest> createBookingOfferCommandOperationRequest)
 }

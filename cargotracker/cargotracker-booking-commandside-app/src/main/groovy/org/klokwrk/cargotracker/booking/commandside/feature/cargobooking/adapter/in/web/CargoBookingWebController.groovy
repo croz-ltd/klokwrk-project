@@ -38,6 +38,7 @@ class CargoBookingWebController {
     this.createBookingOfferCommandPortIn = createBookingOfferCommandPortIn
   }
 
+  @SuppressWarnings("CodeNarc.FactoryMethodName")
   @PostMapping("/create-booking-offer")
   OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommand(
       @RequestBody CreateBookingOfferCommandWebRequest createBookingOfferCommandWebRequest, HttpServletRequest httpServletRequest)
