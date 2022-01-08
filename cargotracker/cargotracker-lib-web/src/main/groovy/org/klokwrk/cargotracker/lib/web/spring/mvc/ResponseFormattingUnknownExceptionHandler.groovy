@@ -111,14 +111,14 @@ class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
       log.error("Unknown exception occured [uuid: ${ logUuid }, unknownExceptionClass: ${ unknownException.getClass().name }]", unknownException)
     }
 
-    HttpResponseMetaData httpResponseMetaData = createHttpResponseMetaData(unknownException, handlerMethod, locale, logUuid)
+    HttpResponseMetaData httpResponseMetaData = makeHttpResponseMetaData(unknownException, handlerMethod, locale, logUuid)
     OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseMetaData.propertiesFiltered)
     ResponseEntity responseEntity = new ResponseEntity(operationResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR)
 
     return responseEntity
   }
 
-  protected HttpResponseMetaData createHttpResponseMetaData(Throwable unknownException, HandlerMethod handlerMethod, Locale locale, String logUuid) {
+  protected HttpResponseMetaData makeHttpResponseMetaData(Throwable unknownException, HandlerMethod handlerMethod, Locale locale, String logUuid) {
     HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
 
     ResponseMetaDataViolationPart responseMetaDataReportViolationPart =
