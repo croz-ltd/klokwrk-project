@@ -64,13 +64,13 @@ class CargoBookingFactoryService {
     Location resolvedDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(createBookingOfferCommandRequest.routeSpecification.destinationLocation)
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
-        bookingOfferId: BookingOfferId.createWithGeneratedIdentifierIfNeeded(createBookingOfferCommandRequest.bookingOfferIdentifier),
-        routeSpecification: RouteSpecification.create(
+        bookingOfferId: BookingOfferId.makeWithGeneratedIdentifierIfNeeded(createBookingOfferCommandRequest.bookingOfferIdentifier),
+        routeSpecification: RouteSpecification.make(
             resolvedOriginLocation, resolvedDestinationLocation,
             createBookingOfferCommandRequest.routeSpecification.departureEarliestTime, createBookingOfferCommandRequest.routeSpecification.departureLatestTime,
             createBookingOfferCommandRequest.routeSpecification.arrivalLatestTime, clock
         ),
-        commodityInfo: CommodityInfo.create(
+        commodityInfo: CommodityInfo.make(
             createBookingOfferCommandRequest.commodityInfo.commodityType, createBookingOfferCommandRequest.commodityInfo.totalWeightInKilograms,
             createBookingOfferCommandRequest.commodityInfo.requestedStorageTemperatureInCelsius
         ),
@@ -102,8 +102,8 @@ class CargoBookingFactoryService {
     //
     //       If clients still decide to use direct responses from aggregate for gaining data, they should be aware of consequences and have a robust suite of regression tests in place.
 
-    Map<String, ?> originLocationMap = createMapFromLocation(bookingOfferAggregate.routeSpecification.originLocation)
-    Map<String, ?> destinationLocationMap = createMapFromLocation(bookingOfferAggregate.routeSpecification.destinationLocation)
+    Map<String, ?> originLocationMap = makeMapFromLocation(bookingOfferAggregate.routeSpecification.originLocation)
+    Map<String, ?> destinationLocationMap = makeMapFromLocation(bookingOfferAggregate.routeSpecification.destinationLocation)
 
     CreateBookingOfferCommandResponse createBookingOfferCommandResponse = new CreateBookingOfferCommandResponse(
         bookingOfferId: [identifier: bookingOfferAggregate.bookingOfferId.identifier],
@@ -125,7 +125,7 @@ class CargoBookingFactoryService {
   /**
    * Creates, or "render" a map from {@link Location} instance.
    */
-  protected Map<String, ?> createMapFromLocation(Location location) {
+  protected Map<String, ?> makeMapFromLocation(Location location) {
     Map<String, ?> renderedMap = [
         name: location.name.nameInternationalized,
         countryName: location.countryName.nameInternationalized,

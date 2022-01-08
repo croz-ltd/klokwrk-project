@@ -394,10 +394,7 @@ ruleset {
   ClassNameSameAsFilename
   ClassNameSameAsSuperclass
   ConfusingMethodName
-  FactoryMethodName {
-    regex = /(build.*|make.*)/
-    enabled = false
-  }
+  FactoryMethodName
   FieldName {
     ignoreFieldNames = "serialVersionUID,log,logger"
   }

@@ -63,7 +63,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage =
-        GenericDomainEventMessageFactory.createEventMessage(bookingOfferCreatedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
+        GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
 
     eventBus.publish(genericDomainEventMessage)
 
@@ -90,7 +90,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtures.eventValidRouteSpecification()
     String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
 
-    GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.createEventMessage(bookingOfferCreatedEvent, [:])
+    GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, [:])
     eventBus.publish(genericDomainEventMessage)
 
     expect:

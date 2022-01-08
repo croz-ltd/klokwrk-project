@@ -79,11 +79,11 @@ import java.time.Instant
  * ...
  * </pre>
  * Localization message codes for {@code metaData.violation.message} property is created with
- * {@link MessageSourceResolvableHelper#createMessageCodeListForViolationMessageOfDomainFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
+ * {@link MessageSourceResolvableHelper#makeMessageCodeListForViolationMessageOfDomainFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
  * for further details.
  *
  * @see MessageSourceResolvableHelper
- * @see MessageSourceResolvableHelper#createMessageCodeListForViolationMessageOfDomainFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
+ * @see MessageSourceResolvableHelper#makeMessageCodeListForViolationMessageOfDomainFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
  */
 @CompileStatic
 class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
@@ -96,7 +96,7 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
 
   @ExceptionHandler
   ResponseEntity handleDomainException(DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
-    HttpResponseMetaData httpResponseMetaData = createHttpResponseMetaData(domainException, handlerMethod, locale)
+    HttpResponseMetaData httpResponseMetaData = makeHttpResponseMetaData(domainException, handlerMethod, locale)
     HttpStatus httpStatus = mapDomainExceptionToHttpStatus(domainException)
     OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseMetaData.propertiesFiltered)
     ResponseEntity responseEntity = new ResponseEntity(operationResponse, new HttpHeaders(), httpStatus)
@@ -104,13 +104,13 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
     return responseEntity
   }
 
-  protected HttpResponseMetaData createHttpResponseMetaData(DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
+  protected HttpResponseMetaData makeHttpResponseMetaData(DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
     HttpStatus httpStatus = mapDomainExceptionToHttpStatus(domainException)
 
     HttpResponseMetaData httpResponseMetaData = new HttpResponseMetaData(
         general: new ResponseMetaDataGeneralPart(timestamp: Instant.now(), severity: domainException.violationInfo.severity.name().toLowerCase(), locale: locale),
-        violation: createResponseMetaDataViolationPart(domainException),
-        http: createHttpResponseMetaDataPart(httpStatus)
+        violation: makeResponseMetaDataViolationPart(domainException),
+        http: makeHttpResponseMetaDataPart(httpStatus)
     )
 
     httpResponseMetaData = localizeHttpResponseMetaData(httpResponseMetaData, domainException, handlerMethod, locale)
@@ -135,7 +135,7 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
     return httpStatus
   }
 
-  protected ResponseMetaDataViolationPart createResponseMetaDataViolationPart(DomainException domainException) {
+  protected ResponseMetaDataViolationPart makeResponseMetaDataViolationPart(DomainException domainException) {
     ResponseMetaDataViolationPart responseMetaDataViolationPart = new ResponseMetaDataViolationPart(
         code: domainException.violationInfo.violationCode.code,
         message: domainException.violationInfo.violationCode.codeMessage,
@@ -145,7 +145,7 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
     return responseMetaDataViolationPart
   }
 
-  protected HttpResponseMetaDataHttpPart createHttpResponseMetaDataPart(HttpStatus httpStatus) {
+  protected HttpResponseMetaDataHttpPart makeHttpResponseMetaDataPart(HttpStatus httpStatus) {
     HttpResponseMetaDataHttpPart httpResponseMetaDataPart = new HttpResponseMetaDataHttpPart(status: httpStatus.value().toString(), message: httpStatus.reasonPhrase)
     return httpResponseMetaDataPart
   }
@@ -167,7 +167,7 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
     )
 
     httpResponseMetaData.violation.message = MessageSourceResolvableHelper.resolveMessageCodeList(
-        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfDomainFailure(resolvableMessageSpecification), locale
+        messageSource, MessageSourceResolvableHelper.makeMessageCodeListForViolationMessageOfDomainFailure(resolvableMessageSpecification), locale
     )
 
     return httpResponseMetaData

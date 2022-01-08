@@ -79,16 +79,16 @@ class Location implements PostMapConstructorCheckable {
   PortCapabilities portCapabilities
 
   @SuppressWarnings("CodeNarc.ParameterCount")
-  static Location create(
+  static Location make(
       String unLoCode, String name, String countryName, String unLoCodeFunction, String unLoCodeCoordinates, PortCapabilities portCapabilities = PortCapabilities.NO_PORT_CAPABILITIES)
   {
-    Location createdLocation = new Location(
+    Location newLocation = new Location(
         unLoCode: new UnLoCode(code: unLoCode), name: new InternationalizedName(name: name), countryName: new InternationalizedName(name: countryName),
         unLoCodeFunction: new UnLoCodeFunction(functionEncoded: unLoCodeFunction), unLoCodeCoordinates: new UnLoCodeCoordinates(coordinatesEncoded: unLoCodeCoordinates),
         portCapabilities: portCapabilities
     )
 
-    return createdLocation
+    return newLocation
   }
 
   @Override

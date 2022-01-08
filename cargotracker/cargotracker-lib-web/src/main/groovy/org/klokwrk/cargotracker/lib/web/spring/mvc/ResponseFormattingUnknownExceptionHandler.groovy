@@ -82,11 +82,11 @@ import java.time.Instant
  * ...
  * </pre>
  * Localization message codes for {@code metaData.violation.message} property is created with
- * {@link MessageSourceResolvableHelper#createMessageCodeListForViolationMessageOfUnknownFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
+ * {@link MessageSourceResolvableHelper#makeMessageCodeListForViolationMessageOfUnknownFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
  * for further details.
  *
  * @see MessageSourceResolvableHelper
- * @see MessageSourceResolvableHelper#createMessageCodeListForViolationMessageOfUnknownFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
+ * @see MessageSourceResolvableHelper#makeMessageCodeListForViolationMessageOfUnknownFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
  */
 @CompileStatic
 class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
@@ -111,14 +111,14 @@ class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
       log.error("Unknown exception occured [uuid: ${ logUuid }, unknownExceptionClass: ${ unknownException.getClass().name }]", unknownException)
     }
 
-    HttpResponseMetaData httpResponseMetaData = createHttpResponseMetaData(unknownException, handlerMethod, locale, logUuid)
+    HttpResponseMetaData httpResponseMetaData = makeHttpResponseMetaData(unknownException, handlerMethod, locale, logUuid)
     OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseMetaData.propertiesFiltered)
     ResponseEntity responseEntity = new ResponseEntity(operationResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR)
 
     return responseEntity
   }
 
-  protected HttpResponseMetaData createHttpResponseMetaData(Throwable unknownException, HandlerMethod handlerMethod, Locale locale, String logUuid) {
+  protected HttpResponseMetaData makeHttpResponseMetaData(Throwable unknownException, HandlerMethod handlerMethod, Locale locale, String logUuid) {
     HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
 
     ResponseMetaDataViolationPart responseMetaDataReportViolationPart =
@@ -148,7 +148,7 @@ class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
     )
 
     httpResponseMetaData.violation.message = MessageSourceResolvableHelper.resolveMessageCodeList(
-        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfUnknownFailure(resolvableMessageSpecification), locale
+        messageSource, MessageSourceResolvableHelper.makeMessageCodeListForViolationMessageOfUnknownFailure(resolvableMessageSpecification), locale
     )
 
     return httpResponseMetaData

@@ -32,7 +32,7 @@ class CargoBookingWebAssembler {
   static OperationRequest<CreateBookingOfferCommandRequest> toCreateBookingOfferCommandOperationRequest(
       CreateBookingOfferCommandWebRequest createBookingOfferCommandWebRequest, HttpServletRequest httpServletRequest)
   {
-    Map metadataMap = WebMetaDataFactory.createMetaDataMapForWebBookingChannel(ClientIpAddressExtractor.extractClientIpAddress(httpServletRequest))
+    Map metadataMap = WebMetaDataFactory.makeMetaDataMapForWebBookingChannel(ClientIpAddressExtractor.extractClientIpAddress(httpServletRequest))
 
     OperationRequest<CreateBookingOfferCommandRequest> createBookingOfferCommandOperationRequest =
         new OperationRequest(payload: new CreateBookingOfferCommandRequest(createBookingOfferCommandWebRequest.properties), metaData: metadataMap)

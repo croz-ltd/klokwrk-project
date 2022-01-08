@@ -32,7 +32,7 @@ class CommoditySpecification extends Specification {
     when:
     Commodity commodity = new Commodity(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(DRY, 2_000),
+        commodityInfo: CommodityInfo.make(DRY, 2_000),
         maxAllowedWeightPerContainer: getQuantity(2_200, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(2_000, KILOGRAM),
         containerCount: 1
@@ -46,7 +46,7 @@ class CommoditySpecification extends Specification {
     when:
     new Commodity(
         containerType: TYPE_ISO_22R1_STANDARD_REEFER, // It should be TYPE_ISO_22G1, for example.
-        commodityInfo: CommodityInfo.create(DRY, 2_000),
+        commodityInfo: CommodityInfo.make(DRY, 2_000),
         maxAllowedWeightPerContainer: getQuantity(2_200, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(2_000, KILOGRAM),
         containerCount: 1
@@ -61,7 +61,7 @@ class CommoditySpecification extends Specification {
     when:
     new Commodity(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(DRY, 20_000),
+        commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(30_000, KILOGRAM), // It should be <= containerType.maxCommodityWeight.
         maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
         containerCount: 1
@@ -76,7 +76,7 @@ class CommoditySpecification extends Specification {
     when:
     new Commodity(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(DRY, 23_000),
+        commodityInfo: CommodityInfo.make(DRY, 23_000),
         maxAllowedWeightPerContainer: getQuantity(24_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM), // It should be >= commodityInfo.totalWeight.
         containerCount: 1
@@ -91,7 +91,7 @@ class CommoditySpecification extends Specification {
     when:
     new Commodity(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(DRY, 50_000),
+        commodityInfo: CommodityInfo.make(DRY, 50_000),
         maxAllowedWeightPerContainer: getQuantity(24_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(24_000, KILOGRAM),
         containerCount: 2 // It should be 3 or more.
@@ -106,7 +106,7 @@ class CommoditySpecification extends Specification {
     when:
     new Commodity(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(DRY, 20_000),
+        commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(24_000_000, GRAM),
         maxRecommendedWeightPerContainer: getQuantity(24_000, KILOGRAM),
         containerCount: 1
@@ -121,7 +121,7 @@ class CommoditySpecification extends Specification {
     when:
     new Commodity(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(DRY, 20_000),
+        commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(24_000.1, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(24_000, KILOGRAM),
         containerCount: 1
@@ -136,7 +136,7 @@ class CommoditySpecification extends Specification {
     when:
     new Commodity(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(DRY, 20_000),
+        commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(24_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(24_000_000, GRAM),
         containerCount: 1
@@ -151,7 +151,7 @@ class CommoditySpecification extends Specification {
     when:
     new Commodity(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(DRY, 20_000),
+        commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(24_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(20_000.1, KILOGRAM),
         containerCount: 1

@@ -72,16 +72,16 @@ class ValidationService implements InitializingBean {
       return
     }
 
-    Map<Class, Class> validatorImplementationToConstraintAnnotationMapping = createValidatorImplementationToConstraintAnnotationMapping(validatorImplementationPackagesToScan)
+    Map<Class, Class> validatorImplementationToConstraintAnnotationMapping = makeValidatorImplementationToConstraintAnnotationMapping(validatorImplementationPackagesToScan)
 
     KlokwrkLocalValidatorFactoryBean localValidatorFactoryBean = new KlokwrkLocalValidatorFactoryBean(validatorImplementationToConstraintAnnotationMapping)
-    localValidatorFactoryBean.validationMessageSource = createMessageSource(this.messageSourceBaseNames)
+    localValidatorFactoryBean.validationMessageSource = makeMessageSource(this.messageSourceBaseNames)
     localValidatorFactoryBean.afterPropertiesSet()
 
     this.validator = localValidatorFactoryBean
   }
 
-  protected MessageSource createMessageSource(String[] messageSourceBaseNames) {
+  protected MessageSource makeMessageSource(String[] messageSourceBaseNames) {
     MessageSource messageSource = new ResourceBundleMessageSource()
     messageSource.basenames = messageSourceBaseNames
     messageSource.defaultEncoding = "UTF-8"
@@ -89,7 +89,7 @@ class ValidationService implements InitializingBean {
     return messageSource
   }
 
-  protected Map<Class, Class> createValidatorImplementationToConstraintAnnotationMapping(String[] validatorImplementationPackagesToScan) {
+  protected Map<Class, Class> makeValidatorImplementationToConstraintAnnotationMapping(String[] validatorImplementationPackagesToScan) {
     Map<Class, Class> validatorImplementationToConstraintAnnotationMapping = [:]
 
     ClassGraph gradleSourceRepackClassGraph = new ClassGraph()

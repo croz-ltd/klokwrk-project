@@ -61,9 +61,9 @@ class UnLoCodeFunctionSpecification extends Specification {
     "-------b"        | "matchesPattern"
   }
 
-  void "createWithPortClassifier() should work as expected"() {
+  void "makeWithPortClassifier() should work as expected"() {
     when:
-    UnLoCodeFunction unLoCodeFunction = UnLoCodeFunction.createWithPortClassifier()
+    UnLoCodeFunction unLoCodeFunction = UnLoCodeFunction.makeWithPortClassifier()
 
     then:
     unLoCodeFunction.functionEncoded == "1-------"

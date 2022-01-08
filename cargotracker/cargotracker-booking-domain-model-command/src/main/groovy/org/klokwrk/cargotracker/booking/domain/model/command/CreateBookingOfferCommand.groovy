@@ -71,7 +71,7 @@ class CreateBookingOfferCommand implements BaseCreateCommand, PostMapConstructor
   @Generated // To avoid unnecessary drop-down in code coverage (see the last paragraph in comment inside postMapConstructorCheck() method).
   private void requireKnownLocation(Location location, String violationCodeKey) {
     if (location == Location.UNKNOWN_LOCATION) {
-      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey(violationCodeKey))
+      throw new CommandException(ViolationInfo.makeForBadRequestWithCustomCodeKey(violationCodeKey))
     }
   }
 

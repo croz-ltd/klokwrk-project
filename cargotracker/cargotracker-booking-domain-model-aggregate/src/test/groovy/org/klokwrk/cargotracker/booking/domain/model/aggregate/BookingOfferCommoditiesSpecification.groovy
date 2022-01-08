@@ -44,7 +44,7 @@ class BookingOfferCommoditiesSpecification extends Specification {
     given:
     Commodity commodity = new Commodity(
         containerType: ContainerType.TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(CommodityType.DRY, containerCountParam * 23_000),
+        commodityInfo: CommodityInfo.make(CommodityType.DRY, containerCountParam * 23_000),
         maxAllowedWeightPerContainer: Quantities.getQuantity(25_000, Units.KILOGRAM),
         maxRecommendedWeightPerContainer: Quantities.getQuantity(24_000, Units.KILOGRAM),
         containerCount: containerCountParam
@@ -70,7 +70,7 @@ class BookingOfferCommoditiesSpecification extends Specification {
     given:
     Commodity commodity = new Commodity(
         containerType: ContainerType.TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(CommodityType.DRY, 110_000),
+        commodityInfo: CommodityInfo.make(CommodityType.DRY, 110_000),
         maxAllowedWeightPerContainer: Quantities.getQuantity(24_000, Units.KILOGRAM),
         maxRecommendedWeightPerContainer: Quantities.getQuantity(22_000, Units.KILOGRAM),
         containerCount: 5
@@ -90,7 +90,7 @@ class BookingOfferCommoditiesSpecification extends Specification {
     given:
     Commodity commodity = new Commodity(
         containerType: ContainerType.TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(CommodityType.DRY, 110_000),
+        commodityInfo: CommodityInfo.make(CommodityType.DRY, 110_000),
         maxAllowedWeightPerContainer: Quantities.getQuantity(24_000, Units.KILOGRAM),
         maxRecommendedWeightPerContainer: Quantities.getQuantity(22_000, Units.KILOGRAM),
         containerCount: 5
@@ -111,7 +111,7 @@ class BookingOfferCommoditiesSpecification extends Specification {
     given:
     Commodity commodity = new Commodity(
         containerType: ContainerType.TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(CommodityType.DRY, 110_000),
+        commodityInfo: CommodityInfo.make(CommodityType.DRY, 110_000),
         maxAllowedWeightPerContainer: Quantities.getQuantity(24_000, Units.KILOGRAM),
         maxRecommendedWeightPerContainer: Quantities.getQuantity(22_000, Units.KILOGRAM),
         containerCount: 5
@@ -122,7 +122,7 @@ class BookingOfferCommoditiesSpecification extends Specification {
 
     Commodity nonStoredCommodity = new Commodity(
         containerType: ContainerType.TYPE_ISO_22R1_STANDARD_REEFER,
-        commodityInfo: CommodityInfo.create(CommodityType.AIR_COOLED, 110_000),
+        commodityInfo: CommodityInfo.make(CommodityType.AIR_COOLED, 110_000),
         maxAllowedWeightPerContainer: Quantities.getQuantity(24_000, Units.KILOGRAM),
         maxRecommendedWeightPerContainer: Quantities.getQuantity(22_000, Units.KILOGRAM),
         containerCount: 5
@@ -140,7 +140,7 @@ class BookingOfferCommoditiesSpecification extends Specification {
     given:
     Commodity commodity = new Commodity(
         containerType: ContainerType.TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(CommodityType.DRY, containerCountParam * 23_000),
+        commodityInfo: CommodityInfo.make(CommodityType.DRY, containerCountParam * 23_000),
         maxAllowedWeightPerContainer: Quantities.getQuantity(25_000, Units.KILOGRAM),
         maxRecommendedWeightPerContainer: Quantities.getQuantity(24_000, Units.KILOGRAM),
         containerCount: containerCountParam
@@ -165,7 +165,7 @@ class BookingOfferCommoditiesSpecification extends Specification {
     given:
     Commodity commodity = new Commodity(
         containerType: ContainerType.TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(CommodityType.DRY, containerCountParam * 23_000),
+        commodityInfo: CommodityInfo.make(CommodityType.DRY, containerCountParam * 23_000),
         maxAllowedWeightPerContainer: Quantities.getQuantity(25_000, Units.KILOGRAM),
         maxRecommendedWeightPerContainer: Quantities.getQuantity(24_000, Units.KILOGRAM),
         containerCount: containerCountParam
@@ -190,7 +190,7 @@ class BookingOfferCommoditiesSpecification extends Specification {
     given:
     Commodity commodity1 = new Commodity(
         containerType: ContainerType.TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(CommodityType.DRY, 10_000 * 23_000),
+        commodityInfo: CommodityInfo.make(CommodityType.DRY, 10_000 * 23_000),
         maxAllowedWeightPerContainer: Quantities.getQuantity(25_000, Units.KILOGRAM),
         maxRecommendedWeightPerContainer: Quantities.getQuantity(24_000, Units.KILOGRAM),
         containerCount: 10_000
@@ -198,7 +198,7 @@ class BookingOfferCommoditiesSpecification extends Specification {
 
     Commodity commodity2 = new Commodity(
         containerType: ContainerType.TYPE_ISO_22R1_STANDARD_REEFER,
-        commodityInfo: CommodityInfo.create(CommodityType.AIR_COOLED, 10_000 * 23_000),
+        commodityInfo: CommodityInfo.make(CommodityType.AIR_COOLED, 10_000 * 23_000),
         maxAllowedWeightPerContainer: Quantities.getQuantity(25_000, Units.KILOGRAM),
         maxRecommendedWeightPerContainer: Quantities.getQuantity(24_000, Units.KILOGRAM),
         containerCount: 10_000

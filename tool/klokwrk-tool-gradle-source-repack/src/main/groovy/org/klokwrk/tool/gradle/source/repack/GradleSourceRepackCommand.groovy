@@ -112,7 +112,7 @@ Example: ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG,io.micronaut.http
     configureCustomLoggingLevels()
     log.debug("Started.")
 
-    GradleSourceRepackCliArguments cliArguments = createGradleSourceRepackCliArguments(FileSystems.default)
+    GradleSourceRepackCliArguments cliArguments = makeGradleSourceRepackCliArguments(FileSystems.default)
     log.debug("cliArguments: {}", cliArguments)
 
     File gradleDistributionZipFile = fetchGradleDistributionZipFile(cliArguments, gradleDownloader)
@@ -151,7 +151,7 @@ Example: ROOT=INFO,org.klokwrk.tool.gradle.source.repack=DEBUG,io.micronaut.http
     }
   }
 
-  GradleSourceRepackCliArguments createGradleSourceRepackCliArguments(FileSystem fileSystem) {
+  GradleSourceRepackCliArguments makeGradleSourceRepackCliArguments(FileSystem fileSystem) {
     GradleSourceRepackCliArguments cliArguments = new GradleSourceRepackCliArguments(cliParameterGradleVersion.trim(), fileSystem)
     cliArguments.performCleanup = cliOptionCleanup
 

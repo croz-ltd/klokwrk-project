@@ -23,8 +23,8 @@ import org.klokwrk.cargotracker.lib.domain.model.event.BaseEvent
 
 @CompileStatic
 class GenericDomainEventMessageFactory {
-  static <T extends BaseEvent> GenericDomainEventMessage createEventMessage(T event, Map<String, ?> metadataMap, Long sequenceNumber = 0) {
-    GenericDomainEventMessage<T> eventMessage = new GenericDomainEventMessage<>(event.getClass().simpleName, event.aggregateIdentifier, sequenceNumber, event, metadataMap)
-    return eventMessage
+  static <T extends BaseEvent> GenericDomainEventMessage makeEventMessage(T event, Map<String, ?> metadataMap, Long sequenceNumber = 0) {
+    GenericDomainEventMessage<T> newEventMessage = new GenericDomainEventMessage<>(event.getClass().simpleName, event.aggregateIdentifier, sequenceNumber, event, metadataMap)
+    return newEventMessage
   }
 }

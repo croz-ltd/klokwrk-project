@@ -21,9 +21,9 @@ import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import spock.lang.Specification
 
 class ResponseMetaDataSpecification extends Specification {
-  void "createBasicInfoResponseMetaData - should create expected meta data"() {
+  void "makeBasicInfoResponseMetaData - should create expected meta data"() {
     given:
-    ResponseMetaData responseMetaData = ResponseMetaData.createBasicInfoResponseMetaData()
+    ResponseMetaData responseMetaData = ResponseMetaData.makeBasicInfoResponseMetaData()
 
     expect:
     verifyAll(responseMetaData.general) {

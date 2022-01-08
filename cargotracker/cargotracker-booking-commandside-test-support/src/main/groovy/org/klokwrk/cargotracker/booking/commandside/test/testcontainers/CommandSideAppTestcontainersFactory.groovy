@@ -29,15 +29,15 @@ import org.testcontainers.containers.wait.strategy.Wait
 @CompileStatic
 class CommandSideAppTestcontainersFactory {
   /**
-   * Creates and start cargotracker-booking-commandside-app in container.
+   * Creates and start {@code cargotracker-booking-commandside-app} in container.
    * <p/>
    * <ul>
-   *   <li>Container name prefix: <code>cargotracker-booking-commandside-app</code>.</li>
+   *   <li>Container name prefix: {@code cargotracker-booking-commandside-app}.</li>
    *   <li>Exposed internal ports: 8080.</li>
-   *   <li>Container time zone: <code>Europe/Zagreb</code>.</li>
+   *   <li>Container time zone: {@code Europe/Zagreb}.</li>
    * </ul>
    */
-  static GenericContainer createAndStartCommandSideApp(Network klokwrkNetwork, GenericContainer axonServer) {
+  static GenericContainer makeAndStartCommandSideApp(Network klokwrkNetwork, GenericContainer axonServer) {
     String imageVersion = System.getProperty("cargotrackerBookingCommandSideAppDockerImageVersion")
     Integer[] exposedPorts = [8080]
     String containerName = "cargotracker-booking-commandside-app"

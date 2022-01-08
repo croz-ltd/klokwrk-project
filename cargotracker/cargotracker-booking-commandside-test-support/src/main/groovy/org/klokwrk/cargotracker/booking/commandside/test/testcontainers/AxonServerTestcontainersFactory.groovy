@@ -32,12 +32,12 @@ class AxonServerTestcontainersFactory {
    * Creates and start Axon Server in container.
    * <p/>
    * <ul>
-   *   <li>Container name prefix: <code>klokwrk-project-axon-server</code>.</li>
+   *   <li>Container name prefix: {@code klokwrk-project-axon-server}.</li>
    *   <li>Exposed internal ports: 8024, 8124.</li>
-   *   <li>Container time zone: <code>Europe/Zagreb</code>.</li>
+   *   <li>Container time zone: {@code Europe/Zagreb}.</li>
    * </ul>
    */
-  static GenericContainer createAndStartAxonServer(Network klokwrkNetwork) {
+  static GenericContainer makeAndStartAxonServer(Network klokwrkNetwork) {
     String imageVersion = System.getProperty("axonServerDockerImageVersion")
     Integer[] exposedPorts = [8024, 8124]
 

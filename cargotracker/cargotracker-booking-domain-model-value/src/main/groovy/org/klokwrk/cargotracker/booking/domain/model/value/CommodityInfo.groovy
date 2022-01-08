@@ -51,7 +51,7 @@ class CommodityInfo implements PostMapConstructorCheckable {
    * This weight might exceed what a single container can carry (in that case, multiple containers will be allocated based on this commodity info).
    * <p/>
    * Must not be {@code null}, and must be at least 1 kg or greater. It must be specified in kilogram units and a value must be the whole number.
-   * For conversion from other {@code Mass} units, and for a conversion of decimal numbers, use {@code create()} factory methods.
+   * For conversion from other {@code Mass} units, and for a conversion of decimal numbers, use {@code make()} factory methods.
    */
   Quantity<Mass> totalWeight
 
@@ -60,22 +60,22 @@ class CommodityInfo implements PostMapConstructorCheckable {
    * <p/>
    * Whether it is required or not depends on the commodity type. If required, it must be inside of temperature range boundaries of the corresponding commodity type.
    * <p/>
-   * When using factory {@code create()} methods, if not provided, the requested storage temperature is populated from the recommended storage temperature of the corresponding commodity type.
+   * When using factory {@code make()} methods, if not provided, the requested storage temperature is populated from the recommended storage temperature of the corresponding commodity type.
    */
   Quantity<Temperature> requestedStorageTemperature
 
-  static CommodityInfo create(CommodityType commodityType, Quantity<Mass> weight) {
-    CommodityInfo commodityInfo = create(commodityType, weight, null)
+  static CommodityInfo make(CommodityType commodityType, Quantity<Mass> weight) {
+    CommodityInfo commodityInfo = make(commodityType, weight, null)
     return commodityInfo
   }
 
   /**
-   * The main factory method for creating {@code CommodityInfo} instance (all other {@code create()} factory methods delegate to this one).
+   * The main factory method for creating {@code CommodityInfo} instance (all other {@code make()} factory methods delegate to this one).
    * <p/>
    * The only optional parameter (can be provided as {@code null}) is {@code requestedStorageTemperature}. When {@code null}, the actual {code requestedStorageTemperature} of the instance is set to
    * the {@code recommendedStorageTemperature} of provided {@code commodityType}. Note that the {@code recommendedStorageTemperature} of {@code commodityType} can be {@code null}.
    */
-  static CommodityInfo create(CommodityType commodityType, Quantity<Mass> weight, Quantity<Temperature> requestedStorageTemperature) {
+  static CommodityInfo make(CommodityType commodityType, Quantity<Mass> weight, Quantity<Temperature> requestedStorageTemperature) {
     Quantity<Temperature> requestedStorageTemperatureToUse = requestedStorageTemperature
     if (requestedStorageTemperature == null && commodityType != null) {
       requestedStorageTemperatureToUse = commodityType.recommendedStorageTemperature
@@ -88,13 +88,13 @@ class CommodityInfo implements PostMapConstructorCheckable {
     return commodityInfo
   }
 
-  static CommodityInfo create(CommodityType commodityType, Integer weightInKilograms) {
-    CommodityInfo commodityInfo = create(commodityType, weightInKilograms, null)
+  static CommodityInfo make(CommodityType commodityType, Integer weightInKilograms) {
+    CommodityInfo commodityInfo = make(commodityType, weightInKilograms, null)
     return commodityInfo
   }
 
-  static CommodityInfo create(CommodityType commodityType, Integer weightInKilograms, Integer requestedStorageTemperatureInCelsius) {
-    CommodityInfo commodityInfo = create(
+  static CommodityInfo make(CommodityType commodityType, Integer weightInKilograms, Integer requestedStorageTemperatureInCelsius) {
+    CommodityInfo commodityInfo = make(
         commodityType,
         Quantities.getQuantity(weightInKilograms, Units.KILOGRAM),
         requestedStorageTemperatureInCelsius == null ? null : Quantities.getQuantity(requestedStorageTemperatureInCelsius, Units.CELSIUS)
@@ -142,7 +142,7 @@ class CommodityInfo implements PostMapConstructorCheckable {
           throw new AssertionError("Unexpected CommodityType value: [value: ${ commodityType.name() }]", null)
       }
 
-      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey(messageKey))
+      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey(messageKey))
     }
   }
 }

@@ -37,11 +37,11 @@ import java.time.Instant
 @CompileStatic
 class CreateBookingOfferCommandFixtures {
   static final Map<String, Location> LOCATION_SAMPLE_MAP = [
-      "HRKRK": Location.create("HRKRK", "Krk", "Croatia", "1-3-----", "4502N 01435E", PortCapabilities.SEA_PORT_CAPABILITIES),
-      "HRRJK": Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-      "HRZAG": Location.create("HRZAG", "Zagreb", "Croatia", "-2345---", "4548N 01600E", PortCapabilities.NO_PORT_CAPABILITIES),
+      "HRKRK": Location.make("HRKRK", "Krk", "Croatia", "1-3-----", "4502N 01435E", PortCapabilities.SEA_PORT_CAPABILITIES),
+      "HRRJK": Location.make("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
+      "HRZAG": Location.make("HRZAG", "Zagreb", "Croatia", "-2345---", "4548N 01600E", PortCapabilities.NO_PORT_CAPABILITIES),
 
-      "NLRTM": Location.create("NLRTM", "Rotterdam", "Netherlands", "12345---", "5155N 00430E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
+      "NLRTM": Location.make("NLRTM", "Rotterdam", "Netherlands", "12345---", "5155N 00430E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
   ]
 
   /**
@@ -54,9 +54,9 @@ class CreateBookingOfferCommandFixtures {
     Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
-        bookingOfferId: BookingOfferId.create(bookingOfferIdentifier),
-        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
-        commodityInfo: CommodityInfo.create(CommodityType.DRY, 1000),
+        bookingOfferId: BookingOfferId.make(bookingOfferIdentifier),
+        routeSpecification: RouteSpecification.make(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
+        commodityInfo: CommodityInfo.make(CommodityType.DRY, 1000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
     )
 
@@ -70,9 +70,9 @@ class CreateBookingOfferCommandFixtures {
     Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
-        bookingOfferId: BookingOfferId.create(bookingOfferIdentifier),
-        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
-        commodityInfo: CommodityInfo.create(CommodityType.DRY, 10_000),
+        bookingOfferId: BookingOfferId.make(bookingOfferIdentifier),
+        routeSpecification: RouteSpecification.make(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
+        commodityInfo: CommodityInfo.make(CommodityType.DRY, 10_000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
     )
 
@@ -86,9 +86,9 @@ class CreateBookingOfferCommandFixtures {
     Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
-        bookingOfferId: BookingOfferId.create(cargoIdentifier),
-        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
-        commodityInfo: CommodityInfo.create(CommodityType.DRY, 5001 * 25_000),
+        bookingOfferId: BookingOfferId.make(cargoIdentifier),
+        routeSpecification: RouteSpecification.make(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
+        commodityInfo: CommodityInfo.make(CommodityType.DRY, 5001 * 25_000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
     )
 

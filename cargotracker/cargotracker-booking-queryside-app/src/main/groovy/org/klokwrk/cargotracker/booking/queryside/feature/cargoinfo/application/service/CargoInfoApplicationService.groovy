@@ -52,7 +52,7 @@ class CargoInfoApplicationService implements BookingOfferSummaryQueryPortIn {
   }
 
   protected OperationResponse<BookingOfferSummaryQueryResponse> operationResponseFromQueryResponse(BookingOfferSummaryQueryResponse bookingOfferSummaryQueryResponse) {
-    ResponseMetaData responseMetaData = ResponseMetaData.createBasicInfoResponseMetaData()
+    ResponseMetaData responseMetaData = ResponseMetaData.makeBasicInfoResponseMetaData()
     return new OperationResponse<BookingOfferSummaryQueryResponse>(payload: bookingOfferSummaryQueryResponse, metaData: responseMetaData.propertiesFiltered)
   }
 }

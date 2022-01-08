@@ -39,13 +39,13 @@ class AbstractComponentIntegrationSpecification extends Specification {
   static {
     klokwrkNetwork = Network.builder().createNetworkCmdModifier({ CreateNetworkCmd createNetworkCmd -> createNetworkCmd.withName("klokwrk-network-${ UUID.randomUUID() }") }).build()
 
-    postgresqlServer = PostgreSqlTestcontainersFactory.createAndStartPostgreSqlServer(klokwrkNetwork)
-    RdbmsManagementAppTestcontainersFactory.createAndStartRdbmsManagementApp(klokwrkNetwork, postgresqlServer)
+    postgresqlServer = PostgreSqlTestcontainersFactory.makeAndStartPostgreSqlServer(klokwrkNetwork)
+    RdbmsManagementAppTestcontainersFactory.makeAndStartRdbmsManagementApp(klokwrkNetwork, postgresqlServer)
 
-    axonServer = AxonServerTestcontainersFactory.createAndStartAxonServer(klokwrkNetwork)
+    axonServer = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetwork)
 
-    commandSideApp = CommandSideAppTestcontainersFactory.createAndStartCommandSideApp(klokwrkNetwork, axonServer)
-    RdbmsProjectionAppTestcontainersFactory.createAndStartRdbmsProjectionApp(klokwrkNetwork, axonServer, postgresqlServer)
-    querySideApp = QuerySideAppTestcontainersFactory.createAndStartQuerySideApp(klokwrkNetwork, axonServer, postgresqlServer)
+    commandSideApp = CommandSideAppTestcontainersFactory.makeAndStartCommandSideApp(klokwrkNetwork, axonServer)
+    RdbmsProjectionAppTestcontainersFactory.makeAndStartRdbmsProjectionApp(klokwrkNetwork, axonServer, postgresqlServer)
+    querySideApp = QuerySideAppTestcontainersFactory.makeAndStartQuerySideApp(klokwrkNetwork, axonServer, postgresqlServer)
   }
 }

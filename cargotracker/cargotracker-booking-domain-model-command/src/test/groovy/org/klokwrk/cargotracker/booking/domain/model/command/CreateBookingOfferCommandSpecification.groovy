@@ -36,9 +36,9 @@ import java.time.ZoneOffset
 
 class CreateBookingOfferCommandSpecification extends Specification {
   static Map<String, Location> locationSampleMap = [
-      "NLRTM": Location.create("NLRTM", "Rotterdam", "Netherlands", "12345---", "5155N 00430E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-      "DEHAM": Location.create("DEHAM", "Hamburg", "Germany", "12345---", "5331N 00956E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-      "HRZAG": Location.create("HRZAG", "Zagreb", "Croatia", "-2345---", "4548N 01600E"),
+      "NLRTM": Location.make("NLRTM", "Rotterdam", "Netherlands", "12345---", "5155N 00430E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
+      "DEHAM": Location.make("DEHAM", "Hamburg", "Germany", "12345---", "5331N 00956E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
+      "HRZAG": Location.make("HRZAG", "Zagreb", "Croatia", "-2345---", "4548N 01600E"),
   ]
 
   static Clock clock = Clock.fixed(Instant.parse("2021-12-07T12:00:00Z"), ZoneOffset.UTC)
@@ -46,15 +46,15 @@ class CreateBookingOfferCommandSpecification extends Specification {
   static Instant currentInstantRoundedAndOneHour = currentInstantRounded + Duration.ofHours(1)
   static Instant currentInstantRoundedAndTwoHours = currentInstantRounded + Duration.ofHours(2)
   static Instant currentInstantRoundedAndThreeHours = currentInstantRounded + Duration.ofHours(3)
-  static RouteSpecification validRouteSpecification = RouteSpecification.create(
+  static RouteSpecification validRouteSpecification = RouteSpecification.make(
       locationSampleMap["NLRTM"], locationSampleMap["DEHAM"], currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours, currentInstantRoundedAndThreeHours, clock
   )
-  static CommodityInfo validCommodityInfo = CommodityInfo.create(CommodityType.DRY, 1000, null)
+  static CommodityInfo validCommodityInfo = CommodityInfo.make(CommodityType.DRY, 1000, null)
   static ContainerDimensionType validContainerDimensionType = ContainerDimensionType.DIMENSION_ISO_22
 
   void "map constructor should work for correct input params"() {
     when:
-    BookingOfferId bookingOfferId = BookingOfferId.createWithGeneratedIdentifier()
+    BookingOfferId bookingOfferId = BookingOfferId.makeWithGeneratedIdentifier()
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
         bookingOfferId: bookingOfferId,
         routeSpecification: validRouteSpecification,
@@ -85,15 +85,15 @@ class CreateBookingOfferCommandSpecification extends Specification {
     where:
     bookingOfferIdParam                            | routeSpecificationParam | commodityInfoParam | containerDimensionTypeParam | messagePartParam
     null                                           | validRouteSpecification | validCommodityInfo | validContainerDimensionType | "notNullValue"
-    BookingOfferId.createWithGeneratedIdentifier() | null                    | validCommodityInfo | validContainerDimensionType | "notNullValue"
-    BookingOfferId.createWithGeneratedIdentifier() | validRouteSpecification | null               | validContainerDimensionType | "notNullValue"
-    BookingOfferId.createWithGeneratedIdentifier() | validRouteSpecification | validCommodityInfo | null                        | "notNullValue"
+    BookingOfferId.makeWithGeneratedIdentifier() | null                    | validCommodityInfo | validContainerDimensionType | "notNullValue"
+    BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | null               | validContainerDimensionType | "notNullValue"
+    BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | validCommodityInfo | null                        | "notNullValue"
   }
 
   void "map constructor should fail when some of business rules of routeSpecification are not satisfied"() {
     when:
     new CreateBookingOfferCommand(
-        routeSpecification: RouteSpecification.create(
+        routeSpecification: RouteSpecification.make(
             originLocationParam, destinationLocationParam,
             currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours,
             currentInstantRoundedAndThreeHours, clock

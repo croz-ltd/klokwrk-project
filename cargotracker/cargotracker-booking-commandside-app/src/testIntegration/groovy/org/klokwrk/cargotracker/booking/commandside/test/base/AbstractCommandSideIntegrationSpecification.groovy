@@ -31,7 +31,7 @@ abstract class AbstractCommandSideIntegrationSpecification extends Specification
 
   static {
     klokwrkNetwork = Network.builder().createNetworkCmdModifier({ CreateNetworkCmd createNetworkCmd -> createNetworkCmd.withName("klokwrk-network-${ UUID.randomUUID() }") }).build()
-    axonServer = AxonServerTestcontainersFactory.createAndStartAxonServer(klokwrkNetwork)
+    axonServer = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetwork)
   }
 
   @DynamicPropertySource

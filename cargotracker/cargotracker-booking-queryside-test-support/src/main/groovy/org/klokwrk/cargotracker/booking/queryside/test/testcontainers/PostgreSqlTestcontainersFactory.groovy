@@ -24,7 +24,7 @@ import org.testcontainers.containers.PostgreSQLContainer
 
 @CompileStatic
 class PostgreSqlTestcontainersFactory {
-  static PostgreSQLContainer createAndStartPostgreSqlServer(Network klokwrkNetwork) {
+  static PostgreSQLContainer makeAndStartPostgreSqlServer(Network klokwrkNetwork) {
     String imageVersion = System.getProperty("postgreSqlDockerImageVersion")
     String containerName = "klokwrk-project-postgres"
     String containerNameSuffix = UUID.randomUUID()

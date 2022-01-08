@@ -40,7 +40,7 @@ class ViolationInfo implements PostMapConstructorCheckable {
   static final ViolationInfo BAD_REQUEST = new ViolationInfo(severity: Severity.WARNING, violationCode: ViolationCode.BAD_REQUEST)
   static final ViolationInfo NOT_FOUND = new ViolationInfo(severity: Severity.WARNING, violationCode: ViolationCode.NOT_FOUND)
 
-  static ViolationInfo createForBadRequestWithCustomCodeKey(String customCodeKey) {
+  static ViolationInfo makeForBadRequestWithCustomCodeKey(String customCodeKey) {
     ViolationCode violationCode = new ViolationCode(code: ViolationCode.BAD_REQUEST.code, codeKey: customCodeKey, codeMessage: ViolationCode.BAD_REQUEST.codeMessage)
     return new ViolationInfo(severity: ViolationInfo.BAD_REQUEST.severity, violationCode: violationCode)
   }

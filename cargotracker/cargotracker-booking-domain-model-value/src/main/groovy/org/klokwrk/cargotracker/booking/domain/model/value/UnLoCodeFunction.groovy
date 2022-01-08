@@ -43,7 +43,7 @@ class UnLoCodeFunction implements PostMapConstructorCheckable {
 
   String functionEncoded
 
-  static UnLoCodeFunction createWithPortClassifier() {
+  static UnLoCodeFunction makeWithPortClassifier() {
     return new UnLoCodeFunction(functionEncoded: "1-------")
   }
 

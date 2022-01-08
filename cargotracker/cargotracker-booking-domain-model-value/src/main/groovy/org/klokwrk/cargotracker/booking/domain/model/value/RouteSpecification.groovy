@@ -89,19 +89,19 @@ class RouteSpecification implements PostMapConstructorCheckable {
    * If {@code departureLatestTime} contains non-zero minutes, seconds or nanos, {@code departureLatestTime} is rounded up to the next hour.
    */
   @SuppressWarnings("CodeNarc.ParameterCount")
-  static RouteSpecification create(
+  static RouteSpecification make(
       Location originLocation, Location destinationLocation, Instant departureEarliestTime, Instant departureLatestTime, Instant arrivalLatestTime, Clock clock = Clock.systemUTC())
   {
     Instant departureEarliestTimeToUse = InstantUtils.roundUpInstantToTheHour(departureEarliestTime)
     Instant departureLatestTimeToUse = InstantUtils.roundUpInstantToTheHour(departureLatestTime)
     Instant arrivalLatestTimeToUse = InstantUtils.roundUpInstantToTheHour(arrivalLatestTime)
 
-    RouteSpecification createdRouteSpecification = new RouteSpecification(
+    RouteSpecification newRouteSpecification = new RouteSpecification(
         originLocation: originLocation, destinationLocation: destinationLocation, creationTime: Instant.now(clock),
         departureEarliestTime: departureEarliestTimeToUse, departureLatestTime: departureLatestTimeToUse, arrivalLatestTime: arrivalLatestTimeToUse
     )
 
-    return createdRouteSpecification
+    return newRouteSpecification
   }
 
   @Override
@@ -134,31 +134,31 @@ class RouteSpecification implements PostMapConstructorCheckable {
 
   private void requireKnownLocation(Location location, String violationCodeKey) {
     if (location == Location.UNKNOWN_LOCATION) {
-      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey(violationCodeKey))
+      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey(violationCodeKey))
     }
   }
 
   private void requireDifferentOriginAndDestination(Location originLocation, Location destinationLocation) {
     if (originLocation == destinationLocation) {
-      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("routeSpecification.originAndDestinationLocationAreEqual"))
+      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey("routeSpecification.originAndDestinationLocationAreEqual"))
     }
   }
 
   private void requireCanRouteCargoFromOriginToDestination(Location originLocation, Location destinationLocation) {
     if (!(originLocation.portCapabilities.isSeaContainerPort() && destinationLocation.portCapabilities.isSeaContainerPort())) {
-      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("routeSpecification.cannotRouteCargoFromOriginToDestination"))
+      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey("routeSpecification.cannotRouteCargoFromOriginToDestination"))
     }
   }
 
   private void requireInstantInFuture(Instant instantToCheck, Instant currentTimeInstant, String violationCodeKey) {
     if (currentTimeInstant >= instantToCheck) {
-      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey(violationCodeKey))
+      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey(violationCodeKey))
     }
   }
 
   private void requireDepartureEarliestTimeBeforeOrEqualToDepartureLatestTime(Instant departureEarliestTime, Instant departureLatestTime) {
     if (departureEarliestTime > departureLatestTime) {
-      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("routeSpecification.departureEarliestTime.afterDepartureLatestTime"))
+      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey("routeSpecification.departureEarliestTime.afterDepartureLatestTime"))
     }
   }
 
@@ -168,13 +168,13 @@ class RouteSpecification implements PostMapConstructorCheckable {
     Integer minutes = LocalDateTime.ofInstant(instantToCheck, ZoneOffset.UTC).minute
 
     if (nanoSeconds + seconds + minutes != 0) {
-      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey(violationCodeKey))
+      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey(violationCodeKey))
     }
   }
 
   private void requireArrivalLatestTimeAfterDepartureLatestTime(Instant arrivalLatestTime, Instant departureLatestTime) {
     if (arrivalLatestTime <= departureLatestTime) {
-      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey("routeSpecification.arrivalLatestTime.beforeDepartureLatestTime"))
+      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey("routeSpecification.arrivalLatestTime.beforeDepartureLatestTime"))
     }
   }
 }

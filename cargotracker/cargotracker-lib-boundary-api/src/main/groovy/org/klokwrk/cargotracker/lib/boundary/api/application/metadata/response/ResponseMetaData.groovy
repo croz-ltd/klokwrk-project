@@ -68,7 +68,7 @@ class ResponseMetaData {
    *
    * @see Severity
    */
-  static ResponseMetaData createBasicInfoResponseMetaData() {
+  static ResponseMetaData makeBasicInfoResponseMetaData() {
     ResponseMetaData responseMetadata = new ResponseMetaData(general: new ResponseMetaDataGeneralPart(timestamp: Instant.now(), severity: Severity.INFO.name().toLowerCase()))
     return responseMetadata
   }

@@ -226,7 +226,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
   }
 
   @SuppressWarnings("CodeNarc.MethodSize")
-  void "createBookCargoCommandResponse - should create expected response"() {
+  void "makeCreateBookingOfferCommandResponse - should create expected response"() {
     given:
     String myBookingOfferIdentifier = UUID.randomUUID()
     Location myOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRRJK")
@@ -235,14 +235,14 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     BookingOfferCommodities expectedBookingOfferCommodities = new BookingOfferCommodities()
     expectedBookingOfferCommodities.storeCommodity(new Commodity(
         containerType: ContainerType.TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(CommodityType.DRY, 1000),
+        commodityInfo: CommodityInfo.make(CommodityType.DRY, 1000),
         maxAllowedWeightPerContainer: Quantities.getQuantity(23_750, Units.KILOGRAM),
         maxRecommendedWeightPerContainer: Quantities.getQuantity(1000, Units.KILOGRAM),
         containerCount: 1
     ))
 
     BookingOfferAggregate bookingOfferAggregate = new BookingOfferAggregate(
-        bookingOfferId: BookingOfferId.create(myBookingOfferIdentifier),
+        bookingOfferId: BookingOfferId.make(myBookingOfferIdentifier),
         routeSpecification: new RouteSpecification(
             originLocation: myOriginLocation, destinationLocation: myDestinationLocation,
             creationTime: currentInstantRounded,

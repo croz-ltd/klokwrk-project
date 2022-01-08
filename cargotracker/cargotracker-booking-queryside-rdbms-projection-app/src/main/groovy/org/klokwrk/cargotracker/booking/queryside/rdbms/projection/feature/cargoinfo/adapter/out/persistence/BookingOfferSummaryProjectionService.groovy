@@ -37,6 +37,6 @@ class BookingOfferSummaryProjectionService {
 
   @EventHandler
   void onBookingOfferCreatedEvent(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
-    bookingOfferSummaryJpaRepository.save(BookingOfferSummaryJpaEntityFactory.createBookingOfferSummaryJpaEntity(bookingOfferCreatedEvent, domainEventMessage))
+    bookingOfferSummaryJpaRepository.save(BookingOfferSummaryJpaEntityFactory.makeBookingOfferSummaryJpaEntity(bookingOfferCreatedEvent, domainEventMessage))
   }
 }

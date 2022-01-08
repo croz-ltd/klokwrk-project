@@ -128,6 +128,7 @@ class BookingOfferAggregate {
     return bookingOfferId?.identifier
   }
 
+  @SuppressWarnings("CodeNarc.FactoryMethodName")
   @CommandHandler
   @CreationPolicy(AggregateCreationPolicy.ALWAYS)
   BookingOfferAggregate createBookingOffer(CreateBookingOfferCommand createBookingOfferCommand, MetaData metaData) {
@@ -138,7 +139,7 @@ class BookingOfferAggregate {
     // We can have two different policies here. One for limiting container count per commodity type, and another one for limiting container count for booking.
     // In a simpler case, both policies can be the same. In that case with a single commodity type we can allocate complete booking capacity.
     if (!bookingOfferCommodities.canAcceptCommodity(commodity)) { // TODO dmurat: container count per booking policy
-      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey("bookingOfferAggregate.bookingOfferCommodities.cannotAcceptCommodity"))
+      throw new CommandException(ViolationInfo.makeForBadRequestWithCustomCodeKey("bookingOfferAggregate.bookingOfferCommodities.cannotAcceptCommodity"))
     }
 
     // Note: cannot store here directly as state change should happen in event sourcing handler.
