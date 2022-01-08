@@ -142,7 +142,7 @@ class CommodityInfo implements PostMapConstructorCheckable {
           throw new AssertionError("Unexpected CommodityType value: [value: ${ commodityType.name() }]", null)
       }
 
-      throw new DomainException(ViolationInfo.createForBadRequestWithCustomCodeKey(messageKey))
+      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey(messageKey))
     }
   }
 }
