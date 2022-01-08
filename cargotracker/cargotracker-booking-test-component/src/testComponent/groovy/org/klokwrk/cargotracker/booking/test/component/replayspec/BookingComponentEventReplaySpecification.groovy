@@ -46,7 +46,7 @@ class BookingComponentEventReplaySpecification extends Specification {
 
     postgresqlServer = PostgreSqlTestcontainersFactory.createAndStartPostgreSqlServer(klokwrkNetwork)
     RdbmsManagementAppTestcontainersFactory.createAndStartRdbmsManagementApp(klokwrkNetwork, postgresqlServer)
-    axonServer = AxonServerTestcontainersFactory.createAndStartAxonServer(klokwrkNetwork)
+    axonServer = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetwork)
     RdbmsProjectionAppTestcontainersFactory.createAndStartRdbmsProjectionApp(klokwrkNetwork, axonServer, postgresqlServer)
   }
 

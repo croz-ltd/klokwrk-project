@@ -39,7 +39,7 @@ abstract class AbstractRdbmsProjectionIntegrationSpecification extends Specifica
     postgresqlServer = PostgreSqlTestcontainersFactory.createAndStartPostgreSqlServer(klokwrkNetwork)
     RdbmsManagementAppTestcontainersFactory.createAndStartRdbmsManagementApp(klokwrkNetwork, postgresqlServer)
 
-    axonServer = AxonServerTestcontainersFactory.createAndStartAxonServer(klokwrkNetwork)
+    axonServer = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetwork)
   }
 
   @DynamicPropertySource

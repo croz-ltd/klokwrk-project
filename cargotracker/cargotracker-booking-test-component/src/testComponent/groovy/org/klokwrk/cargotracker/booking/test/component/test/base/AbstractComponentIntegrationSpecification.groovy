@@ -42,7 +42,7 @@ class AbstractComponentIntegrationSpecification extends Specification {
     postgresqlServer = PostgreSqlTestcontainersFactory.createAndStartPostgreSqlServer(klokwrkNetwork)
     RdbmsManagementAppTestcontainersFactory.createAndStartRdbmsManagementApp(klokwrkNetwork, postgresqlServer)
 
-    axonServer = AxonServerTestcontainersFactory.createAndStartAxonServer(klokwrkNetwork)
+    axonServer = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetwork)
 
     commandSideApp = CommandSideAppTestcontainersFactory.createAndStartCommandSideApp(klokwrkNetwork, axonServer)
     RdbmsProjectionAppTestcontainersFactory.createAndStartRdbmsProjectionApp(klokwrkNetwork, axonServer, postgresqlServer)
