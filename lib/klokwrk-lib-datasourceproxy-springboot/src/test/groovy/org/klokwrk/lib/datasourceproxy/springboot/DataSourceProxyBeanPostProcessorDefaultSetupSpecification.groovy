@@ -51,7 +51,7 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
     testLogger.enabledLevelsForAllThreads = selectedLevels
   }
 
-  DataSource createPlainDataSource() {
+  DataSource makePlainDataSource() {
     DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create()
 
     dataSourceBuilder
@@ -81,7 +81,7 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
     DataSourceProxyBeanPostProcessor dataSourceProxyBeanPostProcessor = new DataSourceProxyBeanPostProcessor(new DataSourceProxyConfigurationProperties())
 
     when:
-    DataSource plainDataSource = dataSourceProxyBeanPostProcessor.postProcessAfterInitialization(createPlainDataSource(), "plainDataSource") as DataSource
+    DataSource plainDataSource = dataSourceProxyBeanPostProcessor.postProcessAfterInitialization(makePlainDataSource(), "plainDataSource") as DataSource
 
     then:
     //noinspection GroovyAssignabilityCheck,GrUnresolvedAccess
@@ -91,7 +91,7 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
   void "should not configure anything for ProxyDataSource"() {
     given:
     DataSourceProxyBeanPostProcessor dataSourceProxyBeanPostProcessor = new DataSourceProxyBeanPostProcessor(new DataSourceProxyConfigurationProperties())
-    ProxyDataSource proxyDataSource = new ProxyDataSource(createPlainDataSource())
+    ProxyDataSource proxyDataSource = new ProxyDataSource(makePlainDataSource())
 
     when:
     DataSource plainDataSource = dataSourceProxyBeanPostProcessor.postProcessAfterInitialization(proxyDataSource, "proxyDataSource") as DataSource
