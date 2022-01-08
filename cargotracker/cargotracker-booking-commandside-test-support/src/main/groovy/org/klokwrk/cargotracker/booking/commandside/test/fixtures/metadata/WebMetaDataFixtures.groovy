@@ -21,14 +21,14 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFactory
 
 /**
- * Contains test metadata fixtures for <code>web-booking</code> inbound channel.
+ * Contains test metadata fixtures for {@code web-booking} inbound channel.
  */
 @CompileStatic
 class WebMetaDataFixtures {
   /**
-   * Creates valid metadata for <code>web-booking</code> inbound channel.
+   * Creates valid metadata for {@code web-booking} inbound channel.
    */
   static Map<String, ?> metaDataMapForWebBookingChannel() {
-    return WebMetaDataFactory.createMetaDataMapForWebBookingChannel("127.0.0.1")
+    return WebMetaDataFactory.makeMetaDataMapForWebBookingChannel("127.0.0.1")
   }
 }

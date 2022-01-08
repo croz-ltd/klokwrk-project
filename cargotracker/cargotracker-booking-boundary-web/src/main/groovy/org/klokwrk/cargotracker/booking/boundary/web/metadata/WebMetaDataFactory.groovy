@@ -24,11 +24,11 @@ import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDa
 class WebMetaDataFactory {
 
   /**
-   * Creates a simple map representing meta data for <code>web-booking</code> inbound channel.
+   * Creates a simple map representing meta data for {@code web-booking} inbound channel.
    * <p/>
-   * Parameter <code>inboundChannelRequestIdentifier</code> should specify unique identifier of web request, i.e. IP address of remote user.
+   * Parameter {@code inboundChannelRequestIdentifier} should specify unique identifier of web request, i.e. IP address of remote user.
    */
-  static Map<String, ?> createMetaDataMapForWebBookingChannel(String inboundChannelRequestIdentifier) {
+  static Map<String, ?> makeMetaDataMapForWebBookingChannel(String inboundChannelRequestIdentifier) {
     Map metadataMap = [
         (MetaDataConstant.INBOUND_CHANNEL_NAME_KEY): WebMetaDataConstant.WEB_BOOKING_CHANNEL_NAME,
         (MetaDataConstant.INBOUND_CHANNEL_TYPE_KEY): WebMetaDataConstant.WEB_BOOKING_CHANNEL_TYPE,
