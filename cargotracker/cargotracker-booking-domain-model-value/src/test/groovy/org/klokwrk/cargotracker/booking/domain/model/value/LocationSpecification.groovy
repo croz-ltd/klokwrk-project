@@ -116,9 +116,9 @@ class LocationSpecification extends Specification {
     "HRRJK"   | "someName" | "someCountry"    | "0-------"    | "4520N 01424E"   | null                                  | "item: portCapabilities, expected: notNullValue()"
   }
 
-  void "create() factory method should work for correct input params"() {
+  void "make() factory method should work for correct input params"() {
     when:
-    Location location = Location.create("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES)
+    Location location = Location.make("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES)
 
     then:
     location.unLoCode == new UnLoCode(code: "HRRJK")
@@ -128,9 +128,9 @@ class LocationSpecification extends Specification {
     location.portCapabilities.isSeaContainerPort()
   }
 
-  void "create() factory method should fail for invalid input params"() {
+  void "make() factory method should fail for invalid input params"() {
     when:
-    Location.create(codeParam, nameParam, countryNameParam, functionParam, coordinatesParam, portCapabilitiesParam)
+    Location.make(codeParam, nameParam, countryNameParam, functionParam, coordinatesParam, portCapabilitiesParam)
 
     then:
     AssertionError assertionError = thrown()
