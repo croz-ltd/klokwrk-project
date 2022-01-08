@@ -52,7 +52,7 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
     RdbmsManagementAppTestcontainersFactory.makeAndStartRdbmsManagementApp(klokwrkNetwork, postgresqlServer)
 
     axonServer = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetwork)
-    RdbmsProjectionAppTestcontainersFactory.createAndStartRdbmsProjectionApp(klokwrkNetwork, axonServer, postgresqlServer)
+    RdbmsProjectionAppTestcontainersFactory.makeAndStartRdbmsProjectionApp(klokwrkNetwork, axonServer, postgresqlServer)
   }
 
   @DynamicPropertySource
