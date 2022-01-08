@@ -181,7 +181,7 @@ class ResponseFormattingConstraintViolationExceptionHandler implements MessageSo
     )
 
     httpResponseMetaData.violation.message = MessageSourceResolvableHelper.resolveMessageCodeList(
-        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfValidationFailure(resolvableMessageSpecificationForViolationMessage), locale
+        messageSource, MessageSourceResolvableHelper.makeMessageCodeListForViolationMessageOfValidationFailure(resolvableMessageSpecificationForViolationMessage), locale
     )
 
     // constraintList
@@ -199,7 +199,7 @@ class ResponseFormattingConstraintViolationExceptionHandler implements MessageSo
 
       validationReportConstraintViolation.message = MessageSourceResolvableHelper.resolveMessageCodeList(
           messageSource,
-          MessageSourceResolvableHelper.createMessageCodeListForConstraintViolationMessageOfValidationFailure(resolvableMessageSpecificationForConstraintViolation, validationReportConstraintViolation.message),
+          MessageSourceResolvableHelper.makeMessageCodeListForConstraintViolationMessageOfValidationFailure(resolvableMessageSpecificationForConstraintViolation, validationReportConstraintViolation.message),
           locale,
           validationReportConstraintViolation.message
       )

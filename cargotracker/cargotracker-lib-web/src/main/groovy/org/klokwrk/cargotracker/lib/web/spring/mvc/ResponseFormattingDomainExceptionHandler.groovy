@@ -79,11 +79,11 @@ import java.time.Instant
  * ...
  * </pre>
  * Localization message codes for {@code metaData.violation.message} property is created with
- * {@link MessageSourceResolvableHelper#createMessageCodeListForViolationMessageOfDomainFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
+ * {@link MessageSourceResolvableHelper#makeMessageCodeListForViolationMessageOfDomainFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
  * for further details.
  *
  * @see MessageSourceResolvableHelper
- * @see MessageSourceResolvableHelper#createMessageCodeListForViolationMessageOfDomainFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
+ * @see MessageSourceResolvableHelper#makeMessageCodeListForViolationMessageOfDomainFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
  */
 @CompileStatic
 class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
@@ -167,7 +167,7 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
     )
 
     httpResponseMetaData.violation.message = MessageSourceResolvableHelper.resolveMessageCodeList(
-        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfDomainFailure(resolvableMessageSpecification), locale
+        messageSource, MessageSourceResolvableHelper.makeMessageCodeListForViolationMessageOfDomainFailure(resolvableMessageSpecification), locale
     )
 
     return httpResponseMetaData

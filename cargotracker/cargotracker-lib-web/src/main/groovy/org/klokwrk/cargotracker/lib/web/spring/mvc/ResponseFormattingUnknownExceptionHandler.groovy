@@ -82,11 +82,11 @@ import java.time.Instant
  * ...
  * </pre>
  * Localization message codes for {@code metaData.violation.message} property is created with
- * {@link MessageSourceResolvableHelper#createMessageCodeListForViolationMessageOfUnknownFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
+ * {@link MessageSourceResolvableHelper#makeMessageCodeListForViolationMessageOfUnknownFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
  * for further details.
  *
  * @see MessageSourceResolvableHelper
- * @see MessageSourceResolvableHelper#createMessageCodeListForViolationMessageOfUnknownFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
+ * @see MessageSourceResolvableHelper#makeMessageCodeListForViolationMessageOfUnknownFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
  */
 @CompileStatic
 class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
@@ -148,7 +148,7 @@ class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
     )
 
     httpResponseMetaData.violation.message = MessageSourceResolvableHelper.resolveMessageCodeList(
-        messageSource, MessageSourceResolvableHelper.createMessageCodeListForViolationMessageOfUnknownFailure(resolvableMessageSpecification), locale
+        messageSource, MessageSourceResolvableHelper.makeMessageCodeListForViolationMessageOfUnknownFailure(resolvableMessageSpecification), locale
     )
 
     return httpResponseMetaData
