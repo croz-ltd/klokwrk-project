@@ -26,7 +26,7 @@ import org.testcontainers.containers.wait.strategy.Wait
 
 @CompileStatic
 class RdbmsManagementAppTestcontainersFactory {
-  static GenericContainer createAndStartRdbmsManagementApp(Network klokwrkNetwork, PostgreSQLContainer postgresqlServer) {
+  static GenericContainer makeAndStartRdbmsManagementApp(Network klokwrkNetwork, PostgreSQLContainer postgresqlServer) {
     String imageVersion = System.getProperty("cargotrackerBookingRdbmsManagementAppDockerImageVersion")
     String containerName = "cargotracker-booking-rdbms-management-app"
     String containerNameSuffix = UUID.randomUUID()
