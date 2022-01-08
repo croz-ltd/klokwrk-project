@@ -49,7 +49,7 @@ class CreateBookingOfferCommandSpecification extends Specification {
   static RouteSpecification validRouteSpecification = RouteSpecification.create(
       locationSampleMap["NLRTM"], locationSampleMap["DEHAM"], currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours, currentInstantRoundedAndThreeHours, clock
   )
-  static CommodityInfo validCommodityInfo = CommodityInfo.create(CommodityType.DRY, 1000, null)
+  static CommodityInfo validCommodityInfo = CommodityInfo.make(CommodityType.DRY, 1000, null)
   static ContainerDimensionType validContainerDimensionType = ContainerDimensionType.DIMENSION_ISO_22
 
   void "map constructor should work for correct input params"() {

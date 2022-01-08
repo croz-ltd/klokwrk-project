@@ -84,7 +84,7 @@ abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification ex
     BookingOfferCommodities expectedBookingOfferCommodities = new BookingOfferCommodities()
     expectedBookingOfferCommodities.storeCommodity(new Commodity(
         containerType: ContainerType.TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.create(CommodityType.DRY, 1000),
+        commodityInfo: CommodityInfo.make(CommodityType.DRY, 1000),
         maxAllowedWeightPerContainer: Quantities.getQuantity(23_750, Units.KILOGRAM),
         maxRecommendedWeightPerContainer: Quantities.getQuantity(1000, Units.KILOGRAM),
         containerCount: 1

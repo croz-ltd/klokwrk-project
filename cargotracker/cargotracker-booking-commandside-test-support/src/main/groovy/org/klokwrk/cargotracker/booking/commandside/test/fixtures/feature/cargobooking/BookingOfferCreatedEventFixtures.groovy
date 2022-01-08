@@ -47,7 +47,7 @@ class BookingOfferCreatedEventFixtures {
    * Used implementation is the same as when aggregate creates event from command.
    */
   static BookingOfferCreatedEvent eventValidForCommand(CreateBookingOfferCommand createBookingOfferCommand) {
-    CommodityInfo commodityInfo = CommodityInfo.create(CommodityType.DRY, 1_000)
+    CommodityInfo commodityInfo = CommodityInfo.make(CommodityType.DRY, 1_000)
     Commodity commodity = new Commodity(
         containerType: ContainerType.TYPE_ISO_22G1,
         commodityInfo: commodityInfo,

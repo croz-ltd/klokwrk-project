@@ -190,9 +190,9 @@ class CommodityInfoSpecification extends Specification {
     assertionError.message == "Unexpected CommodityType value: [value: NON_EXISTENT_ENUM_VALUE]"
   }
 
-  void "create(CommodityType, Quantity, Quantity) factory method should work for correct input params"() {
+  void "make(CommodityType, Quantity, Quantity) factory method should work for correct input params"() {
     when:
-    CommodityInfo commodityInfo = CommodityInfo.create(commodityTypeParam, oneKilogram, requestedStorageTemperatureParam)
+    CommodityInfo commodityInfo = CommodityInfo.make(commodityTypeParam, oneKilogram, requestedStorageTemperatureParam)
 
     then:
     commodityInfo
@@ -214,9 +214,9 @@ class CommodityInfoSpecification extends Specification {
     FROZEN             | getQuantity(-8, CELSIUS)
   }
 
-  void "create(CommodityType, Quantity, Quantity) factory method should acquire recommendedStorageTemperature when requestedStorageTemperature is not given"() {
+  void "make(CommodityType, Quantity, Quantity) factory method should acquire recommendedStorageTemperature when requestedStorageTemperature is not given"() {
     when:
-    CommodityInfo commodityInfo = CommodityInfo.create(commodityTypeParam, oneKilogram, null)
+    CommodityInfo commodityInfo = CommodityInfo.make(commodityTypeParam, oneKilogram, null)
 
     then:
     commodityInfo.requestedStorageTemperature == commodityTypeParam.recommendedStorageTemperature
@@ -229,17 +229,17 @@ class CommodityInfoSpecification extends Specification {
     FROZEN             | _
   }
 
-  void "create(CommodityType, Quantity, Quantity) factory method should skip requiring recommendedStorageTemperature for the combination of invalid input params"() {
+  void "make(CommodityType, Quantity, Quantity) factory method should skip requiring recommendedStorageTemperature for the combination of invalid input params"() {
     when:
-    CommodityInfo.create(null, oneKilogram, null)
+    CommodityInfo.make(null, oneKilogram, null)
 
     then:
     thrown(AssertionError)
   }
 
-  void "create(CommodityType, Quantity, Quantity) factory method should convert totalWeight in kilograms and round it up to the whole number"() {
+  void "make(CommodityType, Quantity, Quantity) factory method should convert totalWeight in kilograms and round it up to the whole number"() {
     when:
-    CommodityInfo commodityInfo = CommodityInfo.create(DRY, totalWeightParam, null)
+    CommodityInfo commodityInfo = CommodityInfo.make(DRY, totalWeightParam, null)
 
     then:
     commodityInfo
@@ -252,9 +252,9 @@ class CommodityInfoSpecification extends Specification {
     getQuantity(1.001, KILOGRAM) | 2
   }
 
-  void "create(CommodityType, Quantity) factory method should work for correct input params"() {
+  void "make(CommodityType, Quantity) factory method should work for correct input params"() {
     when:
-    CommodityInfo commodityInfo = CommodityInfo.create(commodityTypeParam, oneKilogram)
+    CommodityInfo commodityInfo = CommodityInfo.make(commodityTypeParam, oneKilogram)
 
     then:
     commodityInfo
@@ -268,9 +268,9 @@ class CommodityInfoSpecification extends Specification {
     FROZEN             | getQuantity(-12, CELSIUS)
   }
 
-  void "create(CommodityType, Integer, Integer) factory method should work for correct input params"() {
+  void "make(CommodityType, Integer, Integer) factory method should work for correct input params"() {
     when:
-    CommodityInfo commodityInfo = CommodityInfo.create(commodityTypeParam, 1, requestedStorageTemperatureParam)
+    CommodityInfo commodityInfo = CommodityInfo.make(commodityTypeParam, 1, requestedStorageTemperatureParam)
 
     then:
     commodityInfo
@@ -292,9 +292,9 @@ class CommodityInfoSpecification extends Specification {
     FROZEN             | -8
   }
 
-  void "create(CommodityType, Integer) factory method should work for correct input params"() {
+  void "make(CommodityType, Integer) factory method should work for correct input params"() {
     when:
-    CommodityInfo commodityInfo = CommodityInfo.create(commodityTypeParam, 1)
+    CommodityInfo commodityInfo = CommodityInfo.make(commodityTypeParam, 1)
 
     then:
     commodityInfo

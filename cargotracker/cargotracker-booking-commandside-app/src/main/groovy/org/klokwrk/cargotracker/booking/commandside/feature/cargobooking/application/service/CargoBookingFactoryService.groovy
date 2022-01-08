@@ -70,7 +70,7 @@ class CargoBookingFactoryService {
             createBookingOfferCommandRequest.routeSpecification.departureEarliestTime, createBookingOfferCommandRequest.routeSpecification.departureLatestTime,
             createBookingOfferCommandRequest.routeSpecification.arrivalLatestTime, clock
         ),
-        commodityInfo: CommodityInfo.create(
+        commodityInfo: CommodityInfo.make(
             createBookingOfferCommandRequest.commodityInfo.commodityType, createBookingOfferCommandRequest.commodityInfo.totalWeightInKilograms,
             createBookingOfferCommandRequest.commodityInfo.requestedStorageTemperatureInCelsius
         ),
