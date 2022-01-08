@@ -102,24 +102,24 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     HttpServletRequest httpServletRequest = (serverHttpRequest as ServletServerHttpRequest).servletRequest
     HttpServletResponse httpServletResponse = (serverHttpResponse as ServletServerHttpResponse).servletResponse
 
-    HttpResponseMetaData httpResponseMetaData = createHttpResponseMetaData(httpServletResponse, httpServletRequest)
+    HttpResponseMetaData httpResponseMetaData = makeHttpResponseMetaData(httpServletResponse, httpServletRequest)
     operationResponseBody.metaData = httpResponseMetaData.propertiesFiltered
 
     return operationResponseBody
   }
 
-  protected HttpResponseMetaData createHttpResponseMetaData(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) {
+  protected HttpResponseMetaData makeHttpResponseMetaData(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) {
     HttpStatus httpStatus = HttpStatus.resolve(httpServletResponse.status)
 
     HttpResponseMetaData httpResponseMetaData = new HttpResponseMetaData(
         general: new ResponseMetaDataGeneralPart(timestamp: Instant.now(), severity: Severity.INFO.name().toLowerCase(), locale: httpServletRequest.locale),
-        http: createHttpResponseMetaDataPart(httpStatus)
+        http: makeHttpResponseMetaDataPart(httpStatus)
     )
 
     return httpResponseMetaData
   }
 
-  protected HttpResponseMetaDataHttpPart createHttpResponseMetaDataPart(HttpStatus httpStatus) {
+  protected HttpResponseMetaDataHttpPart makeHttpResponseMetaDataPart(HttpStatus httpStatus) {
     HttpResponseMetaDataHttpPart httpResponseMetaDataPart = new HttpResponseMetaDataHttpPart(status: httpStatus.value().toString(), message: httpStatus.reasonPhrase)
     return httpResponseMetaDataPart
   }
