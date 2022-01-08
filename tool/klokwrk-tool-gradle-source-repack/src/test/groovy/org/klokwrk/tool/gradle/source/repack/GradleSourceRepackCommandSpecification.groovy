@@ -326,7 +326,7 @@ class GradleSourceRepackCommandSpecification extends Specification {
     !testDirectoriesAndFiles.repackedSourceArchiveFile.exists()
   }
 
-  void "createGradleSourceRepackCliArguments - should return expected defaults when 'generated-gradle-jars' does NOT exists"() {
+  void "makeGradleSourceRepackCliArguments - should return expected defaults when 'generated-gradle-jars' does NOT exists"() {
     given:
     FileSystem fileSystem = Jimfs.newFileSystem(Configuration.unix())
     String inputGradleVersion = "7.0.2"
@@ -336,7 +336,7 @@ class GradleSourceRepackCommandSpecification extends Specification {
       cliParameterGradleVersion = inputGradleVersion
     }
 
-    GradleSourceRepackCliArguments gradleSourceRepackCliArguments = gradleSourceRepackCommand.createGradleSourceRepackCliArguments(fileSystem)
+    GradleSourceRepackCliArguments gradleSourceRepackCliArguments = gradleSourceRepackCommand.makeGradleSourceRepackCliArguments(fileSystem)
 
     then:
     verifyAll(gradleSourceRepackCliArguments, {
@@ -351,7 +351,7 @@ class GradleSourceRepackCommandSpecification extends Specification {
     })
   }
 
-  void "createGradleSourceRepackCliArguments - should return expected defaults when 'generated-gradle-jars' does exists"() {
+  void "makeGradleSourceRepackCliArguments - should return expected defaults when 'generated-gradle-jars' does exists"() {
     given:
     FileSystem fileSystem = Jimfs.newFileSystem(Configuration.unix())
     String inputGradleVersion = "7.0.2"
@@ -363,7 +363,7 @@ class GradleSourceRepackCommandSpecification extends Specification {
       cliParameterGradleVersion = inputGradleVersion
     }
 
-    GradleSourceRepackCliArguments gradleSourceRepackCliArguments = gradleSourceRepackCommand.createGradleSourceRepackCliArguments(fileSystem)
+    GradleSourceRepackCliArguments gradleSourceRepackCliArguments = gradleSourceRepackCommand.makeGradleSourceRepackCliArguments(fileSystem)
 
     then:
     verifyAll(gradleSourceRepackCliArguments, {
@@ -378,7 +378,7 @@ class GradleSourceRepackCommandSpecification extends Specification {
     })
   }
 
-  void "createGradleSourceRepackCliArguments - should always append slash character on gradleDistributionSiteUrl"() {
+  void "makeGradleSourceRepackCliArguments - should always append slash character on gradleDistributionSiteUrl"() {
     given:
     String inputGradleVersion = "7.0.2"
 
@@ -388,7 +388,7 @@ class GradleSourceRepackCommandSpecification extends Specification {
       gradleDistributionDirUrl = gradleDistributionDirUrlParam
     }
 
-    GradleSourceRepackCliArguments gradleSourceRepackCliArguments = gradleSourceRepackCommand.createGradleSourceRepackCliArguments(FileSystems.default)
+    GradleSourceRepackCliArguments gradleSourceRepackCliArguments = gradleSourceRepackCommand.makeGradleSourceRepackCliArguments(FileSystems.default)
 
     then:
     gradleSourceRepackCliArguments.gradleDistributionSiteUrl.endsWith("/")
