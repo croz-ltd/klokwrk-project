@@ -226,7 +226,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
   }
 
   @SuppressWarnings("CodeNarc.MethodSize")
-  void "createBookCargoCommandResponse - should create expected response"() {
+  void "makeCreateBookingOfferCommandResponse - should create expected response"() {
     given:
     String myBookingOfferIdentifier = UUID.randomUUID()
     Location myOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRRJK")
