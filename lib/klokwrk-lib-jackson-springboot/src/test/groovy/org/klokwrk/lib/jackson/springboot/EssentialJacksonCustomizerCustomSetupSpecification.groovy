@@ -52,7 +52,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
    * <p/>
    * Should be used sparingly for performance reasons. It is much better to use standard Spring (Boot) means if appropriate.
    */
-  ApplicationContext createNewTestApplicationContext() {
+  ApplicationContext makeNewTestApplicationContext() {
     SpringBootTestContextBootstrapper contextBootstrapper = new SpringBootTestContextBootstrapper()
     contextBootstrapper.bootstrapContext = new DefaultBootstrapContext(EssentialJacksonCustomizerCustomSetupSpecification, new DefaultCacheAwareContextLoaderDelegate())
     MergedContextConfiguration contextConfiguration = contextBootstrapper.buildMergedContextConfiguration()
@@ -65,7 +65,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   void "should be disabled when configured so"() {
     given:
     System.setProperty("klokwrk.jackson.customizer.essential.enabled", "false")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     expect:
@@ -77,7 +77,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   void "should not add StringSanitizingDeserializer when configured so"() {
     given:
     System.setProperty("klokwrk.jackson.customizer.essential.deserialization.stringSanitizingDeserializer.enabled", "false")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     when:
@@ -92,7 +92,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   @RestoreSystemProperties
   void "should not add UomQuantityDeserializer when configured so"() {
     System.setProperty("klokwrk.jackson.customizer.essential.deserialization.uomQuantityDeserializer.enabled", "false")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     when:
@@ -108,7 +108,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   void "should not add GStringSerializer when configured so"() {
     given:
     System.setProperty("klokwrk.jackson.customizer.essential.serialization.gStringSerializer.enabled", "false")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     when:
@@ -124,7 +124,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   void "should not add UomQuantitySerializer when configured so"() {
     given:
     System.setProperty("klokwrk.jackson.customizer.essential.serialization.uomQuantitySerializer.enabled", "false")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     when:
@@ -140,7 +140,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   void "should not ignore transients when configured so"() {
     given:
     System.setProperty("klokwrk.jackson.customizer.essential.mapper.ignoreTransient", "false")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     expect:
@@ -152,7 +152,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   void "should not ignore read-only properties when configured so"() {
     given:
     System.setProperty("klokwrk.jackson.customizer.essential.mapper.ignoreReadOnly", "false")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     expect:
@@ -164,7 +164,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   void "should not accept case-insensitive enum names when configured so"() {
     given:
     System.setProperty("klokwrk.jackson.customizer.essential.mapper.acceptCaseInsensitiveEnums", "false")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     expect:
@@ -176,7 +176,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   void "should not allow json comments when configured so"() {
     given:
     System.setProperty("klokwrk.jackson.customizer.essential.deserialization.allowJsonComments", "false")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     expect:
@@ -188,7 +188,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   void "should not accept single value as array when configured so"() {
     given:
     System.setProperty("klokwrk.jackson.customizer.essential.deserialization.acceptSingleValueAsArray", "false")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     expect:
@@ -200,7 +200,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   void "should fail on unknown properties when configured so"() {
     given:
     System.setProperty("klokwrk.jackson.customizer.essential.deserialization.failOnUnknownProperties", "true")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     expect:
@@ -212,7 +212,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   void "should not skip null values on serialization when configured so"() {
     given:
     System.setProperty("klokwrk.jackson.customizer.essential.serialization.skipNullValues", "false")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     expect:
@@ -223,7 +223,7 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   void "should not skip null values on deserialization when configured so"() {
     given:
     System.setProperty("klokwrk.jackson.customizer.essential.deserialization.skipNullValues", "false")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
     ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
 
     expect:
