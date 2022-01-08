@@ -27,7 +27,7 @@ class LocationSpecification extends Specification {
     Location location = new Location(
         unLoCode: new UnLoCode(code: "HRRJK"), name: new InternationalizedName(name: "Rijeka"), countryName: new InternationalizedName(name: "Croatia"),
         unLoCodeFunction: new UnLoCodeFunction(functionEncoded: "1234----"), unLoCodeCoordinates: new UnLoCodeCoordinates(coordinatesEncoded: "4520N 01424E"),
-        portCapabilities: PortCapabilities.createSeaContainerPortCapabilities()
+        portCapabilities: PortCapabilities.makeSeaContainerPortCapabilities()
     )
 
     then:

@@ -45,28 +45,28 @@ class PortCapabilities implements PostMapConstructorCheckable {
   /**
    * Creates a new {@code PortCapabilities} corresponding to the location which is not a port.
    */
-  static PortCapabilities createNoPortCapabilities() {
+  static PortCapabilities makeNoPortCapabilities() {
     return new PortCapabilities(capabilities: [PortCapabilityType.NO_PORT] as Set)
   }
 
   /**
    * Creates a new {@code PortCapabilities} instance for sea port.
    */
-  static PortCapabilities createSeaPortCapabilities() {
+  static PortCapabilities makeSeaPortCapabilities() {
     return new PortCapabilities(capabilities: [PortCapabilityType.SEA_PORT] as Set)
   }
 
   /**
    * Creates a new {@code PortCapabilities} instance for river port.
    */
-  static PortCapabilities createRiverPortCapabilities() {
+  static PortCapabilities makeRiverPortCapabilities() {
     return new PortCapabilities(capabilities: [PortCapabilityType.RIVER_PORT] as Set)
   }
 
   /**
    * Creates a new {@code PortCapabilities} instance for sea port with container terminal.
    */
-  static PortCapabilities createSeaContainerPortCapabilities() {
+  static PortCapabilities makeSeaContainerPortCapabilities() {
     return new PortCapabilities(capabilities: [PortCapabilityType.SEA_PORT, PortCapabilityType.CONTAINER_PORT] as Set)
   }
 
@@ -77,7 +77,7 @@ class PortCapabilities implements PostMapConstructorCheckable {
    * <p/>
    * When comparing supplied names with names of an enum, supplied names are trimmed and uppercased before comparison.
    */
-  static PortCapabilities createFromStringsIfPossible(List<String> portCapabilitiesStringList) {
+  static PortCapabilities makeFromStringsIfPossible(List<String> portCapabilitiesStringList) {
     if (portCapabilitiesStringList == null || portCapabilitiesStringList.isEmpty()) {
       return null
     }

@@ -182,9 +182,9 @@ class PortCapabilitiesSpecification extends Specification {
   }
 
   @SuppressWarnings("GroovyPointlessBoolean")
-  void "createFromStringsIfPossible() - should create for valid input"() {
+  void "makeFromStringsIfPossible() - should work for valid input"() {
     when:
-    PortCapabilities portCapabilities = PortCapabilities.createFromStringsIfPossible(["SEA_PORT", "CONTAINER_PORT", "BULK_CARGO_PORT"])
+    PortCapabilities portCapabilities = PortCapabilities.makeFromStringsIfPossible(["SEA_PORT", "CONTAINER_PORT", "BULK_CARGO_PORT"])
 
     then:
     portCapabilities.isPort() == true
@@ -200,9 +200,9 @@ class PortCapabilitiesSpecification extends Specification {
     ["  sea_PORT  ", "  CONTAINER_port  "] | _
   }
 
-  void "createFromStringsIfPossible() - should return null for invalid input"() {
+  void "makeFromStringsIfPossible() - should return null for invalid input"() {
     when:
-    PortCapabilities portCapabilities = PortCapabilities.createFromStringsIfPossible(nameListParam)
+    PortCapabilities portCapabilities = PortCapabilities.makeFromStringsIfPossible(nameListParam)
 
     then:
     portCapabilities == null
@@ -217,27 +217,27 @@ class PortCapabilitiesSpecification extends Specification {
     ["SEA_PORT", "CONTAINER_PORT", "bla"]  | _
   }
 
-  void "createNoPortCapabilities() - should work as expected"() {
+  void "makeNoPortCapabilities() - should work as expected"() {
     expect:
-    PortCapabilities.createNoPortCapabilities() == PortCapabilities.NO_PORT_CAPABILITIES
-    !(PortCapabilities.createNoPortCapabilities() === PortCapabilities.NO_PORT_CAPABILITIES)
+    PortCapabilities.makeNoPortCapabilities() == PortCapabilities.NO_PORT_CAPABILITIES
+    !(PortCapabilities.makeNoPortCapabilities() === PortCapabilities.NO_PORT_CAPABILITIES)
   }
 
-  void "createSeaPortCapabilities() - should work as expected"() {
+  void "makeSeaPortCapabilities() - should work as expected"() {
     expect:
-    PortCapabilities.createSeaPortCapabilities() == PortCapabilities.SEA_PORT_CAPABILITIES
-    !(PortCapabilities.createSeaPortCapabilities() === PortCapabilities.SEA_PORT_CAPABILITIES)
+    PortCapabilities.makeSeaPortCapabilities() == PortCapabilities.SEA_PORT_CAPABILITIES
+    !(PortCapabilities.makeSeaPortCapabilities() === PortCapabilities.SEA_PORT_CAPABILITIES)
   }
 
-  void "createRiverPortCapabilities() - should work as expected"() {
+  void "makeRiverPortCapabilities() - should work as expected"() {
     expect:
-    PortCapabilities.createRiverPortCapabilities() == PortCapabilities.RIVER_PORT_CAPABILITIES
-    !(PortCapabilities.createRiverPortCapabilities() === PortCapabilities.RIVER_PORT_CAPABILITIES)
+    PortCapabilities.makeRiverPortCapabilities() == PortCapabilities.RIVER_PORT_CAPABILITIES
+    !(PortCapabilities.makeRiverPortCapabilities() === PortCapabilities.RIVER_PORT_CAPABILITIES)
   }
 
-  void "createSeaContainerPortCapabilities() - should work as expected"() {
+  void "makeSeaContainerPortCapabilities() - should work as expected"() {
     expect:
-    PortCapabilities.createSeaContainerPortCapabilities() == PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES
-    !(PortCapabilities.createSeaContainerPortCapabilities() === PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES)
+    PortCapabilities.makeSeaContainerPortCapabilities() == PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES
+    !(PortCapabilities.makeSeaContainerPortCapabilities() === PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES)
   }
 }
