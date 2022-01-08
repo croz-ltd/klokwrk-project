@@ -46,7 +46,7 @@ class CreateBookingOfferCommandSpecification extends Specification {
   static Instant currentInstantRoundedAndOneHour = currentInstantRounded + Duration.ofHours(1)
   static Instant currentInstantRoundedAndTwoHours = currentInstantRounded + Duration.ofHours(2)
   static Instant currentInstantRoundedAndThreeHours = currentInstantRounded + Duration.ofHours(3)
-  static RouteSpecification validRouteSpecification = RouteSpecification.create(
+  static RouteSpecification validRouteSpecification = RouteSpecification.make(
       locationSampleMap["NLRTM"], locationSampleMap["DEHAM"], currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours, currentInstantRoundedAndThreeHours, clock
   )
   static CommodityInfo validCommodityInfo = CommodityInfo.make(CommodityType.DRY, 1000, null)
@@ -93,7 +93,7 @@ class CreateBookingOfferCommandSpecification extends Specification {
   void "map constructor should fail when some of business rules of routeSpecification are not satisfied"() {
     when:
     new CreateBookingOfferCommand(
-        routeSpecification: RouteSpecification.create(
+        routeSpecification: RouteSpecification.make(
             originLocationParam, destinationLocationParam,
             currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours,
             currentInstantRoundedAndThreeHours, clock

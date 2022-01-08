@@ -65,7 +65,7 @@ class CargoBookingFactoryService {
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
         bookingOfferId: BookingOfferId.makeWithGeneratedIdentifierIfNeeded(createBookingOfferCommandRequest.bookingOfferIdentifier),
-        routeSpecification: RouteSpecification.create(
+        routeSpecification: RouteSpecification.make(
             resolvedOriginLocation, resolvedDestinationLocation,
             createBookingOfferCommandRequest.routeSpecification.departureEarliestTime, createBookingOfferCommandRequest.routeSpecification.departureLatestTime,
             createBookingOfferCommandRequest.routeSpecification.arrivalLatestTime, clock

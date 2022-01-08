@@ -55,7 +55,7 @@ class CreateBookingOfferCommandFixtures {
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
         bookingOfferId: BookingOfferId.make(bookingOfferIdentifier),
-        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
+        routeSpecification: RouteSpecification.make(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
         commodityInfo: CommodityInfo.make(CommodityType.DRY, 1000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
     )
@@ -71,7 +71,7 @@ class CreateBookingOfferCommandFixtures {
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
         bookingOfferId: BookingOfferId.make(bookingOfferIdentifier),
-        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
+        routeSpecification: RouteSpecification.make(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
         commodityInfo: CommodityInfo.make(CommodityType.DRY, 10_000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
     )
@@ -87,7 +87,7 @@ class CreateBookingOfferCommandFixtures {
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
         bookingOfferId: BookingOfferId.make(cargoIdentifier),
-        routeSpecification: RouteSpecification.create(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
+        routeSpecification: RouteSpecification.make(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
         commodityInfo: CommodityInfo.make(CommodityType.DRY, 5001 * 25_000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
     )

@@ -89,19 +89,19 @@ class RouteSpecification implements PostMapConstructorCheckable {
    * If {@code departureLatestTime} contains non-zero minutes, seconds or nanos, {@code departureLatestTime} is rounded up to the next hour.
    */
   @SuppressWarnings("CodeNarc.ParameterCount")
-  static RouteSpecification create(
+  static RouteSpecification make(
       Location originLocation, Location destinationLocation, Instant departureEarliestTime, Instant departureLatestTime, Instant arrivalLatestTime, Clock clock = Clock.systemUTC())
   {
     Instant departureEarliestTimeToUse = InstantUtils.roundUpInstantToTheHour(departureEarliestTime)
     Instant departureLatestTimeToUse = InstantUtils.roundUpInstantToTheHour(departureLatestTime)
     Instant arrivalLatestTimeToUse = InstantUtils.roundUpInstantToTheHour(arrivalLatestTime)
 
-    RouteSpecification createdRouteSpecification = new RouteSpecification(
+    RouteSpecification newRouteSpecification = new RouteSpecification(
         originLocation: originLocation, destinationLocation: destinationLocation, creationTime: Instant.now(clock),
         departureEarliestTime: departureEarliestTimeToUse, departureLatestTime: departureLatestTimeToUse, arrivalLatestTime: arrivalLatestTimeToUse
     )
 
-    return createdRouteSpecification
+    return newRouteSpecification
   }
 
   @Override
