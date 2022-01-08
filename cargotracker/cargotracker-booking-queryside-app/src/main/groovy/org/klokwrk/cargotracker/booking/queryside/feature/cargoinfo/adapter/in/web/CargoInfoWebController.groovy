@@ -42,7 +42,7 @@ class CargoInfoWebController {
   @PostMapping("/booking-offer-summary")
   OperationResponse<BookingOfferSummaryQueryResponse> bookingOfferSummaryQuery(@RequestBody BookingOfferSummaryQueryWebRequest webRequest, Locale locale) {
     OperationResponse<BookingOfferSummaryQueryResponse> bookingOfferSummary =
-        bookingOfferSummaryQueryPortIn.bookingOfferSummaryQuery(createOperationRequest(webRequest, BookingOfferSummaryQueryRequest, locale))
+        bookingOfferSummaryQueryPortIn.bookingOfferSummaryQuery(makeOperationRequest(webRequest, BookingOfferSummaryQueryRequest, locale))
 
     return bookingOfferSummary
   }
@@ -52,7 +52,7 @@ class CargoInfoWebController {
    *
    * @param <P> Type of the {@link OperationRequest}'s payload.
    */
-  private <P> OperationRequest<P> createOperationRequest(Object webRequest, Class<P> operationRequestPayloadType, Locale locale) {
+  private <P> OperationRequest<P> makeOperationRequest(Object webRequest, Class<P> operationRequestPayloadType, Locale locale) {
     OperationRequest<P> operationRequest = new OperationRequest(
         payload: operationRequestPayloadType.newInstance(webRequest.properties),
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): locale]
