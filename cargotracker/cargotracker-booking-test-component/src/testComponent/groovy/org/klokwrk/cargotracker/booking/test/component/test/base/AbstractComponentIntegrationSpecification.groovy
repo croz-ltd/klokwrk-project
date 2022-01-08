@@ -46,6 +46,6 @@ class AbstractComponentIntegrationSpecification extends Specification {
 
     commandSideApp = CommandSideAppTestcontainersFactory.makeAndStartCommandSideApp(klokwrkNetwork, axonServer)
     RdbmsProjectionAppTestcontainersFactory.createAndStartRdbmsProjectionApp(klokwrkNetwork, axonServer, postgresqlServer)
-    querySideApp = QuerySideAppTestcontainersFactory.createAndStartQuerySideApp(klokwrkNetwork, axonServer, postgresqlServer)
+    querySideApp = QuerySideAppTestcontainersFactory.makeAndStartQuerySideApp(klokwrkNetwork, axonServer, postgresqlServer)
   }
 }

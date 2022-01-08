@@ -25,7 +25,7 @@ import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.containers.wait.strategy.Wait
 
 /**
- * Factory for creating and starting cargotracker-booking-queryside-app in Testcontainers.
+ * Factory for creating and starting {@code cargotracker-booking-queryside-app} in Testcontainers.
  */
 @CompileStatic
 class QuerySideAppTestcontainersFactory {
@@ -33,12 +33,12 @@ class QuerySideAppTestcontainersFactory {
    * Creates and start cargotracker-booking-queryside-app in container.
    * <p/>
    * <ul>
-   *   <li>Container name prefix: <code>cargotracker-booking-queryside-app</code>.</li>
+   *   <li>Container name prefix: {@code cargotracker-booking-queryside-app}.</li>
    *   <li>Exposed internal ports: 8084.</li>
-   *   <li>Container time zone: <code>Europe/Zagreb</code>.</li>
+   *   <li>Container time zone: {@code Europe/Zagreb}.</li>
    * </ul>
    */
-  static GenericContainer createAndStartQuerySideApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
+  static GenericContainer makeAndStartQuerySideApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
     String imageVersion = System.getProperty("cargotrackerBookingQuerySideAppDockerImageVersion")
     Integer[] exposedPorts = [8084]
     String containerName = "cargotracker-booking-queryside-app"
