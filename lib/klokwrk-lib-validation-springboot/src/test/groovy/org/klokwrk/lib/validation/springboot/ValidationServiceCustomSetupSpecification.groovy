@@ -47,7 +47,7 @@ class ValidationServiceCustomSetupSpecification extends Specification {
    * <p/>
    * Should be used sparingly for performance reasons. It is much better to use standard Spring (Boot) means if appropriate.
    */
-  ApplicationContext createNewTestApplicationContext() {
+  ApplicationContext makeNewTestApplicationContext() {
     SpringBootTestContextBootstrapper contextBootstrapper = new SpringBootTestContextBootstrapper()
     contextBootstrapper.bootstrapContext = new DefaultBootstrapContext(ValidationServiceCustomSetupSpecification, new DefaultCacheAwareContextLoaderDelegate())
     MergedContextConfiguration contextConfiguration = contextBootstrapper.buildMergedContextConfiguration()
@@ -61,7 +61,7 @@ class ValidationServiceCustomSetupSpecification extends Specification {
   void "should be disabled when configured so"() {
     given:
     System.setProperty("klokwrk.validation.enabled", "false")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
 
     expect:
     applicationContext.getBean("validationService").enabled == false
@@ -71,7 +71,7 @@ class ValidationServiceCustomSetupSpecification extends Specification {
   void "should not throw for valid object when disabled"() {
     given:
     System.setProperty("klokwrk.validation.enabled", "false")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
     ValidationService validationService = applicationContext.getBean("validationService")
 
     TestObject validTestObject = new TestObject(stringProperty: "bla")
@@ -87,7 +87,7 @@ class ValidationServiceCustomSetupSpecification extends Specification {
   void "should not throw for invalid object when disabled"() {
     given:
     System.setProperty("klokwrk.validation.enabled", "false")
-    ApplicationContext applicationContext = createNewTestApplicationContext()
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
     ValidationService validationService = applicationContext.getBean("validationService")
 
     TestObject invalidTestObject = new TestObject(stringProperty: null)
