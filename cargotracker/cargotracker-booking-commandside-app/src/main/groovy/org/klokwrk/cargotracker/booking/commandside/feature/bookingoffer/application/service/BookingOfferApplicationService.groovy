@@ -35,14 +35,14 @@ import static org.hamcrest.Matchers.notNullValue
 @Service
 @CompileStatic
 class BookingOfferApplicationService implements CreateBookingOfferCommandPortIn {
-  private final CargoBookingFactoryService cargoBookingFactoryService
+  private final BookingOfferFactoryService bookingOfferFactoryService
   private final CommandGatewayAdapter commandGatewayAdapter
   private final ValidationService validationService
 
-  BookingOfferApplicationService(ValidationService validationService, CommandGateway commandGateway, CargoBookingFactoryService cargoBookingFactoryService) {
+  BookingOfferApplicationService(ValidationService validationService, CommandGateway commandGateway, BookingOfferFactoryService bookingOfferFactoryService) {
     this.validationService = validationService
     this.commandGatewayAdapter = new CommandGatewayAdapter(commandGateway)
-    this.cargoBookingFactoryService = cargoBookingFactoryService
+    this.bookingOfferFactoryService = bookingOfferFactoryService
   }
 
   @Override
@@ -50,9 +50,9 @@ class BookingOfferApplicationService implements CreateBookingOfferCommandPortIn 
     requireMatch(createBookingOfferCommandOperationRequest, notNullValue())
     validationService.validate(createBookingOfferCommandOperationRequest.payload)
 
-    CreateBookingOfferCommand createBookingOfferCommand = cargoBookingFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandOperationRequest.payload)
+    CreateBookingOfferCommand createBookingOfferCommand = bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandOperationRequest.payload)
     BookingOfferAggregate bookingOfferAggregate = commandGatewayAdapter.sendAndWait(createBookingOfferCommand, createBookingOfferCommandOperationRequest.metaData)
 
-    return new OperationResponse(payload: cargoBookingFactoryService.makeCreateBookingOfferCommandResponse(bookingOfferAggregate))
+    return new OperationResponse(payload: bookingOfferFactoryService.makeCreateBookingOfferCommandResponse(bookingOfferAggregate))
   }
 }

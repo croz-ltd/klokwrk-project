@@ -44,7 +44,7 @@ import java.time.Duration
 import java.time.Instant
 import java.time.ZoneOffset
 
-class CargoBookingFactoryServiceSpecification extends Specification {
+class BookingOfferFactoryServiceSpecification extends Specification {
 
   static Clock clock = Clock.fixed(Instant.parse("2021-12-07T12:00:00Z"), ZoneOffset.UTC)
   static Instant currentInstantRounded = Instant.now(clock)
@@ -59,17 +59,17 @@ class CargoBookingFactoryServiceSpecification extends Specification {
   static CommodityInfoData validCommodityInfoData = new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null)
   static String validContainerDimensionData = "DIMENSION_ISO_22"
 
-  CargoBookingFactoryService cargoBookingFactoryService
+  BookingOfferFactoryService bookingOfferFactoryService
   LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut
 
   void setup() {
     locationByUnLoCodeQueryPortOut = new InMemoryLocationRegistryService()
-    cargoBookingFactoryService = new CargoBookingFactoryService(locationByUnLoCodeQueryPortOut, Optional.of(clock))
+    bookingOfferFactoryService = new BookingOfferFactoryService(locationByUnLoCodeQueryPortOut, Optional.of(clock))
   }
 
   void "makeCreateBookingOfferCommand - should throw for passed null"() {
     when:
-    cargoBookingFactoryService.makeCreateBookingOfferCommand(null)
+    bookingOfferFactoryService.makeCreateBookingOfferCommand(null)
 
     then:
     thrown(AssertionError)
@@ -87,7 +87,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     )
 
     when:
-    cargoBookingFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
+    bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     DomainException domainException = thrown()
@@ -116,7 +116,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     )
 
     when:
-    cargoBookingFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
+    bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     DomainException domainException = thrown()
@@ -146,7 +146,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     )
 
     when:
-    cargoBookingFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
+    bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     DomainException domainException = thrown()
@@ -170,7 +170,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     )
 
     when:
-    CreateBookingOfferCommand createBookingOfferCommand = cargoBookingFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
+    CreateBookingOfferCommand createBookingOfferCommand = bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     verifyAll(createBookingOfferCommand) {
@@ -196,7 +196,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     )
 
     when:
-    CreateBookingOfferCommand createBookingOfferCommand = cargoBookingFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
+    CreateBookingOfferCommand createBookingOfferCommand = bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     verifyAll(createBookingOfferCommand) {
@@ -219,7 +219,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     )
 
     when:
-    cargoBookingFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
+    bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     thrown(AssertionError)
@@ -253,7 +253,7 @@ class CargoBookingFactoryServiceSpecification extends Specification {
     )
 
     when:
-    CreateBookingOfferCommandResponse createBookingOfferCommandResponse = cargoBookingFactoryService.makeCreateBookingOfferCommandResponse(bookingOfferAggregate)
+    CreateBookingOfferCommandResponse createBookingOfferCommandResponse = bookingOfferFactoryService.makeCreateBookingOfferCommandResponse(bookingOfferAggregate)
 
     then:
     verifyAll(createBookingOfferCommandResponse) {

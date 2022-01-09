@@ -40,12 +40,12 @@ import static org.hamcrest.Matchers.notNullValue
  */
 @Service
 @CompileStatic
-class CargoBookingFactoryService {
+class BookingOfferFactoryService {
   private final LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut
   private final Clock clock
 
   @SuppressWarnings("CodeNarc.OptionalMethodParameter")
-  CargoBookingFactoryService(LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut, Optional<Clock> clockOptional) {
+  BookingOfferFactoryService(LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut, Optional<Clock> clockOptional) {
     this.locationByUnLoCodeQueryPortOut = locationByUnLoCodeQueryPortOut
     this.clock = clockOptional.orElse(Clock.systemUTC())
   }
