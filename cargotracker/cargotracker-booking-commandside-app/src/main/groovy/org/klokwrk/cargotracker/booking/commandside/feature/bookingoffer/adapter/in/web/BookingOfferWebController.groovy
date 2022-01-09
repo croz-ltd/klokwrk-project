@@ -31,10 +31,10 @@ import javax.servlet.http.HttpServletRequest
 @CompileStatic
 @RestController
 @RequestMapping("/cargo-booking")
-class CargoBookingWebController {
+class BookingOfferWebController {
   private final CreateBookingOfferCommandPortIn createBookingOfferCommandPortIn
 
-  CargoBookingWebController(CreateBookingOfferCommandPortIn createBookingOfferCommandPortIn) {
+  BookingOfferWebController(CreateBookingOfferCommandPortIn createBookingOfferCommandPortIn) {
     this.createBookingOfferCommandPortIn = createBookingOfferCommandPortIn
   }
 

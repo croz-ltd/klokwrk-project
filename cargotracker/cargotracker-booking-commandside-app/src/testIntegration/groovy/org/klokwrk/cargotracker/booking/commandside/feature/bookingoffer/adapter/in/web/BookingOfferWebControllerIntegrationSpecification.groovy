@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class CargoBookingWebControllerIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
+class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
   @Autowired
   WebApplicationContext webApplicationContext
 
