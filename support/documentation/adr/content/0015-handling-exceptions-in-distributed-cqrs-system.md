@@ -46,7 +46,7 @@ hidden in infrastructural code. From the developer's perspective, he works with 
 business invariants are handled the same way on handling and dispatching sides, without depending on classes from the Axon framework.
 
 As a usage example on the handling side, take a look at `BookingOfferAggregate` or `CargoSummaryQueryHandlerService` classes. An example for the dispatching side can be found in
-`CargoBookingFactoryService` class.
+`BookingOfferFactoryService` class.
 
 #### Unexpected exception handling
 When handling business exceptions, we are not interested in stack traces. Since business exceptions are just a form of the alternate execution flow, there isn't much benefit in logging their

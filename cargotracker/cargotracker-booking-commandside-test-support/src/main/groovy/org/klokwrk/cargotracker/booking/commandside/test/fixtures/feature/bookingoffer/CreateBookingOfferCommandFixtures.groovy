@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking
+package org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.bookingoffer
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand

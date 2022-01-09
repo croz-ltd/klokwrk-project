@@ -20,8 +20,8 @@ package org.klokwrk.cargotracker.booking.domain.model.aggregate
 import org.axonframework.test.aggregate.AggregateTestFixture
 import org.axonframework.test.aggregate.ResultValidator
 import org.axonframework.test.aggregate.TestExecutor
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.CreateBookingOfferCommandFixtures
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.BookingOfferCreatedEventFixtures
+import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.bookingoffer.BookingOfferCreatedEventFixtures
+import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.bookingoffer.CreateBookingOfferCommandFixtures
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
