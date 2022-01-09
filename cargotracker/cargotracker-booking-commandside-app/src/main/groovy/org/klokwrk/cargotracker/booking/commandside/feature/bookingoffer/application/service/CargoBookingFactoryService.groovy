@@ -35,7 +35,7 @@ import java.time.Clock
 import static org.hamcrest.Matchers.notNullValue
 
 /**
- * Convenient factory intended to be used by {@link CargoBookingApplicationService} for encapsulating and simplifying creation of objects required in {@link CargoBookingApplicationService}
+ * Convenient factory intended to be used by {@link BookingOfferApplicationService} for encapsulating and simplifying creation of objects required in {@link BookingOfferApplicationService}
  * implementation.
  */
 @Service

@@ -50,7 +50,7 @@ import tech.units.indriya.unit.Units
 import java.time.Duration
 import java.time.Instant
 
-abstract class AbstractCargoBookingApplicationServiceIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
+abstract class AbstractBookingOfferApplicationServiceIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
   @Autowired
   CreateBookingOfferCommandPortIn createBookingOfferCommandPortIn
 

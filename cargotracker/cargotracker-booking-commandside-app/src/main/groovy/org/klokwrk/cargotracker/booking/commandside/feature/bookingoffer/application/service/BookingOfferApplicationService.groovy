@@ -34,12 +34,12 @@ import static org.hamcrest.Matchers.notNullValue
 
 @Service
 @CompileStatic
-class CargoBookingApplicationService implements CreateBookingOfferCommandPortIn {
+class BookingOfferApplicationService implements CreateBookingOfferCommandPortIn {
   private final CargoBookingFactoryService cargoBookingFactoryService
   private final CommandGatewayAdapter commandGatewayAdapter
   private final ValidationService validationService
 
-  CargoBookingApplicationService(ValidationService validationService, CommandGateway commandGateway, CargoBookingFactoryService cargoBookingFactoryService) {
+  BookingOfferApplicationService(ValidationService validationService, CommandGateway commandGateway, CargoBookingFactoryService cargoBookingFactoryService) {
     this.validationService = validationService
     this.commandGatewayAdapter = new CommandGatewayAdapter(commandGateway)
     this.cargoBookingFactoryService = cargoBookingFactoryService
