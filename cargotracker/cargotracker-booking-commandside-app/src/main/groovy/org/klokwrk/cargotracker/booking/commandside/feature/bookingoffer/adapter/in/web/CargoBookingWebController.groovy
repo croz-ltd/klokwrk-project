@@ -44,7 +44,7 @@ class CargoBookingWebController {
       @RequestBody CreateBookingOfferCommandWebRequest createBookingOfferCommandWebRequest, HttpServletRequest httpServletRequest)
   {
     OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommandResponse =
-        createBookingOfferCommandPortIn.createBookingOfferCommand(CargoBookingWebAssembler.toCreateBookingOfferCommandOperationRequest(createBookingOfferCommandWebRequest, httpServletRequest))
+        createBookingOfferCommandPortIn.createBookingOfferCommand(BookingOfferWebAssembler.toCreateBookingOfferCommandOperationRequest(createBookingOfferCommandWebRequest, httpServletRequest))
 
     return createBookingOfferCommandResponse
   }
