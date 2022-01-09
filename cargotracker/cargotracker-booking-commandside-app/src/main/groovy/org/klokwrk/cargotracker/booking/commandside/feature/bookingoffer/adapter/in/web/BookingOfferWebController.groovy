@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest
 
 @CompileStatic
 @RestController
-@RequestMapping("/cargo-booking")
+@RequestMapping("/booking-offer")
 class BookingOfferWebController {
   private final CreateBookingOfferCommandPortIn createBookingOfferCommandPortIn
 

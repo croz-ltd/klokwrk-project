@@ -82,7 +82,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-booking/create-booking-offer")
+        post("/booking-offer/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -230,7 +230,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-booking/create-booking-offer")
+        post("/booking-offer/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -306,7 +306,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-booking/create-booking-offer")
+        post("/booking-offer/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -370,7 +370,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-booking/create-booking-offer")
+        post("/booking-offer/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -434,7 +434,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-booking/create-booking-offer")
+        post("/booking-offer/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -472,7 +472,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        put("/cargo-booking/create-booking-offer")
+        put("/booking-offer/create-booking-offer")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
