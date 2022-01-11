@@ -24,6 +24,7 @@ import ch.qos.logback.core.read.ListAppender
 import org.axonframework.commandhandling.CommandBus
 import org.axonframework.common.Registration
 import org.axonframework.messaging.InterceptorChain
+import org.axonframework.messaging.MessageHandlerInterceptor
 import org.axonframework.messaging.unitofwork.UnitOfWork
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CommodityInfoData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandPortIn
@@ -129,15 +130,20 @@ abstract class AbstractBookingOfferApplicationServiceIntegrationSpecification ex
     Logger abstractRetrySchedulerLogger = (Logger) LoggerFactory.getLogger("org.axonframework.commandhandling.gateway.AbstractRetryScheduler")
     abstractRetrySchedulerLogger.addAppender(listAppender)
 
-    Boolean firstInvocation = true
-    Registration handlerInterceptorRegistration = commandBus.registerHandlerInterceptor({ UnitOfWork unitOfWork, InterceptorChain interceptorChain ->
-      if (firstInvocation) {
-        firstInvocation = false
-        throw new IllegalArgumentException("transient exception")
-      }
+    MessageHandlerInterceptor messageHandlerInterceptor = new MessageHandlerInterceptor() {
+      Boolean firstInvocation = true
 
-      return interceptorChain.proceed()
-    })
+      @Override
+      Object handle(UnitOfWork unitOfWork, InterceptorChain interceptorChain) throws Exception {
+        if (firstInvocation) {
+          firstInvocation = false
+          throw new IllegalArgumentException("transient exception")
+        }
+
+        return interceptorChain.proceed()
+      }
+    }
+    Registration handlerInterceptorRegistration = commandBus.registerHandlerInterceptor(messageHandlerInterceptor)
 
     String myBookingOfferIdentifier = UUID.randomUUID()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
@@ -145,7 +151,7 @@ abstract class AbstractBookingOfferApplicationServiceIntegrationSpecification ex
         routeSpecification: new RouteSpecificationData(
             originLocation: "NLRTM", destinationLocation: "HRRJK",
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
-            arrivalLatestTime: Instant.now() + Duration.ofHours(2),
+            arrivalLatestTime: Instant.now() + Duration.ofHours(2)
         ),
         commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000),
         containerDimensionType: "DIMENSION_ISO_22"
@@ -186,15 +192,21 @@ abstract class AbstractBookingOfferApplicationServiceIntegrationSpecification ex
     Logger abstractRetrySchedulerLogger = (Logger) LoggerFactory.getLogger("org.axonframework.commandhandling.gateway.AbstractRetryScheduler")
     abstractRetrySchedulerLogger.addAppender(listAppender)
 
-    Integer retryCount = 0
-    Registration handlerInterceptorRegistration = commandBus.registerHandlerInterceptor({ UnitOfWork unitOfWork, InterceptorChain interceptorChain ->
-      if (retryCount <= maxRetryCount) {
-        retryCount++
-        throw new IllegalArgumentException("transient exception")
-      }
+    MessageHandlerInterceptor messageHandlerInterceptor = new MessageHandlerInterceptor() {
+      Integer myRetryCount = 0
+      Integer myMaxRetryCount = SpringBootConfig.MAX_RETRY_COUNT_DEFAULT
 
-      return interceptorChain.proceed()
-    })
+      @Override
+      Object handle(UnitOfWork unitOfWork, InterceptorChain interceptorChain) throws Exception {
+        if (myRetryCount <= myMaxRetryCount) {
+          myRetryCount++
+          throw new IllegalArgumentException("transient exception")
+        }
+
+        return interceptorChain.proceed()
+      }
+    }
+    Registration handlerInterceptorRegistration = commandBus.registerHandlerInterceptor(messageHandlerInterceptor)
 
     String bookingOfferIdentifier = UUID.randomUUID()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(

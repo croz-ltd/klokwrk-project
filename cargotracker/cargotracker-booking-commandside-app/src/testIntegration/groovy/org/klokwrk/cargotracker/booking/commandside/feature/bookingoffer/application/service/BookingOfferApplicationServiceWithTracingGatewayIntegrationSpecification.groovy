@@ -21,8 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 
+@DirtiesContext // see "Notes about DirtiesContext" in BookingOfferApplicationServiceWithDefaultGatewayIntegrationSpecification class
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-@DirtiesContext // Need this to recreate commandBus in parent test and clear it from added handler interceptors. Didn't succeed with interceptor unregistering.
 class BookingOfferApplicationServiceWithTracingGatewayIntegrationSpecification extends AbstractBookingOfferApplicationServiceIntegrationSpecification {
 }
