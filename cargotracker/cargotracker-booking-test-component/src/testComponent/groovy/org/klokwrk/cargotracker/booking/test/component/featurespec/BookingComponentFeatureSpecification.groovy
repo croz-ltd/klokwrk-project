@@ -36,7 +36,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
     //noinspection HttpUrlsUsage
-    String createBookingOfferCommandUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/create-booking-offer"
+    String createBookingOfferCommandUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/booking-offer/create-booking-offer"
     String commandPostRequestBody = """
         {
           "routeSpecification": {
@@ -87,7 +87,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
     //noinspection HttpUrlsUsage
-    String createBookingOfferCommandUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/create-booking-offer"
+    String createBookingOfferCommandUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/booking-offer/create-booking-offer"
     String commandPostRequestBody = """
         {
           "routeSpecification": {
@@ -166,7 +166,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
     //noinspection HttpUrlsUsage
-    String createBookingOfferCommandUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/cargo-booking/create-booking-offer"
+    String createBookingOfferCommandUrl = "http://${ commandSideApp.containerIpAddress }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/booking-offer/create-booking-offer"
     String commandPostRequestBody = """
         {
           "routeSpecification": {

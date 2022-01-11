@@ -20,7 +20,7 @@ rules.
 ## Decision
 **We will execute syntactic validation at the application facade layer. If necessary for UI requirements, it may also be executed on the adapter layer.**
 
-Core validation at the application facade layer ensures that input data from any inbound channel will be validated in the same way. An example can be seen in `CargoBookingApplicationService` class
+Core validation at the application facade layer ensures that input data from any inbound channel will be validated in the same way. An example can be seen in `BookingOfferApplicationService` class
 from `cargotracker-booking-commandside-app` module.
 
 Validation at the inbound channel adapter layer is used when there is a need for UI or client-specific validations. A typical example is an email verification scenario where, with repetition, we want

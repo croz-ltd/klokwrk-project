@@ -21,7 +21,7 @@ import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.axonframework.eventhandling.GenericDomainEventMessage
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataConstant
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.cargobooking.BookingOfferCreatedEventFixtures
+import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.bookingoffer.BookingOfferCreatedEventFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.test.base.AbstractRdbmsProjectionIntegrationSpecification
