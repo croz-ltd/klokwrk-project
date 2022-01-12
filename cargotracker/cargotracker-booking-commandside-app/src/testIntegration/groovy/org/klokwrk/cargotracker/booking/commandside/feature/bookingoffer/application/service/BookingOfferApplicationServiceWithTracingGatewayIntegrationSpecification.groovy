@@ -18,11 +18,9 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.service
 
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 
-@DirtiesContext // see "Notes about DirtiesContext" in BookingOfferApplicationServiceWithDefaultGatewayIntegrationSpecification class
-@SpringBootTest
+@SpringBootTest(properties = ['axon.axonserver.servers = ${axonServerFirstInstanceUrl}'])
 @ActiveProfiles("testIntegration")
 class BookingOfferApplicationServiceWithTracingGatewayIntegrationSpecification extends AbstractBookingOfferApplicationServiceIntegrationSpecification {
 }

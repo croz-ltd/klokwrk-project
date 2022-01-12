@@ -32,27 +32,29 @@ class AxonServerTestcontainersFactory {
    * Creates and start Axon Server in container.
    * <p/>
    * <ul>
-   *   <li>Container name prefix: {@code klokwrk-project-axon-server}.</li>
-   *   <li>Exposed internal ports: 8024, 8124.</li>
-   *   <li>Container time zone: {@code Europe/Zagreb}.</li>
+   *   <li>Default container name prefix: {@code klokwrk-project-axon-server}.</li>
+   *   <li>Default exposed internal ports are 8024 for http port and 8124 for GRPC port.</li>
+   *   <li>Container time zone is set to {@code Europe/Zagreb}.</li>
    * </ul>
    */
-  static GenericContainer makeAndStartAxonServer(Network klokwrkNetwork) {
+  static GenericContainer makeAndStartAxonServer(Network klokwrkNetwork, String containerName = "klokwrk-project-axon-server", Integer httpPort = 8024, Integer grpcPort = 8124) {
     String imageVersion = System.getProperty("axonServerDockerImageVersion")
-    Integer[] exposedPorts = [8024, 8124]
+    Integer[] exposedPorts = [httpPort, grpcPort]
 
-    String containerName = "klokwrk-project-axon-server"
     // Used for randomization of container name to avoid collisions when multiple tests are run at the same time.
     String containerNameSuffix = UUID.randomUUID()
-
     GenericContainer axonServer = new GenericContainer("axoniq/axonserver:${ imageVersion }")
 
     axonServer.with {
       withExposedPorts(exposedPorts)
       withCreateContainerCmdModifier({ CreateContainerCmd cmd -> cmd.withName("${ containerName }-${ containerNameSuffix }") })
-      withEnv(["TZ": "Europe/Zagreb"])
+      withEnv([
+          "TZ": "Europe/Zagreb",
+          "SERVER_PORT": "$httpPort".toString(),
+          "AXONIQ_AXONSERVER_PORT": "$grpcPort".toString()
+      ])
       withNetwork(klokwrkNetwork)
-      waitingFor(Wait.forHttp("/v1/public/me").forPort(8024))
+      waitingFor(Wait.forHttp("/v1/public/me").forPort(httpPort))
 
       start()
     }

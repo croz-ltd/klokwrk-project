@@ -27,11 +27,16 @@ import spock.lang.Specification
 
 abstract class AbstractCommandSideIntegrationSpecification extends Specification {
   static GenericContainer axonServer
+  static GenericContainer axonServerSecondInstance
   static Network klokwrkNetwork
+  static Network klokwrkNetworkSecondInstance
 
   static {
     klokwrkNetwork = Network.builder().createNetworkCmdModifier({ CreateNetworkCmd createNetworkCmd -> createNetworkCmd.withName("klokwrk-network-${ UUID.randomUUID() }") }).build()
     axonServer = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetwork)
+
+    klokwrkNetworkSecondInstance = Network.builder().createNetworkCmdModifier({ CreateNetworkCmd createNetworkCmd -> createNetworkCmd.withName("klokwrk-network-secondInstance${ UUID.randomUUID() }") }).build()
+    axonServerSecondInstance = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetworkSecondInstance, "klokwrk-project-axon-server-secondInstance", 9024, 9124)
   }
 
   @DynamicPropertySource
@@ -39,6 +44,13 @@ abstract class AbstractCommandSideIntegrationSpecification extends Specification
     String axonContainerIpAddress = axonServer.containerIpAddress
     Integer axonContainerGrpcPort = axonServer.getMappedPort(8124)
 
-    registry.add("axon.axonserver.servers", { "${ axonContainerIpAddress }:${ axonContainerGrpcPort }" })
+    // Properties axonServerFirstInstanceUrl and axonServerSecondInstanceUrl are used as values for configuring 'axon.axonserver.servers' property at the level of a test class.
+    // For concrete example, take a look SpringBootTest annotations of BookingOfferWebControllerIntegrationSpecification, BookingOfferApplicationServiceWithTracingGatewayIntegrationSpecification
+    // or BookingOfferApplicationServiceWithDefaultGatewayIntegrationSpecification classes.
+    registry.add("axonServerFirstInstanceUrl", { "${ axonContainerIpAddress }:${ axonContainerGrpcPort }" })
+
+    String axonContainerIpAddressSecondInstance = axonServerSecondInstance.containerIpAddress
+    Integer axonContainerGrpcPortSecondInstance = axonServerSecondInstance.getMappedPort(9124)
+    registry.add("axonServerSecondInstanceUrl", { "${ axonContainerIpAddressSecondInstance }:${ axonContainerGrpcPortSecondInstance }" })
   }
 }
