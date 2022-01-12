@@ -28,7 +28,7 @@ import java.time.Duration
 import java.time.Instant
 
 class BookingComponentFeatureSpecification extends AbstractComponentIntegrationSpecification {
-  void "command - should book cargo: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
+  void "command - should create booking offer: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
@@ -79,7 +79,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     "en"                      | _
   }
 
-  void "query - should find booked cargo: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
+  void "query - should find created booking offer: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
@@ -106,7 +106,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
         """
 
     //noinspection HttpUrlsUsage
-    String bookingOfferSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-info/booking-offer-summary"
+    String bookingOfferSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/booking-offer/booking-offer-summary"
     Closure<String> queryPostRequestBodyClosure = { String commandResponseBookingOfferIdentifier ->
       """
       {
@@ -158,7 +158,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     "en"                      | _
   }
 
-  void "command - should not book cargo for invalid command: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
+  void "command - should not create booking offer for invalid command: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
@@ -209,10 +209,10 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     "en"                      | "Cargo cannot be sent from the specified origin location to the destination location."
   }
 
-  void "query - should not find non-existing cargo: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
+  void "query - should not find non-existing booking offer: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
     //noinspection HttpUrlsUsage
-    String bookingOfferSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/cargo-info/booking-offer-summary"
+    String bookingOfferSummaryQueryUrl = "http://${ querySideApp.containerIpAddress }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/booking-offer/booking-offer-summary"
     String queryPostRequestBody = """
       {
         "bookingOfferIdentifier": "${ UUID.randomUUID() }"
@@ -238,7 +238,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
     where:
     acceptLanguageHeaderParam | violationMessageParam
-    "hr-HR"                   | "Sumarni izvještaj za željeni teret nije pronađen."
-    "en"                      | "Summary report for specified cargo is not found."
+    "hr-HR"                   | "Sumarni izvještaj za željenu ponudu za rezervaciju nije pronađen."
+    "en"                      | "Summary report for specified booking offer is not found."
   }
 }

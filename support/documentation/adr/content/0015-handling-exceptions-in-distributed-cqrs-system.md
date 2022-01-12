@@ -45,7 +45,7 @@ It is worth noting that `DomainException` can be used on the dispatching side (c
 hidden in infrastructural code. From the developer's perspective, he works with `CommandException` or `QueryException` only (both are extended from `DomainException`). This is a nice addition as
 business invariants are handled the same way on handling and dispatching sides, without depending on classes from the Axon framework.
 
-As a usage example on the handling side, take a look at `BookingOfferAggregate` or `CargoSummaryQueryHandlerService` classes. An example for the dispatching side can be found in
+As a usage example on the handling side, take a look at `BookingOfferAggregate` or `BookingOfferSummaryQueryHandlerService` classes. An example for the dispatching side can be found in
 `BookingOfferFactoryService` class.
 
 #### Unexpected exception handling

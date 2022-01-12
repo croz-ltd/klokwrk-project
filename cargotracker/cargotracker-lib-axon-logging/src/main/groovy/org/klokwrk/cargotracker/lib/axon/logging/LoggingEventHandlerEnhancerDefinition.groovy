@@ -36,8 +36,8 @@ import java.lang.reflect.Method
  * <p/>
  * Logged output looks similar to this (single line in output):
  * <pre>
- * ... cargotracker.axon.event-handler-logging : Executing EventHandler method [CargoSummaryProjectionService.onCargoBookedEvent(CargoBookedEvent)]
- *         with event [eventGlobalIndex: 6, eventId: 76e6ea70-4fd8-47f9-a15b-ce8df4a939e2, CargoBookedEvent(aggregateIdentifier: eaa1efa4-ff9d-4bd8-8e83-4e4b2c1bbcfb, sequenceNumber: 0)]
+ * ... cargotracker.axon.event-handler-logging : Executing EventHandler method [BookingOfferSummaryProjectionService.onBookingOfferCreatedEvent(BookingOfferCreatedEvent)]
+ *         with event [eventGlobalIndex: 6, eventId: 76e6ea70-4fd8-47f9-a15b-ce8df4a939e2, BookingOfferCreatedEvent(aggregateIdentifier: eaa1efa4-ff9d-4bd8-8e83-4e4b2c1bbcfb, sequenceNumber: 0)]
  * </pre>
  * To register this HandlerEnhancerDefinition, use standard means as described in Axon documentation. Usually this will require adding a simple bean declaration in the Spring Boot config. However,
  * if you have standalone projection app <code>EventHandler</code> annotations are present (not a single <code>CommandHandler</code> or <code>QueryHandler</code> are present), only option at the moment

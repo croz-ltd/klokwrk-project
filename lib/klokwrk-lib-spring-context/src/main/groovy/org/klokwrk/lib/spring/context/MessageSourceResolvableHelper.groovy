@@ -147,25 +147,25 @@ class MessageSourceResolvableHelper {
    * </pre>
    * In another example, we are issuing a query for the details about some cargo. Again, the given request contains all syntactically valid parameters, but our system cannot find the requested cargo.
    * Our query reacts by raising a domain exception containing {@code notFound} code. If we need to be more specific, the query can provide additional details about what exactly cannot be found. In
-   * our case, this will be {@code cargoSummary}.
+   * our case, this will be {@code bookingOfferSummary}.
    * <p/>
-   * Example of message codes for {@code messageSubType = notFound, messageSubTypeDetails = cargoSummary}:
+   * Example of message codes for {@code messageSubType = notFound, messageSubTypeDetails = bookingOfferSummary}:
    * <pre>
-   *   "testController.testControllerMethod.failure.domain.warning.notFound.cargoSummary"
+   *   "testController.testControllerMethod.failure.domain.warning.notFound.bookingOfferSummary"
    *   "testController.testControllerMethod.failure.domain.warning.notFound"
-   *   "testController.testControllerMethod.failure.domain.notFound.cargoSummary"
+   *   "testController.testControllerMethod.failure.domain.notFound.bookingOfferSummary"
    *   "testController.testControllerMethod.failure.domain.notFound"
    *   "testController.testControllerMethod.failure.domain.warning"
    *
-   *   "testControllerMethod.failure.domain.warning.notFound.cargoSummary"
+   *   "testControllerMethod.failure.domain.warning.notFound.bookingOfferSummary"
    *   "testControllerMethod.failure.domain.warning.notFound"
-   *   "testControllerMethod.failure.domain.notFound.cargoSummary"
+   *   "testControllerMethod.failure.domain.notFound.bookingOfferSummary"
    *   "testControllerMethod.failure.domain.notFound"
    *   "testControllerMethod.failure.domain.warning"
    *
-   *   "default.failure.domain.warning.notFound.cargoSummary"
+   *   "default.failure.domain.warning.notFound.bookingOfferSummary"
    *   "default.failure.domain.warning.notFound"
-   *   "default.failure.domain.notFound.cargoSummary"
+   *   "default.failure.domain.notFound.bookingOfferSummary"
    *   "default.failure.domain.notFound"
    *   "default.failure.domain.warning"
    *   "default.failure.domain"
