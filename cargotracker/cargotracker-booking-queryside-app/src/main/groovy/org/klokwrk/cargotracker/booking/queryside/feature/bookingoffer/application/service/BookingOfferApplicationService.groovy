@@ -33,11 +33,11 @@ import static org.hamcrest.Matchers.notNullValue
 
 @Service
 @CompileStatic
-class CargoInfoApplicationService implements BookingOfferSummaryQueryPortIn {
+class BookingOfferApplicationService implements BookingOfferSummaryQueryPortIn {
   private final QueryGatewayAdapter queryGatewayAdapter
   private final ValidationService validationService
 
-  CargoInfoApplicationService(ValidationService validationService, QueryGateway queryGateway) {
+  BookingOfferApplicationService(ValidationService validationService, QueryGateway queryGateway) {
     this.validationService = validationService
     this.queryGatewayAdapter = new QueryGatewayAdapter(queryGateway)
   }

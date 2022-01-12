@@ -39,7 +39,7 @@ import javax.sql.DataSource
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class CargoInfoApplicationServiceIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
+class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
   @TestConfiguration
   static class TestSpringBootConfiguration {
     @Bean
