@@ -78,7 +78,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-info/booking-offer-summary")
+        post("/booking-offer/booking-offer-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -123,7 +123,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-info/booking-offer-summary")
+        post("/booking-offer/booking-offer-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -174,14 +174,14 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
     "en"           | "en"         | "Request is not valid."
   }
 
-  void "should return expected response when CargoSummary cannot be found - domain failure - [acceptLanguage: #acceptLanguage]"() {
+  void "should return expected response when BookingOfferSummary cannot be found - domain failure - [acceptLanguage: #acceptLanguage]"() {
     given:
     String myBookingOfferIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/cargo-info/booking-offer-summary")
+        post("/booking-offer/booking-offer-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -231,7 +231,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        put("/cargo-info/booking-offer-summary")
+        put("/booking-offer/booking-offer-summary")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
