@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
+class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
   @TestConfiguration
   static class TestSpringBootConfiguration {
     @Bean
@@ -220,8 +220,8 @@ class CargoInfoWebControllerIntegrationSpecification extends AbstractQuerySideIn
 
     where:
     acceptLanguage | localeString | myViolationMessage
-    "hr-HR"        | "hr_HR"      | "Sumarni izvještaj za željeni teret nije pronađen."
-    "en"           | "en"         | "Summary report for specified cargo is not found."
+    "hr-HR"        | "hr_HR"      | "Sumarni izvještaj za željenu ponudu za rezervaciju nije pronađen."
+    "en"           | "en"         | "Summary report for specified booking offer is not found."
   }
 
   void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguage]"() {

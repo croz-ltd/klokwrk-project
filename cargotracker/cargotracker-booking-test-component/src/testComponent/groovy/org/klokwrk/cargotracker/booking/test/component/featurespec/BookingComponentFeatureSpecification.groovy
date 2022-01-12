@@ -238,7 +238,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
     where:
     acceptLanguageHeaderParam | violationMessageParam
-    "hr-HR"                   | "Sumarni izvještaj za željeni teret nije pronađen."
-    "en"                      | "Summary report for specified cargo is not found."
+    "hr-HR"                   | "Sumarni izvještaj za željenu ponudu za rezervaciju nije pronađen."
+    "en"                      | "Summary report for specified booking offer is not found."
   }
 }
