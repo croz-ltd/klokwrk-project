@@ -44,7 +44,6 @@ import tech.units.indriya.unit.Units
 import javax.measure.Quantity
 import javax.measure.Unit
 import javax.measure.quantity.Mass
-import java.math.MathContext
 import java.math.RoundingMode
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply
@@ -66,36 +65,15 @@ class BookingOfferAggregate {
     //              Extract this logic in domain service behind AllowedCommodityWeightPerContainerPolicy.allowedWeight(ContainerType) interface
     Quantity<Mass> commodityMaxAllowedWeightPerContainerPerPolicyInKilograms = toQuantityPercent(95, containerType.maxCommodityWeight, Units.KILOGRAM, RoundingMode.DOWN)
 
-    BigDecimal commodityTotalWeightValueInKilograms = commodityInfo.totalWeight.value
-
-    MathContext mathContext = new MathContext(7, RoundingMode.HALF_UP)
-    Integer commodityContainerCount = commodityTotalWeightValueInKilograms
-        .divide(commodityMaxAllowedWeightPerContainerPerPolicyInKilograms.value.toBigDecimal(), mathContext)
-        .setScale(0, RoundingMode.UP)
-        .toInteger()
+    Commodity commodity = Commodity.make(containerType, commodityInfo, commodityMaxAllowedWeightPerContainerPerPolicyInKilograms)
 
     // TODO dmurat: evaluate if we need this policy too
     // max container count per commodity type policy
     // very similar policy we have in BookingOfferCommodities.canAcceptCommodity(). But there it is cumulative across thw whole BookingOffer.
     // will comment for now, and rely on cumulative policy only. Maybe introduce later
-//    if (commodityContainerCount > 5000) {
-//      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey("bookingOfferAggregate.commodityContainerCountTooHigh"))
+//    if (commodityContainerTeuCount > 5000) {
+//      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey("bookingOfferAggregate.commodityContainerTeuCountTooHigh"))
 //    }
-
-    Integer commodityMaxRecommendedWeightPerContainerValueInKilograms = commodityTotalWeightValueInKilograms
-        .divide(commodityContainerCount.toBigDecimal(), mathContext)
-        .setScale(0, RoundingMode.UP)
-        .toInteger()
-
-    Quantity<Mass> commodityMaxRecommendedWeightPerContainer = Quantities.getQuantity(commodityMaxRecommendedWeightPerContainerValueInKilograms, Units.KILOGRAM)
-
-    Commodity commodity = new Commodity(
-        containerType: ContainerType.find(containerDimensionType, commodityInfo.commodityType.containerFeaturesType),
-        commodityInfo: commodityInfo,
-        maxAllowedWeightPerContainer: commodityMaxAllowedWeightPerContainerPerPolicyInKilograms,
-        maxRecommendedWeightPerContainer: commodityMaxRecommendedWeightPerContainer,
-        containerCount: commodityContainerCount
-    )
 
     return commodity
   }
@@ -134,9 +112,9 @@ class BookingOfferAggregate {
   BookingOfferAggregate createBookingOffer(CreateBookingOfferCommand createBookingOfferCommand, MetaData metaData) {
     Commodity commodity = calculateCommodity(createBookingOfferCommand.containerDimensionType, createBookingOfferCommand.commodityInfo)
 
-    // Check for container count per commodity type.
-    // The largest ship in the world can carry 24000 containers. We should limit container count to the max of 5000 per a single booking, for example.
-    // We can have two different policies here. One for limiting container count per commodity type, and another one for limiting container count for booking.
+    // Check for container TEU count per commodity type.
+    // The largest ship in the world can carry 24000 TEU of containers. We should limit container TEU count to the max of 5000 per a single booking, for example.
+    // We can have two different policies here. One for limiting container TEU count per commodity type, and another one for limiting container TEU count for the whole booking.
     // In a simpler case, both policies can be the same. In that case with a single commodity type we can allocate complete booking capacity.
     if (!bookingOfferCommodities.canAcceptCommodity(commodity)) { // TODO dmurat: container count per booking policy
       throw new CommandException(ViolationInfo.makeForBadRequestWithCustomCodeKey("bookingOfferAggregate.bookingOfferCommodities.cannotAcceptCommodity"))
@@ -144,16 +122,16 @@ class BookingOfferAggregate {
 
     // Note: cannot store here directly as state change should happen in event sourcing handler.
     //       Alternative is to publish two events (second one applied after the first one updates the state), but we do not want that.
-    Tuple2<Quantity<Mass>, Integer> preCalculatedTotals = bookingOfferCommodities.preCalculateTotals(commodity)
+    Tuple2<Quantity<Mass>, BigDecimal> preCalculatedTotals = bookingOfferCommodities.preCalculateTotals(commodity)
     Quantity<Mass> bookingTotalCommodityWeight = preCalculatedTotals.v1
-    Integer bookingTotalContainerCount = preCalculatedTotals.v2
+    BigDecimal bookingTotalContainerTeuCount = preCalculatedTotals.v2
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
         bookingOfferId: createBookingOfferCommand.bookingOfferId,
         routeSpecification: createBookingOfferCommand.routeSpecification,
         commodity: commodity,
         bookingTotalCommodityWeight: bookingTotalCommodityWeight,
-        bookingTotalContainerCount: bookingTotalContainerCount
+        bookingTotalContainerTeuCount: bookingTotalContainerTeuCount
     )
 
     apply(bookingOfferCreatedEvent, metaData)

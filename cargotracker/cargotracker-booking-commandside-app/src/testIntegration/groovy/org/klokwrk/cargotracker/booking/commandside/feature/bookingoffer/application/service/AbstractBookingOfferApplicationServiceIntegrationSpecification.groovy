@@ -83,13 +83,7 @@ abstract class AbstractBookingOfferApplicationServiceIntegrationSpecification ex
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
 
     BookingOfferCommodities expectedBookingOfferCommodities = new BookingOfferCommodities()
-    expectedBookingOfferCommodities.storeCommodity(new Commodity(
-        containerType: ContainerType.TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(CommodityType.DRY, 1000),
-        maxAllowedWeightPerContainer: Quantities.getQuantity(23_750, Units.KILOGRAM),
-        maxRecommendedWeightPerContainer: Quantities.getQuantity(1000, Units.KILOGRAM),
-        containerCount: 1
-    ))
+    expectedBookingOfferCommodities.storeCommodity(Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 1000), Quantities.getQuantity(23_750, Units.KILOGRAM)))
 
     when:
     OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommandOperationResponse =
@@ -116,7 +110,7 @@ abstract class AbstractBookingOfferApplicationServiceIntegrationSpecification ex
 
         commodityTypeToCommodityMap == expectedBookingOfferCommodities.commodityTypeToCommodityMap
         totalCommodityWeight == Quantities.getQuantity(1000, Units.KILOGRAM)
-        totalContainerCount == 1
+        totalContainerTeuCount == 1
       }
     }
   }

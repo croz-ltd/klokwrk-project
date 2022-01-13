@@ -37,7 +37,7 @@ class BookingOfferCommodities {
   private final Map<CommodityType, Commodity> commodityTypeToCommodityMap = [:]
 
   private Quantity<Mass> totalCommodityWeight = Quantities.getQuantity(0, Units.KILOGRAM)
-  private Integer totalContainerCount = 0 // should be constrained to the max of, say 5000
+  private BigDecimal totalContainerTeuCount = 0 // should be constrained to the max of, say 5000
 
   Map<CommodityType, Commodity> getCommodityTypeToCommodityMap() {
     return Collections.unmodifiableMap(commodityTypeToCommodityMap)
@@ -47,8 +47,8 @@ class BookingOfferCommodities {
     return totalCommodityWeight
   }
 
-  Integer getTotalContainerCount() {
-    return totalContainerCount
+  BigDecimal getTotalContainerTeuCount() {
+    return totalContainerTeuCount
   }
 
   // TODO dmurat: container count per booking policy
@@ -59,8 +59,8 @@ class BookingOfferCommodities {
    * event sourcing handler. Note that we cannot make this check in the event sourcing handler because it must make changes unconditionally to support rehydration from past events.
    */
   Boolean canAcceptCommodity(Commodity commodity) {
-    Integer newTotalContainerCount = totalContainerCount + commodity.containerCount
-    if (newTotalContainerCount > 5000) {
+    BigDecimal newTotalContainerTeuCount = totalContainerTeuCount + commodity.containerTeuCount
+    if (newTotalContainerTeuCount > 5000) {
       return false
     }
 
@@ -76,14 +76,14 @@ class BookingOfferCommodities {
    * <p/>
    * This method is very similar to the {@link #calculateNewTotals(Commodity)}, but this one also checks if we can accept the commodity.
    * <p/>
-   * The method returns a tuple where value v1 is the new {@code totalCommodityWeight}, while value v2 is the new {@code totalContainerCount}.
+   * The method returns a tuple of 2 where value v1 is the new {@code totalCommodityWeight} and value v2 is the new {@code totalContainerTeuCount}.
    */
-  Tuple2<Quantity<Mass>, Integer> preCalculateTotals(Commodity commodity) {
+  Tuple2<Quantity<Mass>, BigDecimal> preCalculateTotals(Commodity commodity) {
     if (!canAcceptCommodity(commodity)) {
       throw new AssertionError("Cannot proceed with calculating totals since commodity is not acceptable." as Object)
     }
 
-    Tuple2<Quantity<Mass>, Integer> totalsTuple = calculateNewTotals(commodity)
+    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateNewTotals(commodity)
     return totalsTuple
   }
 
@@ -95,10 +95,10 @@ class BookingOfferCommodities {
    * rehydration of the aggregate from previous events. We should do all invariant checking in the aggregate's command handler.
    */
   void storeCommodity(Commodity commodity) {
-    Tuple2<Quantity<Mass>, Integer> totalsTuple = calculateNewTotals(commodity)
+    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateNewTotals(commodity)
 
     totalCommodityWeight = totalsTuple.v1
-    totalContainerCount = totalsTuple.v2
+    totalContainerTeuCount = totalsTuple.v2
 
     commodityTypeToCommodityMap.put(commodity.commodityInfo.commodityType, commodity)
   }
@@ -108,21 +108,22 @@ class BookingOfferCommodities {
    * <p/>
    * This method is very similar to the {@link #preCalculateTotals(Commodity)}, but this one does not check if the commodity can be accepted or not.
    * <p/>
-   * The method returns a tuple where value v1 is the new {@code totalCommodityWeight}, while value v2 is the new {@code totalContainerCount}.
+   * The method returns a tuple of 2 where value v1 is the new {@code totalCommodityWeight} and value v2 is the new {@code totalContainerTeuCount}.
    */
-  Tuple2<Quantity<Mass>, Integer> calculateNewTotals(Commodity commodity) {
+  Tuple2<Quantity<Mass>, BigDecimal> calculateNewTotals(Commodity commodity) {
     Quantity<Mass> newTotalCommodityWeight
-    Integer newTotalContainerCount
+    BigDecimal newTotalContainerTeuCount
+
     Commodity commodityContainerInfoOld = commodityTypeToCommodityMap.get(commodity.commodityInfo.commodityType)
     if (commodityContainerInfoOld == null) {
       newTotalCommodityWeight = totalCommodityWeight.add(commodity.commodityInfo.totalWeight)
-      newTotalContainerCount = totalContainerCount + commodity.containerCount
+      newTotalContainerTeuCount = totalContainerTeuCount + commodity.containerTeuCount
     }
     else {
       newTotalCommodityWeight = totalCommodityWeight.subtract(commodityContainerInfoOld.commodityInfo.totalWeight).add(commodity.commodityInfo.totalWeight)
-      newTotalContainerCount = totalContainerCount - commodityContainerInfoOld.containerCount + commodity.containerCount
+      newTotalContainerTeuCount = totalContainerTeuCount - commodityContainerInfoOld.containerTeuCount + commodity.containerTeuCount
     }
 
-    return new Tuple2<Quantity<Mass>, Integer>(newTotalCommodityWeight, newTotalContainerCount)
+    return new Tuple2<Quantity<Mass>, BigDecimal>(newTotalCommodityWeight, newTotalContainerTeuCount)
   }
 }

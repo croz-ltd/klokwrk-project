@@ -19,10 +19,13 @@ package org.klokwrk.cargotracker.booking.domain.model.value
 
 import spock.lang.Specification
 
+import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType.DIMENSION_ISO_12
 import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType.DIMENSION_ISO_22
 import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType.DIMENSION_ISO_42
 import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerFeaturesType.FEATURES_ISO_G1
 import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerFeaturesType.FEATURES_ISO_R1_STANDARD_REEFER
+import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_12G1
+import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_12R1_STANDARD_REEFER
 import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_22G1
 import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_22R1_STANDARD_REEFER
 import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_42G1
@@ -31,7 +34,7 @@ import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.
 class ContainerTypeSpecification extends Specification {
   void "should have expected enum size"() {
     expect:
-    ContainerType.values().size() == 4
+    ContainerType.values().size() == 6
   }
 
   void "should have unique combination of dimensions and features across all enum values"() {
@@ -63,6 +66,8 @@ class ContainerTypeSpecification extends Specification {
     null                        | null                            | null
     DIMENSION_ISO_22            | null                            | null
     null                        | FEATURES_ISO_G1                 | null
+    DIMENSION_ISO_12            | FEATURES_ISO_G1                 | TYPE_ISO_12G1
+    DIMENSION_ISO_12            | FEATURES_ISO_R1_STANDARD_REEFER | TYPE_ISO_12R1_STANDARD_REEFER
     DIMENSION_ISO_22            | FEATURES_ISO_G1                 | TYPE_ISO_22G1
     DIMENSION_ISO_22            | FEATURES_ISO_R1_STANDARD_REEFER | TYPE_ISO_22R1_STANDARD_REEFER
     DIMENSION_ISO_42            | FEATURES_ISO_G1                 | TYPE_ISO_42G1

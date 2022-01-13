@@ -233,13 +233,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
     Location myDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("NLRTM")
 
     BookingOfferCommodities expectedBookingOfferCommodities = new BookingOfferCommodities()
-    expectedBookingOfferCommodities.storeCommodity(new Commodity(
-        containerType: ContainerType.TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(CommodityType.DRY, 1000),
-        maxAllowedWeightPerContainer: Quantities.getQuantity(23_750, Units.KILOGRAM),
-        maxRecommendedWeightPerContainer: Quantities.getQuantity(1000, Units.KILOGRAM),
-        containerCount: 1
-    ))
+    expectedBookingOfferCommodities.storeCommodity(Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 1000), Quantities.getQuantity(23_750, Units.KILOGRAM)))
 
     BookingOfferAggregate bookingOfferAggregate = new BookingOfferAggregate(
         bookingOfferId: BookingOfferId.make(myBookingOfferIdentifier),
@@ -324,7 +318,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
       it.bookingOfferCommodities == [
           commodityTypeToCommodityMap: expectedBookingOfferCommodities.commodityTypeToCommodityMap,
           totalCommodityWeight: Quantities.getQuantity(1000, Units.KILOGRAM),
-          totalContainerCount: 1
+          totalContainerTeuCount: 1.00G
       ]
     }
   }

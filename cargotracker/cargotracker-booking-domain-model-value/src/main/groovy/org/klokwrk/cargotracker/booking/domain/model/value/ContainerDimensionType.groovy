@@ -30,11 +30,14 @@ import groovy.transform.CompileStatic
  * If we need to use some non-common width, we can do it easily. However, we should care about the constants naming in the process. For example, for a container height of 9 feet and a width of 2500
  * millimeters, we can have a constant of {@code DIMENSION_ISO_2D(LENGTH_ISO_2, HEIGHT_ISO_4, WIDTH_ISO_2500MM)}.
  * <p/>
+ * {@code ContainerDimensionType} also encapsulates appropriate Twenty-foot Equivalent Unit (TEU) value.
+ * <p/>
  * Useful references:
  * <ul>
  * <li>https://en.wikipedia.org/wiki/ISO_6346</li>
  * <li>https://www.bic-code.org/wp-content/uploads/2018/01/SizeAndType-Table1-3.pdf</li>
  * <li>https://www.discovercontainers.com/shipping-container-dimensions/</li>
+ * <li>https://www.freightright.com/kb/teu</li>
  * </ul>
  *
  * @see ContainerLengthType
@@ -44,22 +47,35 @@ import groovy.transform.CompileStatic
 @CompileStatic
 enum ContainerDimensionType {
   /**
+   * 10 feet long x 8 feet 6 inches high x 8 feet width.
+   */
+  DIMENSION_ISO_12(ContainerLengthType.LENGTH_ISO_1, ContainerHeightType.HEIGHT_ISO_2, ContainerWidthType.WIDTH_ISO_STANDARD, 0.50G),
+
+  /**
    * 20 feet long x 8 feet 6 inches high x 8 feet width.
    */
-  DIMENSION_ISO_22(ContainerLengthType.LENGTH_ISO_2, ContainerHeightType.HEIGHT_ISO_2, ContainerWidthType.WIDTH_ISO_STANDARD),
+  DIMENSION_ISO_22(ContainerLengthType.LENGTH_ISO_2, ContainerHeightType.HEIGHT_ISO_2, ContainerWidthType.WIDTH_ISO_STANDARD, 1.00G),
 
   /**
    * 40 feet long x 8 feet 6 inches high x 8 feet width.
    */
-  DIMENSION_ISO_42(ContainerLengthType.LENGTH_ISO_4, ContainerHeightType.HEIGHT_ISO_2, ContainerWidthType.WIDTH_ISO_STANDARD)
+  DIMENSION_ISO_42(ContainerLengthType.LENGTH_ISO_4, ContainerHeightType.HEIGHT_ISO_2, ContainerWidthType.WIDTH_ISO_STANDARD, 2.00G)
 
   private final ContainerLengthType length
   private final ContainerHeightType height
   private final ContainerWidthType width
 
-  private ContainerDimensionType(ContainerLengthType length, ContainerHeightType height, ContainerWidthType width) {
+  // Twenty-foot Equivalent Unit
+  private final BigDecimal teu
+
+  private ContainerDimensionType(ContainerLengthType length, ContainerHeightType height, ContainerWidthType width, BigDecimal teu) {
     this.length = length
     this.height = height
     this.width = width
+    this.teu =  teu
+  }
+
+  BigDecimal getTeu() {
+    return teu
   }
 }
