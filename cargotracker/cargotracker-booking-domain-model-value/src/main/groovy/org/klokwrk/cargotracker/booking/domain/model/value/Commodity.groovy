@@ -90,44 +90,61 @@ class Commodity implements PostMapConstructorCheckable {
    * <p/>
    * During calculation, maxAllowedWeightPerContainer is taken into account.
    * <p/>
+   * Note that in shipping containerCount is just informal information. On the other side, TEU count is much more valuable as it is used for determining container size.
+   * <p/>
    * Must not be {@code null}.<br/>
    * Must be greater than or equal to {@code 1}.<br/>
    */
   Integer containerCount
 
   /**
+   * The number of containers expressed as Twenty-foot Equivalent Units (TEU).
+   * <p/>
+   * Must not be {@code null}.<br/>
+   * Must have a {@code scale} between 0 and 2 inclusive.<br/>
+   * Must be equal to {@code containerCount * containerType.dimensionType.teu} rounded up to two decimals.<br/>
+   */
+  BigDecimal containerTeuCount
+
+  /**
    * Creates {@code Commodity} instance based on required properties and calculates derived properties.
    * <p/>
    * It is recommended to always use this factory method instead of map constructor because map constructor requires that all derived values are correctly precalculated.
    */
+  @SuppressWarnings("CodeNarc.DuplicateNumberLiteral")
   static Commodity make(ContainerType containerType, CommodityInfo commodityInfo, Quantity<Mass> maxAllowedWeightPerContainer) {
-    BigDecimal commodityTotalWeightValueInKilograms = commodityInfo.totalWeight.value
+    BigDecimal totalWeightValueInKilograms = commodityInfo.totalWeight.value
     Quantity<Mass> maxAllowedWeightPerContainerInKilograms = maxAllowedWeightPerContainer.to(Units.KILOGRAM)
     MathContext mathContext = new MathContext(7, RoundingMode.HALF_UP)
 
-    Integer commodityContainerCount = commodityTotalWeightValueInKilograms
+    Integer containerCount = totalWeightValueInKilograms
         .divide(maxAllowedWeightPerContainerInKilograms.value.toBigDecimal(), mathContext)
         .setScale(0, RoundingMode.UP)
         .toInteger()
 
-    Integer maxRecommendedWeightPerContainerValueInKilograms = commodityTotalWeightValueInKilograms
-        .divide(commodityContainerCount.toBigDecimal(), mathContext)
+    Integer maxRecommendedWeightPerContainerValueInKilograms = totalWeightValueInKilograms
+        .divide(containerCount.toBigDecimal(), mathContext)
         .setScale(0, RoundingMode.UP)
         .toInteger()
 
     Quantity<Mass> maxRecommendedWeightPerContainerInKilograms = Quantities.getQuantity(maxRecommendedWeightPerContainerValueInKilograms, Units.KILOGRAM)
+
+    MathContext anotherMathContext = new MathContext(7, RoundingMode.UP)
+    BigDecimal containerTeuCount = (containerCount * containerType.dimensionType.teu).round(anotherMathContext).setScale(2, RoundingMode.UP)
 
     Commodity commodity = new Commodity(
         containerType: containerType,
         commodityInfo: commodityInfo,
         maxAllowedWeightPerContainer: maxAllowedWeightPerContainerInKilograms,
         maxRecommendedWeightPerContainer: maxRecommendedWeightPerContainerInKilograms,
-        containerCount: commodityContainerCount
+        containerCount: containerCount,
+        containerTeuCount: containerTeuCount
     )
 
     return commodity
   }
 
+  @SuppressWarnings(["CodeNarc.AbcMetric", "CodeNarc.DuplicateNumberLiteral"])
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     requireMatch(containerType, notNullValue())
@@ -135,6 +152,7 @@ class Commodity implements PostMapConstructorCheckable {
     requireMatch(maxAllowedWeightPerContainer, notNullValue())
     requireMatch(maxRecommendedWeightPerContainer, notNullValue())
     requireMatch(containerCount, notNullValue())
+    requireMatch(containerTeuCount, notNullValue())
 
     requireTrue(containerType.featuresType == commodityInfo.commodityType.containerFeaturesType)
 
@@ -152,6 +170,11 @@ class Commodity implements PostMapConstructorCheckable {
     requireTrue(maxRecommendedWeightPerContainer.value.toBigDecimal().scale() == 0)
 
     requireTrue(containerCount >= 1)
+    requireTrue(containerTeuCount.scale() <= 2)
+    requireTrue(containerTeuCount.scale() >= 0)
+
+    MathContext mathContext = new MathContext(7, RoundingMode.UP)
+    requireTrue(containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))
 
     requireTrue((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= (commodityInfo.totalWeight.value.toBigDecimal()))
   }

@@ -35,7 +35,8 @@ class CommoditySpecification extends Specification {
         commodityInfo: CommodityInfo.make(DRY, 2_000),
         maxAllowedWeightPerContainer: getQuantity(2_200, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(2_000, KILOGRAM),
-        containerCount: 1
+        containerCount: 1,
+        containerTeuCount: 1
     )
 
     then:
@@ -49,7 +50,8 @@ class CommoditySpecification extends Specification {
         commodityInfo: CommodityInfo.make(DRY, 2_000),
         maxAllowedWeightPerContainer: getQuantity(2_200, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(2_000, KILOGRAM),
-        containerCount: 1
+        containerCount: 1,
+        containerTeuCount: 1
     )
 
     then:
@@ -64,7 +66,8 @@ class CommoditySpecification extends Specification {
         commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(30_000, KILOGRAM), // It should be <= containerType.maxCommodityWeight.
         maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
-        containerCount: 1
+        containerCount: 1,
+        containerTeuCount: 1
     )
 
     then:
@@ -79,7 +82,8 @@ class CommoditySpecification extends Specification {
         commodityInfo: CommodityInfo.make(DRY, 23_000),
         maxAllowedWeightPerContainer: getQuantity(24_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM), // It should be >= commodityInfo.totalWeight.
-        containerCount: 1
+        containerCount: 1,
+        containerTeuCount: 1
     )
 
     then:
@@ -94,7 +98,8 @@ class CommoditySpecification extends Specification {
         commodityInfo: CommodityInfo.make(DRY, 50_000),
         maxAllowedWeightPerContainer: getQuantity(24_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(24_000, KILOGRAM),
-        containerCount: 2 // It should be 3 or more.
+        containerCount: 2, // It should be 3 or more.
+        containerTeuCount: 2
     )
 
     then:
@@ -109,7 +114,8 @@ class CommoditySpecification extends Specification {
         commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(24_000_000, GRAM),
         maxRecommendedWeightPerContainer: getQuantity(24_000, KILOGRAM),
-        containerCount: 1
+        containerCount: 1,
+        containerTeuCount: 1
     )
 
     then:
@@ -124,7 +130,8 @@ class CommoditySpecification extends Specification {
         commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(24_000.1, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(24_000, KILOGRAM),
-        containerCount: 1
+        containerCount: 1,
+        containerTeuCount: 1
     )
 
     then:
@@ -139,7 +146,8 @@ class CommoditySpecification extends Specification {
         commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(24_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(24_000_000, GRAM),
-        containerCount: 1
+        containerCount: 1,
+        containerTeuCount: 1
     )
 
     then:
@@ -154,12 +162,39 @@ class CommoditySpecification extends Specification {
         commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(24_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(20_000.1, KILOGRAM),
-        containerCount: 1
+        containerCount: 1,
+        containerTeuCount: 1
     )
 
     then:
     AssertionError assertionError = thrown()
     assertionError.message.endsWith("boolean condition is false - [condition: (maxRecommendedWeightPerContainer.value.toBigDecimal().scale() == 0)]")
+  }
+
+  void "map constructor should fail for invalid value of containerTeuCount"() {
+    when:
+    new Commodity(
+        containerType: TYPE_ISO_22G1,
+        commodityInfo: CommodityInfo.make(DRY, 20_000),
+        maxAllowedWeightPerContainer: getQuantity(24_000, KILOGRAM),
+        maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
+        containerCount: 1,
+        containerTeuCount: containerTeuCountParam
+    )
+
+    then:
+    AssertionError assertionError = thrown()
+    assertionError.message.endsWith("boolean condition is false - $messageEndParam")
+
+    where:
+    containerTeuCountParam | messageEndParam
+    1.001                  | "[condition: (containerTeuCount.scale() <= 2)]"
+    new BigDecimal(1G, -3) | "[condition: (containerTeuCount.scale() >= 0)]"
+    1.5                    | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))]"
+    1.01                   | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))]"
+    0.5                    | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))]"
+    0.91                   | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))]"
+    0.99                   | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))]"
   }
 
   void "make() method should work as expected"() {
@@ -169,7 +204,8 @@ class CommoditySpecification extends Specification {
         commodityInfo: CommodityInfo.make(DRY, commodityWeightInKilogramsParam),
         maxAllowedWeightPerContainer: getQuantity(24_500, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(maxRecommendedWeightPerContainerParam, KILOGRAM),
-        containerCount: containerCountParam
+        containerCount: containerCountParam,
+        containerTeuCount: containerTeuCountParam
     )
 
     when:
@@ -179,10 +215,10 @@ class CommoditySpecification extends Specification {
     expectedCommodity == actualCommodity
 
     where:
-    commodityWeightInKilogramsParam | maxRecommendedWeightPerContainerParam | containerCountParam
-    2_000                           | 2_000                                 | 1
-    10_000                          | 10_000                                | 1
-    50_000                          | 16_667                                | 3
-    500_000                         | 23_810                                | 21
+    commodityWeightInKilogramsParam | maxRecommendedWeightPerContainerParam | containerCountParam | containerTeuCountParam
+    2_000                           | 2_000                                 | 1                   | 1
+    10_000                          | 10_000                                | 1                   | 1
+    50_000                          | 16_667                                | 3                   | 3
+    500_000                         | 23_810                                | 21                  | 21
   }
 }

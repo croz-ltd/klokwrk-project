@@ -194,7 +194,8 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
                       symbol: "kg"
                   ]
               ],
-              containerCount: 1
+              containerCount: 1,
+              containerTeuCount: 1
           ]
       ]
 
