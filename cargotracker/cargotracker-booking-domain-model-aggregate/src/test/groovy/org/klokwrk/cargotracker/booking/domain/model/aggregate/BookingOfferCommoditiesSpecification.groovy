@@ -37,10 +37,30 @@ class BookingOfferCommoditiesSpecification extends Specification {
     bookingOfferCommodities.commodityTypeToCommodityMap.isEmpty()
 
     bookingOfferCommodities.totalCommodityWeight == Quantities.getQuantity(0, Units.KILOGRAM)
-    bookingOfferCommodities.totalContainerCount == 0
+    bookingOfferCommodities.totalContainerTeuCount == 0
   }
 
-  void "canAcceptCommodity() method should work as expected"() {
+  void "canAcceptCommodity() method should work as expected for 10ft container"() {
+    given:
+    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_12G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * 9_000), Quantities.getQuantity(9_000, Units.KILOGRAM))
+
+    BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
+
+    when:
+    Boolean canAcceptCommodityResult = bookingOfferCommodities.canAcceptCommodity(commodity)
+
+    then:
+    canAcceptCommodityResult == canAcceptCommodityResultParam
+
+    where:
+    containerCountParam | canAcceptCommodityResultParam
+    10_010              | false
+    10_001              | false
+    10_000              | true
+    9_999               | true
+  }
+
+  void "canAcceptCommodity() method should work as expected for 20ft container"() {
     given:
     Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * 25_000), Quantities.getQuantity(25_000, Units.KILOGRAM))
 
@@ -60,13 +80,33 @@ class BookingOfferCommoditiesSpecification extends Specification {
     4999                | true
   }
 
+  void "canAcceptCommodity() method should work as expected for 40ft container"() {
+    given:
+    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_42G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * 27_600), Quantities.getQuantity(27_600, Units.KILOGRAM))
+
+    BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
+
+    when:
+    Boolean canAcceptCommodityResult = bookingOfferCommodities.canAcceptCommodity(commodity)
+
+    then:
+    canAcceptCommodityResult == canAcceptCommodityResultParam
+
+    where:
+    containerCountParam | canAcceptCommodityResultParam
+    2_510               | false
+    2_501               | false
+    2_500               | true
+    2_499               | true
+  }
+
   void "calculateNewTotals() method should work as expected for empty BookingOfferCommodities"() {
     given:
     Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 110_000), Quantities.getQuantity(24_000, Units.KILOGRAM))
     BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
     when:
-    Tuple2<Quantity<Mass>, Integer> newTotals = bookingOfferCommodities.calculateNewTotals(commodity)
+    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCommodities.calculateNewTotals(commodity)
 
     then:
     newTotals.v1 == Quantities.getQuantity(110_000, Units.KILOGRAM)
@@ -80,7 +120,7 @@ class BookingOfferCommoditiesSpecification extends Specification {
     bookingOfferCommodities.storeCommodity(commodity)
 
     when:
-    Tuple2<Quantity<Mass>, Integer> newTotals = bookingOfferCommodities.calculateNewTotals(commodity)
+    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCommodities.calculateNewTotals(commodity)
 
     then:
     newTotals.v1 == Quantities.getQuantity(110_000, Units.KILOGRAM)
@@ -89,17 +129,17 @@ class BookingOfferCommoditiesSpecification extends Specification {
 
   void "calculateNewTotals() method should work as expected for non-empty BookingOfferCommodities when calculating commodity of not-already-stored commodity type"() {
     given:
-    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 110_000), Quantities.getQuantity(24_000, Units.KILOGRAM))
+    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 110_000), Quantities.getQuantity(24_500, Units.KILOGRAM))
     BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
     bookingOfferCommodities.storeCommodity(commodity)
-    Commodity nonStoredCommodity = Commodity.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, CommodityInfo.make(CommodityType.AIR_COOLED, 110_000), Quantities.getQuantity(24_000, Units.KILOGRAM))
+    Commodity nonStoredCommodity = Commodity.make(ContainerType.TYPE_ISO_42R1_STANDARD_REEFER, CommodityInfo.make(CommodityType.AIR_COOLED, 110_000), Quantities.getQuantity(27_000, Units.KILOGRAM))
 
     when:
-    Tuple2<Quantity<Mass>, Integer> newTotals = bookingOfferCommodities.calculateNewTotals(nonStoredCommodity)
+    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCommodities.calculateNewTotals(nonStoredCommodity)
 
     then:
     newTotals.v1 == Quantities.getQuantity(220_000, Units.KILOGRAM)
-    newTotals.v2 == 10
+    newTotals.v2 == 15
   }
 
   void "preCalculateTotals() method should throw when commodity cannot be accepted"() {
@@ -126,7 +166,7 @@ class BookingOfferCommoditiesSpecification extends Specification {
     BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
     when:
-    Tuple2<Quantity<Mass>, Integer> newTotals = bookingOfferCommodities.preCalculateTotals(commodity)
+    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCommodities.preCalculateTotals(commodity)
 
     then:
     newTotals.v1 == Quantities.getQuantity(containerCountParam * 25_000, Units.KILOGRAM)
@@ -150,7 +190,7 @@ class BookingOfferCommoditiesSpecification extends Specification {
     then:
     noExceptionThrown()
     verifyAll(bookingOfferCommodities, {
-      totalContainerCount == 10_000
+      totalContainerTeuCount == 10_000
       totalCommodityWeight == Quantities.getQuantity(10_000 * 25_000, Units.KILOGRAM)
     })
 
@@ -161,7 +201,7 @@ class BookingOfferCommoditiesSpecification extends Specification {
     then:
     noExceptionThrown()
     verifyAll(bookingOfferCommodities, {
-      totalContainerCount == 20_000
+      totalContainerTeuCount == 20_000
       totalCommodityWeight == Quantities.getQuantity(20_000 * 25_000, Units.KILOGRAM)
     })
   }

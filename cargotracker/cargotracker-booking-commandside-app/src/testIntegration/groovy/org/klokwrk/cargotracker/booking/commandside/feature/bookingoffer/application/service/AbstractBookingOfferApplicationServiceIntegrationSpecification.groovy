@@ -110,7 +110,7 @@ abstract class AbstractBookingOfferApplicationServiceIntegrationSpecification ex
 
         commodityTypeToCommodityMap == expectedBookingOfferCommodities.commodityTypeToCommodityMap
         totalCommodityWeight == Quantities.getQuantity(1000, Units.KILOGRAM)
-        totalContainerCount == 1
+        totalContainerTeuCount == 1
       }
     }
   }

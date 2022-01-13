@@ -318,7 +318,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
       it.bookingOfferCommodities == [
           commodityTypeToCommodityMap: expectedBookingOfferCommodities.commodityTypeToCommodityMap,
           totalCommodityWeight: Quantities.getQuantity(1000, Units.KILOGRAM),
-          totalContainerCount: 1
+          totalContainerTeuCount: 1.00G
       ]
     }
   }

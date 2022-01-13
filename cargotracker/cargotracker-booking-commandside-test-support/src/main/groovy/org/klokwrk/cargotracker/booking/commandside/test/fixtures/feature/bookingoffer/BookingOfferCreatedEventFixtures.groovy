@@ -55,7 +55,7 @@ class BookingOfferCreatedEventFixtures {
         routeSpecification: createBookingOfferCommand.routeSpecification,
         commodity: commodity,
         bookingTotalCommodityWeight: Quantities.getQuantity(1_000, Units.KILOGRAM),
-        bookingTotalContainerCount: 1
+        bookingTotalContainerTeuCount: 1.00G
     )
 
     return bookingOfferCreatedEvent

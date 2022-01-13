@@ -115,7 +115,7 @@ class BookingOfferFactoryService {
         bookingOfferCommodities: [
             commodityTypeToCommodityMap: bookingOfferAggregate.bookingOfferCommodities.commodityTypeToCommodityMap,
             totalCommodityWeight: bookingOfferAggregate.bookingOfferCommodities.totalCommodityWeight,
-            totalContainerCount: bookingOfferAggregate.bookingOfferCommodities.totalContainerCount
+            totalContainerTeuCount: bookingOfferAggregate.bookingOfferCommodities.totalContainerTeuCount
         ]
     )
 

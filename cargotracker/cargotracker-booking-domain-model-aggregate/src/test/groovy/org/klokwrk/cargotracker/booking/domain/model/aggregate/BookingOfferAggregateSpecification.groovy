@@ -64,7 +64,7 @@ class BookingOfferAggregateSpecification extends Specification {
         routeSpecification: createBookingOfferCommand.routeSpecification,
         commodity: expectedCommodity,
         bookingTotalCommodityWeight: Quantities.getQuantity(10_000, Units.KILOGRAM),
-        bookingTotalContainerCount: 1
+        bookingTotalContainerTeuCount: 1
     )
 
     when:
@@ -77,7 +77,7 @@ class BookingOfferAggregateSpecification extends Specification {
       bookingOfferId == createBookingOfferCommand.bookingOfferId
       routeSpecification == createBookingOfferCommand.routeSpecification
       bookingOfferCommodities.totalCommodityWeight == Quantities.getQuantity(10_000, Units.KILOGRAM)
-      bookingOfferCommodities.totalContainerCount == 1
+      bookingOfferCommodities.totalContainerTeuCount == 1
       bookingOfferCommodities.commodityTypeToCommodityMap.size() == 1
       bookingOfferCommodities.commodityTypeToCommodityMap[CommodityType.DRY] == expectedCommodity
     })

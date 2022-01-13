@@ -34,7 +34,7 @@ class BookingOfferCreatedEvent implements BaseEvent {
   RouteSpecification routeSpecification
   Commodity commodity
   Quantity<Mass> bookingTotalCommodityWeight
-  Integer bookingTotalContainerCount
+  BigDecimal bookingTotalContainerTeuCount
 
   String getAggregateIdentifier() {
     return bookingOfferId.identifier
