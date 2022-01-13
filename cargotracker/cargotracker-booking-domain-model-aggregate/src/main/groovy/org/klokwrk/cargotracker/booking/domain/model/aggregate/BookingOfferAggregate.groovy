@@ -44,7 +44,6 @@ import tech.units.indriya.unit.Units
 import javax.measure.Quantity
 import javax.measure.Unit
 import javax.measure.quantity.Mass
-import java.math.MathContext
 import java.math.RoundingMode
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply
@@ -66,13 +65,7 @@ class BookingOfferAggregate {
     //              Extract this logic in domain service behind AllowedCommodityWeightPerContainerPolicy.allowedWeight(ContainerType) interface
     Quantity<Mass> commodityMaxAllowedWeightPerContainerPerPolicyInKilograms = toQuantityPercent(95, containerType.maxCommodityWeight, Units.KILOGRAM, RoundingMode.DOWN)
 
-    BigDecimal commodityTotalWeightValueInKilograms = commodityInfo.totalWeight.value
-
-    MathContext mathContext = new MathContext(7, RoundingMode.HALF_UP)
-    Integer commodityContainerCount = commodityTotalWeightValueInKilograms
-        .divide(commodityMaxAllowedWeightPerContainerPerPolicyInKilograms.value.toBigDecimal(), mathContext)
-        .setScale(0, RoundingMode.UP)
-        .toInteger()
+    Commodity commodity = Commodity.make(containerType, commodityInfo, commodityMaxAllowedWeightPerContainerPerPolicyInKilograms)
 
     // TODO dmurat: evaluate if we need this policy too
     // max container count per commodity type policy
@@ -81,21 +74,6 @@ class BookingOfferAggregate {
 //    if (commodityContainerCount > 5000) {
 //      throw new CommandException(ViolationInfo.createForBadRequestWithCustomCodeKey("bookingOfferAggregate.commodityContainerCountTooHigh"))
 //    }
-
-    Integer commodityMaxRecommendedWeightPerContainerValueInKilograms = commodityTotalWeightValueInKilograms
-        .divide(commodityContainerCount.toBigDecimal(), mathContext)
-        .setScale(0, RoundingMode.UP)
-        .toInteger()
-
-    Quantity<Mass> commodityMaxRecommendedWeightPerContainer = Quantities.getQuantity(commodityMaxRecommendedWeightPerContainerValueInKilograms, Units.KILOGRAM)
-
-    Commodity commodity = new Commodity(
-        containerType: ContainerType.find(containerDimensionType, commodityInfo.commodityType.containerFeaturesType),
-        commodityInfo: commodityInfo,
-        maxAllowedWeightPerContainer: commodityMaxAllowedWeightPerContainerPerPolicyInKilograms,
-        maxRecommendedWeightPerContainer: commodityMaxRecommendedWeightPerContainer,
-        containerCount: commodityContainerCount
-    )
 
     return commodity
   }

@@ -161,4 +161,28 @@ class CommoditySpecification extends Specification {
     AssertionError assertionError = thrown()
     assertionError.message.endsWith("boolean condition is false - [condition: (maxRecommendedWeightPerContainer.value.toBigDecimal().scale() == 0)]")
   }
+
+  void "make() method should work as expected"() {
+    given:
+    Commodity expectedCommodity = new Commodity(
+        containerType: TYPE_ISO_22G1,
+        commodityInfo: CommodityInfo.make(DRY, commodityWeightInKilogramsParam),
+        maxAllowedWeightPerContainer: getQuantity(24_500, KILOGRAM),
+        maxRecommendedWeightPerContainer: getQuantity(maxRecommendedWeightPerContainerParam, KILOGRAM),
+        containerCount: containerCountParam
+    )
+
+    when:
+    Commodity actualCommodity = Commodity.make(TYPE_ISO_22G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(24_500, KILOGRAM))
+
+    then:
+    expectedCommodity == actualCommodity
+
+    where:
+    commodityWeightInKilogramsParam | maxRecommendedWeightPerContainerParam | containerCountParam
+    2_000                           | 2_000                                 | 1
+    10_000                          | 10_000                                | 1
+    50_000                          | 16_667                                | 3
+    500_000                         | 23_810                                | 21
+  }
 }

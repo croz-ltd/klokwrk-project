@@ -26,6 +26,8 @@ import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
+import java.math.MathContext
+import java.math.RoundingMode
 
 import static org.hamcrest.Matchers.notNullValue
 
@@ -92,6 +94,39 @@ class Commodity implements PostMapConstructorCheckable {
    * Must be greater than or equal to {@code 1}.<br/>
    */
   Integer containerCount
+
+  /**
+   * Creates {@code Commodity} instance based on required properties and calculates derived properties.
+   * <p/>
+   * It is recommended to always use this factory method instead of map constructor because map constructor requires that all derived values are correctly precalculated.
+   */
+  static Commodity make(ContainerType containerType, CommodityInfo commodityInfo, Quantity<Mass> maxAllowedWeightPerContainer) {
+    BigDecimal commodityTotalWeightValueInKilograms = commodityInfo.totalWeight.value
+    Quantity<Mass> maxAllowedWeightPerContainerInKilograms = maxAllowedWeightPerContainer.to(Units.KILOGRAM)
+    MathContext mathContext = new MathContext(7, RoundingMode.HALF_UP)
+
+    Integer commodityContainerCount = commodityTotalWeightValueInKilograms
+        .divide(maxAllowedWeightPerContainerInKilograms.value.toBigDecimal(), mathContext)
+        .setScale(0, RoundingMode.UP)
+        .toInteger()
+
+    Integer maxRecommendedWeightPerContainerValueInKilograms = commodityTotalWeightValueInKilograms
+        .divide(commodityContainerCount.toBigDecimal(), mathContext)
+        .setScale(0, RoundingMode.UP)
+        .toInteger()
+
+    Quantity<Mass> maxRecommendedWeightPerContainerInKilograms = Quantities.getQuantity(maxRecommendedWeightPerContainerValueInKilograms, Units.KILOGRAM)
+
+    Commodity commodity = new Commodity(
+        containerType: containerType,
+        commodityInfo: commodityInfo,
+        maxAllowedWeightPerContainer: maxAllowedWeightPerContainerInKilograms,
+        maxRecommendedWeightPerContainer: maxRecommendedWeightPerContainerInKilograms,
+        containerCount: commodityContainerCount
+    )
+
+    return commodity
+  }
 
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
