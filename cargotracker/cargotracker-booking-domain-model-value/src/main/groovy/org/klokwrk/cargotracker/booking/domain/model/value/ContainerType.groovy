@@ -50,6 +50,11 @@ import javax.measure.quantity.Mass
 @CompileStatic
 enum ContainerType {
   /**
+   * 10 feet x 8 feet 6 inches x 8 feet general purpose container.
+   */
+  TYPE_ISO_12G1(ContainerDimensionType.DIMENSION_ISO_12, ContainerFeaturesType.FEATURES_ISO_G1, Quantities.getQuantity(1_200, Units.KILOGRAM), Quantities.getQuantity(9_000, Units.KILOGRAM)),
+
+  /**
    * 20 feet x 8 feet 6 inches x 8 feet general purpose container.
    */
   TYPE_ISO_22G1(ContainerDimensionType.DIMENSION_ISO_22, ContainerFeaturesType.FEATURES_ISO_G1, Quantities.getQuantity(2_300, Units.KILOGRAM), Quantities.getQuantity(25_000, Units.KILOGRAM)),
@@ -58,6 +63,13 @@ enum ContainerType {
    * 40 feet x 8 feet 6 inches x 8 feet general purpose container.
    */
   TYPE_ISO_42G1(ContainerDimensionType.DIMENSION_ISO_42, ContainerFeaturesType.FEATURES_ISO_G1, Quantities.getQuantity(3_750, Units.KILOGRAM), Quantities.getQuantity(27_600, Units.KILOGRAM)),
+
+  /**
+   * 10 feet x 8 feet 6 inches x 8 feet reefer container.
+   */
+  TYPE_ISO_12R1_STANDARD_REEFER(
+      ContainerDimensionType.DIMENSION_ISO_12, ContainerFeaturesType.FEATURES_ISO_R1_STANDARD_REEFER, Quantities.getQuantity(1_250, Units.KILOGRAM), Quantities.getQuantity(8_900, Units.KILOGRAM)
+  ),
 
   /**
    * 20 feet x 8 feet 6 inches x 8 feet reefer container.

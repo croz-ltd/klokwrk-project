@@ -47,14 +47,19 @@ import groovy.transform.CompileStatic
 @CompileStatic
 enum ContainerDimensionType {
   /**
+   * 10 feet long x 8 feet 6 inches high x 8 feet width.
+   */
+  DIMENSION_ISO_12(ContainerLengthType.LENGTH_ISO_1, ContainerHeightType.HEIGHT_ISO_2, ContainerWidthType.WIDTH_ISO_STANDARD, 0.50G),
+
+  /**
    * 20 feet long x 8 feet 6 inches high x 8 feet width.
    */
-  DIMENSION_ISO_22(ContainerLengthType.LENGTH_ISO_2, ContainerHeightType.HEIGHT_ISO_2, ContainerWidthType.WIDTH_ISO_STANDARD, new BigDecimal("1")),
+  DIMENSION_ISO_22(ContainerLengthType.LENGTH_ISO_2, ContainerHeightType.HEIGHT_ISO_2, ContainerWidthType.WIDTH_ISO_STANDARD, 1.00G),
 
   /**
    * 40 feet long x 8 feet 6 inches high x 8 feet width.
    */
-  DIMENSION_ISO_42(ContainerLengthType.LENGTH_ISO_4, ContainerHeightType.HEIGHT_ISO_2, ContainerWidthType.WIDTH_ISO_STANDARD, new BigDecimal("2"))
+  DIMENSION_ISO_42(ContainerLengthType.LENGTH_ISO_4, ContainerHeightType.HEIGHT_ISO_2, ContainerWidthType.WIDTH_ISO_STANDARD, 2.00G)
 
   private final ContainerLengthType length
   private final ContainerHeightType height

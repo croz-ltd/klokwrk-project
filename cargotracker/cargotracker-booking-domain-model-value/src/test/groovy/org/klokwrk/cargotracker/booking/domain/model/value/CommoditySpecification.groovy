@@ -20,8 +20,10 @@ package org.klokwrk.cargotracker.booking.domain.model.value
 import spock.lang.Specification
 
 import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.DRY
+import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_12G1
 import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_22G1
 import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_22R1_STANDARD_REEFER
+import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_42G1
 import static tech.units.indriya.quantity.Quantities.getQuantity
 import static tech.units.indriya.unit.Units.GRAM
 import static tech.units.indriya.unit.Units.KILOGRAM
@@ -197,7 +199,32 @@ class CommoditySpecification extends Specification {
     0.99                   | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))]"
   }
 
-  void "make() method should work as expected"() {
+  void "make() method should work as expected for standard 10ft container"() {
+    given:
+    Commodity expectedCommodity = new Commodity(
+        containerType: TYPE_ISO_12G1,
+        commodityInfo: CommodityInfo.make(DRY, commodityWeightInKilogramsParam),
+        maxAllowedWeightPerContainer: getQuantity(8_700, KILOGRAM),
+        maxRecommendedWeightPerContainer: getQuantity(maxRecommendedWeightPerContainerParam, KILOGRAM),
+        containerCount: containerCountParam,
+        containerTeuCount: containerTeuCountParam
+    )
+
+    when:
+    Commodity actualCommodity = Commodity.make(TYPE_ISO_12G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(8_700, KILOGRAM))
+
+    then:
+    expectedCommodity == actualCommodity
+
+    where:
+    commodityWeightInKilogramsParam | maxRecommendedWeightPerContainerParam | containerCountParam | containerTeuCountParam
+    2_000                           | 2_000                                 | 1                   | 0.5
+    10_000                          | 5_000                                 | 2                   | 1
+    50_000                          | 8_334                                 | 6                   | 3
+    500_000                         | 8_621                                 | 58                  | 29
+  }
+
+  void "make() method should work as expected for standard 20ft container"() {
     given:
     Commodity expectedCommodity = new Commodity(
         containerType: TYPE_ISO_22G1,
@@ -220,5 +247,30 @@ class CommoditySpecification extends Specification {
     10_000                          | 10_000                                | 1                   | 1
     50_000                          | 16_667                                | 3                   | 3
     500_000                         | 23_810                                | 21                  | 21
+  }
+
+  void "make() method should work as expected for standard 40ft container"() {
+    given:
+    Commodity expectedCommodity = new Commodity(
+        containerType: TYPE_ISO_42G1,
+        commodityInfo: CommodityInfo.make(DRY, commodityWeightInKilogramsParam),
+        maxAllowedWeightPerContainer: getQuantity(27_600, KILOGRAM),
+        maxRecommendedWeightPerContainer: getQuantity(maxRecommendedWeightPerContainerParam, KILOGRAM),
+        containerCount: containerCountParam,
+        containerTeuCount: containerTeuCountParam
+    )
+
+    when:
+    Commodity actualCommodity = Commodity.make(TYPE_ISO_42G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(27_600, KILOGRAM))
+
+    then:
+    expectedCommodity == actualCommodity
+
+    where:
+    commodityWeightInKilogramsParam | maxRecommendedWeightPerContainerParam | containerCountParam | containerTeuCountParam
+    2_000                           | 2_000                                 | 1                   | 2
+    10_000                          | 10_000                                | 1                   | 2
+    50_000                          | 25_000                                | 2                   | 4
+    500_000                         | 26_316                                | 19                  | 38
   }
 }
