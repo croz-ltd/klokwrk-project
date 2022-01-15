@@ -68,11 +68,11 @@ class PercentBasedMaxAllowedWeightPerContainerPolicySpecification extends Specif
 
     where:
     containerTypeParam            | maxAllowedWightPerContainerValueParam
-    TYPE_ISO_12G1                 | 8_100
-    TYPE_ISO_12R1_STANDARD_REEFER | 8_010
-    TYPE_ISO_22G1                 | 22_500
-    TYPE_ISO_22R1_STANDARD_REEFER | 24_660
-    TYPE_ISO_42G1                 | 24_840
-    TYPE_ISO_42R1_STANDARD_REEFER | 24_930
+    TYPE_ISO_12G1                 | 8_910
+    TYPE_ISO_12R1_STANDARD_REEFER | 8_820
+    TYPE_ISO_22G1                 | 19_530
+    TYPE_ISO_22R1_STANDARD_REEFER | 19_440
+    TYPE_ISO_42G1                 | 23_850
+    TYPE_ISO_42R1_STANDARD_REEFER | 22_500
   }
 }

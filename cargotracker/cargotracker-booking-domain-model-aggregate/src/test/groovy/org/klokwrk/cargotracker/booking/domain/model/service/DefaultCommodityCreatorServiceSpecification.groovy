@@ -33,7 +33,7 @@ class DefaultCommodityCreatorServiceSpecification extends Specification {
     verifyAll(commodity, {
       containerType == ContainerType.TYPE_ISO_22G1
       it.commodityInfo == commodityInfo
-      maxAllowedWeightPerContainer == Quantities.getQuantity(22_500, Units.KILOGRAM)
+      maxAllowedWeightPerContainer == Quantities.getQuantity(19_530, Units.KILOGRAM)
       maxRecommendedWeightPerContainer == Quantities.getQuantity(16_667, Units.KILOGRAM)
       containerCount == 3
       containerTeuCount == 3

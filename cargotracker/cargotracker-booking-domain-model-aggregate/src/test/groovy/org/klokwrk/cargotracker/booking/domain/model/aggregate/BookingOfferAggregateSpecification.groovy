@@ -67,7 +67,7 @@ class BookingOfferAggregateSpecification extends Specification {
     given:
     CreateBookingOfferCommand createBookingOfferCommand = CreateBookingOfferCommandFixtures.commandValidCommodityInfo()
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
-    Commodity expectedCommodity = Commodity.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommand.commodityInfo, Quantities.getQuantity(23_750, Units.KILOGRAM))
+    Commodity expectedCommodity = Commodity.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommand.commodityInfo, Quantities.getQuantity(20_615, Units.KILOGRAM))
 
     BookingOfferCreatedEvent expectedBookingOfferCreatedEvent = new BookingOfferCreatedEvent(
         bookingOfferId: createBookingOfferCommand.bookingOfferId,
