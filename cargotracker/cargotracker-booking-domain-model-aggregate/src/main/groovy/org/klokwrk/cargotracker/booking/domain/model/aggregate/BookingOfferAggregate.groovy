@@ -30,6 +30,7 @@ import org.axonframework.spring.stereotype.Aggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.service.CommodityCreatorService
+import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
@@ -60,20 +61,23 @@ class BookingOfferAggregate {
   @SuppressWarnings("CodeNarc.FactoryMethodName")
   @CommandHandler
   @CreationPolicy(AggregateCreationPolicy.ALWAYS)
-  BookingOfferAggregate createBookingOffer(CreateBookingOfferCommand createBookingOfferCommand, MetaData metaData, CommodityCreatorService commodityCreatorService) {
+  BookingOfferAggregate createBookingOffer(
+      CreateBookingOfferCommand createBookingOfferCommand, MetaData metaData,
+      CommodityCreatorService commodityCreatorService, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy)
+  {
     Commodity commodity = commodityCreatorService.from(createBookingOfferCommand.containerDimensionType, createBookingOfferCommand.commodityInfo)
 
     // Check for container TEU count per commodity type.
     // The largest ship in the world can carry 24000 TEU of containers. We should limit container TEU count to the max of 5000 per a single booking, for example.
     // We can have two different policies here. One for limiting container TEU count per commodity type, and another one for limiting container TEU count for the whole booking.
     // In a simpler case, both policies can be the same. In that case with a single commodity type we can allocate complete booking capacity.
-    if (!bookingOfferCommodities.canAcceptCommodity(commodity)) {
+    if (!bookingOfferCommodities.canAcceptCommodity(commodity, maxAllowedTeuCountPolicy)) {
       throw new CommandException(ViolationInfo.makeForBadRequestWithCustomCodeKey("bookingOfferAggregate.bookingOfferCommodities.cannotAcceptCommodity"))
     }
 
     // Note: cannot store here directly as state change should happen in event sourcing handler.
     //       Alternative is to publish two events (second one applied after the first one updates the state), but we do not want that.
-    Tuple2<Quantity<Mass>, BigDecimal> preCalculatedTotals = bookingOfferCommodities.preCalculateTotals(commodity)
+    Tuple2<Quantity<Mass>, BigDecimal> preCalculatedTotals = bookingOfferCommodities.preCalculateTotals(commodity, maxAllowedTeuCountPolicy)
     Quantity<Mass> bookingTotalCommodityWeight = preCalculatedTotals.v1
     BigDecimal bookingTotalContainerTeuCount = preCalculatedTotals.v2
 

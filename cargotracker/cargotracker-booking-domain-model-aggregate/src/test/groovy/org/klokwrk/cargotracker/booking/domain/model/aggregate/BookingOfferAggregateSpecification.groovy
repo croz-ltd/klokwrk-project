@@ -25,7 +25,9 @@ import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.bookin
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.service.CommodityCreatorService
+import org.klokwrk.cargotracker.booking.domain.model.service.ConstantBasedMaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.service.DefaultCommodityCreatorService
+import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.service.PercentBasedMaxAllowedWeightPerContainerPolicy
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
@@ -40,9 +42,11 @@ class BookingOfferAggregateSpecification extends Specification {
 
   void setup() {
     CommodityCreatorService commodityCreatorService = new DefaultCommodityCreatorService(new PercentBasedMaxAllowedWeightPerContainerPolicy(95))
+    MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
 
     aggregateTestFixture = new AggregateTestFixture(BookingOfferAggregate)
     aggregateTestFixture.registerInjectableResource(commodityCreatorService)
+    aggregateTestFixture.registerInjectableResource(maxAllowedTeuCountPolicy)
   }
 
   void "should work when origin and destination locations are both container ports at sea"() {

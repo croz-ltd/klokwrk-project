@@ -18,6 +18,7 @@
 package org.klokwrk.cargotracker.booking.domain.model.aggregate
 
 import groovy.transform.CompileStatic
+import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import tech.units.indriya.quantity.Quantities
@@ -57,13 +58,9 @@ class BookingOfferCommodities {
    * We should use this method from the aggregate's command handler to check if it is valid to add the {@code Commodity} instance to the aggregate state. Actual state change happens later in the
    * event sourcing handler. Note that we cannot make this check in the event sourcing handler because it must make changes unconditionally to support rehydration from past events.
    */
-  Boolean canAcceptCommodity(Commodity commodity) {
+  Boolean canAcceptCommodity(Commodity commodity, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
     BigDecimal newTotalContainerTeuCount = totalContainerTeuCount + commodity.containerTeuCount
-    if (newTotalContainerTeuCount > 5000) {
-      return false
-    }
-
-    return true
+    return maxAllowedTeuCountPolicy.isTeuCountAllowed(newTotalContainerTeuCount)
   }
 
   /**
@@ -77,8 +74,8 @@ class BookingOfferCommodities {
    * <p/>
    * The method returns a tuple of 2 where value v1 is the new {@code totalCommodityWeight} and value v2 is the new {@code totalContainerTeuCount}.
    */
-  Tuple2<Quantity<Mass>, BigDecimal> preCalculateTotals(Commodity commodity) {
-    if (!canAcceptCommodity(commodity)) {
+  Tuple2<Quantity<Mass>, BigDecimal> preCalculateTotals(Commodity commodity, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
+    if (!canAcceptCommodity(commodity, maxAllowedTeuCountPolicy)) {
       throw new AssertionError("Cannot proceed with calculating totals since commodity is not acceptable." as Object)
     }
 
@@ -105,7 +102,7 @@ class BookingOfferCommodities {
   /**
    * Without changing the aggregate state, calculates new totals based on provided {@link Commodity} and the current aggregate state.
    * <p/>
-   * This method is very similar to the {@link #preCalculateTotals(Commodity)}, but this one does not check if the commodity can be accepted or not.
+   * This method is very similar to the {@link #preCalculateTotals(Commodity, MaxAllowedTeuCountPolicy)}, but this one does not check if the commodity can be accepted or not.
    * <p/>
    * The method returns a tuple of 2 where value v1 is the new {@code totalCommodityWeight} and value v2 is the new {@code totalContainerTeuCount}.
    */

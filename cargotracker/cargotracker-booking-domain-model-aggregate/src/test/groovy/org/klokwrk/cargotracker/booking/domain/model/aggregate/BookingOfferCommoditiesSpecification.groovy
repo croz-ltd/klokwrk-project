@@ -17,6 +17,8 @@
  */
 package org.klokwrk.cargotracker.booking.domain.model.aggregate
 
+import org.klokwrk.cargotracker.booking.domain.model.service.ConstantBasedMaxAllowedTeuCountPolicy
+import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
@@ -43,11 +45,11 @@ class BookingOfferCommoditiesSpecification extends Specification {
   void "canAcceptCommodity() method should work as expected for 10ft container"() {
     given:
     Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_12G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * 9_000), Quantities.getQuantity(9_000, Units.KILOGRAM))
-
+    MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
     BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
     when:
-    Boolean canAcceptCommodityResult = bookingOfferCommodities.canAcceptCommodity(commodity)
+    Boolean canAcceptCommodityResult = bookingOfferCommodities.canAcceptCommodity(commodity, maxAllowedTeuCountPolicy)
 
     then:
     canAcceptCommodityResult == canAcceptCommodityResultParam
@@ -63,11 +65,11 @@ class BookingOfferCommoditiesSpecification extends Specification {
   void "canAcceptCommodity() method should work as expected for 20ft container"() {
     given:
     Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * 25_000), Quantities.getQuantity(25_000, Units.KILOGRAM))
-
+    MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
     BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
     when:
-    Boolean canAcceptCommodityResult = bookingOfferCommodities.canAcceptCommodity(commodity)
+    Boolean canAcceptCommodityResult = bookingOfferCommodities.canAcceptCommodity(commodity, maxAllowedTeuCountPolicy)
 
     then:
     canAcceptCommodityResult == canAcceptCommodityResultParam
@@ -83,11 +85,11 @@ class BookingOfferCommoditiesSpecification extends Specification {
   void "canAcceptCommodity() method should work as expected for 40ft container"() {
     given:
     Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_42G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * 27_600), Quantities.getQuantity(27_600, Units.KILOGRAM))
-
+    MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
     BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
     when:
-    Boolean canAcceptCommodityResult = bookingOfferCommodities.canAcceptCommodity(commodity)
+    Boolean canAcceptCommodityResult = bookingOfferCommodities.canAcceptCommodity(commodity, maxAllowedTeuCountPolicy)
 
     then:
     canAcceptCommodityResult == canAcceptCommodityResultParam
@@ -145,10 +147,11 @@ class BookingOfferCommoditiesSpecification extends Specification {
   void "preCalculateTotals() method should throw when commodity cannot be accepted"() {
     given:
     Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * 25_000), Quantities.getQuantity(25_000, Units.KILOGRAM))
+    MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
     BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
     when:
-    bookingOfferCommodities.preCalculateTotals(commodity)
+    bookingOfferCommodities.preCalculateTotals(commodity, maxAllowedTeuCountPolicy)
 
     then:
     AssertionError assertionError = thrown()
@@ -163,10 +166,11 @@ class BookingOfferCommoditiesSpecification extends Specification {
   void "preCalculateTotals() method should work as expected for acceptable commodity"() {
     given:
     Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * 25_000), Quantities.getQuantity(25_000, Units.KILOGRAM))
+    MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
     BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
     when:
-    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCommodities.preCalculateTotals(commodity)
+    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCommodities.preCalculateTotals(commodity, maxAllowedTeuCountPolicy)
 
     then:
     newTotals.v1 == Quantities.getQuantity(containerCountParam * 25_000, Units.KILOGRAM)
