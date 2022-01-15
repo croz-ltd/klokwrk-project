@@ -36,6 +36,7 @@ import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.vio
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.aggregate.DomainAggregateViolationClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.command.DomainCommandViolationClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.event.DomainEventViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.service.DomainServiceViolationClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.value.DomainModelValueViolationClass
 import spock.lang.Shared
 import spock.lang.Specification
@@ -48,6 +49,7 @@ import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.ADAPTER_PROJE
 import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.APPLICATION_INBOUND_PORT_LAYER
 import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.APPLICATION_OUTBOUND_PORT_LAYER
 import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.APPLICATION_SERVICE_LAYER
+import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.DOMAIN_SERVICE_LAYER
 import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.DOMAIN_AGGREGATE_LAYER
 import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.DOMAIN_COMMAND_LAYER
 import static org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture.DOMAIN_EVENT_LAYER
@@ -64,7 +66,8 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
 
   @Shared
   List<Class<?>> generalArchitectureAllViolatingSources = [
-      DomainModelValueViolationClass, DomainEventViolationClass, DomainCommandViolationClass, DomainAggregateViolationClass, ApplicationPortInViolationInterface, ApplicationPortOutViolationInterface,
+      DomainModelValueViolationClass, DomainEventViolationClass, DomainCommandViolationClass, DomainServiceViolationClass, DomainAggregateViolationClass,
+      ApplicationPortInViolationInterface, ApplicationPortOutViolationInterface,
       ApplicationServiceViolationClass, AdapterInViolationClass, AdapterOutViolationClass, AdapterProjectionViolationClass
   ]
 
@@ -83,6 +86,7 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
         .domainValues("..domain.model.value..")
         .domainEvents("..domain.model.event..")
         .domainCommands("..domain.model.command..")
+        .domainServices("..domain.model.service..")
         .domainAggregates("..domain.model.aggregate..")
 
         .applicationInboundPorts("..application.port.in..")
@@ -92,7 +96,7 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
         .adapterInbound("in", "..adapter.in..")
         .adapterOutbound("out", "..adapter.out..")
 
-        .withOptionalLayers(false)
+        .withOptionalLayers(true)
 
     hexagonalCqrsEsArchitectureRule
         .ignoreDependency(
@@ -153,6 +157,7 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
             .domainValues("..domain.model.value..")
             .domainEvents("..domain.model.event..")
             .domainCommands("..domain.model.command..")
+            .domainServices("..domain.model.service..")
             .domainAggregates("..domain.model.aggregate..")
 
             .applicationInboundPorts("..application.port.in..")
@@ -190,7 +195,10 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
 
             .withOptionalLayers(false)
             .ignoreDependency(
-                resideInAnyPackage(["..domain.model.event..", "..domain.model.command..", "..domain.model.aggregate..", "..adapter.projection.."] as String[]), DescribedPredicate.alwaysTrue()
+                resideInAnyPackage(
+                    ["..domain.model.event..", "..domain.model.command..", "..domain.model.service..", "..domain.model.aggregate..", "..adapter.projection.."] as String[]
+                ),
+                DescribedPredicate.alwaysTrue()
             )
         break
 
@@ -199,6 +207,7 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
             .domainValues("..domain.model.value..")
             .domainEvents("..domain.model.event..")
             .domainCommands("..domain.model.command..")
+            .domainServices("..domain.model.service..")
             .domainAggregates("..domain.model.aggregate..")
 
             .applicationInboundPorts("..application.port.in..")
@@ -245,11 +254,13 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
 
     where:
     allowedSources                                                                              | disallowedTarget                     | description
-    [DomainEventViolationClass, DomainCommandViolationClass, DomainAggregateViolationClass,
+    [DomainEventViolationClass, DomainCommandViolationClass, DomainServiceViolationClass,
+     DomainAggregateViolationClass,
      ApplicationPortOutViolationInterface, ApplicationServiceViolationClass,
      AdapterOutViolationClass, AdapterProjectionViolationClass]                                 | DomainModelValueViolationClass       | "* -> ${ DOMAIN_VALUE_LAYER }"
     [DomainAggregateViolationClass, AdapterProjectionViolationClass]                            | DomainEventViolationClass            | "* -> ${ DOMAIN_EVENT_LAYER }"
     [DomainAggregateViolationClass, ApplicationServiceViolationClass]                           | DomainCommandViolationClass          | "* -> ${ DOMAIN_COMMAND_LAYER }"
+    [DomainAggregateViolationClass]                                                             | DomainServiceViolationClass          | "* -> ${ DOMAIN_SERVICE_LAYER }"
     [ApplicationServiceViolationClass]                                                          | DomainAggregateViolationClass        | "* -> ${ DOMAIN_AGGREGATE_LAYER }"
     [ApplicationServiceViolationClass, AdapterInViolationClass]                                 | ApplicationPortInViolationInterface  | "* -> ${ APPLICATION_INBOUND_PORT_LAYER }"
     [ApplicationServiceViolationClass, DomainAggregateViolationClass, AdapterOutViolationClass] | ApplicationPortOutViolationInterface | "* -> ${ APPLICATION_OUTBOUND_PORT_LAYER }"
@@ -342,10 +353,12 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
 
     where:
     allowedSources                                                                                     | disallowedTarget                     | description
-    [DomainEventViolationClass, DomainCommandViolationClass, DomainAggregateViolationClass,
+    [DomainEventViolationClass, DomainCommandViolationClass, DomainServiceViolationClass,
+     DomainAggregateViolationClass,
      ApplicationServiceViolationClass, ApplicationPortOutViolationInterface, AdapterOutViolationClass] | DomainModelValueViolationClass       | "* -> ${ DOMAIN_VALUE_LAYER }"
     [DomainAggregateViolationClass]                                                                    | DomainEventViolationClass            | "* -> ${ DOMAIN_EVENT_LAYER }"
     [DomainAggregateViolationClass, ApplicationServiceViolationClass]                                  | DomainCommandViolationClass          | "* -> ${ DOMAIN_COMMAND_LAYER }"
+    [DomainAggregateViolationClass]                                                                    | DomainServiceViolationClass          | "* -> ${ DOMAIN_SERVICE_LAYER }"
     [ApplicationServiceViolationClass]                                                                 | DomainAggregateViolationClass        | "* -> ${ DOMAIN_AGGREGATE_LAYER }"
     [ApplicationServiceViolationClass, AdapterInViolationClass]                                        | ApplicationPortInViolationInterface  | "* -> ${ APPLICATION_INBOUND_PORT_LAYER }"
     [ApplicationServiceViolationClass, DomainAggregateViolationClass, AdapterOutViolationClass]        | ApplicationPortOutViolationInterface | "* -> ${ APPLICATION_OUTBOUND_PORT_LAYER }"
@@ -435,7 +448,7 @@ class HexagonalCqrsEsArchitectureSpecification extends Specification {
 
   private List<Class<?>> fetchViolatingSourcesQuerySide(Class<?> disallowedTarget, List<Class<?>> allowedSources) {
     List<Class<?>> querySideArchitectureAllViolatingSources =
-        generalArchitectureAllViolatingSources - [DomainEventViolationClass, DomainCommandViolationClass, DomainAggregateViolationClass, AdapterProjectionViolationClass]
+        generalArchitectureAllViolatingSources - [DomainEventViolationClass, DomainCommandViolationClass, DomainServiceViolationClass, DomainAggregateViolationClass, AdapterProjectionViolationClass]
 
     return fetchViolatingSources(querySideArchitectureAllViolatingSources, disallowedTarget, allowedSources)
   }

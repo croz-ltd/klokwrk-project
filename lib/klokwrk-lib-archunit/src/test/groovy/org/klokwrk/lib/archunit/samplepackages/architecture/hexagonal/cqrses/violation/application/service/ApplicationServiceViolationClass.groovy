@@ -26,6 +26,7 @@ import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.vio
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.aggregate.DomainAggregateViolationClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.command.DomainCommandViolationClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.event.DomainEventViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.service.DomainServiceViolationClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.value.DomainModelValueViolationClass
 
 @SuppressWarnings('unused')
@@ -43,6 +44,10 @@ class ApplicationServiceViolationClass implements ApplicationPortInViolationInte
 
   @Override
   void accessDomainCommandClass(DomainCommandViolationClass domainCommandViolationClass) {
+  }
+
+  @Override
+  void accessDomainServiceClass(DomainServiceViolationClass domainServiceViolationClass) {
   }
 
   @Override

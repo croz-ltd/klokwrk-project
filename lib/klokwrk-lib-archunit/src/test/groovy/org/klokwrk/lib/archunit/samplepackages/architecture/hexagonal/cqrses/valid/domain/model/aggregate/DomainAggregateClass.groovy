@@ -21,6 +21,7 @@ import groovy.transform.CompileStatic
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.application.port.out.ApplicationPortOutInterface
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.command.DomainCommandClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.event.DomainEventClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.service.DomainServiceClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.value.DomainModelValueClass
 
 @SuppressWarnings('unused')
@@ -29,6 +30,7 @@ class DomainAggregateClass {
   DomainModelValueClass domainModelValueClass = new DomainModelValueClass()
   DomainEventClass domainEventClass = new DomainEventClass()
   DomainCommandClass domainCommandClass = new DomainCommandClass()
+  DomainServiceClass domainServiceClass = new DomainServiceClass()
 
   ApplicationPortOutInterface applicationPortOutInterface
 
