@@ -51,7 +51,6 @@ class BookingOfferCommodities {
     return totalContainerTeuCount
   }
 
-  // TODO dmurat: container count per booking policy
   /**
    * Checks if we can accept the {@link Commodity} at the {@link BookingOfferAggregate} level.
    * <p/>

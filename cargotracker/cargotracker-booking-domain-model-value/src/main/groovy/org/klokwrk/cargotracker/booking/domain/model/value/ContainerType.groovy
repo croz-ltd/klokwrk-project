@@ -49,6 +49,7 @@ import javax.measure.quantity.Mass
  */
 @CompileStatic
 enum ContainerType {
+  // TODO dmurat: harmonize maxCommodityWeight across containers (i.e. standard container probably cannot have lower maxCommodityWeight than the reefer container with same dimensions)
   /**
    * 10 feet x 8 feet 6 inches x 8 feet general purpose container.
    */

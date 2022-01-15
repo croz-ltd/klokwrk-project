@@ -29,6 +29,10 @@ import org.axonframework.extensions.tracing.OpenTraceHandlerInterceptor
 import org.axonframework.extensions.tracing.TracingCommandGateway
 import org.axonframework.messaging.MessageHandlerInterceptor
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
+import org.klokwrk.cargotracker.booking.domain.model.service.CommodityCreatorService
+import org.klokwrk.cargotracker.booking.domain.model.service.DefaultCommodityCreatorService
+import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedWeightPerContainerPolicy
+import org.klokwrk.cargotracker.booking.domain.model.service.PercentBasedMaxAllowedWeightPerContainerPolicy
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.CustomIntervalRetryScheduler
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.NonTransientFailurePredicate
@@ -80,6 +84,16 @@ class SpringBootConfig {
   @Bean
   ValidationService validationService(ValidationConfigurationProperties validationConfigurationProperties) {
     return new ValidationService(validationConfigurationProperties)
+  }
+
+  @Bean
+  MaxAllowedWeightPerContainerPolicy maxAllowedWeightPerContainerPolicy() {
+    return new PercentBasedMaxAllowedWeightPerContainerPolicy(95)
+  }
+
+  @Bean
+  CommodityCreatorService commodityCreatorService(MaxAllowedWeightPerContainerPolicy maxAllowedWeightPerContainerPolicy) {
+    return new DefaultCommodityCreatorService(maxAllowedWeightPerContainerPolicy)
   }
 
   // NOTE: At the moment, configuring a RetryScheduler is somewhat awkward. In our scenario with tracing extension present, it requires a redefinition of both DefaultCommandGateway and

@@ -24,6 +24,9 @@ import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.bookin
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.bookingoffer.CreateBookingOfferCommandFixtures
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
+import org.klokwrk.cargotracker.booking.domain.model.service.CommodityCreatorService
+import org.klokwrk.cargotracker.booking.domain.model.service.DefaultCommodityCreatorService
+import org.klokwrk.cargotracker.booking.domain.model.service.PercentBasedMaxAllowedWeightPerContainerPolicy
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
@@ -36,7 +39,10 @@ class BookingOfferAggregateSpecification extends Specification {
   AggregateTestFixture aggregateTestFixture
 
   void setup() {
+    CommodityCreatorService commodityCreatorService = new DefaultCommodityCreatorService(new PercentBasedMaxAllowedWeightPerContainerPolicy(95))
+
     aggregateTestFixture = new AggregateTestFixture(BookingOfferAggregate)
+    aggregateTestFixture.registerInjectableResource(commodityCreatorService)
   }
 
   void "should work when origin and destination locations are both container ports at sea"() {
