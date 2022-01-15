@@ -27,6 +27,8 @@ import org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture
 import spock.lang.Shared
 import spock.lang.Specification
 
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAnyPackage
+
 @Slf4j
 class BookingCommandSideAppArchitectureSpecification extends Specification {
   @Shared
@@ -37,6 +39,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         [
             "org.klokwrk.cargotracker.booking.commandside",
             "org.klokwrk.cargotracker.booking.domain.model.aggregate",
+            "org.klokwrk.cargotracker.booking.domain.model.service",
             "org.klokwrk.cargotracker.booking.domain.model.value",
             "org.klokwrk.cargotracker.booking.domain.model.command",
             "org.klokwrk.cargotracker.booking.domain.model.event"
@@ -91,6 +94,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .onionArchitecture()
         .domainModels(
             "..cargotracker.booking.domain.model.aggregate..", // domainEntities
+            "..cargotracker.booking.domain.model.service..",   // domainServices
             "..cargotracker.booking.domain.model.command..",   // domainCommands
             "..cargotracker.booking.domain.model.event..",     // domainEvents
             "..cargotracker.booking.domain.model.value.."      // domainValueObjects
@@ -102,6 +106,12 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         )
         .adapter("in.web", "..cargotracker.booking.commandside.feature.*.adapter.in.web..") // adapterInbound
         .adapter("out.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..") // adapterOutbound
+
+        .ignoreDependency(
+            resideInAnyPackage(["..cargotracker.booking.commandside.infrastructure.."] as String[]),
+            resideInAnyPackage(["..cargotracker.booking.domain.model.service.."] as String[])
+        )
+
         .withOptionalLayers(true)
     // @formatter:on
 
@@ -122,6 +132,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .domainValues("..cargotracker.booking.domain.model.value..")
         .domainEvents("..cargotracker.booking.domain.model.event..")
         .domainCommands("..cargotracker.booking.domain.model.command..")
+        .domainServices("..cargotracker.booking.domain.model.service..")
         .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
 
         .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
@@ -130,6 +141,11 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
 
         .adapterInbound("in.web", "..cargotracker.booking.commandside.feature.*.adapter.in.web..")
         .adapterOutbound("out.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..")
+
+        .ignoreDependency(
+            resideInAnyPackage(["..cargotracker.booking.commandside.infrastructure.."] as String[]),
+            resideInAnyPackage(["..cargotracker.booking.domain.model.service.."] as String[])
+        )
 
         .withOptionalLayers(true)
     // @formatter:on
@@ -153,6 +169,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .domainValues("..cargotracker.booking.domain.model.value..")
         .domainEvents("..cargotracker.booking.domain.model.event..")
         .domainCommands("..cargotracker.booking.domain.model.command..")
+        .domainServices("..cargotracker.booking.domain.model.service..")
         .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
 
         .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
@@ -161,6 +178,11 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
 
         .adapterInbound("in.web", "..cargotracker.booking.commandside.feature.*.adapter.in.web..")
         .adapterOutbound("out.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..")
+
+        .ignoreDependency(
+            resideInAnyPackage(["..cargotracker.booking.commandside.infrastructure.."] as String[]),
+            resideInAnyPackage(["..cargotracker.booking.domain.model.service.."] as String[])
+        )
 
         .withOptionalLayers(false)
     // @formatter:on
