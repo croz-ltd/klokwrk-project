@@ -181,7 +181,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
                   ]
               ],
               maxAllowedWeightPerContainer: [
-                  value: 23750,
+                  value: 20615,
                   unit: [
                       name: "Kilogram",
                       symbol: "kg"

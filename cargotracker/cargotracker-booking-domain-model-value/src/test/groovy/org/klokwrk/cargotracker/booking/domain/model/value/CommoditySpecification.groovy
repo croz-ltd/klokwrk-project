@@ -81,9 +81,9 @@ class CommoditySpecification extends Specification {
     when:
     new Commodity(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 23_000),
-        maxAllowedWeightPerContainer: getQuantity(24_000, KILOGRAM),
-        maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM), // It should be >= commodityInfo.totalWeight.
+        commodityInfo: CommodityInfo.make(DRY, 20_000),
+        maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
+        maxRecommendedWeightPerContainer: getQuantity(19_000, KILOGRAM), // It should be >= commodityInfo.totalWeight.
         containerCount: 1,
         containerTeuCount: 1
     )
@@ -98,8 +98,8 @@ class CommoditySpecification extends Specification {
     new Commodity(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, 50_000),
-        maxAllowedWeightPerContainer: getQuantity(24_000, KILOGRAM),
-        maxRecommendedWeightPerContainer: getQuantity(24_000, KILOGRAM),
+        maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
+        maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
         containerCount: 2, // It should be 3 or more.
         containerTeuCount: 2
     )
@@ -114,8 +114,8 @@ class CommoditySpecification extends Specification {
     new Commodity(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, 20_000),
-        maxAllowedWeightPerContainer: getQuantity(24_000_000, GRAM),
-        maxRecommendedWeightPerContainer: getQuantity(24_000, KILOGRAM),
+        maxAllowedWeightPerContainer: getQuantity(21_000_000, GRAM),
+        maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
         containerCount: 1,
         containerTeuCount: 1
     )
@@ -130,8 +130,8 @@ class CommoditySpecification extends Specification {
     new Commodity(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, 20_000),
-        maxAllowedWeightPerContainer: getQuantity(24_000.1, KILOGRAM),
-        maxRecommendedWeightPerContainer: getQuantity(24_000, KILOGRAM),
+        maxAllowedWeightPerContainer: getQuantity(21_000.1, KILOGRAM),
+        maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
         containerCount: 1,
         containerTeuCount: 1
     )
@@ -146,8 +146,8 @@ class CommoditySpecification extends Specification {
     new Commodity(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, 20_000),
-        maxAllowedWeightPerContainer: getQuantity(24_000, KILOGRAM),
-        maxRecommendedWeightPerContainer: getQuantity(24_000_000, GRAM),
+        maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
+        maxRecommendedWeightPerContainer: getQuantity(20_000_000, GRAM),
         containerCount: 1,
         containerTeuCount: 1
     )
@@ -162,7 +162,7 @@ class CommoditySpecification extends Specification {
     new Commodity(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, 20_000),
-        maxAllowedWeightPerContainer: getQuantity(24_000, KILOGRAM),
+        maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(20_000.1, KILOGRAM),
         containerCount: 1,
         containerTeuCount: 1
@@ -178,7 +178,7 @@ class CommoditySpecification extends Specification {
     new Commodity(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, 20_000),
-        maxAllowedWeightPerContainer: getQuantity(24_000, KILOGRAM),
+        maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
         containerCount: 1,
         containerTeuCount: containerTeuCountParam
@@ -204,14 +204,14 @@ class CommoditySpecification extends Specification {
     Commodity expectedCommodity = new Commodity(
         containerType: TYPE_ISO_12G1,
         commodityInfo: CommodityInfo.make(DRY, commodityWeightInKilogramsParam),
-        maxAllowedWeightPerContainer: getQuantity(8_700, KILOGRAM),
+        maxAllowedWeightPerContainer: getQuantity(9_500, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(maxRecommendedWeightPerContainerParam, KILOGRAM),
         containerCount: containerCountParam,
         containerTeuCount: containerTeuCountParam
     )
 
     when:
-    Commodity actualCommodity = Commodity.make(TYPE_ISO_12G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(8_700, KILOGRAM))
+    Commodity actualCommodity = Commodity.make(TYPE_ISO_12G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(9_500, KILOGRAM))
 
     then:
     expectedCommodity == actualCommodity
@@ -221,7 +221,7 @@ class CommoditySpecification extends Specification {
     2_000                           | 2_000                                 | 1                   | 0.5
     10_000                          | 5_000                                 | 2                   | 1
     50_000                          | 8_334                                 | 6                   | 3
-    500_000                         | 8_621                                 | 58                  | 29
+    500_000                         | 9_434                                 | 53                  | 26.50
   }
 
   void "make() method should work as expected for standard 20ft container"() {
@@ -229,14 +229,14 @@ class CommoditySpecification extends Specification {
     Commodity expectedCommodity = new Commodity(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, commodityWeightInKilogramsParam),
-        maxAllowedWeightPerContainer: getQuantity(24_500, KILOGRAM),
+        maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(maxRecommendedWeightPerContainerParam, KILOGRAM),
         containerCount: containerCountParam,
         containerTeuCount: containerTeuCountParam
     )
 
     when:
-    Commodity actualCommodity = Commodity.make(TYPE_ISO_22G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(24_500, KILOGRAM))
+    Commodity actualCommodity = Commodity.make(TYPE_ISO_22G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(21_000, KILOGRAM))
 
     then:
     expectedCommodity == actualCommodity
@@ -246,7 +246,7 @@ class CommoditySpecification extends Specification {
     2_000                           | 2_000                                 | 1                   | 1
     10_000                          | 10_000                                | 1                   | 1
     50_000                          | 16_667                                | 3                   | 3
-    500_000                         | 23_810                                | 21                  | 21
+    500_000                         | 20_834                                | 24                  | 24
   }
 
   void "make() method should work as expected for standard 40ft container"() {
@@ -254,14 +254,14 @@ class CommoditySpecification extends Specification {
     Commodity expectedCommodity = new Commodity(
         containerType: TYPE_ISO_42G1,
         commodityInfo: CommodityInfo.make(DRY, commodityWeightInKilogramsParam),
-        maxAllowedWeightPerContainer: getQuantity(27_600, KILOGRAM),
+        maxAllowedWeightPerContainer: getQuantity(26_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(maxRecommendedWeightPerContainerParam, KILOGRAM),
         containerCount: containerCountParam,
         containerTeuCount: containerTeuCountParam
     )
 
     when:
-    Commodity actualCommodity = Commodity.make(TYPE_ISO_42G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(27_600, KILOGRAM))
+    Commodity actualCommodity = Commodity.make(TYPE_ISO_42G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(26_000, KILOGRAM))
 
     then:
     expectedCommodity == actualCommodity
@@ -271,6 +271,6 @@ class CommoditySpecification extends Specification {
     2_000                           | 2_000                                 | 1                   | 2
     10_000                          | 10_000                                | 1                   | 2
     50_000                          | 25_000                                | 2                   | 4
-    500_000                         | 26_316                                | 19                  | 38
+    500_000                         | 25_000                                | 20                  | 40
   }
 }

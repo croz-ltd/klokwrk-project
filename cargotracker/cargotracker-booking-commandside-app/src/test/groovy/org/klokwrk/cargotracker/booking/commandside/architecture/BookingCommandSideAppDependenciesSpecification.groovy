@@ -87,6 +87,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
 
     String[] cargotrackerBookingDomainAggregateAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.aggregate.."]
 
+    String[] cargotrackerBookingServiceAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.service.."]
     String[] cargotrackerBookingCommandAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.command.."]
     String[] cargotrackerBookingEventAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.event.."]
     String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
@@ -99,6 +100,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         .should().onlyAccessClassesThat().resideInAnyPackage(
             cargotrackerBookingDomainAggregateAllPackages +
 
+            cargotrackerBookingServiceAllPackages +
             cargotrackerBookingCommandAllPackages +
             cargotrackerBookingEventAllPackages +
             cargotrackerBookingDomainValueAllPackages +
@@ -188,6 +190,8 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         "org.springframework.context.."
     ]
 
+    String[] cargotrackerBookingServiceAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.service.."]
+
     String[] cargotrackerBookingCommandsideAppInfrastructurePackages = ["org.klokwrk.cargotracker.booking.commandside.infrastructure.."]
 
     String[] cargotrackerLibAxonCqrsCommandPackages = ["org.klokwrk.cargotracker.lib.axon.cqrs.command.."]
@@ -201,6 +205,8 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     ArchRule rule = ArchRuleDefinition
         .classes().that().resideInAnyPackage(cargotrackerBookingCommandsideAppInfrastructurePackages)
         .should().onlyAccessClassesThat().resideInAnyPackage(
+            cargotrackerBookingServiceAllPackages +
+
             cargotrackerBookingCommandsideAppInfrastructurePackages +
 
             cargotrackerLibAxonCqrsCommandPackages +

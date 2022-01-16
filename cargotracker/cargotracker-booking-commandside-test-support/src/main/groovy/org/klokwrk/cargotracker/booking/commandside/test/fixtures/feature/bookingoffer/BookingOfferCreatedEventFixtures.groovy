@@ -48,7 +48,7 @@ class BookingOfferCreatedEventFixtures {
    */
   static BookingOfferCreatedEvent eventValidForCommand(CreateBookingOfferCommand createBookingOfferCommand) {
     CommodityInfo commodityInfo = CommodityInfo.make(CommodityType.DRY, 1_000)
-    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, commodityInfo, Quantities.getQuantity(23_750, Units.KILOGRAM))
+    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, commodityInfo, Quantities.getQuantity(20_615, Units.KILOGRAM))
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
         bookingOfferId: createBookingOfferCommand.bookingOfferId,

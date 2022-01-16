@@ -26,11 +26,13 @@ import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.vio
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.application.service.ApplicationServiceViolationClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.aggregate.DomainAggregateViolationClass
 import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.event.DomainEventViolationClass
+import org.klokwrk.lib.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.service.DomainServiceViolationClass
 
 @SuppressWarnings('unused')
 @CompileStatic
 class DomainCommandViolationClass {
   DomainEventViolationClass domainEventViolationClass = new DomainEventViolationClass()
+  DomainServiceViolationClass domainServiceViolationClass = new DomainServiceViolationClass()
   DomainAggregateViolationClass domainAggregateViolationClass = new DomainAggregateViolationClass()
 
   ApplicationPortInViolationInterface applicationPortInViolationInterface

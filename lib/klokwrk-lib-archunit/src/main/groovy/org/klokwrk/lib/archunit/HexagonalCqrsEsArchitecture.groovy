@@ -103,6 +103,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
   static final String DOMAIN_VALUE_LAYER = "domain value"
   static final String DOMAIN_EVENT_LAYER = "domain event"
   static final String DOMAIN_COMMAND_LAYER = "domain command"
+  static final String DOMAIN_SERVICE_LAYER = "domain service"
   static final String DOMAIN_AGGREGATE_LAYER = "domain aggregate"
 
   static final String APPLICATION_SERVICE_LAYER = "application service"
@@ -120,6 +121,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
   private String[] domainValuePackageIdentifiers = []
   private String[] domainEventPackageIdentifiers = []
   private String[] domainCommandPackageIdentifiers = []
+  private String[] domainServicePackageIdentifiers = []
   private String[] domainAggregatePackageIdentifiers = []
 
   private String[] applicationInboundPortPackageIdentifiers = []
@@ -154,6 +156,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
         .domainValues(domainValuePackageIdentifiers)
         .domainEvents(domainEventPackageIdentifiers)
         .domainCommands(domainCommandPackageIdentifiers)
+        .domainServices(domainServicePackageIdentifiers)
         .domainAggregates(domainAggregatePackageIdentifiers)
 
         .applicationInboundPorts(applicationInboundPortPackageIdentifiers)
@@ -179,6 +182,11 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
 
   HexagonalCqrsEsArchitecture domainCommands(String... packageIdentifiers) {
     domainCommandPackageIdentifiers = packageIdentifiers
+    return this
+  }
+
+  HexagonalCqrsEsArchitecture domainServices(String... packageIdentifiers) {
+    domainServicePackageIdentifiers = packageIdentifiers
     return this
   }
 
@@ -271,6 +279,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
         .layer(DOMAIN_VALUE_LAYER).definedBy(domainValuePackageIdentifiers)
         .layer(DOMAIN_EVENT_LAYER).definedBy(domainEventPackageIdentifiers)
         .layer(DOMAIN_COMMAND_LAYER).definedBy(domainCommandPackageIdentifiers)
+        .layer(DOMAIN_SERVICE_LAYER).definedBy(domainServicePackageIdentifiers)
         .layer(DOMAIN_AGGREGATE_LAYER).definedBy(domainAggregatePackageIdentifiers)
 
         .layer(APPLICATION_INBOUND_PORT_LAYER).definedBy(applicationInboundPortPackageIdentifiers)
@@ -285,12 +294,13 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
         // JSON deserializers/serializers and validation constraints
         .whereLayer(DOMAIN_VALUE_LAYER)
             .mayOnlyBeAccessedByLayers(
-                DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_AGGREGATE_LAYER,
+                DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_SERVICE_LAYER, DOMAIN_AGGREGATE_LAYER,
                 APPLICATION_INBOUND_PORT_LAYER, APPLICATION_OUTBOUND_PORT_LAYER, APPLICATION_SERVICE_LAYER,
                 ADAPTER_INBOUND_LAYER, ADAPTER_OUTBOUND_LAYER, ADAPTER_PROJECTION_LAYER
             )
         .whereLayer(DOMAIN_EVENT_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER, ADAPTER_PROJECTION_LAYER)
         .whereLayer(DOMAIN_COMMAND_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER)
+        .whereLayer(DOMAIN_SERVICE_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER)
         .whereLayer(DOMAIN_AGGREGATE_LAYER).mayOnlyBeAccessedByLayers(APPLICATION_SERVICE_LAYER)
 
         .whereLayer(APPLICATION_INBOUND_PORT_LAYER).mayOnlyBeAccessedByLayers(APPLICATION_SERVICE_LAYER, ADAPTER_INBOUND_LAYER)
@@ -312,6 +322,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
         .layer(DOMAIN_VALUE_LAYER).definedBy(domainValuePackageIdentifiers)
         .layer(DOMAIN_EVENT_LAYER).definedBy(domainEventPackageIdentifiers)
         .layer(DOMAIN_COMMAND_LAYER).definedBy(domainCommandPackageIdentifiers)
+        .layer(DOMAIN_SERVICE_LAYER).definedBy(domainServicePackageIdentifiers)
         .layer(DOMAIN_AGGREGATE_LAYER).definedBy(domainAggregatePackageIdentifiers)
 
         .layer(APPLICATION_INBOUND_PORT_LAYER).definedBy(applicationInboundPortPackageIdentifiers)
@@ -325,12 +336,13 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
         // JSON deserializers/serializers and validation constraints
         .whereLayer(DOMAIN_VALUE_LAYER)
             .mayOnlyBeAccessedByLayers(
-                DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_AGGREGATE_LAYER,
+                DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_SERVICE_LAYER, DOMAIN_AGGREGATE_LAYER,
                 APPLICATION_INBOUND_PORT_LAYER, APPLICATION_SERVICE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER,
                 ADAPTER_INBOUND_LAYER, ADAPTER_OUTBOUND_LAYER
             )
         .whereLayer(DOMAIN_EVENT_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER)
         .whereLayer(DOMAIN_COMMAND_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER)
+        .whereLayer(DOMAIN_SERVICE_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER)
         .whereLayer(DOMAIN_AGGREGATE_LAYER).mayOnlyBeAccessedByLayers(APPLICATION_SERVICE_LAYER)
 
         .whereLayer(APPLICATION_INBOUND_PORT_LAYER).mayOnlyBeAccessedByLayers(APPLICATION_SERVICE_LAYER, ADAPTER_INBOUND_LAYER)
@@ -429,6 +441,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
       addAll(describeStandardPackageIdentifiers(domainValuePackageIdentifiers, "domain value objects"))
       addAll(describeStandardPackageIdentifiers(domainEventPackageIdentifiers, "domain events"))
       addAll(describeStandardPackageIdentifiers(domainCommandPackageIdentifiers, "domain commands"))
+      addAll(describeStandardPackageIdentifiers(domainServicePackageIdentifiers, "domain services"))
       addAll(describeStandardPackageIdentifiers(domainAggregatePackageIdentifiers, "domain entities and aggregates"))
 
       addAll(describeStandardPackageIdentifiers(applicationInboundPortPackageIdentifiers, "application inbound ports"))
