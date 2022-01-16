@@ -22,27 +22,18 @@ plugins {
 }
 
 dependencies {
-  implementation platform(project(":klokwrk-platform-base"))
+  implementation platform(project(":klokwrk-platform-spring-boot"))
 
-  implementation project(":cargotracker-booking-domain-model-command")
-  implementation project(":cargotracker-booking-domain-model-event")
-  implementation project(":cargotracker-booking-domain-model-service")
   implementation project(":cargotracker-booking-domain-model-value")
-  implementation project(":cargotracker-lib-boundary-api")
-  implementation project(":cargotracker-lib-domain-model-command")
-  implementation project(":cargotracker-lib-domain-model-event")
   implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lang-groovy-contracts-match")
+  implementation project(":klokwrk-lang-groovy-contracts-simple")
 
   implementation "javax.measure:unit-api"
-  implementation "org.axonframework:axon-eventsourcing"
-  implementation "org.axonframework:axon-messaging"
-  implementation "org.axonframework:axon-modelling"
-  implementation "org.axonframework:axon-spring"
   implementation "org.codehaus.groovy:groovy"
+  implementation "org.codehaus.groovy:groovy-macro"
+  implementation "org.hamcrest:hamcrest"
   implementation "tech.units:indriya"
 
-  testImplementation project(":cargotracker-booking-commandside-test-support")
-
-  testImplementation "org.axonframework:axon-test"
   testImplementation "org.spockframework:spock-core"
 }
