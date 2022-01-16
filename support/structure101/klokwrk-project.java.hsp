@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<local-project language="java" version="6.1.19172" xml-version="3" flavor="j2se">
+<local-project language="java" version="6.1.20378" xml-version="3" flavor="j2se">
   <property name="show-as-module" value="false" />
   <property name="force-classpath" value="false" />
   <property name="publish-architecture-artifacts" value="true" />
@@ -22,6 +22,7 @@
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model-aggregate/build/classes/groovy/main" module="cargotracker-booking-domain-model-aggregate" displaymodule="cargotracker-booking-domain-model-aggregate" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model-command/build/classes/groovy/main" module="cargotracker-booking-domain-model-command" displaymodule="cargotracker-booking-domain-model-command" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model-event/build/classes/groovy/main" module="cargotracker-booking-domain-model-event" displaymodule="cargotracker-booking-domain-model-event" />
+    <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model-service/build/classes/groovy/main" module="cargotracker-booking-domain-model-service" displaymodule="cargotracker-booking-domain-model-service" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model-value/build/classes/groovy/main" module="cargotracker-booking-domain-model-value" displaymodule="cargotracker-booking-domain-model-value" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-app/build/classes/groovy/main" module="cargotracker-booking-queryside-app" displaymodule="cargotracker-booking-queryside-app" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-rdbms-projection-app/build/classes/groovy/main" module="cargotracker-booking-queryside-rdbms-projection-app" displaymodule="cargotracker-booking-queryside-rdbms-projection-app" />
@@ -54,7 +55,7 @@
   <restructuring>
     <set version="3" name="Action list 1" hiview="Codemap" active="true" todo="false" list="0" />
   </restructuring>
-  <grid-set sep="." version="6.1.19172">
+  <grid-set sep="." version="6.1.20378">
     <grid name="General Architecture" enforce="true" locked="false" strict="false" excludes="cargotracker-booking-commandside-test-support.*,cargotracker-booking-queryside-test-support.*,cargotracker-booking-rdbms-management-app.*,klokwrk-lib-archunit.*,cargotracker-booking-test-component.*">
       <row>
         <cell name="cargotracker-booking (subdomain)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
@@ -82,6 +83,9 @@
                       <grid>
                         <row>
                           <cell name="cargotracker-booking-domain-model-aggregate" pattern="cargotracker-booking-domain-model-aggregate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                        </row>
+                        <row>
+                          <cell name="cargotracker-booking-domain-model-service" pattern="cargotracker-booking-domain-model-service.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                         </row>
                         <row>
                           <cell name="cargotracker-booking-domain-model-command" pattern="cargotracker-booking-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
@@ -184,7 +188,7 @@
       <description>Top-level breakout</description>
     </grid>
   </grid-set>
-  <physical-grid-set sep="." version="6.1.19172">
+  <physical-grid-set sep="." version="6.1.20378">
     <grid name="Workspace spec" enforce="true" locked="true" strict="false">
       <row>
         <cell name="cargotracker-booking" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="255,255,204">
@@ -225,6 +229,9 @@
                 <grid>
                   <row>
                     <cell name="cargotracker-booking-domain-model-aggregate" pattern="cargotracker-booking-domain-model-aggregate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
+                    <cell name="cargotracker-booking-domain-model-service" pattern="cargotracker-booking-domain-model-service.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
                     <cell name="cargotracker-booking-domain-model-command" pattern="cargotracker-booking-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
