@@ -162,7 +162,8 @@ class CommodityInfoSpecification extends Specification {
     FROZEN             | getQuantity(-7, CELSIUS)         | "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
   }
 
-  // adapted from https://stackoverflow.com/questions/5323505/mocking-java-enum-to-add-a-value-to-test-fail-case/57825724#57825724
+  // Here we have an example of adding non existing value to the enum for testing "impossible" switch default cases.
+  // Adapted from https://stackoverflow.com/questions/5323505/mocking-java-enum-to-add-a-value-to-test-fail-case/57825724#57825724
   void "map constructor requestedStorageTemperature check should fail for non existing commodityType"() {
     given:
     Closure<Field> makeAccessibleField = { Class clazz, String fieldName ->

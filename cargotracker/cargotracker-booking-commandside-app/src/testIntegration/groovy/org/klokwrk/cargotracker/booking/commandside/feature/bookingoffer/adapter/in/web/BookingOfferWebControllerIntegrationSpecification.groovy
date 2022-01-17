@@ -467,6 +467,77 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
     "en"                | "en"              | "Cannot accept commodity because it would exceed the maximum allowed count of TEU units (5000 TEU) per a booking offer."
   }
 
+  void "should fail when requested storage temperature is out of range - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
+    given:
+    Instant currentTime = Instant.now()
+    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
+    Instant departureLatestTime = currentTime + Duration.ofHours(2)
+    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
+
+    String bookingOfferIdentifier = UUID.randomUUID()
+    String webRequestBody = objectMapper.writeValueAsString(
+        [
+            bookingOfferIdentifier: bookingOfferIdentifier,
+            routeSpecification: [
+                originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
+            ],
+            commodityInfo: [commodityType: "$commodityTypeStringParam", totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: requestedStorageTemperatureInCelsiusParam],
+            containerDimensionType: "dimension_ISO_22"
+        ]
+    )
+
+    when:
+    MvcResult mvcResult = mockMvc.perform(
+        post("/booking-offer/create-booking-offer")
+            .content(webRequestBody)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
+    ).andReturn()
+
+    Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
+
+    then:
+    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
+    responseContentMap.payload.size() == 0
+
+    verifyAll(responseContentMap.metaData as Map) {
+      general.severity == Severity.WARNING.name().toLowerCase()
+      general.locale == localeStringParam
+
+      http.message == HttpStatus.BAD_REQUEST.reasonPhrase
+      http.status == HttpStatus.BAD_REQUEST.value().toString()
+
+      violation.code == HttpStatus.BAD_REQUEST.value().toString()
+      violation.message == violationMessageParam
+      violation.type == ViolationType.DOMAIN.name().toLowerCase()
+    }
+
+    where:
+    //@formatter:off
+    acceptLanguageParam | localeStringParam
+    "hr-HR"             | "hr_HR"
+    "en"                | "en"
+
+    "hr-HR"             | "hr_HR"
+    "en"                | "en"
+
+    "hr-HR"             | "hr_HR"
+    "en"                | "en"
+    ___
+    commodityTypeStringParam | requestedStorageTemperatureInCelsiusParam | violationMessageParam
+    "air_cooled"             | 13                                        | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za zrakom hlađenu robu: [2, 12] Celzija."
+    "air_cooled"             | 1                                         | "Requested storage temperature is not in supported range for air cooled commodities: [2, 12] Celsius."
+
+    "chilled"                | 7                                         | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za rashlađenu robu: [-2, 6] Celzija."
+    "chilled"                | -3                                        | "Requested storage temperature is not in supported range for chilled commodities: [-2, 6] Celsius."
+
+    "frozen"                 | -7                                        | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za smrznutu robu: [-20, -8] Celzija."
+    "frozen"                 | -21                                       | "Requested storage temperature is not in supported range for frozen commodities: [-20, -8] Celsius."
+    //@formatter:on
+  }
+
   void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguageParam]"() {
     given:
     String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: null, routeSpecification: null])
