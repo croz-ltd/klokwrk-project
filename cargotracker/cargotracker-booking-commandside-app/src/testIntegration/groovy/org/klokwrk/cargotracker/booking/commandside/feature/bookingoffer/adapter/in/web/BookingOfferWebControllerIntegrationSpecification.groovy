@@ -463,8 +463,8 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
-    "hr-HR"             | "hr_HR"           | "Nije moguće prihvatiti robu jer bi premašili najveći dozvoljeni broj TEU jedinica po ponudi za rezervaciju."
-    "en"                | "en"              | "Cannot accept commodity because it would exceed the maximum allowed count of TEU units per a booking offer."
+    "hr-HR"             | "hr_HR"           | "Nije moguće prihvatiti robu jer bi premašili najveći dozvoljeni broj TEU jedinica (5000 TEU) po ponudi za rezervaciju."
+    "en"                | "en"              | "Cannot accept commodity because it would exceed the maximum allowed count of TEU units (5000 TEU) per a booking offer."
   }
 
   void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguageParam]"() {

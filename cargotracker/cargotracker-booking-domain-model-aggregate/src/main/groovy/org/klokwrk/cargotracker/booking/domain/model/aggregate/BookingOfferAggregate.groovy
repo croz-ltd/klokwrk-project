@@ -72,7 +72,12 @@ class BookingOfferAggregate {
     // We can have two different policies here. One for limiting container TEU count per commodity type, and another one for limiting container TEU count for the whole booking.
     // In a simpler case, both policies can be the same. In that case with a single commodity type we can allocate complete booking capacity.
     if (!bookingOfferCommodities.canAcceptCommodity(commodity, maxAllowedTeuCountPolicy)) {
-      throw new CommandException(ViolationInfo.makeForBadRequestWithCustomCodeKey("bookingOfferAggregate.bookingOfferCommodities.cannotAcceptCommodity"))
+      throw new CommandException(
+          ViolationInfo.makeForBadRequestWithCustomCodeKey(
+              "bookingOfferAggregate.bookingOfferCommodities.cannotAcceptCommodity",
+              [maxAllowedTeuCountPolicy.maxAllowedTeuCount.trunc(0).toBigInteger().toString()]
+          )
+      )
     }
 
     // Note: cannot store here directly as state change should happen in event sourcing handler.
