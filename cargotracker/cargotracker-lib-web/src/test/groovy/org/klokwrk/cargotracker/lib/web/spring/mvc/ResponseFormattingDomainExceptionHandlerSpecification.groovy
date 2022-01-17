@@ -161,7 +161,7 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
 
   void "should work for custom ViolationInfo"() {
     given:
-    ViolationCode violationCode = new ViolationCode(code: "12345", codeKey: codeKeyParam, codeMessage: "codeMessage")
+    ViolationCode violationCode = new ViolationCode(code: "12345", codeMessage: "codeMessage", resolvableMessageKey: resolvableMessageKeyParam)
     ViolationInfo violationInfo = new ViolationInfo(severity: Severity.WARNING, violationCode: violationCode)
     DomainException exception = new DomainException(violationInfo)
 
@@ -195,7 +195,7 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
     }
 
     where:
-    codeKeyParam                            | violationMessageParam
+    resolvableMessageKeyParam               | violationMessageParam
     "myTestCode"                            | "My violation code message"
     "myMainTestCode.myMoreSpecificTestCode" | "My more specific violation code message"
   }

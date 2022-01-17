@@ -105,10 +105,10 @@ class CreateBookingOfferCommandSpecification extends Specification {
     domainException.violationInfo.severity == Severity.WARNING
     domainException.violationInfo.violationCode.code == "400"
     domainException.violationInfo.violationCode.codeMessage == "Bad Request"
-    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+    domainException.violationInfo.violationCode.resolvableMessageKey == resolvableMessageKeyParam
 
     where:
-    originLocationParam        | destinationLocationParam   | violationCodeKeyParam
+    originLocationParam        | destinationLocationParam   | resolvableMessageKeyParam
     locationSampleMap["NLRTM"] | locationSampleMap["NLRTM"] | "routeSpecification.originAndDestinationLocationAreEqual"
     locationSampleMap["NLRTM"] | locationSampleMap["HRZAG"] | "routeSpecification.cannotRouteCargoFromOriginToDestination"
   }

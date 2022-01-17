@@ -106,6 +106,6 @@ class BookingOfferAggregateSpecification extends Specification {
         .expectException(CommandException)
         .expectExceptionMessage("Bad Request")
 
-    (resultValidator.actualException as CommandException).violationInfo.violationCode.codeKey == "bookingOfferAggregate.bookingOfferCommodities.cannotAcceptCommodity"
+    (resultValidator.actualException as CommandException).violationInfo.violationCode.resolvableMessageKey == "bookingOfferAggregate.bookingOfferCommodities.cannotAcceptCommodity"
   }
 }

@@ -1,6 +1,9 @@
 # ADR-0015 - Handling Exceptions in Distributed CQRS System
 * **Status: accepted**
 * Dates: proposed - 2021-08-10
+* Dates:
+  - proposed - 2021-08-10
+  - updated - 2022-01-17
 * Authors: Damir Murat (`damir.murat.git at gmail.com`)
 * Reviewers: None
 
@@ -38,8 +41,8 @@ parties, including all necessary data describing error conditions.
 ### Decision details
 #### Business exception handling
 In our case, as exception details DTO, we will use the `DomainException` class and its descendants. It is a stack-less exception that carries `ViolationInfo` property. `ViolationInfo` contains
-`Severity` and `ViolationCode` properties. `ViolationCode` contains `code` and `codeMessage` in English. There is also a `codeKey` that enables error code resolving through a resource bundle for
-internationalization purposes.
+`Severity` and `ViolationCode` properties. `ViolationCode` contains `code` and `codeMessage` in English. There are also a `resolvableMessageKey` and `resolvableMessageParameters` that support error
+code resolving through a resource bundle for internationalization purposes.
 
 It is worth noting that `DomainException` can be used on the dispatching side (client) too. Exception (un)wrapping on the handling side and centralized exception handling on the dispatching side are
 hidden in infrastructural code. From the developer's perspective, he works with `CommandException` or `QueryException` only (both are extended from `DomainException`). This is a nice addition as

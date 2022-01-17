@@ -148,10 +148,10 @@ class CommodityInfoSpecification extends Specification {
     then:
     DomainException domainException = thrown()
     domainException.violationInfo.violationCode.code == "400"
-    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+    domainException.violationInfo.violationCode.resolvableMessageKey == resolvableMessageKeyParam
 
     where:
-    commodityTypeParam | requestedStorageTemperatureParam | violationCodeKeyParam
+    commodityTypeParam | requestedStorageTemperatureParam | resolvableMessageKeyParam
     AIR_COOLED         | getQuantity(1, CELSIUS)          | "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForAirCooledCommodityType"
     AIR_COOLED         | getQuantity(13, CELSIUS)         | "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForAirCooledCommodityType"
 
