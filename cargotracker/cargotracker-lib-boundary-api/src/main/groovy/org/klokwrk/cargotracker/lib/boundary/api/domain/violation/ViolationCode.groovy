@@ -23,6 +23,7 @@ import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
 import static org.hamcrest.Matchers.blankOrNullString
 import static org.hamcrest.Matchers.not
+import static org.hamcrest.Matchers.notNullValue
 
 /**
  * Immutable data structure describing violation's code and the corresponding non-localized code's message.
@@ -34,9 +35,9 @@ import static org.hamcrest.Matchers.not
 @KwrkImmutable
 @CompileStatic
 class ViolationCode implements PostMapConstructorCheckable {
-  static final ViolationCode UNKNOWN = new ViolationCode(code: "500", codeMessage: "Internal Server Error", resolvableMessageKey: "internalServerError")
-  static final ViolationCode BAD_REQUEST = new ViolationCode(code: "400", codeMessage: "Bad Request", resolvableMessageKey: "badRequest")
-  static final ViolationCode NOT_FOUND = new ViolationCode(code: "404", codeMessage: "Not Found", resolvableMessageKey: "notFound")
+  static final ViolationCode UNKNOWN = new ViolationCode(code: "500", codeMessage: "Internal Server Error", resolvableMessageKey: "internalServerError", resolvableMessageParameters: [])
+  static final ViolationCode BAD_REQUEST = new ViolationCode(code: "400", codeMessage: "Bad Request", resolvableMessageKey: "badRequest", resolvableMessageParameters: [])
+  static final ViolationCode NOT_FOUND = new ViolationCode(code: "404", codeMessage: "Not Found", resolvableMessageKey: "notFound", resolvableMessageParameters: [])
 
   /**
    * The primary code describing the main category of the violation.
@@ -69,10 +70,26 @@ class ViolationCode implements PostMapConstructorCheckable {
    */
   String resolvableMessageKey
 
+  /**
+   * A list of strings containing parameters for resolving internationalized message corresponding to this {@code ViolationCode}.
+   */
+  List<String> resolvableMessageParameters
+
+  /**
+   * The factory method for creating {@code ViolationCode} instances.
+   * <p/>
+   * The only optional parameter is {@code resolvableMessageParameters}. If it is not specified, it is set to the empty list of strings.
+   */
+  static ViolationCode make(String code, String codeMessage, String resolvableMessageKey, List<String> resolvableMessageParameters = []) {
+    ViolationCode violationCode = new ViolationCode(code: code, codeMessage: codeMessage, resolvableMessageKey: resolvableMessageKey, resolvableMessageParameters: resolvableMessageParameters)
+    return violationCode
+  }
+
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     requireMatch(code, not(blankOrNullString()))
     requireMatch(codeMessage, not(blankOrNullString()))
     requireMatch(resolvableMessageKey, not(blankOrNullString()))
+    requireMatch(resolvableMessageParameters, notNullValue())
   }
 }

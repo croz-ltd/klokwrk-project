@@ -159,9 +159,9 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
     violationInfoConstantName = findViolationInfoConstantName(violationInfoParam)
   }
 
-  void "should work for custom ViolationInfo"() {
+  void "should work for custom ViolationInfo without resolvableMessageParameters"() {
     given:
-    ViolationCode violationCode = new ViolationCode(code: "12345", codeMessage: "codeMessage", resolvableMessageKey: resolvableMessageKeyParam)
+    ViolationCode violationCode = ViolationCode.make("12345", "codeMessage", resolvableMessageKeyParam)
     ViolationInfo violationInfo = new ViolationInfo(severity: Severity.WARNING, violationCode: violationCode)
     DomainException exception = new DomainException(violationInfo)
 
@@ -198,5 +198,46 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
     resolvableMessageKeyParam               | violationMessageParam
     "myTestCode"                            | "My violation code message"
     "myMainTestCode.myMoreSpecificTestCode" | "My more specific violation code message"
+  }
+
+  void "should work for custom ViolationInfo with resolvableMessageParameters"() {
+    given:
+    ViolationCode violationCode = ViolationCode.make("12345", "codeMessage", resolvableMessageKeyParam, resolvableMessageParametersParam)
+    ViolationInfo violationInfo = new ViolationInfo(severity: Severity.WARNING, violationCode: violationCode)
+    DomainException exception = new DomainException(violationInfo)
+
+    when:
+    ResponseEntity responseEntity = responseFormattingDomainExceptionHandler.handleDomainException(exception, handlerMethod, locale)
+
+    OperationResponse<Map> body = responseEntity.body as OperationResponse<Map>
+    Map metadata = body.metaData
+    Map payload = body.payload
+
+    then:
+    verifyAll {
+      body
+      payload.size() == 0
+
+      metadata.general.propertiesFiltered.size() == 3
+      metadata.general.timestamp
+      metadata.general.severity == Severity.WARNING.name().toLowerCase()
+      metadata.general.locale == new Locale("en")
+
+      metadata.violation.propertiesFiltered.size() == 5
+      metadata.violation.code == "12345"
+      metadata.violation.message == violationMessageParam
+      metadata.violation.type == ViolationType.DOMAIN.name().toLowerCase()
+      metadata.violation.logUuid == null
+      metadata.violation.validationReport == null
+
+      metadata.http.propertiesFiltered.size() == 2
+      metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
+      metadata.http.message == HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase
+    }
+
+    where:
+    resolvableMessageKeyParam                         | resolvableMessageParametersParam | violationMessageParam
+    "myTestCodeWithParams"                            | ["paramOne", "paramTwo"]         | "My violation code message with params - paramOne, paramTwo"
+    "myMainTestCode.myMoreSpecificTestCodeWithParams" | ["paramOne", "paramTwo"]         | "My more specific violation code message - paramOne, paramTwo"
   }
 }
