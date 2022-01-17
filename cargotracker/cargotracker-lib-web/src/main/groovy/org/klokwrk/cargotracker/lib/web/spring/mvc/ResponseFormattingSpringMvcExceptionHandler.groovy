@@ -182,7 +182,9 @@ class ResponseFormattingSpringMvcExceptionHandler extends ResponseEntityExceptio
     )
 
     httpResponseMetaData.violation.message = MessageSourceResolvableHelper.resolveMessageCodeList(
-        messageSource, MessageSourceResolvableHelper.makeMessageCodeListForViolationMessageOfInfrastructureWebFailure(resolvableMessageSpecification), locale
+        locale,
+        messageSource,
+        MessageSourceResolvableHelper.makeMessageCodeListForViolationMessageOfInfrastructureWebFailure(resolvableMessageSpecification)
     )
 
     return httpResponseMetaData

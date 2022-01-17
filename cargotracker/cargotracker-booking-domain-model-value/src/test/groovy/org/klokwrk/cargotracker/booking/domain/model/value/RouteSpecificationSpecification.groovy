@@ -103,10 +103,10 @@ class RouteSpecificationSpecification extends Specification {
     then:
     DomainException domainException = thrown()
     domainException.violationInfo.violationCode.code == "400"
-    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+    domainException.violationInfo.violationCode.resolvableMessageKey == resolvableMessageKeyParam
 
     where:
-    originLocationParam        | destinationLocationParam   | violationCodeKeyParam
+    originLocationParam        | destinationLocationParam   | resolvableMessageKeyParam
     Location.UNKNOWN_LOCATION  | locationSampleMap["NLRTM"] | "routeSpecification.unknownOriginLocation"
     locationSampleMap["HRRJK"] | Location.UNKNOWN_LOCATION  | "routeSpecification.unknownDestinationLocation"
     locationSampleMap["HRRJK"] | locationSampleMap["HRRJK"] | "routeSpecification.originAndDestinationLocationAreEqual"
@@ -126,10 +126,10 @@ class RouteSpecificationSpecification extends Specification {
     then:
     DomainException domainException = thrown()
     domainException.violationInfo.violationCode.code == "400"
-    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+    domainException.violationInfo.violationCode.resolvableMessageKey == resolvableMessageKeyParam
 
     where:
-    departureEarliestTimeParam                  | departureLatestTimeParam                    | violationCodeKeyParam
+    departureEarliestTimeParam                  | departureLatestTimeParam                    | resolvableMessageKeyParam
     currentInstantRounded                       | currentInstantRoundedAndTwoHours            | "routeSpecification.departureEarliestTime.notInFuture"
     currentInstantRounded - Duration.ofHours(1) | currentInstantRoundedAndTwoHours            | "routeSpecification.departureEarliestTime.notInFuture"
     currentInstantRoundedAndOneHour             | currentInstantRounded                       | "routeSpecification.departureLatestTime.notInFuture"
@@ -159,10 +159,10 @@ class RouteSpecificationSpecification extends Specification {
     then:
     DomainException domainException = thrown()
     domainException.violationInfo.violationCode.code == "400"
-    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+    domainException.violationInfo.violationCode.resolvableMessageKey == resolvableMessageKeyParam
 
     where:
-    arrivalLatestTimeParam                                                | violationCodeKeyParam
+    arrivalLatestTimeParam                                                | resolvableMessageKeyParam
     currentInstantRounded                                                 | "routeSpecification.arrivalLatestTime.notInFuture"
     currentInstantRounded + Duration.ofMinutes(1)                         | "routeSpecification.arrivalLatestTime.notInHours"
     currentInstantRounded + Duration.ofSeconds(1)                         | "routeSpecification.arrivalLatestTime.notInHours"
@@ -216,10 +216,10 @@ class RouteSpecificationSpecification extends Specification {
     then:
     DomainException domainException = thrown()
     domainException.violationInfo.violationCode.code == "400"
-    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+    domainException.violationInfo.violationCode.resolvableMessageKey == resolvableMessageKeyParam
 
     where:
-    originLocationParam        | destinationLocationParam   | violationCodeKeyParam
+    originLocationParam        | destinationLocationParam   | resolvableMessageKeyParam
     Location.UNKNOWN_LOCATION  | locationSampleMap["NLRTM"] | "routeSpecification.unknownOriginLocation"
     locationSampleMap["HRRJK"] | Location.UNKNOWN_LOCATION  | "routeSpecification.unknownDestinationLocation"
     locationSampleMap["HRRJK"] | locationSampleMap["HRRJK"] | "routeSpecification.originAndDestinationLocationAreEqual"
@@ -265,10 +265,10 @@ class RouteSpecificationSpecification extends Specification {
     then:
     DomainException domainException = thrown()
     domainException.violationInfo.violationCode.code == "400"
-    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+    domainException.violationInfo.violationCode.resolvableMessageKey == resolvableMessageKeyParam
 
     where:
-    departureEarliestTimeParam                  | departureLatestTimeParam                    | violationCodeKeyParam
+    departureEarliestTimeParam                  | departureLatestTimeParam                    | resolvableMessageKeyParam
     currentInstantRounded                       | currentInstantRoundedAndTwoHours            | "routeSpecification.departureEarliestTime.notInFuture"
     currentInstantRounded - Duration.ofHours(1) | currentInstantRoundedAndTwoHours            | "routeSpecification.departureEarliestTime.notInFuture"
     currentInstantRoundedAndOneHour             | currentInstantRounded                       | "routeSpecification.departureLatestTime.notInFuture"
@@ -306,10 +306,10 @@ class RouteSpecificationSpecification extends Specification {
     then:
     DomainException domainException = thrown()
     domainException.violationInfo.violationCode.code == "400"
-    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+    domainException.violationInfo.violationCode.resolvableMessageKey == resolvableMessageKeyParam
 
     where:
-    arrivalLatestTimeParam                                 | violationCodeKeyParam
+    arrivalLatestTimeParam                                 | resolvableMessageKeyParam
     currentInstantRounded                                  | "routeSpecification.arrivalLatestTime.notInFuture"
     currentInstantRoundedAndTwoHours                       | "routeSpecification.arrivalLatestTime.beforeDepartureLatestTime"
     currentInstantRoundedAndTwoHours - Duration.ofHours(1) | "routeSpecification.arrivalLatestTime.beforeDepartureLatestTime"

@@ -94,10 +94,10 @@ class BookingOfferFactoryServiceSpecification extends Specification {
     domainException.violationInfo.severity == Severity.WARNING
     domainException.violationInfo.violationCode.code == "400"
     domainException.violationInfo.violationCode.codeMessage == "Bad Request"
-    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+    domainException.violationInfo.violationCode.resolvableMessageKey == resolvableMessageKeyParam
 
     where:
-    originLocationParam | destinationLocationParam | violationCodeKeyParam
+    originLocationParam | destinationLocationParam | resolvableMessageKeyParam
     "invalidOrigin"     | "HRRJK"                  | "routeSpecification.unknownOriginLocation"
     "HRRJK"             | "invalidOrigin"          | "routeSpecification.unknownDestinationLocation"
     "HRRJK"             | "HRRJK"                  | "routeSpecification.originAndDestinationLocationAreEqual"
@@ -123,10 +123,10 @@ class BookingOfferFactoryServiceSpecification extends Specification {
     domainException.violationInfo.severity == Severity.WARNING
     domainException.violationInfo.violationCode.code == "400"
     domainException.violationInfo.violationCode.codeMessage == "Bad Request"
-    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+    domainException.violationInfo.violationCode.resolvableMessageKey == resolvableMessageKeyParam
 
     where:
-    departureEarliestTimeParam                            | departureLatestTimeParam                    | violationCodeKeyParam
+    departureEarliestTimeParam                            | departureLatestTimeParam                    | resolvableMessageKeyParam
     currentInstantRounded                                 | currentInstantRoundedAndTwoHours            | "routeSpecification.departureEarliestTime.notInFuture"
     currentInstantRounded - Duration.ofHours(1)           | currentInstantRoundedAndTwoHours            | "routeSpecification.departureEarliestTime.notInFuture"
     currentInstantRoundedAndOneHour                       | currentInstantRounded                       | "routeSpecification.departureLatestTime.notInFuture"
@@ -153,10 +153,10 @@ class BookingOfferFactoryServiceSpecification extends Specification {
     domainException.violationInfo.severity == Severity.WARNING
     domainException.violationInfo.violationCode.code == "400"
     domainException.violationInfo.violationCode.codeMessage == "Bad Request"
-    domainException.violationInfo.violationCode.codeKey == violationCodeKeyParam
+    domainException.violationInfo.violationCode.resolvableMessageKey == resolvableMessageKeyParam
 
     where:
-    arrivalLatestTimeParam                                   | violationCodeKeyParam
+    arrivalLatestTimeParam                                   | resolvableMessageKeyParam
     currentInstantRounded                                    | "routeSpecification.arrivalLatestTime.notInFuture"
     currentInstantRounded - Duration.ofMinutes(1)            | "routeSpecification.arrivalLatestTime.notInFuture"
     currentInstantRoundedAndTwoHours                         | "routeSpecification.arrivalLatestTime.beforeDepartureLatestTime"

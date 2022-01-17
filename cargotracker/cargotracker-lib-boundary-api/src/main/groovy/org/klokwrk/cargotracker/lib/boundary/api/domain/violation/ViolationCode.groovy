@@ -23,6 +23,7 @@ import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
 import static org.hamcrest.Matchers.blankOrNullString
 import static org.hamcrest.Matchers.not
+import static org.hamcrest.Matchers.notNullValue
 
 /**
  * Immutable data structure describing violation's code and the corresponding non-localized code's message.
@@ -34,9 +35,9 @@ import static org.hamcrest.Matchers.not
 @KwrkImmutable
 @CompileStatic
 class ViolationCode implements PostMapConstructorCheckable {
-  static final ViolationCode UNKNOWN = new ViolationCode(code: "500", codeKey: "internalServerError", codeMessage: "Internal Server Error")
-  static final ViolationCode BAD_REQUEST = new ViolationCode(code: "400", codeKey: "badRequest", codeMessage: "Bad Request")
-  static final ViolationCode NOT_FOUND = new ViolationCode(code: "404", codeKey: "notFound", codeMessage: "Not Found")
+  static final ViolationCode UNKNOWN = new ViolationCode(code: "500", codeMessage: "Internal Server Error", resolvableMessageKey: "internalServerError", resolvableMessageParameters: [])
+  static final ViolationCode BAD_REQUEST = new ViolationCode(code: "400", codeMessage: "Bad Request", resolvableMessageKey: "badRequest", resolvableMessageParameters: [])
+  static final ViolationCode NOT_FOUND = new ViolationCode(code: "404", codeMessage: "Not Found", resolvableMessageKey: "notFound", resolvableMessageParameters: [])
 
   /**
    * The primary code describing the main category of the violation.
@@ -47,28 +48,48 @@ class ViolationCode implements PostMapConstructorCheckable {
   String code
 
   /**
-   * More human-readable alias for <code>code</code> property.
-   * <p/>
-   * In this context, human-readable does not mean full sentences but rather some textual encoded value that is easily recognizable by developers. The intention is that <code>codeKey</code> is
-   * used as an alias of primary code property that is more appealing for writing localized resource bundles at the inbound channel level. For example, when maintaining resource bundles, it should be
-   * easier for developers to deduct the meaning of <code>bookingOfferWebController.bookingOfferSummaryQuery.failure.other.badRequest</code> resource bundle key instead the meaning of
-   * <code>bookingOfferWebController.bookingOfferSummaryQuery.failure.other.400</code> key. And this is exactly the intention behind this property.
-   * <p/>
-   * If we need some kind of categorization inside <code>codeKey</code>, it is recommended to use dot character. For example, <code>notFound.personSummary</code>.
-   */
-  String codeKey
-
-  /**
-   * A short human-readable message written in English describing the problem identified by primary code.
+   * A short hardcoded human-readable message written in English describing the problem identified by this {@code ViolationCode}.
    * <p/>
    * For example, in HTTP error handling, this message would correspond to the textual descriptions of status codes like "OK", "Internal Server Error", "Not Found", etc.
    */
   String codeMessage
 
+  /**
+   * A key for resolving an internationalized message corresponding to this {@code ViolationCode}, i.e., through the resource bundle.
+   * <p/>
+   * In theory, we could use {@code code} as a key for resolving internationalized messages. However, {@code code} can be very technical and often expressed as a stringified number, which makes it
+   * hard to recognize for developers or other human translators.
+   * <p/>
+   * Therefore, {@code resolvableMessageKey} is a resolvable alias for {@code code} that is much more appealing to use for writing localized resource bundles at the inbound/outbound channel level.
+   * <p/>
+   * For example, when maintaining resource bundles, it should be much easier for a developer to deduct the meaning of
+   * {@code bookingOfferWebController.bookingOfferSummaryQuery.failure.other.badRequest} resource bundle key instead the meaning of
+   * {@code bookingOfferWebController.bookingOfferSummaryQuery.failure.other.400} key. And this is exactly the intention behind this property.
+   * <p/>
+   * If we need some further categorization inside {@code resolvableMessageKey}, it is recommended to use dot character for that purpose. For example, like in {@code notFound.personSummary}.
+   */
+  String resolvableMessageKey
+
+  /**
+   * A list of strings containing parameters for resolving internationalized message corresponding to this {@code ViolationCode}.
+   */
+  List<String> resolvableMessageParameters
+
+  /**
+   * The factory method for creating {@code ViolationCode} instances.
+   * <p/>
+   * The only optional parameter is {@code resolvableMessageParameters}. If it is not specified, it is set to the empty list of strings.
+   */
+  static ViolationCode make(String code, String codeMessage, String resolvableMessageKey, List<String> resolvableMessageParameters = []) {
+    ViolationCode violationCode = new ViolationCode(code: code, codeMessage: codeMessage, resolvableMessageKey: resolvableMessageKey, resolvableMessageParameters: resolvableMessageParameters)
+    return violationCode
+  }
+
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     requireMatch(code, not(blankOrNullString()))
-    requireMatch(codeKey, not(blankOrNullString()))
     requireMatch(codeMessage, not(blankOrNullString()))
+    requireMatch(resolvableMessageKey, not(blankOrNullString()))
+    requireMatch(resolvableMessageParameters, notNullValue())
   }
 }

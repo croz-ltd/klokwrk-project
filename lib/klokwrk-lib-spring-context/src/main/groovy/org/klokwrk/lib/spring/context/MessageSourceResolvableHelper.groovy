@@ -105,8 +105,8 @@ class MessageSourceResolvableHelper {
   /**
    * Resolves a message for given messageCodeList against Spring's {@link MessageSource}.
    */
-  static String resolveMessageCodeList(MessageSource messageSource, List<String> messageCodeList, Locale locale, String defaultMessage = null) {
-    String message = messageSource.getMessage(new DefaultMessageSourceResolvable(messageCodeList as String[], defaultMessage), locale)
+  static String resolveMessageCodeList(Locale locale, MessageSource messageSource, List<String> messageCodeList, List<String> messageParameters = [], String defaultMessage = null) {
+    String message = messageSource.getMessage(new DefaultMessageSourceResolvable(messageCodeList as String[], messageParameters.toArray(), defaultMessage), locale)
     return message
   }
 
