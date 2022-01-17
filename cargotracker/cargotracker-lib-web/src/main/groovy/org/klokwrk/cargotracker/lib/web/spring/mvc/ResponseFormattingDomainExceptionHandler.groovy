@@ -167,7 +167,9 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
     )
 
     httpResponseMetaData.violation.message = MessageSourceResolvableHelper.resolveMessageCodeList(
-        messageSource, MessageSourceResolvableHelper.makeMessageCodeListForViolationMessageOfDomainFailure(resolvableMessageSpecification), locale, null,
+        locale,
+        messageSource,
+        MessageSourceResolvableHelper.makeMessageCodeListForViolationMessageOfDomainFailure(resolvableMessageSpecification),
         domainException.violationInfo.violationCode.resolvableMessageParameters
     )
 

@@ -148,7 +148,9 @@ class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
     )
 
     httpResponseMetaData.violation.message = MessageSourceResolvableHelper.resolveMessageCodeList(
-        messageSource, MessageSourceResolvableHelper.makeMessageCodeListForViolationMessageOfUnknownFailure(resolvableMessageSpecification), locale
+        locale,
+        messageSource,
+        MessageSourceResolvableHelper.makeMessageCodeListForViolationMessageOfUnknownFailure(resolvableMessageSpecification)
     )
 
     return httpResponseMetaData
