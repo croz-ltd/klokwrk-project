@@ -331,7 +331,7 @@ ruleset {
   ExplicitStackInstantiation
   ExplicitTreeSetInstantiation
   GStringAsMapKey
-  GStringExpressionWithinString
+  GStringExpressionWithinString { enabled = false }
   GetterMethodCouldBeProperty
   GroovyLangImmutable
   UseCollectMany
