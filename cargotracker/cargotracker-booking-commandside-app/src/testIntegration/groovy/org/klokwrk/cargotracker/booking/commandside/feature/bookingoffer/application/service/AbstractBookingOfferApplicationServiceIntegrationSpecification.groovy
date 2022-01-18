@@ -77,7 +77,7 @@ abstract class AbstractBookingOfferApplicationServiceIntegrationSpecification ex
             departureEarliestTime: currentInstantAndOneHour, departureLatestTime: currentInstantAndTwoHours,
             arrivalLatestTime: currentInstantAndThreeHours
         ),
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000),
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY.name(), totalWeightInKilograms: 1000),
         containerDimensionType: "DIMENSION_ISO_22"
     )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
@@ -147,7 +147,7 @@ abstract class AbstractBookingOfferApplicationServiceIntegrationSpecification ex
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
             arrivalLatestTime: Instant.now() + Duration.ofHours(2)
         ),
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000),
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY.name(), totalWeightInKilograms: 1000),
         containerDimensionType: "DIMENSION_ISO_22"
     )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
@@ -210,7 +210,7 @@ abstract class AbstractBookingOfferApplicationServiceIntegrationSpecification ex
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
             arrivalLatestTime: Instant.now() + Duration.ofHours(2)
         ),
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000),
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY.name(), totalWeightInKilograms: 1000),
         containerDimensionType: "DIMENSION_ISO_22"
     )
     Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()

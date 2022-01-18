@@ -42,7 +42,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
       departureEarliestTime: Instant.now(), departureLatestTime: Instant.now(),
       arrivalLatestTime: Instant.now()
   )
-  static CommodityInfoData validCommodityInfoData = new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null)
+  static CommodityInfoData validCommodityInfoData = new CommodityInfoData(commodityType: CommodityType.DRY.name(), totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null)
   static String validContainerDimensionTypeData = "DIMENSION_ISO_22"
 
   @Shared
@@ -79,7 +79,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: weightInKilogramsParam, requestedStorageTemperatureInCelsius: null),
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY.name(), totalWeightInKilograms: weightInKilogramsParam, requestedStorageTemperatureInCelsius: null),
         containerDimensionType: validContainerDimensionTypeData
     )
 
@@ -101,7 +101,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.CHILLED, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: storageTemperatureInCelsiusParam),
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.CHILLED.name(), totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: storageTemperatureInCelsiusParam),
         containerDimensionType: validContainerDimensionTypeData
     )
 
@@ -257,7 +257,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(commodityType: null, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null),
+        commodityInfo: new CommodityInfoData(commodityType: commodityTypeParam, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null),
         containerDimensionType: validContainerDimensionTypeData
     )
 
@@ -269,7 +269,19 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
 
     constraintViolationException.constraintViolations.size() == 1
     constraintViolationException.constraintViolations[0].propertyPath.toString() == "commodityInfo.commodityType"
-    constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == NotNull
+    constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
+
+    where:
+    commodityTypeParam | constraintTypeParam
+    null               | NotBlank
+    ""                 | NotBlank
+    "  "               | NotBlank
+
+    " DRY"             | ValueOfEnumConstraint
+    "DRY "             | ValueOfEnumConstraint
+    " DRY "            | ValueOfEnumConstraint
+
+    "invalid"          | ValueOfEnumConstraint
   }
 
   void "should not pass validation for invalid totalWeightInKilograms data in CommodityInfoData"() {
@@ -277,7 +289,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: weightInKilogramsParam, requestedStorageTemperatureInCelsius: null),
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY.name(), totalWeightInKilograms: weightInKilogramsParam, requestedStorageTemperatureInCelsius: null),
         containerDimensionType: validContainerDimensionTypeData
     )
 
@@ -302,7 +314,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.CHILLED, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: storageTemperatureInCelsiusParam),
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.CHILLED.name(), totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: storageTemperatureInCelsiusParam),
         containerDimensionType: validContainerDimensionTypeData
     )
 

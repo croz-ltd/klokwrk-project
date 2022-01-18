@@ -22,12 +22,14 @@ import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint
 import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
 
 import javax.validation.GroupSequence
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
+import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 /**
@@ -43,8 +45,9 @@ class CommodityInfoData {
    * <p/>
    * Not {@code null}.
    */
-  @NotNull(groups = [Level1])
-  CommodityType commodityType
+  @ValueOfEnumConstraint(enumClass = CommodityType)
+  @NotBlank(groups = [Level1])
+  String commodityType
 
   /**
    * Commodity total weight in kilograms.
