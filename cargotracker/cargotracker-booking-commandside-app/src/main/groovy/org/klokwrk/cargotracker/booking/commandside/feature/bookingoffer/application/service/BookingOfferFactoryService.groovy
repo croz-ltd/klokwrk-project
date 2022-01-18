@@ -25,6 +25,7 @@ import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggre
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilityType
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
@@ -74,7 +75,7 @@ class BookingOfferFactoryService {
             createBookingOfferCommandRequest.commodityInfo.commodityType, createBookingOfferCommandRequest.commodityInfo.totalWeightInKilograms,
             createBookingOfferCommandRequest.commodityInfo.requestedStorageTemperatureInCelsius
         ),
-        containerDimensionType: createBookingOfferCommandRequest.containerDimensionType
+        containerDimensionType: ContainerDimensionType.valueOf(createBookingOfferCommandRequest.containerDimensionType.toUpperCase())
     )
 
     return createBookingOfferCommand

@@ -21,6 +21,7 @@ import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint
 import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
 import org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint
+import org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint
 import org.klokwrk.lib.validation.springboot.ValidationConfigurationProperties
 import org.klokwrk.lib.validation.springboot.ValidationService
 import spock.lang.Shared
@@ -319,5 +320,37 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     storageTemperatureInCelsiusParam | constraintTypeParam
     -31                              | Min
     31                               | Max
+  }
+
+  void "should not pass validation for invalid containerDimensionType"() {
+    given:
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: validBookingOfferIdentifier,
+        routeSpecification: validRouteSpecificationData,
+        commodityInfo: validCommodityInfoData,
+        containerDimensionType: conatinerDimensionTypeParam
+    )
+
+    when:
+    validationService.validate(createBookingOfferCommandRequest)
+
+    then:
+    ConstraintViolationException constraintViolationException = thrown()
+
+    constraintViolationException.constraintViolations.size() == 1
+    constraintViolationException.constraintViolations[0].propertyPath.toString() == "containerDimensionType"
+    constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
+
+    where:
+    conatinerDimensionTypeParam | constraintTypeParam
+    null                        | NotBlank
+    ""                          | NotBlank
+    "  "                        | NotBlank
+
+    " DIMENSION_ISO_12"         | ValueOfEnumConstraint
+    "DIMENSION_ISO_12 "         | ValueOfEnumConstraint
+    " DIMENSION_ISO_12 "        | ValueOfEnumConstraint
+
+    "invalid"                   | ValueOfEnumConstraint
   }
 }
