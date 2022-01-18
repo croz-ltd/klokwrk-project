@@ -21,6 +21,7 @@ import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint
 import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
 import org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint
+import org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint
 import org.klokwrk.lib.validation.springboot.ValidationConfigurationProperties
 import org.klokwrk.lib.validation.springboot.ValidationService
 import spock.lang.Shared
@@ -41,7 +42,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
       departureEarliestTime: Instant.now(), departureLatestTime: Instant.now(),
       arrivalLatestTime: Instant.now()
   )
-  static CommodityInfoData validCommodityInfoData = new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null)
+  static CommodityInfoData validCommodityInfoData = new CommodityInfoData(commodityType: CommodityType.DRY.name(), totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null)
   static String validContainerDimensionTypeData = "DIMENSION_ISO_22"
 
   @Shared
@@ -78,7 +79,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: weightInKilogramsParam, requestedStorageTemperatureInCelsius: null),
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY.name(), totalWeightInKilograms: weightInKilogramsParam, requestedStorageTemperatureInCelsius: null),
         containerDimensionType: validContainerDimensionTypeData
     )
 
@@ -100,7 +101,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.CHILLED, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: storageTemperatureInCelsiusParam),
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.CHILLED.name(), totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: storageTemperatureInCelsiusParam),
         containerDimensionType: validContainerDimensionTypeData
     )
 
@@ -256,7 +257,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(commodityType: null, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null),
+        commodityInfo: new CommodityInfoData(commodityType: commodityTypeParam, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null),
         containerDimensionType: validContainerDimensionTypeData
     )
 
@@ -268,7 +269,19 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
 
     constraintViolationException.constraintViolations.size() == 1
     constraintViolationException.constraintViolations[0].propertyPath.toString() == "commodityInfo.commodityType"
-    constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == NotNull
+    constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
+
+    where:
+    commodityTypeParam | constraintTypeParam
+    null               | NotBlank
+    ""                 | NotBlank
+    "  "               | NotBlank
+
+    " DRY"             | ValueOfEnumConstraint
+    "DRY "             | ValueOfEnumConstraint
+    " DRY "            | ValueOfEnumConstraint
+
+    "invalid"          | ValueOfEnumConstraint
   }
 
   void "should not pass validation for invalid totalWeightInKilograms data in CommodityInfoData"() {
@@ -276,7 +289,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY, totalWeightInKilograms: weightInKilogramsParam, requestedStorageTemperatureInCelsius: null),
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY.name(), totalWeightInKilograms: weightInKilogramsParam, requestedStorageTemperatureInCelsius: null),
         containerDimensionType: validContainerDimensionTypeData
     )
 
@@ -301,7 +314,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.CHILLED, totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: storageTemperatureInCelsiusParam),
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.CHILLED.name(), totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: storageTemperatureInCelsiusParam),
         containerDimensionType: validContainerDimensionTypeData
     )
 
@@ -319,5 +332,37 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     storageTemperatureInCelsiusParam | constraintTypeParam
     -31                              | Min
     31                               | Max
+  }
+
+  void "should not pass validation for invalid containerDimensionType"() {
+    given:
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        bookingOfferIdentifier: validBookingOfferIdentifier,
+        routeSpecification: validRouteSpecificationData,
+        commodityInfo: validCommodityInfoData,
+        containerDimensionType: conatinerDimensionTypeParam
+    )
+
+    when:
+    validationService.validate(createBookingOfferCommandRequest)
+
+    then:
+    ConstraintViolationException constraintViolationException = thrown()
+
+    constraintViolationException.constraintViolations.size() == 1
+    constraintViolationException.constraintViolations[0].propertyPath.toString() == "containerDimensionType"
+    constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
+
+    where:
+    conatinerDimensionTypeParam | constraintTypeParam
+    null                        | NotBlank
+    ""                          | NotBlank
+    "  "                        | NotBlank
+
+    " DIMENSION_ISO_12"         | ValueOfEnumConstraint
+    "DIMENSION_ISO_12 "         | ValueOfEnumConstraint
+    " DIMENSION_ISO_12 "        | ValueOfEnumConstraint
+
+    "invalid"                   | ValueOfEnumConstraint
   }
 }

@@ -24,12 +24,14 @@ import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionTyp
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 import org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint
 import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
+import org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint
 import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
 import org.klokwrk.lib.validation.group.Level3
 
 import javax.validation.GroupSequence
 import javax.validation.Valid
+import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
@@ -65,6 +67,7 @@ class CreateBookingOfferCommandRequest {
   @NotNull(groups = [Level1])
   CommodityInfoData commodityInfo
 
-  @NotNull(groups = [Level1])
-  ContainerDimensionType containerDimensionType
+  @ValueOfEnumConstraint(enumClass = ContainerDimensionType, groups = [Level2])
+  @NotBlank(groups = [Level1])
+  String containerDimensionType
 }
