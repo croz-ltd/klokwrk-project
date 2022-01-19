@@ -18,6 +18,7 @@
 package org.klokwrk.lib.validation.validator
 
 import groovy.transform.CompileStatic
+import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext
 import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
 
 import javax.validation.ConstraintValidator
@@ -30,6 +31,13 @@ import javax.validation.ConstraintValidatorContext
  */
 @CompileStatic
 class RandomUuidFormatConstraintValidator implements ConstraintValidator<RandomUuidFormatConstraint, String> {
+  String message
+
+  @Override
+  void initialize(RandomUuidFormatConstraint constraintAnnotation) {
+    message = constraintAnnotation.message().trim()
+  }
+
   @SuppressWarnings("CodeNarc.CatchException")
   @Override
   boolean isValid(String uuidStringToValidate, ConstraintValidatorContext context) {
@@ -40,23 +48,32 @@ class RandomUuidFormatConstraintValidator implements ConstraintValidator<RandomU
       return true
     }
 
-    // Prevent adding constraint violation with default message which is empty
-    context.disableDefaultConstraintViolation()
-
     try {
       parsedUuid = UUID.fromString(uuidStringToValidate)
     }
     catch (Exception ignore) {
-      context.buildConstraintViolationWithTemplate("{${ RandomUuidFormatConstraint.INVALID_UUID_FORMAT_MESSAGE_KEY }}").addConstraintViolation()
+      configureContextAndAddConstraintViolation(message, context, "{${ RandomUuidFormatConstraint.INVALID_UUID_FORMAT_MESSAGE_KEY }}")
       return false
     }
 
     Boolean isValidRandomUuid = (parsedUuid.version() == 4) && (parsedUuid.variant() == 2)
     if (!isValidRandomUuid) {
-      context.buildConstraintViolationWithTemplate("{${ RandomUuidFormatConstraint.INVALID_RANDOM_UUID_FORMAT_MESSAGE_KEY }}").addConstraintViolation()
+      configureContextAndAddConstraintViolation(message, context, "{${ RandomUuidFormatConstraint.INVALID_RANDOM_UUID_FORMAT_MESSAGE_KEY }}")
       return false
     }
 
     return true
+  }
+
+  protected void configureContextAndAddConstraintViolation(String annotationMessage, ConstraintValidatorContext context, String templateToUseWhenAnnotationMessageIsEmpty) {
+    if (annotationMessage.isEmpty()) {
+      // Prevent adding constraint violation with default message which is empty in this case
+      context.disableDefaultConstraintViolation()
+      context.buildConstraintViolationWithTemplate(templateToUseWhenAnnotationMessageIsEmpty).addConstraintViolation()
+    }
+    else {
+      HibernateConstraintValidatorContext hibernateContext = context.unwrap(HibernateConstraintValidatorContext)
+      hibernateContext.buildConstraintViolationWithTemplate(annotationMessage).enableExpressionLanguage().addConstraintViolation()
+    }
   }
 }

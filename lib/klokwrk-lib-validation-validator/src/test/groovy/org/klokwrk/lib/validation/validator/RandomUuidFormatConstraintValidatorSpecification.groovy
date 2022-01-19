@@ -41,17 +41,27 @@ class RandomUuidFormatConstraintValidatorSpecification extends Specification {
     String randomUuidString
   }
 
-  void setupSpec() {
-    validator = configureValidator()
+  static class RandomUuidFormatConstraintTestObjectWithCustomMessageTemplate {
+    @RandomUuidFormatConstraint(message = "{custom.RandomUuidFormatConstraint.invalidMessage}")
+    String randomUuidString
   }
 
-  private Validator configureValidator(Locale defaultLocale = Locale.default) {
+  static class RandomUuidFormatConstraintTestObjectWithCustomMessage {
+    @RandomUuidFormatConstraint(message = 'This is invalid random UUID - [validatedValue: ${validatedValue}].')
+    String randomUuidString
+  }
+
+  void setupSpec() {
+    validator = configureValidator("klokwrkValidationConstraintMessages")
+  }
+
+  private Validator configureValidator(String resourceBundleName, Locale defaultLocale = Locale.default) {
     HibernateValidatorConfiguration configuration = Validation
         .byProvider(HibernateValidator)
         .configure()
         .messageInterpolator(
             new ResourceBundleMessageInterpolator(
-                new PlatformResourceBundleLocator("klokwrkValidationConstraintMessages"), [new Locale("hr"), new Locale("en")] as Set<Locale>, defaultLocale, new DefaultLocaleResolver(), true
+                new PlatformResourceBundleLocator(resourceBundleName), [new Locale("hr"), new Locale("en")] as Set<Locale>, defaultLocale, new DefaultLocaleResolver(), true
             )
         )
 
@@ -155,7 +165,7 @@ class RandomUuidFormatConstraintValidatorSpecification extends Specification {
 
   void "should correctly interpolate messages for various locales when non-parsable UUID string is validated"() {
     given:
-    Validator myValidator = configureValidator(localeParam)
+    Validator myValidator = configureValidator("klokwrkValidationConstraintMessages", localeParam)
     RandomUuidFormatConstraintTestObject randomUuidFormatConstraintTestObject = new RandomUuidFormatConstraintTestObject(randomUuidString: randomUuidStringParam)
 
     when:
@@ -174,9 +184,9 @@ class RandomUuidFormatConstraintValidatorSpecification extends Specification {
     "invalid uuid"        | new Locale("hr") | "Neispravan UUID."
   }
 
-  void "should correctly interpolate messages for various locales when non-random UUID string is validated"() {
+  void "should correctly interpolate default messages for various locales when non-random UUID string is validated"() {
     given:
-    Validator myValidator = configureValidator(localeParam)
+    Validator myValidator = configureValidator("klokwrkValidationConstraintMessages", localeParam)
     RandomUuidFormatConstraintTestObject randomUuidFormatConstraintTestObject = new RandomUuidFormatConstraintTestObject(randomUuidString: randomUuidStringParam)
 
     when:
@@ -193,5 +203,49 @@ class RandomUuidFormatConstraintValidatorSpecification extends Specification {
     randomUuidStringParam                  | localeParam      | messageParam
     "00000000-0000-0000-0000-000000000000" | new Locale("en") | "Invalid random UUID."
     "00000000-0000-0000-0000-000000000000" | new Locale("hr") | "Neispravan slučajno generirani UUID."
+  }
+
+  void "should correctly interpolate custom message template with expressions for different locales when non-parsable or non-random UUID string is validated"() {
+    given:
+    Validator myValidator = configureValidator("klokwrkValidationConstraintTestMessages", localeParam)
+    RandomUuidFormatConstraintTestObjectWithCustomMessageTemplate testObject = new RandomUuidFormatConstraintTestObjectWithCustomMessageTemplate(randomUuidString: randomUuidStringParam)
+
+    when:
+    Set<ConstraintViolation> constraintViolations = myValidator.validate(testObject)
+
+    then:
+    constraintViolations.size() == 1
+    verifyAll(constraintViolations[0]) {
+      it.messageTemplate == "{custom.RandomUuidFormatConstraint.invalidMessage}"
+      it.message == messageParam
+    }
+
+    where:
+    randomUuidStringParam                  | localeParam      | messageParam
+    "invalid uuid"                         | new Locale("en") | "The value '$randomUuidStringParam' is an invalid random UUID."
+    "00000000-0000-0000-0000-000000000000" | new Locale("en") | "The value '$randomUuidStringParam' is an invalid random UUID."
+
+    "invalid uuid"                         | new Locale("hr") | "Vrijednost '$randomUuidStringParam' je neispravan slučajno generirani UUID."
+    "00000000-0000-0000-0000-000000000000" | new Locale("hr") | "Vrijednost '$randomUuidStringParam' je neispravan slučajno generirani UUID."
+  }
+
+  void "should correctly interpolate custom message with expressions when non-parsable or non-random UUID string is validated"() {
+    given:
+    RandomUuidFormatConstraintTestObjectWithCustomMessage testObject = new RandomUuidFormatConstraintTestObjectWithCustomMessage(randomUuidString: randomUuidStringParam)
+
+    when:
+    Set<ConstraintViolation> constraintViolations = validator.validate(testObject)
+
+    then:
+    constraintViolations.size() == 1
+    verifyAll(constraintViolations[0]) {
+      it.messageTemplate == 'This is invalid random UUID - [validatedValue: ${validatedValue}].'
+      it.message == messageParam
+    }
+
+    where:
+    randomUuidStringParam                  | messageParam
+    "invalid uuid"                         | "This is invalid random UUID - [validatedValue: $randomUuidStringParam]."
+    "00000000-0000-0000-0000-000000000000" | "This is invalid random UUID - [validatedValue: $randomUuidStringParam]."
   }
 }
