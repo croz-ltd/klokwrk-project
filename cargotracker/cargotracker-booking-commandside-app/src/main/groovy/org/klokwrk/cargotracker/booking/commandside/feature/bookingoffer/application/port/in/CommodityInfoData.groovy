@@ -22,9 +22,11 @@ import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint
 import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
+import org.klokwrk.lib.validation.group.Level3
 
 import javax.validation.GroupSequence
 import javax.validation.constraints.Max
@@ -35,17 +37,18 @@ import javax.validation.constraints.NotNull
 /**
  * DTO encapsulating commodity info data pieces gathered from external ports/adapters.
  */
-@GroupSequence([CommodityInfoData, Level1, Level2])
+@GroupSequence([CommodityInfoData, Level1, Level2, Level3])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
 class CommodityInfoData {
   /**
-   * Commodity type defined as the value of {@link CommodityType} enum.
+   * Commodity type string corresponding to the names of constants from {@link CommodityType} enum.
    * <p/>
-   * Not {@code null}.
+   * Must be not {@code null}, not blank, and correspond to one of constant names (ignoring case) from {@link CommodityType} enum.
    */
-  @ValueOfEnumConstraint(enumClass = CommodityType)
+  @ValueOfEnumConstraint(enumClass = CommodityType, groups = [Level3])
+  @TrimmedStringConstraint(groups = [Level2])
   @NotBlank(groups = [Level1])
   String commodityType
 

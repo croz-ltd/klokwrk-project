@@ -20,6 +20,7 @@ package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applic
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint
 import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
+import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint
 import org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint
 import org.klokwrk.lib.validation.springboot.ValidationConfigurationProperties
@@ -140,6 +141,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     bookingOfferIdentifierParam            | propertyPathParam        | constraintTypeParam
     ""                                     | "bookingOfferIdentifier" | NotBlankWhenNullableConstraint
     "123"                                  | "bookingOfferIdentifier" | Size
+    " 0000000-0000-0000-0000-00000000000 " | "bookingOfferIdentifier" | TrimmedStringConstraint
     "00000000=0000=0000=0000=000000000000" | "bookingOfferIdentifier" | RandomUuidFormatConstraint
   }
 
@@ -191,11 +193,13 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     null                | "AAAAA"                  | "routeSpecification.originLocation"      | NotBlank
     "A"                 | "AAAAA"                  | "routeSpecification.originLocation"      | Size
     "AAAAAA"            | "AAAAA"                  | "routeSpecification.originLocation"      | Size
+    " AAAA"             | "AAAAA"                  | "routeSpecification.originLocation"      | TrimmedStringConstraint
     "1===5"             | "AAAAA"                  | "routeSpecification.originLocation"      | UnLoCodeFormatConstraint
 
     "AAAAA"             | null                     | "routeSpecification.destinationLocation" | NotBlank
     "AAAAA"             | "A"                      | "routeSpecification.destinationLocation" | Size
     "AAAAA"             | "AAAAAA"                 | "routeSpecification.destinationLocation" | Size
+    "AAAAA"             | " AAAA"                  | "routeSpecification.destinationLocation" | TrimmedStringConstraint
     "AAAAA"             | "1===5"                  | "routeSpecification.destinationLocation" | UnLoCodeFormatConstraint
   }
 
@@ -277,9 +281,9 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     ""                 | NotBlank
     "  "               | NotBlank
 
-    " DRY"             | ValueOfEnumConstraint
-    "DRY "             | ValueOfEnumConstraint
-    " DRY "            | ValueOfEnumConstraint
+    " DRY"             | TrimmedStringConstraint
+    "DRY "             | TrimmedStringConstraint
+    " DRY "            | TrimmedStringConstraint
 
     "invalid"          | ValueOfEnumConstraint
   }
@@ -359,9 +363,9 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     ""                          | NotBlank
     "  "                        | NotBlank
 
-    " DIMENSION_ISO_12"         | ValueOfEnumConstraint
-    "DIMENSION_ISO_12 "         | ValueOfEnumConstraint
-    " DIMENSION_ISO_12 "        | ValueOfEnumConstraint
+    " DIMENSION_ISO_12"         | TrimmedStringConstraint
+    "DIMENSION_ISO_12 "         | TrimmedStringConstraint
+    " DIMENSION_ISO_12 "        | TrimmedStringConstraint
 
     "invalid"                   | ValueOfEnumConstraint
   }
