@@ -24,10 +24,12 @@ import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionTyp
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 import org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint
 import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
+import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint
 import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
 import org.klokwrk.lib.validation.group.Level3
+import org.klokwrk.lib.validation.group.Level4
 
 import javax.validation.GroupSequence
 import javax.validation.Valid
@@ -44,7 +46,7 @@ import javax.validation.constraints.Size
  *   <li>https://stackoverflow.com/questions/5571231/control-validation-annotations-order/66264530#66264530</li>
  * </ul>
  */
-@GroupSequence([CreateBookingOfferCommandRequest, Level1, Level2, Level3])
+@GroupSequence([CreateBookingOfferCommandRequest, Level1, Level2, Level3, Level4])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
@@ -52,22 +54,39 @@ class CreateBookingOfferCommandRequest {
   /**
    * Optional identifier of a booking offer to be created.
    * <p/>
-   * Can be null. If specified, must not be blank and must be in random uuid format.
+   * Can be {@code null}. If specified, must not be blank and must be in random uuid format.
    */
-  @RandomUuidFormatConstraint(groups = [Level3])
+  @RandomUuidFormatConstraint(groups = [Level4])
+  @TrimmedStringConstraint(groups = [Level3])
   @Size(min = 36, max = 36, groups = [Level2])
   @NotBlankWhenNullableConstraint(groups = [Level1])
   String bookingOfferIdentifier
 
+  /**
+   * Route specification data.
+   * <p/>
+   * Must be not {@code null} and valid.
+   */
   @Valid
   @NotNull(groups = [Level1])
   RouteSpecificationData routeSpecification
 
+  /**
+   * Commodity info data.
+   * <p/>
+   * Must be not {@code null} and valid.
+   */
   @Valid
   @NotNull(groups = [Level1])
   CommodityInfoData commodityInfo
 
-  @ValueOfEnumConstraint(enumClass = ContainerDimensionType, groups = [Level2])
+  /**
+   * Container dimension type string corresponding to the names of constants from {@link ContainerDimensionType} enum.
+   * <p/>
+   * Must be not {@code null}, not blank, and correspond to one of constant names (ignoring case) from {@link ContainerDimensionType} enum.
+   */
+  @ValueOfEnumConstraint(enumClass = ContainerDimensionType, groups = [Level3])
+  @TrimmedStringConstraint(groups = [Level2])
   @NotBlank(groups = [Level1])
   String containerDimensionType
 }
