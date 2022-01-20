@@ -1,110 +1,160 @@
-## Starting up and trying the whole thing
+# Starting up and trying the whole thing
 * **Author:** Damir Murat
 * **Created:** 26.05.2020.
-* **Updated:** 17.11.2021.
+* **Updated:** 21.01.2022.
 
 Environment:
 - OSX (should work with any desktop Linux distro and with Windows with appropriate bash-shell like git-bash)
 - JDK 11 (should work with JDK 8)
 - Gradle 7.0.2
-- IDEA Ultimate 2021.2.3 (should work with IDEA Community except for http client which is part of the Ultimate edition)
+- IDEA Community/Ultimate 2021.3.1
 - Docker
-- httpie
+- Postman
 
-### Running from the shell
-Open your shell at the project root and execute following commands (shell-1):
+## Compile and test
+### Application artifacts
+For **compiling classes and tests**, open your shell (shell-1) at the project root and execute the following command:
+
+    ./gradlew assemble testClasses testIntegrationClasses testComponentClasses --parallel -x groovydoc
+
+When the command finishes, we have all the necessary artifacts for running applications. Therefore, just for running applications, the following commands are not required, but you will need them to
+develop or contribute to the `klokwrk-project`.
+
+### Tests and other checks
+For **running all tests**, execute the following command. Note that Docker daemon must be running to perform integration and component tests:
+
+    ./gradlew test --parallel && ./gradlew bootBuildImage && ./gradlew testIntegration -PdisableTestRetry --parallel && ./gradlew testComponent -PdisableTestRetry --parallel
+
+To **verify code conventions** compliance, execute the following command:
+
+    ./gradlew aggregateCodenarc
+
+To **generate and see the cumulative Groovydoc documentation**, execute the following commands:
+
+    ./gradlew aggregateGroovydoc
+    open build/docs/aggregate-groovydoc/index.html
+
+To **generate and see the cumulative JaCoCo code coverage report**, execute the following commands:
+
+    ./gradlew aggregateJacocoReport
+    open build/reports/jacoco/aggregate/html/index.html
+
+## Running and exercising applications
+As in most distributed systems, we have multiple applications to run. Some of them are functional, while others have a supportive role. In addition, we also have required infrastructural pieces.
+
+### Starting applications
+In our case, infrastructure comprises Axon Server and PostgreSQL database. To **start those infrastructural components**, open the new shell (shell-2) at the project root and execute the following
+commands:
 
     cd support/docker
     ./dockerComposeInfrastructureUp.sh
 
-Open another shell (shell-2) at the project root and execute following command (generating Groovydoc is skipped to speed things up)
-
-    ./gradlew clean assemble testClasses testIntegrationClasses testComponentClasses -x groovydoc --parallel
-
-Open next shell (shell-3) where we will run `cargotracker-booking-rdbms-management-app`. It will migrate the database schema to the state expected by applications (it wraps
-[flyway](https://flywaydb.org/) for implementing database migrations).
+Open the next shell (shell-3) at the root of the project. We first have to **execute a database schema management application**. It will migrate the database schema to the state expected by other
+applications (it wraps [flyway](https://flywaydb.org/) for implementing database migrations):
 
     ./gradlew -p cargotracker/cargotracker-booking-rdbms-management-app bootRun
 
-We have three functional apps that needs to be run, and for each open a new shell at the project root (shell-3, shell-4 and shell-5 where shell-3 is reused from previous step)
+Alternatively, you can use corresponding shell script:
+
+    cd support/docker
+    ./dockerComposeRdbmsMigration.sh
+
+Now we are ready for **running functional applications**. First, please make sure you are at the root of the project, and then execute the following commands, each one from a separate shell (shell-3,
+shell-4, and shell-5 where shell-3 is reused from the previous step). Wait until applications are fully started:
 
     ./gradlew -p cargotracker/cargotracker-booking-commandside-app bootRun
     ./gradlew -p cargotracker/cargotracker-booking-queryside-rdbms-projection-app bootRun
     ./gradlew -p cargotracker/cargotracker-booking-queryside-app bootRun
 
-Going back to shell-2, some HTTP requests can be tried via `httpie`:
-- commandside
+If you prefer, you might want to run applications from IDE. In that case, select the application's `bootRun` Gradle task as is shown in the picture for the `cargotracker-booking-commandside-app`
+application.
 
-      http POST http://localhost:8080/cargotracker-booking-commandside/cargo-booking/book-cargo \
-        Content-Type:application/json Accept:application/json Accept-Charset:utf-8 Accept-Language:hr-HR \
-        originLocation=NLRTM \
-        destinationLocation=USNYC
+![Starting commandside application from IDE](images/01-startup-00-commandside-bootRun.jpg "Starting commandside application from IDE")
 
-      http POST http://localhost:8080/cargotracker-booking-commandside/cargo-booking/book-cargo \
-        Content-Type:application/json Accept:application/json Accept-Charset:utf-8 Accept-Language:en \
-        originLocation=NLRTM \
-        destinationLocation=USNYC
+### Stopping applications
+Once experimenting is finished, you will want to stop applications. But, of course, do not do this yet if you intend to read the sections below.
 
-- queryside
+If you've started applications from IDEA, you can stop them with the `CMD+F2` keyboard shortcut or via IDEA's "Run" tool window. For applications started from CLI, use the `CTRL+C` shortcut.
 
-    To be able to execute queryside request, from the previous commandside output we need to take the value of `cargoIdentifier` element, and then try some queryside requests. For example:
+Since we started infrastructural components from CLI, `CTRL+C` will be handy again. However, this will only stop docker-compose log tailing. For a full stop of infrastructure components and cleaning
+them up properly, execute `./dockerComposeInfrastructureDown.sh` shell script (from shell-2).
 
-      http POST http://localhost:8084/cargotracker-booking-queryside/cargo-info/cargo-summary \
-        Content-Type:application/json Accept:application/json Accept-Charset:utf-8 Accept-Language:hr-HR \
-        cargoIdentifier=9e4a13c8-cb74-4a01-9717-f41aaba5428d
+### Executing HTTP requests via Postman
+For executing HTTP requests, we will use [Postman](https://www.postman.com/). Please [download](https://www.postman.com/downloads/) a free local application for your OS and install it if you don't
+have it already.
 
-      http POST http://localhost:8084/cargotracker-booking-queryside/cargo-info/cargo-summary \
-        Content-Type:application/json Accept:application/json Accept-Charset:utf-8 Accept-Language:en \
-        cargoIdentifier=9e4a13c8-cb74-4a01-9717-f41aaba5428d
+First, you have to import `support/http-request/postman/klokwrk-workspace/cargotracker-booking.postman_collection.json` collection.
 
-When finished experimenting, applications can be stopped by `CTRL+C` (shell-3, shell-4, shell-5). For stopping infrastructural components (shell-1), first we need to stop docker-compose log tailing
-by `CTRL+C`, and then do some cleanup with `./dockerComposeInfrastructureDown.sh`.
+> <br/>
+> Note: Every time the collection source file changes, the collection must be deleted and reimported in Postman. <br/>
+> <br/>
 
-### Running from IDEA
-Executing HTTP requests from CLI can be cumbersome, and many prefer some more user-friendly tool like Postman. If you develop from IDEA, you can also use IDEA's http client. Although it does not have
-all niceties of Postman it can be really useful for storing series of requests as code artifacts in the project.
+Inside your Postman workspace, click on `Import` button, select `File` tab in `Import` dialog, and click on `Upload Files` button:
 
-First, the project needs to be imported in IDEA as Gradle project. Next, either from the IDEA terminal or from external shell, infrastructural components needs to be started:
+![Postman Import dialog](images/01-startup-10-postmanImportDialog.jpg "Postman Import dialog")
 
-    cd support/docker
-    ./dockerComposeInfrastructureUp.sh
+Navigate to the `support/http-request/postman/klokwrk-workspace/cargotracker-booking.postman_collection.json` collection and open it. Then, in the `Import` dialog, click the `Import` button to finish
+the process. Now, you should have your `cargotracker-booking` collection available.
 
-Applications can also be started from CLI, but it might be preferable to use UI.
+![Imported Postman collection](images/01-startup-11-importedPostmanCollection.jpg "Imported Postman collection")
 
-After starting up infrastructural services, we need to run a utility application for database schema migration:
+#### Commandside requests
+For executing some command requests, expand the collection and navigate to `cargotracker-booking/individual-requests/commandside/booking-offer/create-booking-offer`. Here `create-booking-offer`
+folder corresponds to multiple variations of the `CreateBookingOfferCommand` command from the `cargotracker-booking-commandside-app` application.
 
-![Starting database migration from IDE](images/01-startup-01-database-migration-bootRun.jpg "Starting commandside application from IDE")
+For example, select the `ok, en` request and click the `Send` button. You should get the appropriate response:
 
-After migrating database schema, functional applications can be started in any order:
-- Start commandside app by double-clicking on its `bootRun` Gradle task and wait until it is started up:
+![Execute ok,en command request](images/01-startup-12-executeOkEnCommandRequest.jpg "Execute ok,en command request")
 
-    ![Starting commandside application from IDE](images/01-startup-02-commandside-bootRun.jpg "Starting commandside application from IDE")
+The previous command request returns a response containing the **booking offer identifier** in the payload (`$.payload.bookingOfferId.identifier`). Utilizing some Postman scripting features, that
+identifier is remembered and made available for subsequent queryside requests.
 
-- Start queryside projection app by double-clicking on its `bootRun` Gradle task and wait until it is started up:
+There are more commandside requests available. Feel free to experiment with them.
 
-    ![Starting projection application from IDE](images/01-startup-03-queryside-projection-bootRun.jpg "Starting projection application from IDE")
+#### Queryside requests
+Before executing queryside requests, remember they rely on identifiers returned from previously performed commandside requests.
 
-- Start queryside app by double-clicking on its `bootRun` Gradle task and wait until it is started up:
+Otherwise, queryside request execution is very similar to the commandside. In this case, navigate to the `cargotracker-booking/individual-requests/queryside/booking-offer/booking-offer-summary`
+folder and pick and execute the request. Again, the results should be similar to commandside requests.
 
-    ![Starting queryside application from IDE](images/01-startup-04-queryside-bootRun.jpg "Starting queryside application from IDE")
+#### Scenarios
+Besides individual request execution, Postman also supports the execution of scenarios. In that way, we can organize sequences of dependent requests to exercise complete use cases of the system.
 
-When all applications are started up, we can try executing some requests:
-- Find and open `support/http-request/commandsideRequests.http`.
-- Click on `Run All Requests in File` and select `Run with 'development' environment`.
+To execute a scenario from our collection, navigate to `cargotracker-booking/scenarios`, click a folder corresponding to the scenario, and click on the `Run` button in the scenario's tab:
 
-    ![Running IDEA HTTP client for executing commands](images/01-startup-05-commandside-httpClient.jpg "Running IDEA HTTP client for executing commands")
+![Execute scenario, step 1](images/01-startup-20-executeScenarioStep1.jpg "Execute scenario, step 1")
 
-- Repeat the same with `support/http-request/querysideRequests.http`.
+This will open the `Runner` tab, where you should click the `Run collection-name` button to execute it:
 
-When finished experimenting, applications can be stopped by `CMD+F2` shortcut or via IDEA "Run" tool window. For stopping infrastructural components, stop docker-compose log tailing with `CTRL+C`,
-and then do some cleanup with `./dockerComposeInfrastructureDown.sh`.
+![Execute scenario, step 2](images/01-startup-21-executeScenarioStep2.jpg "Execute scenario, step 2")
+
+Each request from the scenario contains tests that verify if a particular request was successful or not:
+
+![Execute scenario, step 3](images/01-startup-22-executeScenarioStep3.jpg "Execute scenario, step 3")
+
+### Exploring Wavefront integration
+Since the 2.3.0 version, Spring Boot provides out-of-the-box free integration with Wavefront observability service. It offers zero-setup and feature-rich alternative to the standard observability
+solutions like Prometheus (metrics collection), Zipkin (distributed tracing) and Grafana (visualization) combo. Wavefront is very convenient and effortless to use from a development environment.
+
+Here is a very brief overview of Wavefront usage for a `klokwrk-project`:
+- Start all applications as described previously. From the output of any application, copy the link to the Wavefront service.
+
+  ![Wavefront link](images/01-startup-30-wavefront-link.jpg "Wavefront link")
+
+- Execute a dozen of commandside and queryside requests as described above, to provide some data to the Wavefront.
+- Open previously copied Wavefront link and start exploring. The following resources will get you quickly up to speed: <br/>
+  - [Tanzu Observability by Wavefront for Spring Boot Applications](https://www.youtube.com/watch?v=Jxwf-Iw-3T8) <br/>
+  - [Wavefront for Spring Boot](https://docs.wavefront.com/wavefront_springboot.html) <br/>
+  - [Wavefront for Spring Boot Tutorial](https://docs.wavefront.com/wavefront_springboot_tutorial.html)
 
 ### Supportive Gradle tasks
 While working on a project, a developer often needs access to various pieces of information about the current state of a project. These reports might provide beneficial information about code quality
-and can point to the areas which require some attention and improvements. Project Klokwrk has a dozen of Gradle tasks that provide such information. They can be run for each individual project, or
-for a project root.
+and can point to the areas which require some attention and improvements. Project Klokwrk has a dozen of Gradle tasks that provide such information. They can be run for each individual module, or
+from the project's root.
 
-Before executing any of commands bellow, position your terminal prompt at the project's root:
+> <br/>
+> Note: Before executing any of commands bellow, position your terminal prompt at the project's root. <br/>
+> <br/>
 
 - `./gradlew test --parallel`
 
@@ -120,43 +170,22 @@ Before executing any of commands bellow, position your terminal prompt at the pr
 
 - `./gradlew allTestReports`
 
-  Creates a cumulative report of all unit, integration and component tests for all subprojects. Report can be accessed via `klokwrk-project/build/reports/allTestReports/index.html`. It can be opened
-  from IDEA using `Open in Browser` action.
-
-  ![Opening All Tests report from IDEA](images/01-startup-06-open-allTests-report.jpg "Opening All Tests report from IDEA")
-
-  Behind the scenes, IDEA uses an internal HTTP server, which is very convenient for looking at statically generated pages like these.
-
-  Alternatively, you can open it from CLI with
+  Creates a cumulative report of all unit, integration and component tests for all subprojects. You can open it from CLI with
 
       open build/reports/allTestReports/index.html
 
-- `./gradlew allTestUnitReports`, `gradlew allTestIntegrationReports`, `gradlew allTestComponentReports`
+- `./gradlew allTestUnitReports`, `./gradlew allTestIntegrationReports`, `./gradlew allTestComponentReports`
 
   These commands create cumulative reports for each supported test type.
 
 - `./gradlew aggregateJacocoReport`
 
-  Creates a cumulative code coverage report accessible at `klokwrk-project/build/reports/jacoco/aggregate/html/index.html`
+  Creates a cumulative code coverage report accessible at `build/reports/jacoco/aggregate/html/index.html`
 
 - `./gradlew aggregateCodenarc`
 
-  Creates a cumulative CodeNarc report accessible at `klokwrk-project/build/reports/codenarc/aggregate.html`.
+  Creates a cumulative CodeNarc report accessible at `build/reports/codenarc/aggregate.html`.
 
 - `./gradlew aggregateGroovydoc`
 
-  Creates a cumulative documentation for the whole project accessible at `klokwrk-project/build/docs/aggregate-groovydoc/index.html`.
-
-### Exploring Wavefront integration
-Since the 2.3.0 version, Spring Boot provides out-of-the-box free integration with Wavefront observability service. It offers zero-setup and feature-rich alternative to the standard observability
-solutions like Prometheus (metrics collection), Zipkin (distributed tracing) and Grafana (visualization) combo. Wavefront is very convenient and effortless to use, even from a development environment.
-
-Here is a very brief overview of Wavefront usage for a `klokwrk-project`:
-- Start all applications as described previously. From the output of any application, copy the link to the Wavefront service.
-
-  ![Wavefront link](images/01-startup-07-wavefront-link.jpg "Wavefront link")
-
-- Execute a dozen of commandside and queryside requests as described above, to provide some data to the Wavefront.
-- Open previously copied Wavefront link and start exploring. The following resources will get you quickly up to speed: <br/>
-  [Zero Cost, No Sign-up: Introducing Tanzu Observability for Spring Boot Applications](https://tanzu.vmware.com/content/practitioners-blog/zero-cost-no-sign-up-introducing-tanzu-observability-for-spring-boot-applications) <br/>
-  [Wavefront for Spring Boot](https://docs.wavefront.com/wavefront_springboot.html)
+  Creates a cumulative documentation for the whole project accessible at `build/docs/aggregate-groovydoc/index.html`.
