@@ -53,6 +53,10 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (2.2.0) - https://github.com/CodeNarc/CodeNarc/issues/632
   * https://github.com/CodeNarc/CodeNarc/pull/633
 * VERIFIED (2.2.0) - https://github.com/CodeNarc/CodeNarc/issues/636
+* REPORTED - https://github.com/CodeNarc/CodeNarc/issues/660
+  * https://github.com/CodeNarc/CodeNarc/pull/661
+* REPORTED - https://github.com/CodeNarc/CodeNarc/issues/662
+  * https://github.com/CodeNarc/CodeNarc/pull/663
 
 ### GitHub Action - gradle-build-action
 * VERIFIED - https://github.com/gradle/gradle-build-action/issues/22
@@ -86,6 +90,9 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (2021.1) - https://youtrack.jetbrains.com/issue/IDEA-255422
 * VERIFIED (2021.2) - https://youtrack.jetbrains.com/issue/IDEA-261239
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-270964
+* FIXED - https://youtrack.jetbrains.com/issue/IDEA-285153
+* REPORTED - https://youtrack.jetbrains.com/issue/IDEA-285736
+* REPORTED - https://youtrack.jetbrains.com/issue/IDEA-286813
 
 ### JReleaser
 * VERIFIED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/85
