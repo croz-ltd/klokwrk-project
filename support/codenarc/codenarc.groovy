@@ -331,7 +331,7 @@ ruleset {
   ExplicitStackInstantiation
   ExplicitTreeSetInstantiation
   GStringAsMapKey
-  GStringExpressionWithinString { enabled = false }
+  GStringExpressionWithinString { enabled = false } // TODO dmurat: enable when and if the following issue is fixed: https://github.com/CodeNarc/CodeNarc/issues/660
   GetterMethodCouldBeProperty
   GroovyLangImmutable
   UseCollectMany
