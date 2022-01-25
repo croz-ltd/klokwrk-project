@@ -23,6 +23,8 @@ import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
+import org.klokwrk.cargotracker.booking.domain.model.value.Customer
+import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
@@ -54,6 +56,7 @@ class CreateBookingOfferCommandFixtures {
     Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
+        customer: Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),
         bookingOfferId: BookingOfferId.make(bookingOfferIdentifier),
         routeSpecification: RouteSpecification.make(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
         commodityInfo: CommodityInfo.make(CommodityType.DRY, 1000),
@@ -70,6 +73,7 @@ class CreateBookingOfferCommandFixtures {
     Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
+        customer: Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),
         bookingOfferId: BookingOfferId.make(bookingOfferIdentifier),
         routeSpecification: RouteSpecification.make(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
         commodityInfo: CommodityInfo.make(CommodityType.DRY, 10_000),
@@ -86,6 +90,7 @@ class CreateBookingOfferCommandFixtures {
     Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
+        customer: Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),
         bookingOfferId: BookingOfferId.make(cargoIdentifier),
         routeSpecification: RouteSpecification.make(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
         commodityInfo: CommodityInfo.make(CommodityType.DRY, 5001 * 25_000),

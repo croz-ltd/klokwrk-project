@@ -22,6 +22,7 @@ import groovy.transform.Generated
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
+import org.klokwrk.cargotracker.booking.domain.model.value.Customer
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
@@ -35,6 +36,7 @@ import static org.hamcrest.Matchers.notNullValue
 @KwrkImmutable
 @CompileStatic
 class CreateBookingOfferCommand implements BaseCreateCommand, PostMapConstructorCheckable {
+  Customer customer
   BookingOfferId bookingOfferId
   RouteSpecification routeSpecification
   CommodityInfo commodityInfo
@@ -43,6 +45,7 @@ class CreateBookingOfferCommand implements BaseCreateCommand, PostMapConstructor
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     // Here we are comply to the validation ordering as explained in ADR-0013.
+    requireMatch(customer, notNullValue())
     requireMatch(bookingOfferId, notNullValue())
     requireMatch(routeSpecification, notNullValue())
     requireMatch(commodityInfo, notNullValue())

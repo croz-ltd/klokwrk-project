@@ -33,6 +33,7 @@ import org.klokwrk.cargotracker.booking.domain.model.service.CommodityCreatorSer
 import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
+import org.klokwrk.cargotracker.booking.domain.model.value.Customer
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
@@ -48,6 +49,7 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply
 @Aggregate
 @CompileStatic
 class BookingOfferAggregate {
+  Customer customer
   BookingOfferId bookingOfferId
   RouteSpecification routeSpecification
   BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
@@ -87,6 +89,7 @@ class BookingOfferAggregate {
     BigDecimal bookingTotalContainerTeuCount = preCalculatedTotals.v2
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
+        customer: createBookingOfferCommand.customer,
         bookingOfferId: createBookingOfferCommand.bookingOfferId,
         routeSpecification: createBookingOfferCommand.routeSpecification,
         commodity: commodity,
@@ -100,6 +103,7 @@ class BookingOfferAggregate {
 
   @EventSourcingHandler
   void onBookingOfferCreatedEvent(BookingOfferCreatedEvent bookingOfferCreatedEvent) {
+    customer = bookingOfferCreatedEvent.customer
     bookingOfferId = bookingOfferCreatedEvent.bookingOfferId
     routeSpecification = bookingOfferCreatedEvent.routeSpecification
     bookingOfferCommodities.storeCommodity(bookingOfferCreatedEvent.commodity)
