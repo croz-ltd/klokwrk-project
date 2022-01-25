@@ -41,15 +41,21 @@ class BookingOfferIdSpecification extends Specification {
     assertionError.message.contains(errorMessagePartParam)
 
     where:
-    identifierParam            | errorMessagePartParam
-    null                       | "not(blankOrNullString())"
-    ""                         | "not(blankOrNullString())"
-    "   "                      | "not(blankOrNullString())"
-    "1"                        | "checkIfRandomUuid(identifier)"
-    "Z"                        | "checkIfRandomUuid(identifier)"
-    " ${ UUID.randomUUID() }"  | "checkIfRandomUuid(identifier)"
-    "${ UUID.randomUUID() } "  | "checkIfRandomUuid(identifier)"
-    " ${ UUID.randomUUID() } " | "checkIfRandomUuid(identifier)"
+    identifierParam                        | errorMessagePartParam
+    null                                   | "not(blankOrNullString())"
+    ""                                     | "not(blankOrNullString())"
+    "   "                                  | "not(blankOrNullString())"
+
+    "1"                                    | "checkIfRandomUuid(identifier)"
+    "Z"                                    | "checkIfRandomUuid(identifier)"
+    " ${ UUID.randomUUID() }"              | "checkIfRandomUuid(identifier)"
+    "${ UUID.randomUUID() } "              | "checkIfRandomUuid(identifier)"
+    " ${ UUID.randomUUID() } "             | "checkIfRandomUuid(identifier)"
+
+    "00000000-0000-4000-0000-000000000000" | "checkIfRandomUuid(identifier)"
+    "00000000-0000-4000-1000-000000000000" | "checkIfRandomUuid(identifier)"
+    "00000000-0000-4000-7000-000000000000" | "checkIfRandomUuid(identifier)"
+    "00000000-0000-4000-C000-000000000000" | "checkIfRandomUuid(identifier)"
   }
 
   void "makeWithGeneratedIdentifier() should produce valid CargoId"() {
@@ -88,8 +94,13 @@ class BookingOfferIdSpecification extends Specification {
     where:
     uuidStringParam                        | errorMessagePartParam
     "   "                                  | "not(blankOrNullString())"
+
     "1"                                    | "checkIfRandomUuid(identifier)"
     "Z"                                    | "checkIfRandomUuid(identifier)"
+    " ${ UUID.randomUUID() }"              | "checkIfRandomUuid(identifier)"
+    "${ UUID.randomUUID() } "              | "checkIfRandomUuid(identifier)"
+    " ${ UUID.randomUUID() } "             | "checkIfRandomUuid(identifier)"
+
     "00000000-0000-0000-0000-000000000000" | "checkIfRandomUuid(identifier)"
     "00000000-0000-4000-0000-000000000000" | "checkIfRandomUuid(identifier)"
     "00000000-0000-4000-1000-000000000000" | "checkIfRandomUuid(identifier)"

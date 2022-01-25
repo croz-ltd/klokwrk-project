@@ -28,6 +28,7 @@ import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.
 
 class CommodityTypeSpecification extends Specification {
   void "should have expected enum size"() {
+    // Failure of this test is a signal that we should check places where enumeration is used and update tests and switch/if/else statements
     expect:
     CommodityType.values().size() == 4
   }
