@@ -66,6 +66,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
     String myBookingOfferIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString(
         [
+            userIdentifier: "standard-customer@cargotracker.com",
             bookingOfferIdentifier: myBookingOfferIdentifier,
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK",
@@ -109,10 +110,17 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
     }
 
     verifyAll(responseContentMap.payload as Map) {
-      size() == 3
+      size() == 4
+      customer
       bookingOfferId.identifier == myBookingOfferIdentifier
       routeSpecification
       bookingOfferCommodities
+    }
+
+    verifyAll(responseContentMap.payload.customer as Map) {
+      size() == 2
+      customerId == "26d5f7d8-9ded-4ce3-b320-03a75f674f4e"
+      customerType == "STANDARD"
     }
 
     verifyAll(responseContentMap.payload.routeSpecification as Map) {
@@ -222,6 +230,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
     String bookingOfferIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString(
         [
+            userIdentifier: "standard-customer@cargotracker.com",
             bookingOfferIdentifier: bookingOfferIdentifier,
             routeSpecification: [originLocation: null, destinationLocation: null, departureEarliestTime: null, departureLatestTime: null, arrivalLatestTime: null],
             commodityInfo: [commodityType: "dry", totalWeightInKilograms: 1000],
@@ -286,6 +295,76 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
     "en"                | "en"              | "Request is not valid."
   }
 
+  void "should fail when customer cannot be found - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
+    given:
+    Instant currentTime = Instant.now()
+    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
+    Instant departureLatestTime = currentTime + Duration.ofHours(2)
+    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
+
+    String myBookingOfferIdentifier = UUID.randomUUID()
+    String webRequestBody = objectMapper.writeValueAsString(
+        [
+            userIdentifier: "unknownUserIdentifier",
+            bookingOfferIdentifier: myBookingOfferIdentifier,
+            routeSpecification: [
+                originLocation: "NLRTM", destinationLocation: "HRRJK",
+                departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
+                arrivalLatestTime: arrivalLatestTime
+            ],
+            commodityInfo: [
+                commodityType: "dry",
+                totalWeightInKilograms: 1000
+            ],
+            containerDimensionType: "DIMENSION_ISO_22"
+        ]
+    )
+
+    when:
+    MvcResult mvcResult = mockMvc.perform(
+        post("/booking-offer/create-booking-offer")
+            .content(webRequestBody)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
+    ).andReturn()
+
+    Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
+
+    then:
+    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
+
+    verifyAll(responseContentMap.metaData.general as Map) {
+      size() == 3
+      locale == localeStringParam
+      severity == Severity.WARNING.name().toLowerCase()
+      timestamp
+    }
+
+    verifyAll(responseContentMap.metaData.http as Map) {
+      size() == 2
+      message == HttpStatus.BAD_REQUEST.reasonPhrase
+      status == HttpStatus.BAD_REQUEST.value().toString()
+    }
+
+    verifyAll(responseContentMap.metaData.violation as Map) {
+      size() == 3
+      code == HttpStatus.BAD_REQUEST.value().toString()
+      message == violationMessageParam
+      type == ViolationType.DOMAIN.name().toLowerCase()
+    }
+
+    verifyAll(responseContentMap.payload as Map) {
+      size() == 0
+    }
+
+    where:
+    acceptLanguageParam | localeStringParam | violationMessageParam
+    "hr-HR"             | "hr_HR"           | "Nije pronađen potrošač s korisničkim imenom 'unknownUserIdentifier'."
+    "en"                | "en"              | "Can't find the customer with user id 'unknownUserIdentifier'."
+  }
+
   void "should fail when origin and destination locations are equal - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
     given:
     Instant currentTime = Instant.now()
@@ -296,6 +375,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
     String bookingOfferIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString(
         [
+            userIdentifier: "standard-customer@cargotracker.com",
             bookingOfferIdentifier: bookingOfferIdentifier,
             routeSpecification: [
                 originLocation: "HRRJK", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
@@ -360,6 +440,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
     String bookingOfferIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString(
         [
+            userIdentifier: "standard-customer@cargotracker.com",
             bookingOfferIdentifier: bookingOfferIdentifier,
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRZAG", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
@@ -424,6 +505,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
     String bookingOfferIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString(
         [
+            userIdentifier: "standard-customer@cargotracker.com",
             bookingOfferIdentifier: bookingOfferIdentifier,
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
@@ -477,6 +559,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
     String bookingOfferIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString(
         [
+            userIdentifier: "standard-customer@cargotracker.com",
             bookingOfferIdentifier: bookingOfferIdentifier,
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime

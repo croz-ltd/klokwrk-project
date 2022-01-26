@@ -71,6 +71,7 @@ abstract class AbstractBookingOfferApplicationServiceIntegrationSpecification ex
 
     String myBookingOfferIdentifier = UUID.randomUUID()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: myBookingOfferIdentifier,
         routeSpecification: new RouteSpecificationData(
             originLocation: "NLRTM", destinationLocation: "HRRJK",
@@ -141,6 +142,7 @@ abstract class AbstractBookingOfferApplicationServiceIntegrationSpecification ex
 
     String myBookingOfferIdentifier = UUID.randomUUID()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: myBookingOfferIdentifier,
         routeSpecification: new RouteSpecificationData(
             originLocation: "NLRTM", destinationLocation: "HRRJK",
@@ -204,6 +206,7 @@ abstract class AbstractBookingOfferApplicationServiceIntegrationSpecification ex
 
     String bookingOfferIdentifier = UUID.randomUUID()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: bookingOfferIdentifier,
         routeSpecification: new RouteSpecificationData(
             originLocation: "NLRTM", destinationLocation: "HRRJK",
