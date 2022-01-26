@@ -1,0 +1,21 @@
+
+plugins {
+  id "klokwrk-gradle-plugin-convention-module-base"
+  id "klokwrk-gradle-plugin-convention-module-groovy"
+}
+
+dependencies {
+  implementation platform(project(":klokwrk-platform-spring-boot"))
+
+  implementation project(":cargotracker-booking-domain-model-value")
+  implementation project(":cargotracker-lib-boundary-api")
+  implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lang-groovy-contracts-match")
+  implementation project(":klokwrk-lang-groovy-contracts-simple")
+
+  implementation "org.codehaus.groovy:groovy"
+  implementation "org.codehaus.groovy:groovy-macro"
+  implementation "org.hamcrest:hamcrest"
+
+  testImplementation "org.spockframework:spock-core"
+}
