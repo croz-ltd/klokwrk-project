@@ -24,6 +24,7 @@
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model-event/build/classes/groovy/main" module="cargotracker-booking-domain-model-event" displaymodule="cargotracker-booking-domain-model-event" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model-service/build/classes/groovy/main" module="cargotracker-booking-domain-model-service" displaymodule="cargotracker-booking-domain-model-service" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model-value/build/classes/groovy/main" module="cargotracker-booking-domain-model-value" displaymodule="cargotracker-booking-domain-model-value" />
+    <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-out-customer/build/classes/groovy/main" module="cargotracker-booking-out-customer" displaymodule="cargotracker-booking-out-customer" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-app/build/classes/groovy/main" module="cargotracker-booking-queryside-app" displaymodule="cargotracker-booking-queryside-app" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-rdbms-projection-app/build/classes/groovy/main" module="cargotracker-booking-queryside-rdbms-projection-app" displaymodule="cargotracker-booking-queryside-rdbms-projection-app" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-rdbms-projection-model/build/classes/groovy/main" module="cargotracker-booking-queryside-rdbms-projection-model" displaymodule="cargotracker-booking-queryside-rdbms-projection-model" />
@@ -86,6 +87,15 @@
                         </row>
                         <row>
                           <cell name="cargotracker-booking-domain-model-service" pattern="cargotracker-booking-domain-model-service.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                        </row>
+                        <row>
+                          <cell name="outbound adapter" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+                            <grid>
+                              <row>
+                                <cell name="cargotracker-booking-out-customer" pattern="cargotracker-booking-out-customer.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                              </row>
+                            </grid>
+                          </cell>
                         </row>
                         <row>
                           <cell name="cargotracker-booking-domain-model-command" pattern="cargotracker-booking-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
@@ -232,6 +242,15 @@
                   </row>
                   <row>
                     <cell name="cargotracker-booking-domain-model-service" pattern="cargotracker-booking-domain-model-service.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
+                    <cell name="outbound adapter" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+                      <grid>
+                        <row>
+                          <cell name="cargotracker-booking-out-customer" pattern="cargotracker-booking-out-customer.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                        </row>
+                      </grid>
+                    </cell>
                   </row>
                   <row>
                     <cell name="cargotracker-booking-domain-model-command" pattern="cargotracker-booking-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
