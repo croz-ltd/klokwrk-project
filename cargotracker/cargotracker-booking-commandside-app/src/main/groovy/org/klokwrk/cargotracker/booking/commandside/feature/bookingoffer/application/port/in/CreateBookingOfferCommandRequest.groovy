@@ -51,6 +51,10 @@ import javax.validation.constraints.Size
 @MapConstructor(noArg = true)
 @CompileStatic
 class CreateBookingOfferCommandRequest {
+  @TrimmedStringConstraint(groups = [Level2])
+  @NotBlank(groups = [Level1])
+  String userIdentifier
+
   /**
    * Optional identifier of a booking offer to be created.
    * <p/>

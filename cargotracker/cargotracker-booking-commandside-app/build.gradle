@@ -32,6 +32,7 @@ dependencies {
   implementation project(":cargotracker-booking-domain-model-service")
   implementation project(":cargotracker-booking-domain-model-value")
   implementation project(":cargotracker-booking-boundary-web")
+  implementation project(":cargotracker-booking-out-customer")
   implementation project(":cargotracker-lib-axon-logging")
   implementation project(":cargotracker-lib-axon-cqrs")
   implementation project(":cargotracker-lib-boundary-api")

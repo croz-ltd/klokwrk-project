@@ -31,8 +31,12 @@ import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
+import org.klokwrk.cargotracker.booking.domain.model.value.Customer
+import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
+import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerRegistryService
+import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdentifierPortOut
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import spock.lang.Specification
@@ -61,10 +65,12 @@ class BookingOfferFactoryServiceSpecification extends Specification {
 
   BookingOfferFactoryService bookingOfferFactoryService
   LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut
+  CustomerByUserIdentifierPortOut customerByUserIdentifierPortOut
 
   void setup() {
     locationByUnLoCodeQueryPortOut = new InMemoryLocationRegistryService()
-    bookingOfferFactoryService = new BookingOfferFactoryService(locationByUnLoCodeQueryPortOut, Optional.of(clock))
+    customerByUserIdentifierPortOut = new InMemoryCustomerRegistryService()
+    bookingOfferFactoryService = new BookingOfferFactoryService(customerByUserIdentifierPortOut, locationByUnLoCodeQueryPortOut, Optional.of(clock))
   }
 
   void "makeCreateBookingOfferCommand - should throw for passed null"() {
@@ -75,9 +81,25 @@ class BookingOfferFactoryServiceSpecification extends Specification {
     thrown(AssertionError)
   }
 
+  void "makeCreateBookingOfferCommand - should fail for unknown customer"() {
+    given:
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(userIdentifier: "unknownIdentifier")
+
+    when:
+    bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
+
+    then:
+    DomainException domainException = thrown()
+    domainException.violationInfo.severity == Severity.WARNING
+    domainException.violationInfo.violationCode.code == "400"
+    domainException.violationInfo.violationCode.codeMessage == "Bad Request"
+    domainException.violationInfo.violationCode.resolvableMessageKey == "customerByUserIdentifierPortOut.findCustomerByUserIdentifier.notFound"
+  }
+
   void "makeCreateBookingOfferCommand - should fail for invalid locations in RouteSpecificationData"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        userIdentifier: "standard-customer@cargotracker.com",
         routeSpecification: new RouteSpecificationData(
             originLocation: originLocationParam, destinationLocation: destinationLocationParam,
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
@@ -107,6 +129,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
   void "makeCreateBookingOfferCommand - should fail for invalid departure instants in RouteSpecificationData"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        userIdentifier: "standard-customer@cargotracker.com",
         routeSpecification: new RouteSpecificationData(
             originLocation: "HRRJK", destinationLocation: "NLRTM",
             departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam,
@@ -137,6 +160,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
   void "makeCreateBookingOfferCommand - should fail for invalid arrival instant in RouteSpecificationData"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        userIdentifier: "standard-customer@cargotracker.com",
         routeSpecification: new RouteSpecificationData(
             originLocation: "HRRJK", destinationLocation: "NLRTM",
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
@@ -166,7 +190,10 @@ class BookingOfferFactoryServiceSpecification extends Specification {
   void "makeCreateBookingOfferCommand - should work for unspecified cargo identifier"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        routeSpecification: validRouteSpecificationData, commodityInfo: validCommodityInfoData, containerDimensionType: validContainerDimensionData
+        userIdentifier: "standard-customer@cargotracker.com",
+        routeSpecification: validRouteSpecificationData,
+        commodityInfo: validCommodityInfoData,
+        containerDimensionType: validContainerDimensionData
     )
 
     when:
@@ -189,6 +216,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
     given:
     String bookingOfferIdentifier = UUID.randomUUID()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: bookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
         commodityInfo: validCommodityInfoData,
@@ -213,6 +241,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
   void "makeCreateBookingOfferCommand - should throw for specified cargo identifier in invalid format"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: "invalid",
         routeSpecification: validRouteSpecificationData,
         commodityInfo: validCommodityInfoData
@@ -236,6 +265,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
     expectedBookingOfferCommodities.storeCommodity(Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 1000), Quantities.getQuantity(20_615, Units.KILOGRAM)))
 
     BookingOfferAggregate bookingOfferAggregate = new BookingOfferAggregate(
+        customer: Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),
         bookingOfferId: BookingOfferId.make(myBookingOfferIdentifier),
         routeSpecification: new RouteSpecification(
             originLocation: myOriginLocation, destinationLocation: myDestinationLocation,
@@ -251,6 +281,11 @@ class BookingOfferFactoryServiceSpecification extends Specification {
 
     then:
     verifyAll(createBookingOfferCommandResponse) {
+      it.customer == [
+          customerId: "26d5f7d8-9ded-4ce3-b320-03a75f674f4e",
+          customerType: "STANDARD"
+      ]
+
       it.bookingOfferId == [
           identifier: myBookingOfferIdentifier
       ]

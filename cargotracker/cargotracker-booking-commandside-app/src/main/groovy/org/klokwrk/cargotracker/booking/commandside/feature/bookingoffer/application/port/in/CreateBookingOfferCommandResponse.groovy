@@ -26,6 +26,7 @@ import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 @MapConstructor
 @CompileStatic
 class CreateBookingOfferCommandResponse {
+  Map<String, ?> customer
   Map<String, ?> bookingOfferId
   Map<String, ?> routeSpecification
   Map<String, ?> bookingOfferCommodities
