@@ -35,6 +35,7 @@ import org.klokwrk.cargotracker.booking.domain.model.service.DefaultCommodityCre
 import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedWeightPerContainerPolicy
 import org.klokwrk.cargotracker.booking.domain.model.service.PercentBasedMaxAllowedWeightPerContainerPolicy
+import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerRegistryService
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.CustomIntervalRetryScheduler
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.NonTransientFailurePredicate
@@ -101,6 +102,11 @@ class SpringBootConfig {
   @Bean
   MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy() {
     return new ConstantBasedMaxAllowedTeuCountPolicy(5_000.0)
+  }
+
+  @Bean
+  InMemoryCustomerRegistryService inMemoryCustomerRegistryService() {
+    return new InMemoryCustomerRegistryService()
   }
 
   // NOTE: At the moment, configuring a RetryScheduler is somewhat awkward. In our scenario with tracing extension present, it requires a redefinition of both DefaultCommandGateway and

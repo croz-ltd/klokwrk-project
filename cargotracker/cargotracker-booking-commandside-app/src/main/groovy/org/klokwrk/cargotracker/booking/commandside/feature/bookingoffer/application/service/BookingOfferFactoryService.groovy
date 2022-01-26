@@ -27,9 +27,11 @@ import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
+import org.klokwrk.cargotracker.booking.domain.model.value.Customer
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilityType
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
+import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdentifierPortOut
 import org.springframework.stereotype.Service
 
 import java.time.Clock
@@ -43,11 +45,13 @@ import static org.hamcrest.Matchers.notNullValue
 @Service
 @CompileStatic
 class BookingOfferFactoryService {
+  private final CustomerByUserIdentifierPortOut customerByUserIdentifierPortOut
   private final LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut
   private final Clock clock
 
   @SuppressWarnings("CodeNarc.OptionalMethodParameter")
-  BookingOfferFactoryService(LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut, Optional<Clock> clockOptional) {
+  BookingOfferFactoryService(CustomerByUserIdentifierPortOut customerByUserIdentifierPortOut, LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut, Optional<Clock> clockOptional) {
+    this.customerByUserIdentifierPortOut = customerByUserIdentifierPortOut
     this.locationByUnLoCodeQueryPortOut = locationByUnLoCodeQueryPortOut
     this.clock = clockOptional.orElse(Clock.systemUTC())
   }
@@ -59,13 +63,15 @@ class BookingOfferFactoryService {
     requireMatch(createBookingOfferCommandRequest, notNullValue())
 
     // NOTE: Since commands are immutable objects, the command's data and objects should be in their fully valid state after the command is constructed.
-    //       While creating a command, we sometimes have to resolve data from external services. The domain facade is an excellent choice for such activities. In this example, we resolve Location
-    //       registry data (a.k.a. master data) from the outbound adapter.
+    //       While creating a command, we sometimes have to resolve data from external services. The domain facade is an excellent choice for such activities. In this example, we resolve Customer
+    //       and Location registry data (a.k.a. master data) from the outbound adapter.
 
+    Customer customer = customerByUserIdentifierPortOut.findCustomerByUserIdentifier(createBookingOfferCommandRequest.userIdentifier)
     Location resolvedOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(createBookingOfferCommandRequest.routeSpecification.originLocation)
     Location resolvedDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(createBookingOfferCommandRequest.routeSpecification.destinationLocation)
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
+        customer: customer,
         bookingOfferId: BookingOfferId.makeWithGeneratedIdentifierIfNeeded(createBookingOfferCommandRequest.bookingOfferIdentifier),
         routeSpecification: RouteSpecification.make(
             resolvedOriginLocation, resolvedDestinationLocation,
@@ -109,6 +115,10 @@ class BookingOfferFactoryService {
     Map<String, ?> destinationLocationMap = makeMapFromLocation(bookingOfferAggregate.routeSpecification.destinationLocation)
 
     CreateBookingOfferCommandResponse createBookingOfferCommandResponse = new CreateBookingOfferCommandResponse(
+        customer: [
+            customerId: bookingOfferAggregate.customer.customerId.identifier,
+            customerType: bookingOfferAggregate.customer.customerType.name()
+        ],
         bookingOfferId: [identifier: bookingOfferAggregate.bookingOfferId.identifier],
         routeSpecification: [
             originLocation: originLocationMap, destinationLocation: destinationLocationMap,

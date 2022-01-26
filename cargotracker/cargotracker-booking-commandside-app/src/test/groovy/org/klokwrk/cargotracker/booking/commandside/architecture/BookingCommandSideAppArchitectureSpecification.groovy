@@ -42,7 +42,8 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
             "org.klokwrk.cargotracker.booking.domain.model.service",
             "org.klokwrk.cargotracker.booking.domain.model.value",
             "org.klokwrk.cargotracker.booking.domain.model.command",
-            "org.klokwrk.cargotracker.booking.domain.model.event"
+            "org.klokwrk.cargotracker.booking.domain.model.event",
+            "org.klokwrk.cargotracker.booking.out.customer"
         ],
         ["org.klokwrk.cargotracker.booking.commandside.test"]
     )
@@ -101,15 +102,21 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         )
         .applicationServices(
             "..cargotracker.booking.commandside.feature.*.application.service..", // applicationServices
-            "..cargotracker.booking.commandside.feature.*.application.port.in..", // applicationInboundPorts
-            "..cargotracker.booking.commandside.feature.*.application.port.out.." // applicationOutboundPorts
+            "..cargotracker.booking.commandside.feature.*.application.port.in..", // portInbound
+            "..cargotracker.booking.commandside.feature.*.application.port.out..", // portOutbound
+            "..cargotracker.booking.out.customer.port.." // portOutbound
         )
         .adapter("in.web", "..cargotracker.booking.commandside.feature.*.adapter.in.web..") // adapterInbound
-        .adapter("out.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..") // adapterOutbound
+        .adapter("out.inline.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..") // adapterOutbound
+        .adapter("out.standalone.customer", "..cargotracker.booking.out.customer.adapter..") // adapterOutbound
 
-        .ignoreDependency(
-            resideInAnyPackage(["..cargotracker.booking.commandside.infrastructure.."] as String[]),
-            resideInAnyPackage(["..cargotracker.booking.domain.model.service.."] as String[])
+        .ignoreDependency( // dependency injection can access and instantiate domain services
+            resideInAnyPackage("..cargotracker.booking.commandside.infrastructure.."),
+            resideInAnyPackage("..cargotracker.booking.domain.model.service..")
+        )
+        .ignoreDependency( // dependency injection can access and instantiate outbound adapters
+            resideInAnyPackage("..cargotracker.booking.commandside.infrastructure.."),
+            resideInAnyPackage("..cargotracker.booking.out.customer.adapter..")
         )
 
         .withOptionalLayers(true)
@@ -136,15 +143,23 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
 
         .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
-        .applicationOutboundPorts("..cargotracker.booking.commandside.feature.*.application.port.out..")
+        .applicationOutboundPorts(
+            "..cargotracker.booking.commandside.feature.*.application.port.out..",
+            "..cargotracker.booking.out.customer.port.."
+        )
         .applicationServices("..cargotracker.booking.commandside.feature.*.application.service..")
 
         .adapterInbound("in.web", "..cargotracker.booking.commandside.feature.*.adapter.in.web..")
-        .adapterOutbound("out.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..")
+        .adapterOutbound("out.inline.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..")
+        .adapterOutbound("out.standalone.customer", "..cargotracker.booking.out.customer.adapter..")
 
-        .ignoreDependency(
-            resideInAnyPackage(["..cargotracker.booking.commandside.infrastructure.."] as String[]),
-            resideInAnyPackage(["..cargotracker.booking.domain.model.service.."] as String[])
+        .ignoreDependency( // dependency injection can access and instantiate domain services
+            resideInAnyPackage("..cargotracker.booking.commandside.infrastructure.."),
+            resideInAnyPackage("..cargotracker.booking.domain.model.service..")
+        )
+        .ignoreDependency( // dependency injection can access and instantiate outbound adapters
+            resideInAnyPackage("..cargotracker.booking.commandside.infrastructure.."),
+            resideInAnyPackage("..cargotracker.booking.out.customer.adapter..")
         )
 
         .withOptionalLayers(true)
@@ -173,15 +188,23 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
 
         .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
-        .applicationOutboundPorts("..cargotracker.booking.commandside.feature.*.application.port.out..")
+        .applicationOutboundPorts(
+            "..cargotracker.booking.commandside.feature.*.application.port.out..",
+            "..cargotracker.booking.out.customer.port.."
+        )
         .applicationServices("..cargotracker.booking.commandside.feature.*.application.service..")
 
         .adapterInbound("in.web", "..cargotracker.booking.commandside.feature.*.adapter.in.web..")
-        .adapterOutbound("out.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..")
+        .adapterOutbound("out.inline.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..")
+        .adapterOutbound("out.standalone.customer", "..cargotracker.booking.out.customer.adapter..")
 
-        .ignoreDependency(
+        .ignoreDependency( // dependency injection can access and instantiate domain services
             resideInAnyPackage(["..cargotracker.booking.commandside.infrastructure.."] as String[]),
             resideInAnyPackage(["..cargotracker.booking.domain.model.service.."] as String[])
+        )
+        .ignoreDependency( // dependency injection can access and instantiate outbound adapters
+            resideInAnyPackage("..cargotracker.booking.commandside.infrastructure.."),
+            resideInAnyPackage("..cargotracker.booking.out.customer.adapter..")
         )
 
         .withOptionalLayers(false)

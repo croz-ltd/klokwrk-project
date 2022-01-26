@@ -51,6 +51,7 @@ class BookingOfferCreatedEventFixtures {
     Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, commodityInfo, Quantities.getQuantity(20_615, Units.KILOGRAM))
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
+        customer: createBookingOfferCommand.customer,
         bookingOfferId: createBookingOfferCommand.bookingOfferId,
         routeSpecification: createBookingOfferCommand.routeSpecification,
         commodity: commodity,

@@ -15,19 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in
+package org.klokwrk.cargotracker.booking.domain.model.value
 
 import groovy.transform.CompileStatic
-import groovy.transform.MapConstructor
-import groovy.transform.PropertyOptions
-import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
-@PropertyOptions(propertyHandler = RelaxedPropertyHandler)
-@MapConstructor
+/**
+ * Enumerates Customer types.
+ * <p/>
+ * Available Customer types are:
+ * <ul>
+ *   <li><b>ANONYMOUS</b>: not logged in customer. Does not have any benefits, i.e., like special booking discounts.</li>
+ *   <li><b>STANDARD</b>: logged in customer. Usually does not have any benefits, i.e., like special booking discounts. It is equivalent to the anonymous, but logged in the system.</li>
+ *   <li><b>GOLD</b>: logged in customer. Usually has some benefits like smaller discounts.</li>
+ *   <li><b>PLATINUM</b>: logged in customer. It has benefits like larger discounts.</li>
+ * </ul>
+ */
 @CompileStatic
-class CreateBookingOfferCommandResponse {
-  Map<String, ?> customer
-  Map<String, ?> bookingOfferId
-  Map<String, ?> routeSpecification
-  Map<String, ?> bookingOfferCommodities
+enum CustomerType {
+  ANONYMOUS,
+  STANDARD,
+  GOLD,
+  PLATINUM
 }

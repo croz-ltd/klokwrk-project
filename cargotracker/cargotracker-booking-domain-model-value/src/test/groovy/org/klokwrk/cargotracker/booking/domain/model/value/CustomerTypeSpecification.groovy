@@ -15,19 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in
+package org.klokwrk.cargotracker.booking.domain.model.value
 
-import groovy.transform.CompileStatic
-import groovy.transform.MapConstructor
-import groovy.transform.PropertyOptions
-import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import spock.lang.Specification
 
-@PropertyOptions(propertyHandler = RelaxedPropertyHandler)
-@MapConstructor
-@CompileStatic
-class CreateBookingOfferCommandResponse {
-  Map<String, ?> customer
-  Map<String, ?> bookingOfferId
-  Map<String, ?> routeSpecification
-  Map<String, ?> bookingOfferCommodities
+class CustomerTypeSpecification extends Specification {
+  void "should have expected enum size"() {
+    // Failure of this test is a signal that we should check places where enumeration is used and update tests and switch/if/else statements
+    expect:
+    CustomerType.values().size() == 4
+  }
 }

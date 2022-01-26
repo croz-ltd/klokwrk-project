@@ -21,6 +21,8 @@ import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
+import org.klokwrk.cargotracker.booking.domain.model.value.Customer
+import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
@@ -46,6 +48,8 @@ class CreateBookingOfferCommandSpecification extends Specification {
   static Instant currentInstantRoundedAndOneHour = currentInstantRounded + Duration.ofHours(1)
   static Instant currentInstantRoundedAndTwoHours = currentInstantRounded + Duration.ofHours(2)
   static Instant currentInstantRoundedAndThreeHours = currentInstantRounded + Duration.ofHours(3)
+
+  static Customer validStandardCustomer = Customer.make("${ UUID.randomUUID() }", CustomerType.STANDARD)
   static RouteSpecification validRouteSpecification = RouteSpecification.make(
       locationSampleMap["NLRTM"], locationSampleMap["DEHAM"], currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours, currentInstantRoundedAndThreeHours, clock
   )
@@ -56,6 +60,7 @@ class CreateBookingOfferCommandSpecification extends Specification {
     when:
     BookingOfferId bookingOfferId = BookingOfferId.makeWithGeneratedIdentifier()
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
+        customer: Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),
         bookingOfferId: bookingOfferId,
         routeSpecification: validRouteSpecification,
         commodityInfo: validCommodityInfo,
@@ -76,18 +81,25 @@ class CreateBookingOfferCommandSpecification extends Specification {
 
   void "map constructor should fail for null input params"() {
     when:
-    new CreateBookingOfferCommand(bookingOfferId: bookingOfferIdParam, routeSpecification: routeSpecificationParam, commodityInfo: commodityInfoParam, containerDimensionType: containerDimensionTypeParam)
+    new CreateBookingOfferCommand(
+        customer: customerParam,
+        bookingOfferId: bookingOfferIdParam,
+        routeSpecification: routeSpecificationParam,
+        commodityInfo: commodityInfoParam,
+        containerDimensionType: containerDimensionTypeParam
+    )
 
     then:
     AssertionError assertionError = thrown()
     assertionError.message.contains(messagePartParam)
 
     where:
-    bookingOfferIdParam                            | routeSpecificationParam | commodityInfoParam | containerDimensionTypeParam | messagePartParam
-    null                                           | validRouteSpecification | validCommodityInfo | validContainerDimensionType | "notNullValue"
-    BookingOfferId.makeWithGeneratedIdentifier() | null                    | validCommodityInfo | validContainerDimensionType | "notNullValue"
-    BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | null               | validContainerDimensionType | "notNullValue"
-    BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | validCommodityInfo | null                        | "notNullValue"
+    customerParam         | bookingOfferIdParam                          | routeSpecificationParam | commodityInfoParam | containerDimensionTypeParam | messagePartParam
+    null                  | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | validCommodityInfo | validContainerDimensionType | "notNullValue"
+    validStandardCustomer | null                                         | validRouteSpecification | validCommodityInfo | validContainerDimensionType | "notNullValue"
+    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | null                    | validCommodityInfo | validContainerDimensionType | "notNullValue"
+    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | null               | validContainerDimensionType | "notNullValue"
+    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | validCommodityInfo | null                        | "notNullValue"
   }
 
   void "map constructor should fail when some of business rules of routeSpecification are not satisfied"() {

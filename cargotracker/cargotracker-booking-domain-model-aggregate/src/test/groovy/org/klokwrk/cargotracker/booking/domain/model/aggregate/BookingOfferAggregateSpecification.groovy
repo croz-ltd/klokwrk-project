@@ -70,6 +70,7 @@ class BookingOfferAggregateSpecification extends Specification {
     Commodity expectedCommodity = Commodity.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommand.commodityInfo, Quantities.getQuantity(20_615, Units.KILOGRAM))
 
     BookingOfferCreatedEvent expectedBookingOfferCreatedEvent = new BookingOfferCreatedEvent(
+        customer: createBookingOfferCommand.customer,
         bookingOfferId: createBookingOfferCommand.bookingOfferId,
         routeSpecification: createBookingOfferCommand.routeSpecification,
         commodity: expectedCommodity,

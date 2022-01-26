@@ -26,6 +26,7 @@ import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerFeatu
 
 class ContainerFeaturesTypeSpecification extends Specification {
   void "should have expected enum size"() {
+    // Failure of this test is a signal that we should check places where enumeration is used and update tests and switch/if/else statements
     expect:
     ContainerFeaturesType.values().size() == 2
   }

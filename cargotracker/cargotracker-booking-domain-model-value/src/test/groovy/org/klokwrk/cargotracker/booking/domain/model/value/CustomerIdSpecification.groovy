@@ -19,10 +19,10 @@ package org.klokwrk.cargotracker.booking.domain.model.value
 
 import spock.lang.Specification
 
-class BookingOfferIdSpecification extends Specification {
+class CustomerIdSpecification extends Specification {
   void "map constructor should work for valid arguments"() {
     expect:
-    new BookingOfferId(identifier: identifierParam)
+    new CustomerId(identifier: identifierParam)
 
     where:
     identifierParam                        | _
@@ -34,7 +34,7 @@ class BookingOfferIdSpecification extends Specification {
 
   void "map constructor should fail for invalid arguments"() {
     when:
-    new BookingOfferId(identifier: identifierParam)
+    new CustomerId(identifier: identifierParam)
 
     then:
     AssertionError assertionError = thrown(AssertionError)
@@ -58,34 +58,24 @@ class BookingOfferIdSpecification extends Specification {
     "00000000-0000-4000-C000-000000000000" | "checkIfRandomUuid(identifier)"
   }
 
-  void "makeWithGeneratedIdentifier() should produce valid CargoId"() {
+  void "make() should produce valid CargoId for valid parameter"() {
     when:
-    BookingOfferId.makeWithGeneratedIdentifier()
-
-    then:
-    noExceptionThrown()
-  }
-
-  void "makeWithGeneratedIdentifierIfNeeded() should produce valid CargoId for valid parameter"() {
-    when:
-    BookingOfferId.makeWithGeneratedIdentifierIfNeeded(uuidStringParam)
+    CustomerId.make(uuidStringParam)
 
     then:
     noExceptionThrown()
 
     where:
     uuidStringParam                        | _
-    null                                   | _
-    ""                                     | _
     UUID.randomUUID().toString()           | _
     "00000000-0000-4000-8000-000000000000" | _
     "00000000-0000-4000-9000-000000000001" | _
     "11111111-1111-4111-A111-111111111111" | _
   }
 
-  void "makeWithGeneratedIdentifierIfNeeded() should fail for invalid parameter"() {
+  void "make() should fail for invalid parameter"() {
     when:
-    BookingOfferId.makeWithGeneratedIdentifierIfNeeded(uuidStringParam)
+    CustomerId.make(uuidStringParam)
 
     then:
     AssertionError assertionError = thrown(AssertionError)
@@ -93,6 +83,8 @@ class BookingOfferIdSpecification extends Specification {
 
     where:
     uuidStringParam                        | errorMessagePartParam
+    null                                   | "not(blankOrNullString())"
+    ""                                     | "not(blankOrNullString())"
     "   "                                  | "not(blankOrNullString())"
 
     "1"                                    | "checkIfRandomUuid(identifier)"
@@ -101,7 +93,6 @@ class BookingOfferIdSpecification extends Specification {
     "${ UUID.randomUUID() } "              | "checkIfRandomUuid(identifier)"
     " ${ UUID.randomUUID() } "             | "checkIfRandomUuid(identifier)"
 
-    "00000000-0000-0000-0000-000000000000" | "checkIfRandomUuid(identifier)"
     "00000000-0000-4000-0000-000000000000" | "checkIfRandomUuid(identifier)"
     "00000000-0000-4000-1000-000000000000" | "checkIfRandomUuid(identifier)"
     "00000000-0000-4000-7000-000000000000" | "checkIfRandomUuid(identifier)"
