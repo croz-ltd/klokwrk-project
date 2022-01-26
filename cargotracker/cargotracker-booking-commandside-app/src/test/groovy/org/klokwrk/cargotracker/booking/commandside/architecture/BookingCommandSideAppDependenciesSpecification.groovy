@@ -134,6 +134,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     String[] cargotrackerBookingBoundaryWebAllPackages = ["org.klokwrk.cargotracker.booking.boundary.web.."]
     String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
     String[] cargotrackerBookingDomainAggregateAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.aggregate.."]
+    String[] cargotrackerBookingStandaloneOutAdapterAllPackages = ["org.klokwrk.cargotracker.booking.out.customer.."]
 
     String[] cargotrackerLibAxonCqrsCommandPackages = ["org.klokwrk.cargotracker.lib.axon.cqrs.command.."]
     String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracker.lib.boundary.api.."]
@@ -154,6 +155,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
             cargotrackerBookingBoundaryWebAllPackages +
             cargotrackerBookingDomainValueAllPackages +
             cargotrackerBookingDomainAggregateAllPackages +
+            cargotrackerBookingStandaloneOutAdapterAllPackages +
 
             cargotrackerLibAxonCqrsCommandPackages +
             cargotrackerLibBoundaryApiAllPackages +
@@ -190,9 +192,10 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         "org.springframework.context.."
     ]
 
-    String[] cargotrackerBookingServiceAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.service.."]
-
     String[] cargotrackerBookingCommandsideAppInfrastructurePackages = ["org.klokwrk.cargotracker.booking.commandside.infrastructure.."]
+
+    String[] cargotrackerBookingServiceAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.service.."]
+    String[] cargotrackerBookingStandaloneOutAdapterAllPackages = ["org.klokwrk.cargotracker.booking.out.customer.."]
 
     String[] cargotrackerLibAxonCqrsCommandPackages = ["org.klokwrk.cargotracker.lib.axon.cqrs.command.."]
     String[] cargotrackerLibAxonLoggingAllPackages = ["org.klokwrk.cargotracker.lib.axon.logging.."]
@@ -205,9 +208,10 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     ArchRule rule = ArchRuleDefinition
         .classes().that().resideInAnyPackage(cargotrackerBookingCommandsideAppInfrastructurePackages)
         .should().onlyAccessClassesThat().resideInAnyPackage(
-            cargotrackerBookingServiceAllPackages +
-
             cargotrackerBookingCommandsideAppInfrastructurePackages +
+
+            cargotrackerBookingServiceAllPackages +
+            cargotrackerBookingStandaloneOutAdapterAllPackages +
 
             cargotrackerLibAxonCqrsCommandPackages +
             cargotrackerLibAxonLoggingAllPackages +
