@@ -18,10 +18,16 @@
 package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model
 
 import groovy.transform.CompileStatic
+import groovy.transform.EqualsAndHashCode
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
+import groovy.transform.ToString
 import org.hibernate.annotations.Generated
 import org.hibernate.annotations.GenerationTime
+import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
+import org.klokwrk.lang.groovy.misc.UUIDUtils
+import org.klokwrk.lang.groovy.transform.KwrkMapConstructorDefaultPostCheck
+import org.klokwrk.lang.groovy.transform.KwrkMapConstructorNoArgHideable
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
 import javax.persistence.Column
@@ -29,18 +35,31 @@ import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
+import static org.hamcrest.Matchers.is
+import static org.hamcrest.Matchers.notNullValue
+
+// Note about @EqualsAndHashCode:
+//   We assume bookingOfferIdentifier will never be null when equals and hashCode are used.
+//   For this to work, identifier have to be assigned before passing an entity to JPA provider. For user code this is enforced with combination of @KwrkMapConstructorNoArgHideable and
+//   @KwrkMapConstructorDefaultPostCheck while Hibernate can still operate with private default constructor.
+//   References:
+//     https://vladmihalcea.com/the-best-way-to-implement-equals-hashcode-and-tostring-with-jpa-and-hibernate/
+//     https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+@ToString
+@EqualsAndHashCode(includes = ["bookingOfferIdentifier"])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
+@KwrkMapConstructorDefaultPostCheck
+@KwrkMapConstructorNoArgHideable(makePackagePrivate = true)
 @Entity
 @CompileStatic
 @Table(name = "booking_offer_summary")
-class BookingOfferSummaryJpaEntity {
+class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Id
-  @Column(columnDefinition="uuid")
   UUID bookingOfferIdentifier
 
   @Generated(GenerationTime.INSERT)
-  @Column(nullable = false, unique = true, updatable = false)
+  @Column(insertable = false, updatable = false, columnDefinition = "BIGSERIAL UNIQUE")
   Long rowNum
 
   @Column(nullable = false) String originLocation
@@ -49,4 +68,10 @@ class BookingOfferSummaryJpaEntity {
   @Column(nullable = false) Long aggregateVersion
   @Column(nullable = false) String inboundChannelName
   @Column(nullable = false) String inboundChannelType
+
+  @Override
+  void postMapConstructorCheck(Map<String, ?> constructorArguments) {
+    requireMatch(bookingOfferIdentifier, notNullValue())
+    requireMatch(UUIDUtils.checkIfRandomUuid(bookingOfferIdentifier.toString()), is(true))
+  }
 }

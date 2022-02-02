@@ -1,0 +1,145 @@
+package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model
+
+import com.github.dockerjava.api.command.CreateNetworkCmd
+import org.hibernate.Session
+import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
+import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
+import org.springframework.test.context.DynamicPropertyRegistry
+import org.springframework.test.context.DynamicPropertySource
+import org.testcontainers.containers.Network
+import org.testcontainers.containers.PostgreSQLContainer
+import spock.lang.Specification
+
+// equality consistency tests reference:
+//    https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+//    https://vladmihalcea.com/the-best-way-to-implement-equals-hashcode-and-tostring-with-jpa-and-hibernate/
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DataJpaTest
+class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification {
+  static PostgreSQLContainer postgresqlServer
+  static Network klokwrkNetwork
+
+  static {
+    klokwrkNetwork = Network.builder().createNetworkCmdModifier({ CreateNetworkCmd createNetworkCmd -> createNetworkCmd.withName("klokwrk-network-${ UUID.randomUUID() }") }).build()
+    postgresqlServer = PostgreSqlTestcontainersFactory.makeAndStartPostgreSqlServer(klokwrkNetwork)
+    RdbmsManagementAppTestcontainersFactory.makeAndStartRdbmsManagementApp(klokwrkNetwork, postgresqlServer)
+  }
+
+  @DynamicPropertySource
+  static void configureAxonServerProperties(DynamicPropertyRegistry registry) {
+    registry.add("spring.datasource.url", { postgresqlServer.jdbcUrl })
+    registry.add("spring.datasource.username", { postgresqlServer.username })
+    registry.add("spring.datasource.password", { postgresqlServer.password })
+  }
+
+  @Autowired
+  TestEntityManager testEntityManager
+
+  BookingOfferSummaryJpaEntity originalEntity
+  Set<BookingOfferSummaryJpaEntity> entitySet
+
+  void setup() {
+    originalEntity = new BookingOfferSummaryJpaEntity(
+        bookingOfferIdentifier: UUID.randomUUID(),
+        originLocation: "originLocation",
+        destinationLocation: "destinationLocation",
+        aggregateVersion: 1L,
+        inboundChannelName: "inboundChannelName",
+        inboundChannelType: "inboundChannelType"
+    )
+
+    entitySet = [originalEntity] as HashSet
+  }
+
+  void "should comply with equality consistency - after persist"() {
+    when:
+    testEntityManager.persistAndFlush(originalEntity)
+
+    then:
+    entitySet.contains(originalEntity)
+  }
+
+  void "should comply with equality consistency - after merging non-persisted entity"() {
+    when:
+    BookingOfferSummaryJpaEntity mergedEntity = testEntityManager.merge(originalEntity)
+
+    then:
+    entitySet.contains(mergedEntity)
+  }
+
+  void "should comply with equality consistency - after merging persisted entity"() {
+    given:
+    testEntityManager.persistAndFlush(originalEntity)
+    testEntityManager.clear()
+
+    when:
+    BookingOfferSummaryJpaEntity mergedEntity = testEntityManager.merge(originalEntity)
+
+    then:
+    entitySet.contains(mergedEntity)
+  }
+
+  void "should comply with equality consistency - after reattaching non-persisted entity"() {
+    when:
+    testEntityManager.entityManager.unwrap(Session).update(originalEntity)
+
+    then:
+    entitySet.contains(originalEntity)
+  }
+
+  void "should comply with equality consistency - after reattaching persisted entity"() {
+    given:
+    testEntityManager.persistAndFlush(originalEntity)
+    testEntityManager.clear()
+
+    when:
+    testEntityManager.entityManager.unwrap(Session).update(originalEntity)
+
+    then:
+    entitySet.contains(originalEntity)
+  }
+
+  void "should comply with equality consistency - after loading persisted entity"() {
+    given:
+    testEntityManager.persistAndFlush(originalEntity)
+    testEntityManager.clear()
+
+    when:
+    BookingOfferSummaryJpaEntity foundEntity = testEntityManager.find(BookingOfferSummaryJpaEntity, originalEntity.bookingOfferIdentifier)
+
+    then:
+    entitySet.contains(foundEntity)
+  }
+
+  void "should comply with equality consistency - after loading a proxy to persisted entity"() {
+    given:
+    testEntityManager.persistAndFlush(originalEntity)
+    testEntityManager.clear()
+
+    when:
+    BookingOfferSummaryJpaEntity entityProxy = testEntityManager.entityManager.getReference(BookingOfferSummaryJpaEntity, originalEntity.bookingOfferIdentifier)
+
+    then:
+    entitySet.contains(entityProxy)
+    originalEntity == entityProxy
+  }
+
+  void "should comply with equality consistency - after loading and removing proxy to persisted entity"() {
+    given:
+    testEntityManager.persistAndFlush(originalEntity)
+    testEntityManager.clear()
+
+    BookingOfferSummaryJpaEntity proxyEntity = testEntityManager.entityManager.getReference(BookingOfferSummaryJpaEntity, originalEntity.bookingOfferIdentifier)
+
+    when:
+    testEntityManager.remove(proxyEntity)
+    testEntityManager.flush()
+
+    then:
+    entitySet.contains(proxyEntity)
+  }
+}
