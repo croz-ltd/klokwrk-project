@@ -49,13 +49,16 @@ class BookingOfferSummaryQueryHandlerService {
 
   @QueryHandler
   BookingOfferSummaryQueryResponse handleBookingOfferSummaryQueryRequest(BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest) {
-    BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = bookingOfferSummaryJpaRepository.findByBookingOfferIdentifier(bookingOfferSummaryQueryRequest.bookingOfferIdentifier)
+    BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = bookingOfferSummaryJpaRepository.findByBookingOfferIdentifier(UUID.fromString(bookingOfferSummaryQueryRequest.bookingOfferIdentifier))
 
     if (!bookingOfferSummaryJpaEntity) {
       throw new QueryException(ViolationInfo.NOT_FOUND)
     }
 
-    BookingOfferSummaryQueryResponse bookingOfferSummaryQueryResponse = new BookingOfferSummaryQueryResponse(bookingOfferSummaryJpaEntity.properties)
+    BookingOfferSummaryQueryResponse bookingOfferSummaryQueryResponse = new BookingOfferSummaryQueryResponse(
+        bookingOfferSummaryJpaEntity.properties.tap({ it["bookingOfferIdentifier"] = bookingOfferSummaryJpaEntity.bookingOfferIdentifier.toString() })
+    )
+
     return bookingOfferSummaryQueryResponse
   }
 }

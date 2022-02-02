@@ -60,7 +60,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtures.eventValidRouteSpecification()
-    String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
+    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId.identifier)
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage =
         GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
@@ -88,7 +88,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtures.eventValidRouteSpecification()
-    String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
+    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId.identifier)
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, [:])
     eventBus.publish(genericDomainEventMessage)

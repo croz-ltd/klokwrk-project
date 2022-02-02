@@ -28,7 +28,7 @@ class BookingOfferSummarySqlHelper {
     return groovyRowResult.recordsCount as Long
   }
 
-  static Map<String, ?> selectBookingOfferSummaryRecord(Sql groovySql, String bookingOfferIdentifier) {
+  static Map<String, ?> selectBookingOfferSummaryRecord(Sql groovySql, UUID bookingOfferIdentifier) {
     List<GroovyRowResult> groovyRowResultList =
         groovySql.rows([bookingOfferIdentifier: bookingOfferIdentifier], "SELECT * from booking_offer_summary where booking_offer_identifier = :bookingOfferIdentifier")
 

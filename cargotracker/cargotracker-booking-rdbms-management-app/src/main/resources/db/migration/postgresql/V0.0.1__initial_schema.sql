@@ -34,16 +34,14 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO cargotracker
 CREATE SEQUENCE booking_offer_summary_sequence INCREMENT BY 50 MINVALUE 1 MAXVALUE 9223372036854775807 START WITH 1 NO CYCLE;
 
 CREATE TABLE booking_offer_summary (
-  id bigint NOT NULL,
+  id BIGINT PRIMARY KEY,
+  booking_offer_identifier UUID UNIQUE NOT NULL,
 
-  booking_offer_identifier CHAR(36) NOT NULL,
   origin_location VARCHAR(255) NOT NULL,
   destination_location VARCHAR(255) NOT NULL,
 
   aggregate_version BIGINT NOT NULL,
 
   inbound_channel_name VARCHAR(255) NOT NULL,
-  inbound_channel_type VARCHAR(255) NOT NULL,
-
-  PRIMARY KEY (id)
+  inbound_channel_type VARCHAR(255) NOT NULL
 );

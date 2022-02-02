@@ -41,7 +41,9 @@ class BookingOfferSummaryJpaEntity {
   @SequenceGenerator(name = "bookingOfferSummarySequenceGenerator", sequenceName = "booking_offer_summary_sequence", initialValue = 1, allocationSize = 50)
   Long id
 
-  @Column(nullable = false, columnDefinition="char(36)") String bookingOfferIdentifier
+  @Column(nullable = false, unique = true, updatable = false, columnDefinition="uuid")
+  UUID bookingOfferIdentifier
+
   @Column(nullable = false) String originLocation
   @Column(nullable = false) String destinationLocation
 
