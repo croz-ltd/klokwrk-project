@@ -28,5 +28,6 @@ dependencies {
 
   implementation "jakarta.persistence:jakarta.persistence-api"
   implementation "org.codehaus.groovy:groovy"
+  implementation "org.hibernate:hibernate-core"
   implementation "org.springframework.data:spring-data-jpa"
 }

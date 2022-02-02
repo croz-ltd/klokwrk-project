@@ -20,14 +20,13 @@ package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
+import org.hibernate.annotations.Generated
+import org.hibernate.annotations.GenerationTime
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
 import javax.persistence.Id
-import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
@@ -37,12 +36,12 @@ import javax.persistence.Table
 @Table(name = "booking_offer_summary")
 class BookingOfferSummaryJpaEntity {
   @Id
-  @GeneratedValue(generator = "bookingOfferSummarySequenceGenerator", strategy = GenerationType.SEQUENCE)
-  @SequenceGenerator(name = "bookingOfferSummarySequenceGenerator", sequenceName = "booking_offer_summary_sequence", initialValue = 1, allocationSize = 50)
-  Long id
-
-  @Column(nullable = false, unique = true, updatable = false, columnDefinition="uuid")
+  @Column(columnDefinition="uuid")
   UUID bookingOfferIdentifier
+
+  @Generated(GenerationTime.INSERT)
+  @Column(nullable = false, unique = true, updatable = false)
+  Long rowNum
 
   @Column(nullable = false) String originLocation
   @Column(nullable = false) String destinationLocation
