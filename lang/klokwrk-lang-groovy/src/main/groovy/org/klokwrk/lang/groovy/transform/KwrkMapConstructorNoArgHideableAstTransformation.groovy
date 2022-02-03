@@ -64,6 +64,16 @@ class KwrkMapConstructorNoArgHideableAstTransformation extends AbstractASTTransf
       return
     }
 
+    if (memberHasValue(myAnnotationNode, "makePackagePrivate", true)) {
+      noArgConstructorNode.modifiers = ACC_PUBLIC & ~ACC_PUBLIC
+      return
+    }
+
+    if (memberHasValue(myAnnotationNode, "makeProtected", true)) {
+      noArgConstructorNode.modifiers = ACC_PROTECTED
+      return
+    }
+
     noArgConstructorNode.modifiers = ACC_PRIVATE
   }
 
