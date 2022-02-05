@@ -71,9 +71,8 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
       verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
-        size() == 7
+        size() == 6
         booking_offer_identifier == bookingOfferIdentifier
-        row_num >= 0
         origin_location == "HRRJK"
         destination_location == "NLRTM"
         aggregate_version == 0
@@ -97,9 +96,8 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
       verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
-        size() == 7
+        size() == 6
         booking_offer_identifier == bookingOfferIdentifier
-        row_num >= 0
         origin_location == "HRRJK"
         destination_location == "NLRTM"
         aggregate_version == 0

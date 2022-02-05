@@ -33,7 +33,6 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO cargotracker
 
 CREATE TABLE booking_offer_summary (
   booking_offer_identifier UUID PRIMARY KEY,
-  row_num BIGSERIAL UNIQUE,
 
   origin_location VARCHAR(255) NOT NULL,
   destination_location VARCHAR(255) NOT NULL,

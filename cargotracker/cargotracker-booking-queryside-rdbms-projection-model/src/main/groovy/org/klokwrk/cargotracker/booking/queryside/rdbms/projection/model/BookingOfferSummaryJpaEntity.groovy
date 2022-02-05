@@ -22,8 +22,6 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import groovy.transform.ToString
-import org.hibernate.annotations.Generated
-import org.hibernate.annotations.GenerationTime
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.misc.UUIDUtils
 import org.klokwrk.lang.groovy.transform.KwrkMapConstructorDefaultPostCheck
@@ -42,6 +40,10 @@ import static org.hamcrest.Matchers.notNullValue
 //   We assume bookingOfferIdentifier will never be null when equals and hashCode are used.
 //   For this to work, identifier have to be assigned before passing an entity to JPA provider. For user code this is enforced with combination of @KwrkMapConstructorNoArgHideable and
 //   @KwrkMapConstructorDefaultPostCheck while Hibernate can still operate with private default constructor.
+//
+//   @KwrkMapConstructorNoArgHideable is configured to modify no arg constructor's visibility to package-private. This is because Hibernate proxies cannot work with private no-arg constructor.
+//   To see the effect, change makePackagePrivate to false, and run BookingOfferSummaryJpaEntityIntegrationSpecification.
+//
 //   References:
 //     https://vladmihalcea.com/the-best-way-to-implement-equals-hashcode-and-tostring-with-jpa-and-hibernate/
 //     https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
@@ -57,10 +59,6 @@ import static org.hamcrest.Matchers.notNullValue
 class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Id
   UUID bookingOfferIdentifier
-
-  @Generated(GenerationTime.INSERT)
-  @Column(insertable = false, updatable = false, columnDefinition = "BIGSERIAL UNIQUE")
-  Long rowNum
 
   @Column(nullable = false) String originLocation
   @Column(nullable = false) String destinationLocation
