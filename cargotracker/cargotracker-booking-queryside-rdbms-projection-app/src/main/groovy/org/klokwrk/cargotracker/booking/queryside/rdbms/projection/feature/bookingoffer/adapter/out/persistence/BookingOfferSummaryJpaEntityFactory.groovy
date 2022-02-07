@@ -27,7 +27,7 @@ import org.klokwrk.lang.groovy.constant.CommonConstants
 @CompileStatic
 class BookingOfferSummaryJpaEntityFactory {
   static BookingOfferSummaryJpaEntity makeBookingOfferSummaryJpaEntity(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
-    String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
+    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId.identifier)
     String originLocation = bookingOfferCreatedEvent.routeSpecification.originLocation.unLoCode.code
     String destinationLocation = bookingOfferCreatedEvent.routeSpecification.destinationLocation.unLoCode.code
     Long aggregateVersion = domainEventMessage.sequenceNumber

@@ -21,7 +21,7 @@ import org.klokwrk.cargotracker.booking.domain.model.value.Customer
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
-import org.klokwrk.lang.groovy.misc.UUIDUtils
+import org.klokwrk.lang.groovy.misc.RandomUuidUtils
 import spock.lang.Specification
 
 class InMemoryCustomerRegistryServiceSpecification extends Specification {
@@ -38,7 +38,7 @@ class InMemoryCustomerRegistryServiceSpecification extends Specification {
     Customer customer = inMemoryCustomerRegistryService.findCustomerByUserIdentifier(userIdentifierParam)
 
     then:
-    UUIDUtils.checkIfRandomUuid(customer.customerId.identifier)
+    RandomUuidUtils.checkIfRandomUuidString(customer.customerId.identifier)
     customer.customerId.identifier == customerIdentifierParam
     customer.customerType == customerTypeParam
 

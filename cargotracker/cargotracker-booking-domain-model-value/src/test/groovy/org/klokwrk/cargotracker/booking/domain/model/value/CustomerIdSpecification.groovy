@@ -46,16 +46,16 @@ class CustomerIdSpecification extends Specification {
     ""                                     | "not(blankOrNullString())"
     "   "                                  | "not(blankOrNullString())"
 
-    "1"                                    | "checkIfRandomUuid(identifier)"
-    "Z"                                    | "checkIfRandomUuid(identifier)"
-    " ${ UUID.randomUUID() }"              | "checkIfRandomUuid(identifier)"
-    "${ UUID.randomUUID() } "              | "checkIfRandomUuid(identifier)"
-    " ${ UUID.randomUUID() } "             | "checkIfRandomUuid(identifier)"
+    "1"                                    | "checkIfRandomUuidString(identifier)"
+    "Z"                                    | "checkIfRandomUuidString(identifier)"
+    " ${ UUID.randomUUID() }"              | "checkIfRandomUuidString(identifier)"
+    "${ UUID.randomUUID() } "              | "checkIfRandomUuidString(identifier)"
+    " ${ UUID.randomUUID() } "             | "checkIfRandomUuidString(identifier)"
 
-    "00000000-0000-4000-0000-000000000000" | "checkIfRandomUuid(identifier)"
-    "00000000-0000-4000-1000-000000000000" | "checkIfRandomUuid(identifier)"
-    "00000000-0000-4000-7000-000000000000" | "checkIfRandomUuid(identifier)"
-    "00000000-0000-4000-C000-000000000000" | "checkIfRandomUuid(identifier)"
+    "00000000-0000-4000-0000-000000000000" | "checkIfRandomUuidString(identifier)"
+    "00000000-0000-4000-1000-000000000000" | "checkIfRandomUuidString(identifier)"
+    "00000000-0000-4000-7000-000000000000" | "checkIfRandomUuidString(identifier)"
+    "00000000-0000-4000-C000-000000000000" | "checkIfRandomUuidString(identifier)"
   }
 
   void "make() should produce valid CargoId for valid parameter"() {
@@ -87,15 +87,15 @@ class CustomerIdSpecification extends Specification {
     ""                                     | "not(blankOrNullString())"
     "   "                                  | "not(blankOrNullString())"
 
-    "1"                                    | "checkIfRandomUuid(identifier)"
-    "Z"                                    | "checkIfRandomUuid(identifier)"
-    " ${ UUID.randomUUID() }"              | "checkIfRandomUuid(identifier)"
-    "${ UUID.randomUUID() } "              | "checkIfRandomUuid(identifier)"
-    " ${ UUID.randomUUID() } "             | "checkIfRandomUuid(identifier)"
+    "1"                                    | "checkIfRandomUuidString(identifier)"
+    "Z"                                    | "checkIfRandomUuidString(identifier)"
+    " ${ UUID.randomUUID() }"              | "checkIfRandomUuidString(identifier)"
+    "${ UUID.randomUUID() } "              | "checkIfRandomUuidString(identifier)"
+    " ${ UUID.randomUUID() } "             | "checkIfRandomUuidString(identifier)"
 
-    "00000000-0000-4000-0000-000000000000" | "checkIfRandomUuid(identifier)"
-    "00000000-0000-4000-1000-000000000000" | "checkIfRandomUuid(identifier)"
-    "00000000-0000-4000-7000-000000000000" | "checkIfRandomUuid(identifier)"
-    "00000000-0000-4000-C000-000000000000" | "checkIfRandomUuid(identifier)"
+    "00000000-0000-4000-0000-000000000000" | "checkIfRandomUuidString(identifier)"
+    "00000000-0000-4000-1000-000000000000" | "checkIfRandomUuidString(identifier)"
+    "00000000-0000-4000-7000-000000000000" | "checkIfRandomUuidString(identifier)"
+    "00000000-0000-4000-C000-000000000000" | "checkIfRandomUuidString(identifier)"
   }
 }

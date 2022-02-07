@@ -42,6 +42,7 @@ import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 import org.klokwrk.cargotracker.lib.boundary.api.application.exception.RemoteHandlerException
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
+import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
 import org.klokwrk.lang.groovy.misc.InstantUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -69,7 +70,7 @@ abstract class AbstractBookingOfferApplicationServiceIntegrationSpecification ex
     Instant currentInstantRoundedAndTwoHours = InstantUtils.roundUpInstantToTheHour(currentInstantAndTwoHours)
     Instant currentInstantRoundedAndThreeHours = InstantUtils.roundUpInstantToTheHour(currentInstantAndThreeHours)
 
-    String myBookingOfferIdentifier = UUID.randomUUID()
+    String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: myBookingOfferIdentifier,
@@ -140,7 +141,7 @@ abstract class AbstractBookingOfferApplicationServiceIntegrationSpecification ex
     }
     Registration handlerInterceptorRegistration = commandBus.registerHandlerInterceptor(messageHandlerInterceptor)
 
-    String myBookingOfferIdentifier = UUID.randomUUID()
+    String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: myBookingOfferIdentifier,
@@ -204,7 +205,7 @@ abstract class AbstractBookingOfferApplicationServiceIntegrationSpecification ex
     }
     Registration handlerInterceptorRegistration = commandBus.registerHandlerInterceptor(messageHandlerInterceptor)
 
-    String bookingOfferIdentifier = UUID.randomUUID()
+    String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: bookingOfferIdentifier,

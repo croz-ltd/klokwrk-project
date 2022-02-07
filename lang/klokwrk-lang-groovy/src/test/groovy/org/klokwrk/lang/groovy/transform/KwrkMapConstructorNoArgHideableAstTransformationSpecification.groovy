@@ -48,6 +48,78 @@ class KwrkMapConstructorNoArgHideableAstTransformationSpecification extends Spec
     myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() != 0 }.modifiers == Opcodes.ACC_PUBLIC
   }
 
+  void "should work with MapConstructor when package private visibility is configured"() {
+    given:
+    Class myClass = new GroovyClassLoader().parseClass("""
+        import groovy.transform.MapConstructor
+        import org.klokwrk.lang.groovy.transform.KwrkMapConstructorNoArgHideable
+
+        @MapConstructor(noArg = true)
+        @KwrkMapConstructorNoArgHideable(makePackagePrivate = true)
+        class MyClass {
+          String first
+          String last
+        }
+    """)
+
+    when:
+    def myClassInstance = myClass.newInstance(first: "Some first", last: "Some last")
+
+    then:
+    myClassInstance
+    myClass.declaredConstructors.size() == 2
+    myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() == 0 }.modifiers == (Opcodes.ACC_PUBLIC & ~Opcodes.ACC_PUBLIC)
+    myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() != 0 }.modifiers == Opcodes.ACC_PUBLIC
+  }
+
+  void "should work with MapConstructor when protected visibility is configured"() {
+    given:
+    Class myClass = new GroovyClassLoader().parseClass("""
+        import groovy.transform.MapConstructor
+        import org.klokwrk.lang.groovy.transform.KwrkMapConstructorNoArgHideable
+
+        @MapConstructor(noArg = true)
+        @KwrkMapConstructorNoArgHideable(makeProtected = true)
+        class MyClass {
+          String first
+          String last
+        }
+    """)
+
+    when:
+    def myClassInstance = myClass.newInstance(first: "Some first", last: "Some last")
+
+    then:
+    myClassInstance
+    myClass.declaredConstructors.size() == 2
+    myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() == 0 }.modifiers == Opcodes.ACC_PROTECTED
+    myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() != 0 }.modifiers == Opcodes.ACC_PUBLIC
+  }
+
+  void "should work with MapConstructor when both packagePrivate and protected visibilities are configured - package private takes precedence"() {
+    given:
+    Class myClass = new GroovyClassLoader().parseClass("""
+        import groovy.transform.MapConstructor
+        import org.klokwrk.lang.groovy.transform.KwrkMapConstructorNoArgHideable
+
+        @MapConstructor(noArg = true)
+        @KwrkMapConstructorNoArgHideable(makePackagePrivate = true, makeProtected = true)
+        class MyClass {
+          String first
+          String last
+        }
+    """)
+
+    when:
+    def myClassInstance = myClass.newInstance(first: "Some first", last: "Some last")
+
+    then:
+    myClassInstance
+    myClass.declaredConstructors.size() == 2
+    myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() == 0 }.modifiers == (Opcodes.ACC_PUBLIC & ~Opcodes.ACC_PUBLIC)
+    myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() != 0 }.modifiers == Opcodes.ACC_PUBLIC
+  }
+
   void "should work with default Immutable"() {
     given:
     Class myClass = new GroovyClassLoader().parseClass("""
@@ -69,6 +141,81 @@ class KwrkMapConstructorNoArgHideableAstTransformationSpecification extends Spec
     myClassInstance
     myClass.declaredConstructors.size() == 3
     myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() == 0 }.modifiers == Opcodes.ACC_PRIVATE
+    myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() == 1 }.modifiers == Opcodes.ACC_PUBLIC
+    myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() == 2 }.modifiers == Opcodes.ACC_PUBLIC
+  }
+
+  void "should work with default Immutable when package private visibility is configured"() {
+    given:
+    Class myClass = new GroovyClassLoader().parseClass("""
+        import groovy.transform.Immutable
+        import org.klokwrk.lang.groovy.transform.KwrkMapConstructorNoArgHideable
+
+        @Immutable
+        @KwrkMapConstructorNoArgHideable(makePackagePrivate = true)
+        class MyClass {
+          String first
+          String last
+        }
+    """)
+
+    when:
+    def myClassInstance = myClass.newInstance(first: "Some first", last: "Some last")
+
+    then:
+    myClassInstance
+    myClass.declaredConstructors.size() == 3
+    myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() == 0 }.modifiers == (Opcodes.ACC_PUBLIC & ~Opcodes.ACC_PUBLIC)
+    myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() == 1 }.modifiers == Opcodes.ACC_PUBLIC
+    myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() == 2 }.modifiers == Opcodes.ACC_PUBLIC
+  }
+
+  void "should work with default Immutable when protected visibility is configured"() {
+    given:
+    Class myClass = new GroovyClassLoader().parseClass("""
+        import groovy.transform.Immutable
+        import org.klokwrk.lang.groovy.transform.KwrkMapConstructorNoArgHideable
+
+        @Immutable
+        @KwrkMapConstructorNoArgHideable(makeProtected = true)
+        class MyClass {
+          String first
+          String last
+        }
+    """)
+
+    when:
+    def myClassInstance = myClass.newInstance(first: "Some first", last: "Some last")
+
+    then:
+    myClassInstance
+    myClass.declaredConstructors.size() == 3
+    myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() == 0 }.modifiers == Opcodes.ACC_PROTECTED
+    myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() == 1 }.modifiers == Opcodes.ACC_PUBLIC
+    myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() == 2 }.modifiers == Opcodes.ACC_PUBLIC
+  }
+
+  void "should work with default Immutable when both package private and protected visibilities are configured - package private takes precedence"() {
+    given:
+    Class myClass = new GroovyClassLoader().parseClass("""
+        import groovy.transform.Immutable
+        import org.klokwrk.lang.groovy.transform.KwrkMapConstructorNoArgHideable
+
+        @Immutable
+        @KwrkMapConstructorNoArgHideable(makePackagePrivate = true, makeProtected = true)
+        class MyClass {
+          String first
+          String last
+        }
+    """)
+
+    when:
+    def myClassInstance = myClass.newInstance(first: "Some first", last: "Some last")
+
+    then:
+    myClassInstance
+    myClass.declaredConstructors.size() == 3
+    myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() == 0 }.modifiers == (Opcodes.ACC_PUBLIC & ~Opcodes.ACC_PUBLIC)
     myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() == 1 }.modifiers == Opcodes.ACC_PUBLIC
     myClass.declaredConstructors.find { Constructor constructor -> constructor.parameters.size() == 2 }.modifiers == Opcodes.ACC_PUBLIC
   }

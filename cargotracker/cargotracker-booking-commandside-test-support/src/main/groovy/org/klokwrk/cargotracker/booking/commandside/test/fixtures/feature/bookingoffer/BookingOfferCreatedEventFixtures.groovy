@@ -24,6 +24,7 @@ import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
+import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
 import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.Units
 
@@ -35,8 +36,8 @@ class BookingOfferCreatedEventFixtures {
   /**
    * Creates valid event where origin and destination locations form supported route.
    */
-  static BookingOfferCreatedEvent eventValidRouteSpecification(String cargoIdentifier = UUID.randomUUID()) {
-    CreateBookingOfferCommand createBookingOfferCommand = CreateBookingOfferCommandFixtures.commandValidRouteSpecification(cargoIdentifier)
+  static BookingOfferCreatedEvent eventValidRouteSpecification(String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()) {
+    CreateBookingOfferCommand createBookingOfferCommand = CreateBookingOfferCommandFixtures.commandValidRouteSpecification(bookingOfferIdentifier)
     BookingOfferCreatedEvent bookingOfferCreatedEvent = eventValidForCommand(createBookingOfferCommand)
     return bookingOfferCreatedEvent
   }

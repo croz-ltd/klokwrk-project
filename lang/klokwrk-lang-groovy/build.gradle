@@ -37,6 +37,7 @@ compileGroovy {
 dependencies {
   implementation platform(project(":klokwrk-platform-base"))
 
+  implementation "com.github.f4b6a3:uuid-creator"
   implementation "org.codehaus.groovy:groovy"
 
   testImplementation "org.spockframework:spock-core"

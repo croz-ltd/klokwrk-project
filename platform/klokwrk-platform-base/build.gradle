@@ -55,6 +55,7 @@ dependencies {
   api platform("org.codehaus.groovy:groovy-bom:$groovyVersion")
 
   constraints {
+    api "com.github.f4b6a3:uuid-creator:$uuidCreatorVersion"
     api "com.github.tomakehurst:wiremock-jre8:$wireMockVersion"
     api "com.google.jimfs:jimfs:$jimfsVersion"
     api "com.tngtech.archunit:archunit-junit5:$archUnitVersion"
