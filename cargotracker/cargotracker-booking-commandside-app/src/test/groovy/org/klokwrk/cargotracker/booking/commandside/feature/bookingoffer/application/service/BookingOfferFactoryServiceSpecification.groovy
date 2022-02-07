@@ -39,6 +39,7 @@ import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerReg
 import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdentifierPortOut
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
+import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
 import spock.lang.Specification
 import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.Units
@@ -214,7 +215,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
 
   void "makeCreateBookingOfferCommand - should work for specified cargo identifier"() {
     given:
-    String bookingOfferIdentifier = UUID.randomUUID()
+    String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: bookingOfferIdentifier,
@@ -257,7 +258,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
   @SuppressWarnings("CodeNarc.MethodSize")
   void "makeCreateBookingOfferCommandResponse - should create expected response"() {
     given:
-    String myBookingOfferIdentifier = UUID.randomUUID()
+    String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     Location myOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRRJK")
     Location myDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("NLRTM")
 

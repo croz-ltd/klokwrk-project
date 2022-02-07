@@ -28,6 +28,7 @@ import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
+import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
 
 import java.time.Clock
 import java.time.Duration
@@ -49,16 +50,14 @@ class CreateBookingOfferCommandFixtures {
   /**
    * Creates valid command where origin and destination locations form supported route.
    */
-  static CreateBookingOfferCommand commandValidRouteSpecification(String bookingOfferIdentifier = UUID.randomUUID(), Clock clock = Clock.systemUTC()) {
-    Instant currentTime = Instant.now(clock)
-    Instant currentTimeAndOneHour = currentTime + Duration.ofHours(1)
-    Instant currentTimeAndTwoHours = currentTime + Duration.ofHours(2)
-    Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
+  static CreateBookingOfferCommand commandValidRouteSpecification(String bookingOfferIdentifier = null, Clock clock = Clock.systemUTC()) {
+    Tuple3<Instant, Instant, Instant> offsets = obtainInstantOffsets(Instant.now(clock))
+    String bookingOfferIdentifierToUse = obtainBookingOfferIdentifierToUse(bookingOfferIdentifier, clock)
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
         customer: Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),
-        bookingOfferId: BookingOfferId.make(bookingOfferIdentifier),
-        routeSpecification: RouteSpecification.make(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
+        bookingOfferId: BookingOfferId.make(bookingOfferIdentifierToUse),
+        routeSpecification: RouteSpecification.make(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, offsets.v1, offsets.v2, offsets.v3, clock),
         commodityInfo: CommodityInfo.make(CommodityType.DRY, 1000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
     )
@@ -66,16 +65,31 @@ class CreateBookingOfferCommandFixtures {
     return createBookingOfferCommand
   }
 
-  static CreateBookingOfferCommand commandValidCommodityInfo(String bookingOfferIdentifier = UUID.randomUUID(), Clock clock = Clock.systemUTC()) {
-    Instant currentTime = Instant.now(clock)
+  private static Tuple3<Instant, Instant, Instant> obtainInstantOffsets(Instant currentTime) {
     Instant currentTimeAndOneHour = currentTime + Duration.ofHours(1)
     Instant currentTimeAndTwoHours = currentTime + Duration.ofHours(2)
     Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
 
+    return new Tuple3<Instant, Instant, Instant>(currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours)
+  }
+
+  private static String obtainBookingOfferIdentifierToUse(String bookingOfferIdentifier, Clock clock = Clock.systemUTC()) {
+    String bookingOfferIdentifierToUse = bookingOfferIdentifier
+    if (!bookingOfferIdentifier?.trim()) {
+      bookingOfferIdentifierToUse = CombUuidShortPrefixUtils.makeCombShortPrefix(clock)
+    }
+
+    return bookingOfferIdentifierToUse
+  }
+
+  static CreateBookingOfferCommand commandValidCommodityInfo(String bookingOfferIdentifier = null, Clock clock = Clock.systemUTC()) {
+    Tuple3<Instant, Instant, Instant> offsets = obtainInstantOffsets(Instant.now(clock))
+    String bookingOfferIdentifierToUse = obtainBookingOfferIdentifierToUse(bookingOfferIdentifier, clock)
+
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
         customer: Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),
-        bookingOfferId: BookingOfferId.make(bookingOfferIdentifier),
-        routeSpecification: RouteSpecification.make(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
+        bookingOfferId: BookingOfferId.make(bookingOfferIdentifierToUse),
+        routeSpecification: RouteSpecification.make(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, offsets.v1, offsets.v2, offsets.v3, clock),
         commodityInfo: CommodityInfo.make(CommodityType.DRY, 10_000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
     )
@@ -83,16 +97,14 @@ class CreateBookingOfferCommandFixtures {
     return createBookingOfferCommand
   }
 
-  static CreateBookingOfferCommand commandInvalidCommodityInfo(String cargoIdentifier = UUID.randomUUID(), Clock clock = Clock.systemUTC()) {
-    Instant currentTime = Instant.now(clock)
-    Instant currentTimeAndOneHour = currentTime + Duration.ofHours(1)
-    Instant currentTimeAndTwoHours = currentTime + Duration.ofHours(2)
-    Instant currentTimeAndThreeHours = currentTime + Duration.ofHours(3)
+  static CreateBookingOfferCommand commandInvalidCommodityInfo(String bookingOfferIdentifier = null, Clock clock = Clock.systemUTC()) {
+    Tuple3<Instant, Instant, Instant> offsets = obtainInstantOffsets(Instant.now(clock))
+    String bookingOfferIdentifierToUse = obtainBookingOfferIdentifierToUse(bookingOfferIdentifier, clock)
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
         customer: Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),
-        bookingOfferId: BookingOfferId.make(cargoIdentifier),
-        routeSpecification: RouteSpecification.make(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, currentTimeAndOneHour, currentTimeAndTwoHours, currentTimeAndThreeHours, clock),
+        bookingOfferId: BookingOfferId.make(bookingOfferIdentifierToUse),
+        routeSpecification: RouteSpecification.make(LOCATION_SAMPLE_MAP.HRRJK, LOCATION_SAMPLE_MAP.NLRTM, offsets.v1, offsets.v2, offsets.v3, clock),
         commodityInfo: CommodityInfo.make(CommodityType.DRY, 5001 * 25_000),
         containerDimensionType: ContainerDimensionType.DIMENSION_ISO_22
     )

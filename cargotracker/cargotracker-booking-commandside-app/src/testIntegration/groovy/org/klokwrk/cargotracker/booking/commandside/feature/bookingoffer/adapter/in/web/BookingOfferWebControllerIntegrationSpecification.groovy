@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
+import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
 import org.klokwrk.lang.groovy.misc.InstantUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -63,7 +64,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
-    String myBookingOfferIdentifier = UUID.randomUUID()
+    String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
         [
             userIdentifier: "standard-customer@cargotracker.com",
@@ -227,7 +228,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
   @SuppressWarnings("CodeNarc.AbcMetric")
   void "should return expected response when request is not valid - validation failure - [acceptLanguage: #acceptLanguageParam]"() {
     given:
-    String bookingOfferIdentifier = UUID.randomUUID()
+    String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
         [
             userIdentifier: "standard-customer@cargotracker.com",
@@ -302,7 +303,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
-    String myBookingOfferIdentifier = UUID.randomUUID()
+    String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
         [
             userIdentifier: "unknownUserIdentifier",
@@ -372,7 +373,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
-    String bookingOfferIdentifier = UUID.randomUUID()
+    String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
         [
             userIdentifier: "standard-customer@cargotracker.com",
@@ -437,7 +438,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
-    String bookingOfferIdentifier = UUID.randomUUID()
+    String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
         [
             userIdentifier: "standard-customer@cargotracker.com",
@@ -502,7 +503,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
-    String bookingOfferIdentifier = UUID.randomUUID()
+    String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
         [
             userIdentifier: "standard-customer@cargotracker.com",
@@ -556,7 +557,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandS
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
-    String bookingOfferIdentifier = UUID.randomUUID()
+    String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
         [
             userIdentifier: "standard-customer@cargotracker.com",
