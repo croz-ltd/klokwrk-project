@@ -23,7 +23,7 @@ import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import groovy.transform.ToString
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
-import org.klokwrk.lang.groovy.misc.UUIDUtils
+import org.klokwrk.lang.groovy.misc.RandomUuidUtils
 import org.klokwrk.lang.groovy.transform.KwrkMapConstructorDefaultPostCheck
 import org.klokwrk.lang.groovy.transform.KwrkMapConstructorNoArgHideable
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
@@ -70,6 +70,6 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     requireMatch(bookingOfferIdentifier, notNullValue())
-    requireMatch(UUIDUtils.checkIfRandomUuid(bookingOfferIdentifier.toString()), is(true))
+    requireMatch(RandomUuidUtils.checkIfRandomUuidString(bookingOfferIdentifier.toString()), is(true))
   }
 }

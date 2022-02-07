@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.domain.model.value
 
 import groovy.transform.CompileStatic
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
-import org.klokwrk.lang.groovy.misc.UUIDUtils
+import org.klokwrk.lang.groovy.misc.RandomUuidUtils
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
 import static org.hamcrest.Matchers.blankOrNullString
@@ -73,6 +73,6 @@ class BookingOfferId implements PostMapConstructorCheckable {
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     requireMatch(identifier, not(blankOrNullString()))
-    requireMatch(UUIDUtils.checkIfRandomUuid(identifier), is(true))
+    requireMatch(RandomUuidUtils.checkIfRandomUuidString(identifier), is(true))
   }
 }
