@@ -74,7 +74,7 @@ class CombUuidShortPrefixUtils {
   /**
    * Checks if provided UUID instance is time-bounded as expected.
    * <p/>
-   * Method assumes that provided UUID is COMB UUID ith short prefix. Otherwise it will return {@code false}.
+   * Method assumes that provided UUID is COMB UUID with short prefix. Otherwise it will return {@code false}.
    * <p/>
    * By default time-bounds are checked against the current time. Base time can be changed via {@code clock} parameter.
    * <p/>
