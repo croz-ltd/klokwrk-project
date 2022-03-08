@@ -70,6 +70,6 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     requireMatch(bookingOfferIdentifier, notNullValue())
-    requireMatch(RandomUuidUtils.checkIfRandomUuidString(bookingOfferIdentifier.toString()), is(true))
+    requireMatch(RandomUuidUtils.checkIfRandomUuid(bookingOfferIdentifier), is(true))
   }
 }
