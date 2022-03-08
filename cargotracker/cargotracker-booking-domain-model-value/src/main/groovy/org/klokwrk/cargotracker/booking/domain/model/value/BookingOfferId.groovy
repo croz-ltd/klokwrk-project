@@ -18,14 +18,16 @@
 package org.klokwrk.cargotracker.booking.domain.model.value
 
 import groovy.transform.CompileStatic
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
+import org.klokwrk.lang.groovy.misc.RandomUuidUtils
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
 import java.time.Clock
 
 import static org.hamcrest.Matchers.blankOrNullString
-import static org.hamcrest.Matchers.is
 import static org.hamcrest.Matchers.not
 import static org.hamcrest.Matchers.notNullValue
 
@@ -123,11 +125,21 @@ class BookingOfferId implements PostMapConstructorCheckable {
     return make(uuidStringToUse, clock, inPastMinutesBound, inFutureMinutesBound)
   }
 
-  @SuppressWarnings("CodeNarc.DuplicateStringLiteral")
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     requireMatch(identifier, not(blankOrNullString()))
+    requireRandomUuidIdentifier(identifier)
+    requireCorrectlyBoundedCombUuidShortPrefixIdentifier(identifier, constructorArguments)
+  }
 
+  private void requireRandomUuidIdentifier(String identifier) {
+    if (!RandomUuidUtils.checkIfRandomUuidString(identifier)) {
+      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey("bookingOfferId.identifier.notRandomUuid"))
+    }
+  }
+
+  @SuppressWarnings("CodeNarc.DuplicateStringLiteral")
+  private void requireCorrectlyBoundedCombUuidShortPrefixIdentifier(String identifier, Map<String, ?> constructorArguments) {
     Clock clock = Clock.systemUTC()
     if (constructorArguments["clock"] != null && Clock.isInstance(constructorArguments["clock"])) {
       clock = constructorArguments["clock"] as Clock
@@ -143,6 +155,8 @@ class BookingOfferId implements PostMapConstructorCheckable {
       inFutureMinutesBound = constructorArguments["inFutureMinutesBound"] as Integer
     }
 
-    requireMatch(CombUuidShortPrefixUtils.checkIfCombShortPrefixStringIsBounded(identifier, clock, inPastMinutesBound, inFutureMinutesBound), is(true))
+    if (!CombUuidShortPrefixUtils.checkIfCombShortPrefixStringIsBounded(identifier, clock, inPastMinutesBound, inFutureMinutesBound)) {
+      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey("bookingOfferId.identifier.shortPrefixCombUuidNotInAllowedTimeRangeBounds"))
+    }
   }
 }

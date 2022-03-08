@@ -252,7 +252,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
     bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
-    thrown(AssertionError)
+    thrown(DomainException)
   }
 
   @SuppressWarnings("CodeNarc.MethodSize")

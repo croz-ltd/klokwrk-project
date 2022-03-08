@@ -17,6 +17,7 @@
  */
 package org.klokwrk.cargotracker.booking.domain.model.value
 
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
 import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
 import org.klokwrk.lang.groovy.misc.RandomUuidUtils
 import spock.lang.Specification
@@ -141,7 +142,7 @@ class BookingOfferIdSpecification extends Specification {
     "FFF6"               | "${ combShortPrefixParam }0000-0000-4000-8000-000000000000"
   }
 
-  void "map constructor should fail for invalid arguments"() {
+  void "map constructor should fail for invalid arguments - null or blank identifier"() {
     when:
     new BookingOfferId(identifier: identifierParam)
 
@@ -154,17 +155,38 @@ class BookingOfferIdSpecification extends Specification {
     null                                   | "not(blankOrNullString())"
     ""                                     | "not(blankOrNullString())"
     "   "                                  | "not(blankOrNullString())"
+  }
 
-    "1"                                    | "CombUuidShortPrefixUtils.checkIfCombShortPrefixStringIsBounded(identifier"
-    "Z"                                    | "CombUuidShortPrefixUtils.checkIfCombShortPrefixStringIsBounded(identifier"
-    " ${ UUID.randomUUID() }"              | "CombUuidShortPrefixUtils.checkIfCombShortPrefixStringIsBounded(identifier"
-    "${ UUID.randomUUID() } "              | "CombUuidShortPrefixUtils.checkIfCombShortPrefixStringIsBounded(identifier"
-    " ${ UUID.randomUUID() } "             | "CombUuidShortPrefixUtils.checkIfCombShortPrefixStringIsBounded(identifier"
+  void "map constructor should fail for invalid arguments - invalid uuid"() {
+    given:
+    // The time whose bounded minute is 0. As default tolerance is +- 10 minutes, we can have short COMB UUID prefixes (of 4 hex digits) from fff6 to 000A
+    Clock clock = Clock.fixed(Instant.parse("2022-03-18T03:44:00Z"), ZoneOffset.UTC)
 
-    "00000000-0000-4000-0000-000000000000" | "CombUuidShortPrefixUtils.checkIfCombShortPrefixStringIsBounded(identifier"
-    "00000000-0000-4000-1000-000000000000" | "CombUuidShortPrefixUtils.checkIfCombShortPrefixStringIsBounded(identifier"
-    "00000000-0000-4000-7000-000000000000" | "CombUuidShortPrefixUtils.checkIfCombShortPrefixStringIsBounded(identifier"
-    "00000000-0000-4000-C000-000000000000" | "CombUuidShortPrefixUtils.checkIfCombShortPrefixStringIsBounded(identifier"
+    when:
+    //noinspection GroovyConstructorNamedArguments
+    new BookingOfferId(identifier: identifierParam, clock: clock)
+
+    then:
+    DomainException domainException = thrown()
+    domainException.violationInfo.violationCode.code == "400"
+    domainException.violationInfo.violationCode.resolvableMessageKey == resolvableMessageKeyParam
+
+    where:
+    identifierParam                        | resolvableMessageKeyParam
+    "1"                                    | "bookingOfferId.identifier.notRandomUuid"
+    "Z"                                    | "bookingOfferId.identifier.notRandomUuid"
+    " ${ UUID.randomUUID() }"              | "bookingOfferId.identifier.notRandomUuid"
+    "${ UUID.randomUUID() } "              | "bookingOfferId.identifier.notRandomUuid"
+    " ${ UUID.randomUUID() } "             | "bookingOfferId.identifier.notRandomUuid"
+
+    "00000000-0000-4000-0000-000000000000" | "bookingOfferId.identifier.notRandomUuid"
+    "00000000-0000-4000-1000-000000000000" | "bookingOfferId.identifier.notRandomUuid"
+    "00000000-0000-4000-7000-000000000000" | "bookingOfferId.identifier.notRandomUuid"
+    "00000000-0000-4000-C000-000000000000" | "bookingOfferId.identifier.notRandomUuid"
+
+    "10000000-0000-4000-8000-000000000000" | "bookingOfferId.identifier.shortPrefixCombUuidNotInAllowedTimeRangeBounds"
+    "FFF50000-0000-4000-8000-000000000000" | "bookingOfferId.identifier.shortPrefixCombUuidNotInAllowedTimeRangeBounds"
+    "000B0000-0000-4000-8000-000000000000" | "bookingOfferId.identifier.shortPrefixCombUuidNotInAllowedTimeRangeBounds"
   }
 
   void "make() should produce valid BookingOfferId for valid arguments"() {
@@ -260,24 +282,23 @@ class BookingOfferIdSpecification extends Specification {
     BookingOfferId.makeWithGeneratedIdentifierIfNeeded(uuidStringParam, clock)
 
     then:
-    AssertionError assertionError = thrown(AssertionError)
-    assertionError.message.contains(errorMessagePartParam)
+    DomainException domainException = thrown()
+    domainException.violationInfo.violationCode.code == "400"
+    domainException.violationInfo.violationCode.resolvableMessageKey == resolvableMessageKeyParam
 
     where:
-    uuidStringParam                        | _
-    "1"                                    | _
-    "Z"                                    | _
-    "${ UUID.randomUUID() }"               | _
+    uuidStringParam                        | resolvableMessageKeyParam
+    "1"                                    | "bookingOfferId.identifier.notRandomUuid"
+    "Z"                                    | "bookingOfferId.identifier.notRandomUuid"
 
-    "00000000-0000-0000-0000-000000000000" | _
-    "00000000-0000-4000-0000-000000000000" | _
-    "00000000-0000-4000-1000-000000000000" | _
-    "00000000-0000-4000-7000-000000000000" | _
-    "00000000-0000-4000-C000-000000000000" | _
+    "00000000-0000-0000-0000-000000000000" | "bookingOfferId.identifier.notRandomUuid"
+    "00000000-0000-4000-0000-000000000000" | "bookingOfferId.identifier.notRandomUuid"
+    "00000000-0000-4000-1000-000000000000" | "bookingOfferId.identifier.notRandomUuid"
+    "00000000-0000-4000-7000-000000000000" | "bookingOfferId.identifier.notRandomUuid"
+    "00000000-0000-4000-C000-000000000000" | "bookingOfferId.identifier.notRandomUuid"
 
-    "000B0000-0000-4000-8000-000000000000" | _
-    "FFF50000-0000-4000-8000-000000000000" | _
-
-    errorMessagePartParam = "CombUuidShortPrefixUtils.checkIfCombShortPrefixStringIsBounded(identifier"
+    "${ UUID.randomUUID() }"               | "bookingOfferId.identifier.shortPrefixCombUuidNotInAllowedTimeRangeBounds"
+    "000B0000-0000-4000-8000-000000000000" | "bookingOfferId.identifier.shortPrefixCombUuidNotInAllowedTimeRangeBounds"
+    "FFF50000-0000-4000-8000-000000000000" | "bookingOfferId.identifier.shortPrefixCombUuidNotInAllowedTimeRangeBounds"
   }
 }
