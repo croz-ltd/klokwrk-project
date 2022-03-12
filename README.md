@@ -38,6 +38,8 @@ There are several articles describing some `klokwrk-project` features in more de
   Discussion about principles and ideas behind organizing high-level artifacts of a project and using hexagonal architecture in CQRS/ES context.
 * [The format of rendered responses](support/documentation/article/response-format/responseFormat.md)<br/>
   Explains structuring and rendering of server-side responses in `klokwrk-project` applications.
+* [Random UUID as a Primary Key in the Relational Database](support/documentation/article/random-uuid-as-database-primary-key/random-uuid-as-database-primary-key.md)<br/>
+  Discusses the performance issues (and solutions) of random UUIDs used as primary keys in relational databases. It also covers some typical usages of UUIDs like implementing idempotency and retries.
 
 While not tightly related to `klokwrk-project` features, the following articles describe some specific challenges that we encountered:
 * [Debugging Gradle internals from IntelliJ IDEA](support/documentation/article/debugging-gradle-from-idea/debugging-gradle-from-idea.md)<br/>
