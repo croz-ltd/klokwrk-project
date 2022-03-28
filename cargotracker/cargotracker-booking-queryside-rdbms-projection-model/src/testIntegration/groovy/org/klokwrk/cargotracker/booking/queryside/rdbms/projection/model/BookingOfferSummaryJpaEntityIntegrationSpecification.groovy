@@ -31,6 +31,8 @@ import org.testcontainers.containers.Network
 import org.testcontainers.containers.PostgreSQLContainer
 import spock.lang.Specification
 
+import java.time.Instant
+
 // equality consistency tests reference:
 //    https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
 //    https://vladmihalcea.com/the-best-way-to-implement-equals-hashcode-and-tostring-with-jpa-and-hibernate/
@@ -58,15 +60,20 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
 
   BookingOfferSummaryJpaEntity originalEntity
   Set<BookingOfferSummaryJpaEntity> entitySet
+  Instant currentInstant = Instant.now()
 
   void setup() {
     originalEntity = new BookingOfferSummaryJpaEntity(
         bookingOfferIdentifier: UUID.randomUUID(),
         originLocation: "originLocation",
         destinationLocation: "destinationLocation",
-        aggregateVersion: 1L,
+
         inboundChannelName: "inboundChannelName",
-        inboundChannelType: "inboundChannelType"
+        inboundChannelType: "inboundChannelType",
+
+        firstEventRecordedAt: currentInstant,
+        lastEventRecordedAt: currentInstant,
+        lastEventSequenceNumber: 0L
     )
 
     entitySet = [originalEntity] as HashSet
@@ -158,5 +165,19 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
 
     then:
     entitySet.contains(proxyEntity)
+  }
+
+  void "should correctly store metadata"() {
+    given:
+    testEntityManager.persistAndFlush(originalEntity)
+    testEntityManager.clear()
+
+    when:
+    BookingOfferSummaryJpaEntity foundEntity = testEntityManager.find(BookingOfferSummaryJpaEntity, originalEntity.bookingOfferIdentifier)
+
+    then:
+    foundEntity.firstEventRecordedAt == currentInstant
+    foundEntity.lastEventRecordedAt == currentInstant
+    foundEntity.lastEventSequenceNumber == 0
   }
 }

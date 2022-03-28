@@ -36,6 +36,8 @@ import org.springframework.test.context.ActiveProfiles
 import spock.util.concurrent.PollingConditions
 
 import javax.sql.DataSource
+import java.sql.Timestamp
+import java.time.Instant
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")
@@ -57,6 +59,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
 
   void "should work for event message with metadata"() {
     given:
+    Instant startedAt = Instant.now()
     Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtures.eventValidRouteSpecification()
@@ -71,19 +74,24 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
       verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
-        size() == 6
+        size() == 8
         booking_offer_identifier == bookingOfferIdentifier
         origin_location == "HRRJK"
         destination_location == "NLRTM"
-        aggregate_version == 0
+
         inbound_channel_name == WebMetaDataConstant.WEB_BOOKING_CHANNEL_NAME
         inbound_channel_type == WebMetaDataConstant.WEB_BOOKING_CHANNEL_TYPE
+
+        (first_event_recorded_at as Timestamp).toInstant() >= startedAt
+        (last_event_recorded_at as Timestamp).toInstant() >= startedAt
+        last_event_sequence_number == 0
       }
     }
   }
 
   void "should work for event message without metadata"() {
     given:
+    Instant startedAt = Instant.now()
     Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtures.eventValidRouteSpecification()
@@ -96,13 +104,17 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
       verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
-        size() == 6
+        size() == 8
         booking_offer_identifier == bookingOfferIdentifier
         origin_location == "HRRJK"
         destination_location == "NLRTM"
-        aggregate_version == 0
+
         inbound_channel_name == CommonConstants.NOT_AVAILABLE
         inbound_channel_type == CommonConstants.NOT_AVAILABLE
+
+        (first_event_recorded_at as Timestamp).toInstant() >= startedAt
+        (last_event_recorded_at as Timestamp).toInstant() >= startedAt
+        last_event_sequence_number == 0
       }
     }
   }

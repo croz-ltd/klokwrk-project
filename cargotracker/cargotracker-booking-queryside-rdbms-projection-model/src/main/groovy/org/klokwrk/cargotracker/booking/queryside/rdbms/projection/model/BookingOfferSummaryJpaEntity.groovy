@@ -32,6 +32,7 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
+import java.time.Instant
 
 import static org.hamcrest.Matchers.is
 import static org.hamcrest.Matchers.notNullValue
@@ -63,9 +64,12 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Column(nullable = false) String originLocation
   @Column(nullable = false) String destinationLocation
 
-  @Column(nullable = false) Long aggregateVersion
   @Column(nullable = false) String inboundChannelName
   @Column(nullable = false) String inboundChannelType
+
+  @Column(nullable = false, updatable = false) Instant firstEventRecordedAt
+  @Column(nullable = false) Instant lastEventRecordedAt
+  @Column(nullable = false) Long lastEventSequenceNumber
 
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {

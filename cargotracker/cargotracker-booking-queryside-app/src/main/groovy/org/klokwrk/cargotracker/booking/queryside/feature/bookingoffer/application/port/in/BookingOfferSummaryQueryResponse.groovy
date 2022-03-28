@@ -22,13 +22,18 @@ import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
+import java.time.Instant
+
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
 class BookingOfferSummaryQueryResponse {
   String bookingOfferIdentifier
-  Long aggregateVersion
 
   String originLocation
   String destinationLocation
+
+  Instant firstEventRecordedAt
+  Instant lastEventRecordedAt
+  Long lastEventSequenceNumber
 }

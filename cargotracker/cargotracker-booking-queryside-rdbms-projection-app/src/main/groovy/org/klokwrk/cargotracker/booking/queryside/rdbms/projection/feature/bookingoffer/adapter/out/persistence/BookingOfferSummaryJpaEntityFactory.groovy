@@ -30,13 +30,18 @@ class BookingOfferSummaryJpaEntityFactory {
     UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId.identifier)
     String originLocation = bookingOfferCreatedEvent.routeSpecification.originLocation.unLoCode.code
     String destinationLocation = bookingOfferCreatedEvent.routeSpecification.destinationLocation.unLoCode.code
-    Long aggregateVersion = domainEventMessage.sequenceNumber
 
     BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = new BookingOfferSummaryJpaEntity(
-        bookingOfferIdentifier: bookingOfferIdentifier, originLocation: originLocation, destinationLocation: destinationLocation,
-        aggregateVersion: aggregateVersion,
+        bookingOfferIdentifier: bookingOfferIdentifier,
+        originLocation: originLocation,
+        destinationLocation: destinationLocation,
+
         inboundChannelName: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_NAME_KEY] ?: CommonConstants.NOT_AVAILABLE,
-        inboundChannelType: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_TYPE_KEY] ?: CommonConstants.NOT_AVAILABLE
+        inboundChannelType: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_TYPE_KEY] ?: CommonConstants.NOT_AVAILABLE,
+
+        firstEventRecordedAt: domainEventMessage.timestamp,
+        lastEventRecordedAt: domainEventMessage.timestamp,
+        lastEventSequenceNumber: domainEventMessage.sequenceNumber
     )
 
     return bookingOfferSummaryJpaEntity
