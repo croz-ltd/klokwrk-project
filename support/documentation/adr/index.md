@@ -20,3 +20,5 @@ This log lists the architectural decisions for `klokwrk-project`:
 * [ADR-0013 - Validation taxonomy](content/0013-validation-taxonomy.md)
 * [ADR-0014 - Commit Message Format](content/0014-commit-message-format.md)
 * [ADR-0015 - Handling Exceptions in Distributed CQRS System](content/0015-handling-exceptions-in-distributed-cqrs-system.md)
+* [ADR-0016 - Handling UTC timestamps in the application and relational database](content/0016-handling-UTC-timestamps-in-the-application-and-relational-database.md)
+* [ADR-0017 - Minimal audit metadata in RDBMS projections](content/0017-minimal-audit-metadata-in-RDBMS-projections.md)

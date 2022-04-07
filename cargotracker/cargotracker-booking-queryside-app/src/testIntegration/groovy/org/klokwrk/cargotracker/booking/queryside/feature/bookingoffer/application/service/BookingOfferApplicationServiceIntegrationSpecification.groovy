@@ -36,6 +36,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ActiveProfiles
 
 import javax.sql.DataSource
+import java.time.Instant
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")
@@ -59,6 +60,7 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
 
   void "should work for correct request - [locale: #localeParam]"() {
     given:
+    Instant startedAt = Instant.now()
     String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
 
     BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest = new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: myBookingOfferIdentifier)
@@ -73,9 +75,12 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
     then:
     verifyAll(operationResponse.payload) {
       bookingOfferIdentifier == myBookingOfferIdentifier
-      aggregateVersion == 0
       originLocation == "HRRJK"
       destinationLocation == "NLRTM"
+
+      firstEventRecordedAt >= startedAt
+      lastEventRecordedAt >= startedAt
+      lastEventSequenceNumber == 0
     }
 
     verifyAll(operationResponse.metaData) {

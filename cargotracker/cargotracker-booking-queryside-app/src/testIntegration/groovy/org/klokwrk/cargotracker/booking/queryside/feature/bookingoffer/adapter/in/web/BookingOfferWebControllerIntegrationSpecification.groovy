@@ -37,6 +37,7 @@ import org.springframework.web.context.WebApplicationContext
 
 import javax.sql.DataSource
 import java.nio.charset.Charset
+import java.time.Instant
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
@@ -73,6 +74,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
 
   void "should work for correct request - [acceptLanguage: #acceptLanguage]"() {
     given:
+    Instant startedAt = Instant.now()
     String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
     String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier])
 
@@ -106,9 +108,12 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
 
     verifyAll(responseContentMap.payload as Map) {
       bookingOfferIdentifier == myBookingOfferIdentifier
-      aggregateVersion == 0
       originLocation == "HRRJK"
       destinationLocation == "NLRTM"
+
+      Instant.parse(firstEventRecordedAt as String) >= startedAt
+      Instant.parse(lastEventRecordedAt as String) >= startedAt
+      lastEventSequenceNumber == 0
     }
 
     where:

@@ -37,8 +37,10 @@ CREATE TABLE booking_offer_summary (
   origin_location VARCHAR(255) NOT NULL,
   destination_location VARCHAR(255) NOT NULL,
 
-  aggregate_version BIGINT NOT NULL,
-
   inbound_channel_name VARCHAR(255) NOT NULL,
-  inbound_channel_type VARCHAR(255) NOT NULL
+  inbound_channel_type VARCHAR(255) NOT NULL,
+
+  first_event_recorded_at timestamptz NOT NULL,
+  last_event_recorded_at timestamptz NOT NULL,
+  last_event_sequence_number BIGINT NOT NULL
 );
