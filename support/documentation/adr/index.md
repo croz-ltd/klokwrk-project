@@ -22,3 +22,4 @@ This log lists the architectural decisions for `klokwrk-project`:
 * [ADR-0015 - Handling Exceptions in Distributed CQRS System](content/0015-handling-exceptions-in-distributed-cqrs-system.md)
 * [ADR-0016 - Handling UTC timestamps in the application and relational database](content/0016-handling-UTC-timestamps-in-the-application-and-relational-database.md)
 * [ADR-0017 - Minimal audit metadata in RDBMS projections](content/0017-minimal-audit-metadata-in-RDBMS-projections.md)
+* [ADR-0018 - Random UUID as a primary key in RDBMS projections](content/0018-random-UUID-as-a-primary-key-in-RDBMS-projections.md)
