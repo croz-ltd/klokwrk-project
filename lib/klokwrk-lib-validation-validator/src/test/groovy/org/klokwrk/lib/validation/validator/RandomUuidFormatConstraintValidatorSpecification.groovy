@@ -229,6 +229,7 @@ class RandomUuidFormatConstraintValidatorSpecification extends Specification {
     "00000000-0000-0000-0000-000000000000" | new Locale("hr") | "Vrijednost '$randomUuidStringParam' je neispravan slučajno generirani UUID."
   }
 
+  @SuppressWarnings("CodeNarc.GStringExpressionWithinString")
   void "should correctly interpolate custom message with expressions when non-parsable or non-random UUID string is validated"() {
     given:
     RandomUuidFormatConstraintTestObjectWithCustomMessage testObject = new RandomUuidFormatConstraintTestObjectWithCustomMessage(randomUuidString: randomUuidStringParam)
