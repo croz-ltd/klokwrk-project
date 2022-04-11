@@ -51,7 +51,7 @@ publishing {
 }
 
 dependencies {
-  api platform("org.axonframework:axon-bom:$axonFrameworkVersion")
+  api platform("org.axonframework:axon-bom:$axonBomVersion")
   api platform("org.codehaus.groovy:groovy-bom:$groovyVersion")
 
   constraints {

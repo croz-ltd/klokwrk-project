@@ -331,7 +331,7 @@ ruleset {
   ExplicitStackInstantiation
   ExplicitTreeSetInstantiation
   GStringAsMapKey
-  GStringExpressionWithinString { enabled = false } // TODO dmurat: enable when and if the following issue is fixed: https://github.com/CodeNarc/CodeNarc/issues/660
+  GStringExpressionWithinString
   GetterMethodCouldBeProperty
   GroovyLangImmutable
   UseCollectMany
@@ -499,7 +499,6 @@ ruleset {
   UnnecessarySemicolon
   UnnecessarySetter
   UnnecessaryStringInstantiation
-  UnnecessarySubstring
   UnnecessaryTernaryExpression
   UnnecessaryToString
   UnnecessaryTransientModifier { enabled = false }

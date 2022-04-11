@@ -97,6 +97,7 @@ import static org.hamcrest.Matchers.not
  * rule.check(importedClasses)
  * </pre>
  */
+@SuppressWarnings("CodeNarc.MethodCount")
 @CompileStatic
 class HexagonalCqrsEsArchitecture implements ArchRule {
 
@@ -416,6 +417,11 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
   @Override
   HexagonalCqrsEsArchitecture because(String reason) {
     return Factory.withBecause(this, reason) as HexagonalCqrsEsArchitecture
+  }
+
+  @Override
+  ArchRule allowEmptyShould(boolean allowEmptyShould) {
+    return withOptionalLayers(allowEmptyShould)
   }
 
   @Override

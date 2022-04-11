@@ -18,7 +18,6 @@
 package org.klokwrk.cargotracker.lib.axon.cqrs.command
 
 import org.axonframework.commandhandling.CommandExecutionException
-import org.axonframework.commandhandling.CommandMessage
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.MetaData
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
@@ -42,13 +41,7 @@ class CommandGatewayAdapterSpecification extends Specification {
     commandGatewayAdapter.sendAndWait(command)
 
     then:
-    1 * commandGatewayMock.sendAndWait({ def commandMessage ->
-      verifyAll {
-        commandMessage instanceof CommandMessage
-        commandMessage.payload == command
-        commandMessage.metaData === MetaData.emptyInstance()
-      }
-    })
+    1 * commandGatewayMock.sendAndWait({ def commandParam -> commandParam instanceof String }, { def metaDataParam -> metaDataParam === MetaData.emptyInstance() })
   }
 
   void "sendAndWait(command, metaData) - should fail for null command"() {
@@ -72,13 +65,7 @@ class CommandGatewayAdapterSpecification extends Specification {
     commandGatewayAdapter.sendAndWait(command, metaData)
 
     then:
-    1 * commandGatewayMock.sendAndWait({ def commandMessage ->
-      verifyAll {
-        commandMessage instanceof CommandMessage
-        commandMessage.payload == command
-        commandMessage.metaData === MetaData.emptyInstance()
-      }
-    })
+    1 * commandGatewayMock.sendAndWait({ def commandParam -> commandParam instanceof String }, { def metaDataParam -> metaDataParam === MetaData.emptyInstance() })
   }
 
   void "sendAndWait(command, metaData) - should delegate to the command gateway"() {
@@ -90,13 +77,7 @@ class CommandGatewayAdapterSpecification extends Specification {
     commandGatewayAdapter.sendAndWait(command, metaData)
 
     then:
-    1 * commandGatewayMock.sendAndWait({ def commandMessage ->
-      verifyAll {
-        commandMessage instanceof CommandMessage
-        commandMessage.payload == command
-        commandMessage.metaData == metaData
-      }
-    })
+    1 * commandGatewayMock.sendAndWait({ def commandParam -> commandParam instanceof String }, { def metaDataParam -> metaDataParam == metaData })
   }
 
   void "sendAndWait(command, metaData) - should propagate CommandExecutionException to the caller when details exception is not available"() {
@@ -104,7 +85,7 @@ class CommandGatewayAdapterSpecification extends Specification {
     CommandExecutionException commandExecutionException = new CommandExecutionException("Command execution failed", null)
 
     CommandGateway commandGatewayStub = Stub()
-    commandGatewayStub.sendAndWait(_) >> { throw commandExecutionException }
+    commandGatewayStub.sendAndWait(_ as Object, _ as MetaData) >> { throw commandExecutionException }
 
     CommandGatewayAdapter commandGatewayAdapter = new CommandGatewayAdapter(commandGatewayStub)
 
@@ -129,7 +110,7 @@ class CommandGatewayAdapterSpecification extends Specification {
     CommandExecutionException commandExecutionException = new CommandExecutionException("Command execution failed", null, exceptionDetailsParam)
 
     CommandGateway commandGatewayStub = Stub()
-    commandGatewayStub.sendAndWait(_) >> { throw commandExecutionException }
+    commandGatewayStub.sendAndWait(_ as Object, _ as MetaData) >> { throw commandExecutionException }
 
     CommandGatewayAdapter commandGatewayAdapter = new CommandGatewayAdapter(commandGatewayStub)
 

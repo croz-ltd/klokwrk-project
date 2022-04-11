@@ -19,8 +19,8 @@ package org.klokwrk.cargotracker.lib.axon.cqrs.command
 
 import groovy.transform.CompileStatic
 import org.axonframework.commandhandling.CommandExecutionException
-import org.axonframework.commandhandling.GenericCommandMessage
 import org.axonframework.commandhandling.gateway.CommandGateway
+import org.axonframework.messaging.MetaData
 
 import static org.hamcrest.Matchers.notNullValue
 
@@ -67,11 +67,9 @@ class CommandGatewayAdapter {
   public <R, C> R sendAndWait(C command, Map metaData) {
     requireMatch(command, notNullValue())
 
-    GenericCommandMessage<C> cargoBookCommandMessage = new GenericCommandMessage(command, metaData)
-
     R commandResponse
     try {
-      commandResponse = commandGateway.sendAndWait(cargoBookCommandMessage)
+      commandResponse = commandGateway.sendAndWait(command, MetaData.from(metaData))
     }
     catch (CommandExecutionException commandExecutionException) {
       if (commandExecutionException.details.isPresent()) {
