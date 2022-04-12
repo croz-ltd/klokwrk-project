@@ -99,16 +99,26 @@ jobs:
       - name: Support long paths for Windows
         run: git config --system core.longpaths true
 
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
       - name: Set up Windows 1/2 - Configure environment for compiling C/C++ code
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Set up Windows 2/2 - Configure MSBuild tool
         uses: microsoft/setup-msbuild@v1
+
+      - name: Configure Windows pagefile
+        uses: al-cheb/configure-pagefile-action@v1.2
+        with:
+          minimum-size: 10GB
+          maximum-size: 12GB
+
+      - name: Set up Windows pagefile
+        run: |
+          (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Cache Gradle caches
         uses: actions/cache@v2
