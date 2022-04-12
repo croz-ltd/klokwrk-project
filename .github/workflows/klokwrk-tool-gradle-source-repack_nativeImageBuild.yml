@@ -6,7 +6,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ linux, macos, windows ]
+        os: [ linux, macos]
         include:
           - os: 'linux'
             version: 'ubuntu-latest'
@@ -16,19 +16,11 @@ jobs:
             version: 'macos-latest'
             label: 'mac'
             native-image-name: 'klokwrk-tool-gradle-source-repack'
-          - os: 'windows'
-            version: 'windows-2019'
-            label: 'win'
-            native-image-name: 'klokwrk-tool-gradle-source-repack.exe'
 
     runs-on: ${{ matrix.version }}
     name: ${{ matrix.version }} - GraalVM native image build
 
     steps:
-      - name: Support long paths for Windows
-        if: ${{ matrix.label == 'win' }}
-        run: git config --system core.longpaths true
-
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -79,22 +71,84 @@ jobs:
           name: klokwrk-tool-gradle-source-repack_${{ env.UPLOAD_VERSION }}-jar
           path: tool/klokwrk-tool-gradle-source-repack/build/libs/*-all.jar
 
-      - name: Build GraalVM native image for mac or linux
-        if: ${{ matrix.label == 'linux' || matrix.label == 'mac'}}
+      - name: Build GraalVM native image
         uses: gradle/gradle-build-action@v1
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
 
+      - name: GraalVM native image upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: klokwrk-tool-gradle-source-repack_${{ env.UPLOAD_VERSION }}-${{ matrix.label }}
+          path: tool/klokwrk-tool-gradle-source-repack/build/native-image/${{ matrix.native-image-name }}
+
+  build-windows:
+    strategy:
+      matrix:
+        os: [ windows ]
+        include:
+          - os: 'windows'
+            version: 'windows-latest'
+            label: 'win'
+            native-image-name: 'klokwrk-tool-gradle-source-repack.exe'
+
+    runs-on: ${{ matrix.version }}
+    name: ${{ matrix.version }} - GraalVM native image build
+
+    steps:
+      - name: Support long paths for Windows
+        run: git config --system core.longpaths true
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
       - name: Set up Windows 1/2 - Configure environment for compiling C/C++ code
-        if: ${{ matrix.label == 'win' }}
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Set up Windows 2/2 - Configure MSBuild tool
-        if: ${{ matrix.label == 'win' }}
         uses: microsoft/setup-msbuild@v1
 
+      - name: Cache Gradle caches
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ matrix.version }}-gradle-caches-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ matrix.version }}-gradle-caches-
+
+      - name: Cache Gradle wrapper
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ matrix.version }}-gradle-wrapper-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ matrix.version }}-gradle-wrapper-
+
+      - name: Set up GraalVM
+        uses: ayltai/setup-graalvm@v1
+        with:
+          java-version: 11
+          graalvm-version: 21.3.0
+          native-image: true
+
+      - name: Assemble
+        uses: gradle/gradle-build-action@v1
+        with:
+          arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue --exclude-task groovydoc clean assemble testClasses
+
+      - name: Test Unit
+        uses: gradle/gradle-build-action@v1
+        with:
+          arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue check
+
+      - name: Get upload version
+        shell: bash
+        run: |
+          echo "UPLOAD_VERSION=$(./gradlew --quiet --project-dir tool/klokwrk-tool-gradle-source-repack properties | grep "^version:." | awk '{print $2}')" >> $GITHUB_ENV
+
       - name: Build GraalVM native image for windows
-        if: ${{ matrix.label == 'win' }}
         shell: cmd
         run: |
           ./gradlew.bat --project-dir tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
