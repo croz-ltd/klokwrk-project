@@ -10,6 +10,9 @@ on:
         description: "'draft' or 'release'"
         required: true
         default: draft
+      run-id-of-gradle-source-repack-native-image:
+        description: "Run ID of repack tool native image workflow"
+        required: false
 
 jobs:
   verify-inputs:
@@ -27,11 +30,19 @@ jobs:
     name: Prepare klokwrk-tool-gradle-source-repack binaries
     runs-on: ubuntu-latest
     steps:
-      - name: Download binaries
+      - name: Download binaries for last succesful repack workflow
+        if: ${{ !github.event.inputs.run-id-of-gradle-source-repack-native-image }}
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: klokwrk-tool-gradle-source-repack_nativeImageBuild.yml
           workflow_conclusion: success
+
+      - name: Download binaries for repack workflow with provided Run ID
+        if: ${{ github.event.inputs.run-id-of-gradle-source-repack-native-image }}
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: klokwrk-tool-gradle-source-repack_nativeImageBuild.yml
+          run_id: ${{ github.event.inputs.run-id-of-gradle-source-repack-native-image }}
 
       - name: Set execute permissions on binaries
         run: |
