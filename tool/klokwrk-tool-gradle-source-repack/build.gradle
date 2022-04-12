@@ -213,6 +213,9 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
       "-H:Class=${ mainClass }",
 
       // The name of the executable file that is generated.
-      "-H:Name=${ project.name }"
+      "-H:Name=${ project.name }",
+
+      // Configure max heap
+      "-J-Xmx10g"
   ])
 }
