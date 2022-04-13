@@ -50,12 +50,12 @@ jobs:
           native-image: true
 
       - name: Assemble
-        uses: gradle/gradle-build-action@v1
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue --exclude-task groovydoc clean assemble testClasses
 
       - name: Test Unit
-        uses: gradle/gradle-build-action@v1
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue check
 
@@ -72,7 +72,7 @@ jobs:
           path: tool/klokwrk-tool-gradle-source-repack/build/libs/*-all.jar
 
       - name: Build GraalVM native image
-        uses: gradle/gradle-build-action@v1
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
 
@@ -144,12 +144,12 @@ jobs:
           native-image: true
 
       - name: Assemble
-        uses: gradle/gradle-build-action@v1
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue --exclude-task groovydoc clean assemble testClasses
 
       - name: Test Unit
-        uses: gradle/gradle-build-action@v1
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue check
 
