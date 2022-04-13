@@ -22,7 +22,7 @@ jobs:
       - name: Verify input release-type
         if: ${{ github.event.inputs.release-type != 'draft' && github.event.inputs.release-type != 'release' }}
         run: |
-          echo "Input release-type is '${{ github.event.inputs.release-type }}' which is not allowed. Allower release-types are 'draft' or 'release'."
+          echo "Input release-type is '${{ github.event.inputs.release-type }}' which is not allowed. Allowed release-types are 'draft' or 'release'."
           exit 1
 
   prepare-binaries-klokwrk-tool-gradle-source-repack:
@@ -30,7 +30,7 @@ jobs:
     name: Prepare klokwrk-tool-gradle-source-repack binaries
     runs-on: ubuntu-latest
     steps:
-      - name: Download binaries for last succesful repack workflow
+      - name: Download binaries for last successful repack workflow
         if: ${{ !github.event.inputs.run-id-of-gradle-source-repack-native-image }}
         uses: dawidd6/action-download-artifact@v2
         with:
