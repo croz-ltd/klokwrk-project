@@ -70,9 +70,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0    # Generated changelog displays only the changes from checked-out commits. Therefore, we need a full history.
 
       - name: Download klokwrk-tool-gradle-source-repack binaries
         uses: actions/download-artifact@v2
