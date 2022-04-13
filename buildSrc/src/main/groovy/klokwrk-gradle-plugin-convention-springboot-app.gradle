@@ -54,4 +54,5 @@ bootBuildImage {
   enabled = true
   environment = ["BP_JVM_VERSION" : "11.*"]
   imageName = "klokwrkprj/${project.name}:${project.version}"
+  buildpacks = ["gcr.io/paketo-buildpacks/adoptium", "urn:cnb:builder:paketo-buildpacks/java"]
 }
