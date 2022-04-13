@@ -27,7 +27,7 @@ jobs:
           fetch-depth: 0    # We need a full history here because the Gradle Jgitver plugin requires it for calculating the correct project version.
 
       - name: Cache Gradle caches
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.gradle/caches
           key: ${{ matrix.version }}-gradle-caches-${{ hashFiles('**/*.gradle') }}
@@ -35,7 +35,7 @@ jobs:
             ${{ matrix.version }}-gradle-caches-
 
       - name: Cache Gradle wrapper
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.gradle/wrapper
           key: ${{ matrix.version }}-gradle-wrapper-${{ hashFiles('**/*.gradle') }}
@@ -121,7 +121,7 @@ jobs:
           fetch-depth: 0
 
       - name: Cache Gradle caches
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.gradle/caches
           key: ${{ matrix.version }}-gradle-caches-${{ hashFiles('**/*.gradle') }}
@@ -129,7 +129,7 @@ jobs:
             ${{ matrix.version }}-gradle-caches-
 
       - name: Cache Gradle wrapper
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.gradle/wrapper
           key: ${{ matrix.version }}-gradle-wrapper-${{ hashFiles('**/*.gradle') }}
