@@ -997,15 +997,15 @@ size provides enough benefits for your case.
 
 |                |size (B)    | size increase |
 |----------------|-----------:|--------------:|
-|**no-config**   | 72.792.392 | -
-|**tuned-config**| 74.907.872 | 2,9 %
+|**no-config**   | 72.792.392 | -             |
+|**tuned-config**| 74.907.872 | 2,9 %         |
 
 **2. Size decrease relatively to the all-inclusive image:**
 
 |                 |size (MB)   | size decrease  |
 |-----------------|-----------:|---------------:|
-|**all-inclusive**| 85.683.664 | -
-|**tuned-config** | 74.907.872 | 12,6 %
+|**all-inclusive**| 85.683.664 | -              |
+|**tuned-config** | 74.907.872 | 12,6 %         |
 
 ## Conclusion
 GraalVM native image is an exciting technology adopted and supported by many popular frameworks. Because of some limitations related to the static analysis of reflective code, that support is usually
