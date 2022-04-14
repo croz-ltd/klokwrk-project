@@ -61,7 +61,7 @@ public class RegistrationFeatureUtils {
     }
 
     stringBuilder.append("---------- ").append(classInfoListName).append(" - end\n");
-    System.err.println(stringBuilder.toString());
+    System.err.println(stringBuilder);
   }
 
   /**
