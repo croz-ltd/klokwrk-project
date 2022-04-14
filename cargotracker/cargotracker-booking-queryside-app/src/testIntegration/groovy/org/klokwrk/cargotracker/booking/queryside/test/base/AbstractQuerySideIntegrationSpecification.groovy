@@ -57,7 +57,7 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
 
   @DynamicPropertySource
   static void configureAxonServerProperties(DynamicPropertyRegistry registry) {
-    String axonContainerIpAddress = axonServer.containerIpAddress
+    String axonContainerIpAddress = axonServer.host
     Integer axonContainerGrpcPort = axonServer.getMappedPort(8124)
     registry.add("axon.axonserver.servers", { "${ axonContainerIpAddress }:${ axonContainerGrpcPort }" })
 

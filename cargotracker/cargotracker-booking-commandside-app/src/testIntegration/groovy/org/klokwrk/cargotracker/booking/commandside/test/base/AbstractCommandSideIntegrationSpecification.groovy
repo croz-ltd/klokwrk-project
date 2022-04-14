@@ -49,7 +49,7 @@ abstract class AbstractCommandSideIntegrationSpecification extends Specification
     // or BookingOfferApplicationServiceWithDefaultGatewayIntegrationSpecification classes.
     registry.add("axonServerFirstInstanceUrl", { "${ axonContainerIpAddress }:${ axonContainerGrpcPort }" })
 
-    String axonContainerIpAddressSecondInstance = axonServerSecondInstance.containerIpAddress
+    String axonContainerIpAddressSecondInstance = axonServerSecondInstance.host
     Integer axonContainerGrpcPortSecondInstance = axonServerSecondInstance.getMappedPort(9124)
     registry.add("axonServerSecondInstanceUrl", { "${ axonContainerIpAddressSecondInstance }:${ axonContainerGrpcPortSecondInstance }" })
   }

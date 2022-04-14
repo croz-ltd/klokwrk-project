@@ -82,7 +82,7 @@ class BookingComponentEventReplaySpecification extends Specification {
 
   private static void sendAxonEventMessages(GenericContainer axonServerContainer, List<String> messageList) {
     //noinspection HttpUrlsUsage
-    String axonServerBaseUrl = "http://${ axonServerContainer.containerIpAddress }:${ axonServerContainer.firstMappedPort }"
+    String axonServerBaseUrl = "http://${ axonServerContainer.host }:${ axonServerContainer.firstMappedPort }"
 
     String axonServerApiEventsUrl = "$axonServerBaseUrl/v1/events"
 
