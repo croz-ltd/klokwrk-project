@@ -21,7 +21,7 @@ import org.gradle.internal.deprecation.DeprecatableConfiguration
 plugins {
   id "klokwrk-gradle-plugin-convention-module-base"
   id "klokwrk-gradle-plugin-convention-module-groovy"
-  id "klokwrk-gradle-plugin-convention-micronaut-app"
+  id "klokwrk-gradle-plugin-convention-micronaut-app-minimal"
 }
 
 config {
@@ -34,7 +34,6 @@ config {
 
 micronaut {
   testRuntime("spock2")
-  enableNativeImage(false)
   processing {
     incremental(true)
     annotations("org.klokwrk.tool.gradle.source.repack.*")

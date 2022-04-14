@@ -17,5 +17,5 @@
  */
 plugins {
   id "com.github.johnrengelman.shadow"
-  id "io.micronaut.application"
+  id "io.micronaut.minimal.application"
 }
