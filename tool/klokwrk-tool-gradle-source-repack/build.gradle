@@ -21,7 +21,7 @@ import org.gradle.internal.deprecation.DeprecatableConfiguration
 plugins {
   id "klokwrk-gradle-plugin-convention-module-base"
   id "klokwrk-gradle-plugin-convention-module-groovy"
-  id "klokwrk-gradle-plugin-convention-micronaut-app"
+  id "klokwrk-gradle-plugin-convention-micronaut-app-minimal"
 }
 
 config {
@@ -34,7 +34,6 @@ config {
 
 micronaut {
   testRuntime("spock2")
-  enableNativeImage(false)
   processing {
     incremental(true)
     annotations("org.klokwrk.tool.gradle.source.repack.*")
@@ -200,11 +199,11 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
       // Print stacktrace of underlying exceptions.
       "-H:+ReportExceptionStackTraces",
 
-      // Default locale
-      "-H:DefaultLocale=en",
-
       // Included locales (comma separated list)
       "-H:IncludeLocales=en",
+
+      // Configure default language and locale
+      "-J-Duser.language=en",
 
       // The directory where the generated executable is placed.
       "-H:Path=${ workingDir.absolutePath }",

@@ -19,11 +19,13 @@ package org.klokwrk.tool.gradle.source.repack.repackager
 
 import groovy.transform.CompileStatic
 import groovy.transform.Immutable
+import groovy.transform.ToString
 
 /**
  * Encapsulates data needed for repackaging of Gradle sources from Gradle main distribution ZIP file.
  */
-@Immutable(includeNames = true)
+@ToString(includeNames = true) // TODO dmurat: Move annotation attribute into @Immutable when and if https://github.com/micronaut-projects/micronaut-core/issues/7220 gets fixed.
+@Immutable
 @CompileStatic
 class GradleSourceRepackagerInfo {
   /**

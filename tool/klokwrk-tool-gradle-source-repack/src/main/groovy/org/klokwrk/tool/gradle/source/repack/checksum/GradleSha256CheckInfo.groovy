@@ -19,11 +19,13 @@ package org.klokwrk.tool.gradle.source.repack.checksum
 
 import groovy.transform.CompileStatic
 import groovy.transform.Immutable
+import groovy.transform.ToString
 
 /**
  * Encapsulates data needed for reporting result of SHA-256 check on Gradle distribution ZIP file.
  */
-@Immutable(includeNames = true)
+@ToString(includeNames = true) // TODO dmurat: Move annotation attribute into @Immutable when and if https://github.com/micronaut-projects/micronaut-core/issues/7220 gets fixed.
+@Immutable
 @CompileStatic
 class GradleSha256CheckInfo {
 
