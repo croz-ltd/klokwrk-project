@@ -82,7 +82,7 @@ class BookingComponentEventReplaySpecification extends Specification {
 
   private static void sendAxonEventMessages(GenericContainer axonServerContainer, List<String> messageList) {
     //noinspection HttpUrlsUsage
-    String axonServerBaseUrl = "http://${ axonServerContainer.containerIpAddress }:${ axonServerContainer.firstMappedPort }"
+    String axonServerBaseUrl = "http://${ axonServerContainer.host }:${ axonServerContainer.firstMappedPort }"
 
     String axonServerApiEventsUrl = "$axonServerBaseUrl/v1/events"
 
@@ -107,7 +107,7 @@ class BookingComponentEventReplaySpecification extends Specification {
     Sql.withInstance(postgresqlServer.jdbcUrl, postgresqlServer.username, postgresqlServer.password, postgresqlServer.driverClassName) { Sql groovySql ->
       GroovyRowResult queryRowResult = groovySql.firstRow("SELECT token as tokenBlob FROM token_entry WHERE processor_name != '__config'")
 
-      byte[] tokenBlobByteArray = queryRowResult.tokenBlob
+      byte[] tokenBlobByteArray = queryRowResult.tokenBlob as byte[]
       String tokenBlobAsPrintableString = new String(tokenBlobByteArray, "UTF-8")
       Object commandResponseJson = new JsonSlurper().parseText(tokenBlobAsPrintableString)
 

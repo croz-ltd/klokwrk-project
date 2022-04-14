@@ -44,7 +44,7 @@ abstract class AbstractRdbmsProjectionIntegrationSpecification extends Specifica
 
   @DynamicPropertySource
   static void configureAxonServerProperties(DynamicPropertyRegistry registry) {
-    String axonContainerIpAddress = axonServer.containerIpAddress
+    String axonContainerIpAddress = axonServer.host
     Integer axonContainerGrpcPort = axonServer.getMappedPort(8124)
     registry.add("axon.axonserver.servers", { "${ axonContainerIpAddress }:${ axonContainerGrpcPort }" })
 

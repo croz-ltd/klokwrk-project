@@ -84,6 +84,7 @@ class KwrkImmutableSpecification extends Specification {
 
   void "should throw for map constructor with non-existing properties when existing properties are not used"() {
     when:
+    //noinspection GroovyConstructorNamedArguments
     new Person(myAddress: "My Address")
 
     then:
@@ -92,6 +93,7 @@ class KwrkImmutableSpecification extends Specification {
 
   void "should work for map constructor with non-existing properties"() {
     when:
+    //noinspection GroovyConstructorNamedArguments
     Person person = new Person(firstName: "First Name", lastName: "Last Name", myAddress: "MyAddress")
 
     then:

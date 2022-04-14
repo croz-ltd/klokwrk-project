@@ -24,7 +24,7 @@ import spock.lang.Specification
 class ClientIpAddressExtractorSpecification extends Specification {
   void "should work without headers"() {
     given:
-    MockHttpServletRequest request = MockMvcRequestBuilders.get("http://some.com").buildRequest()
+    MockHttpServletRequest request = MockMvcRequestBuilders.get("http://some.com").buildRequest(null)
 
     when:
     String clientIpAddress = ClientIpAddressExtractor.extractClientIpAddress(request)
@@ -38,7 +38,7 @@ class ClientIpAddressExtractorSpecification extends Specification {
     MockHttpServletRequest request = MockMvcRequestBuilders
         .get("http://some.com")
         .header("X-Forwarded-For", "unknown")
-        .buildRequest()
+        .buildRequest(null)
 
     when:
     String clientIpAddress = ClientIpAddressExtractor.extractClientIpAddress(request)
@@ -52,7 +52,7 @@ class ClientIpAddressExtractorSpecification extends Specification {
     MockHttpServletRequest request = MockMvcRequestBuilders
         .get("http://some.com")
         .header(headerNameParam, "203.0.113.1")
-        .buildRequest()
+        .buildRequest(null)
 
     when:
     String clientIpAddress = ClientIpAddressExtractor.extractClientIpAddress(request)
@@ -71,7 +71,7 @@ class ClientIpAddressExtractorSpecification extends Specification {
     MockHttpServletRequest request = MockMvcRequestBuilders
         .get("http://some.com")
         .header(headerNameParam, "198.51.100.101, 198.51.100.102, 203.0.113.1")
-        .buildRequest()
+        .buildRequest(null)
 
     when:
     String clientIpAddress = ClientIpAddressExtractor.extractClientIpAddress(request)
