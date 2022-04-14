@@ -135,7 +135,7 @@ jobs:
 
       - name: Publish JaCoCo Coverage Report
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' }}
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           name: Aggregated JaCoCo Report
           files: build/reports/jacoco/aggregate/jacocoTestReport.xml
