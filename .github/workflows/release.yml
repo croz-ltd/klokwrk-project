@@ -89,12 +89,14 @@ jobs:
       - name: Setup current date
         run: |
           echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
       - name: Run JReleaser
-        uses: jreleaser/release-action@v1
+        uses: jreleaser/release-action@v2
         with:
           # You may use "latest" to pull the latest stable release or "early-access" to pull the latest snapshot.
           version: latest
           arguments: full-release --basedir=${{ github.workspace }} --config-file=${{ github.workspace }}/support/jreleaser/jreleaser-${{ github.event.inputs.release-type }}.yml
+          setup-java: false
         env:
           CURRENT_DATE: ${{env.CURRENT_DATE}}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
