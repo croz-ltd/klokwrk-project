@@ -5,7 +5,7 @@ services:
     container_name: klokwrk-project-postgres
     image: postgres:${postgreSqlDockerImageVersion}
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -23,8 +23,8 @@ services:
     container_name: klokwrk-project-axon-server
     image: axoniq/axonserver:${axonServerDockerImageVersion}
     ports:
-      - 8024:8024
-      - 8124:8124
+      - "8024:8024"
+      - "8124:8124"
     networks:
       - klokwrk-project-network
     volumes:
