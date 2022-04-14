@@ -22,7 +22,7 @@ jobs:
       - name: Verify input release-type
         if: ${{ github.event.inputs.release-type != 'draft' && github.event.inputs.release-type != 'release' }}
         run: |
-          echo "Input release-type is '${{ github.event.inputs.release-type }}' which is not allowed. Allower release-types are 'draft' or 'release'."
+          echo "Input release-type is '${{ github.event.inputs.release-type }}' which is not allowed. Allowed release-types are 'draft' or 'release'."
           exit 1
 
   prepare-binaries-klokwrk-tool-gradle-source-repack:
@@ -30,7 +30,7 @@ jobs:
     name: Prepare klokwrk-tool-gradle-source-repack binaries
     runs-on: ubuntu-latest
     steps:
-      - name: Download binaries for last succesful repack workflow
+      - name: Download binaries for last successful repack workflow
         if: ${{ !github.event.inputs.run-id-of-gradle-source-repack-native-image }}
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -70,9 +70,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0    # Generated changelog displays only the changes from checked-out commits. Therefore, we need a full history.
 
       - name: Download klokwrk-tool-gradle-source-repack binaries
         uses: actions/download-artifact@v2
@@ -81,20 +81,22 @@ jobs:
           path: artifacts-klokwrk-tool-gradle-source-repack
 
       - name: Setup Java for JReleaser
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
-          distribution: zulu
+          distribution: temurin    # We are using Eclipse Temurin here since it is available locally on GitHub runners (no need to download and install).
           java-version: 11
 
       - name: Setup current date
         run: |
           echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
       - name: Run JReleaser
-        uses: jreleaser/release-action@v1
+        uses: jreleaser/release-action@v2
         with:
           # You may use "latest" to pull the latest stable release or "early-access" to pull the latest snapshot.
           version: latest
           arguments: full-release --basedir=${{ github.workspace }} --config-file=${{ github.workspace }}/support/jreleaser/jreleaser-${{ github.event.inputs.release-type }}.yml
+          setup-java: false
         env:
           CURRENT_DATE: ${{env.CURRENT_DATE}}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
