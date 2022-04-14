@@ -66,7 +66,7 @@ jobs:
 
       - name: Jar upload
         if: ${{ matrix.label == 'linux' }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: klokwrk-tool-gradle-source-repack_${{ env.UPLOAD_VERSION }}-jar
           path: tool/klokwrk-tool-gradle-source-repack/build/libs/*-all.jar
@@ -77,7 +77,7 @@ jobs:
           arguments: --project-dir tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
 
       - name: GraalVM native image upload
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: klokwrk-tool-gradle-source-repack_${{ env.UPLOAD_VERSION }}-${{ matrix.label }}
           path: tool/klokwrk-tool-gradle-source-repack/build/native-image/${{ matrix.native-image-name }}
@@ -164,7 +164,7 @@ jobs:
           ./gradlew.bat --project-dir tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
 
       - name: GraalVM native image upload
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: klokwrk-tool-gradle-source-repack_${{ env.UPLOAD_VERSION }}-${{ matrix.label }}
           path: tool/klokwrk-tool-gradle-source-repack/build/native-image/${{ matrix.native-image-name }}
