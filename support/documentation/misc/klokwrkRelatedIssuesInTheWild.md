@@ -26,7 +26,10 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (4.5.1) - https://github.com/AxonFramework/AxonFramework/issues/1805
 * FIXED (4.6.0) - https://github.com/AxonFramework/AxonFramework/issues/1901
   * https://github.com/AxonFramework/AxonFramework/pull/1905
-* IN PROGRESS - https://github.com/AxonFramework/AxonFramework/pull/1910
+* FIXED (4.6.0) - https://github.com/AxonFramework/AxonFramework/pull/1910
+
+### Axon Framework - IDEA Plugin
+* IN PROGRESS - https://github.com/AxonFramework/IdeaPlugin/issues/64
 
 ### Axon Server:
 * VERIFIED (in Axon Framework 4.4.1) - https://github.com/AxonIQ/axon-server-se/issues/148
@@ -53,16 +56,16 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (2.2.0) - https://github.com/CodeNarc/CodeNarc/issues/632
   * https://github.com/CodeNarc/CodeNarc/pull/633
 * VERIFIED (2.2.0) - https://github.com/CodeNarc/CodeNarc/issues/636
-* REPORTED - https://github.com/CodeNarc/CodeNarc/issues/660
+* VERIFIED (3.0.0) - https://github.com/CodeNarc/CodeNarc/issues/660
   * https://github.com/CodeNarc/CodeNarc/pull/661
-* REPORTED - https://github.com/CodeNarc/CodeNarc/issues/662
+* VERIFIED (3.0.0) - https://github.com/CodeNarc/CodeNarc/issues/662
   * https://github.com/CodeNarc/CodeNarc/pull/663
 
 ### GitHub Action - gradle-build-action
 * VERIFIED - https://github.com/gradle/gradle-build-action/issues/22
 
 ### GraalVM - Native Build TOOLS
-* FIXED - https://github.com/graalvm/native-build-tools/issues/129
+* FIXED (0.9.6) - https://github.com/graalvm/native-build-tools/issues/129
 
 ### Gradle Dependency Analyze
 * IN PROGRESS - https://github.com/gradle-dependency-analyze/gradle-dependency-analyze/issues/108
@@ -80,19 +83,20 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (3.0.9) - https://issues.apache.org/jira/browse/GROOVY-10052
 * FIXED (4.0.0) - https://issues.apache.org/jira/browse/GROOVY-10055
 * IN PROGRESS - https://issues.apache.org/jira/browse/GROOVY-10156
-* FIXED (3.0.10) - https://issues.apache.org/jira/browse/GROOVY-10318
+* VERIFIED (3.0.10) - https://issues.apache.org/jira/browse/GROOVY-10318
 
 ### IDEA
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-216308
-* REPORTED - https://youtrack.jetbrains.com/issue/IDEA-239626
+* FIXED (2022.1) - https://youtrack.jetbrains.com/issue/IDEA-239626
 * VERIFIED (2020.3) - https://youtrack.jetbrains.com/issue/IDEA-239966
 * IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-243620
 * VERIFIED (2021.1) - https://youtrack.jetbrains.com/issue/IDEA-255422
 * VERIFIED (2021.2) - https://youtrack.jetbrains.com/issue/IDEA-261239
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-270964
-* FIXED - https://youtrack.jetbrains.com/issue/IDEA-285153
-* REPORTED - https://youtrack.jetbrains.com/issue/IDEA-285736
-* REPORTED - https://youtrack.jetbrains.com/issue/IDEA-286813
+* FIXED (2022.1) - https://youtrack.jetbrains.com/issue/IDEA-285153
+* IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-285736
+* FIXED (2022.2) - https://youtrack.jetbrains.com/issue/IDEA-286813
+* REPORTED - https://youtrack.jetbrains.com/issue/IDEA-292254
 
 ### JReleaser
 * VERIFIED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/85
@@ -103,6 +107,9 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/114
 * RESOLVED (0.3.0)- https://github.com/jreleaser/jreleaser/issues/120
 * VERIFIED (0.4.0) - https://github.com/jreleaser/jreleaser/issues/121
+
+### JReleaser - GitHub action release-action
+* REPORTED - https://github.com/jreleaser/release-action/issues/7
 
 ### Kordamp Gradle Plugins
 * VERIFIED (0.36.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/291
@@ -123,6 +130,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 
 ### micronaut-core
 * OBSOLETE - https://github.com/micronaut-projects/micronaut-core/issues/4622
+* REPORTED - https://github.com/micronaut-projects/micronaut-core/issues/7220
 
 ### micronaut-gradle-plugin
 * REPORTED - https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/92
@@ -137,6 +145,10 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 
 ### Spring Boot Wavefront extension
 * VERIFIED (2.0.0) - https://github.com/wavefrontHQ/wavefront-spring-boot/issues/57
+
+### uuid-creator
+* VERIFIED (4.4.1) - https://github.com/f4b6a3/uuid-creator/issues/60
+* VERIFIED (4.6.1) - https://github.com/f4b6a3/uuid-creator/issues/64
 
 ## List of monitored issues
 This is a list of all issues that are NOT reported by `klokwrk-project` team members, but are relevant for the project. Those issues are monitored by team members.
