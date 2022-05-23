@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.lib.boundary.api.domain.violation
 import spock.lang.Specification
 
 class ViolationCodeSpecification extends Specification {
-  void "map constructor should work for valid parameters"() {
+  void "map constructor should work for valid parameters - all available parameters"() {
     when:
     ViolationCode violationCode = new ViolationCode(
         code: "someCode", codeMessage: "someCodeMessage", resolvableMessageKey: "someResolvableMessageKey", resolvableMessageParameters: resolvableMessageParametersParam
@@ -28,11 +28,29 @@ class ViolationCodeSpecification extends Specification {
 
     then:
     violationCode
+    violationCode.code == "someCode"
+    violationCode.codeMessage == "someCodeMessage"
+    violationCode.resolvableMessageKey == "someResolvableMessageKey"
+    violationCode.resolvableMessageParameters == resolvableMessageParametersParam
+    violationCode.isResolvable()
 
     where:
     resolvableMessageParametersParam | _
     []                               | _
     ["paramOne", "paramTwo"]         | _
+  }
+
+  void "map constructor should work for valid parameters - required parameters only"() {
+    when:
+    ViolationCode violationCode = new ViolationCode(code: "someCode", codeMessage: "someCodeMessage")
+
+    then:
+    violationCode
+    violationCode.code == "someCode"
+    violationCode.codeMessage == "someCodeMessage"
+    violationCode.resolvableMessageKey == ViolationCode.RESOLVABLE_MESSAGE_KEY_UNAVAILABLE
+    violationCode.resolvableMessageParameters == []
+    !violationCode.isResolvable()
   }
 
   void "map constructor should fail for invalid parameters"() {
@@ -62,30 +80,54 @@ class ViolationCodeSpecification extends Specification {
     "someCodeParam" | "someCodeMessage" | "someResolvableMessageKey" | null                             | "item: resolvableMessageParameters, expected: notNullValue()"
   }
 
-  void "make factory method should work as expected when optional parameter is not provided"() {
+  void "make factory method should work as expected when optional parameters are not provided"() {
+    when:
+    ViolationCode violationCode = ViolationCode.make("someString", "someCodeMessage")
+
+    then:
+    violationCode
+    violationCode.code == "someString"
+    violationCode.codeMessage == "someCodeMessage"
+    violationCode.resolvableMessageKey == ViolationCode.RESOLVABLE_MESSAGE_KEY_UNAVAILABLE
+    violationCode.resolvableMessageParameters == []
+  }
+
+  void "make factory method should work as expected when optional parameters are provided"() {
     when:
     ViolationCode violationCode = ViolationCode.make("someString", "someCodeMessage", "someResolvableMessageKey")
 
     then:
     violationCode
+    violationCode.code == "someString"
+    violationCode.codeMessage == "someCodeMessage"
+    violationCode.resolvableMessageKey == "someResolvableMessageKey"
     violationCode.resolvableMessageParameters == []
-  }
 
-  void "make factory method should work as expected when optional parameter is provided"() {
+    and:
     when:
-    ViolationCode violationCode = ViolationCode.make("someString", "someCodeMessage", "someResolvableMessageKey", ["paramOne", "paramTwo"])
+    violationCode = ViolationCode.make("someString", "someCodeMessage", "someResolvableMessageKey", ["paramOne", "paramTwo"])
 
     then:
     violationCode
+    violationCode.code == "someString"
+    violationCode.codeMessage == "someCodeMessage"
+    violationCode.resolvableMessageKey == "someResolvableMessageKey"
     violationCode.resolvableMessageParameters == ["paramOne", "paramTwo"]
   }
 
   void "make factory method should fail for invalid value of optional parameter"() {
     when:
-    ViolationCode.make("someString", "someCodeMessage", "someResolvableMessageKey", null)
+    ViolationCode.make("someString", "someCodeMessage", resolvableMessageKeyParam, resolvableMessageParametersParam)
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message.contains("[item: resolvableMessageParameters, expected: notNullValue(), actual: null]")
+    assertionError.message.contains(errorMessageParam)
+
+    where:
+    resolvableMessageKeyParam  | resolvableMessageParametersParam | errorMessageParam
+    null                       | ["paramOne", "paramTwo"]         | "[item: resolvableMessageKey, expected: not(blankOrNullString()), actual: null]"
+    ""                         | ["paramOne", "paramTwo"]         | "[item: resolvableMessageKey, expected: not(blankOrNullString()), actual: ]"
+    "  "                       | ["paramOne", "paramTwo"]         | "[item: resolvableMessageKey, expected: not(blankOrNullString()), actual:   ]"
+    "someResolvableMessageKey" | null                             | "[item: resolvableMessageParameters, expected: notNullValue(), actual: null]"
   }
 }
