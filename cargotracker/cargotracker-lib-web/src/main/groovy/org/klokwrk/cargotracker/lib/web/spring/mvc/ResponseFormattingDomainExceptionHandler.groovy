@@ -63,7 +63,16 @@ import java.time.Instant
  *   "payload": {}
  * }
  * </pre>
- * Property {@code metaData.violation.message} needs to be localized.
+ * Property {@code metaData.violation.message} is intended to be localized. For localization to work, corresponding {@code ViolationCode} property (contained in exception's {@code ViolationInfo}
+ * property) has to be resolvable ({@code ViolationCode.isResolvable()} returns {@code true}). If this is not the case, hierarchical overriding of violation and exception messages is employed
+ * according to the following rules:
+ * <ul>
+ * <li>If {@code ViolationCode.resolvableMessageKey} is available, the exception renderer should use is for resolving a message through resource bundle.</li>
+ * <li>
+ *   Otherwise, the exception renderer should use {@code DomainException} message directly. Note that {@code DomainException.message} is initialized to {@code ViolationCode.codeMessage} if not set
+ *   explicitly to non-blank string.
+ * </li>
+ * </ul>
  * <p/>
  * When used from the Spring Boot application, the easiest is to create controller advice that is eligible for component scanning (&#64;ControllerAdvice annotation is annotated with &#64;Component):
  * <pre>
@@ -109,11 +118,9 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
 
     HttpResponseMetaData httpResponseMetaData = new HttpResponseMetaData(
         general: new ResponseMetaDataGeneralPart(timestamp: Instant.now(), severity: domainException.violationInfo.severity.name().toLowerCase(), locale: locale),
-        violation: makeResponseMetaDataViolationPart(domainException),
+        violation: makeResponseMetaDataViolationPart(domainException, handlerMethod, locale),
         http: makeHttpResponseMetaDataPart(httpStatus)
     )
-
-    httpResponseMetaData = localizeHttpResponseMetaData(httpResponseMetaData, domainException, handlerMethod, locale)
 
     return httpResponseMetaData
   }
@@ -135,14 +142,27 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
     return httpStatus
   }
 
-  protected ResponseMetaDataViolationPart makeResponseMetaDataViolationPart(DomainException domainException) {
+  protected ResponseMetaDataViolationPart makeResponseMetaDataViolationPart(DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
     ResponseMetaDataViolationPart responseMetaDataViolationPart = new ResponseMetaDataViolationPart(
         code: domainException.violationInfo.violationCode.code,
-        message: domainException.violationInfo.violationCode.codeMessage,
+        message: makeResponseMetaDataViolationMessage(domainException, handlerMethod, locale),
         type: ViolationType.DOMAIN.name().toLowerCase()
     )
 
     return responseMetaDataViolationPart
+  }
+
+  protected String makeResponseMetaDataViolationMessage(DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
+    String responseMetaDataViolationMessage
+    if (domainException.violationInfo.violationCode.isResolvable()) {
+      responseMetaDataViolationMessage = localizeHttpResponseMetaDataViolationMessage(domainException, handlerMethod, locale)
+    }
+    else {
+      // NOTE: domain exception always has a message, which is ensured by its constructor
+      responseMetaDataViolationMessage = domainException.message
+    }
+
+    return responseMetaDataViolationMessage
   }
 
   protected HttpResponseMetaDataHttpPart makeHttpResponseMetaDataPart(HttpStatus httpStatus) {
@@ -150,7 +170,7 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
     return httpResponseMetaDataPart
   }
 
-  protected HttpResponseMetaData localizeHttpResponseMetaData(HttpResponseMetaData httpResponseMetaData, DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
+  protected String localizeHttpResponseMetaDataViolationMessage(DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
     String fullMessageSubType = domainException.violationInfo.violationCode.resolvableMessageKey
     List<String> fullMessageSubTypeTokens = fullMessageSubType.tokenize(".")
     String messageSubTypeMain = fullMessageSubTypeTokens[0]
@@ -166,13 +186,13 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
         severity: domainException.violationInfo.severity.name().toLowerCase()
     )
 
-    httpResponseMetaData.violation.message = MessageSourceResolvableHelper.resolveMessageCodeList(
+    String httpResponseMetaDataViolationMessage = MessageSourceResolvableHelper.resolveMessageCodeList(
         locale,
         messageSource,
         MessageSourceResolvableHelper.makeMessageCodeListForViolationMessageOfDomainFailure(resolvableMessageSpecification),
         domainException.violationInfo.violationCode.resolvableMessageParameters
     )
 
-    return httpResponseMetaData
+    return httpResponseMetaDataViolationMessage
   }
 }

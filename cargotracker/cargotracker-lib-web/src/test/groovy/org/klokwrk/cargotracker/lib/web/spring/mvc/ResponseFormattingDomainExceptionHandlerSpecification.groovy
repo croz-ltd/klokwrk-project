@@ -159,7 +159,85 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
     violationInfoConstantName = findViolationInfoConstantName(violationInfoParam)
   }
 
-  void "should work for custom ViolationInfo without resolvableMessageParameters"() {
+  void "should work for DomainException with message"() {
+    given:
+    ViolationCode violationCode = ViolationCode.make("12345", "codeMessage")
+    ViolationInfo violationInfo = new ViolationInfo(severity: Severity.WARNING, violationCode: violationCode)
+    DomainException exception = new DomainException(violationInfo, "Domain exception message")
+
+    when:
+    ResponseEntity responseEntity = responseFormattingDomainExceptionHandler.handleDomainException(exception, handlerMethod, locale)
+
+    OperationResponse<Map> body = responseEntity.body as OperationResponse<Map>
+    Map metadata = body.metaData
+    Map payload = body.payload
+
+    then:
+    verifyAll {
+      body
+      payload.size() == 0
+
+      metadata.general.propertiesFiltered.size() == 3
+      metadata.general.timestamp
+      metadata.general.severity == Severity.WARNING.name().toLowerCase()
+      metadata.general.locale == new Locale("en")
+
+      metadata.violation.propertiesFiltered.size() == 5
+      metadata.violation.code == "12345"
+      metadata.violation.message == "Domain exception message"
+      metadata.violation.type == ViolationType.DOMAIN.name().toLowerCase()
+      metadata.violation.logUuid == null
+      metadata.violation.validationReport == null
+
+      metadata.http.propertiesFiltered.size() == 2
+      metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
+      metadata.http.message == HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase
+    }
+  }
+
+  void "should work for DomainException with default message and custom ViolationInfo without resolvableMessageKey"() {
+    given:
+    ViolationCode violationCode = ViolationCode.make("12345", "codeMessage")
+    ViolationInfo violationInfo = new ViolationInfo(severity: Severity.WARNING, violationCode: violationCode)
+    DomainException exception = new DomainException(violationInfo, domainExceptionMessageParam)
+
+    when:
+    ResponseEntity responseEntity = responseFormattingDomainExceptionHandler.handleDomainException(exception, handlerMethod, locale)
+
+    OperationResponse<Map> body = responseEntity.body as OperationResponse<Map>
+    Map metadata = body.metaData
+    Map payload = body.payload
+
+    then:
+    verifyAll {
+      body
+      payload.size() == 0
+
+      metadata.general.propertiesFiltered.size() == 3
+      metadata.general.timestamp
+      metadata.general.severity == Severity.WARNING.name().toLowerCase()
+      metadata.general.locale == new Locale("en")
+
+      metadata.violation.propertiesFiltered.size() == 5
+      metadata.violation.code == "12345"
+      metadata.violation.message == "codeMessage"
+      metadata.violation.type == ViolationType.DOMAIN.name().toLowerCase()
+      metadata.violation.logUuid == null
+      metadata.violation.validationReport == null
+
+      metadata.http.propertiesFiltered.size() == 2
+      metadata.http.status == HttpStatus.INTERNAL_SERVER_ERROR.value().toString()
+      metadata.http.message == HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase
+    }
+
+    where:
+    domainExceptionMessageParam | _
+    null                        | _
+    ""                          | _
+    "  "                        | _
+  }
+
+  void "should work for custom ViolationInfo with resolvableMessageKey and without resolvableMessageParameters"() {
     given:
     ViolationCode violationCode = ViolationCode.make("12345", "codeMessage", resolvableMessageKeyParam)
     ViolationInfo violationInfo = new ViolationInfo(severity: Severity.WARNING, violationCode: violationCode)
@@ -200,7 +278,7 @@ class ResponseFormattingDomainExceptionHandlerSpecification extends Specificatio
     "myMainTestCode.myMoreSpecificTestCode" | "My more specific violation code message"
   }
 
-  void "should work for custom ViolationInfo with resolvableMessageParameters"() {
+  void "should work for custom ViolationInfo with resolvableMessageKey and resolvableMessageParameters"() {
     given:
     ViolationCode violationCode = ViolationCode.make("12345", "codeMessage", resolvableMessageKeyParam, resolvableMessageParametersParam)
     ViolationInfo violationInfo = new ViolationInfo(severity: Severity.WARNING, violationCode: violationCode)
