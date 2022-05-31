@@ -67,8 +67,8 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Column(nullable = false) String inboundChannelName
   @Column(nullable = false) String inboundChannelType
 
-  @Column(nullable = false, updatable = false) Instant firstEventRecordedAt
-  @Column(nullable = false) Instant lastEventRecordedAt
+  @Column(nullable = false, updatable = false, columnDefinition = "timestamptz") Instant firstEventRecordedAt
+  @Column(nullable = false, columnDefinition = "timestamptz") Instant lastEventRecordedAt
   @Column(nullable = false) Long lastEventSequenceNumber
 
   @Override
