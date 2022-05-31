@@ -63,7 +63,10 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
     Instant startedAt = Instant.now()
     String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
 
-    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest = new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: myBookingOfferIdentifier)
+    // Note: "standard-customer@cargotracker.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
+    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest =
+        new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: myBookingOfferIdentifier, userIdentifier: "standard-customer@cargotracker.com")
+
     OperationRequest<BookingOfferSummaryQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryQueryRequest,
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): localeParam]
@@ -74,6 +77,8 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
 
     then:
     verifyAll(operationResponse.payload) {
+      propertiesFiltered.size() == 6
+
       bookingOfferIdentifier == myBookingOfferIdentifier
       originLocation == "HRRJK"
       destinationLocation == "NLRTM"
@@ -98,7 +103,9 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
 
   void "should throw when booking offer summary cannot be found - [locale: #locale]"() {
     given:
-    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest = new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: UUID.randomUUID())
+    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest =
+        new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: UUID.randomUUID(), userIdentifier: "standard-customer@cargotracker.com")
+
     OperationRequest<BookingOfferSummaryQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryQueryRequest,
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): locale]

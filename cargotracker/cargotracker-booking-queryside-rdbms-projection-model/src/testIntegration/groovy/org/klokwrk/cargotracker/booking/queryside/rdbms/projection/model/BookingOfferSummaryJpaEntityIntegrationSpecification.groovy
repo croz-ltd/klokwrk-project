@@ -65,6 +65,9 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
   void setup() {
     originalEntity = new BookingOfferSummaryJpaEntity(
         bookingOfferIdentifier: UUID.randomUUID(),
+
+        customerIdentifier: UUID.randomUUID(),
+
         originLocation: "originLocation",
         destinationLocation: "destinationLocation",
 

@@ -29,6 +29,8 @@ import org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture
 import spock.lang.Shared
 import spock.lang.Specification
 
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAnyPackage
+
 @Slf4j
 class BookingQuerySideAppArchitectureSpecification extends Specification {
   @Shared
@@ -36,7 +38,11 @@ class BookingQuerySideAppArchitectureSpecification extends Specification {
 
   void setupSpec() {
     importedClasses = ArchUnitUtils.importJavaClassesFromPackages(
-        ["org.klokwrk.cargotracker.booking.queryside", "org.klokwrk.cargotracker.booking.domain.model.value"],
+        [
+            "org.klokwrk.cargotracker.booking.queryside",
+            "org.klokwrk.cargotracker.booking.domain.model.value",
+            "org.klokwrk.cargotracker.booking.out.customer"
+        ],
         ["org.klokwrk.cargotracker.booking.queryside.rdbms.projection"]
     )
   }
@@ -72,11 +78,20 @@ class BookingQuerySideAppArchitectureSpecification extends Specification {
         .domainValues("..cargotracker.booking.domain.model.value..")
 
         .applicationInboundPorts("..cargotracker.booking.queryside.feature.*.application.port.in..")
-        .applicationOutboundPorts("..cargotracker.booking.queryside.feature.*.application.port.out..")
+        .applicationOutboundPorts(
+            "..cargotracker.booking.queryside.feature.*.application.port.out..",
+            "..cargotracker.booking.out.customer.port.."
+        )
         .applicationServices("..cargotracker.booking.queryside.feature.*.application.service..")
 
         .adapterInbound("in.web", "..cargotracker.booking.queryside.feature.*.adapter.in.web..")
         .adapterOutbound("out.persistence", "..cargotracker.booking.queryside.feature.*.adapter.out.persistence..")
+        .adapterOutbound("out.standalone.customer", "..cargotracker.booking.out.customer.adapter..")
+
+        .ignoreDependency( // dependency injection can access and instantiate outbound adapters
+            resideInAnyPackage("..cargotracker.booking.queryside.infrastructure.."),
+            resideInAnyPackage("..cargotracker.booking.out.customer.adapter..")
+        )
 
         .withOptionalLayers(false)
     // @formatter:on

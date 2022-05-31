@@ -76,7 +76,9 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
     given:
     Instant startedAt = Instant.now()
     String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
-    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier])
+
+    // Note: "standard-customer@cargotracker.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
+    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier, userIdentifier: "standard-customer@cargotracker.com"])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -124,7 +126,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
 
   @SuppressWarnings("CodeNarc.AbcMetric")
   void "should return expected response when request is not valid - validation failure - [acceptLanguage: #acceptLanguage]"() {
-    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: null])
+    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: null, userIdentifier: null])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -165,8 +167,9 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
     verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
       it.size() == 2
       root.type == "bookingOfferSummaryQueryRequest"
-      constraintViolations.size() == 1
+      constraintViolations.size() == 2
       constraintViolations.find({ it.path == "bookingOfferIdentifier" }).type == "notBlank"
+      constraintViolations.find({ it.path == "userIdentifier" }).type == "notBlank"
     }
 
     verifyAll(responseContentMap.payload as Map) {
@@ -179,10 +182,60 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
     "en"           | "en"         | "Request is not valid."
   }
 
+  void "should return expected response when specified user can not be found - stateful validation failure [acceptLanguage: #acceptLanguage]"() {
+    given:
+    String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
+    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier, userIdentifier: "someUserIdentifier"])
+
+    when:
+    MvcResult mvcResult = mockMvc.perform(
+        post("/booking-offer/booking-offer-summary")
+            .content(webRequestBody)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+    ).andReturn()
+
+    Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
+
+    then:
+    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
+
+    verifyAll(responseContentMap.metaData.general as Map) {
+      it.size() == 3
+      locale == localeString
+      severity == Severity.WARNING.name().toLowerCase()
+      timestamp
+    }
+
+    verifyAll(responseContentMap.metaData.http as Map) {
+      it.size() == 2
+      message == HttpStatus.BAD_REQUEST.reasonPhrase
+      status == HttpStatus.BAD_REQUEST.value().toString()
+    }
+
+    verifyAll(responseContentMap.metaData.violation as Map) {
+      it.size() == 3
+      code == HttpStatus.BAD_REQUEST.value().toString()
+      message == myViolationMessage
+      type == ViolationType.DOMAIN.name().toLowerCase()
+    }
+
+    verifyAll(responseContentMap.payload as Map) {
+      size() == 0
+    }
+
+    where:
+    acceptLanguage | localeString | myViolationMessage
+    "hr-HR"        | "hr_HR"      | "Nije pronađen potrošač s korisničkim imenom 'someUserIdentifier'."
+    "en"           | "en"         | "Can't find the customer with user id 'someUserIdentifier'."
+  }
+
   void "should return expected response when BookingOfferSummary cannot be found - domain failure - [acceptLanguage: #acceptLanguage]"() {
     given:
     String myBookingOfferIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier])
+    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier, userIdentifier: "standard-customer@cargotracker.com"])
 
     when:
     MvcResult mvcResult = mockMvc.perform(
