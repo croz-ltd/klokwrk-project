@@ -49,7 +49,10 @@ class BookingOfferSummaryQueryHandlerService {
 
   @QueryHandler
   BookingOfferSummaryQueryResponse handleBookingOfferSummaryQueryRequest(BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest) {
-    BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = bookingOfferSummaryJpaRepository.findByBookingOfferIdentifier(UUID.fromString(bookingOfferSummaryQueryRequest.bookingOfferIdentifier))
+    BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity =
+        bookingOfferSummaryJpaRepository.findByBookingOfferIdentifierAndCustomerIdentifier(
+            UUID.fromString(bookingOfferSummaryQueryRequest.bookingOfferIdentifier), bookingOfferSummaryQueryRequest.customerIdentifier
+        )
 
     if (!bookingOfferSummaryJpaEntity) {
       throw new QueryException(ViolationInfo.NOT_FOUND)

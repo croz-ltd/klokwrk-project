@@ -22,12 +22,14 @@ import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
+import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
 import org.klokwrk.lib.validation.group.Level3
 
 import javax.validation.GroupSequence
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.Null
 import javax.validation.constraints.Size
 
 /**
@@ -40,6 +42,35 @@ import javax.validation.constraints.Size
 @MapConstructor(noArg = true)
 @CompileStatic
 class BookingOfferSummaryQueryRequest {
+  /**
+   * User identifier known to the real end user (i.e., like email)
+   * <p/>
+   * Not null and not blank.
+   * <p/>
+   * During request processing, {@code userIdentifier} is converted to the corresponding {@code customerIdentifier} which is used at the database level.
+   */
+  @TrimmedStringConstraint(groups = [Level2])
+  @NotBlank(groups = [Level1])
+  String userIdentifier
+
+  /**
+   * Internal customer identifier.
+   * <p/>
+   * In inbound request it must be null.
+   * <p/>
+   * It is assigned during request processing based on corresponding {@code userIdentifier}. {@code customerIdentifier} is used at the database level, while the processing pipeline is responsible to
+   * map provided {@code userIdentifier} to {@code customerIdentifier}.
+   * <p/>
+   * We could introduce another class for complete separation of concerns, i.e., something like {@code BookingOfferSummaryQuery} (and corresponding {@code }BookingOfferSummaryQueryResult}). That
+   * {@code BookingOfferSummaryQuery} class would then contain {@code customerIdentifier}, but not {@code userIdentifier} property. Of course, we should also implement appropriate mapping for such a
+   * scenario.
+   * <p/>
+   * However, for simplicity and the smaller number of DTO classes, we have just added the {@code customerIdentifier} property to the already existing {@code BookingOfferSummaryQueryRequest} class.
+   * In addition, by adding {@code Null} annotation, we ensure the end user does not specify it.
+   */
+  @Null
+  String customerIdentifier
+
   /**
    * Identifier of a booking offer.
    * <p/>

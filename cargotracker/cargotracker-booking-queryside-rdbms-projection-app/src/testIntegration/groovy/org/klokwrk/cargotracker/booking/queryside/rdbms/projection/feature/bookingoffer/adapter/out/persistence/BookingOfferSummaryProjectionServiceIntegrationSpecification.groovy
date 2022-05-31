@@ -64,6 +64,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtures.eventValidRouteSpecification()
     UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId.identifier)
+    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId.identifier
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage =
         GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
@@ -74,8 +75,11 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
       verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
-        size() == 8
+        size() == 9
         booking_offer_identifier == bookingOfferIdentifier
+
+        customer_identifier == customerIdentifier
+
         origin_location == "HRRJK"
         destination_location == "NLRTM"
 
@@ -96,6 +100,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtures.eventValidRouteSpecification()
     UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId.identifier)
+    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId.identifier
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, [:])
     eventBus.publish(genericDomainEventMessage)
@@ -104,8 +109,11 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
       verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
-        size() == 8
+        size() == 9
         booking_offer_identifier == bookingOfferIdentifier
+
+        customer_identifier == customerIdentifier
+
         origin_location == "HRRJK"
         destination_location == "NLRTM"
 

@@ -807,7 +807,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
+													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -860,7 +860,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
+													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -913,7 +913,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"bookingOfferIdentifier\": null\n}",
+													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": null\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -965,7 +965,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"bookingOfferIdentifier\": null\n}",
+													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": null\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1017,7 +1017,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"bookingOfferIdentifier\": \"{{$randomUUID}}\"\n}",
+													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{$randomUUID}}\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1069,7 +1069,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"bookingOfferIdentifier\": \"{{$randomUUID}}\"\n}",
+													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{$randomUUID}}\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1214,7 +1214,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
+									"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1346,7 +1346,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
+									"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"

@@ -18,6 +18,7 @@
 package org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in
 
 import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
+import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.validation.springboot.ValidationConfigurationProperties
 import org.klokwrk.lib.validation.springboot.ValidationService
 import spock.lang.Shared
@@ -25,6 +26,7 @@ import spock.lang.Specification
 
 import javax.validation.ConstraintViolationException
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.Null
 import javax.validation.constraints.Size
 
 class BookingOfferSummaryQueryRequestSpecification extends Specification {
@@ -38,7 +40,8 @@ class BookingOfferSummaryQueryRequestSpecification extends Specification {
 
   void "should pass validation for valid data"() {
     given:
-    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest = new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: "00000000-0000-4000-8000-000000000000")
+    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest =
+        new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: "00000000-0000-4000-8000-000000000000", userIdentifier: "someUserIdentifier")
 
     when:
     validationService.validate(bookingOfferSummaryQueryRequest)
@@ -49,7 +52,7 @@ class BookingOfferSummaryQueryRequestSpecification extends Specification {
 
   void "should not pass validation for invalid data"() {
     given:
-    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest = new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: bookingOfferIdentifierParam)
+    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest = new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: bookingOfferIdentifierParam, userIdentifier: userIdentifierParam)
 
     when:
     validationService.validate(bookingOfferSummaryQueryRequest)
@@ -58,13 +61,37 @@ class BookingOfferSummaryQueryRequestSpecification extends Specification {
     ConstraintViolationException constraintViolationException = thrown()
 
     constraintViolationException.constraintViolations.size() == 1
-    constraintViolationException.constraintViolations[0].propertyPath.toString() == "bookingOfferIdentifier"
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
-    bookingOfferIdentifierParam            | constraintTypeParam
-    ""                                     | NotBlank
-    "123"                                  | Size
-    "00000000=0000=0000=0000=000000000000" | RandomUuidFormatConstraint
+    bookingOfferIdentifierParam            | userIdentifierParam    | constraintTypeParam
+    null                                   | "someUserIdentifier"   | NotBlank
+    ""                                     | "someUserIdentifier"   | NotBlank
+    "  "                                   | "someUserIdentifier"   | NotBlank
+    "123"                                  | "someUserIdentifier"   | Size
+    "00000000=0000=0000=0000=000000000000" | "someUserIdentifier"   | RandomUuidFormatConstraint
+
+    "00000000-0000-0000-0000-000000000000" | null                   | NotBlank
+    "00000000-0000-0000-0000-000000000000" | ""                     | NotBlank
+    "00000000-0000-0000-0000-000000000000" | "  "                   | NotBlank
+    "00000000-0000-0000-0000-000000000000" | " someUserIdentifier"  | TrimmedStringConstraint
+    "00000000-0000-0000-0000-000000000000" | "someUserIdentifier "  | TrimmedStringConstraint
+    "00000000-0000-0000-0000-000000000000" | " someUserIdentifier " | TrimmedStringConstraint
+  }
+
+  void "should not pass validation for unexpected data"() {
+    given:
+    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest =
+        new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: UUID.randomUUID(), userIdentifier: "someUserIdentifier", customerIdentifier: "someCustomerIdentifier")
+
+    when:
+    validationService.validate(bookingOfferSummaryQueryRequest)
+
+    then:
+    ConstraintViolationException constraintViolationException = thrown()
+
+    constraintViolationException.constraintViolations.size() == 1
+    constraintViolationException.constraintViolations[0].propertyPath.toString() == "customerIdentifier"
+    constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == Null
   }
 }

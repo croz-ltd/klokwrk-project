@@ -28,11 +28,16 @@ import org.klokwrk.lang.groovy.constant.CommonConstants
 class BookingOfferSummaryJpaEntityFactory {
   static BookingOfferSummaryJpaEntity makeBookingOfferSummaryJpaEntity(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
     UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId.identifier)
+
+    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId.identifier
     String originLocation = bookingOfferCreatedEvent.routeSpecification.originLocation.unLoCode.code
     String destinationLocation = bookingOfferCreatedEvent.routeSpecification.destinationLocation.unLoCode.code
 
     BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = new BookingOfferSummaryJpaEntity(
         bookingOfferIdentifier: bookingOfferIdentifier,
+
+        customerIdentifier: customerIdentifier,
+
         originLocation: originLocation,
         destinationLocation: destinationLocation,
 
