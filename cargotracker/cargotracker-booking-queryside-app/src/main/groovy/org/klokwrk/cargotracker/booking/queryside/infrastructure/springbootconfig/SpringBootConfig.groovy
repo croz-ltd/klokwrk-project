@@ -21,6 +21,7 @@ import groovy.transform.CompileStatic
 import org.axonframework.common.transaction.TransactionManager
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
 import org.axonframework.spring.messaging.unitofwork.SpringTransactionManager
+import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerRegistryService
 import org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingQueryHandlerEnhancerDefinition
 import org.klokwrk.lib.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
@@ -86,5 +87,10 @@ class SpringBootConfig {
   @Bean
   ValidationService validationService(ValidationConfigurationProperties validationConfigurationProperties) {
     return new ValidationService(validationConfigurationProperties)
+  }
+
+  @Bean
+  InMemoryCustomerRegistryService inMemoryCustomerRegistryService() {
+    return new InMemoryCustomerRegistryService()
   }
 }

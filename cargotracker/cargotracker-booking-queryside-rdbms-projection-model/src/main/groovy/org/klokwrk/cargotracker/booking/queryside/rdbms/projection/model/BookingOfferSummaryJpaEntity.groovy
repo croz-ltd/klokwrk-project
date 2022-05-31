@@ -61,6 +61,8 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Id
   UUID bookingOfferIdentifier
 
+  @Column(nullable = false, updatable = false) String customerIdentifier
+
   @Column(nullable = false) String originLocation
   @Column(nullable = false) String destinationLocation
 
