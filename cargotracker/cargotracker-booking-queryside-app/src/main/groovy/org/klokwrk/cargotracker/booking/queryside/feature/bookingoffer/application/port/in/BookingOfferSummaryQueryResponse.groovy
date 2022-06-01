@@ -20,6 +20,7 @@ package org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.applicat
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
+import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
 import java.time.Instant
@@ -29,6 +30,8 @@ import java.time.Instant
 @CompileStatic
 class BookingOfferSummaryQueryResponse {
   String bookingOfferIdentifier
+
+  CustomerType customerType
 
   String originLocation
   String destinationLocation

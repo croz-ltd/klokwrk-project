@@ -22,6 +22,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import groovy.transform.ToString
+import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.misc.RandomUuidUtils
 import org.klokwrk.lang.groovy.transform.KwrkMapConstructorDefaultPostCheck
@@ -30,6 +31,8 @@ import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
 import javax.persistence.Id
 import javax.persistence.Table
 import java.time.Instant
@@ -62,6 +65,7 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   UUID bookingOfferIdentifier
 
   @Column(nullable = false, updatable = false) String customerIdentifier
+  @Column(nullable = false) @Enumerated(EnumType.STRING) CustomerType customerType
 
   @Column(nullable = false) String originLocation
   @Column(nullable = false) String destinationLocation
