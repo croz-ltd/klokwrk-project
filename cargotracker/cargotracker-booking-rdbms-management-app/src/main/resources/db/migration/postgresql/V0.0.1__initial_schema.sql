@@ -17,12 +17,12 @@
 --
 
 CREATE TABLE token_entry (
-  processor_name VARCHAR(255) NOT NULL,
+  processor_name TEXT NOT NULL,
   segment INTEGER NOT NULL,
-  owner VARCHAR(255),
-  timestamp VARCHAR(255) NOT NULL,
+  owner TEXT,
+  timestamp TEXT NOT NULL,
   token BYTEA,
-  token_type VARCHAR(255),
+  token_type TEXT,
 
   PRIMARY KEY (processor_name, segment)
 );
@@ -34,14 +34,14 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO cargotracker
 CREATE TABLE booking_offer_summary (
   booking_offer_identifier UUID PRIMARY KEY,
 
-  customer_identifier VARCHAR(255) NOT NULL,
-  customer_type VARCHAR(255) NOT NULL,
+  customer_identifier TEXT NOT NULL,
+  customer_type TEXT NOT NULL,
 
-  origin_location VARCHAR(255) NOT NULL,
-  destination_location VARCHAR(255) NOT NULL,
+  origin_location TEXT NOT NULL,
+  destination_location TEXT NOT NULL,
 
-  inbound_channel_name VARCHAR(255) NOT NULL,
-  inbound_channel_type VARCHAR(255) NOT NULL,
+  inbound_channel_name TEXT NOT NULL,
+  inbound_channel_type TEXT NOT NULL,
 
   first_event_recorded_at timestamptz NOT NULL,
   last_event_recorded_at timestamptz NOT NULL,
