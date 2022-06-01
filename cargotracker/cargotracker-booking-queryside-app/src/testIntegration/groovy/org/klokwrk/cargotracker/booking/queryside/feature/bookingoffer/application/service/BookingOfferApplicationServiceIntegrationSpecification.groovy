@@ -19,6 +19,7 @@ package org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.applicat
 
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
+import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryResponse
@@ -77,9 +78,11 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
 
     then:
     verifyAll(operationResponse.payload) {
-      propertiesFiltered.size() == 6
+      propertiesFiltered.size() == 7
 
       bookingOfferIdentifier == myBookingOfferIdentifier
+
+      customerType == CustomerType.STANDARD
       originLocation == "HRRJK"
       destinationLocation == "NLRTM"
 

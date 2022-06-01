@@ -19,6 +19,7 @@ package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model
 
 import com.github.dockerjava.api.command.CreateNetworkCmd
 import org.hibernate.Session
+import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -67,6 +68,7 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
         bookingOfferIdentifier: UUID.randomUUID(),
 
         customerIdentifier: UUID.randomUUID(),
+        customerType: CustomerType.STANDARD,
 
         originLocation: "originLocation",
         destinationLocation: "destinationLocation",

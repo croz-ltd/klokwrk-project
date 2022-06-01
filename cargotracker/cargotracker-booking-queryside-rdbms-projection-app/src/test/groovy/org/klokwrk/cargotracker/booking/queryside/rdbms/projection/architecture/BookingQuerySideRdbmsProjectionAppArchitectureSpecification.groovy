@@ -63,11 +63,14 @@ class BookingQuerySideRdbmsProjectionAppArchitectureSpecification extends Specif
         .domainValues("..cargotracker.booking.domain.model.value..")
         .domainEvents("..cargotracker.booking.domain.model.event..")
 
-        .adapterProjection("out.persistence", "..cargotracker.booking.queryside.rdbms.projection.feature.*.adapter.out..")
+        .adapterProjection(
+            "out.persistence",
+            [
+                "..cargotracker.booking.queryside.rdbms.projection.feature.*.adapter.out..",
+                "..cargotracker.booking.queryside.rdbms.projection.model.."
+            ] as String[]
+        )
 
-        // We are ignoring dependencies originating from command classes. Command classes should not be used in projections. Only events can be used. Since command and events are not split it their
-        // own modules, we need to ignore commands here. Illegal access to commands is verified in other test.
-        .ignoreDependency(JavaClass.Predicates.resideInAPackage("org.klokwrk.cargotracker.booking.axon.api.feature.*.command.."), JavaClass.Predicates.resideInAPackage("org.klokwrk.cargotracker.."))
         .withOptionalLayers(false)
     // @formatter:on
 
