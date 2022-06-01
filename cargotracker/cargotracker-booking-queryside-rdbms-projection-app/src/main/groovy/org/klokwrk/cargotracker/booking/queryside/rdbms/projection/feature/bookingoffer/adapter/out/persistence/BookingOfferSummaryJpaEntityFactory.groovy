@@ -20,7 +20,6 @@ package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.feature.book
 import groovy.transform.CompileStatic
 import org.axonframework.eventhandling.DomainEventMessage
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
-import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.BookingOfferSummaryJpaEntity
 import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDataConstant
 import org.klokwrk.lang.groovy.constant.CommonConstants
@@ -30,19 +29,14 @@ class BookingOfferSummaryJpaEntityFactory {
   static BookingOfferSummaryJpaEntity makeBookingOfferSummaryJpaEntity(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
     UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId.identifier)
 
-    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId.identifier
-    CustomerType customerType = bookingOfferCreatedEvent.customer.customerType
-    String originLocation = bookingOfferCreatedEvent.routeSpecification.originLocation.unLoCode.code
-    String destinationLocation = bookingOfferCreatedEvent.routeSpecification.destinationLocation.unLoCode.code
-
     BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = new BookingOfferSummaryJpaEntity(
         bookingOfferIdentifier: bookingOfferIdentifier,
 
-        customerIdentifier: customerIdentifier,
-        customerType: customerType,
+        customerIdentifier: bookingOfferCreatedEvent.customer.customerId.identifier,
+        customerType: bookingOfferCreatedEvent.customer.customerType,
 
-        originLocation: originLocation,
-        destinationLocation: destinationLocation,
+        originLocationUnLoCode: bookingOfferCreatedEvent.routeSpecification.originLocation.unLoCode.code,
+        destinationLocationUnLoCode: bookingOfferCreatedEvent.routeSpecification.destinationLocation.unLoCode.code,
 
         inboundChannelName: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_NAME_KEY] ?: CommonConstants.NOT_AVAILABLE,
         inboundChannelType: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_TYPE_KEY] ?: CommonConstants.NOT_AVAILABLE,

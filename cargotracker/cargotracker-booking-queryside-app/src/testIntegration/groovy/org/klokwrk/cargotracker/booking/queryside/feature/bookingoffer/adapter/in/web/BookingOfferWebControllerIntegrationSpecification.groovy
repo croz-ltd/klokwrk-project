@@ -110,8 +110,8 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
 
     verifyAll(responseContentMap.payload as Map) {
       bookingOfferIdentifier == myBookingOfferIdentifier
-      originLocation == "HRRJK"
-      destinationLocation == "NLRTM"
+      originLocationUnLoCode == "HRRJK"
+      destinationLocationUnLoCode == "NLRTM"
 
       Instant.parse(firstEventRecordedAt as String) >= startedAt
       Instant.parse(lastEventRecordedAt as String) >= startedAt

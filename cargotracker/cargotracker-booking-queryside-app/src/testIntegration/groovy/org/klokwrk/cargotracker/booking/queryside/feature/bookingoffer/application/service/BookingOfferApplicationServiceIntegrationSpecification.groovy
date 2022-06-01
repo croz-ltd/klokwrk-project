@@ -83,8 +83,8 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
       bookingOfferIdentifier == myBookingOfferIdentifier
 
       customerType == CustomerType.STANDARD
-      originLocation == "HRRJK"
-      destinationLocation == "NLRTM"
+      originLocationUnLoCode == "HRRJK"
+      destinationLocationUnLoCode == "NLRTM"
 
       firstEventRecordedAt >= startedAt
       lastEventRecordedAt >= startedAt

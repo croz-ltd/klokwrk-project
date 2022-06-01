@@ -83,8 +83,8 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         customer_identifier == customerIdentifier
         customer_type == customerType.name()
 
-        origin_location == "HRRJK"
-        destination_location == "NLRTM"
+        origin_location_un_lo_code == "HRRJK"
+        destination_location_un_lo_code == "NLRTM"
 
         inbound_channel_name == WebMetaDataConstant.WEB_BOOKING_CHANNEL_NAME
         inbound_channel_type == WebMetaDataConstant.WEB_BOOKING_CHANNEL_TYPE
@@ -119,8 +119,8 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         customer_identifier == customerIdentifier
         customer_type == customerType.name()
 
-        origin_location == "HRRJK"
-        destination_location == "NLRTM"
+        origin_location_un_lo_code == "HRRJK"
+        destination_location_un_lo_code == "NLRTM"
 
         inbound_channel_name == CommonConstants.NOT_AVAILABLE
         inbound_channel_type == CommonConstants.NOT_AVAILABLE

@@ -70,8 +70,8 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
         customerIdentifier: UUID.randomUUID(),
         customerType: CustomerType.STANDARD,
 
-        originLocation: "originLocation",
-        destinationLocation: "destinationLocation",
+        originLocationUnLoCode: "originLocationUnLoCode",
+        destinationLocationUnLoCode: "destinationLocationUnLoCode",
 
         inboundChannelName: "inboundChannelName",
         inboundChannelType: "inboundChannelType",
