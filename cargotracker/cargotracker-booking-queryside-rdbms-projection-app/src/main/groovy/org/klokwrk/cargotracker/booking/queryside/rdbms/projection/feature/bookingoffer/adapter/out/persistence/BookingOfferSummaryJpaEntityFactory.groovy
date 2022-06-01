@@ -36,7 +36,12 @@ class BookingOfferSummaryJpaEntityFactory {
         customerType: bookingOfferCreatedEvent.customer.customerType,
 
         originLocationUnLoCode: bookingOfferCreatedEvent.routeSpecification.originLocation.unLoCode.code,
+        originLocationName: bookingOfferCreatedEvent.routeSpecification.originLocation.name.nameInternationalized,
+        originLocationCountryName: bookingOfferCreatedEvent.routeSpecification.originLocation.countryName.nameInternationalized,
+
         destinationLocationUnLoCode: bookingOfferCreatedEvent.routeSpecification.destinationLocation.unLoCode.code,
+        destinationLocationName: bookingOfferCreatedEvent.routeSpecification.destinationLocation.name.nameInternationalized,
+        destinationLocationCountryName: bookingOfferCreatedEvent.routeSpecification.destinationLocation.countryName.nameInternationalized,
 
         inboundChannelName: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_NAME_KEY] ?: CommonConstants.NOT_AVAILABLE,
         inboundChannelType: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_TYPE_KEY] ?: CommonConstants.NOT_AVAILABLE,

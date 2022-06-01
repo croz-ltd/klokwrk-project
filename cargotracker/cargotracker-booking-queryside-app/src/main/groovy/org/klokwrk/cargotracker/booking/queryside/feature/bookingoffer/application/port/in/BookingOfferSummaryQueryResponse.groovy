@@ -34,7 +34,12 @@ class BookingOfferSummaryQueryResponse {
   CustomerType customerType
 
   String originLocationUnLoCode
+  String originLocationName
+  String originLocationCountryName
+
   String destinationLocationUnLoCode
+  String destinationLocationName
+  String destinationLocationCountryName
 
   Instant firstEventRecordedAt
   Instant lastEventRecordedAt

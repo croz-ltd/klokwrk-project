@@ -77,14 +77,19 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
       verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
-        size() == 10
+        size() == 14
         booking_offer_identifier == bookingOfferIdentifier
 
         customer_identifier == customerIdentifier
         customer_type == customerType.name()
 
         origin_location_un_lo_code == "HRRJK"
+        origin_location_name == "Rijeka"
+        origin_location_country_name == "Croatia"
+
         destination_location_un_lo_code == "NLRTM"
+        destination_location_name == "Rotterdam"
+        destination_location_country_name == "Netherlands"
 
         inbound_channel_name == WebMetaDataConstant.WEB_BOOKING_CHANNEL_NAME
         inbound_channel_type == WebMetaDataConstant.WEB_BOOKING_CHANNEL_TYPE
@@ -113,14 +118,19 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
       verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
-        size() == 10
+        size() == 14
         booking_offer_identifier == bookingOfferIdentifier
 
         customer_identifier == customerIdentifier
         customer_type == customerType.name()
 
         origin_location_un_lo_code == "HRRJK"
+        origin_location_name == "Rijeka"
+        origin_location_country_name == "Croatia"
+
         destination_location_un_lo_code == "NLRTM"
+        destination_location_name == "Rotterdam"
+        destination_location_country_name == "Netherlands"
 
         inbound_channel_name == CommonConstants.NOT_AVAILABLE
         inbound_channel_type == CommonConstants.NOT_AVAILABLE

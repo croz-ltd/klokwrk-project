@@ -68,7 +68,12 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Column(nullable = false) @Enumerated(EnumType.STRING) CustomerType customerType
 
   @Column(nullable = false) String originLocationUnLoCode
+  @Column(nullable = false) String originLocationName
+  @Column(nullable = false) String originLocationCountryName
+
   @Column(nullable = false) String destinationLocationUnLoCode
+  @Column(nullable = false) String destinationLocationName
+  @Column(nullable = false) String destinationLocationCountryName
 
   @Column(nullable = false) String inboundChannelName
   @Column(nullable = false) String inboundChannelType

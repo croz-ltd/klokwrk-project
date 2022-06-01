@@ -38,7 +38,12 @@ CREATE TABLE booking_offer_summary (
   customer_type TEXT NOT NULL,
 
   origin_location_un_lo_code TEXT NOT NULL,
+  origin_location_name TEXT NOT NULL,
+  origin_location_country_name TEXT NOT NULL,
+
   destination_location_un_lo_code TEXT NOT NULL,
+  destination_location_name TEXT NOT NULL,
+  destination_location_country_name TEXT NOT NULL,
 
   inbound_channel_name TEXT NOT NULL,
   inbound_channel_type TEXT NOT NULL,

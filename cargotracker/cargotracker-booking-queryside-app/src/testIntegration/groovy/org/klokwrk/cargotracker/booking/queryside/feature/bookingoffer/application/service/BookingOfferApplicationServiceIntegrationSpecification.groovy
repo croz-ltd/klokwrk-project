@@ -78,13 +78,19 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
 
     then:
     verifyAll(operationResponse.payload) {
-      propertiesFiltered.size() == 7
+      propertiesFiltered.size() == 11
 
       bookingOfferIdentifier == myBookingOfferIdentifier
 
       customerType == CustomerType.STANDARD
+
       originLocationUnLoCode == "HRRJK"
+      originLocationName == "Rijeka"
+      originLocationCountryName == "Croatia"
+
       destinationLocationUnLoCode == "NLRTM"
+      destinationLocationName == "Rotterdam"
+      destinationLocationCountryName == "Netherlands"
 
       firstEventRecordedAt >= startedAt
       lastEventRecordedAt >= startedAt

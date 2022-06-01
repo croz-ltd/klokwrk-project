@@ -153,14 +153,19 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
       // then:
       queryResponseStatusCode == 200
       verifyAll(queryResponseJson.payload as Map, {
-        it.size() == 7
+        it.size() == 11
 
         bookingOfferIdentifier == commandResponseBookingOfferIdentifier
 
         customerType == "STANDARD"
 
         originLocationUnLoCode == "HRRJK"
+        originLocationName == "Rijeka"
+        originLocationCountryName == "Croatia"
+
         destinationLocationUnLoCode == "NLRTM"
+        destinationLocationName == "Rotterdam"
+        destinationLocationCountryName == "Netherlands"
 
         firstEventRecordedAt == lastEventRecordedAt
         Instant.parse(firstEventRecordedAt as String) > currentTime

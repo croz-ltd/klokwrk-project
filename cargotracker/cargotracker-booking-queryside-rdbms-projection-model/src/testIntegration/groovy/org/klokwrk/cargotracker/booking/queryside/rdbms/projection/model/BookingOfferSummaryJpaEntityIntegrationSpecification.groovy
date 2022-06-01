@@ -71,7 +71,12 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
         customerType: CustomerType.STANDARD,
 
         originLocationUnLoCode: "originLocationUnLoCode",
+        originLocationName: "originLocationName",
+        originLocationCountryName: "originLocationCountryName",
+
         destinationLocationUnLoCode: "destinationLocationUnLoCode",
+        destinationLocationName: "destinationLocationName",
+        destinationLocationCountryName: "destinationLocationCountryName",
 
         inboundChannelName: "inboundChannelName",
         inboundChannelType: "inboundChannelType",
@@ -80,6 +85,8 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
         lastEventRecordedAt: currentInstant,
         lastEventSequenceNumber: 0L
     )
+
+    assert originalEntity.propertiesFiltered.size() == 14
 
     entitySet = [originalEntity] as HashSet
   }
