@@ -154,7 +154,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
       // then:
       queryResponseStatusCode == 200
       verifyAll(queryResponseJson.payload as Map, {
-        size() == 14
+        size() == 16
 
         bookingOfferIdentifier == commandResponseBookingOfferIdentifier
 
@@ -171,6 +171,9 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
         Instant.parse(departureEarliestTime as String) >= currentTime + Duration.ofHours(1)
         Instant.parse(departureLatestTime as String) >= currentTime + Duration.ofHours(2)
         Instant.parse(arrivalLatestTime as String) >= currentTime + Duration.ofHours(3)
+
+        commodityTotalWeightKg == 1000
+        commodityTotalContainerTeuCount == 1.00G
 
         firstEventRecordedAt == lastEventRecordedAt
         Instant.parse(firstEventRecordedAt as String) > currentTime

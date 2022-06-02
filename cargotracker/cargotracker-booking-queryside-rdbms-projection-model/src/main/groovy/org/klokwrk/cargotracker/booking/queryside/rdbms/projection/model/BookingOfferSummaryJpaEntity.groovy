@@ -79,6 +79,9 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Column(nullable = false, columnDefinition = "timestamptz") Instant departureLatestTime
   @Column(nullable = false, columnDefinition = "timestamptz") Instant arrivalLatestTime
 
+  @Column(nullable = false) Integer commodityTotalWeightKg
+  @Column(nullable = false, precision = 8, scale = 2) BigDecimal commodityTotalContainerTeuCount
+
   @Column(nullable = false) String inboundChannelName
   @Column(nullable = false) String inboundChannelType
 

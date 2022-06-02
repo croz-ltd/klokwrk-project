@@ -79,7 +79,7 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
 
     then:
     verifyAll(operationResponse.payload) {
-      propertiesFiltered.size() == 14
+      propertiesFiltered.size() == 16
 
       bookingOfferIdentifier == myBookingOfferIdentifier
 
@@ -96,6 +96,9 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
       departureEarliestTime >= startedAt + Duration.ofHours(1)
       departureLatestTime >= startedAt + Duration.ofHours(2)
       arrivalLatestTime >= startedAt + Duration.ofHours(3)
+
+      commodityTotalWeightKg == 1000
+      commodityTotalContainerTeuCount == 1.00G
 
       firstEventRecordedAt >= startedAt
       lastEventRecordedAt >= startedAt

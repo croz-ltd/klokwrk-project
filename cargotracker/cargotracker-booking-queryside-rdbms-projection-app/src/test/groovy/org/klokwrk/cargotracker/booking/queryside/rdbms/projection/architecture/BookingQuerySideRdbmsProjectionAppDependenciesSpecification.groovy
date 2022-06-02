@@ -58,7 +58,10 @@ class BookingQuerySideRdbmsProjectionAppDependenciesSpecification extends Specif
         "org.axonframework.eventhandling..",
         "org.axonframework.messaging..",
 
-        "org.springframework.."
+        "org.springframework..",
+
+        "javax.measure..",
+        "tech.units.indriya.."
     ]
 
     String[] cargotrackerBookingRdbmsProjectionAppAllPackages = [

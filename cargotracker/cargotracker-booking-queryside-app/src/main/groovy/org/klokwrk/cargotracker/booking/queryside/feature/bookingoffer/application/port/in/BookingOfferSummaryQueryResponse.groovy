@@ -45,6 +45,9 @@ class BookingOfferSummaryQueryResponse {
   Instant departureLatestTime
   Instant arrivalLatestTime
 
+  Integer commodityTotalWeightKg
+  BigDecimal commodityTotalContainerTeuCount
+
   Instant firstEventRecordedAt
   Instant lastEventRecordedAt
   Long lastEventSequenceNumber

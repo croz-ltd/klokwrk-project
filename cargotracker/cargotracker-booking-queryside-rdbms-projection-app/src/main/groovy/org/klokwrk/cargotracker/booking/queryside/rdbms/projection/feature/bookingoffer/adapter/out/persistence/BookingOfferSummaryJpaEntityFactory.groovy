@@ -23,6 +23,7 @@ import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEv
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.BookingOfferSummaryJpaEntity
 import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDataConstant
 import org.klokwrk.lang.groovy.constant.CommonConstants
+import tech.units.indriya.unit.Units
 
 @CompileStatic
 class BookingOfferSummaryJpaEntityFactory {
@@ -46,6 +47,9 @@ class BookingOfferSummaryJpaEntityFactory {
         departureEarliestTime: bookingOfferCreatedEvent.routeSpecification.departureEarliestTime,
         departureLatestTime: bookingOfferCreatedEvent.routeSpecification.departureLatestTime,
         arrivalLatestTime: bookingOfferCreatedEvent.routeSpecification.arrivalLatestTime,
+
+        commodityTotalWeightKg: bookingOfferCreatedEvent.bookingTotalCommodityWeight.to(Units.KILOGRAM).value,
+        commodityTotalContainerTeuCount: bookingOfferCreatedEvent.bookingTotalContainerTeuCount,
 
         inboundChannelName: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_NAME_KEY] ?: CommonConstants.NOT_AVAILABLE,
         inboundChannelType: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_TYPE_KEY] ?: CommonConstants.NOT_AVAILABLE,

@@ -83,6 +83,9 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
         departureLatestTime: currentInstant.plus(5, ChronoUnit.HOURS),
         arrivalLatestTime: currentInstant.plus(20, ChronoUnit.HOURS),
 
+        commodityTotalWeightKg: 1000,
+        commodityTotalContainerTeuCount: 2.00G,
+
         inboundChannelName: "inboundChannelName",
         inboundChannelType: "inboundChannelType",
 
@@ -91,7 +94,7 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
         lastEventSequenceNumber: 0L
     )
 
-    assert originalEntity.propertiesFiltered.size() == 17
+    assert originalEntity.propertiesFiltered.size() == 19
 
     entitySet = [originalEntity] as HashSet
   }
