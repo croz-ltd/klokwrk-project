@@ -19,6 +19,7 @@ package org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.applicat
 
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
+import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryResponse
@@ -36,6 +37,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ActiveProfiles
 
 import javax.sql.DataSource
+import java.time.Duration
 import java.time.Instant
 
 @SpringBootTest
@@ -77,11 +79,26 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
 
     then:
     verifyAll(operationResponse.payload) {
-      propertiesFiltered.size() == 6
+      propertiesFiltered.size() == 16
 
       bookingOfferIdentifier == myBookingOfferIdentifier
-      originLocation == "HRRJK"
-      destinationLocation == "NLRTM"
+
+      customerType == CustomerType.STANDARD
+
+      originLocationUnLoCode == "HRRJK"
+      originLocationName == "Rijeka"
+      originLocationCountryName == "Croatia"
+
+      destinationLocationUnLoCode == "NLRTM"
+      destinationLocationName == "Rotterdam"
+      destinationLocationCountryName == "Netherlands"
+
+      departureEarliestTime >= startedAt + Duration.ofHours(1)
+      departureLatestTime >= startedAt + Duration.ofHours(2)
+      arrivalLatestTime >= startedAt + Duration.ofHours(3)
+
+      commodityTotalWeightKg == 1000
+      commodityTotalContainerTeuCount == 1.00G
 
       firstEventRecordedAt >= startedAt
       lastEventRecordedAt >= startedAt

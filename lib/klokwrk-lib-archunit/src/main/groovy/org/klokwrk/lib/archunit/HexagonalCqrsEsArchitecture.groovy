@@ -386,7 +386,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
         .layer(ADAPTER_INBOUND_LAYER).definedBy(adapterInboundPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
         .layer(ADAPTER_OUTBOUND_LAYER).definedBy(adapterOutboundPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
 
-        .whereLayer(DOMAIN_VALUE_LAYER).mayOnlyBeAccessedByLayers(APPLICATION_SERVICE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER, ADAPTER_OUTBOUND_LAYER)
+        .whereLayer(DOMAIN_VALUE_LAYER).mayOnlyBeAccessedByLayers(APPLICATION_SERVICE_LAYER, APPLICATION_INBOUND_PORT_LAYER, APPLICATION_OUTBOUND_PORT_LAYER, ADAPTER_OUTBOUND_LAYER)
 
         // Here we are allowing for outbound layer to access types defined in APPLICATION_INBOUND_PORT_LAYER. Reason is, this is queryside where often application services just pass
         // inbound data to the outbound queries. Outbound queries than can use response types that are defined in inbound ports.

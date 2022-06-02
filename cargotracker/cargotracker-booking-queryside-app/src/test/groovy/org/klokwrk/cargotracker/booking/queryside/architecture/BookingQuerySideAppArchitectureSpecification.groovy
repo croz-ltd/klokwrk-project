@@ -85,7 +85,13 @@ class BookingQuerySideAppArchitectureSpecification extends Specification {
         .applicationServices("..cargotracker.booking.queryside.feature.*.application.service..")
 
         .adapterInbound("in.web", "..cargotracker.booking.queryside.feature.*.adapter.in.web..")
-        .adapterOutbound("out.persistence", "..cargotracker.booking.queryside.feature.*.adapter.out.persistence..")
+        .adapterOutbound(
+            "out.persistence",
+            [
+                "..cargotracker.booking.queryside.feature.*.adapter.out.persistence..",
+                "..cargotracker.booking.queryside.rdbms.projection.model.."
+            ] as String[]
+        )
         .adapterOutbound("out.standalone.customer", "..cargotracker.booking.out.customer.adapter..")
 
         .ignoreDependency( // dependency injection can access and instantiate outbound adapters

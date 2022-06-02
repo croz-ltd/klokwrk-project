@@ -19,6 +19,7 @@ package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model
 
 import com.github.dockerjava.api.command.CreateNetworkCmd
 import org.hibernate.Session
+import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,6 +33,7 @@ import org.testcontainers.containers.PostgreSQLContainer
 import spock.lang.Specification
 
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 // equality consistency tests reference:
 //    https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
@@ -67,9 +69,22 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
         bookingOfferIdentifier: UUID.randomUUID(),
 
         customerIdentifier: UUID.randomUUID(),
+        customerType: CustomerType.STANDARD,
 
-        originLocation: "originLocation",
-        destinationLocation: "destinationLocation",
+        originLocationUnLoCode: "originLocationUnLoCode",
+        originLocationName: "originLocationName",
+        originLocationCountryName: "originLocationCountryName",
+
+        destinationLocationUnLoCode: "destinationLocationUnLoCode",
+        destinationLocationName: "destinationLocationName",
+        destinationLocationCountryName: "destinationLocationCountryName",
+
+        departureEarliestTime: currentInstant.plus(1, ChronoUnit.HOURS),
+        departureLatestTime: currentInstant.plus(5, ChronoUnit.HOURS),
+        arrivalLatestTime: currentInstant.plus(20, ChronoUnit.HOURS),
+
+        commodityTotalWeightKg: 1000,
+        commodityTotalContainerTeuCount: 2.00G,
 
         inboundChannelName: "inboundChannelName",
         inboundChannelType: "inboundChannelType",
@@ -78,6 +93,8 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
         lastEventRecordedAt: currentInstant,
         lastEventSequenceNumber: 0L
     )
+
+    assert originalEntity.propertiesFiltered.size() == 19
 
     entitySet = [originalEntity] as HashSet
   }

@@ -80,6 +80,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
     "en"                      | _
   }
 
+  @SuppressWarnings(["CodeNarc.AbcMetric", "CodeNarc.MethodSize"])
   void "query - should find created booking offer: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
     Instant currentTime = Instant.now()
@@ -152,7 +153,33 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
       // then:
       queryResponseStatusCode == 200
-      queryResponseJson.payload.bookingOfferIdentifier == commandResponseBookingOfferIdentifier
+      verifyAll(queryResponseJson.payload as Map, {
+        size() == 16
+
+        bookingOfferIdentifier == commandResponseBookingOfferIdentifier
+
+        customerType == "STANDARD"
+
+        originLocationUnLoCode == "HRRJK"
+        originLocationName == "Rijeka"
+        originLocationCountryName == "Croatia"
+
+        destinationLocationUnLoCode == "NLRTM"
+        destinationLocationName == "Rotterdam"
+        destinationLocationCountryName == "Netherlands"
+
+        Instant.parse(departureEarliestTime as String) >= currentTime + Duration.ofHours(1)
+        Instant.parse(departureLatestTime as String) >= currentTime + Duration.ofHours(2)
+        Instant.parse(arrivalLatestTime as String) >= currentTime + Duration.ofHours(3)
+
+        commodityTotalWeightKg == 1000
+        commodityTotalContainerTeuCount == 1.00G
+
+        firstEventRecordedAt == lastEventRecordedAt
+        Instant.parse(firstEventRecordedAt as String) > currentTime
+        Instant.parse(lastEventRecordedAt as String) > currentTime
+        lastEventSequenceNumber == 0
+      })
     }
 
     where:

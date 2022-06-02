@@ -23,23 +23,33 @@ import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEv
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.BookingOfferSummaryJpaEntity
 import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDataConstant
 import org.klokwrk.lang.groovy.constant.CommonConstants
+import tech.units.indriya.unit.Units
 
 @CompileStatic
 class BookingOfferSummaryJpaEntityFactory {
   static BookingOfferSummaryJpaEntity makeBookingOfferSummaryJpaEntity(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
     UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId.identifier)
 
-    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId.identifier
-    String originLocation = bookingOfferCreatedEvent.routeSpecification.originLocation.unLoCode.code
-    String destinationLocation = bookingOfferCreatedEvent.routeSpecification.destinationLocation.unLoCode.code
-
     BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = new BookingOfferSummaryJpaEntity(
         bookingOfferIdentifier: bookingOfferIdentifier,
 
-        customerIdentifier: customerIdentifier,
+        customerIdentifier: bookingOfferCreatedEvent.customer.customerId.identifier,
+        customerType: bookingOfferCreatedEvent.customer.customerType,
 
-        originLocation: originLocation,
-        destinationLocation: destinationLocation,
+        originLocationUnLoCode: bookingOfferCreatedEvent.routeSpecification.originLocation.unLoCode.code,
+        originLocationName: bookingOfferCreatedEvent.routeSpecification.originLocation.name.nameInternationalized,
+        originLocationCountryName: bookingOfferCreatedEvent.routeSpecification.originLocation.countryName.nameInternationalized,
+
+        destinationLocationUnLoCode: bookingOfferCreatedEvent.routeSpecification.destinationLocation.unLoCode.code,
+        destinationLocationName: bookingOfferCreatedEvent.routeSpecification.destinationLocation.name.nameInternationalized,
+        destinationLocationCountryName: bookingOfferCreatedEvent.routeSpecification.destinationLocation.countryName.nameInternationalized,
+
+        departureEarliestTime: bookingOfferCreatedEvent.routeSpecification.departureEarliestTime,
+        departureLatestTime: bookingOfferCreatedEvent.routeSpecification.departureLatestTime,
+        arrivalLatestTime: bookingOfferCreatedEvent.routeSpecification.arrivalLatestTime,
+
+        commodityTotalWeightKg: bookingOfferCreatedEvent.bookingTotalCommodityWeight.to(Units.KILOGRAM).value,
+        commodityTotalContainerTeuCount: bookingOfferCreatedEvent.bookingTotalContainerTeuCount,
 
         inboundChannelName: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_NAME_KEY] ?: CommonConstants.NOT_AVAILABLE,
         inboundChannelType: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_TYPE_KEY] ?: CommonConstants.NOT_AVAILABLE,
