@@ -41,6 +41,10 @@ class BookingOfferSummaryQueryResponse {
   String destinationLocationName
   String destinationLocationCountryName
 
+  Instant departureEarliestTime
+  Instant departureLatestTime
+  Instant arrivalLatestTime
+
   Instant firstEventRecordedAt
   Instant lastEventRecordedAt
   Long lastEventSequenceNumber

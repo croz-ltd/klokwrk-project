@@ -33,6 +33,7 @@ import org.testcontainers.containers.PostgreSQLContainer
 import spock.lang.Specification
 
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 // equality consistency tests reference:
 //    https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
@@ -78,6 +79,10 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
         destinationLocationName: "destinationLocationName",
         destinationLocationCountryName: "destinationLocationCountryName",
 
+        departureEarliestTime: currentInstant.plus(1, ChronoUnit.HOURS),
+        departureLatestTime: currentInstant.plus(5, ChronoUnit.HOURS),
+        arrivalLatestTime: currentInstant.plus(20, ChronoUnit.HOURS),
+
         inboundChannelName: "inboundChannelName",
         inboundChannelType: "inboundChannelType",
 
@@ -86,7 +91,7 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
         lastEventSequenceNumber: 0L
     )
 
-    assert originalEntity.propertiesFiltered.size() == 14
+    assert originalEntity.propertiesFiltered.size() == 17
 
     entitySet = [originalEntity] as HashSet
   }

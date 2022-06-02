@@ -38,6 +38,7 @@ import spock.util.concurrent.PollingConditions
 
 import javax.sql.DataSource
 import java.sql.Timestamp
+import java.time.Duration
 import java.time.Instant
 
 @SpringBootTest
@@ -77,7 +78,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
       verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
-        size() == 14
+        size() == 17
         booking_offer_identifier == bookingOfferIdentifier
 
         customer_identifier == customerIdentifier
@@ -90,6 +91,10 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         destination_location_un_lo_code == "NLRTM"
         destination_location_name == "Rotterdam"
         destination_location_country_name == "Netherlands"
+
+        (departure_earliest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(1)
+        (departure_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(2)
+        (arrival_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(3)
 
         inbound_channel_name == WebMetaDataConstant.WEB_BOOKING_CHANNEL_NAME
         inbound_channel_type == WebMetaDataConstant.WEB_BOOKING_CHANNEL_TYPE
@@ -118,7 +123,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
       verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
-        size() == 14
+        size() == 17
         booking_offer_identifier == bookingOfferIdentifier
 
         customer_identifier == customerIdentifier
@@ -131,6 +136,10 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         destination_location_un_lo_code == "NLRTM"
         destination_location_name == "Rotterdam"
         destination_location_country_name == "Netherlands"
+
+        (departure_earliest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(1)
+        (departure_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(2)
+        (arrival_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(3)
 
         inbound_channel_name == CommonConstants.NOT_AVAILABLE
         inbound_channel_type == CommonConstants.NOT_AVAILABLE

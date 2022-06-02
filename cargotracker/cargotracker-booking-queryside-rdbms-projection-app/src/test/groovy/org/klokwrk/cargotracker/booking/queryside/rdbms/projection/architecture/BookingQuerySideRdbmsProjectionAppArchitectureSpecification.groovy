@@ -17,7 +17,6 @@
  */
 package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.architecture
 
-import com.tngtech.archunit.core.domain.JavaClass
 import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition

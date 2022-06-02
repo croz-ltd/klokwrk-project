@@ -45,6 +45,10 @@ CREATE TABLE booking_offer_summary (
   destination_location_name TEXT NOT NULL,
   destination_location_country_name TEXT NOT NULL,
 
+  departure_earliest_time timestamptz NOT NULL,
+  departure_latest_time timestamptz NOT NULL,
+  arrival_latest_time timestamptz NOT NULL,
+
   inbound_channel_name TEXT NOT NULL,
   inbound_channel_type TEXT NOT NULL,
 

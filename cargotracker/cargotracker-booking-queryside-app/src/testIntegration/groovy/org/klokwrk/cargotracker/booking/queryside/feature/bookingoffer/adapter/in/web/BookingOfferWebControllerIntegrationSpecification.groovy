@@ -72,6 +72,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
     mockMvc ?= webAppContextSetup(webApplicationContext).build()
   }
 
+  @SuppressWarnings("CodeNarc.AbcMetric")
   void "should work for correct request - [acceptLanguage: #acceptLanguage]"() {
     given:
     Instant startedAt = Instant.now()
@@ -96,22 +97,38 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
     mvcResult.response.status == HttpStatus.OK.value()
 
     verifyAll(responseContentMap.metaData.general as Map) {
-      it.size() == 3
+      size() == 3
+
       locale == localeString
       severity == Severity.INFO.name().toLowerCase()
       timestamp
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
-      it.size() == 2
+      size() == 2
+
       message == HttpStatus.OK.reasonPhrase
       status == HttpStatus.OK.value().toString()
     }
 
     verifyAll(responseContentMap.payload as Map) {
+      size() == 14
+
       bookingOfferIdentifier == myBookingOfferIdentifier
+
+      customerType == "STANDARD"
+
       originLocationUnLoCode == "HRRJK"
+      originLocationName == "Rijeka"
+      originLocationCountryName == "Croatia"
+
       destinationLocationUnLoCode == "NLRTM"
+      destinationLocationName == "Rotterdam"
+      destinationLocationCountryName == "Netherlands"
+
+      Instant.parse(departureEarliestTime as String) >= startedAt + java.time.Duration.ofHours(1)
+      Instant.parse(departureLatestTime as String) >= startedAt + java.time.Duration.ofHours(2)
+      Instant.parse(arrivalLatestTime as String) >= startedAt + java.time.Duration.ofHours(3)
 
       Instant.parse(firstEventRecordedAt as String) >= startedAt
       Instant.parse(lastEventRecordedAt as String) >= startedAt
@@ -144,20 +161,23 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
 
     verifyAll(responseContentMap.metaData.general as Map) {
-      it.size() == 3
+      size() == 3
+
       locale == localeString
       severity == Severity.WARNING.name().toLowerCase()
       timestamp
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
-      it.size() == 2
+      size() == 2
+
       message == HttpStatus.BAD_REQUEST.reasonPhrase
       status == HttpStatus.BAD_REQUEST.value().toString()
     }
 
     verifyAll(responseContentMap.metaData.violation as Map) {
-      it.size() == 4
+      size() == 4
+
       code == HttpStatus.BAD_REQUEST.value().toString()
       message == myViolationMessage
       type == ViolationType.VALIDATION.name().toLowerCase()
@@ -165,7 +185,8 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
     }
 
     verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
-      it.size() == 2
+      size() == 2
+
       root.type == "bookingOfferSummaryQueryRequest"
       constraintViolations.size() == 2
       constraintViolations.find({ it.path == "bookingOfferIdentifier" }).type == "notBlank"
@@ -203,20 +224,23 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
 
     verifyAll(responseContentMap.metaData.general as Map) {
-      it.size() == 3
+      size() == 3
+
       locale == localeString
       severity == Severity.WARNING.name().toLowerCase()
       timestamp
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
-      it.size() == 2
+      size() == 2
+
       message == HttpStatus.BAD_REQUEST.reasonPhrase
       status == HttpStatus.BAD_REQUEST.value().toString()
     }
 
     verifyAll(responseContentMap.metaData.violation as Map) {
-      it.size() == 3
+      size() == 3
+
       code == HttpStatus.BAD_REQUEST.value().toString()
       message == myViolationMessage
       type == ViolationType.DOMAIN.name().toLowerCase()
@@ -253,20 +277,23 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
     mvcResult.response.status == HttpStatus.NOT_FOUND.value()
 
     verifyAll(responseContentMap.metaData.general as Map) {
-      it.size() == 3
+      size() == 3
+
       locale == localeString
       severity == Severity.WARNING.name().toLowerCase()
       timestamp
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
-      it.size() == 2
+      size() == 2
+
       message == HttpStatus.NOT_FOUND.reasonPhrase
       status == HttpStatus.NOT_FOUND.value().toString()
     }
 
     verifyAll(responseContentMap.metaData.violation as Map) {
-      it.size() == 3
+      size() == 3
+
       code == HttpStatus.NOT_FOUND.value().toString()
       message == myViolationMessage
       type == ViolationType.DOMAIN.name().toLowerCase()
@@ -303,20 +330,23 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
     mvcResult.response.status == HttpStatus.METHOD_NOT_ALLOWED.value()
 
     verifyAll(responseContentMap.metaData.general as Map) {
-      it.size() == 3
+      size() == 3
+
       locale == localeString
       severity == Severity.WARNING.name().toLowerCase()
       timestamp
     }
 
     verifyAll(responseContentMap.metaData.http as Map) {
-      it.size() == 2
+      size() == 2
+
       message == HttpStatus.METHOD_NOT_ALLOWED.reasonPhrase
       status == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
     }
 
     verifyAll(responseContentMap.metaData.violation as Map) {
-      it.size() == 4
+      size() == 4
+
       code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
       message == myViolationMessage
       type == ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase()

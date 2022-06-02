@@ -75,6 +75,10 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Column(nullable = false) String destinationLocationName
   @Column(nullable = false) String destinationLocationCountryName
 
+  @Column(nullable = false, columnDefinition = "timestamptz") Instant departureEarliestTime
+  @Column(nullable = false, columnDefinition = "timestamptz") Instant departureLatestTime
+  @Column(nullable = false, columnDefinition = "timestamptz") Instant arrivalLatestTime
+
   @Column(nullable = false) String inboundChannelName
   @Column(nullable = false) String inboundChannelType
 

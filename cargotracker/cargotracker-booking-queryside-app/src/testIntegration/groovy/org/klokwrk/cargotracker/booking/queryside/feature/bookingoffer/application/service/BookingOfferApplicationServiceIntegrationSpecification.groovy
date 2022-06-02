@@ -37,6 +37,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ActiveProfiles
 
 import javax.sql.DataSource
+import java.time.Duration
 import java.time.Instant
 
 @SpringBootTest
@@ -78,7 +79,7 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
 
     then:
     verifyAll(operationResponse.payload) {
-      propertiesFiltered.size() == 11
+      propertiesFiltered.size() == 14
 
       bookingOfferIdentifier == myBookingOfferIdentifier
 
@@ -91,6 +92,10 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
       destinationLocationUnLoCode == "NLRTM"
       destinationLocationName == "Rotterdam"
       destinationLocationCountryName == "Netherlands"
+
+      departureEarliestTime >= startedAt + Duration.ofHours(1)
+      departureLatestTime >= startedAt + Duration.ofHours(2)
+      arrivalLatestTime >= startedAt + Duration.ofHours(3)
 
       firstEventRecordedAt >= startedAt
       lastEventRecordedAt >= startedAt
