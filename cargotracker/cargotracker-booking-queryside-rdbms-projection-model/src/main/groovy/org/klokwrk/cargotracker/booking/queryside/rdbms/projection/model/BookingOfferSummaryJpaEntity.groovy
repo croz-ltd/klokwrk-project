@@ -17,11 +17,15 @@
  */
 package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model
 
+import com.vladmihalcea.hibernate.type.array.ListArrayType
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import groovy.transform.ToString
+import org.hibernate.annotations.Type
+import org.hibernate.annotations.TypeDef
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.misc.RandomUuidUtils
@@ -37,7 +41,13 @@ import javax.persistence.Id
 import javax.persistence.Table
 import java.time.Instant
 
+import static org.hamcrest.Matchers.empty
+import static org.hamcrest.Matchers.emptyOrNullString
+import static org.hamcrest.Matchers.everyItem
+import static org.hamcrest.Matchers.greaterThanOrEqualTo
 import static org.hamcrest.Matchers.is
+import static org.hamcrest.Matchers.lessThanOrEqualTo
+import static org.hamcrest.Matchers.not
 import static org.hamcrest.Matchers.notNullValue
 
 // Note about @EqualsAndHashCode:
@@ -54,12 +64,13 @@ import static org.hamcrest.Matchers.notNullValue
 @ToString
 @EqualsAndHashCode(includes = ["bookingOfferIdentifier"])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
-@MapConstructor(noArg = true)
+@MapConstructor(noArg = true, useSetters = true)
 @KwrkMapConstructorDefaultPostCheck
 @KwrkMapConstructorNoArgHideable(makePackagePrivate = true)
 @Entity
-@CompileStatic
 @Table(name = "booking_offer_summary")
+@TypeDef(name = "list-array", typeClass = ListArrayType)
+@CompileStatic
 class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Id
   UUID bookingOfferIdentifier
@@ -79,6 +90,18 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Column(nullable = false, columnDefinition = "timestamptz") Instant departureLatestTime
   @Column(nullable = false, columnDefinition = "timestamptz") Instant arrivalLatestTime
 
+  @Type(type = "list-array")
+  @Column(nullable = false, columnDefinition = "text[]")
+  List<String> commodityTypes
+
+  Set<CommodityType> getCommodityTypes() {
+    return commodityTypes.collect({ String commodityTypeString -> CommodityType.valueOf(commodityTypeString) }).toSet()
+  }
+
+  void setCommodityTypes(Set<CommodityType> commodityTypes) {
+    this.commodityTypes = commodityTypes.collect({ CommodityType commodityType -> commodityType.name() })
+  }
+
   @Column(nullable = false) Integer commodityTotalWeightKg
   @Column(nullable = false, precision = 8, scale = 2) BigDecimal commodityTotalContainerTeuCount
 
@@ -89,9 +112,44 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Column(nullable = false, columnDefinition = "timestamptz") Instant lastEventRecordedAt
   @Column(nullable = false) Long lastEventSequenceNumber
 
+  @SuppressWarnings("CodeNarc.AbcMetric")
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     requireMatch(bookingOfferIdentifier, notNullValue())
     requireMatch(RandomUuidUtils.checkIfRandomUuid(bookingOfferIdentifier), is(true))
+
+    requireMatch(customerIdentifier, not(emptyOrNullString()))
+    requireMatch(customerType, notNullValue())
+
+    requireMatch(originLocationUnLoCode, not(emptyOrNullString()))
+    requireMatch(originLocationName, not(emptyOrNullString()))
+    requireMatch(originLocationCountryName, not(emptyOrNullString()))
+
+    requireMatch(destinationLocationUnLoCode, not(emptyOrNullString()))
+    requireMatch(destinationLocationName, not(emptyOrNullString()))
+    requireMatch(destinationLocationCountryName, not(emptyOrNullString()))
+
+    requireMatch(departureEarliestTime, notNullValue())
+    requireMatch(departureLatestTime, notNullValue())
+    requireMatch(arrivalLatestTime, notNullValue())
+
+    requireMatch(commodityTypes, not(empty()))
+    requireMatch(commodityTypes, everyItem(not(emptyOrNullString())))
+
+    requireMatch(commodityTotalWeightKg, notNullValue())
+    requireMatch(commodityTotalWeightKg, greaterThanOrEqualTo(1))
+
+    requireMatch(commodityTotalContainerTeuCount, notNullValue())
+    requireMatch(commodityTotalContainerTeuCount, greaterThanOrEqualTo(1.0G))
+    requireMatch(commodityTotalContainerTeuCount.scale(), lessThanOrEqualTo(2))
+
+    requireMatch(inboundChannelName, not(emptyOrNullString()))
+    requireMatch(inboundChannelType, not(emptyOrNullString()))
+
+    requireMatch(firstEventRecordedAt, notNullValue())
+    requireMatch(lastEventRecordedAt, notNullValue())
+
+    requireMatch(lastEventSequenceNumber, notNullValue())
+    requireMatch(lastEventSequenceNumber, greaterThanOrEqualTo(0L))
   }
 }

@@ -25,6 +25,7 @@ import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDa
 import org.klokwrk.lang.groovy.constant.CommonConstants
 import tech.units.indriya.unit.Units
 
+@SuppressWarnings("CodeNarc.AbcMetric")
 @CompileStatic
 class BookingOfferSummaryJpaEntityFactory {
   static BookingOfferSummaryJpaEntity makeBookingOfferSummaryJpaEntity(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
@@ -48,6 +49,7 @@ class BookingOfferSummaryJpaEntityFactory {
         departureLatestTime: bookingOfferCreatedEvent.routeSpecification.departureLatestTime,
         arrivalLatestTime: bookingOfferCreatedEvent.routeSpecification.arrivalLatestTime,
 
+        commodityTypes: [bookingOfferCreatedEvent.commodity.commodityInfo.commodityType].toSet(),
         commodityTotalWeightKg: bookingOfferCreatedEvent.bookingTotalCommodityWeight.to(Units.KILOGRAM).value,
         commodityTotalContainerTeuCount: bookingOfferCreatedEvent.bookingTotalContainerTeuCount,
 

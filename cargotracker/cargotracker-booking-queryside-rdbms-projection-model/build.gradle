@@ -31,12 +31,15 @@ dependencies {
   implementation project(":klokwrk-lang-groovy-contracts-match")
   implementation project(":klokwrk-lang-groovy-contracts-simple")
 
+  implementation "com.vladmihalcea:hibernate-types-55"
   implementation "jakarta.persistence:jakarta.persistence-api"
+  implementation "javax.measure:unit-api"
   implementation "org.codehaus.groovy:groovy"
   implementation "org.codehaus.groovy:groovy-macro"
   implementation "org.hamcrest:hamcrest"
   implementation "org.hibernate:hibernate-core"
   implementation "org.springframework.data:spring-data-jpa"
+  implementation "tech.units:indriya"
 
   testIntegrationImplementation project(":cargotracker-booking-queryside-test-support")
   testIntegrationImplementation project(":klokwrk-lib-datasourceproxy-springboot")

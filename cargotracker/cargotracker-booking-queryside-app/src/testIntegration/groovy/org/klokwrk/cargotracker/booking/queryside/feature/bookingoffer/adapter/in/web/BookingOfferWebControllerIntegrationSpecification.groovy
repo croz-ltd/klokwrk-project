@@ -112,7 +112,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
     }
 
     verifyAll(responseContentMap.payload as Map) {
-      size() == 16
+      size() == 17
 
       bookingOfferIdentifier == myBookingOfferIdentifier
 
@@ -130,6 +130,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
       Instant.parse(departureLatestTime as String) >= startedAt + java.time.Duration.ofHours(2)
       Instant.parse(arrivalLatestTime as String) >= startedAt + java.time.Duration.ofHours(3)
 
+      commodityTypes == ["DRY"]
       commodityTotalWeightKg == 1000
       commodityTotalContainerTeuCount == 1.00G
 

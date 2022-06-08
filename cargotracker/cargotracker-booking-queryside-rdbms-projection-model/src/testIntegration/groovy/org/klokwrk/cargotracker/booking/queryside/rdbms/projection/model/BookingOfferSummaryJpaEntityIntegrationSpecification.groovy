@@ -19,6 +19,7 @@ package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model
 
 import com.github.dockerjava.api.command.CreateNetworkCmd
 import org.hibernate.Session
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
@@ -68,7 +69,7 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
     originalEntity = new BookingOfferSummaryJpaEntity(
         bookingOfferIdentifier: UUID.randomUUID(),
 
-        customerIdentifier: UUID.randomUUID(),
+        customerIdentifier: UUID.randomUUID().toString(),
         customerType: CustomerType.STANDARD,
 
         originLocationUnLoCode: "originLocationUnLoCode",
@@ -83,6 +84,7 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
         departureLatestTime: currentInstant.plus(5, ChronoUnit.HOURS),
         arrivalLatestTime: currentInstant.plus(20, ChronoUnit.HOURS),
 
+        commodityTypes: [CommodityType.DRY].toSet(),
         commodityTotalWeightKg: 1000,
         commodityTotalContainerTeuCount: 2.00G,
 
@@ -94,7 +96,8 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
         lastEventSequenceNumber: 0L
     )
 
-    assert originalEntity.propertiesFiltered.size() == 19
+    assert originalEntity.propertiesFiltered.size() == 20
+    assert originalEntity.commodityTypes == [CommodityType.DRY].toSet()
 
     entitySet = [originalEntity] as HashSet
   }

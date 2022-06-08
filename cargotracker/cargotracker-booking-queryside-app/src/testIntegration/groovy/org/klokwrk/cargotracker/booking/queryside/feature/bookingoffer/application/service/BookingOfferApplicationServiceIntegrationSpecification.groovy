@@ -19,6 +19,7 @@ package org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.applicat
 
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryRequest
@@ -79,7 +80,7 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
 
     then:
     verifyAll(operationResponse.payload) {
-      propertiesFiltered.size() == 16
+      propertiesFiltered.size() == 17
 
       bookingOfferIdentifier == myBookingOfferIdentifier
 
@@ -97,6 +98,7 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
       departureLatestTime >= startedAt + Duration.ofHours(2)
       arrivalLatestTime >= startedAt + Duration.ofHours(3)
 
+      commodityTypes == [CommodityType.DRY].toSet()
       commodityTotalWeightKg == 1000
       commodityTotalContainerTeuCount == 1.00G
 
