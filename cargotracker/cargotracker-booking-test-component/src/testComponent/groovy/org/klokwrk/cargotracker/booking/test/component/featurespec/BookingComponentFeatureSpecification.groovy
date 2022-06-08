@@ -60,7 +60,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
-                                    .addHeader("Accept-Language", acceptLanguageHeaderParam)
+                                    .addHeader("Accept-Language", acceptLanguageHeaderParam as String)
                                     .bodyString(commandPostRequestBody, ContentType.APPLICATION_JSON)
 
     when:
@@ -123,7 +123,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
-                                    .addHeader("Accept-Language", acceptLanguageHeaderParam)
+                                    .addHeader("Accept-Language", acceptLanguageHeaderParam as String)
                                     .bodyString(commandPostRequestBody, ContentType.APPLICATION_JSON)
 
     when:
@@ -143,7 +143,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
-                                    .addHeader("Accept-Language", acceptLanguageHeaderParam)
+                                    .addHeader("Accept-Language", acceptLanguageHeaderParam as String)
                                     .bodyString(queryPostRequestBodyClosure(commandResponseBookingOfferIdentifier), ContentType.APPLICATION_JSON)
 
       // when
@@ -154,7 +154,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
       // then:
       queryResponseStatusCode == 200
       verifyAll(queryResponseJson.payload as Map, {
-        size() == 16
+        size() == 17
 
         bookingOfferIdentifier == commandResponseBookingOfferIdentifier
 
@@ -172,6 +172,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
         Instant.parse(departureLatestTime as String) >= currentTime + Duration.ofHours(2)
         Instant.parse(arrivalLatestTime as String) >= currentTime + Duration.ofHours(3)
 
+        commodityTypes == ["DRY"]
         commodityTotalWeightKg == 1000
         commodityTotalContainerTeuCount == 1.00G
 
@@ -220,7 +221,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
                                     .addHeader("Content-Type", "application/json")
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
-                                    .addHeader("Accept-Language", acceptLanguageHeaderParam)
+                                    .addHeader("Accept-Language", acceptLanguageHeaderParam as String)
                                     .bodyString(commandPostRequestBody, ContentType.APPLICATION_JSON)
 
     when:
@@ -255,7 +256,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
                                   .addHeader("Content-Type", "application/json")
                                   .addHeader("Accept", "application/json")
                                   .addHeader("Accept-Charset", "utf-8")
-                                  .addHeader("Accept-Language", acceptLanguageHeaderParam)
+                                  .addHeader("Accept-Language", acceptLanguageHeaderParam as String)
                                   .bodyString(queryPostRequestBody, ContentType.APPLICATION_JSON)
 
     when:

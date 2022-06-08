@@ -78,7 +78,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
       verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
-        size() == 19
+        size() == 20
         booking_offer_identifier == bookingOfferIdentifier
 
         customer_identifier == customerIdentifier
@@ -96,6 +96,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         (departure_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(2)
         (arrival_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(3)
 
+        (it.commodity_types as java.sql.Array).array == ["DRY"]
         commodity_total_weight_kg == 1000
         commodity_total_container_teu_count == 1.00G
 
@@ -126,7 +127,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
       verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
-        size() == 19
+        size() == 20
         booking_offer_identifier == bookingOfferIdentifier
 
         customer_identifier == customerIdentifier
@@ -144,6 +145,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         (departure_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(2)
         (arrival_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(3)
 
+        (it.commodity_types as java.sql.Array).array == ["DRY"]
         commodity_total_weight_kg == 1000
         commodity_total_container_teu_count == 1.00G
 

@@ -20,6 +20,7 @@ package org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.applicat
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
@@ -45,6 +46,7 @@ class BookingOfferSummaryQueryResponse {
   Instant departureLatestTime
   Instant arrivalLatestTime
 
+  Set<CommodityType> commodityTypes
   Integer commodityTotalWeightKg
   BigDecimal commodityTotalContainerTeuCount
 

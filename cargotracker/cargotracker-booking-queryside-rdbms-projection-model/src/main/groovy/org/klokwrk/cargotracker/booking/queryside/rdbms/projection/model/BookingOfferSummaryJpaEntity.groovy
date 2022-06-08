@@ -17,11 +17,15 @@
  */
 package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model
 
+import com.vladmihalcea.hibernate.type.array.ListArrayType
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import groovy.transform.ToString
+import org.hibernate.annotations.Type
+import org.hibernate.annotations.TypeDef
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.misc.RandomUuidUtils
@@ -54,12 +58,13 @@ import static org.hamcrest.Matchers.notNullValue
 @ToString
 @EqualsAndHashCode(includes = ["bookingOfferIdentifier"])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
-@MapConstructor(noArg = true)
+@MapConstructor(noArg = true, useSetters = true)
 @KwrkMapConstructorDefaultPostCheck
 @KwrkMapConstructorNoArgHideable(makePackagePrivate = true)
 @Entity
-@CompileStatic
 @Table(name = "booking_offer_summary")
+@TypeDef(name = "list-array", typeClass = ListArrayType)
+@CompileStatic
 class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Id
   UUID bookingOfferIdentifier
@@ -78,6 +83,18 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Column(nullable = false, columnDefinition = "timestamptz") Instant departureEarliestTime
   @Column(nullable = false, columnDefinition = "timestamptz") Instant departureLatestTime
   @Column(nullable = false, columnDefinition = "timestamptz") Instant arrivalLatestTime
+
+  @Type(type = "list-array")
+  @Column(nullable = false, columnDefinition = "text[]")
+  List<String> commodityTypes
+
+  Set<CommodityType> getCommodityTypes() {
+    return commodityTypes.collect({ String commodityTypeString -> CommodityType.valueOf(commodityTypeString) }).toSet()
+  }
+
+  void setCommodityTypes(Set<CommodityType> commodityTypes) {
+    this.commodityTypes = commodityTypes.collect({ CommodityType commodityType -> commodityType.name() })
+  }
 
   @Column(nullable = false) Integer commodityTotalWeightKg
   @Column(nullable = false, precision = 8, scale = 2) BigDecimal commodityTotalContainerTeuCount
