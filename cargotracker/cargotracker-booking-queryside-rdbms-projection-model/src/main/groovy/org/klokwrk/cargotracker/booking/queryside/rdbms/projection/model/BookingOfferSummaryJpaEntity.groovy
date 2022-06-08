@@ -41,7 +41,13 @@ import javax.persistence.Id
 import javax.persistence.Table
 import java.time.Instant
 
+import static org.hamcrest.Matchers.empty
+import static org.hamcrest.Matchers.emptyOrNullString
+import static org.hamcrest.Matchers.everyItem
+import static org.hamcrest.Matchers.greaterThanOrEqualTo
 import static org.hamcrest.Matchers.is
+import static org.hamcrest.Matchers.lessThanOrEqualTo
+import static org.hamcrest.Matchers.not
 import static org.hamcrest.Matchers.notNullValue
 
 // Note about @EqualsAndHashCode:
@@ -106,9 +112,44 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Column(nullable = false, columnDefinition = "timestamptz") Instant lastEventRecordedAt
   @Column(nullable = false) Long lastEventSequenceNumber
 
+  @SuppressWarnings("CodeNarc.AbcMetric")
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     requireMatch(bookingOfferIdentifier, notNullValue())
     requireMatch(RandomUuidUtils.checkIfRandomUuid(bookingOfferIdentifier), is(true))
+
+    requireMatch(customerIdentifier, not(emptyOrNullString()))
+    requireMatch(customerType, notNullValue())
+
+    requireMatch(originLocationUnLoCode, not(emptyOrNullString()))
+    requireMatch(originLocationName, not(emptyOrNullString()))
+    requireMatch(originLocationCountryName, not(emptyOrNullString()))
+
+    requireMatch(destinationLocationUnLoCode, not(emptyOrNullString()))
+    requireMatch(destinationLocationName, not(emptyOrNullString()))
+    requireMatch(destinationLocationCountryName, not(emptyOrNullString()))
+
+    requireMatch(departureEarliestTime, notNullValue())
+    requireMatch(departureLatestTime, notNullValue())
+    requireMatch(arrivalLatestTime, notNullValue())
+
+    requireMatch(commodityTypes, not(empty()))
+    requireMatch(commodityTypes, everyItem(not(emptyOrNullString())))
+
+    requireMatch(commodityTotalWeightKg, notNullValue())
+    requireMatch(commodityTotalWeightKg, greaterThanOrEqualTo(1))
+
+    requireMatch(commodityTotalContainerTeuCount, notNullValue())
+    requireMatch(commodityTotalContainerTeuCount, greaterThanOrEqualTo(1.0G))
+    requireMatch(commodityTotalContainerTeuCount.scale(), lessThanOrEqualTo(2))
+
+    requireMatch(inboundChannelName, not(emptyOrNullString()))
+    requireMatch(inboundChannelType, not(emptyOrNullString()))
+
+    requireMatch(firstEventRecordedAt, notNullValue())
+    requireMatch(lastEventRecordedAt, notNullValue())
+
+    requireMatch(lastEventSequenceNumber, notNullValue())
+    requireMatch(lastEventSequenceNumber, greaterThanOrEqualTo(0L))
   }
 }
