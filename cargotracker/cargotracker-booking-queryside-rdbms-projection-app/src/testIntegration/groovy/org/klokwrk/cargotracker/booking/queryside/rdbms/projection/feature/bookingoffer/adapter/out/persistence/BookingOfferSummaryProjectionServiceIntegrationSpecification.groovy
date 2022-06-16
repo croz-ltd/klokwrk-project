@@ -17,6 +17,10 @@
  */
 package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.feature.bookingoffer.adapter.out.persistence
 
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.read.ListAppender
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.axonframework.eventhandling.GenericDomainEventMessage
@@ -29,6 +33,7 @@ import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.test.base.Abs
 import org.klokwrk.cargotracker.booking.queryside.test.axon.GenericDomainEventMessageFactory
 import org.klokwrk.cargotracker.booking.queryside.test.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.lang.groovy.constant.CommonConstants
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -157,5 +162,37 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         last_event_sequence_number == 0
       }
     }
+  }
+
+  void "should execute single insert SQL statement only"() {
+    // NOTE: Here we are testing whether our Spring Data JPA repository implementation optimally works when persisting the new entity with the assigned identifier. For more information, take a look
+    //       at the Groovydoc of "org.klokwrk.lib.springframework.data.jpa.repository.hibernate.HibernateJpaRepository" or the article at https://vladmihalcea.com/best-spring-data-jparepository/.
+    given:
+    Logger logger = LoggerFactory.getLogger("klokwrk.datasourceproxy.queryLogger") as Logger
+    logger.level = Level.DEBUG
+    ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
+    listAppender.start()
+    logger.addAppender(listAppender)
+
+    BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtures.eventValidRouteSpecification()
+    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId.identifier)
+    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId.identifier
+
+    GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, [:])
+
+    when:
+    eventBus.publish(genericDomainEventMessage)
+
+    then:
+    new PollingConditions(timeout: 5, initialDelay: 0, delay: 0.1).eventually {
+      listAppender.list.size() == 1
+      String formattedMessage = listAppender.list[0].formattedMessage
+      formattedMessage.contains("insert into booking_offer_summary")
+      formattedMessage.contains(bookingOfferIdentifier.toString())
+      formattedMessage.contains(customerIdentifier)
+    }
+
+    cleanup:
+    logger.detachAppender(listAppender)
   }
 }
