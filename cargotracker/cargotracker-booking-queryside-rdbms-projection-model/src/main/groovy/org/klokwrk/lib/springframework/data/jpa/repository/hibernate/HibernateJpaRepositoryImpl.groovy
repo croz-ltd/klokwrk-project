@@ -21,9 +21,16 @@ class HibernateJpaRepositoryImpl<T> implements HibernateJpaRepository<T> {
   @PersistenceContext
   private EntityManager entityManager
 
+  @SuppressWarnings("CodeNarc.UnusedMethodParameter")
   <S extends T> S save(S entity) { return unsupported() }
+
+  @SuppressWarnings("CodeNarc.UnusedMethodParameter")
   <S extends T> List<S> saveAll(Iterable<S> entities) { return unsupported() }
+
+  @SuppressWarnings("CodeNarc.UnusedMethodParameter")
   <S extends T> S saveAndFlush(S entity) { return unsupported() }
+
+  @SuppressWarnings("CodeNarc.UnusedMethodParameter")
   <S extends T> List<S> saveAllAndFlush(Iterable<S> entities) { return unsupported() }
 
   <S extends T> S persist(S entity) {
@@ -38,8 +45,8 @@ class HibernateJpaRepositoryImpl<T> implements HibernateJpaRepository<T> {
   }
 
   <S extends T> List<S> persistAll(Iterable<S> entities) {
-    List<S> result = new ArrayList<>()
-    for(S entity : entities) {
+    List<S> result = []
+    for (S entity : entities) {
       result.add(persist(entity))
     }
     return result
@@ -47,8 +54,8 @@ class HibernateJpaRepositoryImpl<T> implements HibernateJpaRepository<T> {
 
   <S extends T> List<S> persistAllAndFlush(Iterable<S> entities) {
     return executeBatch(() -> {
-      List<S> result = new ArrayList<>()
-      for(S entity : entities) {
+      List<S> result = []
+      for (S entity : entities) {
         result.add(persist(entity))
       }
       entityManager.flush()
@@ -68,8 +75,8 @@ class HibernateJpaRepositoryImpl<T> implements HibernateJpaRepository<T> {
 
   @SuppressWarnings('DuplicatedCode')
   <S extends T> List<S> mergeAll(Iterable<S> entities) {
-    List<S> result = new ArrayList<>()
-    for(S entity : entities) {
+    List<S> result = []
+    for (S entity : entities) {
       result.add(merge(entity))
     }
     return result
@@ -78,8 +85,8 @@ class HibernateJpaRepositoryImpl<T> implements HibernateJpaRepository<T> {
   @SuppressWarnings('DuplicatedCode')
   <S extends T> List<S> mergeAllAndFlush(Iterable<S> entities) {
     return executeBatch(() -> {
-      List<S> result = new ArrayList<>()
-      for(S entity : entities) {
+      List<S> result = []
+      for (S entity : entities) {
         result.add(merge(entity))
       }
       entityManager.flush()
@@ -100,8 +107,8 @@ class HibernateJpaRepositoryImpl<T> implements HibernateJpaRepository<T> {
 
   @SuppressWarnings('DuplicatedCode')
   <S extends T> List<S> updateAll(Iterable<S> entities) {
-    List<S> result = new ArrayList<>()
-    for(S entity : entities) {
+    List<S> result = []
+    for (S entity : entities) {
       result.add(update(entity))
     }
     return result
@@ -110,8 +117,8 @@ class HibernateJpaRepositoryImpl<T> implements HibernateJpaRepository<T> {
   @SuppressWarnings('DuplicatedCode')
   <S extends T> List<S> updateAllAndFlush(Iterable<S> entities) {
     return executeBatch(() -> {
-      List<S> result = new ArrayList<>()
-      for(S entity : entities) {
+      List<S> result = []
+      for (S entity : entities) {
         result.add(update(entity))
       }
       entityManager.flush()
@@ -122,31 +129,31 @@ class HibernateJpaRepositoryImpl<T> implements HibernateJpaRepository<T> {
   protected <R> R executeBatch(Supplier<R> callback) {
     Session session = session()
     Integer jdbcBatchSize = getBatchSize(session)
-    Integer originalSessionBatchSize = session.getJdbcBatchSize()
+    Integer originalSessionBatchSize = session.jdbcBatchSize
     try {
       if (jdbcBatchSize == null) {
-        session.setJdbcBatchSize(10)
+        session.jdbcBatchSize = 10
       }
       return callback.get()
     }
     finally {
-      session.setJdbcBatchSize(originalSessionBatchSize)
+      session.jdbcBatchSize = originalSessionBatchSize
     }
   }
 
   protected Session session() {
-    return entityManager.unwrap(Session.class)
+    return entityManager.unwrap(Session)
   }
 
   protected Integer getBatchSize(Session session) {
-    SessionFactoryImplementor sessionFactory = session.getSessionFactory().unwrap(SessionFactoryImplementor.class)
-    final JdbcServices jdbcServices = sessionFactory.getServiceRegistry().getService(JdbcServices.class)
+    SessionFactoryImplementor sessionFactory = session.sessionFactory.unwrap(SessionFactoryImplementor)
+    final JdbcServices jdbcServices = sessionFactory.serviceRegistry.getService(JdbcServices)
 
-    if(!jdbcServices.getExtractedMetaDataSupport().supportsBatchUpdates()) {
+    if (!jdbcServices.extractedMetaDataSupport.supportsBatchUpdates()) {
       return Integer.MIN_VALUE
     }
 
-    return session.unwrap(AbstractSharedSessionContract.class).getConfiguredJdbcBatchSize()
+    return session.unwrap(AbstractSharedSessionContract).configuredJdbcBatchSize
   }
 
   protected <S extends T> S unsupported() {
