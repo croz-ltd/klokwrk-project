@@ -9,7 +9,7 @@ import groovy.transform.CompileStatic
  * entities with assigned identifiers.
  * <p/>
  * Note: since this interface and the corresponding implementation are expected to be published as part of the {@code hibernate-types library}, I'm not performing complete testing here. So instead, I
- * will just replace it with the published version in the future.
+ * will just replace it with the published version in the future. This is also the reason why the implementation class is marked with {@code Generated} annotation.
  * <p/>
  * Reference: https://vladmihalcea.com/best-spring-data-jparepository/
  */

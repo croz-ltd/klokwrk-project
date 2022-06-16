@@ -1,6 +1,7 @@
 package org.klokwrk.lib.springframework.data.jpa.repository.hibernate
 
 import groovy.transform.CompileStatic
+import groovy.transform.Generated
 import org.hibernate.Session
 import org.hibernate.engine.jdbc.spi.JdbcServices
 import org.hibernate.engine.spi.SessionFactoryImplementor
@@ -15,6 +16,8 @@ import java.util.function.Supplier
  *
  * @see HibernateJpaRepository
  */
+@Generated
+// I'm not interested in code coverage here since the plan is to replace this implementation with the one from hibernate-types library once it is available
 @CompileStatic
 class HibernateJpaRepositoryImpl<T> implements HibernateJpaRepository<T> {
 
@@ -52,12 +55,10 @@ class HibernateJpaRepositoryImpl<T> implements HibernateJpaRepository<T> {
     return result
   }
 
+  @SuppressWarnings('DuplicatedCode')
   <S extends T> List<S> persistAllAndFlush(Iterable<S> entities) {
-    return executeBatch(() -> {
-      List<S> result = []
-      for (S entity : entities) {
-        result.add(persist(entity))
-      }
+    return executeBatch({
+      List<S> result = persistAll(entities)
       entityManager.flush()
       return result
     })
@@ -84,11 +85,8 @@ class HibernateJpaRepositoryImpl<T> implements HibernateJpaRepository<T> {
 
   @SuppressWarnings('DuplicatedCode')
   <S extends T> List<S> mergeAllAndFlush(Iterable<S> entities) {
-    return executeBatch(() -> {
-      List<S> result = []
-      for (S entity : entities) {
-        result.add(merge(entity))
-      }
+    return executeBatch({
+      List<S> result = mergeAll(entities)
       entityManager.flush()
       return result
     })
@@ -116,11 +114,8 @@ class HibernateJpaRepositoryImpl<T> implements HibernateJpaRepository<T> {
 
   @SuppressWarnings('DuplicatedCode')
   <S extends T> List<S> updateAllAndFlush(Iterable<S> entities) {
-    return executeBatch(() -> {
-      List<S> result = []
-      for (S entity : entities) {
-        result.add(update(entity))
-      }
+    return executeBatch({
+      List<S> result = updateAll(entities)
       entityManager.flush()
       return result
     })
