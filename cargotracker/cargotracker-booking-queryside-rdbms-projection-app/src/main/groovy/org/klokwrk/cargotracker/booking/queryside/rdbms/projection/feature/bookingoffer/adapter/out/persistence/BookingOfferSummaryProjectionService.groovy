@@ -31,12 +31,13 @@ import org.springframework.transaction.annotation.Transactional
 class BookingOfferSummaryProjectionService {
   private final BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository
 
+  @SuppressWarnings('SpringJavaInjectionPointsAutowiringInspection')
   BookingOfferSummaryProjectionService(BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository) {
     this.bookingOfferSummaryJpaRepository = bookingOfferSummaryJpaRepository
   }
 
   @EventHandler
   void onBookingOfferCreatedEvent(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
-    bookingOfferSummaryJpaRepository.save(BookingOfferSummaryJpaEntityFactory.makeBookingOfferSummaryJpaEntity(bookingOfferCreatedEvent, domainEventMessage))
+    bookingOfferSummaryJpaRepository.persist(BookingOfferSummaryJpaEntityFactory.makeBookingOfferSummaryJpaEntity(bookingOfferCreatedEvent, domainEventMessage))
   }
 }

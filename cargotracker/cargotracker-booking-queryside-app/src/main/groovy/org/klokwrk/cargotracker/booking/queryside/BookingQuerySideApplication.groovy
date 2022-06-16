@@ -28,7 +28,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
  * Booking query-side application.
  */
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = ["org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model"])
+@EnableJpaRepositories(basePackages = ["org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model", "org.klokwrk.lib.springframework.data.jpa.repository.hibernate"])
 @EntityScan(basePackages = ["org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model"])
 @CompileStatic
 class BookingQuerySideApplication {
