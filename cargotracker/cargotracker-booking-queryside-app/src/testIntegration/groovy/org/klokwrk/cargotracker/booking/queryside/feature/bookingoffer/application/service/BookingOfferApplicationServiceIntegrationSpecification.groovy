@@ -61,7 +61,7 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
   @Autowired
   BookingOfferSummaryQueryPortIn bookingOfferSummaryQueryPortIn
 
-  void "should work for correct request - [locale: #localeParam]"() {
+  void "should work for correct request"() {
     given:
     Instant startedAt = Instant.now()
     String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
@@ -120,7 +120,7 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
     Locale.forLanguageTag("en")    | _
   }
 
-  void "should throw when booking offer summary cannot be found - [locale: #locale]"() {
+  void "should throw when booking offer summary cannot be found"() {
     given:
     BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest =
         new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: UUID.randomUUID(), userIdentifier: "standard-customer@cargotracker.com")
