@@ -19,12 +19,17 @@ package org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.adapter.
 
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryHandler
+import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.BookingOfferSummaryJpaEntity
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.BookingOfferSummaryJpaRepository
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.mapping.PropertyReferenceException
 import org.springframework.stereotype.Service
 
 /**
@@ -43,25 +48,49 @@ import org.springframework.stereotype.Service
 class BookingOfferSummaryQueryHandlerService {
   private final BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository
 
+  @SuppressWarnings('SpringJavaInjectionPointsAutowiringInspection')
   BookingOfferSummaryQueryHandlerService(BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository) {
     this.bookingOfferSummaryJpaRepository = bookingOfferSummaryJpaRepository
   }
 
   @QueryHandler
   BookingOfferSummaryQueryResponse handleBookingOfferSummaryQueryRequest(BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest) {
-    BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity =
-        bookingOfferSummaryJpaRepository.findByBookingOfferIdentifierAndCustomerIdentifier(
-            UUID.fromString(bookingOfferSummaryQueryRequest.bookingOfferIdentifier), bookingOfferSummaryQueryRequest.customerIdentifier
-        )
+    BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = bookingOfferSummaryJpaRepository
+        .findByBookingOfferIdentifierAndCustomerIdentifier(UUID.fromString(bookingOfferSummaryQueryRequest.bookingOfferIdentifier), bookingOfferSummaryQueryRequest.customerIdentifier)
 
     if (!bookingOfferSummaryJpaEntity) {
       throw new QueryException(ViolationInfo.NOT_FOUND)
     }
 
-    BookingOfferSummaryQueryResponse bookingOfferSummaryQueryResponse = new BookingOfferSummaryQueryResponse(
-        bookingOfferSummaryJpaEntity.properties.tap({ it["bookingOfferIdentifier"] = bookingOfferSummaryJpaEntity.bookingOfferIdentifier.toString() })
-    )
-
+    BookingOfferSummaryQueryResponse bookingOfferSummaryQueryResponse = new BookingOfferSummaryQueryResponse(fetchBookingOfferSummaryJpaEntityProperties(bookingOfferSummaryJpaEntity))
     return bookingOfferSummaryQueryResponse
+  }
+
+  protected Map<String, Object> fetchBookingOfferSummaryJpaEntityProperties(BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity) {
+    return bookingOfferSummaryJpaEntity.properties.tap({ it["bookingOfferIdentifier"] = bookingOfferSummaryJpaEntity.bookingOfferIdentifier.toString() })
+  }
+
+  @QueryHandler
+  BookingOfferSummaryFindAllQueryResponse handleBookingOfferSummaryFindAllQueryRequest(BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest) {
+    PageRequest pageRequest =
+        QueryHandlerSpringDataJpaUtil.makePageRequestFromPageAndSortRequirements(bookingOfferSummaryFindAllQueryRequest.pageRequirement, bookingOfferSummaryFindAllQueryRequest.sortRequirementList)
+
+    Page<BookingOfferSummaryJpaEntity> pageOfBookingOfferSummaryJpaEntity = null
+    try {
+      pageOfBookingOfferSummaryJpaEntity = bookingOfferSummaryJpaRepository.findAllByCustomerIdentifier(bookingOfferSummaryFindAllQueryRequest.customerIdentifier, pageRequest)
+    }
+    catch (PropertyReferenceException pre) {
+      QueryHandlerSpringDataJpaUtil.handlePropertyReferenceException(pre)
+    }
+
+    BookingOfferSummaryFindAllQueryResponse bookingOfferSummaryFindAllQueryResponse = new BookingOfferSummaryFindAllQueryResponse().tap {
+      pageContent = pageOfBookingOfferSummaryJpaEntity.content
+          .collect({ BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity -> new BookingOfferSummaryQueryResponse(fetchBookingOfferSummaryJpaEntityProperties(bookingOfferSummaryJpaEntity)) })
+
+      pageInfo = QueryHandlerSpringDataJpaUtil
+          .makePageInfoFromPage(pageOfBookingOfferSummaryJpaEntity, bookingOfferSummaryFindAllQueryRequest.pageRequirement, bookingOfferSummaryFindAllQueryRequest.sortRequirementList)
+    }
+
+    return bookingOfferSummaryFindAllQueryResponse
   }
 }

@@ -21,6 +21,9 @@ import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryGateway
 import org.klokwrk.cargotracker.booking.domain.model.value.Customer
 import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdentifierPortOut
+import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryPortIn
+import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryResponse
@@ -35,7 +38,7 @@ import static org.hamcrest.Matchers.notNullValue
 
 @Service
 @CompileStatic
-class BookingOfferApplicationService implements BookingOfferSummaryQueryPortIn {
+class BookingOfferApplicationService implements BookingOfferSummaryQueryPortIn, BookingOfferSummaryFindAllQueryPortIn {
   private final QueryGatewayAdapter queryGatewayAdapter
   private final ValidationService validationService
   private final CustomerByUserIdentifierPortOut customerByUserIdentifierPortOut
@@ -58,8 +61,22 @@ class BookingOfferApplicationService implements BookingOfferSummaryQueryPortIn {
     return operationResponseFromQueryResponse(bookingOfferSummaryQueryResponse)
   }
 
-  protected OperationResponse<BookingOfferSummaryQueryResponse> operationResponseFromQueryResponse(BookingOfferSummaryQueryResponse bookingOfferSummaryQueryResponse) {
+  protected <T> OperationResponse<T> operationResponseFromQueryResponse(T queryResponse) {
     ResponseMetaData responseMetaData = ResponseMetaData.makeBasicInfoResponseMetaData()
-    return new OperationResponse<BookingOfferSummaryQueryResponse>(payload: bookingOfferSummaryQueryResponse, metaData: responseMetaData.propertiesFiltered)
+    return new OperationResponse<T>(payload: queryResponse, metaData: responseMetaData.propertiesFiltered)
+  }
+
+  @Override
+  OperationResponse<BookingOfferSummaryFindAllQueryResponse> bookingOfferSummaryFindAllQuery(
+      OperationRequest<BookingOfferSummaryFindAllQueryRequest> bookingOfferSummaryFindAllQueryOperationRequest)
+  {
+    requireMatch(bookingOfferSummaryFindAllQueryOperationRequest, notNullValue())
+    validationService.validate(bookingOfferSummaryFindAllQueryOperationRequest.payload)
+
+    Customer customer = customerByUserIdentifierPortOut.findCustomerByUserIdentifier(bookingOfferSummaryFindAllQueryOperationRequest.payload.userIdentifier)
+    bookingOfferSummaryFindAllQueryOperationRequest.payload.customerIdentifier = customer.customerId.identifier
+
+    BookingOfferSummaryFindAllQueryResponse queryResponse = queryGatewayAdapter.query(bookingOfferSummaryFindAllQueryOperationRequest, BookingOfferSummaryFindAllQueryResponse)
+    return operationResponseFromQueryResponse(queryResponse)
   }
 }
