@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<local-project language="java" version="6.1.20378" xml-version="3" flavor="j2se">
+<local-project language="java" version="6.1.20566" xml-version="3" flavor="j2se">
   <property name="show-as-module" value="false" />
   <property name="force-classpath" value="false" />
   <property name="publish-architecture-artifacts" value="true" />
@@ -34,6 +34,7 @@
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-cqrs/build/classes/groovy/main" module="cargotracker-lib-axon-cqrs" displaymodule="cargotracker-lib-axon-cqrs" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-axon-logging/build/classes/groovy/main" module="cargotracker-lib-axon-logging" displaymodule="cargotracker-lib-axon-logging" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-boundary-api/build/classes/groovy/main" module="cargotracker-lib-boundary-api" displaymodule="cargotracker-lib-boundary-api" />
+    <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-boundary-query-api/build/classes/groovy/main" module="cargotracker-lib-boundary-query-api" displaymodule="cargotracker-lib-boundary-query-api" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-domain-model-command/build/classes/groovy/main" module="cargotracker-lib-domain-model-command" displaymodule="cargotracker-lib-domain-model-command" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-domain-model-event/build/classes/groovy/main" module="cargotracker-lib-domain-model-event" displaymodule="cargotracker-lib-domain-model-event" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-lib-web/build/classes/groovy/main" module="cargotracker-lib-web" displaymodule="cargotracker-lib-web" />
@@ -56,7 +57,7 @@
   <restructuring>
     <set version="3" name="Action list 1" hiview="Codemap" active="true" todo="false" list="0" />
   </restructuring>
-  <grid-set sep="." version="6.1.20378">
+  <grid-set sep="." version="6.1.20566">
     <grid name="General Architecture" enforce="true" locked="false" strict="false" excludes="cargotracker-booking-commandside-test-support.*,cargotracker-booking-queryside-test-support.*,cargotracker-booking-rdbms-management-app.*,klokwrk-lib-archunit.*,cargotracker-booking-test-component.*">
       <row>
         <cell name="cargotracker-booking (subdomain)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
@@ -134,6 +135,9 @@
               <cell name="cargotracker-lib-web" pattern="cargotracker-lib-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
             <row>
+              <cell name="cargotracker-lib-boundary-query-api" pattern="cargotracker-lib-boundary-query-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+            <row>
               <cell name="cargotracker-lib-boundary-api" pattern="cargotracker-lib-boundary-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
           </grid>
@@ -198,7 +202,7 @@
       <description>Top-level breakout</description>
     </grid>
   </grid-set>
-  <physical-grid-set sep="." version="6.1.20378">
+  <physical-grid-set sep="." version="6.1.20566">
     <grid name="Workspace spec" enforce="true" locked="true" strict="false">
       <row>
         <cell name="cargotracker-booking" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="255,255,204">
@@ -284,6 +288,9 @@
                 </grid>
               </cell>
               <cell name="cargotracker-lib-web" pattern="cargotracker-lib-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+            <row>
+              <cell name="cargotracker-lib-boundary-query-api" pattern="cargotracker-lib-boundary-query-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
             <row>
               <cell name="cargotracker-lib-boundary-api" pattern="cargotracker-lib-boundary-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />

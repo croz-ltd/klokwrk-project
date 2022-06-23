@@ -18,8 +18,11 @@
 package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model
 
 import org.klokwrk.lib.springframework.data.jpa.repository.hibernate.HibernateJpaRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface BookingOfferSummaryJpaRepository extends JpaRepository<BookingOfferSummaryJpaEntity, UUID>, HibernateJpaRepository<BookingOfferSummaryJpaEntity> {
   BookingOfferSummaryJpaEntity findByBookingOfferIdentifierAndCustomerIdentifier(UUID bookingOfferIdentifier, String customerIdentifier)
+  Page<BookingOfferSummaryJpaEntity> findAllByCustomerIdentifier(String customerIdentifier, Pageable pageable)
 }

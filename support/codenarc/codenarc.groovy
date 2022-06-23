@@ -178,7 +178,7 @@ ruleset {
   }
   DuplicateNumberLiteral {
     doNotApplyToFilesMatching = TEST_FILES
-    ignoreNumbers = "0,1,1024"
+    ignoreNumbers = "-1,0,1,1024"
   }
   DuplicateStringLiteral {
     doNotApplyToFilesMatching = TEST_FILES

@@ -73,7 +73,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
   }
 
   @SuppressWarnings("CodeNarc.AbcMetric")
-  void "should work for correct request - [acceptLanguage: #acceptLanguage]"() {
+  void "should work for correct request"() {
     given:
     Instant startedAt = Instant.now()
     String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
@@ -146,7 +146,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
   }
 
   @SuppressWarnings("CodeNarc.AbcMetric")
-  void "should return expected response when request is not valid - validation failure - [acceptLanguage: #acceptLanguage]"() {
+  void "should return expected response when request is not valid - validation failure"() {
     String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: null, userIdentifier: null])
 
     when:
@@ -207,7 +207,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
     "en"           | "en"         | "Request is not valid."
   }
 
-  void "should return expected response when specified user can not be found - stateful validation failure [acceptLanguage: #acceptLanguage]"() {
+  void "should return expected response when specified user can not be found - stateful validation failure"() {
     given:
     String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
     String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier, userIdentifier: "someUserIdentifier"])
@@ -260,7 +260,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
     "en"           | "en"         | "Can't find the customer with user id 'someUserIdentifier'."
   }
 
-  void "should return expected response when BookingOfferSummary cannot be found - domain failure - [acceptLanguage: #acceptLanguage]"() {
+  void "should return expected response when BookingOfferSummary cannot be found - domain failure"() {
     given:
     String myBookingOfferIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier, userIdentifier: "standard-customer@cargotracker.com"])
@@ -313,7 +313,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
     "en"           | "en"         | "Summary report for specified booking offer is not found."
   }
 
-  void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguage]"() {
+  void "should return expected response for a request with invalid HTTP method"() {
     given:
     String myBookingOfferIdentifier = UUID.randomUUID()
     String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier])

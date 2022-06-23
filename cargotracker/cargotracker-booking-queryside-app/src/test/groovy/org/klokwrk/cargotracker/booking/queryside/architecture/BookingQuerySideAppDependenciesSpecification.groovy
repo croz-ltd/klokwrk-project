@@ -73,6 +73,7 @@ class BookingQuerySideAppDependenciesSpecification extends Specification {
     String[] cargotrackerLibAxonCqrsAllPackages = ["org.klokwrk.cargotracker.lib.axon.cqrs.."]
     String[] cargotrackerLibAxonLoggingAllPackages = ["org.klokwrk.cargotracker.lib.axon.logging.."]
     String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracker.lib.boundary.api.."]
+    String[] cargotrackerLibBoundaryQueryApiAllPackages = ["org.klokwrk.cargotracker.lib.boundary.query.api.."]
     String[] cargotrackerLibWebAllPackages = ["org.klokwrk.cargotracker.lib.web.."]
 
     String[] klokwrkLibDatasourceProxyAllPackages = ["org.klokwrk.lib.datasourceproxy.."]
@@ -100,6 +101,7 @@ class BookingQuerySideAppDependenciesSpecification extends Specification {
                 cargotrackerLibAxonCqrsAllPackages +
                 cargotrackerLibAxonLoggingAllPackages +
                 cargotrackerLibBoundaryApiAllPackages +
+                cargotrackerLibBoundaryQueryApiAllPackages +
                 cargotrackerLibWebAllPackages +
 
                 klokwrkLibDatasourceProxyAllPackages +
