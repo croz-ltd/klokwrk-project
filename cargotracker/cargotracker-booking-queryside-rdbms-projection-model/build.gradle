@@ -27,6 +27,7 @@ dependencies {
   testIntegrationImplementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
 
   implementation project(":cargotracker-booking-domain-model-value")
+  implementation project(":klokwrk-lib-spring-data-jpa")
   implementation project(":klokwrk-lang-groovy")
   implementation project(":klokwrk-lang-groovy-contracts-match")
   implementation project(":klokwrk-lang-groovy-contracts-simple")

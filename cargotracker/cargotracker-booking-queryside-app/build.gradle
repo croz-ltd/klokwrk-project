@@ -37,6 +37,7 @@ dependencies {
   implementation project(":klokwrk-lib-datasourceproxy-springboot")
   implementation project(":klokwrk-lib-hibernate")
   implementation project(":klokwrk-lib-jackson-springboot")
+  implementation project(":klokwrk-lib-spring-data-jpa")
   implementation project(":klokwrk-lib-validation-constraint")
   implementation project(":klokwrk-lib-validation-springboot")
   implementation project(":klokwrk-lang-groovy")

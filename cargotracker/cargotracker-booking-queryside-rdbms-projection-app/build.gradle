@@ -35,6 +35,7 @@ dependencies {
   implementation project(":klokwrk-lib-datasourceproxy-springboot")
   implementation project(":klokwrk-lib-hibernate")
   implementation project(":klokwrk-lib-jackson-springboot")
+  implementation project(":klokwrk-lib-spring-data-jpa")
 
   // Note: although currently there is no direct code dependencies to the klokwrk-lang-groovy module, need to have it as implementation dependency for CompileStatic to work. Otherwise,
   // java.lang.NoClassDefFoundError id thrown for PostMapConstructorCheckable class.
