@@ -15,14 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model
+package org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.adapter.out.persistence
 
-import org.klokwrk.lib.springframework.data.jpa.repository.hibernate.HibernateJpaRepository
+import groovy.transform.CompileStatic
+import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.BookingOfferSummaryJpaEntity
+import org.klokwrk.lib.springframework.data.jpa.repository.hibernate.ReadOnlyJpaRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface BookingOfferSummaryJpaRepository extends JpaRepository<BookingOfferSummaryJpaEntity, UUID>, HibernateJpaRepository<BookingOfferSummaryJpaEntity> {
+@CompileStatic
+interface BookingOfferSummaryViewJpaRepository extends JpaRepository<BookingOfferSummaryJpaEntity, UUID>, ReadOnlyJpaRepository<BookingOfferSummaryJpaEntity> {
   BookingOfferSummaryJpaEntity findByBookingOfferIdentifierAndCustomerIdentifier(UUID bookingOfferIdentifier, String customerIdentifier)
   Page<BookingOfferSummaryJpaEntity> findAllByCustomerIdentifier(String customerIdentifier, Pageable pageable)
 }

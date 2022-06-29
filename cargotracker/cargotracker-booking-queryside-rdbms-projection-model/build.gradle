@@ -39,7 +39,6 @@ dependencies {
   implementation "org.codehaus.groovy:groovy-macro"
   implementation "org.hamcrest:hamcrest"
   implementation "org.hibernate:hibernate-core"
-  implementation "org.springframework.data:spring-data-jpa"
   implementation "tech.units:indriya"
 
   testIntegrationImplementation project(":cargotracker-booking-queryside-test-support")

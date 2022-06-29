@@ -24,7 +24,6 @@ import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.applicati
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.BookingOfferSummaryJpaEntity
-import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.BookingOfferSummaryJpaRepository
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.springframework.data.domain.Page
@@ -46,16 +45,16 @@ import org.springframework.stereotype.Service
 @Service
 @CompileStatic
 class BookingOfferSummaryQueryHandlerService {
-  private final BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository
+  private final BookingOfferSummaryViewJpaRepository bookingOfferSummaryViewJpaRepository
 
   @SuppressWarnings('SpringJavaInjectionPointsAutowiringInspection')
-  BookingOfferSummaryQueryHandlerService(BookingOfferSummaryJpaRepository bookingOfferSummaryJpaRepository) {
-    this.bookingOfferSummaryJpaRepository = bookingOfferSummaryJpaRepository
+  BookingOfferSummaryQueryHandlerService(BookingOfferSummaryViewJpaRepository bookingOfferSummaryViewJpaRepository) {
+    this.bookingOfferSummaryViewJpaRepository = bookingOfferSummaryViewJpaRepository
   }
 
   @QueryHandler
   BookingOfferSummaryQueryResponse handleBookingOfferSummaryQueryRequest(BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest) {
-    BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = bookingOfferSummaryJpaRepository
+    BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = bookingOfferSummaryViewJpaRepository
         .findByBookingOfferIdentifierAndCustomerIdentifier(UUID.fromString(bookingOfferSummaryQueryRequest.bookingOfferIdentifier), bookingOfferSummaryQueryRequest.customerIdentifier)
 
     if (!bookingOfferSummaryJpaEntity) {
@@ -77,7 +76,7 @@ class BookingOfferSummaryQueryHandlerService {
 
     Page<BookingOfferSummaryJpaEntity> pageOfBookingOfferSummaryJpaEntity = null
     try {
-      pageOfBookingOfferSummaryJpaEntity = bookingOfferSummaryJpaRepository.findAllByCustomerIdentifier(bookingOfferSummaryFindAllQueryRequest.customerIdentifier, pageRequest)
+      pageOfBookingOfferSummaryJpaEntity = bookingOfferSummaryViewJpaRepository.findAllByCustomerIdentifier(bookingOfferSummaryFindAllQueryRequest.customerIdentifier, pageRequest)
     }
     catch (PropertyReferenceException pre) {
       QueryHandlerSpringDataJpaUtil.handlePropertyReferenceException(pre)
