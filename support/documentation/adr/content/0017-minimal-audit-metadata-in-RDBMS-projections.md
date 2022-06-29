@@ -37,7 +37,7 @@ Second, the availability of security-principal information may be domain or use-
 from event handlers. For those reasons, we are leaving out those columns in the context of this ADR.
 
 ## Architectural Context
-* RDBMS projections (`cargotracker-booking-queryside-rdbms-projection-app`, `cargotracker-booking-queryside-rdbms-projection-model`)
+* RDBMS projections (`cargotracker-booking-queryside-rdbms-projection-app`, `cargotracker-booking-queryside-model-rdbms-jpa`)
 
 ## Decision
 **We will store the minimal set of event audit metadata in the following  columns of projection tables:**

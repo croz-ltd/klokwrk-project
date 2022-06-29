@@ -66,7 +66,7 @@ class BookingQuerySideAppDependenciesSpecification extends Specification {
     String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
 
     String[] cargotrackerBookingQuerysideAppAllPackages = ["org.klokwrk.cargotracker.booking.queryside.feature..", "org.klokwrk.cargotracker.booking.queryside.infrastructure.."]
-    String[] cargotrackerBookingQuerysideRdbmsProjectionModelAllPackages = ["org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.."]
+    String[] cargotrackerBookingQuerysideRdbmsProjectionModelAllPackages = ["org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.."]
 
     String[] cargotrackerBookingStandaloneOutAdapterAllPackages = ["org.klokwrk.cargotracker.booking.out.customer.."]
 

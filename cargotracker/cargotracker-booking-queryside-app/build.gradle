@@ -28,7 +28,7 @@ dependencies {
 
   implementation project(":cargotracker-booking-domain-model-value")
   implementation project(":cargotracker-booking-out-customer")
-  implementation project(":cargotracker-booking-queryside-rdbms-projection-model")
+  implementation project(":cargotracker-booking-queryside-model-rdbms-jpa")
   implementation project(":cargotracker-lib-axon-cqrs")
   implementation project(":cargotracker-lib-axon-logging")
   implementation project(":cargotracker-lib-boundary-api")

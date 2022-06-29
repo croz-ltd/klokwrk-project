@@ -20,7 +20,7 @@ article explains problems and solutions in detail, while the second part also ex
 this ADR, and we will not repeat the discussion here. Please read the article to get a full explanation.
 
 ## Architectural Context
-* RDBMS projections (`cargotracker-booking-queryside-rdbms-projection-app`, `cargotracker-booking-queryside-rdbms-projection-model`)
+* RDBMS projections (`cargotracker-booking-queryside-rdbms-projection-app`, `cargotracker-booking-queryside-model-rdbms-jpa`)
 
 ## Decision
 **We will use short prefix COMB UUIDs as aggregate identifiers and as primary keys in related projection tables.**

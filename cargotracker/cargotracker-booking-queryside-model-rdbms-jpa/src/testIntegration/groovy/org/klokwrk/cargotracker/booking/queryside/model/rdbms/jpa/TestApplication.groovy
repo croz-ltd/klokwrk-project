@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model
+package org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa
 
 import groovy.transform.CompileStatic
 import org.klokwrk.lib.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor

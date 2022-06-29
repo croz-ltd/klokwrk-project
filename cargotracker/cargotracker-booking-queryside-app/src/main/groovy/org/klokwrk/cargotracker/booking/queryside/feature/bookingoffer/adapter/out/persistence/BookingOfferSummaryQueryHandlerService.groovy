@@ -23,7 +23,7 @@ import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.applicati
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryResponse
-import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.model.BookingOfferSummaryJpaEntity
+import org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.BookingOfferSummaryJpaEntity
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.springframework.data.domain.Page
