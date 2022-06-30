@@ -777,7 +777,7 @@
 							"name": "booking-offer",
 							"item": [
 								{
-									"name": "booking-offer-summary",
+									"name": "booking-offer-summary-find-by-id",
 									"item": [
 										{
 											"name": "ok, hr",
@@ -816,7 +816,7 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/booking-offer/booking-offer-summary",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/booking-offer/booking-offer-summary-find-by-id",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
@@ -825,7 +825,7 @@
 													"path": [
 														"cargotracker-booking-queryside",
 														"booking-offer",
-														"booking-offer-summary"
+														"booking-offer-summary-find-by-id"
 													]
 												},
 												"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
@@ -869,7 +869,7 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/booking-offer/booking-offer-summary",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/booking-offer/booking-offer-summary-find-by-id",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
@@ -878,7 +878,7 @@
 													"path": [
 														"cargotracker-booking-queryside",
 														"booking-offer",
-														"booking-offer-summary"
+														"booking-offer-summary-find-by-id"
 													]
 												},
 												"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
@@ -922,7 +922,7 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/booking-offer/booking-offer-summary",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/booking-offer/booking-offer-summary-find-by-id",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
@@ -931,7 +931,7 @@
 													"path": [
 														"cargotracker-booking-queryside",
 														"booking-offer",
-														"booking-offer-summary"
+														"booking-offer-summary-find-by-id"
 													]
 												}
 											},
@@ -974,7 +974,7 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/booking-offer/booking-offer-summary",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/booking-offer/booking-offer-summary-find-by-id",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
@@ -983,7 +983,7 @@
 													"path": [
 														"cargotracker-booking-queryside",
 														"booking-offer",
-														"booking-offer-summary"
+														"booking-offer-summary-find-by-id"
 													]
 												}
 											},
@@ -1026,7 +1026,7 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/booking-offer/booking-offer-summary",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/booking-offer/booking-offer-summary-find-by-id",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
@@ -1035,7 +1035,7 @@
 													"path": [
 														"cargotracker-booking-queryside",
 														"booking-offer",
-														"booking-offer-summary"
+														"booking-offer-summary-find-by-id"
 													]
 												}
 											},
@@ -1078,7 +1078,7 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/booking-offer/booking-offer-summary",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/booking-offer/booking-offer-summary-find-by-id",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
@@ -1087,7 +1087,7 @@
 													"path": [
 														"cargotracker-booking-queryside",
 														"booking-offer",
-														"booking-offer-summary"
+														"booking-offer-summary-find-by-id"
 													]
 												}
 											},
@@ -1345,7 +1345,7 @@
 							"response": []
 						},
 						{
-							"name": "booking-offer-summary, ok, hr",
+							"name": "booking-offer-summary-find-by-id, ok, hr",
 							"event": [
 								{
 									"listen": "test",
@@ -1387,7 +1387,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/booking-offer/booking-offer-summary",
+									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/booking-offer/booking-offer-summary-find-by-id",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -1396,7 +1396,7 @@
 									"path": [
 										"cargotracker-booking-queryside",
 										"booking-offer",
-										"booking-offer-summary"
+										"booking-offer-summary-find-by-id"
 									]
 								},
 								"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
@@ -1477,7 +1477,7 @@
 							"response": []
 						},
 						{
-							"name": "booking-offer-summary, ok, en",
+							"name": "booking-offer-summary-find-by-id, ok, en",
 							"event": [
 								{
 									"listen": "test",
@@ -1519,7 +1519,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/booking-offer/booking-offer-summary",
+									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside/booking-offer/booking-offer-summary-find-by-id",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -1528,7 +1528,7 @@
 									"path": [
 										"cargotracker-booking-queryside",
 										"booking-offer",
-										"booking-offer-summary"
+										"booking-offer-summary-find-by-id"
 									]
 								},
 								"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."

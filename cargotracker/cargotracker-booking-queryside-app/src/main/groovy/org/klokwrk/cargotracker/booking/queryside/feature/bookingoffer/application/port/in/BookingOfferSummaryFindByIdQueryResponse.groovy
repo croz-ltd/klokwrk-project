@@ -29,7 +29,7 @@ import java.time.Instant
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
-class BookingOfferSummaryQueryResponse {
+class BookingOfferSummaryFindByIdQueryResponse {
   String bookingOfferIdentifier
 
   CustomerType customerType

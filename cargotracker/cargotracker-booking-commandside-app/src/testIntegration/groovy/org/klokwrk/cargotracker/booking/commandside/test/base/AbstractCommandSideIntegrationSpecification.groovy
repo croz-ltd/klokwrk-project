@@ -32,21 +32,29 @@ abstract class AbstractCommandSideIntegrationSpecification extends Specification
   static Network klokwrkNetworkSecondInstance
 
   static {
-    klokwrkNetwork = Network.builder().createNetworkCmdModifier({ CreateNetworkCmd createNetworkCmd -> createNetworkCmd.withName("klokwrk-network-${ UUID.randomUUID() }") }).build()
+    klokwrkNetwork = Network
+        .builder()
+        .createNetworkCmdModifier({ CreateNetworkCmd createNetworkCmd -> createNetworkCmd.withName("klokwrk-network-${ UUID.randomUUID() }") })
+        .build()
+
     axonServer = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetwork)
 
-    klokwrkNetworkSecondInstance = Network.builder().createNetworkCmdModifier({ CreateNetworkCmd createNetworkCmd -> createNetworkCmd.withName("klokwrk-network-secondInstance${ UUID.randomUUID() }") }).build()
+    klokwrkNetworkSecondInstance = Network
+        .builder()
+        .createNetworkCmdModifier({ CreateNetworkCmd createNetworkCmd -> createNetworkCmd.withName("klokwrk-network-secondInstance${ UUID.randomUUID() }") })
+        .build()
+
     axonServerSecondInstance = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetworkSecondInstance, "klokwrk-project-axon-server-secondInstance", 9024, 9124)
   }
 
   @DynamicPropertySource
   static void configureAxonServerProperties(DynamicPropertyRegistry registry) {
-    String axonContainerIpAddress = axonServer.containerIpAddress
+    String axonContainerIpAddress = axonServer.host
     Integer axonContainerGrpcPort = axonServer.getMappedPort(8124)
 
     // Properties axonServerFirstInstanceUrl and axonServerSecondInstanceUrl are used as values for configuring 'axon.axonserver.servers' property at the level of a test class.
-    // For concrete example, take a look SpringBootTest annotations of BookingOfferWebControllerIntegrationSpecification, BookingOfferApplicationServiceWithTracingGatewayIntegrationSpecification
-    // or BookingOfferApplicationServiceWithDefaultGatewayIntegrationSpecification classes.
+    // For concrete example, take a look SpringBootTest annotations of BookingOfferCommandWebControllerIntegrationSpecification,
+    // BookingOfferCommandApplicationServiceWithTracingGatewayIntegrationSpecification or BookingOfferCommandApplicationServiceWithDefaultGatewayIntegrationSpecification classes.
     registry.add("axonServerFirstInstanceUrl", { "${ axonContainerIpAddress }:${ axonContainerGrpcPort }" })
 
     String axonContainerIpAddressSecondInstance = axonServerSecondInstance.host

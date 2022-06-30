@@ -21,9 +21,9 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryResponse
-import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryPortIn
-import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindByIdQueryPortIn
+import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindByIdQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindByIdQueryResponse
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDataConstant
@@ -35,21 +35,21 @@ import org.springframework.web.bind.annotation.RestController
 @CompileStatic
 @RestController
 @RequestMapping("/booking-offer")
-class BookingOfferWebController {
-  private final BookingOfferSummaryQueryPortIn bookingOfferSummaryQueryPortIn
+class BookingOfferQueryWebController {
+  private final BookingOfferSummaryFindByIdQueryPortIn bookingOfferSummaryFindByIdQueryPortIn
   private final BookingOfferSummaryFindAllQueryPortIn bookingOfferSummaryFindAllQueryPortIn
 
-  BookingOfferWebController(BookingOfferSummaryQueryPortIn bookingOfferSummaryQueryPortIn, BookingOfferSummaryFindAllQueryPortIn bookingOfferSummaryFindAllQueryPortIn) {
-    this.bookingOfferSummaryQueryPortIn = bookingOfferSummaryQueryPortIn
+  BookingOfferQueryWebController(BookingOfferSummaryFindByIdQueryPortIn bookingOfferSummaryFindByIdQueryPortIn, BookingOfferSummaryFindAllQueryPortIn bookingOfferSummaryFindAllQueryPortIn) {
+    this.bookingOfferSummaryFindByIdQueryPortIn = bookingOfferSummaryFindByIdQueryPortIn
     this.bookingOfferSummaryFindAllQueryPortIn = bookingOfferSummaryFindAllQueryPortIn
   }
 
-  @PostMapping("/booking-offer-summary")
-  OperationResponse<BookingOfferSummaryQueryResponse> bookingOfferSummaryQuery(@RequestBody BookingOfferSummaryQueryWebRequest webRequest, Locale locale) {
-    OperationResponse<BookingOfferSummaryQueryResponse> bookingOfferSummaryOperationResponse =
-        bookingOfferSummaryQueryPortIn.bookingOfferSummaryQuery(makeOperationRequest(webRequest, BookingOfferSummaryQueryRequest, locale))
+  @PostMapping("/booking-offer-summary-find-by-id")
+  OperationResponse<BookingOfferSummaryFindByIdQueryResponse> bookingOfferSummaryFindByIdQuery(@RequestBody BookingOfferSummaryFindByIdQueryWebRequest webRequest, Locale locale) {
+    OperationResponse<BookingOfferSummaryFindByIdQueryResponse> bookingOfferSummaryFindByIdOperationResponse =
+        bookingOfferSummaryFindByIdQueryPortIn.bookingOfferSummaryFindByIdQuery(makeOperationRequest(webRequest, BookingOfferSummaryFindByIdQueryRequest, locale))
 
-    return bookingOfferSummaryOperationResponse
+    return bookingOfferSummaryFindByIdOperationResponse
   }
 
   /**

@@ -21,9 +21,9 @@ import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
-import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryPortIn
-import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindByIdQueryPortIn
+import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindByIdQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindByIdQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.test.base.AbstractQuerySideIntegrationSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
@@ -43,7 +43,7 @@ import java.time.Instant
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
+class BookingOfferQueryApplicationServiceIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
   @TestConfiguration
   static class TestSpringBootConfiguration {
     @Bean
@@ -59,7 +59,7 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
   Sql groovySql
 
   @Autowired
-  BookingOfferSummaryQueryPortIn bookingOfferSummaryQueryPortIn
+  BookingOfferSummaryFindByIdQueryPortIn bookingOfferSummaryFindByIdQueryPortIn
 
   void "should work for correct request"() {
     given:
@@ -67,16 +67,16 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
     String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
 
     // Note: "standard-customer@cargotracker.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
-    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest =
-        new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: myBookingOfferIdentifier, userIdentifier: "standard-customer@cargotracker.com")
+    BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: myBookingOfferIdentifier, userIdentifier: "standard-customer@cargotracker.com")
 
-    OperationRequest<BookingOfferSummaryQueryRequest> operationRequest = new OperationRequest(
-        payload: bookingOfferSummaryQueryRequest,
+    OperationRequest<BookingOfferSummaryFindByIdQueryRequest> operationRequest = new OperationRequest(
+        payload: bookingOfferSummaryFindByIdQueryRequest,
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): localeParam]
     )
 
     when:
-    OperationResponse<BookingOfferSummaryQueryResponse> operationResponse = bookingOfferSummaryQueryPortIn.bookingOfferSummaryQuery(operationRequest)
+    OperationResponse<BookingOfferSummaryFindByIdQueryResponse> operationResponse = bookingOfferSummaryFindByIdQueryPortIn.bookingOfferSummaryFindByIdQuery(operationRequest)
 
     then:
     verifyAll(operationResponse.payload) {
@@ -122,16 +122,16 @@ class BookingOfferApplicationServiceIntegrationSpecification extends AbstractQue
 
   void "should throw when booking offer summary cannot be found"() {
     given:
-    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest =
-        new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: UUID.randomUUID(), userIdentifier: "standard-customer@cargotracker.com")
+    BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: UUID.randomUUID(), userIdentifier: "standard-customer@cargotracker.com")
 
-    OperationRequest<BookingOfferSummaryQueryRequest> operationRequest = new OperationRequest(
-        payload: bookingOfferSummaryQueryRequest,
+    OperationRequest<BookingOfferSummaryFindByIdQueryRequest> operationRequest = new OperationRequest(
+        payload: bookingOfferSummaryFindByIdQueryRequest,
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): locale]
     )
 
     when:
-    bookingOfferSummaryQueryPortIn.bookingOfferSummaryQuery(operationRequest)
+    bookingOfferSummaryFindByIdQueryPortIn.bookingOfferSummaryFindByIdQuery(operationRequest)
 
     then:
     QueryException queryException = thrown()

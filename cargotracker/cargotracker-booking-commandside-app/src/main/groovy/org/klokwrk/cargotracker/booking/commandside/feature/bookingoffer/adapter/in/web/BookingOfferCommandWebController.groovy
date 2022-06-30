@@ -31,10 +31,10 @@ import javax.servlet.http.HttpServletRequest
 @CompileStatic
 @RestController
 @RequestMapping("/booking-offer")
-class BookingOfferWebController {
+class BookingOfferCommandWebController {
   private final CreateBookingOfferCommandPortIn createBookingOfferCommandPortIn
 
-  BookingOfferWebController(CreateBookingOfferCommandPortIn createBookingOfferCommandPortIn) {
+  BookingOfferCommandWebController(CreateBookingOfferCommandPortIn createBookingOfferCommandPortIn) {
     this.createBookingOfferCommandPortIn = createBookingOfferCommandPortIn
   }
 
@@ -44,7 +44,7 @@ class BookingOfferWebController {
       @RequestBody CreateBookingOfferCommandWebRequest createBookingOfferCommandWebRequest, HttpServletRequest httpServletRequest)
   {
     OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommandResponse =
-        createBookingOfferCommandPortIn.createBookingOfferCommand(BookingOfferWebAssembler.toCreateBookingOfferCommandOperationRequest(createBookingOfferCommandWebRequest, httpServletRequest))
+        createBookingOfferCommandPortIn.createBookingOfferCommand(BookingOfferCommandWebAssembler.toCreateBookingOfferCommandOperationRequest(createBookingOfferCommandWebRequest, httpServletRequest))
 
     return createBookingOfferCommandResponse
   }

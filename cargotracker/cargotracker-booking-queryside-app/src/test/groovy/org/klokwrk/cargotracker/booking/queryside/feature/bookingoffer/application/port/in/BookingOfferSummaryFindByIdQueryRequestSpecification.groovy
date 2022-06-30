@@ -29,7 +29,7 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Null
 import javax.validation.constraints.Size
 
-class BookingOfferSummaryQueryRequestSpecification extends Specification {
+class BookingOfferSummaryFindByIdQueryRequestSpecification extends Specification {
   @Shared
   ValidationService validationService
 
@@ -40,11 +40,11 @@ class BookingOfferSummaryQueryRequestSpecification extends Specification {
 
   void "should pass validation for valid data"() {
     given:
-    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest =
-        new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: "00000000-0000-4000-8000-000000000000", userIdentifier: "someUserIdentifier")
+    BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: "00000000-0000-4000-8000-000000000000", userIdentifier: "someUserIdentifier")
 
     when:
-    validationService.validate(bookingOfferSummaryQueryRequest)
+    validationService.validate(bookingOfferSummaryFindByIdQueryRequest)
 
     then:
     notThrown(ConstraintViolationException)
@@ -52,10 +52,11 @@ class BookingOfferSummaryQueryRequestSpecification extends Specification {
 
   void "should not pass validation for invalid data"() {
     given:
-    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest = new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: bookingOfferIdentifierParam, userIdentifier: userIdentifierParam)
+    BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: bookingOfferIdentifierParam, userIdentifier: userIdentifierParam)
 
     when:
-    validationService.validate(bookingOfferSummaryQueryRequest)
+    validationService.validate(bookingOfferSummaryFindByIdQueryRequest)
 
     then:
     ConstraintViolationException constraintViolationException = thrown()
@@ -81,11 +82,11 @@ class BookingOfferSummaryQueryRequestSpecification extends Specification {
 
   void "should not pass validation for unexpected data"() {
     given:
-    BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest =
-        new BookingOfferSummaryQueryRequest(bookingOfferIdentifier: UUID.randomUUID(), userIdentifier: "someUserIdentifier", customerIdentifier: "someCustomerIdentifier")
+    BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: UUID.randomUUID(), userIdentifier: "someUserIdentifier", customerIdentifier: "someCustomerIdentifier")
 
     when:
-    validationService.validate(bookingOfferSummaryQueryRequest)
+    validationService.validate(bookingOfferSummaryFindByIdQueryRequest)
 
     then:
     ConstraintViolationException constraintViolationException = thrown()

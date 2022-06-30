@@ -45,7 +45,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
+class BookingOfferQueryWebControllerIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
   @TestConfiguration
   static class TestSpringBootConfiguration {
     @Bean
@@ -83,7 +83,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/booking-offer-summary")
+        post("/booking-offer/booking-offer-summary-find-by-id")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -151,7 +151,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/booking-offer-summary")
+        post("/booking-offer/booking-offer-summary-find-by-id")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -191,7 +191,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
     verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
       size() == 2
 
-      root.type == "bookingOfferSummaryQueryRequest"
+      root.type == "bookingOfferSummaryFindByIdQueryRequest"
       constraintViolations.size() == 2
       constraintViolations.find({ it.path == "bookingOfferIdentifier" }).type == "notBlank"
       constraintViolations.find({ it.path == "userIdentifier" }).type == "notBlank"
@@ -214,7 +214,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/booking-offer-summary")
+        post("/booking-offer/booking-offer-summary-find-by-id")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -267,7 +267,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/booking-offer-summary")
+        post("/booking-offer/booking-offer-summary-find-by-id")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -320,7 +320,7 @@ class BookingOfferWebControllerIntegrationSpecification extends AbstractQuerySid
 
     when:
     MvcResult mvcResult = mockMvc.perform(
-        put("/booking-offer/booking-offer-summary")
+        put("/booking-offer/booking-offer-summary-find-by-id")
             .content(webRequestBody)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)

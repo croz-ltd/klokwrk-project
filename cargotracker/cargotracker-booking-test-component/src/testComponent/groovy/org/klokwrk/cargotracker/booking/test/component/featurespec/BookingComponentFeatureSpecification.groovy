@@ -109,7 +109,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
         """
 
     //noinspection HttpUrlsUsage
-    String bookingOfferSummaryQueryUrl = "http://${ querySideApp.host }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/booking-offer/booking-offer-summary"
+    String bookingOfferSummaryQueryUrl = "http://${ querySideApp.host }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/booking-offer/booking-offer-summary-find-by-id"
     Closure<String> queryPostRequestBodyClosure = { String commandResponseBookingOfferIdentifier ->
       """
       {
@@ -244,7 +244,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
   void "query - should not find non-existing booking offer: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
     //noinspection HttpUrlsUsage
-    String bookingOfferSummaryQueryUrl = "http://${ querySideApp.host }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/booking-offer/booking-offer-summary"
+    String bookingOfferSummaryQueryUrl = "http://${ querySideApp.host }:${ querySideApp.firstMappedPort }/cargotracker-booking-queryside/booking-offer/booking-offer-summary-find-by-id"
     String queryPostRequestBody = """
       {
         "userIdentifier": "standard-customer@cargotracker.com",

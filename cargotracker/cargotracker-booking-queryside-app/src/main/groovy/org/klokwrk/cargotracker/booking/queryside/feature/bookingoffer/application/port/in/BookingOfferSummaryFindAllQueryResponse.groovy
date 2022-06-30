@@ -28,5 +28,5 @@ import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 @CompileStatic
 class BookingOfferSummaryFindAllQueryResponse {
   PageInfo pageInfo
-  List<BookingOfferSummaryQueryResponse> pageContent
+  List<BookingOfferSummaryFindByIdQueryResponse> pageContent
 }

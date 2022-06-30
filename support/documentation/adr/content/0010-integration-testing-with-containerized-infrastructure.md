@@ -43,8 +43,8 @@ tests. Test execution time should not extend significantly.
 Running unit tests and internal application component integration tests must be separate from running containerized integration tests. Each category of tests needs to have a different execution
 command. That way, we can trigger containerized tests only when appropriate.
 
-As an example, take a look at `AbstractCommandSideIntegrationSpecification` abstract class, and related test classes `BookingOfferWebControllerIntegrationSpecification` and
-`AbstractBookingOfferApplicationServiceIntegrationSpecification`.
+As an example, take a look at `AbstractCommandSideIntegrationSpecification` abstract class, and related test classes `BookingOfferCommandWebControllerIntegrationSpecification` and
+`AbstractBookingOfferCommandApplicationServiceIntegrationSpecification`.
 
 ## Consequences
 ### Positive

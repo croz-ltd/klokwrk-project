@@ -114,7 +114,7 @@ There are more commandside requests available. Feel free to experiment with them
 #### Queryside requests
 Before executing queryside requests, remember they rely on identifiers returned from previously performed commandside requests.
 
-Otherwise, queryside request execution is very similar to the commandside. In this case, navigate to the `cargotracker-booking/individual-requests/queryside/booking-offer/booking-offer-summary`
+Otherwise, queryside request execution is very similar to the commandside. In this case, navigate to the `cargotracker-booking/individual-requests/queryside/booking-offer/booking-offer-summary-find-by-id`
 folder and pick and execute the request. Again, the results should be similar to commandside requests.
 
 #### Scenarios

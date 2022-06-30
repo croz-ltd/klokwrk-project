@@ -43,7 +43,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @SpringBootTest(properties = ['axon.axonserver.servers = ${axonServerFirstInstanceUrl}'])
 @ActiveProfiles("testIntegration")
-class BookingOfferWebControllerIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
+class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
   @Autowired
   WebApplicationContext webApplicationContext
 

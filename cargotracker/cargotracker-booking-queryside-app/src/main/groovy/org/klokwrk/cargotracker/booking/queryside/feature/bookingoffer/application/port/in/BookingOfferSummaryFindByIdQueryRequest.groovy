@@ -33,15 +33,15 @@ import javax.validation.constraints.Null
 import javax.validation.constraints.Size
 
 /**
- * Request DTO parameter for {@code bookingOfferSummaryQuery} operation from {@link BookingOfferSummaryQueryPortIn} inbound port interface.
+ * Request DTO parameter for {@code bookingOfferSummaryFindByIdQuery} operation from {@link BookingOfferSummaryFindByIdQueryPortIn} inbound port interface.
  * <p/>
  * Here we are comply to the validation ordering as explained in ADR-0013.
  */
-@GroupSequence([BookingOfferSummaryQueryRequest, Level1, Level2, Level3])
+@GroupSequence([BookingOfferSummaryFindByIdQueryRequest, Level1, Level2, Level3])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
-class BookingOfferSummaryQueryRequest {
+class BookingOfferSummaryFindByIdQueryRequest {
   /**
    * User identifier known to the real end user (i.e., like email)
    * <p/>
@@ -65,8 +65,8 @@ class BookingOfferSummaryQueryRequest {
    * {@code BookingOfferSummaryQuery} class would then contain {@code customerIdentifier}, but not {@code userIdentifier} property. Of course, we should also implement appropriate mapping for such a
    * scenario.
    * <p/>
-   * However, for simplicity and the smaller number of DTO classes, we have just added the {@code customerIdentifier} property to the already existing {@code BookingOfferSummaryQueryRequest} class.
-   * In addition, by adding {@code Null} annotation, we ensure the end user does not specify it.
+   * However, for simplicity and the smaller number of DTO classes, we have just added the {@code customerIdentifier} property to the already existing {@code BookingOfferSummaryFindByIdQueryRequest}
+   * class. In addition, by adding {@code Null} annotation, we ensure the end user does not specify it.
    */
   @Null
   String customerIdentifier

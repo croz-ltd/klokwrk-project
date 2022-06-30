@@ -18,10 +18,10 @@
 package org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.adapter.in.web
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindByIdQueryRequest
 
-// In general, in web interface we use BookingOfferSummaryQueryRequest directly, but BookingOfferSummaryQueryWebRequest can be used for adding additional properties that are only web specific and
-// handled in controller before sending BookingOfferSummaryQueryRequest into domain facade.
+// In general, in web interface we use BookingOfferSummaryFindByIdQueryRequest directly, but BookingOfferSummaryFindByIdQueryWebRequest can be used for adding additional properties that are only web
+// specific and handled in controller before sending BookingOfferSummaryFindByIdQueryRequest into domain facade.
 @CompileStatic
-class BookingOfferSummaryQueryWebRequest extends BookingOfferSummaryQueryRequest {
+class BookingOfferSummaryFindByIdQueryWebRequest extends BookingOfferSummaryFindByIdQueryRequest {
 }

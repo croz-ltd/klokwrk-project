@@ -39,18 +39,18 @@ import java.time.Clock
 import static org.hamcrest.Matchers.notNullValue
 
 /**
- * Convenient factory intended to be used by {@link BookingOfferApplicationService} for encapsulating and simplifying creation of objects required in {@link BookingOfferApplicationService}
- * implementation.
+ * Convenient factory intended to be used by {@link BookingOfferCommandApplicationService} for encapsulating and simplifying creation of objects required in
+ * {@link BookingOfferCommandApplicationService} implementation.
  */
 @Service
 @CompileStatic
-class BookingOfferFactoryService {
+class BookingOfferCommandFactoryService {
   private final CustomerByUserIdentifierPortOut customerByUserIdentifierPortOut
   private final LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut
   private final Clock clock
 
   @SuppressWarnings("CodeNarc.OptionalMethodParameter")
-  BookingOfferFactoryService(CustomerByUserIdentifierPortOut customerByUserIdentifierPortOut, LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut, Optional<Clock> clockOptional) {
+  BookingOfferCommandFactoryService(CustomerByUserIdentifierPortOut customerByUserIdentifierPortOut, LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut, Optional<Clock> clockOptional) {
     this.customerByUserIdentifierPortOut = customerByUserIdentifierPortOut
     this.locationByUnLoCodeQueryPortOut = locationByUnLoCodeQueryPortOut
     this.clock = clockOptional.orElse(Clock.systemUTC())

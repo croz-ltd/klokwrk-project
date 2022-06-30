@@ -89,8 +89,8 @@ class ViolationCode implements PostMapConstructorCheckable {
    * Therefore, {@code resolvableMessageKey} is a resolvable alias for {@code code} that is much more appealing to use for writing localized resource bundles at the inbound/outbound channel level.
    * <p/>
    * For example, when maintaining resource bundles, it should be much easier for a developer to deduct the meaning of
-   * {@code bookingOfferWebController.bookingOfferSummaryQuery.failure.other.badRequest} resource bundle key instead the meaning of
-   * {@code bookingOfferWebController.bookingOfferSummaryQuery.failure.other.400} key. And this is exactly the intention behind this property.
+   * {@code bookingOfferQueryWebController.bookingOfferSummaryQuery.failure.other.badRequest} resource bundle key instead the meaning of
+   * {@code bookingOfferQueryWebController.bookingOfferSummaryQuery.failure.other.400} key. And this is exactly the intention behind this property.
    * <p/>
    * If we need some further categorization inside {@code resolvableMessageKey}, it is recommended to use dot character for that purpose. For example, like in {@code notFound.personSummary}.
    */

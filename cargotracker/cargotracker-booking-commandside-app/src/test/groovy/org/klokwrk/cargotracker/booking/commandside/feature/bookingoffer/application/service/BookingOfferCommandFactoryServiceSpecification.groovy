@@ -49,7 +49,7 @@ import java.time.Duration
 import java.time.Instant
 import java.time.ZoneOffset
 
-class BookingOfferFactoryServiceSpecification extends Specification {
+class BookingOfferCommandFactoryServiceSpecification extends Specification {
 
   static Clock clock = Clock.fixed(Instant.parse("2021-12-07T12:00:00Z"), ZoneOffset.UTC)
   static Instant currentInstantRounded = Instant.now(clock)
@@ -64,19 +64,19 @@ class BookingOfferFactoryServiceSpecification extends Specification {
   static CommodityInfoData validCommodityInfoData = new CommodityInfoData(commodityType: CommodityType.DRY.name(), totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: null)
   static String validContainerDimensionData = "DIMENSION_ISO_22"
 
-  BookingOfferFactoryService bookingOfferFactoryService
+  BookingOfferCommandFactoryService bookingOfferCommandFactoryService
   LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut
   CustomerByUserIdentifierPortOut customerByUserIdentifierPortOut
 
   void setup() {
     locationByUnLoCodeQueryPortOut = new InMemoryLocationRegistryService()
     customerByUserIdentifierPortOut = new InMemoryCustomerRegistryService()
-    bookingOfferFactoryService = new BookingOfferFactoryService(customerByUserIdentifierPortOut, locationByUnLoCodeQueryPortOut, Optional.of(clock))
+    bookingOfferCommandFactoryService = new BookingOfferCommandFactoryService(customerByUserIdentifierPortOut, locationByUnLoCodeQueryPortOut, Optional.of(clock))
   }
 
   void "makeCreateBookingOfferCommand - should throw for passed null"() {
     when:
-    bookingOfferFactoryService.makeCreateBookingOfferCommand(null)
+    bookingOfferCommandFactoryService.makeCreateBookingOfferCommand(null)
 
     then:
     thrown(AssertionError)
@@ -87,7 +87,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(userIdentifier: "unknownIdentifier")
 
     when:
-    bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
+    bookingOfferCommandFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     DomainException domainException = thrown()
@@ -110,7 +110,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
     )
 
     when:
-    bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
+    bookingOfferCommandFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     DomainException domainException = thrown()
@@ -140,7 +140,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
     )
 
     when:
-    bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
+    bookingOfferCommandFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     DomainException domainException = thrown()
@@ -171,7 +171,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
     )
 
     when:
-    bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
+    bookingOfferCommandFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     DomainException domainException = thrown()
@@ -198,7 +198,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
     )
 
     when:
-    CreateBookingOfferCommand createBookingOfferCommand = bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
+    CreateBookingOfferCommand createBookingOfferCommand = bookingOfferCommandFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     verifyAll(createBookingOfferCommand) {
@@ -225,7 +225,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
     )
 
     when:
-    CreateBookingOfferCommand createBookingOfferCommand = bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
+    CreateBookingOfferCommand createBookingOfferCommand = bookingOfferCommandFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     verifyAll(createBookingOfferCommand) {
@@ -249,7 +249,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
     )
 
     when:
-    bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
+    bookingOfferCommandFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandRequest)
 
     then:
     thrown(DomainException)
@@ -278,7 +278,7 @@ class BookingOfferFactoryServiceSpecification extends Specification {
     )
 
     when:
-    CreateBookingOfferCommandResponse createBookingOfferCommandResponse = bookingOfferFactoryService.makeCreateBookingOfferCommandResponse(bookingOfferAggregate)
+    CreateBookingOfferCommandResponse createBookingOfferCommandResponse = bookingOfferCommandFactoryService.makeCreateBookingOfferCommandResponse(bookingOfferAggregate)
 
     then:
     verifyAll(createBookingOfferCommandResponse) {

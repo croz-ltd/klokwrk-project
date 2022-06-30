@@ -21,8 +21,8 @@ import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryHandler
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryResponse
-import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryRequest
-import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindByIdQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.application.port.in.BookingOfferSummaryFindByIdQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.BookingOfferSummaryJpaEntity
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
@@ -53,16 +53,18 @@ class BookingOfferSummaryQueryHandlerService {
   }
 
   @QueryHandler
-  BookingOfferSummaryQueryResponse handleBookingOfferSummaryQueryRequest(BookingOfferSummaryQueryRequest bookingOfferSummaryQueryRequest) {
+  BookingOfferSummaryFindByIdQueryResponse handleBookingOfferSummaryFindByIdQueryRequest(BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest) {
     BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = bookingOfferSummaryViewJpaRepository
-        .findByBookingOfferIdentifierAndCustomerIdentifier(UUID.fromString(bookingOfferSummaryQueryRequest.bookingOfferIdentifier), bookingOfferSummaryQueryRequest.customerIdentifier)
+        .findByBookingOfferIdentifierAndCustomerIdentifier(UUID.fromString(bookingOfferSummaryFindByIdQueryRequest.bookingOfferIdentifier), bookingOfferSummaryFindByIdQueryRequest.customerIdentifier)
 
     if (!bookingOfferSummaryJpaEntity) {
       throw new QueryException(ViolationInfo.NOT_FOUND)
     }
 
-    BookingOfferSummaryQueryResponse bookingOfferSummaryQueryResponse = new BookingOfferSummaryQueryResponse(fetchBookingOfferSummaryJpaEntityProperties(bookingOfferSummaryJpaEntity))
-    return bookingOfferSummaryQueryResponse
+    BookingOfferSummaryFindByIdQueryResponse bookingOfferSummaryFindByIdQueryResponse =
+        new BookingOfferSummaryFindByIdQueryResponse(fetchBookingOfferSummaryJpaEntityProperties(bookingOfferSummaryJpaEntity))
+
+    return bookingOfferSummaryFindByIdQueryResponse
   }
 
   protected Map<String, Object> fetchBookingOfferSummaryJpaEntityProperties(BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity) {
@@ -84,7 +86,9 @@ class BookingOfferSummaryQueryHandlerService {
 
     BookingOfferSummaryFindAllQueryResponse bookingOfferSummaryFindAllQueryResponse = new BookingOfferSummaryFindAllQueryResponse().tap {
       pageContent = pageOfBookingOfferSummaryJpaEntity.content
-          .collect({ BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity -> new BookingOfferSummaryQueryResponse(fetchBookingOfferSummaryJpaEntityProperties(bookingOfferSummaryJpaEntity)) })
+          .collect({ BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity ->
+              new BookingOfferSummaryFindByIdQueryResponse(fetchBookingOfferSummaryJpaEntityProperties(bookingOfferSummaryJpaEntity))
+          })
 
       pageInfo = QueryHandlerSpringDataJpaUtil
           .makePageInfoFromPage(pageOfBookingOfferSummaryJpaEntity, bookingOfferSummaryFindAllQueryRequest.pageRequirement, bookingOfferSummaryFindAllQueryRequest.sortRequirementList)

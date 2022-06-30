@@ -34,15 +34,15 @@ import static org.hamcrest.Matchers.notNullValue
 
 @Service
 @CompileStatic
-class BookingOfferApplicationService implements CreateBookingOfferCommandPortIn {
-  private final BookingOfferFactoryService bookingOfferFactoryService
+class BookingOfferCommandApplicationService implements CreateBookingOfferCommandPortIn {
+  private final BookingOfferCommandFactoryService bookingOfferCommandFactoryService
   private final CommandGatewayAdapter commandGatewayAdapter
   private final ValidationService validationService
 
-  BookingOfferApplicationService(ValidationService validationService, CommandGateway commandGateway, BookingOfferFactoryService bookingOfferFactoryService) {
+  BookingOfferCommandApplicationService(ValidationService validationService, CommandGateway commandGateway, BookingOfferCommandFactoryService bookingOfferCommandFactoryService) {
     this.validationService = validationService
     this.commandGatewayAdapter = new CommandGatewayAdapter(commandGateway)
-    this.bookingOfferFactoryService = bookingOfferFactoryService
+    this.bookingOfferCommandFactoryService = bookingOfferCommandFactoryService
   }
 
   @Override
@@ -50,9 +50,9 @@ class BookingOfferApplicationService implements CreateBookingOfferCommandPortIn 
     requireMatch(createBookingOfferCommandOperationRequest, notNullValue())
     validationService.validate(createBookingOfferCommandOperationRequest.payload)
 
-    CreateBookingOfferCommand createBookingOfferCommand = bookingOfferFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandOperationRequest.payload)
+    CreateBookingOfferCommand createBookingOfferCommand = bookingOfferCommandFactoryService.makeCreateBookingOfferCommand(createBookingOfferCommandOperationRequest.payload)
     BookingOfferAggregate bookingOfferAggregate = commandGatewayAdapter.sendAndWait(createBookingOfferCommand, createBookingOfferCommandOperationRequest.metaData)
 
-    return new OperationResponse(payload: bookingOfferFactoryService.makeCreateBookingOfferCommandResponse(bookingOfferAggregate))
+    return new OperationResponse(payload: bookingOfferCommandFactoryService.makeCreateBookingOfferCommandResponse(bookingOfferAggregate))
   }
 }
