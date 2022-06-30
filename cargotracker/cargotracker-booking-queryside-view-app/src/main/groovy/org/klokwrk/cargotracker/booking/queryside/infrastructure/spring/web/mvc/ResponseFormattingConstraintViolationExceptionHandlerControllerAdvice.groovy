@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice
  * Spring context. Otherwise (since {@link ControllerAdvice} is also annotated with Component), the application developer will not have a clear choice not to activate customized and opinionated
  * exception handling from {@link ResponseFormattingConstraintViolationExceptionHandler}.
  * <p/>
- * In our case, {@code ResponseFormattingConstraintViolationExceptionHandlerControllerAdvice} is picked-up by auto-scanning from {@code BookingQuerySideApplication}.
+ * In our case, {@code ResponseFormattingConstraintViolationExceptionHandlerControllerAdvice} is picked-up by auto-scanning from {@code BookingQuerySideViewApplication}.
  * <p/>
  * The order of this advice is {@code 100}.
  */

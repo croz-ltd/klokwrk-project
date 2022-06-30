@@ -28,7 +28,7 @@ import org.testcontainers.containers.wait.strategy.Wait
  * Factory for creating and starting {@code cargotracker-booking-queryside-view-app} in Testcontainers.
  */
 @CompileStatic
-class QuerySideAppTestcontainersFactory {
+class QuerySideViewAppTestcontainersFactory {
   /**
    * Creates and start cargotracker-booking-queryside-view-app in container.
    * <p/>

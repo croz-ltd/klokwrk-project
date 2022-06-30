@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice
  * Otherwise (since {@link ControllerAdvice} is also annotated with Component), the application developer will not have a clear choice not to activate customized and opinionated exception handling
  * from {@link ResponseFormattingDomainExceptionHandler}.
  * <p/>
- * In our case, {@code ResponseFormattingDomainExceptionHandlerControllerAdvice} is picked-up by auto-scanning from {@code BookingQuerySideApplication}.
+ * In our case, {@code ResponseFormattingDomainExceptionHandlerControllerAdvice} is picked-up by auto-scanning from {@code BookingQuerySideViewApplication}.
  * <p/>
  * The order of this advice is {@code 200}.
  */
