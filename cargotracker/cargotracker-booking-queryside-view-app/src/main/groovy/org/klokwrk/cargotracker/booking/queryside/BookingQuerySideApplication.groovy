@@ -23,7 +23,7 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
 /**
- * Booking query-side application.
+ * Booking query-side view application.
  */
 @SpringBootApplication
 @CompileStatic

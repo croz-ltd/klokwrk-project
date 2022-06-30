@@ -64,7 +64,7 @@ shell-4, and shell-5 where shell-3 is reused from the previous step). Wait until
 
     ./gradlew -p cargotracker/cargotracker-booking-commandside-app bootRun
     ./gradlew -p cargotracker/cargotracker-booking-queryside-rdbms-projection-app bootRun
-    ./gradlew -p cargotracker/cargotracker-booking-queryside-app bootRun
+    ./gradlew -p cargotracker/cargotracker-booking-queryside-view-app bootRun
 
 If you prefer, you might want to run applications from IDE. In that case, select the application's `bootRun` Gradle task as is shown in the picture for the `cargotracker-booking-commandside-app`
 application.
