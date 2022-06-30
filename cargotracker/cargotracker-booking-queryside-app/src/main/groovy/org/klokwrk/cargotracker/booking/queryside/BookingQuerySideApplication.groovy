@@ -21,17 +21,11 @@ import groovy.transform.CompileStatic
 import groovy.transform.Generated
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 /**
  * Booking query-side application.
  */
 @SpringBootApplication
-@EnableJpaRepositories(
-    basePackages = ["org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.adapter.out.persistence", "org.klokwrk.lib.springframework.data.jpa.repository.hibernate"]
-)
-@EntityScan(basePackages = ["org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa"])
 @CompileStatic
 class BookingQuerySideApplication {
   // Generated annotation ignores main method in JaCoCo report as main method is not covered by JaCoCo (probably it is too early for JaCoCo to chip in)
