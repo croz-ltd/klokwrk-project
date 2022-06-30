@@ -21,7 +21,7 @@ import com.github.dockerjava.api.command.CreateNetworkCmd
 import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.AxonServerTestcontainersFactory
 import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.CommandSideAppTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
-import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.QuerySideAppTestcontainersFactory
+import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.QuerySideViewAppTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsProjectionAppTestcontainersFactory
 import org.testcontainers.containers.GenericContainer
@@ -34,7 +34,7 @@ class AbstractComponentIntegrationSpecification extends Specification {
   static PostgreSQLContainer postgresqlServer
   static Network klokwrkNetwork
   static GenericContainer commandSideApp
-  static GenericContainer querySideApp
+  static GenericContainer querySideViewApp
 
   static {
     klokwrkNetwork = Network.builder().createNetworkCmdModifier({ CreateNetworkCmd createNetworkCmd -> createNetworkCmd.withName("klokwrk-network-${ UUID.randomUUID() }") }).build()
@@ -46,6 +46,6 @@ class AbstractComponentIntegrationSpecification extends Specification {
 
     commandSideApp = CommandSideAppTestcontainersFactory.makeAndStartCommandSideApp(klokwrkNetwork, axonServer)
     RdbmsProjectionAppTestcontainersFactory.makeAndStartRdbmsProjectionApp(klokwrkNetwork, axonServer, postgresqlServer)
-    querySideApp = QuerySideAppTestcontainersFactory.makeAndStartQuerySideApp(klokwrkNetwork, axonServer, postgresqlServer)
+    querySideViewApp = QuerySideViewAppTestcontainersFactory.makeAndStartQuerySideApp(klokwrkNetwork, axonServer, postgresqlServer)
   }
 }

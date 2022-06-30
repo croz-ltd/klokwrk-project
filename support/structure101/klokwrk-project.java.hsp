@@ -25,7 +25,7 @@
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model-service/build/classes/groovy/main" module="cargotracker-booking-domain-model-service" displaymodule="cargotracker-booking-domain-model-service" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-domain-model-value/build/classes/groovy/main" module="cargotracker-booking-domain-model-value" displaymodule="cargotracker-booking-domain-model-value" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-out-customer/build/classes/groovy/main" module="cargotracker-booking-out-customer" displaymodule="cargotracker-booking-out-customer" />
-    <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-app/build/classes/groovy/main" module="cargotracker-booking-queryside-app" displaymodule="cargotracker-booking-queryside-app" />
+    <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-view-app/build/classes/groovy/main" module="cargotracker-booking-queryside-view-app" displaymodule="cargotracker-booking-queryside-view-app" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-rdbms-projection-app/build/classes/groovy/main" module="cargotracker-booking-queryside-rdbms-projection-app" displaymodule="cargotracker-booking-queryside-rdbms-projection-app" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-model-rdbms-jpa/build/classes/groovy/main" module="cargotracker-booking-queryside-model-rdbms-jpa" displaymodule="cargotracker-booking-queryside-model-rdbms-jpa" />
     <classpathentry kind="lib" path="../../cargotracker/cargotracker-booking-queryside-test-support/build/classes/groovy/main" module="cargotracker-booking-queryside-test-support" displaymodule="cargotracker-booking-queryside-test-support" />
@@ -67,7 +67,7 @@
                 <grid>
                   <row>
                     <cell name="cargotracker-booking-commandside-app" pattern="cargotracker-booking-commandside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                    <cell name="cargotracker-booking-queryside-app" pattern="cargotracker-booking-queryside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracker-booking-queryside-view-app" pattern="cargotracker-booking-queryside-view-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                     <cell name="cargotracker-booking-queryside-rdbms-projection-app" pattern="cargotracker-booking-queryside-rdbms-projection-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                 </grid>
@@ -226,7 +226,7 @@
                   <row>
                     <cell name="cargotracker-booking-commandside-app" pattern="cargotracker-booking-commandside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                     <cell name="cargotracker-booking-queryside-rdbms-projection-app" pattern="cargotracker-booking-queryside-rdbms-projection-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                    <cell name="cargotracker-booking-queryside-app" pattern="cargotracker-booking-queryside-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracker-booking-queryside-view-app" pattern="cargotracker-booking-queryside-view-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
                     <cell name="cargotracker-booking-rdbms-management-app" pattern="cargotracker-booking-rdbms-management-app.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
