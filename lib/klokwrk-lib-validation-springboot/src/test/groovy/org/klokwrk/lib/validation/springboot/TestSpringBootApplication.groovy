@@ -24,7 +24,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 
 @EnableConfigurationProperties(ValidationConfigurationProperties)
-@SpringBootApplication
+@SpringBootApplication(proxyBeanMethods = false)
 @CompileStatic
 class TestSpringBootApplication {
   static void main(String[] args) {

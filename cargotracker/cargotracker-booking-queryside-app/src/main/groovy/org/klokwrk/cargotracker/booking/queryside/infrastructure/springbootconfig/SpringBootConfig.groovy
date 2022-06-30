@@ -39,7 +39,7 @@ import org.springframework.transaction.TransactionDefinition
 import org.springframework.transaction.support.DefaultTransactionDefinition
 
 @EnableConfigurationProperties([DataSourceProxyConfigurationProperties, EssentialJacksonCustomizerConfigurationProperties, ValidationConfigurationProperties])
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @CompileStatic
 class SpringBootConfig {
   @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")

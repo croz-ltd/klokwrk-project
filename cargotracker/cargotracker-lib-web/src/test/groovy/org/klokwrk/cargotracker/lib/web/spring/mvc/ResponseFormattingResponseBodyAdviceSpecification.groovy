@@ -69,7 +69,7 @@ class ResponseFormattingResponseBodyAdviceSpecification extends Specification {
   }
 
   @EnableWebMvc
-  @Configuration
+  @Configuration(proxyBeanMethods = false)
   static class WebConfig implements WebMvcConfigurer {
     @Bean
     TestController testController() {

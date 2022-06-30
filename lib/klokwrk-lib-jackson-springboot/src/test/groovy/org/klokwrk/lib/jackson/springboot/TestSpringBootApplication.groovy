@@ -23,7 +23,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 
 @EnableConfigurationProperties(EssentialJacksonCustomizerConfigurationProperties)
-@SpringBootApplication
+@SpringBootApplication(proxyBeanMethods = false)
 class TestSpringBootApplication {
   static void main(String[] args) {
     SpringApplication.run(TestSpringBootApplication, args)

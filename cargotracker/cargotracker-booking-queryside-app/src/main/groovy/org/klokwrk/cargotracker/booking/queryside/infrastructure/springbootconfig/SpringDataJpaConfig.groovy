@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
     basePackages = ["org.klokwrk.cargotracker.booking.queryside.feature.bookingoffer.adapter.out.persistence", "org.klokwrk.lib.springframework.data.jpa.repository.hibernate"]
 )
 @EntityScan(basePackages = ["org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa"])
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @CompileStatic
 class SpringDataJpaConfig {
 }

@@ -30,7 +30,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @EnableConfigurationProperties([DataSourceProxyConfigurationProperties, EssentialJacksonCustomizerConfigurationProperties])
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @CompileStatic
 class SpringBootConfig {
 

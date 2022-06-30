@@ -84,7 +84,7 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
   }
 
   @EnableWebMvc
-  @Configuration
+  @Configuration(proxyBeanMethods = false)
   static class WebConfig implements WebMvcConfigurer {
     @Bean
     SpringMvcExceptionHandlerTestController springMvcExceptionHandlerTestController() {

@@ -28,7 +28,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @EnableJpaRepositories(basePackages = ["org.klokwrk.lib.springframework.data.jpa.repository.hibernate"])
 @EnableConfigurationProperties([DataSourceProxyConfigurationProperties])
-@SpringBootApplication
+@SpringBootApplication(proxyBeanMethods = false)
 @CompileStatic
 class TestApplication {
   @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")

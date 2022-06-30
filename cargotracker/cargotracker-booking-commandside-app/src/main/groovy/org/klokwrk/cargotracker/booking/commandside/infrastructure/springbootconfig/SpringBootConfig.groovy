@@ -54,7 +54,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 
 @EnableConfigurationProperties([EssentialJacksonCustomizerConfigurationProperties, ValidationConfigurationProperties])
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @CompileStatic
 class SpringBootConfig {
 
