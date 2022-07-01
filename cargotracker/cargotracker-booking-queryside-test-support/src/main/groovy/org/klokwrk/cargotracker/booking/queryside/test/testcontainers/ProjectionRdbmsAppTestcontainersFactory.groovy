@@ -61,7 +61,7 @@ class ProjectionRdbmsAppTestcontainersFactory {
           "AXON.EXTENSION.TRACING.ENABLED": "false"
       ])
       withNetwork(klokwrkNetwork)
-      waitingFor(Wait.forHttp("/cargotracker-booking-queryside-rdbms-projection/management/health"))
+      waitingFor(Wait.forHttp("/cargotracker-booking-queryside-projection-rdbms/management/health"))
 
       start()
     }
