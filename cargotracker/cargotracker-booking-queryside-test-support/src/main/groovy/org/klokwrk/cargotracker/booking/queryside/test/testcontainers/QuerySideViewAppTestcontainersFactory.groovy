@@ -38,16 +38,16 @@ class QuerySideViewAppTestcontainersFactory {
    *   <li>Container time zone: {@code Europe/Zagreb}.</li>
    * </ul>
    */
-  static GenericContainer makeAndStartQuerySideApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
-    String imageVersion = System.getProperty("cargotrackerBookingQuerySideAppDockerImageVersion")
+  static GenericContainer makeAndStartQuerySideViewApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
+    String imageVersion = System.getProperty("cargotrackerBookingQuerySideViewAppDockerImageVersion")
     Integer[] exposedPorts = [8084]
     String containerName = "cargotracker-booking-queryside-view-app"
     String containerNameSuffix = UUID.randomUUID()
 
     //noinspection DuplicatedCode
-    GenericContainer querySideApp = new GenericContainer("klokwrkprj/cargotracker-booking-queryside-view-app:${ imageVersion }")
+    GenericContainer querySideViewApp = new GenericContainer("klokwrkprj/cargotracker-booking-queryside-view-app:${ imageVersion }")
 
-    querySideApp.with {
+    querySideViewApp.with {
       withExposedPorts(exposedPorts)
       withCreateContainerCmdModifier({ CreateContainerCmd cmd -> cmd.withName("${ containerName }-${ containerNameSuffix }") })
       withEnv([
@@ -66,6 +66,6 @@ class QuerySideViewAppTestcontainersFactory {
       start()
     }
 
-    return querySideApp
+    return querySideViewApp
   }
 }

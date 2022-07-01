@@ -29,7 +29,7 @@ import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.bookin
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
-import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.test.base.AbstractRdbmsProjectionIntegrationSpecification
+import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.test.base.AbstractProjectionRdbmsIntegrationSpecification
 import org.klokwrk.cargotracker.booking.queryside.test.axon.GenericDomainEventMessageFactory
 import org.klokwrk.cargotracker.booking.queryside.test.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.lang.groovy.constant.CommonConstants
@@ -48,7 +48,7 @@ import java.time.Instant
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class BookingOfferSummaryProjectionServiceIntegrationSpecification extends AbstractRdbmsProjectionIntegrationSpecification {
+class BookingOfferSummaryProjectionServiceIntegrationSpecification extends AbstractProjectionRdbmsIntegrationSpecification {
 
   @TestConfiguration
   static class TestSpringBootConfiguration {

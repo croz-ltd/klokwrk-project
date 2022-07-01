@@ -24,10 +24,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 
 @SpringBootApplication
 @CompileStatic
-class BookingQuerySideRdbmsProjectionApplication {
+class BookingQuerySideProjectionRdbmsApplication {
   // Generated annotation ignores main method in JaCoCo report as main method is not covered by JaCoCo (probably it is too early for JaCoCo to chip in)
   @Generated
   static void main(String[] args) {
-    SpringApplication.run(BookingQuerySideRdbmsProjectionApplication, args)
+    SpringApplication.run(BookingQuerySideProjectionRdbmsApplication, args)
   }
 }

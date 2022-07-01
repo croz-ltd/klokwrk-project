@@ -28,7 +28,7 @@ import org.testcontainers.containers.Network
 import org.testcontainers.containers.PostgreSQLContainer
 import spock.lang.Specification
 
-abstract class AbstractRdbmsProjectionIntegrationSpecification extends Specification {
+abstract class AbstractProjectionRdbmsIntegrationSpecification extends Specification {
   static GenericContainer axonServer
   static PostgreSQLContainer postgresqlServer
   static Network klokwrkNetwork

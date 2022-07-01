@@ -23,12 +23,12 @@ import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition
 import com.tngtech.archunit.library.dependencies.SliceRule
 import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition
-import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.BookingQuerySideRdbmsProjectionApplication
+import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.BookingQuerySideProjectionRdbmsApplication
 import org.klokwrk.lib.archunit.ArchUnitUtils
 import spock.lang.Shared
 import spock.lang.Specification
 
-class BookingQuerySideRdbmsProjectionAppDependenciesSpecification extends Specification {
+class BookingQuerySideProjectionRdbmsAppDependenciesSpecification extends Specification {
   @Shared
   JavaClasses allKlokwrkClasses
 
@@ -64,12 +64,12 @@ class BookingQuerySideRdbmsProjectionAppDependenciesSpecification extends Specif
         "tech.units.indriya.."
     ]
 
-    String[] cargotrackerBookingRdbmsProjectionAppAllPackages = [
+    String[] cargotrackerBookingProjectionRdbmsAppAllPackages = [
         "org.klokwrk.cargotracker.booking.queryside.rdbms.projection.feature..", "org.klokwrk.cargotracker.booking.queryside.rdbms.projection.infrastructure.."
     ]
     String[] cargotrackerBookingDomainEventAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.event.."]
     String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
-    String[] cargotrackerBookingQuerysideRdbmsProjectionModelAllPackages = [
+    String[] cargotrackerBookingQuerysideProjectionRdbmsModelAllPackages = [
         "org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa..",
         "org.klokwrk.lib.springframework.data.jpa.repository.hibernate.."
     ]
@@ -86,15 +86,15 @@ class BookingQuerySideRdbmsProjectionAppDependenciesSpecification extends Specif
     //noinspection ChangeToOperator
     ArchRule rule = ArchRuleDefinition
         .classes().that(
-            JavaClass.Predicates.resideInAnyPackage(cargotrackerBookingRdbmsProjectionAppAllPackages)
-                                .or(JavaClass.Predicates.belongToAnyOf(BookingQuerySideRdbmsProjectionApplication))
+            JavaClass.Predicates.resideInAnyPackage(cargotrackerBookingProjectionRdbmsAppAllPackages)
+                                .or(JavaClass.Predicates.belongToAnyOf(BookingQuerySideProjectionRdbmsApplication))
         )
         .should().onlyAccessClassesThat(JavaClass.Predicates
             .resideInAnyPackage(
-                cargotrackerBookingRdbmsProjectionAppAllPackages +
+                cargotrackerBookingProjectionRdbmsAppAllPackages +
                 cargotrackerBookingDomainEventAllPackages +
                 cargotrackerBookingDomainValueAllPackages +
-                cargotrackerBookingQuerysideRdbmsProjectionModelAllPackages +
+                cargotrackerBookingQuerysideProjectionRdbmsModelAllPackages +
 
                 cargotrackerLibAxonLoggingAllPackages +
                 cargotrackerLibBoundaryApiAllPackages +
@@ -106,7 +106,7 @@ class BookingQuerySideRdbmsProjectionAppDependenciesSpecification extends Specif
 
                 thirdPartyDependencyAllPackages as String[]
             )
-            .or(JavaClass.Predicates.belongToAnyOf(BookingQuerySideRdbmsProjectionApplication))
+            .or(JavaClass.Predicates.belongToAnyOf(BookingQuerySideProjectionRdbmsApplication))
        )
     // @formatter:on
 

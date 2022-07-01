@@ -30,7 +30,7 @@ import org.klokwrk.cargotracker.booking.queryside.test.axon.GenericDomainEventMe
 import org.klokwrk.cargotracker.booking.queryside.test.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
-import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsProjectionAppTestcontainersFactory
+import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.ProjectionRdbmsAppTestcontainersFactory
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.GenericContainer
@@ -52,7 +52,7 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
     RdbmsManagementAppTestcontainersFactory.makeAndStartRdbmsManagementApp(klokwrkNetwork, postgresqlServer)
 
     axonServer = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetwork)
-    RdbmsProjectionAppTestcontainersFactory.makeAndStartRdbmsProjectionApp(klokwrkNetwork, axonServer, postgresqlServer)
+    ProjectionRdbmsAppTestcontainersFactory.makeAndStartProjectionRdbmsApp(klokwrkNetwork, axonServer, postgresqlServer)
   }
 
   @DynamicPropertySource

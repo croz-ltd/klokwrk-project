@@ -28,7 +28,7 @@ import org.testcontainers.containers.wait.strategy.Wait
  * Factory for creating and starting {@code cargotracker-booking-queryside-projection-rdbms-app} in Testcontainers.
  */
 @CompileStatic
-class RdbmsProjectionAppTestcontainersFactory {
+class ProjectionRdbmsAppTestcontainersFactory {
   /**
    * Creates and start cargotracker-booking-queryside-projection-rdbms-app in container.
    * <p/>
@@ -38,8 +38,8 @@ class RdbmsProjectionAppTestcontainersFactory {
    *   <li>Container time zone: {@code Europe/Zagreb}.</li>
    * </ul>
    */
-  static GenericContainer makeAndStartRdbmsProjectionApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
-    String imageVersion = System.getProperty("cargotrackerBookingRdbmsProjectionAppDockerImageVersion")
+  static GenericContainer makeAndStartProjectionRdbmsApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
+    String imageVersion = System.getProperty("cargotrackerBookingProjectionRdbmsAppDockerImageVersion")
     Integer[] exposedPorts = [8082]
     String containerName = "cargotracker-booking-queryside-projection-rdbms-app"
     String containerNameSuffix = UUID.randomUUID()

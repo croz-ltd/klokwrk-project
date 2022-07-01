@@ -28,7 +28,7 @@ import org.apache.http.entity.ContentType
 import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.AxonServerTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
-import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsProjectionAppTestcontainersFactory
+import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.ProjectionRdbmsAppTestcontainersFactory
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.containers.PostgreSQLContainer
@@ -47,7 +47,7 @@ class BookingComponentEventReplaySpecification extends Specification {
     postgresqlServer = PostgreSqlTestcontainersFactory.makeAndStartPostgreSqlServer(klokwrkNetwork)
     RdbmsManagementAppTestcontainersFactory.makeAndStartRdbmsManagementApp(klokwrkNetwork, postgresqlServer)
     axonServer = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetwork)
-    RdbmsProjectionAppTestcontainersFactory.makeAndStartRdbmsProjectionApp(klokwrkNetwork, axonServer, postgresqlServer)
+    ProjectionRdbmsAppTestcontainersFactory.makeAndStartProjectionRdbmsApp(klokwrkNetwork, axonServer, postgresqlServer)
   }
 
   static Integer populateAxonEventStore(GenericContainer axonServerContainer) {
@@ -101,7 +101,7 @@ class BookingComponentEventReplaySpecification extends Specification {
     }
   }
 
-  static Integer fetchEventGlobalIndexFromRdbmsProjection(PostgreSQLContainer postgresqlServer) {
+  static Integer fetchEventGlobalIndexFromProjectionRdbms(PostgreSQLContainer postgresqlServer) {
     Integer storedGlobalIndex = -1
 
     Sql.withInstance(postgresqlServer.jdbcUrl, postgresqlServer.username, postgresqlServer.password, postgresqlServer.driverClassName) { Sql groovySql ->
@@ -127,7 +127,7 @@ class BookingComponentEventReplaySpecification extends Specification {
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0, delay: 0.05).eventually {
-      fetchEventGlobalIndexFromRdbmsProjection(postgresqlServer) == axonServerEventGlobalIndexStart + sentEventsCount - 1
+      fetchEventGlobalIndexFromProjectionRdbms(postgresqlServer) == axonServerEventGlobalIndexStart + sentEventsCount - 1
     }
   }
 }

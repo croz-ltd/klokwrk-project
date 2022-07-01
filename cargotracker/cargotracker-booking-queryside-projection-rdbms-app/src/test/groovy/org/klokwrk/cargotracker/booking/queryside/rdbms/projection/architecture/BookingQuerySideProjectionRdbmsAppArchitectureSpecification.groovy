@@ -27,7 +27,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 @Slf4j
-class BookingQuerySideRdbmsProjectionAppArchitectureSpecification extends Specification {
+class BookingQuerySideProjectionRdbmsAppArchitectureSpecification extends Specification {
   @Shared
   JavaClasses importedClasses
 

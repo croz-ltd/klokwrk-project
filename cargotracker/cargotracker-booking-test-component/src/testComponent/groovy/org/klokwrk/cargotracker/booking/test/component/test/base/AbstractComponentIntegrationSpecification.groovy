@@ -23,7 +23,7 @@ import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.CommandS
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.QuerySideViewAppTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
-import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsProjectionAppTestcontainersFactory
+import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.ProjectionRdbmsAppTestcontainersFactory
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.containers.PostgreSQLContainer
@@ -45,7 +45,7 @@ class AbstractComponentIntegrationSpecification extends Specification {
     axonServer = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetwork)
 
     commandSideApp = CommandSideAppTestcontainersFactory.makeAndStartCommandSideApp(klokwrkNetwork, axonServer)
-    RdbmsProjectionAppTestcontainersFactory.makeAndStartRdbmsProjectionApp(klokwrkNetwork, axonServer, postgresqlServer)
-    querySideViewApp = QuerySideViewAppTestcontainersFactory.makeAndStartQuerySideApp(klokwrkNetwork, axonServer, postgresqlServer)
+    ProjectionRdbmsAppTestcontainersFactory.makeAndStartProjectionRdbmsApp(klokwrkNetwork, axonServer, postgresqlServer)
+    querySideViewApp = QuerySideViewAppTestcontainersFactory.makeAndStartQuerySideViewApp(klokwrkNetwork, axonServer, postgresqlServer)
   }
 }
