@@ -68,7 +68,7 @@ import static org.hamcrest.Matchers.not
  *     .domainModelValues("..cargotracker.booking.domain.model.value..")
  *     .domainEvents("..cargotracker.booking.axon.api.feature.*.event..")
  *
- *     .adapterProjection("out.persistence", "..cargotracker.booking.queryside.rdbms.projection.feature.*.adapter.out..")
+ *     .adapterProjection("out.persistence", "..cargotracker.booking.queryside.projection.rdbms.feature.*.adapter.out..")
  *
  *     // We are ignoring dependencies originating from command classes. Command classes should not be used in projections. Only events can be used. Since command and events are not split it their
  *     // own modules, we need to ignore commands here. Illegal access to commands is verified in other test.

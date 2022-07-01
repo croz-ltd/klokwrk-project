@@ -25,7 +25,7 @@
       docker login
       docker push klokwrkprj/cargotracker-booking-rdbms-management-app:[version_tag]
       docker push klokwrkprj/cargotracker-booking-commandside-app:[version_tag]
-      docker push klokwrkprj/cargotracker-booking-queryside-rdbms-projection-app:[version_tag]
+      docker push klokwrkprj/cargotracker-booking-queryside-projection-rdbms-app:[version_tag]
       docker push klokwrkprj/cargotracker-booking-queryside-view-app:[version_tag]
 
 - delete local image

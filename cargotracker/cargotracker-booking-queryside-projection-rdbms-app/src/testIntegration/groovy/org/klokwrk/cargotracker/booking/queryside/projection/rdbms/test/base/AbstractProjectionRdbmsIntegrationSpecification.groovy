@@ -15,22 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.queryside.view.test.base
+package org.klokwrk.cargotracker.booking.queryside.projection.rdbms.test.base
 
 import com.github.dockerjava.api.command.CreateNetworkCmd
-import groovy.sql.Sql
-import org.awaitility.Awaitility
-import org.axonframework.eventhandling.EventBus
-import org.axonframework.eventhandling.GenericDomainEventMessage
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.bookingoffer.BookingOfferCreatedEventFixtures
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.AxonServerTestcontainersFactory
-import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
-import org.klokwrk.cargotracker.booking.queryside.test.axon.GenericDomainEventMessageFactory
-import org.klokwrk.cargotracker.booking.queryside.test.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
-import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.QuerySideProjectionRdbmsAppTestcontainersFactory
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.GenericContainer
@@ -38,9 +28,7 @@ import org.testcontainers.containers.Network
 import org.testcontainers.containers.PostgreSQLContainer
 import spock.lang.Specification
 
-import java.time.Duration
-
-abstract class AbstractQuerySideIntegrationSpecification extends Specification {
+abstract class AbstractProjectionRdbmsIntegrationSpecification extends Specification {
   static GenericContainer axonServer
   static PostgreSQLContainer postgresqlServer
   static Network klokwrkNetwork
@@ -52,7 +40,6 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
     RdbmsManagementAppTestcontainersFactory.makeAndStartRdbmsManagementApp(klokwrkNetwork, postgresqlServer)
 
     axonServer = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetwork)
-    QuerySideProjectionRdbmsAppTestcontainersFactory.makeAndStartQuerySideProjectionRdbmsApp(klokwrkNetwork, axonServer, postgresqlServer)
   }
 
   @DynamicPropertySource
@@ -64,22 +51,5 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
     registry.add("spring.datasource.url", { postgresqlServer.jdbcUrl })
     registry.add("spring.datasource.username", { postgresqlServer.username })
     registry.add("spring.datasource.password", { postgresqlServer.password })
-  }
-
-  static String publishAndWaitForProjectedBookingOfferCreatedEvent(
-      EventBus eventBus, Sql groovySql, BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtures.eventValidRouteSpecification())
-  {
-    Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
-    String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
-
-    GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage =
-        GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
-
-    eventBus.publish(genericDomainEventMessage)
-
-    // Wait for projection to complete
-    Awaitility.await().atMost(Duration.ofSeconds(10)).until({ BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1 })
-
-    return bookingOfferIdentifier
   }
 }

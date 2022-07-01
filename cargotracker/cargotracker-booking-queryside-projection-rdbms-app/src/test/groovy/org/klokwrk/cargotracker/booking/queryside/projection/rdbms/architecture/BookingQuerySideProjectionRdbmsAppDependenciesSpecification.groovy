@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.queryside.view.architecture
+package org.klokwrk.cargotracker.booking.queryside.projection.rdbms.architecture
 
 import com.tngtech.archunit.core.domain.JavaClass
 import com.tngtech.archunit.core.domain.JavaClasses
@@ -23,12 +23,12 @@ import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition
 import com.tngtech.archunit.library.dependencies.SliceRule
 import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition
-import org.klokwrk.cargotracker.booking.queryside.view.BookingQuerySideViewApplication
+import org.klokwrk.cargotracker.booking.queryside.projection.rdbms.BookingQuerySideProjectionRdbmsApplication
 import org.klokwrk.lib.archunit.ArchUnitUtils
 import spock.lang.Shared
 import spock.lang.Specification
 
-class BookingQuerySideViewAppDependenciesSpecification extends Specification {
+class BookingQuerySideProjectionRdbmsAppDependenciesSpecification extends Specification {
   @Shared
   JavaClasses allKlokwrkClasses
 
@@ -48,71 +48,65 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
   }
 
   @SuppressWarnings("CodeNarc.ExplicitCallToOrMethod")
-  void "queryside app should only access classes from allowed dependencies"() {
+  void "rdbms projection app should only access classes from allowed dependencies"() {
     given:
     String[] thirdPartyDependencyAllPackages = [
         "java..",
         "org.codehaus.groovy..",
         "groovy..",
 
-        "javax.validation..",
-
+        "org.axonframework.eventhandling..",
         "org.axonframework.messaging..",
-        "org.axonframework.spring..",
-        "org.hamcrest",
-        "org.springframework.."
+
+        "org.springframework..",
+
+        "javax.measure..",
+        "tech.units.indriya.."
     ]
 
+    String[] cargotrackerBookingProjectionRdbmsAppAllPackages = [
+        "org.klokwrk.cargotracker.booking.queryside.projection.rdbms.feature..", "org.klokwrk.cargotracker.booking.queryside.projection.rdbms.infrastructure.."
+    ]
+    String[] cargotrackerBookingDomainEventAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.event.."]
     String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
+    String[] cargotrackerBookingQuerysideProjectionRdbmsModelAllPackages = [
+        "org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa..",
+        "org.klokwrk.lib.springframework.data.jpa.repository.hibernate.."
+    ]
 
-    String[] cargotrackerBookingQuerySideViewAppAllPackages = ["org.klokwrk.cargotracker.booking.queryside.view.feature..", "org.klokwrk.cargotracker.booking.queryside.view.infrastructure.."]
-    String[] cargotrackerBookingQuerySideModelRdbmsAllPackages = ["org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.."]
-
-    String[] cargotrackerBookingStandaloneOutAdapterAllPackages = ["org.klokwrk.cargotracker.booking.out.customer.."]
-
-    String[] cargotrackerLibAxonCqrsAllPackages = ["org.klokwrk.cargotracker.lib.axon.cqrs.."]
     String[] cargotrackerLibAxonLoggingAllPackages = ["org.klokwrk.cargotracker.lib.axon.logging.."]
     String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracker.lib.boundary.api.."]
-    String[] cargotrackerLibBoundaryQueryApiAllPackages = ["org.klokwrk.cargotracker.lib.boundary.query.api.."]
-    String[] cargotrackerLibWebAllPackages = ["org.klokwrk.cargotracker.lib.web.."]
 
     String[] klokwrkLibDatasourceProxyAllPackages = ["org.klokwrk.lib.datasourceproxy.."]
     String[] klokwrkLibJacksonAllPackages = ["org.klokwrk.lib.jackson.."]
-    String[] klokwrkLibValidationPackages = ["org.klokwrk.lib.validation.."]
 
-    String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lang.groovy.."]
+    String[] klokwrkLangGroovy = ["org.klokwrk.lang.groovy.."]
 
     // @formatter:off
     //noinspection ChangeToOperator
     ArchRule rule = ArchRuleDefinition
         .classes().that(
-            JavaClass.Predicates.resideInAnyPackage(cargotrackerBookingQuerySideViewAppAllPackages)
-                                .or(JavaClass.Predicates.belongToAnyOf(BookingQuerySideViewApplication))
+            JavaClass.Predicates.resideInAnyPackage(cargotrackerBookingProjectionRdbmsAppAllPackages)
+                                .or(JavaClass.Predicates.belongToAnyOf(BookingQuerySideProjectionRdbmsApplication))
         )
         .should().onlyAccessClassesThat(JavaClass.Predicates
             .resideInAnyPackage(
+                cargotrackerBookingProjectionRdbmsAppAllPackages +
+                cargotrackerBookingDomainEventAllPackages +
                 cargotrackerBookingDomainValueAllPackages +
+                cargotrackerBookingQuerysideProjectionRdbmsModelAllPackages +
 
-                cargotrackerBookingQuerySideViewAppAllPackages +
-                cargotrackerBookingQuerySideModelRdbmsAllPackages +
-
-                cargotrackerBookingStandaloneOutAdapterAllPackages +
-
-                cargotrackerLibAxonCqrsAllPackages +
                 cargotrackerLibAxonLoggingAllPackages +
                 cargotrackerLibBoundaryApiAllPackages +
-                cargotrackerLibBoundaryQueryApiAllPackages +
-                cargotrackerLibWebAllPackages +
 
                 klokwrkLibDatasourceProxyAllPackages +
                 klokwrkLibJacksonAllPackages +
-                klokwrkLibValidationPackages +
 
-                klokwrkLangGroovyAllPackages +
+                klokwrkLangGroovy +
 
                 thirdPartyDependencyAllPackages as String[]
             )
-            .or(JavaClass.Predicates.belongToAnyOf(BookingQuerySideViewApplication))
+            .or(JavaClass.Predicates.belongToAnyOf(BookingQuerySideProjectionRdbmsApplication))
        )
     // @formatter:on
 
