@@ -28,7 +28,7 @@ import org.apache.http.entity.ContentType
 import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.AxonServerTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
-import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.ProjectionRdbmsAppTestcontainersFactory
+import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.QuerySideProjectionRdbmsAppTestcontainersFactory
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.containers.PostgreSQLContainer
@@ -47,7 +47,7 @@ class BookingComponentEventReplaySpecification extends Specification {
     postgresqlServer = PostgreSqlTestcontainersFactory.makeAndStartPostgreSqlServer(klokwrkNetwork)
     RdbmsManagementAppTestcontainersFactory.makeAndStartRdbmsManagementApp(klokwrkNetwork, postgresqlServer)
     axonServer = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetwork)
-    ProjectionRdbmsAppTestcontainersFactory.makeAndStartProjectionRdbmsApp(klokwrkNetwork, axonServer, postgresqlServer)
+    QuerySideProjectionRdbmsAppTestcontainersFactory.makeAndStartQuerySideProjectionRdbmsApp(klokwrkNetwork, axonServer, postgresqlServer)
   }
 
   static Integer populateAxonEventStore(GenericContainer axonServerContainer) {

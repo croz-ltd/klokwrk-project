@@ -28,7 +28,7 @@ import org.testcontainers.containers.wait.strategy.Wait
  * Factory for creating and starting {@code cargotracker-booking-queryside-projection-rdbms-app} in Testcontainers.
  */
 @CompileStatic
-class ProjectionRdbmsAppTestcontainersFactory {
+class QuerySideProjectionRdbmsAppTestcontainersFactory {
   /**
    * Creates and start cargotracker-booking-queryside-projection-rdbms-app in container.
    * <p/>
@@ -38,16 +38,16 @@ class ProjectionRdbmsAppTestcontainersFactory {
    *   <li>Container time zone: {@code Europe/Zagreb}.</li>
    * </ul>
    */
-  static GenericContainer makeAndStartProjectionRdbmsApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
+  static GenericContainer makeAndStartQuerySideProjectionRdbmsApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
     String imageVersion = System.getProperty("cargotrackerBookingProjectionRdbmsAppDockerImageVersion")
     Integer[] exposedPorts = [8082]
     String containerName = "cargotracker-booking-queryside-projection-rdbms-app"
     String containerNameSuffix = UUID.randomUUID()
 
     //noinspection DuplicatedCode
-    GenericContainer projectionRdbmsApp = new GenericContainer("klokwrkprj/cargotracker-booking-queryside-projection-rdbms-app:${ imageVersion }")
+    GenericContainer querySideProjectionRdbmsApp = new GenericContainer("klokwrkprj/cargotracker-booking-queryside-projection-rdbms-app:${ imageVersion }")
 
-    projectionRdbmsApp.with {
+    querySideProjectionRdbmsApp.with {
       withExposedPorts(exposedPorts)
       withCreateContainerCmdModifier({ CreateContainerCmd cmd -> cmd.withName("${ containerName }-${ containerNameSuffix }") })
       withEnv([
@@ -66,6 +66,6 @@ class ProjectionRdbmsAppTestcontainersFactory {
       start()
     }
 
-    return projectionRdbmsApp
+    return querySideProjectionRdbmsApp
   }
 }
