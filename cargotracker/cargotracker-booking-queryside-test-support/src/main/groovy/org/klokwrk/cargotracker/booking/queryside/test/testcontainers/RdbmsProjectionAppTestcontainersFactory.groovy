@@ -25,15 +25,15 @@ import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.containers.wait.strategy.Wait
 
 /**
- * Factory for creating and starting {@code cargotracker-booking-queryside-rdbms-projection-app} in Testcontainers.
+ * Factory for creating and starting {@code cargotracker-booking-queryside-projection-rdbms-app} in Testcontainers.
  */
 @CompileStatic
 class RdbmsProjectionAppTestcontainersFactory {
   /**
-   * Creates and start cargotracker-booking-queryside-rdbms-projection-app in container.
+   * Creates and start cargotracker-booking-queryside-projection-rdbms-app in container.
    * <p/>
    * <ul>
-   *   <li>Container name prefix: {@code cargotracker-booking-queryside-rdbms-projection-app}.</li>
+   *   <li>Container name prefix: {@code cargotracker-booking-queryside-projection-rdbms-app}.</li>
    *   <li>Exposed internal ports: 8082.</li>
    *   <li>Container time zone: {@code Europe/Zagreb}.</li>
    * </ul>
@@ -41,13 +41,13 @@ class RdbmsProjectionAppTestcontainersFactory {
   static GenericContainer makeAndStartRdbmsProjectionApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
     String imageVersion = System.getProperty("cargotrackerBookingRdbmsProjectionAppDockerImageVersion")
     Integer[] exposedPorts = [8082]
-    String containerName = "cargotracker-booking-queryside-rdbms-projection-app"
+    String containerName = "cargotracker-booking-queryside-projection-rdbms-app"
     String containerNameSuffix = UUID.randomUUID()
 
     //noinspection DuplicatedCode
-    GenericContainer rdbmsProjectionApp = new GenericContainer("klokwrkprj/cargotracker-booking-queryside-rdbms-projection-app:${ imageVersion }")
+    GenericContainer projectionRdbmsApp = new GenericContainer("klokwrkprj/cargotracker-booking-queryside-projection-rdbms-app:${ imageVersion }")
 
-    rdbmsProjectionApp.with {
+    projectionRdbmsApp.with {
       withExposedPorts(exposedPorts)
       withCreateContainerCmdModifier({ CreateContainerCmd cmd -> cmd.withName("${ containerName }-${ containerNameSuffix }") })
       withEnv([
@@ -66,6 +66,6 @@ class RdbmsProjectionAppTestcontainersFactory {
       start()
     }
 
-    return rdbmsProjectionApp
+    return projectionRdbmsApp
   }
 }
