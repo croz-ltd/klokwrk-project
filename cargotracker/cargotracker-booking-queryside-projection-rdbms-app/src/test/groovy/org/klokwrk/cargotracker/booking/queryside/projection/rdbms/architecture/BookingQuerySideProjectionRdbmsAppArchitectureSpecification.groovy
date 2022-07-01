@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.architecture
+package org.klokwrk.cargotracker.booking.queryside.projection.rdbms.architecture
 
 import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.lang.ArchRule
@@ -33,7 +33,7 @@ class BookingQuerySideProjectionRdbmsAppArchitectureSpecification extends Specif
 
   void setupSpec() {
     importedClasses = ArchUnitUtils.importJavaClassesFromPackages(
-        ["org.klokwrk.cargotracker.booking.queryside.rdbms.projection", "org.klokwrk.cargotracker.booking.domain.model.value", "org.klokwrk.cargotracker.booking.domain.model.event"]
+        ["org.klokwrk.cargotracker.booking.queryside.projection.rdbms", "org.klokwrk.cargotracker.booking.domain.model.value", "org.klokwrk.cargotracker.booking.domain.model.event"]
     )
   }
 
@@ -42,7 +42,7 @@ class BookingQuerySideProjectionRdbmsAppArchitectureSpecification extends Specif
     // @formatter:off
     ArchRule inboundAdapterDoesNotAccessApplicationServiceDirectlyRule = ArchRuleDefinition
         .noClasses().that()
-            .resideInAPackage("org.klokwrk.cargotracker.booking.queryside.rdbms.projection..")
+            .resideInAPackage("org.klokwrk.cargotracker.booking.queryside.projection.rdbms..")
         .should()
             .dependOnClassesThat().resideInAPackage("org.klokwrk.cargotracker.booking.domain.model.command..")
     // @formatter:on
@@ -65,7 +65,7 @@ class BookingQuerySideProjectionRdbmsAppArchitectureSpecification extends Specif
         .adapterProjection(
             "out.persistence",
             [
-                "..cargotracker.booking.queryside.rdbms.projection.feature.*.adapter.out..",
+                "..cargotracker.booking.queryside.projection.rdbms.feature.*.adapter.out..",
                 "..cargotracker.booking.queryside.model.rdbms.jpa.."
             ] as String[]
         )

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.infrastructure.springbootconfig
+package org.klokwrk.cargotracker.booking.queryside.projection.rdbms.infrastructure.springbootconfig
 
 import groovy.transform.CompileStatic
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition

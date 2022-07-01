@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.test.base
+package org.klokwrk.cargotracker.booking.queryside.projection.rdbms.test.base
 
 import com.github.dockerjava.api.command.CreateNetworkCmd
 import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.AxonServerTestcontainersFactory

@@ -15,13 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.feature.bookingoffer.adapter.out.persistence
+package org.klokwrk.cargotracker.booking.queryside.projection.rdbms
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.BookingOfferSummaryJpaEntity
-import org.klokwrk.lib.springframework.data.jpa.repository.hibernate.HibernateJpaRepository
-import org.springframework.data.jpa.repository.JpaRepository
+import groovy.transform.Generated
+import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.SpringBootApplication
 
+@SpringBootApplication
 @CompileStatic
-interface BookingOfferSummaryProjectionJpaRepository extends JpaRepository<BookingOfferSummaryJpaEntity, UUID>, HibernateJpaRepository<BookingOfferSummaryJpaEntity> {
+class BookingQuerySideProjectionRdbmsApplication {
+  // Generated annotation ignores main method in JaCoCo report as main method is not covered by JaCoCo (probably it is too early for JaCoCo to chip in)
+  @Generated
+  static void main(String[] args) {
+    SpringApplication.run(BookingQuerySideProjectionRdbmsApplication, args)
+  }
 }

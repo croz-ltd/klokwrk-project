@@ -43,7 +43,7 @@ class BookingQuerySideViewAppArchitectureSpecification extends Specification {
             "org.klokwrk.cargotracker.booking.domain.model.value",
             "org.klokwrk.cargotracker.booking.out.customer"
         ],
-        ["org.klokwrk.cargotracker.booking.queryside.rdbms.projection"]
+        ["org.klokwrk.cargotracker.booking.queryside.projection.rdbms"]
     )
   }
 

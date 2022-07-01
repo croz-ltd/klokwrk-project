@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.queryside.rdbms.projection.architecture
+package org.klokwrk.cargotracker.booking.queryside.projection.rdbms.architecture
 
 import com.tngtech.archunit.core.domain.JavaClass
 import com.tngtech.archunit.core.domain.JavaClasses
@@ -23,7 +23,7 @@ import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition
 import com.tngtech.archunit.library.dependencies.SliceRule
 import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition
-import org.klokwrk.cargotracker.booking.queryside.rdbms.projection.BookingQuerySideProjectionRdbmsApplication
+import org.klokwrk.cargotracker.booking.queryside.projection.rdbms.BookingQuerySideProjectionRdbmsApplication
 import org.klokwrk.lib.archunit.ArchUnitUtils
 import spock.lang.Shared
 import spock.lang.Specification
@@ -65,7 +65,7 @@ class BookingQuerySideProjectionRdbmsAppDependenciesSpecification extends Specif
     ]
 
     String[] cargotrackerBookingProjectionRdbmsAppAllPackages = [
-        "org.klokwrk.cargotracker.booking.queryside.rdbms.projection.feature..", "org.klokwrk.cargotracker.booking.queryside.rdbms.projection.infrastructure.."
+        "org.klokwrk.cargotracker.booking.queryside.projection.rdbms.feature..", "org.klokwrk.cargotracker.booking.queryside.projection.rdbms.infrastructure.."
     ]
     String[] cargotrackerBookingDomainEventAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.event.."]
     String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
