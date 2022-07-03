@@ -44,6 +44,7 @@ dependencies {
   implementation project(":klokwrk-lang-groovy-contracts-match")
   implementation project(":klokwrk-lang-groovy-contracts-simple")
 
+  implementation "net.croz.nrich:nrich-search"
   implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.codehaus.groovy:groovy"
   implementation "org.codehaus.groovy:groovy-macro"
