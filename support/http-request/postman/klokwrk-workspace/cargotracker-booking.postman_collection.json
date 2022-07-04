@@ -1258,6 +1258,127 @@
 											"response": []
 										}
 									]
+								},
+								{
+									"name": "booking-offer-summary-search-all",
+									"item": [
+										{
+											"name": "ok, en",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "en",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationName\": \"Rotterdam\",\n  \"destinationLocationCountryName\": \"The United States\",\n  \"commodityTotalWeightKgFromIncluding\": 50500,\n  \"commodityTotalWeightKgToIncluding\": 60500\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-search-all",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-queryside}}",
+													"path": [
+														"cargotracker-booking-queryside-view",
+														"booking-offer",
+														"booking-offer-summary-search-all"
+													]
+												},
+												"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
+											},
+											"response": []
+										},
+										{
+											"name": "ok, en - explicit paging and sorting",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "en",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"originLocationCountryName\": \"Netherlands\",\n  \"destinationLocationName\": \"New York\",\n  \"commodityTotalContainerTeuCountFromIncluding\": 0.5,\n  \"commodityTotalContainerTeuCountToIncluding\": 4.5,\n  \"lastEventRecordedAtFromIncluding\": \"{{currentHourStart}}\",  \n  \"lastEventRecordedAtToIncluding\": \"{{currentHourEnd}}\",\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}\n",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-search-all",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-queryside}}",
+													"path": [
+														"cargotracker-booking-queryside-view",
+														"booking-offer",
+														"booking-offer-summary-search-all"
+													]
+												},
+												"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
+											},
+											"response": []
+										}
+									]
 								}
 							]
 						}
@@ -1534,6 +1655,146 @@
 								"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
 							},
 							"response": []
+						},
+						{
+							"name": "booking-offer-summary-find-all, ok, en",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"locale is en\", function () {",
+											"    pm.expect(pm.response.json().metaData.general.locale).to.equal(\"en\");",
+											"});",
+											"",
+											"pm.test(\"page received\", function () {",
+											"    pm.expect(pm.response.json().payload.pageInfo).exist;",
+											"});",
+											"",
+											"pm.test(\"expected pageInfo received\", function () {",
+											"    pm.expect(pm.response.json().payload.pageInfo.pageElementsCount).to.greaterThan(1);",
+											"    pm.expect(pm.response.json().payload.pageInfo.first).to.equal(true);",
+											"});",
+											"",
+											"pm.test(\"expected pageContent received\", function () {",
+											"    pm.expect(pm.response.json().payload.pageContent).exist;",
+											"    pm.expect(pm.response.json().payload.pageContent[0].bookingOfferIdentifier).exist;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept-Charset",
+										"value": "utf-8",
+										"type": "text"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "en",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-all",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port-queryside}}",
+									"path": [
+										"cargotracker-booking-queryside-view",
+										"booking-offer",
+										"booking-offer-summary-find-all"
+									]
+								},
+								"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
+							},
+							"response": []
+						},
+						{
+							"name": "booking-offer-summary-search-all, ok, en",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"locale is en\", function () {",
+											"    pm.expect(pm.response.json().metaData.general.locale).to.equal(\"en\");",
+											"});",
+											"",
+											"pm.test(\"page received\", function () {",
+											"    pm.expect(pm.response.json().payload.pageInfo).exist;",
+											"});",
+											"",
+											"pm.test(\"expected pageInfo received\", function () {",
+											"    pm.expect(pm.response.json().payload.pageInfo.pageElementsCount).to.greaterThan(1);",
+											"    pm.expect(pm.response.json().payload.pageInfo.first).to.equal(true);",
+											"});",
+											"",
+											"pm.test(\"expected pageContent received\", function () {",
+											"    pm.expect(pm.response.json().payload.pageContent).exist;",
+											"    pm.expect(pm.response.json().payload.pageContent[0].bookingOfferIdentifier).exist;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept-Charset",
+										"value": "utf-8",
+										"type": "text"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "en",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"originLocationCountryName\": \"Netherlands\",\n  \"destinationLocationName\": \"New York\",\n  \"commodityTotalContainerTeuCountFromIncluding\": 0.5,\n  \"commodityTotalContainerTeuCountToIncluding\": 4.5,\n  \"lastEventRecordedAtFromIncluding\": \"{{currentHourStart}}\",  \n  \"lastEventRecordedAtToIncluding\": \"{{currentHourEnd}}\",\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-all",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port-queryside}}",
+									"path": [
+										"cargotracker-booking-queryside-view",
+										"booking-offer",
+										"booking-offer-summary-find-all"
+									]
+								},
+								"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
+							},
+							"response": []
 						}
 					]
 				}
@@ -1549,24 +1810,38 @@
 					"Object.prototype.klokwrk_cargotracker_booking = Object.create(null);",
 					"",
 					"Object.prototype.klokwrk_cargotracker_booking.setCurrentTimeVariables = function(variableScope) {",
+					"    var currentTime = new Date();",
+					"",
 					"    var currentTimeAndOneHour = new Date();",
-					"    currentTimeAndOneHour.setHours(currentTimeAndOneHour.getHours() + 1);",
+					"    currentTimeAndOneHour.setHours(currentTime.getHours() + 1);",
 					"",
 					"    var currentTimeAndTwoHours = new Date();",
-					"    currentTimeAndTwoHours.setHours(currentTimeAndTwoHours.getHours() + 2);",
+					"    currentTimeAndTwoHours.setHours(currentTime.getHours() + 2);",
 					"",
 					"    var currentTimeAndThreeHours = new Date();",
-					"    currentTimeAndThreeHours.setHours(currentTimeAndThreeHours.getHours() + 3);",
+					"    currentTimeAndThreeHours.setHours(currentTime.getHours() + 3);",
 					"",
+					"    var currentHourStart = new Date();",
+					"    currentHourStart.setHours(currentTime.getHours(), 0, 0, 0)",
+					"",
+					"    var currentHourEnd = new Date();",
+					"    currentHourEnd.setHours(currentTime.getHours(), 59, 59, 999)",
+					"",
+					"    variableScope.set(\"currentTime\", currentTime.toISOString());",
 					"    variableScope.set(\"currentTimeAndOneHour\", currentTimeAndOneHour.toISOString());",
 					"    variableScope.set(\"currentTimeAndTwoHours\", currentTimeAndTwoHours.toISOString());",
 					"    variableScope.set(\"currentTimeAndThreeHours\", currentTimeAndThreeHours.toISOString());",
+					"    variableScope.set(\"currentHourStart\", currentHourStart.toISOString());",
+					"    variableScope.set(\"currentHourEnd\", currentHourEnd.toISOString());",
 					"};",
 					"",
 					"Object.prototype.klokwrk_cargotracker_booking.unsetCurrentTimeVariables = function(variableScope) {",
+					"    variableScope.unset(\"currentTime\");",
 					"    variableScope.unset(\"currentTimeAndOneHour\");",
 					"    variableScope.unset(\"currentTimeAndTwoHours\");",
 					"    variableScope.unset(\"currentTimeAndThreeHours\");",
+					"    variableScope.unset(\"currentHourStart\");",
+					"    variableScope.unset(\"currentHourEnd\");",
 					"}",
 					"",
 					"Object.prototype.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible = function(response, variableScope) {",
@@ -1601,10 +1876,6 @@
 		{
 			"key": "port-queryside",
 			"value": "8084"
-		},
-		{
-			"key": "execution_receivedBookingOfferIdentifier",
-			"value": ""
 		}
 	]
 }
