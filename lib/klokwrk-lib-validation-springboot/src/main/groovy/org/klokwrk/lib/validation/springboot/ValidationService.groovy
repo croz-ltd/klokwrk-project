@@ -72,9 +72,9 @@ class ValidationService implements InitializingBean {
       return
     }
 
-    Map<Class, Class> validatorImplementationToConstraintAnnotationMapping = makeValidatorImplementationToConstraintAnnotationMapping(validatorImplementationPackagesToScan)
+    Map<Class, Set<Class>> constraintAnnotationToValidatorImplementationListMapping = makeConstraintAnnotationToValidatorImplementationListMapping(validatorImplementationPackagesToScan)
 
-    KlokwrkLocalValidatorFactoryBean localValidatorFactoryBean = new KlokwrkLocalValidatorFactoryBean(validatorImplementationToConstraintAnnotationMapping)
+    KlokwrkLocalValidatorFactoryBean localValidatorFactoryBean = new KlokwrkLocalValidatorFactoryBean(constraintAnnotationToValidatorImplementationListMapping)
     localValidatorFactoryBean.validationMessageSource = makeMessageSource(this.messageSourceBaseNames)
     localValidatorFactoryBean.afterPropertiesSet()
 
@@ -89,30 +89,31 @@ class ValidationService implements InitializingBean {
     return messageSource
   }
 
-  protected Map<Class, Class> makeValidatorImplementationToConstraintAnnotationMapping(String[] validatorImplementationPackagesToScan) {
-    Map<Class, Class> validatorImplementationToConstraintAnnotationMapping = [:]
+  protected Map<Class, Set<Class>> makeConstraintAnnotationToValidatorImplementationListMapping(String[] validatorImplementationPackagesToScan) {
+    Map<Class, Set<Class>> constraintAnnotationToValidatorImplementationListMapping = [:]
 
-    ClassGraph gradleSourceRepackClassGraph = new ClassGraph()
+    ClassGraph validatorImplementationClassGraph = new ClassGraph()
         .enableClassInfo()
         .acceptPackages(validatorImplementationPackagesToScan)
 
-    gradleSourceRepackClassGraph.scan().withCloseable { ScanResult scanResult ->
-      ClassInfoList generatedGroovyClosureClassInfoList = scanResult.getClassesImplementing(ConstraintValidator.name)
-      generatedGroovyClosureClassInfoList.each { ClassInfo classInfo ->
-        String constraintAnnotationClassName = classInfo
+    validatorImplementationClassGraph.scan().withCloseable { ScanResult scanResult ->
+      ClassInfoList validatorImplementationClassInfoList = scanResult.getClassesImplementing(ConstraintValidator.name)
+      validatorImplementationClassInfoList.each { ClassInfo validatorImplementationClassInfo ->
+        String constraintAnnotationClassName = validatorImplementationClassInfo
             .typeSignature
             .superinterfaceSignatures
             .find({ ClassRefTypeSignature classRefTypeSignature -> classRefTypeSignature.baseClassName == ConstraintValidator.name })
             .typeArguments[0]
 
-        Class validatorClass = classInfo.loadClass()
+        Class validatorClass = validatorImplementationClassInfo.loadClass()
         Class constraintAnnotationClass = scanResult.loadClass(constraintAnnotationClassName, true)
 
-        validatorImplementationToConstraintAnnotationMapping.put(validatorClass, constraintAnnotationClass)
+        Set<Class> validatorImplementationList = constraintAnnotationToValidatorImplementationListMapping.get(constraintAnnotationClass, [] as Set)
+        validatorImplementationList.add(validatorClass)
       }
     }
 
-    return validatorImplementationToConstraintAnnotationMapping
+    return constraintAnnotationToValidatorImplementationListMapping
   }
 
   /**

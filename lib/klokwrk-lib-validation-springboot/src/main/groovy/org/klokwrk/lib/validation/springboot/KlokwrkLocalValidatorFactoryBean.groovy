@@ -21,6 +21,7 @@ import groovy.transform.CompileStatic
 import org.hibernate.validator.HibernateValidatorConfiguration
 import org.hibernate.validator.HibernateValidatorFactory
 import org.hibernate.validator.cfg.ConstraintMapping
+import org.hibernate.validator.cfg.context.ConstraintDefinitionContext
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 
 import javax.validation.ClockProvider
@@ -31,10 +32,10 @@ import javax.validation.Configuration
  */
 @CompileStatic
 class KlokwrkLocalValidatorFactoryBean extends LocalValidatorFactoryBean {
-  Map<Class, Class> validatorImplementationToConstraintAnnotationMapping
+  Map<Class, Set<Class>> constraintAnnotationToValidatorImplementationListMapping
 
-  KlokwrkLocalValidatorFactoryBean(Map<Class, Class> validatorImplementationToConstraintAnnotationMapping = [:]) {
-    this.validatorImplementationToConstraintAnnotationMapping = validatorImplementationToConstraintAnnotationMapping
+  KlokwrkLocalValidatorFactoryBean(Map<Class, Set<Class>> constraintAnnotationToValidatorImplementationListMapping = [:]) {
+    this.constraintAnnotationToValidatorImplementationListMapping = constraintAnnotationToValidatorImplementationListMapping
   }
 
   @Override
@@ -47,11 +48,12 @@ class KlokwrkLocalValidatorFactoryBean extends LocalValidatorFactoryBean {
     HibernateValidatorConfiguration hibernateValidatorConfiguration = configuration as HibernateValidatorConfiguration
     ConstraintMapping hibernateValidatorConstraintMapping = hibernateValidatorConfiguration.createConstraintMapping()
 
-    validatorImplementationToConstraintAnnotationMapping.each { entry ->
-      Class constraintAnnotationClass = entry.value
-      Class validatorImplementationClass = entry.key
+    constraintAnnotationToValidatorImplementationListMapping.each { entry ->
+      Class constraintAnnotationClass = entry.key
+      Set<Class> validatorImplementationClassList = entry.value
 
-      hibernateValidatorConstraintMapping.constraintDefinition(constraintAnnotationClass).validatedBy(validatorImplementationClass)
+      ConstraintDefinitionContext constraintDefinitionContext = hibernateValidatorConstraintMapping.constraintDefinition(constraintAnnotationClass)
+      validatorImplementationClassList.each({ Class validatorImplementationClass -> constraintDefinitionContext.validatedBy(validatorImplementationClass) })
     }
 
     hibernateValidatorConfiguration.addMapping(hibernateValidatorConstraintMapping)

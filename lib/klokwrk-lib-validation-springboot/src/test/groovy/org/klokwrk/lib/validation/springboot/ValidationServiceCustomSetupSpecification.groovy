@@ -17,6 +17,7 @@
  */
 package org.klokwrk.lib.validation.springboot
 
+import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTestContextBootstrapper
 import org.springframework.context.ApplicationContext
@@ -33,8 +34,9 @@ import javax.validation.constraints.Size
 @SpringBootTest
 class ValidationServiceCustomSetupSpecification extends Specification {
   static class TestObject {
-    @NotNull
+    @TrimmedStringConstraint
     @Size(min = 1, max = 15)
+    @NotNull
     String stringProperty
   }
 

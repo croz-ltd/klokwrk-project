@@ -41,6 +41,8 @@ dependencies {
 
   runtimeOnly project(":klokwrk-lib-validation-validator")
 
+  testImplementation project(":klokwrk-lib-validation-constraint")
+
   testImplementation "org.spockframework:spock-core"
   testImplementation "org.spockframework:spock-spring"
   testImplementation "org.springframework:spring-test"

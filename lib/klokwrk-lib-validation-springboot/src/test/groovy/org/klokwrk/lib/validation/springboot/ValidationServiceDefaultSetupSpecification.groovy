@@ -17,6 +17,7 @@
  */
 package org.klokwrk.lib.validation.springboot
 
+import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
@@ -31,8 +32,9 @@ class ValidationServiceDefaultSetupSpecification extends Specification {
   ValidationService validationService
 
   static class TestObject {
-    @NotNull
+    @TrimmedStringConstraint
     @Size(min = 1, max = 15)
+    @NotNull
     String stringProperty
   }
 
@@ -56,12 +58,18 @@ class ValidationServiceDefaultSetupSpecification extends Specification {
 
   void "should throw for invalid object"() {
     given:
-    TestObject testObject = new TestObject(stringProperty: null)
+    TestObject testObject = new TestObject(stringProperty: stringPropertyParam)
 
     when:
     validationService.validate(testObject)
 
     then:
     thrown(ConstraintViolationException)
+
+    where:
+    stringPropertyParam | _
+    null                | _
+    ""                  | _
+    "bla "              | _
   }
 }
