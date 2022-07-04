@@ -56,6 +56,9 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
         "groovy..",
 
         "javax.validation..",
+        "javax.persistence..",
+
+        "net.croz.nrich.search..",
 
         "org.axonframework.messaging..",
         "org.axonframework.spring..",
