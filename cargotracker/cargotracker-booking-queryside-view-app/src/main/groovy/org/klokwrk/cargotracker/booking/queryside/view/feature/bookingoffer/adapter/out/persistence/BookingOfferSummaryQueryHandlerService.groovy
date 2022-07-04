@@ -18,12 +18,17 @@
 package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.adapter.out.persistence
 
 import groovy.transform.CompileStatic
+import net.croz.nrich.search.api.model.AdditionalRestrictionResolver
+import net.croz.nrich.search.api.model.SearchConfiguration
+import net.croz.nrich.search.api.model.property.SearchPropertyConfiguration
 import org.axonframework.queryhandling.QueryHandler
 import org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.BookingOfferSummaryJpaEntity
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindByIdQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindByIdQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryResponse
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.springframework.data.domain.Page
@@ -95,5 +100,40 @@ class BookingOfferSummaryQueryHandlerService {
     }
 
     return bookingOfferSummaryFindAllQueryResponse
+  }
+
+  @QueryHandler
+  BookingOfferSummarySearchAllQueryResponse handleBookingOfferSummarySearchAllQueryRequest(BookingOfferSummarySearchAllQueryRequest bookingOfferSummarySearchAllQueryRequest) {
+    SearchConfiguration<BookingOfferSummaryJpaEntity, BookingOfferSummaryJpaEntity, BookingOfferSummarySearchAllQueryRequest> searchConfiguration =
+        SearchConfiguration
+            .<BookingOfferSummaryJpaEntity, BookingOfferSummaryJpaEntity, BookingOfferSummarySearchAllQueryRequest>builder()
+            .anyMatch(false)
+            .searchPropertyConfiguration(SearchPropertyConfiguration.defaultSearchPropertyConfiguration().tap { searchIgnoredPropertyList = ["customerIdentifier"] })
+            .additionalRestrictionResolverList([new BookingOfferSummaryJpaEntityAdditionalRestrictionResolver()] as List<AdditionalRestrictionResolver>) // codenarc-disable-line UnnecessaryCast
+            .build()
+
+    PageRequest pageRequest =
+        QueryHandlerSpringDataJpaUtil.makePageRequestFromPageAndSortRequirements(bookingOfferSummarySearchAllQueryRequest.pageRequirement, bookingOfferSummarySearchAllQueryRequest.sortRequirementList)
+
+    Page<BookingOfferSummaryJpaEntity> pageOfBookingOfferSummaryJpaEntity = null
+    try {
+      pageOfBookingOfferSummaryJpaEntity = bookingOfferSummaryViewJpaRepository.findAll(bookingOfferSummarySearchAllQueryRequest, searchConfiguration, pageRequest)
+    }
+    catch (PropertyReferenceException pre) {
+      QueryHandlerSpringDataJpaUtil.handlePropertyReferenceException(pre)
+    }
+
+    BookingOfferSummarySearchAllQueryResponse bookingOfferSummarySearchAllQueryResponse = new BookingOfferSummarySearchAllQueryResponse().tap {
+      pageContent = pageOfBookingOfferSummaryJpaEntity
+          .content
+          .collect({ BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity ->
+              new BookingOfferSummaryFindByIdQueryResponse(fetchBookingOfferSummaryJpaEntityProperties(bookingOfferSummaryJpaEntity))
+          })
+
+      pageInfo = QueryHandlerSpringDataJpaUtil
+          .makePageInfoFromPage(pageOfBookingOfferSummaryJpaEntity, bookingOfferSummarySearchAllQueryRequest.pageRequirement, bookingOfferSummarySearchAllQueryRequest.sortRequirementList)
+    }
+
+    return bookingOfferSummarySearchAllQueryResponse
   }
 }

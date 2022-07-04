@@ -27,6 +27,9 @@ import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.appl
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindByIdQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindByIdQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindByIdQueryResponse
+import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryPortIn
+import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryResponse
 import org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ResponseMetaData
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
@@ -38,7 +41,7 @@ import static org.hamcrest.Matchers.notNullValue
 
 @Service
 @CompileStatic
-class BookingOfferQueryApplicationService implements BookingOfferSummaryFindByIdQueryPortIn, BookingOfferSummaryFindAllQueryPortIn {
+class BookingOfferQueryApplicationService implements BookingOfferSummaryFindByIdQueryPortIn, BookingOfferSummaryFindAllQueryPortIn, BookingOfferSummarySearchAllQueryPortIn {
   private final QueryGatewayAdapter queryGatewayAdapter
   private final ValidationService validationService
   private final CustomerByUserIdentifierPortOut customerByUserIdentifierPortOut
@@ -81,6 +84,20 @@ class BookingOfferQueryApplicationService implements BookingOfferSummaryFindById
     bookingOfferSummaryFindAllQueryOperationRequest.payload.customerIdentifier = customer.customerId.identifier
 
     BookingOfferSummaryFindAllQueryResponse queryResponse = queryGatewayAdapter.query(bookingOfferSummaryFindAllQueryOperationRequest, BookingOfferSummaryFindAllQueryResponse)
+    return operationResponseFromQueryResponse(queryResponse)
+  }
+
+  @Override
+  OperationResponse<BookingOfferSummarySearchAllQueryResponse> bookingOfferSummarySearchAllQuery(
+      OperationRequest<BookingOfferSummarySearchAllQueryRequest> bookingOfferSummarySearchAllQueryOperationRequest)
+  {
+    requireMatch(bookingOfferSummarySearchAllQueryOperationRequest, notNullValue())
+    validationService.validate(bookingOfferSummarySearchAllQueryOperationRequest.payload)
+
+    Customer customer = customerByUserIdentifierPortOut.findCustomerByUserIdentifier(bookingOfferSummarySearchAllQueryOperationRequest.payload.userIdentifier)
+    bookingOfferSummarySearchAllQueryOperationRequest.payload.customerIdentifier = customer.customerId.identifier
+
+    BookingOfferSummarySearchAllQueryResponse queryResponse = queryGatewayAdapter.query(bookingOfferSummarySearchAllQueryOperationRequest, BookingOfferSummarySearchAllQueryResponse)
     return operationResponseFromQueryResponse(queryResponse)
   }
 }

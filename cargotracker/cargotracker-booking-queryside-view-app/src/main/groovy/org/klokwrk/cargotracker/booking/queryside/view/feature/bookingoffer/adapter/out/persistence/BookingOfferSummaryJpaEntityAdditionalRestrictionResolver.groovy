@@ -18,18 +18,24 @@
 package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.adapter.out.persistence
 
 import groovy.transform.CompileStatic
-import net.croz.nrich.search.api.repository.SearchExecutor
+import net.croz.nrich.search.api.model.AdditionalRestrictionResolver
 import org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.BookingOfferSummaryJpaEntity
-import org.klokwrk.lib.springframework.data.jpa.repository.hibernate.ReadOnlyJpaRepository
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
-import org.springframework.data.jpa.repository.JpaRepository
+import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryRequest
+
+import javax.persistence.criteria.CriteriaBuilder
+import javax.persistence.criteria.CriteriaQuery
+import javax.persistence.criteria.Predicate
+import javax.persistence.criteria.Root
 
 @SuppressWarnings("CodeNarc.BracesForClass")
 @CompileStatic
-interface BookingOfferSummaryViewJpaRepository extends
-    JpaRepository<BookingOfferSummaryJpaEntity, UUID>, SearchExecutor<BookingOfferSummaryJpaEntity>, ReadOnlyJpaRepository<BookingOfferSummaryJpaEntity>
+class BookingOfferSummaryJpaEntityAdditionalRestrictionResolver implements
+    AdditionalRestrictionResolver<BookingOfferSummaryJpaEntity, BookingOfferSummaryJpaEntity, BookingOfferSummarySearchAllQueryRequest>
 {
-  BookingOfferSummaryJpaEntity findByBookingOfferIdentifierAndCustomerIdentifier(UUID bookingOfferIdentifier, String customerIdentifier)
-  Page<BookingOfferSummaryJpaEntity> findAllByCustomerIdentifier(String customerIdentifier, Pageable pageable)
+  @Override
+  List<Predicate> resolvePredicateList(
+      CriteriaBuilder criteriaBuilder, CriteriaQuery<BookingOfferSummaryJpaEntity> query, Root<BookingOfferSummaryJpaEntity> root, BookingOfferSummarySearchAllQueryRequest request)
+  {
+    return [criteriaBuilder.equal(root.get("customerIdentifier"), request.customerIdentifier)]
+  }
 }
