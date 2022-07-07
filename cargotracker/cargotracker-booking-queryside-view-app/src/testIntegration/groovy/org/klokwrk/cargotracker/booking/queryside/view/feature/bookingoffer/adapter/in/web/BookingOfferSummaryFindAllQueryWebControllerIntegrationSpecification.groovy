@@ -20,11 +20,13 @@ package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.ada
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
+import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerRegistryService
 import org.klokwrk.cargotracker.booking.queryside.test.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.cargotracker.booking.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageRequirement
 import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortDirection
+import org.spockframework.spring.EnableSharedInjection
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -36,6 +38,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MvcResult
 import org.springframework.web.context.WebApplicationContext
+import spock.lang.Shared
 
 import javax.sql.DataSource
 import java.nio.charset.Charset
@@ -43,6 +46,8 @@ import java.nio.charset.Charset
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
+@SuppressWarnings("GroovyAccessibility")
+@EnableSharedInjection
 @SpringBootTest
 @ActiveProfiles("testIntegration")
 class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
@@ -54,9 +59,11 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
     }
   }
 
+  @Shared
   @Autowired
   EventBus eventBus
 
+  @Shared
   @Autowired
   Sql groovySql
 
@@ -66,7 +73,16 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
   @Autowired
   ObjectMapper objectMapper
 
+  @Shared
+  Long initialBookingOfferSummaryRecordsCount = null
+
   MockMvc mockMvc
+
+  void setupSpec() {
+    String customerIdentifier = InMemoryCustomerRegistryService.CustomerSample.CUSTOMER_SAMPLE_MAP.get("standard-customer@cargotracker.com").customerId.identifier
+    initialBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount_forCustomerIdentifier(groovySql, customerIdentifier)
+    5.times { publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql) }
+  }
 
   void setup() {
     mockMvc ?= webAppContextSetup(webApplicationContext).build()
@@ -75,10 +91,6 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
   @SuppressWarnings("CodeNarc.AbcMetric")
   void "should work for correct request with default paging and sorting"() {
     given:
-    Long initialBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
-    5.times { publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql) }
-
-    // Note: "standard-customer@cargotracker.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
     String webRequestBody = objectMapper.writeValueAsString([userIdentifier: "standard-customer@cargotracker.com"])
 
     when:
@@ -120,10 +132,9 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
         verifyAll(it.pageInfo as Map) {
           size() == 8
           pageOrdinal == 0
-          pageElementsCount == Math.min(initialBookingOfferSummaryRecordsCount + 5, PageRequirement.PAGE_REQUIREMENT_SIZE_DEFAULT)
+          pageElementsCount == Math.min(this.initialBookingOfferSummaryRecordsCount + 5, PageRequirement.PAGE_REQUIREMENT_SIZE_DEFAULT)
           first
-          totalPagesCount >= 1
-          totalElementsCount == initialBookingOfferSummaryRecordsCount + 5
+          totalElementsCount == this.initialBookingOfferSummaryRecordsCount + 5
 
           verifyAll(it.requestedPageRequirement as Map) {
             size() == 2
@@ -139,7 +150,7 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
         }
 
         verifyAll(it.pageContent as List) {
-          size() == Math.min(initialBookingOfferSummaryRecordsCount + 5, PageRequirement.PAGE_REQUIREMENT_SIZE_DEFAULT)
+          size() == Math.min(this.initialBookingOfferSummaryRecordsCount + 5, PageRequirement.PAGE_REQUIREMENT_SIZE_DEFAULT)
 
           verifyAll(it[0] as Map) {
             size() == 17

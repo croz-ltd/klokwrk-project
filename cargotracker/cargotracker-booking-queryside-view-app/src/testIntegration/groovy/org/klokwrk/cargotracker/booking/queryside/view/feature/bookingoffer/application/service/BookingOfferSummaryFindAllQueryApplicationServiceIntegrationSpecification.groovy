@@ -20,6 +20,7 @@ package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.app
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
+import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerRegistryService
 import org.klokwrk.cargotracker.booking.queryside.test.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryRequest
@@ -34,14 +35,18 @@ import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationCode
 import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageRequirement
 import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortDirection
 import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortRequirement
+import org.spockframework.spring.EnableSharedInjection
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ActiveProfiles
+import spock.lang.Shared
 
 import javax.sql.DataSource
 
+@SuppressWarnings("GroovyAccessibility")
+@EnableSharedInjection
 @SpringBootTest
 @ActiveProfiles("testIntegration")
 class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
@@ -53,21 +58,28 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
     }
   }
 
+  @Shared
   @Autowired
   EventBus eventBus
 
+  @Shared
   @Autowired
   Sql groovySql
 
   @Autowired
   BookingOfferSummaryFindAllQueryPortIn bookingOfferSummaryFindAllQueryPortIn
 
+  @Shared
+  Integer initialBookingOfferSummaryRecordsCount = null
+
+  void setupSpec() {
+    String customerIdentifier = InMemoryCustomerRegistryService.CustomerSample.CUSTOMER_SAMPLE_MAP.get("standard-customer@cargotracker.com").customerId.identifier
+    initialBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount_forCustomerIdentifier(groovySql, customerIdentifier)
+    5.times { publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql) }
+  }
+
   void "should work for correct request with default paging and sorting"() {
     given:
-    Long initialBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
-    5.times { publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql) }
-
-    // Note: "standard-customer@cargotracker.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
     BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(userIdentifier: "standard-customer@cargotracker.com")
 
     OperationRequest<BookingOfferSummaryFindAllQueryRequest> operationRequest = new OperationRequest(
@@ -83,17 +95,15 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
       propertiesFiltered.size() == 8
 
       pageOrdinal == 0
-      pageElementsCount == initialBookingOfferSummaryRecordsCount + 5
+      pageElementsCount == Math.min(initialBookingOfferSummaryRecordsCount + 5, PageRequirement.PAGE_REQUIREMENT_SIZE_DEFAULT)
       first
-      last
-      totalPagesCount == 1
       totalElementsCount == initialBookingOfferSummaryRecordsCount + 5
 
       requestedPageRequirement == PageRequirement.PAGE_REQUIREMENT_INSTANCE_DEFAULT
       requestedSortRequirementList == [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.DESC)]
     }
 
-    operationResponse.payload.pageContent.size() as Long == initialBookingOfferSummaryRecordsCount + 5
+    operationResponse.payload.pageContent.size() == Math.min(initialBookingOfferSummaryRecordsCount + 5, PageRequirement.PAGE_REQUIREMENT_SIZE_DEFAULT)
 
     verifyAll(operationResponse.payload.pageContent[0]) {
       propertiesFiltered.size() == 17
@@ -114,10 +124,6 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
 
   void "should work for correct request with explicit paging and sorting"() {
     given:
-    Long initialBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
-    5.times { publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql) }
-
-    // Note: "standard-customer@cargotracker.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
     BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(
         userIdentifier: "standard-customer@cargotracker.com",
         pageRequirement: new PageRequirement(ordinal: 0, size: 3),
@@ -139,8 +145,6 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
       pageOrdinal == 0
       pageElementsCount == 3
       first
-      !last
-      totalPagesCount >= 2
       totalElementsCount == initialBookingOfferSummaryRecordsCount + 5
 
       requestedPageRequirement == new PageRequirement(ordinal: 0, size: 3)

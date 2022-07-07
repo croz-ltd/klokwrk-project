@@ -23,9 +23,17 @@ import groovy.transform.CompileStatic
 
 @CompileStatic
 class BookingOfferSummarySqlHelper {
-  static Long selectCurrentBookingOfferSummaryRecordsCount(Sql groovySql) {
+  static Integer selectCurrentBookingOfferSummaryRecordsCount(Sql groovySql) {
     GroovyRowResult groovyRowResult = groovySql.firstRow("SELECT count(*) as recordsCount from booking_offer_summary")
-    return groovyRowResult.recordsCount as Long
+    return groovyRowResult.recordsCount as Integer
+  }
+
+  static Integer selectCurrentBookingOfferSummaryRecordsCount_forCustomerIdentifier(Sql groovySql, String customerIdentifier) {
+    GroovyRowResult groovyRowResult = groovySql.firstRow(
+        [customerIdentifier: customerIdentifier],
+        "SELECT count(*) as recordsCount from booking_offer_summary where customer_identifier = :customerIdentifier"
+    )
+    return groovyRowResult.recordsCount as Integer
   }
 
   static Map<String, ?> selectBookingOfferSummaryRecord(Sql groovySql, UUID bookingOfferIdentifier) {
