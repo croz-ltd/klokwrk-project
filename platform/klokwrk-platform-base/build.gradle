@@ -51,6 +51,7 @@ publishing {
 }
 
 dependencies {
+  api platform("net.croz.nrich:nrich-bom:$nrichVersion")
   api platform("org.axonframework:axon-bom:$axonBomVersion")
   api platform("org.codehaus.groovy:groovy-bom:$groovyVersion")
 

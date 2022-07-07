@@ -28,6 +28,7 @@ import org.klokwrk.lib.validation.group.Level2
 import javax.validation.GroupSequence
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Null
 
@@ -61,6 +62,6 @@ class BookingOfferSummaryFindAllQueryRequest {
    * Must be not {@code null}, and must be valid.
    */
   @Valid
-  @NotNull(groups = [Level1])
+  @NotEmpty(groups = [Level1])
   List<SortRequirement> sortRequirementList = [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.DESC)]
 }

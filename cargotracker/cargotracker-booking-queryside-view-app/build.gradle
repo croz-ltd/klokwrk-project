@@ -44,6 +44,7 @@ dependencies {
   implementation project(":klokwrk-lang-groovy-contracts-match")
   implementation project(":klokwrk-lang-groovy-contracts-simple")
 
+  implementation "net.croz.nrich:nrich-search"
   implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.codehaus.groovy:groovy"
   implementation "org.codehaus.groovy:groovy-macro"
@@ -68,12 +69,13 @@ dependencies {
   testIntegrationImplementation project(":cargotracker-booking-queryside-test-support")
   testIntegrationImplementation project(":cargotracker-lib-domain-model-event")
 
+  testIntegrationImplementation "javax.measure:unit-api"
   testIntegrationImplementation "org.awaitility:awaitility"
   testIntegrationImplementation "org.codehaus.groovy:groovy-sql"
+  testIntegrationImplementation "org.spockframework:spock-spring"
   testIntegrationImplementation "org.springframework:spring-test"
   testIntegrationImplementation "org.springframework.boot:spring-boot-test"
   testIntegrationImplementation "org.testcontainers:postgresql"
   testIntegrationImplementation "org.testcontainers:testcontainers"
-
-  testIntegrationRuntimeOnly "org.spockframework:spock-spring"
+  testIntegrationImplementation "tech.units:indriya"
 }
