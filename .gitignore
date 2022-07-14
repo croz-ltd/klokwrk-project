@@ -13,7 +13,11 @@ build/
 
 ### IntelliJ IDEA ###
 .idea/
-.run/
+.run/**
+!.run/1 - cargotracker-booking-commandside-app \[bootRun\].run.xml
+!.run/2 - cargotracker-booking-queryside-projection-rdbms-app \[bootRun\].run.xml
+!.run/3 - cargotracker-booking-queryside-view-app \[bootRun\].run.xml
+!.run/cargotracker-booking-rdbms-management-app \[bootRun\].run.xml
 *.iws
 *.iml
 *.ipr
