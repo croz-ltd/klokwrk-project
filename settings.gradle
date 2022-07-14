@@ -34,7 +34,9 @@ projects {
   cache = false
   directories = [
       "cargotracker",
-      "modules/cargotracker/lib", "modules/lang", "modules/lib", "modules/platform", "modules/tool"
+      "modules/cargotracker/booking/lib",
+      "modules/cargotracker/lib",
+      "modules/lang", "modules/lib", "modules/platform", "modules/tool"
   ]
   enforceNamingConvention = false
 }
