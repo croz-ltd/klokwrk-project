@@ -18,7 +18,7 @@ languages and have some exposure to the ideas behind GraalVM, Ahead-Of-Time (AOT
 
 My interest in compiling Groovy native images was triggered and inspired by [Szymon Stepniak's](https://e.printstacktrace.blog/)
 [work](https://e.printstacktrace.blog/graalvm-and-groovy-how-to-start/) [10] [in this](https://www.youtube.com/watch?v=BjO_vBzaB4c) [11] [area](https://www.youtube.com/watch?v=RPdugI8eZgo) [12].
-As nothing comes in a vacuum, it coincided with a need for creating a [small command-line utility](../../../../tool/klokwrk-tool-gradle-source-repack/README.md) [13] and
+As nothing comes in a vacuum, it coincided with a need for creating a [small command-line utility](../../../../modules/tool/klokwrk-tool-gradle-source-repack/README.md) [13] and
 [important improvements](https://www.graalvm.org/release-notes/20_3) [14] in GraalVM native image functionality. Those circumstances created a perfect environment for trying out GraalVM
 native image compilation for Groovy.
 
@@ -27,14 +27,14 @@ Here at [CROZ](https://croz.net/), we recently started working on [Project Klokw
 often as possible to the open-source community. An essential part of this is [issue reporting](../../misc/klokwrkRelatedIssuesInTheWild.md) for tools and libraries that we use.
 
 As Klokwrk uses Gradle as a build tool, exploratory debugging of Gradle build scripts, 3rd party plugins, and internal classes is a prerequisite for any issue report related to Gradle or its plugins.
-To help with this process, we created the [klokwrk-tool-gradle-source-repack](../../../../tool/klokwrk-tool-gradle-source-repack/README.md) submodule. To explore its role in the process of debugging
+To help with this process, we created the [klokwrk-tool-gradle-source-repack](../../../../modules/tool/klokwrk-tool-gradle-source-repack/README.md) submodule. To explore its role in the process of debugging
 Gradle from IntelliJ IDEA, please take a look at the "[Debugging Gradle internals from IntelliJ IDEA](../debugging-gradle-from-idea/debugging-gradle-from-idea.md)" [15] article.
 
 As `klokwrk-tool-gradle-source-repack` is a CLI (command-line) utility build on top of Groovy, Micronaut, and [picocli](https://picocli.info/), it seemed natural to see if it is possible to package
 it as a GraalVM native image. With Micronaut's [support](https://docs.micronaut.io/latest/guide/index.html#graal) [16] for GraalVM native images and provided
 [integration](https://micronaut-projects.github.io/micronaut-picocli/latest/guide/) [17] with picocli, we already have a great starting point. We "just" need to add Groovy in the picture.
 
-Therefore, this article will use [klokwrk-tool-gradle-source-repack](../../../../tool/klokwrk-tool-gradle-source-repack/README.md) as a working example. For a more comfortable
+Therefore, this article will use [klokwrk-tool-gradle-source-repack](../../../../modules/tool/klokwrk-tool-gradle-source-repack/README.md) as a working example. For a more comfortable
 following of discussion and examples, it might be useful to clone/fork the [klokwrk-project](https://github.com/croz-ltd/klokwrk-project). For creating native images, you need to set up GraalVM and
 its `native-image` tool. The easiest way for installing GraalVM is using [SDKMAN](https://sdkman.io/) as described at the beginning of Szymon Stepniak's
 ["GraalVM native-image - from 2.1s to 0.013s startup time | Groovy Tutorial"](https://www.youtube.com/watch?v=RPdugI8eZgo) video.
@@ -65,7 +65,7 @@ Generated Micronaut Groovy CLI application includes [Micronaut Gradle Plugin](ht
 other excellent features. However, I encountered [[some]](https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/92)
 [[problems]](https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/93) with the `nativeImage` task and decided to create a simplified version - `kwrkNativeImage`. Besides resolving
 issues, it also allows slightly more direct control over native image compilation. To get more details, take a closer look at the `klokwrk-tool-gradle-source-repack's`
-[build.gradle](../../../../tool/klokwrk-tool-gradle-source-repack/build.gradle) file.
+[build.gradle](../../../../modules/tool/klokwrk-tool-gradle-source-repack/build.gradle) file.
 
 ### Generating GraalVM native image configuration files
 GraalVM native image building relies on static analysis for detecting all reachable code paths. This might be problematic with any technology that uses reflection. Although
@@ -307,9 +307,9 @@ Fortunately, GraalVM native image builder is a Java application and can be exten
 intercepting the native image generation and running a custom initialization code, including additions to the configuration.
 
 This functionality is leveraged in `klokwrk-tool-gradle-source-repack` for building the
-[GroovyDgmClassesRegistrationFeature](../../../../tool/klokwrk-tool-gradle-source-repack/src/main/java/org/klokwrk/tool/gradle/source/repack/graal/GroovyDgmClassesRegistrationFeature.java) extension
-that includes all Groovy `dgm$*` classes in the native image. Although it adds too much stuff into the native image, it helps speed up our research. To enable the extension (it is disabled by
-default), we need to edit [kwrk-graal.properties](../../../../tool/klokwrk-tool-gradle-source-repack/src/main/resources/kwrk-graal.properties):
+[GroovyDgmClassesRegistrationFeature](../../../../modules/tool/klokwrk-tool-gradle-source-repack/src/main/java/org/klokwrk/tool/gradle/source/repack/graal/GroovyDgmClassesRegistrationFeature.java)
+extension that includes all Groovy `dgm$*` classes in the native image. Although it adds too much stuff into the native image, it helps speed up our research. To enable the extension (it is disabled
+by default), we need to edit [kwrk-graal.properties](../../../../modules/tool/klokwrk-tool-gradle-source-repack/src/main/resources/kwrk-graal.properties):
 ```
 kwrk-graal.registration-feature.dgm-classes.enabled = true
 ```
@@ -399,9 +399,9 @@ in Groovy `MetaClass` mechanism.
 
 To remedy the issue, we can add the generated closure class in the native image builder configuration file. However, we have a problem similar to the one we had with DGM classes. In typical Groovy
 code, closures are used quite often, so we might end up with numerous iterations of updating configuration files and native image regenerations. For those reasons, `klokwrk-tool-gradle-source-repack`
-provides another native image builder extension - [GroovyApplicationRegistrationFeature](../../../../tool/klokwrk-tool-gradle-source-repack/src/main/java/org/klokwrk/tool/gradle/source/repack/graal/GroovyApplicationRegistrationFeature.java).
+provides another native image builder extension - [GroovyApplicationRegistrationFeature](../../../../modules/tool/klokwrk-tool-gradle-source-repack/src/main/java/org/klokwrk/tool/gradle/source/repack/graal/GroovyApplicationRegistrationFeature.java).
 It looks up and registers all Groovy generated closure classes with the native image builder to include them into the created native image. To enable the extension we need to edit again
-[kwrk-graal.properties](../../../../tool/klokwrk-tool-gradle-source-repack/src/main/resources/kwrk-graal.properties) file:
+[kwrk-graal.properties](../../../../modules/tool/klokwrk-tool-gradle-source-repack/src/main/resources/kwrk-graal.properties) file:
 ```
 kwrk-graal.registration-feature.application.enabled = true
 ```
@@ -519,8 +519,8 @@ Again, the exception mentions the` io.reactivex.functions.Function` class and th
 the proxy classes at the build time. The default location for providing such configuration is the `proxy-config.json` file. However, let's dive deeper and try to find out why we got those two
 exceptions in the first place. We'll start by examining the relevant code section.
 
-In the `download()` method of the [GradleDownloader](../../../../tool/klokwrk-tool-gradle-source-repack/src/main/groovy/org/klokwrk/tool/gradle/source/repack/downloader/GradleDownloader.groovy) class,
-we have the following section. Our point of interest is the `map()` method call:
+In the `download()` method of the [GradleDownloader](../../../../modules/tool/klokwrk-tool-gradle-source-repack/src/main/groovy/org/klokwrk/tool/gradle/source/repack/downloader/GradleDownloader.groovy)
+class, we have the following section. Our point of interest is the `map()` method call:
 ```
 File download(GradleDownloaderInfo gradleDownloaderInfo) {
   ...
@@ -995,17 +995,17 @@ size provides enough benefits for your case.
 
 **1. Size increase relatively to the non-functional base image:**
 
-|                |size (B)    | size increase |
-|----------------|-----------:|--------------:|
-|**no-config**   | 72.792.392 | -             |
-|**tuned-config**| 74.907.872 | 2,9 %         |
+|                  |   size (B) | size increase |
+|------------------|-----------:|--------------:|
+| **no-config**    | 72.792.392 |             - |
+| **tuned-config** | 74.907.872 |         2,9 % |
 
 **2. Size decrease relatively to the all-inclusive image:**
 
-|                 |size (MB)   | size decrease  |
-|-----------------|-----------:|---------------:|
-|**all-inclusive**| 85.683.664 | -              |
-|**tuned-config** | 74.907.872 | 12,6 %         |
+|                   |  size (MB) | size decrease |
+|-------------------|-----------:|--------------:|
+| **all-inclusive** | 85.683.664 |             - |
+| **tuned-config**  | 74.907.872 |        12,6 % |
 
 ## Conclusion
 GraalVM native image is an exciting technology adopted and supported by many popular frameworks. Because of some limitations related to the static analysis of reflective code, that support is usually

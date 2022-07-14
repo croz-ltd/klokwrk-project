@@ -4,7 +4,7 @@
 internals.
 
 To see how `klokwrk-tool-gradle-source-repack` fits in Gradle debugging from IDEA, take a look at the
-"[Debugging Gradle internals from IntelliJ IDEA](../../support/documentation/article/debugging-gradle-from-idea/debugging-gradle-from-idea.md)" article.
+"[Debugging Gradle internals from IntelliJ IDEA](../../../support/documentation/article/debugging-gradle-from-idea/debugging-gradle-from-idea.md)" article.
 
 ## Introduction
 As envisioned by authors, debugging Gradle scripts, 3rd party plugins, and internal Gradle classes should be easy from IDEA. One should just place a breakpoint in a script or class and run a Gradle

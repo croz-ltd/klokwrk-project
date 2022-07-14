@@ -129,12 +129,12 @@ internal modules, and manually repacking all of them is not something that you w
 [quite often](https://gradle.org/releases/).
 
 It is possible to create an involved shell script that will do all the necessary work. Alternatively, you can try
-[klokwrk-tool-gradle-source-repack](../../../../tool/klokwrk-tool-gradle-source-repack/README.md). Despite its complicated name,
+[klokwrk-tool-gradle-source-repack](../../../../modules/tool/klokwrk-tool-gradle-source-repack/README.md). Despite its complicated name,
 this little tool is straightforward to use. All you need to provide is a Gradle version for which you want to create a JAR archive with repacked Gradle sources.
 
 > As a side note, it is worth mentioning that `klokwrk-tool-gradle-source-repack` served another useful purpose. It was a playground for exploring possible usage of GraalVM native images with
 > non-trivial Groovy applications, with particular emphasis on minimal reflection configuration. However, this is a subject of [another article](../groovy-graalvm-native-image/groovy-graalvm-native-image.md).
-> You can find some starting tips in `klokwrk-tool-gradle-source-repack`'s [README.md](../../../../tool/klokwrk-tool-gradle-source-repack/README.md).
+> You can find some starting tips in `klokwrk-tool-gradle-source-repack`'s [README.md](../../../../modules/tool/klokwrk-tool-gradle-source-repack/README.md).
 
 With the correct Gradle version supplied, `klokwrk-tool-gradle-source-repack` will:
 - download Gradle `all` distribution corresponding to the supplied Gradle version
@@ -182,7 +182,7 @@ Now you can go ahead by adding your breakpoints and start debugging Gradle inter
   }
   ```
 - Reload Gradle project in IDEA.
-- Use [klokwrk-tool-gradle-source-repack](../../../../tool/klokwrk-tool-gradle-source-repack/README.md) for creating an archive
+- Use [klokwrk-tool-gradle-source-repack](../../../../modules/tool/klokwrk-tool-gradle-source-repack/README.md) for creating an archive
   with repacked Gradle sources under a single source root.
 - Attach the repacked archive as a source to Gradle internal classes.
 - Put breakpoints in the Gradle internal classes, and run the desired Gradle task in debug mode.

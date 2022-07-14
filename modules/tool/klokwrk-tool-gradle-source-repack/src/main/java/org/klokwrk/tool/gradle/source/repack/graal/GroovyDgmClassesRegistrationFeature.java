@@ -29,7 +29,7 @@ import java.util.Properties;
 /**
  * Programmatically registers default Groovy methods (accessed by reflection) and {@code groovy.lang.Closure} extending classes from {@code org.codehaus.groovy.runtime} package with Graal native
  * image compiler.
- *
+ * <p/>
  * Programmatically registers default Groovy methods classes from {@code org.codehaus.groovy.runtime} package with Graal native image compiler.
  * <p/>
  * Default groovy method classes are all {@code org.codehaus.groovy.runtime.dgm$number.class} classes.
