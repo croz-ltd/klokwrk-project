@@ -33,8 +33,7 @@ rootProject.name = "klokwrk-project"
 projects {
   cache = false
   directories = [
-      "cargotracker",
-      "modules/cargotracker/booking/lib",
+      "modules/cargotracker/booking/app", "modules/cargotracker/booking/lib",
       "modules/cargotracker/lib",
       "modules/lang", "modules/lib", "modules/platform", "modules/tool"
   ]
