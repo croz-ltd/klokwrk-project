@@ -1,6 +1,8 @@
 # ADR-0002 - Strategic Project Structure
 * **Status: accepted**
-* Dates: proposed - 2020-10-28
+* Dates:
+  * proposed - 2020-10-28
+  * updated - 2022-07-18
 * Authors: Damir Murat (`damir.murat.git at gmail.com`)
 * Reviewers: None
 
@@ -10,7 +12,7 @@ We can call that structure - **traditional flat project structure**, or just **f
 
 While the flat structure is appropriate and sufficient for simpler projects, when the project grows and the number of modules increase, the flat structure starts suffering from many drawbacks:
 * Flat structure does not scale when the project and number of modules grows.
-* Flat structure is hard and confusing to navigate with numerous modules in the project.
+* Flat structure is hard and confusing to navigate with numerous modules at the same hierarchy level.
 * Flat structure relies only on module names to provide hints about relations between modules.
 * Flat structure does not suggest the abstraction level of a specific module.
 * Flat structure does not use any high-level constructs that might suggest how modules are organized and related.
@@ -29,23 +31,165 @@ While the flat structure is appropriate and sufficient for simpler projects, whe
 We can call that structure - *strategic DDD project structure*, or just *strategic structure*.
 
 ### Decision Details
-In strategic structure, we think about project root as an equivalent to the whole system. One step below the system, we have organizational directories for each domain in our system, then the
-directory for generic reusable modules and the directory for language extensions.
+Concrete implementations of strategic structure can differ. So we'll cover here two variants that we used at the `klokwrk-project` at different moments in its evolution. We'll start with a simpler
+structure used in the klokwrk at the beginning. Regarding the naming, let's call it a *simple strategic structure*.
 
-Domain directories can contain modules representing domain libraries that we can share across the whole domain. We can distinguish domain library modules by the presence of the `lib` prefix in their
-name.
+#### Simple strategic structure
+In this structure variant, all structure-related directories are placed directly under a project root (`klokwrk-project`) as shown in the following listing:
 
-We can further organize the content of domain directories into appropriate subdomains using a flat approach. In that case, an organization and grouping mean is the module name itself, and it must
-contain the subdomain name. Optionally, we can organize subdomain modules into subdomain directories. Using subdomain directories is useful when we have, for example, more than two subdomains in the
-same domain.
+    klokwrk-project
+    ├── ... (other files or directories)
+    ├── cargotracker
+    │   ├── cargotracker-booking-boundary-web
+    │   ├── cargotracker-booking-commandside-app
+    │   ├── cargotracker-booking-commandside-test-support
+    │   ├── cargotracker-booking-domain-model-aggregate
+    │   ├── cargotracker-booking-domain-model-command
+    │   ├── cargotracker-booking-domain-model-event
+    │   ├── cargotracker-booking-domain-model-service
+    │   ├── cargotracker-booking-domain-model-value
+    │   ├── cargotracker-booking-out-customer
+    │   ├── cargotracker-booking-queryside-model-rdbms-jpa
+    │   ├── cargotracker-booking-queryside-projection-rdbms-app
+    │   ├── cargotracker-booking-queryside-test-support
+    │   ├── cargotracker-booking-queryside-view-app
+    │   ├── cargotracker-booking-rdbms-management-app
+    │   ├── cargotracker-booking-test-component
+    │   ├── cargotracker-lib-axon-cqrs
+    │   ├── cargotracker-lib-axon-logging
+    │   ├── cargotracker-lib-boundary-api
+    │   ├── cargotracker-lib-boundary-query-api
+    │   ├── cargotracker-lib-domain-model-command
+    │   ├── cargotracker-lib-domain-model-event
+    │   └── cargotracker-lib-web
+    ├── ... (other files or directories)
+    ├── lang
+    │   ├── klokwrk-lang-groovy
+    │   ├── klokwrk-lang-groovy-contracts-match
+    │   └── klokwrk-lang-groovy-contracts-simple
+    ├── ... (other files or directories)
+    ├── lib
+    │   ├── klokwrk-lib-archunit
+    │   ├── klokwrk-lib-datasourceproxy
+    │   ├── klokwrk-lib-datasourceproxy-springboot
+    │   ├── klokwrk-lib-hibernate
+    │   ├── klokwrk-lib-jackson
+    │   ├── klokwrk-lib-jackson-springboot
+    │   ├── klokwrk-lib-spring-context
+    │   ├── klokwrk-lib-spring-data-jpa
+    │   ├── klokwrk-lib-validation-constraint
+    │   ├── klokwrk-lib-validation-springboot
+    │   └── klokwrk-lib-validation-validator
+    ├── ... (other files or directories)
+    ├── platform
+    │   ├── klokwrk-platform-base
+    │   ├── klokwrk-platform-micronaut
+    │   └── klokwrk-platform-spring-boot
+    ├── ... (other files or directories)
+    ├── support
+    ├── ... (other files or directories)
+    ├── tool
+    │   └── klokwrk-tool-gradle-source-repack
+    └── ... (other files or directories)
 
-Generic reusable modules contain infrastructural code that often deals with nuances of integration with 3rd party libraries. Generic reusable modules have their organizational directory
-called - `lib`. It is placed directly under the project root. We can use generic reusable modules across the whole system.
+We can think about the project root as equivalent to the whole system. One step below the system, we have organizational directories for each domain in our system (`cargotracker` in our example),
+then the directory for **generic reusable libraries** (`lib`), and the directory for **language extensions** (`lang`).
 
-Language extension modules contain code that extends the feature set of programming language or its SDK library. The organizational directory of language extensions is - `lang`. We can use generic
-reusable modules across the whole system.
+Generic reusable libraries contain infrastructural code that often deals with nuances of integration with 3rd party libraries. We can use generic reusable libraries as dependencies of infrastructural
+code in the whole system. The important distinction are pure domain modules, which should not have (in general) a dependency on any infrastructural code.
 
-Much more details about is available in "[Organizing modules and packages](../../article/modules-and-packages/modulesAndPackages.md)".
+Language extensions contain code that extends the feature set of programming language or its SDK library. We can use language extensions across the whole system, even in pure domain modules.
+
+Just bellow the root we have some additional directories like `tool` (containing custom-developed miscellaneous tools related to the project), `platform` (containing Gradle-related artifacts for
+dependency management), and `support`. Directory `support` contains every other artifact (other than source code) necessary for various aspects of the project. Here we can find documentation,
+supportive scripts, git hooks, etc.
+
+Inside domain directories (`cargotracker` in our example), we have three different artifact types. At the lowest abstraction level are **domain libraries** that can be recognized by
+`[domain-name]-lib-*` pattern in their name (i.e., `cargotracker-lib-axon-cqrs`, `cargotracker-lib-web`, etc.). Domain libraries contain code reusable across the domain.
+
+Then we have **subdomain libraries**, recognized by `[domain-name]-[subdomain-name]-*` pattern. These contain code reusable only inside a single subdomain. In our example, the name of a subdomain
+is `booking`, so `cargotracker-booking-boundary-web`, `cargotracker-booking-domain-model-command`, etc., are examples of subdomain libraries.
+
+And finally, at the highest abstraction level, we have applications. Since, usually, applications belong to subdomains, their name will follow the `[domain-name]-[subdomain-name]-*-app` pattern
+where the `app` suffix distinguishes them from subdomain libraries.
+
+#### Elaborate strategic structure.
+Although a significant improvement over traditional flat project layouts, a simple strategic structure has some shortcomings. Those issues may not be a real burden in the early project stages. But
+the problems become more evident as the project grows, especially if it grows in the number of subdomains and corresponding modules.
+
+For example, as the most valuable project artifacts, modules are not separated from all other artifacts in the project root. This certainly does not help when you try to navigate through the project
+tree. Further, all domain and subdomain modules are crammed together in a single directory. Although this may work for a (very) small number of subdomains, it can become a heavy burden if the number
+of subdomains grows.
+
+The following listing shows the example of the elaborate strategic structure as is used today in the `klokwrk`:
+
+    klokwrk-project
+    ├── ... (other files or directories)
+    ├── modules
+    │   ├── cargotracker
+    │   │   ├── booking
+    │   │   │   ├── app
+    │   │   │   │   ├── cargotracker-booking-commandside-app
+    │   │   │   │   ├── cargotracker-booking-queryside-projection-rdbms-app
+    │   │   │   │   ├── cargotracker-booking-queryside-view-app
+    │   │   │   │   └── cargotracker-booking-rdbms-management-app
+    │   │   │   └── lib
+    │   │   │       ├── cargotracker-booking-boundary-web
+    │   │   │       ├── cargotracker-booking-commandside-test-support
+    │   │   │       ├── cargotracker-booking-domain-model-aggregate
+    │   │   │       ├── cargotracker-booking-domain-model-command
+    │   │   │       ├── cargotracker-booking-domain-model-event
+    │   │   │       ├── cargotracker-booking-domain-model-service
+    │   │   │       ├── cargotracker-booking-domain-model-value
+    │   │   │       ├── cargotracker-booking-out-customer
+    │   │   │       ├── cargotracker-booking-queryside-model-rdbms-jpa
+    │   │   │       ├── cargotracker-booking-queryside-test-support
+    │   │   │       └── cargotracker-booking-test-component
+    │   │   └── lib
+    │   │       ├── cargotracker-lib-axon-cqrs
+    │   │       ├── cargotracker-lib-axon-logging
+    │   │       ├── cargotracker-lib-boundary-api
+    │   │       ├── cargotracker-lib-boundary-query-api
+    │   │       ├── cargotracker-lib-domain-model-command
+    │   │       ├── cargotracker-lib-domain-model-event
+    │   │       └── cargotracker-lib-web
+    │   ├── lang
+    │   │   ├── klokwrk-lang-groovy
+    │   │   ├── klokwrk-lang-groovy-contracts-match
+    │   │   └── klokwrk-lang-groovy-contracts-simple
+    │   ├── lib
+    │   │   ├── klokwrk-lib-archunit
+    │   │   ├── klokwrk-lib-datasourceproxy
+    │   │   ├── klokwrk-lib-datasourceproxy-springboot
+    │   │   ├── klokwrk-lib-hibernate
+    │   │   ├── klokwrk-lib-jackson
+    │   │   ├── klokwrk-lib-jackson-springboot
+    │   │   ├── klokwrk-lib-spring-context
+    │   │   ├── klokwrk-lib-spring-data-jpa
+    │   │   ├── klokwrk-lib-validation-constraint
+    │   │   ├── klokwrk-lib-validation-springboot
+    │   │   └── klokwrk-lib-validation-validator
+    │   ├── platform
+    │   │   ├── klokwrk-platform-base
+    │   │   ├── klokwrk-platform-micronaut
+    │   │   └── klokwrk-platform-spring-boot
+    │   └── tool
+    │       └── klokwrk-tool-gradle-source-repack
+    ├── ... (other files or directories)
+    ├── support
+    └── ... (other files or directories)
+
+At the top level, we have just two directories with predefined names: `modules` and `support`. All our development efforts will primarily focus on `modules`, while here and there, we'll add something
+in the `support` directory. Therefore, 99% of the time, developers will focus only on `modules` and `support`, and the rest of the root content will no longer clutter with the most crucial project
+artifacts.
+
+The first level of the `modules` directory content is organized the same as it was with the simple strategic structure. However, there is a significant distinction under the domain directory
+(`cargotracker` in our example). At the domain level, each subdomain has its own dedicated directory (`booking` in our example), and domain libraries are placed in the dedicated `lib` directory. At
+the subdomain level, we further categorize subdomain libraries in the `lib` directory and applications in the `app` directory.
+
+As a result, the elaborate strategic structure will leave little doubt about each module's context and abstraction level. Navigation should be easy and apparent.
+
+More details about strategic structure can be found in "[Organizing modules and packages](../../article/modules-and-packages/modulesAndPackages.md)" article.
 
 ## Consequences
 ### Positive
@@ -59,7 +203,7 @@ Much more details about is available in "[Organizing modules and packages](../..
 ### Negative
 * The strategic structure is not appropriate for simple projects that will never grow beyond initial inception and vision.
 * Build tooling might have problems with the custom structure, which diverges from the most common case.
-  * With flexible enough build tool, can be solved with appropriate tool configuration, by 3rd party plugins, or by developing custom build tool plugins. `klokwrk-project` uses
+  * With flexible enough build tool, issues can be resolved with appropriate tool configuration, by 3rd party plugins, or by developing custom build tool plugins. `klokwrk-project` uses
     [kordamp-gradle-plugins](https://github.com/kordamp/kordamp-gradle-plugins) for this purpose.
 
 ### Neutral
