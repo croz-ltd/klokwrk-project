@@ -81,6 +81,9 @@
                     <cell name="cargotracker-booking-queryside-model-rdbms-jpa" pattern="cargotracker-booking-queryside-model-rdbms-jpa.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
+                    <cell name="cargotracker-booking-out-customer" pattern="cargotracker-booking-out-customer.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
                     <cell name="domain model" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                       <grid>
                         <row>
@@ -88,15 +91,6 @@
                         </row>
                         <row>
                           <cell name="cargotracker-booking-domain-model-service" pattern="cargotracker-booking-domain-model-service.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                        </row>
-                        <row>
-                          <cell name="outbound adapter" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
-                            <grid>
-                              <row>
-                                <cell name="cargotracker-booking-out-customer" pattern="cargotracker-booking-out-customer.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                              </row>
-                            </grid>
-                          </cell>
                         </row>
                         <row>
                           <cell name="cargotracker-booking-domain-model-command" pattern="cargotracker-booking-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
@@ -187,7 +181,7 @@
         </cell>
       </row>
       <row>
-        <cell name="lang (language extensions)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+        <cell name="klokwrk-lang (language extensions)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
             <row>
               <cell name="klokwkr-lang-groovy-contracts-simple" pattern="klokwkr-lang-groovy-contracts-simple.*" vexpanded="false" illegal="false" visibility="public" drill="true" />

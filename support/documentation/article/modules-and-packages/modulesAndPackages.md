@@ -1,177 +1,290 @@
 # Organizing modules and packages
 * **Author:** Damir Murat
 * **Created:** 13.05.2020.
-* **Updated:** 01.04.2021.
+* **Updated:** 14.08.2022.
 
 ## Introduction
-In this article, we'll explore and describe one specific way of organizing and structuring artifacts of the larger project. As a concrete example, we'll use
+In this article, we'll explore one specific way of structuring the project layout and organizing internal module packages on the larger multi-module project. As a concrete example, we'll use
 [Project Klokwrk](https://github.com/croz-ltd/klokwrk-project).
 
-For organizing high-level project artifacts, Klokwrk uses strategic DDD concepts like domains and subdomains. Besides other things, a meaningful organization can help manage dependencies between
-modules and dependencies between modules and 3rd party libraries. It can also bring significant improvements in orientation and navigation at this level.
+For structuring high-level project layout, Klokwrk uses strategic DDD concepts of domains and subdomains together with differences in abstraction levels of separate modules. A sensible project layout
+significantly improves orientation and navigation at the project level. This is a vital characteristic because we always look for things and navigate between them during development. Furthermore,
+a meaningful project structure also supports and improves the management of dependencies, either direct dependencies between modules or between modules and 3rd party dependencies.
 
-Going one step deeper at the **application** package level, Klokwrk mainly follows hexagonal architecture ideas. It also introduces some CQRS/ES (Command Query Responsibility Segregation/Event
-Sourcing) flavor to the architecture when appropriate.
+Going one step deeper, at the level of application module packages, Klokwrk follows hexagonal architecture ideas. It also introduces CQRS/ES (Command Query Responsibility Segregation/Event Sourcing)
+flavor to the architecture when appropriate.
 
 When combined, we believe that strategic DDD and hexagonal architecture provide suitable organizational constructs with exact placeholders for tactical DDD artifacts like aggregates, entities,
 value objects, etc.
 
 It is not unusual concerns like these pop-up late in the development cycle, often after several releases are already in production. Even when they come to focus, it is typically hard to resolve them
-since they might require dramatic refactoring of applications. It might be easier if we have a suitable structure in place from the start. It shouldn't excessively disturb development in the early
-phases, and it should be flexible enough to support the system's growth.
+since they might require dramatic refactorings. It might be easier if we have a suitable structure in place from the start. It shouldn't excessively disturb development in the early phases, and it
+should be flexible enough to support the system's growth.
 
-With the recent industry move towards microservices, carefully organizing high-level development artifacts has even more importance.
+With the recent industry move towards microservices, carefully organizing high-level development artifacts is even more critical since it can enable efficient usage of mono repositories. Otherwise,
+you may end up with a project per microservice that is hard to manage on a larger scale.
 
-This article explores issues that commonly don't exist in more straightforward projects. For this reason, it will be best if readers were exposed and have some experience working on mid to complex
-projects comprising multiple modules. Familiarity with DDD concepts, hexagonal architecture, and CQRS/ES is also a plus, although some of these ideas are introduced and briefly explained in the
-article. Project and package organization are based on constructs from the Java language but can be translated in any other environment. Although demonstrated code examples use the Groovy language,
-they should be readable enough for all readers.
+This article explores issues that commonly don't exist in simpler projects. It will be best if readers have some experience working on mid to complex projects comprising multiple modules. Familiarity
+with DDD concepts, hexagonal architecture, and CQRS/ES is a plus, although some of these ideas are briefly explained in the article. Project and package organization are based on constructs from the
+Java language but can be translated in any other environment. Although demonstrated code examples use the Groovy language, they should be readable enough for all readers.
 
 ### Main goals
-After the brief discussion above, we can try to enumerate the **main goals** of our targeted project structure:
+After the brief discussion above, we can try to enumerate the main goals of our targeted project structure:
 
 - Provide means for organizing modules that will support future system growth and enable controlled management of dependencies between modules and dependencies on 3rd party libraries.
-- Provide a way for organizing **application** and **library** packages that are flexible enough to support future development and feature expansion smoothly.
-- Organization of **application** packages should adhere to the sound application architecture principles like those promoted by hexagonal, onion, or clean architectures.
+- Provide a way for organizing application and library packages that are flexible enough to support future development and feature expansion smoothly.
+- Organization of application packages should adhere to the sound application architecture principles like those promoted by hexagonal architecture.
 
 ## Organizing modules
-Let's start with modules of `klokwrk-project` that were available at the time of this writing (May 2020). Here is how they look in an IDE:
+### Problems with traditional flat project structure
+The primary technique for organizing modules in multi-module projects is using an appropriate project layout. Many multi-module projects start by placing all modules directly under the project root.
+We'll name such a structure a *traditional flat project structure* or just the **flat structure**.
 
-![Image 1 - Modules layout in an IDE](images/01-modules-in-ide.jpg "Image 1 - Modules layout in an IDE") <br/>
-*Image 1 - Modules layout in an IDE*
+While the flat structure is appropriate for simpler projects, when the project grows and the number of modules increases, the flat structure suffers from many drawbacks:
+- The flat structure does not scale when the project and number of modules grow.
+- The flat structure is hard and confusing to navigate with numerous modules at the same hierarchy level.
+- The flat structure relies only on module names to explain the relationship between modules. It does not use any high-level constructs for that purpose.
+- The flat structure does not suggest the abstraction level of a specific module or group of modules.
+- The flat structure often requires extracting modules in separate repositories just because confusion becomes unbearable with numerous modules.
+- When developing microservices, the flat structure practically forces us to use one project per microservice.
 
-### System
-At the top is a **system artifact** `klokwrk-project` that represents a system being built. It maps to the whole problem space of our solution. As long as we have a single project for the entire
-solution, all related artifacts are placed under the system directory.
+### Introducing strategic structure
+The general solution principle might be obvious. We just have to introduce some hierarchy in the project layout. The harder problem is how exactly we should organize that hierarchy. After some
+tinkering and experimentation, we found the solution in strategic DDD concepts of domain and subdomain together with different abstraction levels that separate module groups have. We'll name this
+structure a *strategic DDD project structure* or just a **strategic structure**.
 
-### Domain
-The `cargotracker` is the name of our domain. The corresponding directory does not represent an artifact by itself. Instead, it just groups all artifacts belonging to that domain. As system
-implementation grows, additional domain grouping directories might be added. They can address essential and distinguishing business features, or be more supportive or non-functional in nature.
+> In DDD, there is no exact formal definition for the term "domain". Instead, the domain is considered as a general subject area where the end user applies the software.
+>
+> To make things a bit more concrete, we can say that the top-level domain represents the area in which some company operates, such as banking, accounting, journalism, sports, healthcare, etc.
+> However, the top-level domain is rarely especially useful for software modeling. Usually, we focus on much smaller parts of a business. We typically focus on subdomains.
+>
+> However, note that terms of domain and subdomain are generally used interchangeably in DDD. Therefore, the top-level domain of our software project can be just a smaller (sub)domain of a larger
+> business. In addition, domains and subdomains do not represent a hierarchy of only two levels. They can form a hierarchy of any depth.
+>
+> When modeling, we usually think about subdomains and their hierarchy. However, to avoid ambiguity, at some places we'll use the term "domain" to refer to our project's top-level (sub)domain.
 
-##### Implementation note
-The Gradle build system does not support artifact-less directories out of the box. By default conventions, every directory known to the Gradle should produce some artifact (jar, war, etc.).
-Fortunately, Gradle is flexible enough to support the described layout by some custom scripting in `settings.gradle`. The more elegant solution is to employ
-[kordamp-gradle-plugins](https://github.com/kordamp/kordamp-gradle-plugins), the excellent portfolio of Gradle plugins with direct support for our desired project layout.
+The best way to describe strategic structure is by analyzing some example. Instead of using some artificial project, well dive into the structure of `klokwrk-project`. Here is what the strategic
+structure of the `klokwrk-project` looks like:
 
-### Subdomain
-As explained in DDD, each business domain can be divided into subdomains. When modeling a solution for it, the business-level "subdomain" concept is mapped into a modeling-level "bounded context".
-In our example, names of implementation artifacts belonging to the bounded context are prefixed with the domain name followed by subdomain name. Therefore, for the `booking` subdomain of
-`cargotracker` domain, we get `cargotracker-booking-*` modules.
+![Image 1 - Strategic structure](images/01-startegic-structure.jpg "Image 1 - Strategic structure") <br/>
+*Image 1 - Strategic structure*
 
-If you want, you may also organize subdomains into grouping directories, in the same way we did for domains. However, even if you do this, it is recommended to keep the same naming convention.
-That way, all potential naming conflicts at the level of concrete JAR files can be avoided.
+### Top-level organization
+Right below the project's root, we have the `modules` directory. It contains actively developed software artifacts and their source code. During everyday work, we will spend most of the time here.
+The hierarchy and organization of `modules` directory content are the primary focus of our strategic structure.
 
-There are multiple `cargotracker-booking` modules, but they are not all at the same abstraction level. Modules with the `app` suffix are highest-level modules, representing runnable artifacts
-([Spring Boot](https://spring.io/projects/spring-boot) applications). The products of other `cargotracker-booking` modules are non-runnable jar archives that are used as dependencies by runnable
-modules. Although producing jars, these non-runnable modules do not have reusability potential outside of the `booking` subdomain. They are specific to the `booking` subdomain.
+At the same level, there is the second important directory - `support`. It contains things created to support other aspects of the project. This is the home for documentation articles, development
+notes, supportive scripts, git hooks, etc. The `support` directory has a free-form organization, and the strategic structure does not impose any rules here. If you want to see a concrete example,
+look at the source of the `klokwrk-project`.
 
-With an increasing number of artifacts, it is quite important to control and monitor dependencies between them. If you don't, you might end up with undesired dependencies, or even with dependency
-cycles in the worst case. This can be done in several ways. You can use specialized tools like [Structure 101](https://structure101.com) or
-[Sonargraph](https://www.hello2morrow.com/products/sonargraph/explorer), or even better, write appropriate tests, for example, with the help of [ArchUnit](https://www.archunit.org/) library.
+With just those two directories, we moved all of our day-to-day work from the clutter of other files in the project's root. Contrary to the flat project structure, finding starting points
+for our work is much easier now.
 
-The abstraction level and direction of compile-time dependencies (directed blue arrows) for our `booking` subdomain are clearly shown in the following image (partial `klokwrk-project` model from
-Structure101 Studio for Java):
+While we are still at the top of the project hierarchy, it is worth mentioning the root project itself. It is essential just because of a fact it represents a system we are building - it is a system
+artifact. Also, there are a few other things to note. For example, the root directory's name (or some parts of it) frequently appears in the names of other artifacts and their internals. Another
+interesting thing is that the project's name often does not correspond to anything already known in the business domain. The marketing team or upper management may coin it, or it may be just a result
+of the inspiration of the developer tasked to create the first commit. Nevertheless, if the project stays around for some time, its name will probably become a new noteworthy term in the domain.
 
-![Image 2 - Abstraction level and dependencies of booking subdomain modules](images/02-cargotracker-booking-partial-dependencies-S101.png "Image 2 - Abstraction level and dependencies of booking subdomain modules") <br/>
-*Image 2 - Abstraction level and dependencies of booking subdomain modules*
+Let's go back to the `modules` directory and start analyzing its organization and structure.
 
-Let's take a look at the purpose of each `cargotracker-booking` module. First, we have `*-app` modules that utilize CQRS and event sourcing via
-[Axon framework](https://github.com/AxonFramework/AxonFramework) and [related infrastructure](https://axoniq.io/product-overview/axon-server). Each of these apps implements a single high-level
-CQRS/Event sourcing architectural component, so we ended up with `commandside` (command processing), `queryside` (query processing), and `queryside-rdbms-projection` (translating events into RDBMS
-tables) applications.
+### The hierarchy of subdomains
+The most valuable artifacts of our project implement a software model based on carefully selected business concepts. The strategic structure organizes such artifacts into domain/subdomain hierarchies.
+In the example, we have the `cargotracker` directory corresponding to our top-level (sub)domain. The top-level (sub)domain is usually divided into a series of more narrow subdomains. In the example,
+we have only a single subdomain - `booking`. The `booking` directory is a place for organizing modules specific to the concrete implementation of the corresponding "booking" **bounded context**.
 
-Next we have `cargotracker-booking-axon-api` and `cargotracker-booking-queryside-rdbms-projection-model`. Both modules are at a similar abstraction level. They logically belong to the
-**subdomain's** internal infrastructure and serve as a layer adapting to and using selected concrete technologies, and that requires compile-time access to some 3rd party libraries (not shown in the
-picture).
+> In DDD, the subdomain concept usually relates to the part of the business as it appears in the real world. When the relevant subdomain's real-world concepts are modeled and translated into software,
+> we usually talk about the **bounded context**. Although not direct peers, notions of subdomain and bounded context are often used interchangeably, especially for green-field projects and when
+> discussing higher-level business abstractions.
 
-Classes from these modules are not exposed to the world outside of the subdomain. Module `cargotracker-booking-axon-api` defines commands and events that are data structures supporting Axon's
-implementation of CQRS/ES. Commands and events are considered the primary internal APIs of Axon CQRS/ES applications, which explains the name. Although commands and events are very close to the
-simple data structure objects, it is allowed for them to use Axon API at compile-time. Module `cargotracker-booking-axon-api` is used by the command side application (commands and events) and
-projection application (events only).
+The `booking` directory further divides its modules into **subdomain libraries** (the `booking/lib` directory) and **subdomain applications** (the `booking/app` directory). During development, it is
+convenient to make this library-application distinction explicit.
 
-Module `cargotracker-booking-queryside-rdbms-projection-model` hosts JPA-related classes responsible for implementing requirements of subdomain queries. Since the `booking` subdomain has selected
-an RDBMS system for building its primary projections and JPA as a database access technology, the module will have a compile-time dependency on the JPA APIs. This module can be used from the
-projection application and queryside application.
+The names of subdomain library modules follow a particular pattern - `[domain_name]-[subdomain_name]-*`. For subdomain application modules, we additionally add `app` suffix to the name -
+`[domain_name]-[subdomain_name]-*-app`. Here, domain and subdomain names reflect the hierarchy of our strategic structure. Although that hierarchy is already expressed via directories, it is helpful
+to have it in module names to avoid ambiguities and conflicts when building concrete artifacts (i.e., JAR archives).
 
-Therefore, both modules require quite different 3rd party libraries (Axon or JPA) and are used by different modules. Even if you think that both modules can be combined into one, significant
-differences in the usage and differences in 3rd party libraries should convince you otherwise.
+Application modules are runnable artifacts, and they can use, depending on their needs, any other module from the system. The only exception is modules from different subdomains/bounded contexts if
+we have those. This characteristic positions application modules at the top of the abstraction and dependency hierarchy. As with many executables, application modules are not intended to be directly
+reused. In general, if we have to reuse some part of application modules, we'll first extract a standalone module at the appropriate abstraction level and reuse that.
 
-Module `cargotracker-booking-domain-model-value` contains subdomain's value objects. In CQRS applications, aggregates and entities belong only to the command side. They cannot be used either from
-projections or query side. But domain value objects can be shared among all of these. In one part, value objects are used for expressing the internal state of aggregates. They are also used as
-building blocks for modeling events. Query side can also use domain value objects while describing query requirements.
+Similarly, subdomain libraries can also reuse modules from the lower abstraction levels, but the reverse does not hold. Subdomain libraries are reusable only inside the boundaries of their subdomain.
+It is not just because of the high abstraction level. Subdomain libraries, together with subdomain applications, are the place where technology meets business requirements. This is where we have a
+coupling between business and our technology choices. Since the business concepts are part of the bounded context, it does not make sense to reuse subdomain libraries elsewhere. The klokwrk strategic
+structure has a typical example - `cargotracker-booking-queryside-model-rdbms-jpa`, the module containing JPA entities specific for `booking` bounded context.
 
-That broad reusability potential across subdomain is the main reason for extracting domain value objects into a standalone module.
+Despite this, it is not forbidden to have generic infrastructural code at the subdomain library level. It may be that a particular infrastructural code is not interesting in other subdomains, or we
+have just created a temporary subdomain library destined to become a domain library or a generic reusable library at the end.
 
-### Domain libraries
-The expanded compile-time dependency graph containing `cargotracker` domain libraries is shown in the next picture.
+However, one particular set of business related subdomain libraries should be as free of technology as possible - the **domain model**.
 
-![Image 3 - cargotracker domain libraries dependencies](images/03-cargotracker-domain-libraries-dependencies-S101.png "Image 3 - cargotracker domain libraries dependencies") <br/>
-*Image 3 - `cargotracker` domain libraries and dependencies*
+> In DDD, the domain model is not a single artifact. Instead, every bounded context has its own domain model. The business-related vocabulary appearing in the domain model is constrained by the
+> bounded context's **ubiquitous language**. Therefore, that particular instance of ubiquitous language is not correct and should not be used outside the corresponding bounded context. This
+> correctness and validity refer primarily to the ubiquitous language's meanings and interpretations of terms. Different ubiquitous languages can contain terms with the same names, but their
+> interpretation and meaning may differ significantly.
 
-Modules belonging to domain libraries contain infrastructural code at the lower abstraction level then subdomain libraries. That code is reusable across the whole `cargotracker` domain.
-As infrastructural modules, they are related to the specific technology choices made for the domain in question. That can be seen in their names to some extent, and the selection of 3rd party
-libraries used by each module (not shown in the picture).
+#### Modules of the domain model
+The domain model of klokwrk's `booking` bounded context looks unusual as it comprises five separate modules (modules with the `cargotracker-booking-domain-model-*` name pattern). We have a module for
+aggregates and entities, a module for value objects, a module for commands, a module for events, and a module for domain services.
 
-If we have multiple domains using the same tech stack, domain libraries can be pulled out into the generic libraries layer to make them more available. Besides, domain libraries can also contain
-"incubating" libraries that are destined to be generic and widely reusable at the end. But for various reasons, it is more convenient to keep them at the domain level temporarily.
+> An entity is an object whose internal state changes over time, but the identity always remains the same. Entities are usually long-lived and persisted.
+>
+> A value object is an immutable object whose properties define its identity. It can be replaced by another value object with the same properties.
+>
+> The aggregate is a cluster of entities and value objects. Any object inside the aggregate can be accessed only through the public interface defined by the aggregate's root entity. The aggregate is
+> a consistency boundary for all inner objects and is responsible for maintaining all business invariants through the cluster of contained objects.
 
-Let's look quickly at what each of these modules contains. `cargotracker-lib-axon-cqrs` includes helpers that ease some aspects of working with Axon APIs. Module `cargotracker-lib-axon-logging`
-provides logging infrastructure that gives more insight into the inner working of various Axon components. `cargotracker-lib-axon-api` brings in base classes and interfaces for working with commands
-and events.
+Typical applications will have only a single separate module for the domain model, or the domain model will be included directly in the corresponding application module. To understand the reasons for
+separation in our example, we have to dive deeper into the chosen architecture and technology. As we do this, we'll uncover several principles guiding code separation into standalone modules.
 
-You may wonder why so many Axon related library modules? As we decided to have microservices for each significant runnable component in CQRS/Event sourcing application, it might be expected for them
-to use different Axon dependencies (Axon framework is not delivered as a single jar, but instead contains multiple modules addressing different concerns). Beside high cohesion and low coupling,
-differences in 3rd party dependencies are usually a significant hint for creating independent modules, even when high cohesion and low coupling attributes are not yet clearly visible and apparent.
+The `booking` bounded context uses the [Axon framework](https://github.com/AxonFramework/AxonFramework) (and corresponding [infrastructure](https://axoniq.io/product-overview/axon-server)) as the
+implementation of CQRS and event sourcing architectural patterns. In CQRS/Event sourcing, we have two major high-level components - the command model (or **commandside**) and the query model (or
+queryside). The query model can be further divided into create/update (**queryside-projection**) and read-only (**queryside-view**) components.
 
-We have two modules left. `cargotracker-lib-web` contains classes related to the handling of HTTP requests and responses. For example, here we deal with the formatting and localization of successful
-and exceptional JSON responses. Module `cargotracker-lib-boundary-api` formalizes general structures of domain boundary API that all inbound adapters (web, messaging, etc.) must follow to be able to
-speak with domain application services (a.k.a. domain facades).
+> In CQRS/Event sourcing, the **commandside** is responsible for accepting commands intended to change the system's state. Commands are routed to specific aggregate instances, then aggregate verifies
+> the command and publishes relevant events if the command is valid. Based on published events, aggregate first updates its own state and then makes events available to all other interested consumers.
+>
+> One or more **queryside-projection** components listen to published events and, based on their type and properties, create appropriate data views. It is not that important which concrete data
+> storage technology is used, but the standard and traditional choice is the RDBMS system, a.k.a. conventional SQL database. Besides creating data views, queryside-projections can also invoke
+> commands inside of a bounded context or send **public** event notifications outside of a bounded context.
+>
+> The **queryside-view** component is responsible just for reading the data prepared by queryside-projections.
 
-Boundary API refers to classes defining the data structures and exceptions that are part of the contract between the outside world and domain hidden behind domain application services. They are
-allowed to be shared between them. Domain facade handles all boundary requests by converting them into appropriate internal commands or queries. On the other side, deep domain artifacts like
-aggregates are allowed to throw boundary exceptions understood by the outside world without any facade-level translation necessary.
+All CQRS/Event sourcing high-level components can be deployed as part of a single application. In the `booking` bounded context, however, we decided to have three separate applications, one for
+commandside, one for queryside-projection, and one for queryside-view component. As a result, we have a single **logical microservice** - `cargotracker-booking`, split into three physical parts, each
+running in a separate JVM. There are multiple reasons for such separation, including physically enforced separation of concerns, support for different operational requirements (i.e., read-write vs.
+read-only database access), or support for different scalability configurations of each physical component.
 
-### Generic libraries and language extensions
-Going further down the abstraction ladder, we will find generic reusable libraries and, even further down, language extensions. The reusability potential of these modules is high and is not tied to
-any domain. Here we can discover supportive additions for various commonly used 3rd party libraries and language-level helpers that expand features of programming languages used in our system.
+However, the physical component split also introduced some consequences like the need for extracting a domain model into at least one separate standalone module to be able to reuse it in all three
+applications. But we have five domain modules. Let's see why.
 
-![Image 4 - klokwrk reusable libraries and language extensions](images/04-klokwrk-reusable-libraries-and-language-extensions-S101.png "Image 4 - klokwrk reusable libraries and language extensions") <br/>
-*Image 4 - `klokwrk` generic libraries and language extensions*
+In CQRS/Event sourcing applications, aggregates (and contained entities) belong to the commandside. Queryside components should not have access to them. Further, when using the Axon framework, the
+implementation of aggregates requires some Axon dependencies that are not needed in queryside components. Therefore, the commandside application is the sole consumer of aggregates; then, aggregates
+require unique 3rd party dependencies not needed elsewhere, and finally, we want to restrict access to the code implementing aggregates. Those three reasons are our guidelines and justification for
+extracting aggregates and their contained entities into a standalone module.
 
-These modules are used as direct compile-time dependencies from higher levels. Still, we can also have runtime-only modules that need to be available in the classpath but are not directly referenced
-from higher-level code (`klokwrk-lib-hibernate` is an example).
+Commands are another part of the commandside model. They model state-changing requests sent to the aggregate instances. Commands carry identifiers of aggregate instances (modeled as simple values or
+as value objects) but cannot reference aggregate objects directly. One way to prevent those accidental references is to physically separate commands from aggregates into different standalone modules.
+In that case, unidirectional dependency from aggregates toward commands can be modeled at the dependency level. In addition, we can use commands from queryside-projection components and from different
+implementations of inbound ports (i.e., web or messaging controllers). Still, none of these components should have access to aggregates. We should also note that commands in Axon applications have a
+different set of required 3rd party dependencies than aggregates. Therefore, the desire for physical and explicit control of dependencies between modules, a different set of consumers, and different
+3rd party dependencies are the reasons to divide commands from aggregates into separate physical modules.
 
-As the reusability of generic libraries is high and the abstraction level relatively low, it is standard for infrastructural code at the higher abstraction level to reference these modules.
-In contrast, it is not expected that business-level domain classes (i.e., aggregates, entities, and value objects) use them. However, language extensions are different. As they expand the
-capabilities of the programming language, the same language in which domain classes are written, then it is allowed for domain classes to use these language extensions. In fact, some language
-extensions might be designed purposely to support the more straightforward implementation of domain classes.
+Events are created and published from aggregates at the commandside. At the same time, queryside-projection modules use events to create and update projected data, or to invoke command requests, or
+to send notifications to other bounded contexts. Since queryside-projection components should not have access to aggregates, we do not want to include events in the already extracted aggregate
+module. Instead, we have to pull events into another standalone module.
 
-Another aspect worth keeping in mind is the potential number of dependencies that higher-level code might have on these modules. Successful reusable libraries can be used all over the place. Thus,
-it is desirable to achieve the right level of implementation stability as soon as possible. In general, this will be easier to accomplish with modules narrower in their scope. A high level of code
-coverage, proper and meaningful documentation, and several concrete usage scenarios are some tools that can all improve stability.
+Value objects are basic building blocks of the domain model. They are utilized across the whole domain model and in various other application parts and components. That broad reusability across the
+entire subdomain is the primary reason for extracting value objects into a standalone module.
 
-There are several modules in the group of reusable libraries. `klokwrk-lib-jackson` provides some custom serializers and deserializers not available in the
-[Jackson](https://github.com/FasterXML/jackson) distribution. `klokwrk-lib-jackson-springboot` brings an opinionated way of setting Jackson's defaults and means for configuring them, if needed, from
-the Spring Boot environment. Opinionated selection of Jackson defaults tries to provide Jackson configuration suitable for avoiding usage of Jackson annotations as much as possible.
+In the `booking` bounded context, domain services are part of the commandside model and are not exposed outside of it. They encapsulate concepts that are awkward to be expressed as either
+entities or value objects. Thus, we could include domain services in the aggregate module, but for consistency with other parts of the domain model, they are pulled into the standalone module as well.
 
-Another pair of related modules deal with the excellent [datasource-proxy](https://github.com/ttddyy/datasource-proxy) library. `klokwrk-lib-datasourceproxy` introduces useful extensions to the
-library like the implementation of a logging suppression filter that can ignore not-interesting queries (i.e. Axon's token store polling). `klokwrk-lib-datasourceproxy-springboot` provides support
-for setting up and configuring the library in the Spring Boot context.
+### The lower abstraction levels of strategic structure
+#### Domain libraries
+On the next level in the strategic structure, we can find domain libraries. Modules belonging to domain libraries contain infrastructural code at a **lower abstraction level** than subdomain
+libraries. As infrastructural modules, domain libraries are related to the specific technology choices made for the domain in question. The naming pattern for domain libraries is
+`[domain-name]-lib-*`. In our example, `cargotracker-lib-*` names suggest that domain libraries are reusable across the whole `cargotracker` domain.
 
-Module `klokwrk-lib-spring-context` contains customized extensions to the classes from the [Spring framework's](https://spring.io/projects/spring-framework) `spring-context` module. Currently, there
-is support for creating a list of message codes used when resolving localized messages from resource bundles. Finally, `klokwrk-lib-hibernate` deals with some peculiarities of the internal workings
-of [Hibernate ORM](https://hibernate.org/orm/).
+If we have multiple domains using the same tech stack, we can pull domain libraries into the generic libraries layer to make them more available. Similar to subdomain libraries, domain libraries can
+also contain "incubating" libraries destined to be generic and widely reusable in the end. But for various reasons, it is sometimes more convenient to keep them at the domain level temporarily.
 
-In the group of language extensions, we have a `klokwrk-lang-groovy` module. It contains some general-purpose constants, utility methods for convenient fetching of object's properties, and some
-infrastructure helping with relaxing requirements of Groovy map constructor. The last two features can help create immutable objects and support simple mapping of data from one object into another.
-Quite often, this is more than enough for data mapping purposes without requiring any additional library.
+Domain libraries will never contain code speaking the ubiquitous language of the bounded context. This is reserved only for subdomains. However, in domain libraries, we can have infrastructure
+supporting the implementation of the domain model. One typical example is the `cargotracker-lib-boundary-api` module which formalizes general structures and exceptions of domain boundary API that all
+inbound adapters (web, messaging, etc.) must know, understand and use to be able to speak with domain application services (a.k.a. domain facades).
+
+Therefore, the boundary API defines essential building elements of a contract between the outside world and the domain. Domain application services use boundary API elements to define interfaces
+exposed to the outside world. At the implementation level, domain application services handle all requests arrived at the boundary by converting them into appropriate internal commands and queries.
+
+Some parts of the boundary API are used in other direction too. For example, *deep* domain artifacts like aggregates or value objects are allowed to throw common boundary exceptions. Since they are
+part of the boundary API, the outside world can understand such exceptions without requiring any translation at the domain facade.
+
+#### Generic libraries
+Going further down the abstraction ladder of the strategic structure, we will find generic libraries. They typically contain infrastructural code with supportive additions for various commonly used
+3rd party libraries. Hence, the reusability potential of these modules is very high and is not tied to any domain.
+
+Generic libraries have high reusability potential and relatively low abstraction level. As such, they are commonly referenced and used from infrastructural modules at the higher abstraction levels.
+However, domain model classes and modules are not expected to use them. The domain model should be free of technology as much as possible.
+
+Successful generic libraries can be used all over the place. Thus, it is desirable to achieve the right level of implementation stability as soon as possible. In general, this will be easier to
+accomplish with modules narrower in their scope. A high level of code coverage, proper and meaningful documentation, and several concrete usage scenarios (ideally demonstrated through tests) are some
+tools that can improve stability.
+
+#### Language extensions
+Language extensions are the modules at the lowest abstraction level in our strategic structure. They comprise various language-level helpers and utilities that expand the features of the programming
+language and the corresponding SDK library used in our system.
+
+The reusability potential of language extensions is the widest in our strategic structure. We can use those modules everywhere. Moreover, contrary to generic libraries, even the domain model can use
+language extensions in the same way it uses programming language and corresponding SDK functionalities. In fact, some language extensions might be designed purposely to support the more
+straightforward implementation of particular aspects in domain classes.
+
+### Architectural skeleton and dependencies management
+Every software architecture describes relationships between different components and specifies dependencies and communication between them. Typically, architectural prescriptions focus on
+relatively fine-grained constructs like classes and interfaces. There is nothing wrong with that approach, but the related story of more coarse-grained components like packages and modules is often
+left out or just implied and not stated explicitly. As the system grows and the number of modules increases, the lack of high-level guidelines becomes more and more problematic.
+
+Our strategic structure can fill that void. With its abstraction levels and rough classification of modules, we have the high-level **architectural skeleton** defining a general requirements for
+module relationships and dependencies:
+- general
+  - Modules from lower abstraction levels must not depend on modules at higher abstraction levels.
+  - Circular dependencies between modules are not allowed.
+- subdomain modules
+  - Business logic, vocabulary (ubiquitous language) and the domain model belong to subdomain modules (both applications and libraries).
+  - Subdomain modules can generally depend on any infrastructural module from lower abstraction levels.
+  - The notable exception is the domain model, which should be independent of technology as much as possible and practical.
+- domain libraries
+  - Domain libraries contain infrastructural code related to the set of technologies used in any contained subdomain.
+  - Domain modules can generally depend on any infrastructural module from lower abstraction levels.
+- generic libraries
+  - Generic libraries contain infrastructural code that deals with widely used 3rd party dependencies or with technical aspects frequently occurring in any type of application.
+  - Generic libraries can be used from any module or component at the higher abstraction level.
+  - The domain model should not, in general, use generic libraries.
+- language extensions
+  - Language extensions contain extensions of programming language and SDK.
+  - Language extensions are at the lowest abstraction level and can be used from any other part of the system.
+  - The domain model can freely use language extensions.
+
+The architectural skeleton works together with finer-grained application architectures like hexagonal architecture. While application architectures handle relationships between components close to
+the implementation artifacts, the architectural skeleton takes care of the bigger picture, ensuring that modules are neatly organized and ordered.
+
+While our strategic structure and architectural skeleton are intended to be applied to systems following DDD principles, they can be helpful for more traditional applications as well. Concepts are
+universal and high-level and, with possible adjustments, can be applied in different environments.
+
+To keep the organization of modules tidy, especially for a large number of modules, we will need help from specialized tools. There are two aspects those tools should cover - visualization and
+automatic verification.
+
+For visualization of module dependencies, we can use tools like [Structure 101](https://structure101.com) or [Sonargraph](https://www.hello2morrow.com/products/sonargraph/explorer). They will show us
+module dependencies based on the bytecode of Java classes, so we can quickly grasp what depends on what in our system. For example, the following picture shows Structure 101 visualization of the
+dependencies between different module categories in the klokwrk's architectural skeleton.
+
+![Image 2 - Architectural skeleton dependencies](images/02-architectural-skeleton-dependencies.jpg "Image 2 - Architectural skeleton dependencies") <br/>
+*Image 2 - Architectural skeleton dependencies*
+
+We can easily dive in and focus on any level of details up to the classes and their fields and methods. In the following picture, we are still at the fairly high abstraction level while exploring
+inbound and outbound dependencies of the `booking` bounded context domain model.
+
+![Image 3 - Domain model dependencies](images/03-domain-model-dependencies.jpg "Image 3 - Domain model dependencies") <br/>
+*Image 3 - Domain model dependencies*
+
+Once we see and understand dependencies, we can cover automatic verification with architectural tests. Those are just unit tests focused on some aspect of architecture verification. It is important
+to have an appropriate library at hand that can easily explore dependencies at various abstraction levels. Klokwrk uses the [ArchUnit](https://www.archunit.org/) library for those purposes, together
+with some specialized klokwrk extensions on top of it, as we'll see later.
+
+### Summary of module organization
+As described, the appropriate organization of modules in a large multi-module project can be helpful in many ways.
+
+Starting with the **strategic structure**, we have introduced the organization and categorization of modules around concepts of DDD subdomains and **coarse-grained abstraction levels**. Besides
+offering general placeholders for different module types, the strategic structure also helps with everyday tasks like sensible orientation and navigation between a large number of artifacts.
+
+Regarding dependencies, the strategic structure provides a high-level **architectural skeleton** that offers general guidelines for module relationships. The architectural skeleton also establishes
+useful boundaries for any fine-grained application architecture applied on top of it. There are some tools to help with exploring module dependencies, but we should strive to encode the architectural
+skeleton in the form of unit tests.
 
 ## Basic package organization principles
 In the domain of separating **applications into packages**, several strategies are often mentioned. In most cases, we can hear about "packaging by layers" and "packaging by features" where
 packaging by features usually dominates (at least on paper). Also, there is an approach that combines these two - "packaging by layered features" [1]. Also, if an application tries to follow a
 well-defined architecture (like hexagonal architecture, for example), there will be more guidelines and rules to follow.
 
-What about **packages in standalone libraries**? There are no features, layers, or architecture to offer at least some guidance. We have to turn our attention to different abstractions like
+But what about **packages in standalone libraries**? There are no features, layers, or architecture to offer at least some guidance. We have to turn our attention to different abstractions like
 "components" or "toolboxes" and even sometimes apply packaging by "kind" in a very narrow scope, despite its lousy reputation [2].
 
 The main principles are striving for a reasonable level of cohesion inside a package, trying to minimize accidental and unnecessary dependencies between packages, and avoiding cyclic dependencies at
@@ -180,10 +293,10 @@ natural thing to do, but often is not. Learning from others' experiences and bei
 and if something does not feel right, it should probably be changed somehow.
 
 When you are dealing with numerous modules, each containing a dozen of packages, applying some consistency rules can be a lifesaver. For example, in the `klokwrk-project`, each module's root package
-name tries to use a hierarchy derived from a module name. With consistent and organized module naming in place, we can end up with root packages that do not collide across the entire system. For
-future maintenance and refactorings, this characteristic might be essential. Also, this is an excellent start for further packaging inside each module.
+name tries to use a hierarchy derived from a module name. With consistent and organized module layout and naming in place, we can end up with root packages that do not collide across the entire
+system. For future maintenance and refactorings, this characteristic might be essential. Also, this is an excellent start for further packaging inside each module.
 
-Let's look at how all this works in `klokwrk-project` on a few examples. We will start with packaging for libraries.
+Let's look at how all this works in `klokwrk-project` on a few examples.
 
 ## Packaging for libraries
 When organizing packages for libraries, the `klokwrk-project` tries to adhere to the principle of keeping high cohesion inside of module's packages while any circular dependencies are strictly
@@ -194,24 +307,27 @@ heterogeneous.
 Since we are extending or customizing features of concrete libraries, it is quite important to monitor required 3rd party dependencies. If they are disparate, we might need more fine-grained modules.
 On the other hand, if we target specific higher-level consumers, we might want to include more heterogeneous features to avoid too fine-grained modules that no one will use in isolation.
 
-The first example (Image 5) shows the packaging of `cargotracker-lib-axon-cqrs` and `cargotracker-lib-axon-logging` modules dealing with different aspects of the Axon framework.
+The first example (Image 4) shows the packaging of `cargotracker-lib-axon-cqrs` and `cargotracker-lib-axon-logging` modules dealing with different aspects of the Axon framework.
 
-![Image 5 - general example of library packaging comparison](images/05-general-example-of-library-packaging-comparison.jpg "Image 5 - general example of library packaging comparison") <br/>
-*Image 5 - general example of library packaging comparison*
+![Image 4 - example of Axon libraries packaging comparison](images/04-axon-libraries-packaging-comparison.jpg "Image 4 - example of Axon libraries packaging comparison") <br/>
+*Image 4 - example of Axon libraries packaging comparison*
 
 Without exploring Axon's internal workings, packages seem to be understandable and coherent, keeping the right level of cohesion. After all, it is hard to fail with cohesion for that small number of
 classes. Subpackages in `cargotracker-lib-axon-cqrs` are a bit more elaborate and look slightly unrelated, which lowers the cohesion of a module, but they all deal with similar enough things.
 
-It might be surprising why these two modules are not combined into a single one. Putting aside that coming up with a meaningful name might be hard, if we look at consumers (Image 3), we can
-see `cargotracker-lib-axon-cqrs` being used from `commandside` and `queryside` apps. At the same time, `cargotracker-lib-axon-logging` is also a dependency of the `projection` app. If lowered module
-cohesion, problematic naming, and different consumers are not enough, taking into account that required 3rd party libraries are different gives us more than enough reasons for justifying the
-existence of separate library modules.
+![Image 5 - dependencies of Axon libraries](images/05-axon-libraries-dependencies.jpg "Image 5 - dependencies of Axon libraries") <br/>
+*Image 5 - dependencies of Axon libraries*
+
+It might be surprising why these two modules are not combined into a single one. Putting aside that coming up with a meaningful name might be hard, if we look at consumers (Image 5), we can
+see `cargotracker-lib-axon-cqrs` being used from `commandside` and `queryside-view` apps. At the same time, `cargotracker-lib-axon-logging` is also a dependency of the `queryside-projection` app. If
+lowered module cohesion, problematic naming, and different consumers are not enough, taking into account that required 3rd party libraries are different gives us more than enough reasons for
+justifying the existence of separate library modules.
 
 Next, we have two low-level libraries supporting extension, customization, and configurability of 3rd party "datasource-proxy" library. Module `klokwrk-lib-datasourceproxy` provides extension itself,
 while `klokwrk-lib-datasourceproxy-springboot` implements support and configurability for the Spring Boot environment.
 
-![Image 6 - datasourceproxy library packaging comparison](images/06-datasourceproxy-library-packaging-comparison.jpg "Image 6 - datasourceproxy library packaging comparison") <br/>
-*Image 6 - datasourceproxy library packaging comparison*
+![Image 6 - datasourceproxy libraries packaging comparison](images/06-datasourceproxy-libraries-packaging-comparison.jpg "Image 6 - datasourceproxy libraries packaging comparison") <br/>
+*Image 6 - datasourceproxy libraries packaging comparison*
 
 After glancing over packages, one might think there is an error in `klokwrk-lib-datasourceproxy` since there are no subpackages. It's true. This is an error unless you take a less strict approach.
 We have only a single class and no intention to add some more in the foreseeable future, so there is no real need for a subpackage. But it can be added if you really want it.
@@ -221,11 +337,11 @@ different reasons, approach with separate modules is usually taken from Spring B
 
 The last example is very similar, but now it's about the Jackson library.
 
-![Image 7 - jackson library packaging comparison](images/07-jackson-library-packaging-comparison.jpg "Image 7 - jackson library packaging comparison") <br/>
-*Image 7 - jackson library packaging comparison*
+![Image 7 - jackson libraries packaging comparison](images/07-jackson-libraries-packaging-comparison.jpg "Image 7 - jackson libraries packaging comparison") <br/>
+*Image 7 - jackson libraries packaging comparison*
 
-This time, in the core `klokwrk-lib-jackson` library, we need separated subpackages for splitting different functions. It is worth noting the names of subpackages. They are the same as for
-corresponding packages in the Jackson library. This is standard practice when you are extending existing libraries, which aids in understanding and maintenance.
+This time, in the core `klokwrk-lib-jackson` library, we need separated subpackages for splitting different functions. It is worth noting the names of subpackages - `deser` and `ser`. They are the
+same as for corresponding packages in the Jackson library. This is standard practice when you are extending existing libraries, which aids in understanding and maintenance.
 
 ## Packaging for applications
 So far, we were exploring mainly infrastructural concerns of our system. There was no real business logic involved. What happens when we try to add it? How should we organize it into packages? Is
@@ -276,45 +392,40 @@ for classical ones. However, in straightforward and very concrete terms, it expl
 
 ### Applying hexagonal architecture
 #### Structure
-Let's take a look at how Project Klokwrk uses hexagonal architecture. We'll briefly explore structural manifestations at the level of packages and classes for commandside, queryside, and projection
-applications.
+Let's take a look at how Project Klokwrk implements hexagonal architecture. We'll briefly explore the structure and organization of packages and classes for commandside, queryside-view, and
+queryside-projection applications. The next image (Image 9) shows expanded packages of the commandside application.
 
-The next image shows expanded packages of command side application. To make different nesting levels more apparent, packages and classes are displayed in colors.
+![Image 9 - commandside hexagonal architecture](images/09-commandside-hexagonal-architecture.jpg "Image 9 - commandside hexagonal architecture") <br/>
+*Image 9 - commandside hexagonal architecture*
 
-![Image 9 - command side hexagonal architecture](images/09-commandside-hexagonal-architecture.jpg "Image 9 - command side hexagonal architecture") <br/>
-*Image 9 - command side hexagonal architecture*
+Top-level packages are `feature` and `infrastructure`. Package `infrastructure` contains glue-code with various responsibilities. As it is not subject to hexagonal architecture, we will not explore
+it further.
 
-Top-level packages are `domain`, `feature`, and `infrastructure`. Package `infrastructure` contains glue-code with various responsibilities. As it is not subject to hexagonal architecture, we will
-not explore it further.
+The package `feature` is a placeholder for all features of our commandside application. You can think of a "feature" as a more coarse-grained concept than the use-case. All closely related use-cases
+are contained in a single feature. In our case, we have a feature with the name `bookingoffer`.
 
-In the case of the command side application, the `domain` package will contain aggregates and entities. If we have some domain services closely related to the aggregates in question, we can also put
-them here. On the other hand, more general domain services with wider reusability should be pulled out into the subdomain or domain libraries.
+Under the `bookingoffer` feature package, we can find packages and classes related to the hexagonal architecture - `adapter` and `application`. Package `application` contains inbound and outbound
+port interfaces, together with corresponding data structure classes if those are necessary (i.e., `CreateBookingOfferCommandRequest`, `CreateBookingOfferCommandResponse`, and others). Under the
+`service` package, we can find domain application services (i.e., `BookingOfferCommandApplicationService`) that implement inbound port interfaces.
 
-The package `feature` is a placeholder for all features of our command side application. You can think of a "feature" as a more coarse-grained concept than the use-case. All closely related use-cases
-are contained in a single feature. In our case, we have a feature with the name `cargobooking`.
+Adapters live in the `adapter` package. There are inbound and outbound adapters. We can see here `BookingOfferCommandWebController` as an example of a **driving inbound** adapter. It depends on and
+calls the `CreateBookingOfferCommandPortIn` inbound port, which is implemented by the application service `BookingOfferCommandApplicationService`. As an example of an **outbound**, or **driven**,
+adapter, here we have `InMemoryLocationRegistryService`. It implements `LocationByUnLoCodeQueryPortOut` outbound port, which is also used by application service.
 
-Under the `cargobooking` feature package, we can find packages and classes related to the hexagonal architecture - `adapter` and `application`. Package `application` contains inbound and outbound
-port interfaces, together with corresponding data structure classes if those are necessary (i.e., `BookCargoCommandRequest` and `BookCargoCommandResponse`). Under the `service` package, we can find
-domain application services (i.e., `CargoBookingApplicationService`) that implement inbound port interfaces.
+For comparison, the following picture (Image 10) shows the structure of queryside-projection and queryside-view applications.
 
-Adapters live in the `adapter` package. There are inbound and outbound adapters. We can see here `CargoBookingWebController` as an example of a **driving inbound** adapter. It depends on and calls
-the `BookCargoPortIn` inbound port, which is implemented by the application service `CargoBookingApplicationService`. As an example of an **outbound**, or **driven**, adapter, here we have
-`InMemoryLocationRegistryService`. It implements `LocationByUnLoCodeQueryPortOut` outbound port, which is called by application service `CargoBookingApplicationService`.
+![Image 10 - projection and query side hexagonal architecture](images/10-queryside-projection-and-view-hexagonal-architecture.jpg "Image 10 - queryside-projection and queryside-view hexagonal architecture") <br/>
+*Image 10 - queryside-projection and queryside-view hexagonal architecture*
 
-For comparison, the following picture shows the structure of projection and query side applications.
+In queryside-projection application we can observe some CQRS/ES and Axon specifics applied to the hexagonal architecture. For example, the queryside-projection application contains only an outbound
+adapter responsible for persisting events. It even does not implement any outbound port since it is called indirectly by Axon Server infrastructural component.
 
-![Image 10 - projection and query side hexagonal architecture](images/10-projection-and-queryside-hexagonal-architecture.jpg "Image 10 - projection and query side hexagonal architecture") <br/>
-*Image 10 - projection and query side hexagonal architecture*
+On the other hand, the structure of the queryside-view application is more elaborate and very similar to the commandside application. However, it does not make any domain-specific business decisions
+as the commandside does. Nevertheless, the queryside-view can still use classes from the domain model (typically value objects only) but only as convenient and dormant data carriers.
 
-Besides obvious simplification over the command side application, we can also observe some CQRS/ES specifics applied to hexagonal architecture. For example, the projection application contains only
-an outbound adapter responsible for persisting events. It even does not implement any outbound port since it is called indirectly by Axon Server.
-
-On the other hand, the query side application is slightly more elaborate, but, for example, it does not do anything related to the core domain in the DDD sense. There are no domain aggregates or
-domain entities on the query side.
-
-#### Behavior and architectural testing
+#### Architectural testing
 Using hexagonal architecture might be an attractive idea as it looks like every significant component has a well-defined placeholder in the project structure. However, besides the structure,
-any software architecture also imposes behavioral rules, and hexagonal architecture is not the exception. When you add additional CQRS/ES flavor, there are even more rules to follow.
+any software architecture also imposes some rules, and hexagonal architecture is not the exception. When you add additional CQRS/ES flavor, there are even more rules to follow.
 
 What are these rules, and what they enforce? Basically, in the application that follows some architecture, it is not allowed that a class or an interface accesses anything that it wants. Rules impose
 constraints on dependencies that are permitted between code-level artifacts. For example, they regulate who can be called by some class or which interface a class should implement.
@@ -324,9 +435,9 @@ work without breaking it? This is the point where architectural testing steps in
 
 It would help if you had in place tests that verify all architectural invariants. Project Klokwrk uses the [ArchUnit](https://www.archunit.org/) library for this purpose. Building on top of the
 ArchUnit, Klokwrk provides DSL for specifying hexagonal architecture layers for CQRS/ES applications. There is support for several subtypes of CQRS/ES flavored hexagonal architecture corresponding
-to the command side, projections, and query side aspects.
+to the commandside, queryside-projection, and queryside-view aspects.
 
-To better understand how this works, we can look at the test fragment for command side application (taken from `BookingCommandSideAppArchitectureSpecification` class).
+To better understand how this works, we can look at the architectural test fragment for the commandside application (taken from `BookingCommandSideAppArchitectureSpecification` class).
 
 ```
   void "should be valid hexagonal commandside CQRS/ES architecture"() {
@@ -336,32 +447,42 @@ To better understand how this works, we can look at the test fragment for comman
         .domainValues("..cargotracker.booking.domain.model.value..")
         .domainEvents("..cargotracker.booking.domain.model.event..")
         .domainCommands("..cargotracker.booking.domain.model.command..")
+        .domainServices("..cargotracker.booking.domain.model.service..")
         .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
 
         .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
-        .applicationOutboundPorts("..cargotracker.booking.commandside.feature.*.application.port.out..")
+        .applicationOutboundPorts(
+            "..cargotracker.booking.commandside.feature.*.application.port.out..",
+            "..cargotracker.booking.out.customer.port.."
+        )
         .applicationServices("..cargotracker.booking.commandside.feature.*.application.service..")
 
         .adapterInbound("in.web", "..cargotracker.booking.commandside.feature.*.adapter.in.web..")
-        .adapterOutbound("out.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..")
+        .adapterOutbound("out.inline.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..")
+        .adapterOutbound("out.standalone.customer", "..cargotracker.booking.out.customer.adapter..")
+
+        // ...
 
         .withOptionalLayers(false)
+
+    // ...
 
     expect:
     rule.check(importedClasses)
   }
 ```
 
-The test is relatively simple as we only need to specify packages that belong to each layer of the CQRS/ES flavored hexagonal architecture. The DSL does the rest, meaning it checks all the rules.
-To really get a grasp on this, we should look at the DSL implementation. The following listing displays a DSL fragment responsible for specifying rules intended for command side applications (taken
-from `HexagonalCqrsEsArchitecture` class).
+The architectural test is relatively simple as we only need to specify packages that belong to each layer of the CQRS/ES flavored hexagonal architecture. The DSL does the rest, meaning it checks all
+the rules. To really get a grasp on this, we should look at the DSL implementation. The following listing displays a DSL fragment responsible for specifying rules intended for command side
+applications (taken from `HexagonalCqrsEsArchitecture` class).
 
 ```
   private void specifyArchitectureCommandSide(LayeredArchitecture layeredArchitecture) {
     layeredArchitecture
-        .layer(DOMAIN_VALUE_LAYER).definedBy(domainModelPackageIdentifiers)
+        .layer(DOMAIN_VALUE_LAYER).definedBy(domainValuePackageIdentifiers)
         .layer(DOMAIN_EVENT_LAYER).definedBy(domainEventPackageIdentifiers)
         .layer(DOMAIN_COMMAND_LAYER).definedBy(domainCommandPackageIdentifiers)
+        .layer(DOMAIN_SERVICE_LAYER).definedBy(domainServicePackageIdentifiers)
         .layer(DOMAIN_AGGREGATE_LAYER).definedBy(domainAggregatePackageIdentifiers)
 
         .layer(APPLICATION_INBOUND_PORT_LAYER).definedBy(applicationInboundPortPackageIdentifiers)
@@ -372,14 +493,18 @@ from `HexagonalCqrsEsArchitecture` class).
         .optionalLayer(ADAPTER_OUTBOUND_LAYER).definedBy(adapterOutboundPackageIdentifiers.collect({ Map.Entry<String, String[]> mapEntry -> mapEntry.value }).flatten() as String[])
 
         .whereLayer(DOMAIN_VALUE_LAYER)
-            .mayOnlyBeAccessedByLayers(DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER, ADAPTER_OUTBOUND_LAYER)
+            .mayOnlyBeAccessedByLayers(
+                DOMAIN_EVENT_LAYER, DOMAIN_COMMAND_LAYER, DOMAIN_SERVICE_LAYER, DOMAIN_AGGREGATE_LAYER,
+                APPLICATION_INBOUND_PORT_LAYER, APPLICATION_SERVICE_LAYER, APPLICATION_OUTBOUND_PORT_LAYER,
+                ADAPTER_INBOUND_LAYER, ADAPTER_OUTBOUND_LAYER
+            )
         .whereLayer(DOMAIN_EVENT_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER)
         .whereLayer(DOMAIN_COMMAND_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER, APPLICATION_SERVICE_LAYER)
+        .whereLayer(DOMAIN_SERVICE_LAYER).mayOnlyBeAccessedByLayers(DOMAIN_AGGREGATE_LAYER)
         .whereLayer(DOMAIN_AGGREGATE_LAYER).mayOnlyBeAccessedByLayers(APPLICATION_SERVICE_LAYER)
 
         .whereLayer(APPLICATION_INBOUND_PORT_LAYER).mayOnlyBeAccessedByLayers(APPLICATION_SERVICE_LAYER, ADAPTER_INBOUND_LAYER)
         .whereLayer(APPLICATION_OUTBOUND_PORT_LAYER).mayOnlyBeAccessedByLayers(APPLICATION_SERVICE_LAYER, DOMAIN_AGGREGATE_LAYER, ADAPTER_OUTBOUND_LAYER)
-
         .whereLayer(APPLICATION_SERVICE_LAYER).mayNotBeAccessedByAnyLayer()
 
     adapterMayNotBeAccessedByAnyLayer(layeredArchitecture, adapterInboundPackageIdentifiers, ADAPTER_INBOUND_LAYER)
@@ -393,19 +518,19 @@ can use them in command side applications. Then, commands (`whereLayer(DOMAIN_CO
 By implementing appropriate architectural tests for each CQRS/ES application type, we can be sure that architectural invariants will hold.
 
 ## Conclusion
-This article explored a method for structuring the complex project leveraging DDD concepts and hexagonal architecture. While doing this, we introduced project artifacts categorization into subdomain
-applications and libraries, domain libraries, generic reusable libraries, and generic reusable language extensions.
+This article explored a method for structuring the complex multi-module project leveraging DDD concepts, hexagonal architecture and CQRS/ES. While doing this, we introduced strategic structure
+for project artifacts categorization into subdomain applications and libraries, domain libraries, generic reusable libraries, and generic reusable language extensions.
 
-We've also seen the way to deal with inter-module dependencies and how to monitor and control them.
+We've seen how to leverage coarse-grained abstraction levels and architectural skeleton to deal with inter-module dependencies. We've also demonstrated some tools for monitoring and controlling them.
 
-Next, we've demonstrated principles for package organization and consistent naming, including an emphasized distinction between low-level libraries and high-level application artifacts.
+Next, we've explored principles for package organization and consistent naming, including an emphasized distinction between low-level libraries and high-level application artifacts.
 
 At the application level, we introduced hexagonal architecture to structure the application's business features and seamless inclusion of CQRS/ES architecture implemented on top of the Axon framework
 and Axon Server.
 
-And finally, we ended with tests for our hexagonal CQRS/ES architecture that verify our own rules for application dependencies at the package and class/interface level.
+And finally, we ended with architectural tests for our hexagonal CQRS/ES architecture that verify our own rules for application dependencies at the package and class/interface level.
 
-Although we dealt with quite specific architectural and technology choices, hopefully, demonstrated principles and ideas could be helpful in other environments too.
+Although we've used quite specific architectural and technology choices, demonstrated principles and ideas should be applicable and helpful in other environments too.
 
 ## References
 [1] [Package by type, -by layer, -by feature vs Package by layered features](https://proandroiddev.com/package-by-type-by-layer-by-feature-vs-package-by-layered-feature-e59921a4dffa) <br/>
