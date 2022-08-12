@@ -32,10 +32,12 @@ Klokwrk is an open-source project, started by [Damir Murat](https://github.com/d
 ## Find out more
 ### Articles
 There are several articles describing some `klokwrk-project` features in more details:
+* [Project Klokwrk - Connecting the Business with Technology](support/documentation/article/klokwrk-introduction/klokwrk-introduction.md)<br/>
+  High-level introduction to the Project Klokwrk.
 * [Starting up and trying the whole thing](support/documentation/article/starting-up/startingUp.md)<br/>
   Step-by-step tutorial describing how one can run and try `klokwrk-project`.
 * [Organizing modules and packages](support/documentation/article/modules-and-packages/modulesAndPackages.md)<br/>
-  Discussion about principles and ideas behind organizing high-level artifacts of a project and using hexagonal architecture in CQRS/ES context.
+  The cornerstone article about organizing high-level project artifacts, internal module structures, and using hexagonal architecture in CQRS/Event Sourcing context.
 * [The format of rendered responses](support/documentation/article/response-format/responseFormat.md)<br/>
   Explains structuring and rendering of server-side responses in `klokwrk-project` applications.
 * [Random UUID as a Primary Key in the Relational Database](support/documentation/article/random-uuid-as-database-primary-key/random-uuid-as-database-primary-key.md)<br/>
