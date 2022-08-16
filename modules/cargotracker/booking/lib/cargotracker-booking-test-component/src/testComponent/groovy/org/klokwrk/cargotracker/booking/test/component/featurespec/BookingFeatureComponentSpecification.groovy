@@ -20,48 +20,24 @@ package org.klokwrk.cargotracker.booking.test.component.featurespec
 import groovy.json.JsonSlurper
 import org.apache.http.HttpResponse
 import org.apache.http.client.fluent.Request
-import org.apache.http.entity.ContentType
+import org.awaitility.Awaitility
 import org.klokwrk.cargotracker.booking.test.component.test.base.AbstractComponentSpecification
-import spock.util.concurrent.PollingConditions
 
 import java.time.Duration
 import java.time.Instant
 
+import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeCommandRequestBody_createBookingOffer_chilledCommodity
+import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeCommandRequestBody_createBookingOffer_dryCommodity
+import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeCommandRequestBody_createBookingOffer_invalid
+import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeCommandRequestUrl_createBookingOffer
+import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeQueryRequestBody_bookingOfferSummary_findById
+import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeQueryRequestUrl_bookingOfferSummary_findById
+import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeRequest
+
 class BookingFeatureComponentSpecification extends AbstractComponentSpecification {
-  void "command - should create booking offer: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
+  void "command - createBookingOffer - should create booking offer: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
-    Instant currentTime = Instant.now()
-    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
-    Instant departureLatestTime = currentTime + Duration.ofHours(2)
-    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
-
-    //noinspection HttpUrlsUsage
-    String createBookingOfferCommandUrl = "http://${ commandSideApp.host }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/booking-offer/create-booking-offer"
-    String commandRequestBody = """
-        {
-          "userIdentifier": "standard-customer@cargotracker.com",
-          "routeSpecification": {
-            "originLocation": "HRRJK",
-            "destinationLocation": "NLRTM",
-            "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }",
-            "arrivalLatestTime": "${ arrivalLatestTime }"
-          },
-          "commodityInfo": {
-            "commodityType": "chilled",
-            "totalWeightInKilograms": 1000,
-            "requestedStorageTemperatureInCelsius": 5
-          },
-          "containerDimensionType": "DIMENSION_ISO_22"
-        }
-        """
-
-    Request commandRequest = Request.Post(createBookingOfferCommandUrl)
-                                    .addHeader("Content-Type", "application/json")
-                                    .addHeader("Accept", "application/json")
-                                    .addHeader("Accept-Charset", "utf-8")
-                                    .addHeader("Accept-Language", acceptLanguageHeaderParam as String)
-                                    .bodyString(commandRequestBody, ContentType.APPLICATION_JSON)
+    Request commandRequest = makeRequest(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBodyParam as String, acceptLanguageHeaderParam as String)
 
     when:
     HttpResponse commandResponse = commandRequest.execute().returnResponse()
@@ -75,154 +51,16 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
     commandResponseBookingOfferIdentifier
 
     where:
-    acceptLanguageHeaderParam | _
-    "hr-HR"                   | _
-    "en"                      | _
+    acceptLanguageHeaderParam | commandBodyParam
+    "hr-HR"                   | makeCommandRequestBody_createBookingOffer_dryCommodity()
+    "hr-HR"                   | makeCommandRequestBody_createBookingOffer_chilledCommodity()
+    "en"                      | makeCommandRequestBody_createBookingOffer_dryCommodity()
+    "en"                      | makeCommandRequestBody_createBookingOffer_chilledCommodity()
   }
 
-  @SuppressWarnings(["CodeNarc.AbcMetric", "CodeNarc.MethodSize"])
-  void "query - should find created booking offer: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
+  void "command - createBookingOffer - should not create booking offer for invalid command: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
-    Instant currentTime = Instant.now()
-    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
-    Instant departureLatestTime = currentTime + Duration.ofHours(2)
-    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
-
-    //noinspection HttpUrlsUsage
-    String createBookingOfferCommandUrl = "http://${ commandSideApp.host }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/booking-offer/create-booking-offer"
-    String commandRequestBody = """
-        {
-          "userIdentifier": "standard-customer@cargotracker.com",
-          "routeSpecification": {
-            "originLocation": "HRRJK",
-            "destinationLocation": "NLRTM",
-            "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }",
-            "arrivalLatestTime": "${ arrivalLatestTime }"
-          },
-          "commodityInfo": {
-            "commodityType": "dry",
-            "totalWeightInKilograms": 1000
-          },
-          "containerDimensionType": "DIMENSION_ISO_22"
-        }
-        """
-
-    //noinspection HttpUrlsUsage
-    String bookingOfferSummaryQueryUrl = "http://${ querySideViewApp.host }:${ querySideViewApp.firstMappedPort }/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-by-id"
-    Closure<String> queryPostRequestBodyClosure = { String commandResponseBookingOfferIdentifier ->
-      """
-      {
-        "userIdentifier": "standard-customer@cargotracker.com",
-        "bookingOfferIdentifier": "${ commandResponseBookingOfferIdentifier }"
-      }
-      """
-    }
-
-    Request commandRequest = Request.Post(createBookingOfferCommandUrl)
-                                    .addHeader("Content-Type", "application/json")
-                                    .addHeader("Accept", "application/json")
-                                    .addHeader("Accept-Charset", "utf-8")
-                                    .addHeader("Accept-Language", acceptLanguageHeaderParam as String)
-                                    .bodyString(commandRequestBody, ContentType.APPLICATION_JSON)
-
-    when:
-    HttpResponse commandResponse = commandRequest.execute().returnResponse()
-    Integer commandResponseStatusCode = commandResponse.statusLine.statusCode
-
-    Object commandResponseJson = new JsonSlurper().parseText(commandResponse.entity.content.text)
-    String commandResponseBookingOfferIdentifier = commandResponseJson.payload.bookingOfferId.identifier
-
-    then:
-    commandResponseStatusCode == 200
-    commandResponseBookingOfferIdentifier
-
-    new PollingConditions(timeout: 5, initialDelay: 0, delay: 0.05).eventually {
-      // given
-      Request queryRequest = Request.Post(bookingOfferSummaryQueryUrl)
-                                    .addHeader("Content-Type", "application/json")
-                                    .addHeader("Accept", "application/json")
-                                    .addHeader("Accept-Charset", "utf-8")
-                                    .addHeader("Accept-Language", acceptLanguageHeaderParam as String)
-                                    .bodyString(queryPostRequestBodyClosure(commandResponseBookingOfferIdentifier), ContentType.APPLICATION_JSON)
-
-      // when
-      HttpResponse queryResponse = queryRequest.execute().returnResponse()
-      Integer queryResponseStatusCode = queryResponse.statusLine.statusCode
-      Object queryResponseJson = new JsonSlurper().parseText(queryResponse.entity.content.text)
-
-      // then:
-      queryResponseStatusCode == 200
-      verifyAll(queryResponseJson.payload as Map, {
-        size() == 17
-
-        bookingOfferIdentifier == commandResponseBookingOfferIdentifier
-
-        customerType == "STANDARD"
-
-        originLocationUnLoCode == "HRRJK"
-        originLocationName == "Rijeka"
-        originLocationCountryName == "Croatia"
-
-        destinationLocationUnLoCode == "NLRTM"
-        destinationLocationName == "Rotterdam"
-        destinationLocationCountryName == "Netherlands"
-
-        Instant.parse(departureEarliestTime as String) >= currentTime + Duration.ofHours(1)
-        Instant.parse(departureLatestTime as String) >= currentTime + Duration.ofHours(2)
-        Instant.parse(arrivalLatestTime as String) >= currentTime + Duration.ofHours(3)
-
-        commodityTypes == ["DRY"]
-        commodityTotalWeightKg == 1000
-        commodityTotalContainerTeuCount == 1.00G
-
-        firstEventRecordedAt == lastEventRecordedAt
-        Instant.parse(firstEventRecordedAt as String) > currentTime
-        Instant.parse(lastEventRecordedAt as String) > currentTime
-        lastEventSequenceNumber == 0
-      })
-    }
-
-    where:
-    acceptLanguageHeaderParam | _
-    "hr-HR"                   | _
-    "en"                      | _
-  }
-
-  void "command - should not create booking offer for invalid command: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
-    given:
-    Instant currentTime = Instant.now()
-    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
-    Instant departureLatestTime = currentTime + Duration.ofHours(2)
-    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
-
-    //noinspection HttpUrlsUsage
-    String createBookingOfferCommandUrl = "http://${ commandSideApp.host }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/booking-offer/create-booking-offer"
-    String commandRequestBody = """
-        {
-          "userIdentifier": "standard-customer@cargotracker.com",
-          "routeSpecification": {
-            "originLocation": "NLRTM",
-            "destinationLocation": "HRZAG",
-            "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }",
-            "arrivalLatestTime": "${ arrivalLatestTime }"
-          },
-          "commodityInfo": {
-            "commodityType": "chilled",
-            "totalWeightInKilograms": 1000,
-            "requestedStorageTemperatureInCelsius": 5
-          },
-          "containerDimensionType": "DIMENSION_ISO_22"
-        }
-        """
-
-    Request commandRequest = Request.Post(createBookingOfferCommandUrl)
-                                    .addHeader("Content-Type", "application/json")
-                                    .addHeader("Accept", "application/json")
-                                    .addHeader("Accept-Charset", "utf-8")
-                                    .addHeader("Accept-Language", acceptLanguageHeaderParam as String)
-                                    .bodyString(commandRequestBody, ContentType.APPLICATION_JSON)
+    Request commandRequest = makeRequest(makeCommandRequestUrl_createBookingOffer(commandSideApp), makeCommandRequestBody_createBookingOffer_invalid(), acceptLanguageHeaderParam as String)
 
     when:
     HttpResponse commandResponse = commandRequest.execute().returnResponse()
@@ -241,23 +79,77 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
     "en"                      | "Cargo cannot be sent from the specified origin location to the destination location."
   }
 
-  void "query - should not find non-existing booking offer: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
+  void "query - bookingOfferSummary_findById - should find created booking offer: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
-    //noinspection HttpUrlsUsage
-    String bookingOfferSummaryQueryUrl = "http://${ querySideViewApp.host }:${ querySideViewApp.firstMappedPort }/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-by-id"
-    String queryPostRequestBody = """
-      {
-        "userIdentifier": "standard-customer@cargotracker.com",
-        "bookingOfferIdentifier": "${ UUID.randomUUID() }"
-      }
-      """
+    Instant currentTime = Instant.now()
+    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
+    Instant departureLatestTime = currentTime + Duration.ofHours(2)
+    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
-    Request queryRequest = Request.Post(bookingOfferSummaryQueryUrl)
-                                  .addHeader("Content-Type", "application/json")
-                                  .addHeader("Accept", "application/json")
-                                  .addHeader("Accept-Charset", "utf-8")
-                                  .addHeader("Accept-Language", acceptLanguageHeaderParam as String)
-                                  .bodyString(queryPostRequestBody, ContentType.APPLICATION_JSON)
+    Request commandRequest = makeRequest(makeCommandRequestUrl_createBookingOffer(commandSideApp), makeCommandRequestBody_createBookingOffer_dryCommodity(currentTime), "en")
+    HttpResponse commandResponse = commandRequest.execute().returnResponse()
+    Integer commandResponseStatusCode = commandResponse.statusLine.statusCode
+    assert commandResponseStatusCode == 200
+
+    Object commandResponseJson = new JsonSlurper().parseText(commandResponse.entity.content.text)
+    String commandResponseBookingOfferIdentifier = commandResponseJson.payload.bookingOfferId.identifier
+    assert commandResponseBookingOfferIdentifier
+
+    when:
+    Request queryRequest = makeRequest(
+        makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), makeQueryRequestBody_bookingOfferSummary_findById(commandResponseBookingOfferIdentifier), acceptLanguageHeaderParam as String
+    )
+
+    HttpResponse queryResponse = null
+    Awaitility.await().atMost(Duration.ofSeconds(5)).until({
+      queryResponse = queryRequest.execute().returnResponse()
+      Integer queryResponseStatusCode = queryResponse.statusLine.statusCode
+      queryResponseStatusCode == 200
+    })
+
+    Object queryResponseJson = new JsonSlurper().parseText(queryResponse.entity.content.text)
+
+    then:
+    verifyAll(queryResponseJson.payload as Map, {
+      size() == 17
+
+      bookingOfferIdentifier == commandResponseBookingOfferIdentifier
+
+      customerType == "STANDARD"
+
+      originLocationUnLoCode == "HRRJK"
+      originLocationName == "Rijeka"
+      originLocationCountryName == "Croatia"
+
+      destinationLocationUnLoCode == "NLRTM"
+      destinationLocationName == "Rotterdam"
+      destinationLocationCountryName == "Netherlands"
+
+      Instant.parse(departureEarliestTime as String) >= currentTime + Duration.ofHours(1)
+      Instant.parse(departureLatestTime as String) >= currentTime + Duration.ofHours(2)
+      Instant.parse(arrivalLatestTime as String) >= currentTime + Duration.ofHours(3)
+
+      commodityTypes == ["DRY"]
+      commodityTotalWeightKg == 1000
+      commodityTotalContainerTeuCount == 1.00G
+
+      firstEventRecordedAt == lastEventRecordedAt
+      Instant.parse(firstEventRecordedAt as String) > currentTime
+      Instant.parse(lastEventRecordedAt as String) > currentTime
+      lastEventSequenceNumber == 0
+    })
+
+    where:
+    acceptLanguageHeaderParam | _
+    "hr-HR"                   | _
+    "en"                      | _
+  }
+
+  void "query - bookingOfferSummary_findById - should not find non-existing booking offer: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
+    given:
+    Request queryRequest = makeRequest(
+        makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), makeQueryRequestBody_bookingOfferSummary_findById(UUID.randomUUID().toString()), acceptLanguageHeaderParam as String
+    )
 
     when:
     HttpResponse queryResponse = queryRequest.execute().returnResponse()
