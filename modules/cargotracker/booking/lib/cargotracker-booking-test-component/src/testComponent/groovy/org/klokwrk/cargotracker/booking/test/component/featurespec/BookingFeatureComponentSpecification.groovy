@@ -21,13 +21,13 @@ import groovy.json.JsonSlurper
 import org.apache.http.HttpResponse
 import org.apache.http.client.fluent.Request
 import org.apache.http.entity.ContentType
-import org.klokwrk.cargotracker.booking.test.component.test.base.AbstractComponentIntegrationSpecification
+import org.klokwrk.cargotracker.booking.test.component.test.base.AbstractComponentSpecification
 import spock.util.concurrent.PollingConditions
 
 import java.time.Duration
 import java.time.Instant
 
-class BookingComponentFeatureSpecification extends AbstractComponentIntegrationSpecification {
+class BookingFeatureComponentSpecification extends AbstractComponentSpecification {
   void "command - should create booking offer: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
     Instant currentTime = Instant.now()
@@ -37,7 +37,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
     //noinspection HttpUrlsUsage
     String createBookingOfferCommandUrl = "http://${ commandSideApp.host }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/booking-offer/create-booking-offer"
-    String commandPostRequestBody = """
+    String commandRequestBody = """
         {
           "userIdentifier": "standard-customer@cargotracker.com",
           "routeSpecification": {
@@ -61,7 +61,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
                                     .addHeader("Accept-Language", acceptLanguageHeaderParam as String)
-                                    .bodyString(commandPostRequestBody, ContentType.APPLICATION_JSON)
+                                    .bodyString(commandRequestBody, ContentType.APPLICATION_JSON)
 
     when:
     HttpResponse commandResponse = commandRequest.execute().returnResponse()
@@ -90,7 +90,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
     //noinspection HttpUrlsUsage
     String createBookingOfferCommandUrl = "http://${ commandSideApp.host }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/booking-offer/create-booking-offer"
-    String commandPostRequestBody = """
+    String commandRequestBody = """
         {
           "userIdentifier": "standard-customer@cargotracker.com",
           "routeSpecification": {
@@ -124,7 +124,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
                                     .addHeader("Accept-Language", acceptLanguageHeaderParam as String)
-                                    .bodyString(commandPostRequestBody, ContentType.APPLICATION_JSON)
+                                    .bodyString(commandRequestBody, ContentType.APPLICATION_JSON)
 
     when:
     HttpResponse commandResponse = commandRequest.execute().returnResponse()
@@ -198,7 +198,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
 
     //noinspection HttpUrlsUsage
     String createBookingOfferCommandUrl = "http://${ commandSideApp.host }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/booking-offer/create-booking-offer"
-    String commandPostRequestBody = """
+    String commandRequestBody = """
         {
           "userIdentifier": "standard-customer@cargotracker.com",
           "routeSpecification": {
@@ -222,7 +222,7 @@ class BookingComponentFeatureSpecification extends AbstractComponentIntegrationS
                                     .addHeader("Accept", "application/json")
                                     .addHeader("Accept-Charset", "utf-8")
                                     .addHeader("Accept-Language", acceptLanguageHeaderParam as String)
-                                    .bodyString(commandPostRequestBody, ContentType.APPLICATION_JSON)
+                                    .bodyString(commandRequestBody, ContentType.APPLICATION_JSON)
 
     when:
     HttpResponse commandResponse = commandRequest.execute().returnResponse()
