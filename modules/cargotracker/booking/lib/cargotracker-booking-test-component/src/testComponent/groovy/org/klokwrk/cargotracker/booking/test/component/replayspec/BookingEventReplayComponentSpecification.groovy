@@ -36,7 +36,7 @@ import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
 @Slf4j
-class BookingComponentEventReplaySpecification extends Specification {
+class BookingEventReplayComponentSpecification extends Specification {
   static GenericContainer axonServer
   static PostgreSQLContainer postgresqlServer
   static Network klokwrkNetwork
