@@ -1,6 +1,10 @@
 project:
   name: klokwrk-project
   license: Apache-2.0
+  description: DDD example of CQRS/ES distributed application
+  inceptionYear: 2020
+  authors:
+    - Damir Murat
 
   snapshot:
     # Prevent creating a release named "Release early-access" for snapshot versions.
