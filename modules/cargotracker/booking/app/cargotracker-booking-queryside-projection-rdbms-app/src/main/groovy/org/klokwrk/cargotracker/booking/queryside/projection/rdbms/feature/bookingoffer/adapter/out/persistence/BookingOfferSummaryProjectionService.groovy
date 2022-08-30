@@ -22,10 +22,8 @@ import org.axonframework.eventhandling.DomainEventMessage
 import org.axonframework.eventhandling.EventHandler
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
-@Transactional
 @CompileStatic
 class BookingOfferSummaryProjectionService {
   private final BookingOfferSummaryProjectionJpaRepository bookingOfferSummaryProjectionJpaRepository
