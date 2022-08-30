@@ -138,12 +138,12 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
 
     when:
     jdbcTemplate.query("select * from person", new ColumnMapRowMapper())
-    jdbcTemplate.query("select sleep(1100), name from person", new ColumnMapRowMapper())
+    jdbcTemplate.query("select sleep(2100), name from person", new ColumnMapRowMapper())
     ImmutableList<LoggingEvent> loggingEventList = slowQueryLogger.allLoggingEvents
 
     then:
     loggingEventList.size() == 1
     loggingEventList[0].level == Level.WARN
-    loggingEventList[0].message.contains("select sleep(1100), name from person")
+    loggingEventList[0].message.contains("select sleep(2100), name from person")
   }
 }
