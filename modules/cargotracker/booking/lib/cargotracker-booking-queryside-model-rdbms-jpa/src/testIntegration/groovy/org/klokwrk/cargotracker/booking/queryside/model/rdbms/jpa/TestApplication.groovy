@@ -24,9 +24,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
-@EnableJpaRepositories(basePackages = ["org.klokwrk.lib.springframework.data.jpa.repository.hibernate"])
 @EnableConfigurationProperties([DataSourceProxyConfigurationProperties])
 @SpringBootApplication(proxyBeanMethods = false)
 @CompileStatic

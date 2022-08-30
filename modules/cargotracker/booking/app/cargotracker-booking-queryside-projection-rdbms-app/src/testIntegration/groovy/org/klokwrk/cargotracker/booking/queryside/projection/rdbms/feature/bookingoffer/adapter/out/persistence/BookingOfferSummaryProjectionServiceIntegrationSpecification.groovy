@@ -166,7 +166,8 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
 
   void "should execute single insert SQL statement only"() {
     // NOTE: Here we are testing whether our Spring Data JPA repository implementation optimally works when persisting the new entity with the assigned identifier. For more information, take a look
-    //       at the Groovydoc of "org.klokwrk.lib.springframework.data.jpa.repository.hibernate.HibernateJpaRepository" or the article at https://vladmihalcea.com/best-spring-data-jparepository/.
+    //       at the article at https://vladmihalcea.com/best-spring-data-jparepository/ and the usage of com.vladmihalcea.spring.repository.HibernateRepository in
+    //       BookingOfferSummaryProjectionJpaRepository.
     given:
     Logger logger = LoggerFactory.getLogger("klokwrk.datasourceproxy.queryLogger") as Logger
     logger.level = Level.DEBUG

@@ -17,11 +17,11 @@
  */
 package org.klokwrk.cargotracker.booking.queryside.projection.rdbms.feature.bookingoffer.adapter.out.persistence
 
+import com.vladmihalcea.spring.repository.HibernateRepository
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.BookingOfferSummaryJpaEntity
-import org.klokwrk.lib.springframework.data.jpa.repository.hibernate.HibernateJpaRepository
 import org.springframework.data.jpa.repository.JpaRepository
 
 @CompileStatic
-interface BookingOfferSummaryProjectionJpaRepository extends JpaRepository<BookingOfferSummaryJpaEntity, UUID>, HibernateJpaRepository<BookingOfferSummaryJpaEntity> {
+interface BookingOfferSummaryProjectionJpaRepository extends JpaRepository<BookingOfferSummaryJpaEntity, UUID>, HibernateRepository<BookingOfferSummaryJpaEntity> {
 }
