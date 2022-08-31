@@ -19,6 +19,14 @@ package org.klokwrk.lib.springframework.data.jpa.repository.hibernate
 
 import groovy.transform.CompileStatic
 
+/**
+ * Guaranties that all mutating operations of Spring Data JPA repository will fail with {@code java.lang.UnsupportedOperationException}.
+ * <p/>
+ * This interface is intended to be used in read-only Spring Data JPA repositories, typically used in queryside-view modules. That way, it is guaranteed that queryside-view repositories will not
+ * mutate the database state.
+ *
+ * @param <T> The class of entity.
+ */
 @CompileStatic
 interface ReadOnlyJpaRepository<T> {
   <S extends T> S save(S entity)

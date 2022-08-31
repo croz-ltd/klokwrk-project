@@ -19,89 +19,93 @@ package org.klokwrk.lib.springframework.data.jpa.repository.hibernate
 
 import groovy.transform.CompileStatic
 
+@SuppressWarnings("unused")
 @CompileStatic
 class ReadOnlyJpaRepositoryImpl<T> implements ReadOnlyJpaRepository<T> {
   @Override
   <S extends T> S save(S entity) {
-    return unsupported()
+    // NOTE:
+    // The idiom we use here (and in other methods) for throwing exceptions might look unusual. It is used to get accurate code coverage with JaCoCo, as explained here:
+    // https://github.com/jacoco/jacoco/issues/370#issuecomment-267854179
+    throw makeUnsupportedOperationException()
   }
 
   @Override
   <S extends T> List<S> saveAll(Iterable<S> entities) {
-    return unsupported()
+    throw makeUnsupportedOperationException()
   }
 
   @Override
   <S extends T> S saveAndFlush(S entity) {
-    return unsupported()
+    throw makeUnsupportedOperationException()
   }
 
   @Override
   <S extends T> List<S> saveAllAndFlush(Iterable<S> entities) {
-    return unsupported()
+    throw makeUnsupportedOperationException()
   }
 
   @Override
   <S extends T> S persist(S entity) {
-    return unsupported()
+    throw makeUnsupportedOperationException()
   }
 
   @Override
   <S extends T> S persistAndFlush(S entity) {
-    return unsupported()
+    throw makeUnsupportedOperationException()
   }
 
   @Override
   <S extends T> List<S> persistAll(Iterable<S> entities) {
-    return unsupported()
+    throw makeUnsupportedOperationException()
   }
 
   @Override
   <S extends T> List<S> persistAllAndFlush(Iterable<S> entities) {
-    return unsupported()
+    throw makeUnsupportedOperationException()
   }
 
   @Override
   <S extends T> S merge(S entity) {
-    return unsupported()
+    throw makeUnsupportedOperationException()
   }
 
   @Override
   <S extends T> S mergeAndFlush(S entity) {
-    return unsupported()
+    throw makeUnsupportedOperationException()
   }
 
   @Override
   <S extends T> List<S> mergeAll(Iterable<S> entities) {
-    return unsupported()
+    throw makeUnsupportedOperationException()
   }
 
   @Override
   <S extends T> List<S> mergeAllAndFlush(Iterable<S> entities) {
-    return unsupported()
+    throw makeUnsupportedOperationException()
   }
 
   @Override
   <S extends T> S update(S entity) {
-    return unsupported()
+    throw makeUnsupportedOperationException()
   }
 
   @Override
   <S extends T> S updateAndFlush(S entity) {
-    return unsupported()
+    throw makeUnsupportedOperationException()
   }
 
   @Override
   <S extends T> List<S> updateAll(Iterable<S> entities) {
-    return unsupported()
+    throw makeUnsupportedOperationException()
   }
 
   @Override
   <S extends T> List<S> updateAllAndFlush(Iterable<S> entities) {
-    return unsupported()
+    throw makeUnsupportedOperationException()
   }
 
-  protected <S extends T> S unsupported() {
-    throw new UnsupportedOperationException("Write operations are not supported from read-only repository")
+  protected UnsupportedOperationException makeUnsupportedOperationException() {
+    return new UnsupportedOperationException("Write operations are not supported from read-only repository")
   }
 }

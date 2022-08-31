@@ -15,23 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-  id "java-library"
-  id "klokwrk-gradle-plugin-convention-module-base"
-  id "klokwrk-gradle-plugin-convention-module-groovy"
-}
+package org.klokwrk.lib.springframework.data.jpa.repository.hibernate
 
-dependencies {
-  implementation platform(project(":klokwrk-platform-spring-boot"))
+import groovy.transform.CompileStatic
 
-  implementation "jakarta.persistence:jakarta.persistence-api"
-  implementation "org.codehaus.groovy:groovy"
-  implementation "org.hibernate:hibernate-core"
+import javax.persistence.Entity
+import javax.persistence.Id
 
-  testImplementation "org.spockframework:spock-core"
-  testImplementation "org.springframework.boot:spring-boot-starter-data-jpa"
-  testImplementation "org.springframework.boot:spring-boot-starter-test"
-
-  testRuntimeOnly "com.h2database:h2"
-  testRuntimeOnly "org.spockframework:spock-spring"
+@Entity
+@CompileStatic
+class TestEntity {
+  @Id
+  Long id
 }
