@@ -21,6 +21,7 @@ import groovy.transform.CompileStatic
 import net.croz.nrich.search.api.converter.StringToEntityPropertyMapConverter
 import net.croz.nrich.search.api.converter.StringToTypeConverter
 import net.croz.nrich.search.api.factory.RepositoryFactorySupportFactory
+import net.croz.nrich.search.api.factory.SearchExecutorJpaRepositoryFactoryBean
 import net.croz.nrich.search.converter.DefaultStringToEntityPropertyMapConverter
 import net.croz.nrich.search.converter.DefaultStringToTypeConverter
 import net.croz.nrich.search.factory.SearchRepositoryFactorySupportFactory
@@ -30,7 +31,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @EnableJpaRepositories(
-    repositoryFactoryBeanClass = MySearchExecutorJpaRepositoryFactoryBean,
+    repositoryFactoryBeanClass = SearchExecutorJpaRepositoryFactoryBean,
     basePackages = [
         "org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.adapter.out.persistence",
         "org.klokwrk.lib.springframework.data.jpa.repository.hibernate"
@@ -40,8 +41,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @Configuration(proxyBeanMethods = false)
 @CompileStatic
 class SpringDataJpaConfig {
-  // Technically RepositoryFactorySupportFactory bean is not needed as it provides the the same configuration as a defaults used in MySearchExecutorJpaRepositoryFactoryBean. In addition, we are not
-  // using StringSearchExecutor at all, so we don't need StringToEntityPropertyMapConverter (it can be null). However, it is useful as an example for customization.
+  // Technically RepositoryFactorySupportFactory bean is not needed because we are not using StringSearchExecutor at all, so we don't need StringToEntityPropertyMapConverter (it can be null).
+  // However, it is useful as an example for customization.
+  // Alternatively, spring boot configuration properties may be used as described in https://github.com/croz-ltd/nrich/blob/master/nrich-search-spring-boot-starter/README.md .
   @Bean
   RepositoryFactorySupportFactory repositoryFactorySupportFactory() {
     List<String> dateFormatList = ["yyyy-MM-dd'T'HH:mm:ss'Z'"]
