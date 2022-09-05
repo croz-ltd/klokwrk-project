@@ -17,14 +17,11 @@
  */
 package org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa
 
-import com.vladmihalcea.hibernate.type.array.ListArrayType
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import groovy.transform.ToString
-import org.hibernate.annotations.Type
-import org.hibernate.annotations.TypeDef
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
@@ -33,11 +30,15 @@ import org.klokwrk.lang.groovy.transform.KwrkMapConstructorDefaultPostCheck
 import org.klokwrk.lang.groovy.transform.KwrkMapConstructorNoArgHideable
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
+import javax.persistence.CollectionTable
 import javax.persistence.Column
+import javax.persistence.ElementCollection
 import javax.persistence.Entity
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
+import javax.persistence.FetchType
 import javax.persistence.Id
+import javax.persistence.JoinColumn
 import javax.persistence.Table
 import java.time.Instant
 
@@ -61,6 +62,7 @@ import static org.hamcrest.Matchers.notNullValue
 //   References:
 //     https://vladmihalcea.com/the-best-way-to-implement-equals-hashcode-and-tostring-with-jpa-and-hibernate/
 //     https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+@SuppressWarnings("CodeNarc.AbcMetric")
 @ToString
 @EqualsAndHashCode(includes = ["bookingOfferIdentifier"])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
@@ -69,7 +71,6 @@ import static org.hamcrest.Matchers.notNullValue
 @KwrkMapConstructorNoArgHideable(makePackagePrivate = true)
 @Entity
 @Table(name = "booking_offer_summary")
-@TypeDef(name = "list-array", typeClass = ListArrayType)
 @CompileStatic
 class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Id
@@ -90,17 +91,11 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Column(nullable = false, columnDefinition = "timestamptz") Instant departureLatestTime
   @Column(nullable = false, columnDefinition = "timestamptz") Instant arrivalLatestTime
 
-  @Type(type = "list-array")
-  @Column(nullable = false, columnDefinition = "text[]")
-  List<String> commodityTypes
-
-  Set<CommodityType> getCommodityTypes() {
-    return commodityTypes.collect({ String commodityTypeString -> CommodityType.valueOf(commodityTypeString) }).toSet()
-  }
-
-  void setCommodityTypes(Set<CommodityType> commodityTypes) {
-    this.commodityTypes = commodityTypes.collect({ CommodityType commodityType -> commodityType.name() })
-  }
+  @ElementCollection(fetch = FetchType.LAZY)
+  @CollectionTable(name = "booking_offer_summary_commodity_type", joinColumns = @JoinColumn(name = "booking_offer_identifier"))
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, name = "commodity_type")
+  Set<CommodityType> commodityTypes
 
   @Column(nullable = false) Integer commodityTotalWeightKg
   @Column(nullable = false, precision = 8, scale = 2) BigDecimal commodityTotalContainerTeuCount
