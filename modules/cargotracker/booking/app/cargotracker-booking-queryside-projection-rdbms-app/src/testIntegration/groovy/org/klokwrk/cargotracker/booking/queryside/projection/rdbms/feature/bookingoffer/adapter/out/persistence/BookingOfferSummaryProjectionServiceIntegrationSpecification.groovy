@@ -101,7 +101,6 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         (departure_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(2)
         (arrival_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(3)
 
-        (it.commodity_types as java.sql.Array).array == ["DRY"]
         commodity_total_weight_kg == 1000
         commodity_total_container_teu_count == 1.00G
 
@@ -111,6 +110,9 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         (first_event_recorded_at as Timestamp).toInstant() >= startedAt
         (last_event_recorded_at as Timestamp).toInstant() >= startedAt
         last_event_sequence_number == 0
+
+        // collections verification
+        commodity_type_list == ["DRY"] as Set
       }
     }
   }
@@ -150,7 +152,6 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         (departure_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(2)
         (arrival_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(3)
 
-        (it.commodity_types as java.sql.Array).array == ["DRY"]
         commodity_total_weight_kg == 1000
         commodity_total_container_teu_count == 1.00G
 
@@ -160,14 +161,17 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         (first_event_recorded_at as Timestamp).toInstant() >= startedAt
         (last_event_recorded_at as Timestamp).toInstant() >= startedAt
         last_event_sequence_number == 0
+
+        // collections verification
+        commodity_type_list == ["DRY"] as Set
       }
     }
   }
 
-  void "should execute single insert SQL statement only"() {
-    // NOTE: Here we are testing whether our Spring Data JPA repository implementation optimally works when persisting the new entity with the assigned identifier. For more information, take a look
-    //       at the article at https://vladmihalcea.com/best-spring-data-jparepository/ and the usage of com.vladmihalcea.spring.repository.HibernateRepository in
-    //       BookingOfferSummaryProjectionJpaRepository.
+  void "should execute expected SQL insert statements"() {
+    // NOTE: Here we are testing whether our Spring Data JPA repository implementation optimally works when persisting the new entity with the assigned identifier. We want only SQL inserts to be
+    //       executed, without any additional and unnecessary SQL selects. For more information, take a look at the article at https://vladmihalcea.com/best-spring-data-jparepository/ and the usage
+    //       of com.vladmihalcea.spring.repository.HibernateRepository in BookingOfferSummaryProjectionJpaRepository.
     given:
     Logger logger = LoggerFactory.getLogger("klokwrk.datasourceproxy.queryLogger") as Logger
     logger.level = Level.DEBUG
@@ -186,11 +190,16 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0, delay: 0.1).eventually {
-      listAppender.list.size() == 1
-      String formattedMessage = listAppender.list[0].formattedMessage
-      formattedMessage.contains("insert into booking_offer_summary")
-      formattedMessage.contains(bookingOfferIdentifier.toString())
-      formattedMessage.contains(customerIdentifier)
+      listAppender.list.size() == 2
+
+      String firstFormattedMessage = listAppender.list[0].formattedMessage
+      firstFormattedMessage.contains("insert into booking_offer_summary")
+      firstFormattedMessage.contains(bookingOfferIdentifier.toString())
+      firstFormattedMessage.contains(customerIdentifier)
+
+      String secondFormattedMessage2 = listAppender.list[1].formattedMessage
+      secondFormattedMessage2.contains("insert into booking_offer_summary_commodity_type")
+      secondFormattedMessage2.contains(bookingOfferIdentifier.toString())
     }
 
     cleanup:
