@@ -49,7 +49,6 @@ CREATE TABLE booking_offer_summary (
   departure_latest_time timestamptz NOT NULL,
   arrival_latest_time timestamptz NOT NULL,
 
-  commodity_types text[] NOT NULL,
   commodity_total_weight_kg integer NOT NULL,
   commodity_total_container_teu_count numeric(8, 2) NOT NULL,
 
@@ -59,4 +58,11 @@ CREATE TABLE booking_offer_summary (
   first_event_recorded_at timestamptz NOT NULL,
   last_event_recorded_at timestamptz NOT NULL,
   last_event_sequence_number bigint NOT NULL
+);
+
+CREATE TABLE booking_offer_summary_commodity_type (
+  booking_offer_identifier uuid NOT NULL,
+  commodity_type text NOT NULL,
+  PRIMARY KEY (booking_offer_identifier, commodity_type),
+  CONSTRAINT FK__booking_offer_summary_commodity_type__booking_offer_summary FOREIGN KEY (booking_offer_identifier) REFERENCES booking_offer_summary(booking_offer_identifier)
 );

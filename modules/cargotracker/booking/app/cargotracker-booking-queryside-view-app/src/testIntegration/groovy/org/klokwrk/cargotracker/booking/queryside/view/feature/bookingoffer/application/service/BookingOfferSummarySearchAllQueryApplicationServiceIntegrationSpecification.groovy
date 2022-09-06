@@ -26,7 +26,10 @@ import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.appl
 import org.klokwrk.cargotracker.booking.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDataConstant
+import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
+import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationCode
 import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageRequirement
 import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortDirection
 import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortRequirement
@@ -74,7 +77,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
     given:
     OperationRequest<BookingOfferSummarySearchAllQueryRequest> operationRequest = new OperationRequest(
         payload: new BookingOfferSummarySearchAllQueryRequest(userIdentifier: "standard-customer@cargotracker.com"),
-        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): localeParam]
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
     )
 
     when:
@@ -100,11 +103,6 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       commodityTotalContainerTeuCount == 3.00G
       lastEventSequenceNumber == 0
     }
-
-    where:
-    localeParam                    | _
-    Locale.forLanguageTag("hr-HR") | _
-    Locale.forLanguageTag("en")    | _
   }
 
   void "should work for customized search request with default paging and sorting"() {
@@ -117,7 +115,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
             commodityTotalWeightKgFromIncluding: 5_000,
             commodityTotalWeightKgToIncluding: 50_000
         ),
-        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): localeParam]
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
     )
 
     when:
@@ -143,10 +141,32 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       commodityTotalContainerTeuCount == 1.00G
       lastEventSequenceNumber == 0
     }
+  }
 
-    where:
-    localeParam                    | _
-    Locale.forLanguageTag("hr-HR") | _
-    Locale.forLanguageTag("en")    | _
+  void "should fail for invalid property name in sort requirements"() {
+    given:
+    OperationRequest<BookingOfferSummarySearchAllQueryRequest> operationRequest = new OperationRequest(
+        payload: new BookingOfferSummarySearchAllQueryRequest(
+            userIdentifier: "standard-customer@cargotracker.com",
+            pageRequirement: PageRequirement.PAGE_REQUIREMENT_INSTANCE_DEFAULT,
+            sortRequirementList: [new SortRequirement(propertyName: "nonExistingProperty", direction: SortDirection.ASC)]
+        ),
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
+    )
+
+    when:
+    bookingOfferSummarySearchAllQueryPortIn.bookingOfferSummarySearchAllQuery(operationRequest)
+
+    then:
+    QueryException queryException = thrown()
+
+    queryException.message == "Internal Server Error"
+    verifyAll(queryException.violationInfo, {
+      severity == Severity.WARNING
+      violationCode.code == ViolationCode.BAD_REQUEST.code
+      violationCode.codeMessage == ViolationCode.BAD_REQUEST.codeMessage
+      violationCode.resolvableMessageKey == "badRequest.query.sorting.invalidProperty"
+      violationCode.resolvableMessageParameters == ["nonExistingProperty"]
+    })
   }
 }

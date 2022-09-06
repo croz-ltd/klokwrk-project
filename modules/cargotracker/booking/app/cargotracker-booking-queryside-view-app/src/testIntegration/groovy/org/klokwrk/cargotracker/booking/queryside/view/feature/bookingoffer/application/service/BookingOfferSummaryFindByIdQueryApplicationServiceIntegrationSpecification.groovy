@@ -17,6 +17,10 @@
  */
 package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.service
 
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.read.ListAppender
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
@@ -31,6 +35,7 @@ import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDataConstant
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -43,7 +48,7 @@ import java.time.Instant
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class BookingOfferQueryApplicationServiceIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
+class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
   @TestConfiguration
   static class TestSpringBootConfiguration {
     @Bean
@@ -72,7 +77,7 @@ class BookingOfferQueryApplicationServiceIntegrationSpecification extends Abstra
 
     OperationRequest<BookingOfferSummaryFindByIdQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryFindByIdQueryRequest,
-        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): localeParam]
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
     )
 
     when:
@@ -113,11 +118,6 @@ class BookingOfferQueryApplicationServiceIntegrationSpecification extends Abstra
       general.locale == null
       violation == null
     }
-
-    where:
-    localeParam                    | _
-    Locale.forLanguageTag("hr-HR") | _
-    Locale.forLanguageTag("en")    | _
   }
 
   void "should throw when booking offer summary cannot be found"() {
@@ -127,7 +127,7 @@ class BookingOfferQueryApplicationServiceIntegrationSpecification extends Abstra
 
     OperationRequest<BookingOfferSummaryFindByIdQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryFindByIdQueryRequest,
-        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): locale]
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
     )
 
     when:
@@ -136,10 +136,41 @@ class BookingOfferQueryApplicationServiceIntegrationSpecification extends Abstra
     then:
     QueryException queryException = thrown()
     queryException.violationInfo == ViolationInfo.NOT_FOUND
+  }
 
-    where:
-    locale                         | _
-    Locale.forLanguageTag("hr-HR") | _
-    Locale.forLanguageTag("en")    | _
+  void "should execute expected single select statement"() {
+    given:
+    Logger logger = LoggerFactory.getLogger("klokwrk.datasourceproxy.queryLogger") as Logger
+    logger.level = Level.DEBUG
+    ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
+    listAppender.start()
+    logger.addAppender(listAppender)
+
+    String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
+
+    // Note: "standard-customer@cargotracker.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
+    BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: myBookingOfferIdentifier, userIdentifier: "standard-customer@cargotracker.com")
+
+    OperationRequest<BookingOfferSummaryFindByIdQueryRequest> operationRequest = new OperationRequest(
+        payload: bookingOfferSummaryFindByIdQueryRequest,
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
+    )
+
+    when:
+    OperationResponse<BookingOfferSummaryFindByIdQueryResponse> operationResponse = bookingOfferSummaryFindByIdQueryPortIn.bookingOfferSummaryFindByIdQuery(operationRequest)
+
+    then:
+    operationResponse.payload.bookingOfferIdentifier
+
+    List<ILoggingEvent> filteredLoggingEventList =
+        listAppender.list.dropWhile({ ILoggingEvent iLoggingEvent -> iLoggingEvent.formattedMessage.contains("SELECT count(*) as recordsCount from booking_offer_summary") })
+    filteredLoggingEventList.size() == 1
+
+    String formattedMessage = filteredLoggingEventList.first().formattedMessage
+    formattedMessage.matches(/.*select.*from booking_offer_summary.*left outer join booking_offer_summary_commodity_type.*/)
+
+    cleanup:
+    logger.detachAppender(listAppender)
   }
 }

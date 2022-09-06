@@ -17,6 +17,10 @@
  */
 package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.service
 
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.read.ListAppender
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
@@ -35,6 +39,7 @@ import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationCode
 import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageRequirement
 import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortDirection
 import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortRequirement
+import org.slf4j.LoggerFactory
 import org.spockframework.spring.EnableSharedInjection
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -84,7 +89,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
 
     OperationRequest<BookingOfferSummaryFindAllQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryFindAllQueryRequest,
-        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): localeParam]
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
     )
 
     when:
@@ -115,11 +120,6 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
       commodityTotalContainerTeuCount == 1.00G
       lastEventSequenceNumber == 0
     }
-
-    where:
-    localeParam                    | _
-    Locale.forLanguageTag("hr-HR") | _
-    Locale.forLanguageTag("en")    | _
   }
 
   void "should work for correct request with explicit paging and sorting"() {
@@ -132,7 +132,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
 
     OperationRequest<BookingOfferSummaryFindAllQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryFindAllQueryRequest,
-        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): localeParam]
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
     )
 
     when:
@@ -152,11 +152,6 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
     }
 
     operationResponse.payload.pageContent.size() as Long == 3
-
-    where:
-    localeParam                    | _
-    Locale.forLanguageTag("hr-HR") | _
-    Locale.forLanguageTag("en")    | _
   }
 
   void "should fail for invalid property name in sort requirements"() {
@@ -169,7 +164,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
 
     OperationRequest<BookingOfferSummaryFindAllQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryFindAllQueryRequest,
-        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): localeParam]
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
     )
 
     when:
@@ -186,10 +181,80 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
       violationCode.resolvableMessageKey == "badRequest.query.sorting.invalidProperty"
       violationCode.resolvableMessageParameters == ["nonExistingProperty"]
     })
+  }
 
-    where:
-    localeParam                    | _
-    Locale.forLanguageTag("hr-HR") | _
-    Locale.forLanguageTag("en")    | _
+  void "should execute expected select statements when first page includes all available entities"() {
+    given:
+    Logger logger = LoggerFactory.getLogger("klokwrk.datasourceproxy.queryLogger") as Logger
+    logger.level = Level.DEBUG
+    ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
+    listAppender.start()
+    logger.addAppender(listAppender)
+
+    BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(
+        userIdentifier: "standard-customer@cargotracker.com",
+        pageRequirement: new PageRequirement(ordinal: 0, size: 25),
+        sortRequirementList: [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.ASC)]
+    )
+
+    OperationRequest<BookingOfferSummaryFindAllQueryRequest> operationRequest = new OperationRequest(
+        payload: bookingOfferSummaryFindAllQueryRequest,
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
+    )
+
+    when:
+    OperationResponse<BookingOfferSummaryFindAllQueryResponse> operationResponse = bookingOfferSummaryFindAllQueryPortIn.bookingOfferSummaryFindAllQuery(operationRequest)
+
+    then:
+    operationResponse.payload.pageInfo.totalElementsCount == initialBookingOfferSummaryRecordsCount + 5
+    listAppender.list.size() == 2
+
+    String firstFormattedMessage = listAppender.list[0].formattedMessage
+    firstFormattedMessage.matches(/.*select.*booking_offer_identifier.*from booking_offer_summary \w* where.*limit.*/)
+
+    String secondFormattedMessage = listAppender.list[1].formattedMessage
+    secondFormattedMessage.matches(/.*select.*from booking_offer_summary \w* left outer join booking_offer_summary_commodity_type.*where.*booking_offer_identifier in .*/)
+
+    cleanup:
+    logger.detachAppender(listAppender)
+  }
+
+  void "should execute expected select statements when first page includes subset of all available entities"() {
+    given:
+    Logger logger = LoggerFactory.getLogger("klokwrk.datasourceproxy.queryLogger") as Logger
+    logger.level = Level.DEBUG
+    ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
+    listAppender.start()
+    logger.addAppender(listAppender)
+
+    BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(
+        userIdentifier: "standard-customer@cargotracker.com",
+        pageRequirement: new PageRequirement(ordinal: 0, size: 3),
+        sortRequirementList: [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.ASC)]
+    )
+
+    OperationRequest<BookingOfferSummaryFindAllQueryRequest> operationRequest = new OperationRequest(
+        payload: bookingOfferSummaryFindAllQueryRequest,
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
+    )
+
+    when:
+    OperationResponse<BookingOfferSummaryFindAllQueryResponse> operationResponse = bookingOfferSummaryFindAllQueryPortIn.bookingOfferSummaryFindAllQuery(operationRequest)
+
+    then:
+    operationResponse.payload.pageInfo.totalElementsCount == initialBookingOfferSummaryRecordsCount + 5
+    listAppender.list.size() == 3
+
+    String firstFormattedMessage = listAppender.list[0].formattedMessage
+    firstFormattedMessage.matches(/.*select.*booking_offer_identifier.*from booking_offer_summary \w* where.*limit.*/)
+
+    String secondFormattedMessage = listAppender.list[1].formattedMessage
+    secondFormattedMessage.matches(/.*select count\(\w*.booking_offer_identifier\).*from booking_offer_summary \w* where.*/)
+
+    String thirdFormattedMessage = listAppender.list[2].formattedMessage
+    thirdFormattedMessage.matches(/.*select.*from booking_offer_summary \w* left outer join booking_offer_summary_commodity_type.*where.*booking_offer_identifier in .*/)
+
+    cleanup:
+    logger.detachAppender(listAppender)
   }
 }

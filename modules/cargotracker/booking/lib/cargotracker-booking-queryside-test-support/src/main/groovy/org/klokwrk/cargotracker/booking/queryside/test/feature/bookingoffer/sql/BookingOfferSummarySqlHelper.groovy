@@ -37,8 +37,28 @@ class BookingOfferSummarySqlHelper {
   }
 
   static Map<String, ?> selectBookingOfferSummaryRecord(Sql groovySql, UUID bookingOfferIdentifier) {
+    // because of join, for each value of contained collection we will have duplicate records of parent columns. So we have to filter the result set.
     List<GroovyRowResult> groovyRowResultList =
-        groovySql.rows([bookingOfferIdentifier: bookingOfferIdentifier], "SELECT * from booking_offer_summary where booking_offer_identifier = :bookingOfferIdentifier")
+        groovySql.rows(
+            [bookingOfferIdentifier: bookingOfferIdentifier],
+            """
+            SELECT bos.*, bos_ct.commodity_type
+            FROM booking_offer_summary bos
+            LEFT OUTER JOIN booking_offer_summary_commodity_type bos_ct ON bos.booking_offer_identifier = bos_ct.booking_offer_identifier
+            WHERE bos.booking_offer_identifier = :bookingOfferIdentifier
+            """
+        )
+
+    // populate root entity
+    Map<String, ?> rootEntityColumns = groovyRowResultList[0]
+
+    // populate collections and remove corresponding element from root
+    Set<String> commodityTypeList = groovyRowResultList
+        .findAll({ GroovyRowResult groovyRowResult -> groovyRowResult.getProperty("commodity_type") != null })
+        .collect({ GroovyRowResult groovyRowResult -> groovyRowResult.getProperty("commodity_type") as String })
+        .toSet()
+    rootEntityColumns.put("commodity_type_list", commodityTypeList)
+    rootEntityColumns.remove("commodity_type")
 
     return groovyRowResultList[0] as Map<String, ?>
   }

@@ -24,12 +24,53 @@ import org.klokwrk.lib.springframework.data.jpa.repository.hibernate.ReadOnlyJpa
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.jpa.repository.QueryHints
+import org.springframework.data.repository.query.Param
+
+import javax.persistence.QueryHint
 
 @SuppressWarnings("CodeNarc.BracesForClass")
 @CompileStatic
 interface BookingOfferSummaryViewJpaRepository extends
     JpaRepository<BookingOfferSummaryJpaEntity, UUID>, SearchExecutor<BookingOfferSummaryJpaEntity>, ReadOnlyJpaRepository<BookingOfferSummaryJpaEntity>
 {
-  BookingOfferSummaryJpaEntity findByBookingOfferIdentifierAndCustomerIdentifier(UUID bookingOfferIdentifier, String customerIdentifier)
-  Page<BookingOfferSummaryJpaEntity> findAllByCustomerIdentifier(String customerIdentifier, Pageable pageable)
+  @Query("""
+      SELECT b FROM BookingOfferSummaryJpaEntity b
+      LEFT JOIN FETCH b.commodityTypes
+      WHERE
+        b.bookingOfferIdentifier = :bookingOfferIdentifier
+        AND b.customerIdentifier = :customerIdentifier
+  """)
+  BookingOfferSummaryJpaEntity findByBookingOfferIdentifierAndCustomerIdentifier(
+      @Param("bookingOfferIdentifier") UUID bookingOfferIdentifier, @Param("customerIdentifier") String customerIdentifier)
+
+  // Intended to be used in combination with findAllByBookingOfferIdentifiersAndCustomerIdentifier to avoid paging in memory while fetching a collection.
+  // Reference: https://vladmihalcea.com/fix-hibernate-hhh000104-entity-fetch-pagination-warning-message/
+  @Query(
+      value ="""
+          SELECT b.bookingOfferIdentifier FROM BookingOfferSummaryJpaEntity b
+          WHERE b.customerIdentifier = :customerIdentifier
+      """,
+      countQuery = """
+          SELECT COUNT(b.bookingOfferIdentifier)
+          FROM BookingOfferSummaryJpaEntity b
+          WHERE b.customerIdentifier = :customerIdentifier"""
+  )
+  Page<UUID> findPageOfBookingOfferIdentifiersByCustomerIdentifier(@Param("customerIdentifier") String customerIdentifier, Pageable pageable)
+
+  // Intended to be used in combination with findPageOfBookingOfferIdentifiersByCustomerIdentifier to avoid paging in memory while fetching a collection.
+  // Fixing in-memory paging: https://vladmihalcea.com/fix-hibernate-hhh000104-entity-fetch-pagination-warning-message/
+  // JOIN FETCH: https://vladmihalcea.com/n-plus-1-query-problem/
+  // DISTINCT JPQL keyword and QueryHint: https://vladmihalcea.com/jpql-distinct-jpa-hibernate/
+  @Query("""
+      SELECT DISTINCT b FROM BookingOfferSummaryJpaEntity b
+      LEFT JOIN FETCH b.commodityTypes
+      WHERE
+        b.bookingOfferIdentifier IN :bookingOfferIdentifiers
+        AND b.customerIdentifier = :customerIdentifier
+  """)
+  @QueryHints(@QueryHint(name = org.hibernate.jpa.QueryHints.HINT_PASS_DISTINCT_THROUGH, value = "false"))
+  List<BookingOfferSummaryJpaEntity> findAllByBookingOfferIdentifiersAndCustomerIdentifier(
+      @Param("bookingOfferIdentifiers") List<UUID> bookingOfferIdentifiers, @Param("customerIdentifier") String customerIdentifier)
 }

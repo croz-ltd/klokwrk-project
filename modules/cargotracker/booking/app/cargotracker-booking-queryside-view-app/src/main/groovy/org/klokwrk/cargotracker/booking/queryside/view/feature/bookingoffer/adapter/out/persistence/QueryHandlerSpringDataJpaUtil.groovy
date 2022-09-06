@@ -23,13 +23,20 @@ import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageInfo
 import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageRequirement
 import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortRequirement
+import org.springframework.dao.InvalidDataAccessApiUsageException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.mapping.PropertyReferenceException
 
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 @CompileStatic
 class QueryHandlerSpringDataJpaUtil {
+  private final static Pattern QUERY_EXCEPTION_PROPERTY_NAME_PATTERN = Pattern.compile(/(?s)^org.hibernate.QueryException:.could.not.resolve.property:\s(\w*)\sof:.*/)
+  private static final String INVALID_PROPERTY_MESSAGE_KEY = "badRequest.query.sorting.invalidProperty"
+
   static PageRequest makePageRequestFromPageAndSortRequirements(PageRequirement pageRequirement, List<SortRequirement> sortRequirementList) {
     List<Sort.Order> sortOrderList = sortRequirementList
         .collect({ SortRequirement sortRequirement -> new Sort.Order(Sort.Direction.fromString(sortRequirement.direction.name()), sortRequirement.propertyName) })
@@ -39,11 +46,24 @@ class QueryHandlerSpringDataJpaUtil {
     return pageRequest
   }
 
-  static void handlePropertyReferenceException(PropertyReferenceException propertyReferenceException) {
-    String messageKey = "badRequest.query.sorting.invalidProperty"
+  static QueryException makeQueryExceptionFromPropertyReferenceException(PropertyReferenceException propertyReferenceException) {
     List<String> messageParams = [propertyReferenceException.propertyName]
+    return new QueryException(ViolationInfo.makeForBadRequestWithCustomCodeKey(INVALID_PROPERTY_MESSAGE_KEY, messageParams))
+  }
 
-    throw new QueryException(ViolationInfo.makeForBadRequestWithCustomCodeKey(messageKey, messageParams))
+  static QueryException makeQueryExceptionFromInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException invalidDataAccessApiUsageException) {
+    if (invalidDataAccessApiUsageException.message.startsWith("org.hibernate.QueryException: could not resolve property:")) {
+      String propertyName = "unknown"
+      Matcher matcher = QUERY_EXCEPTION_PROPERTY_NAME_PATTERN.matcher(invalidDataAccessApiUsageException.message)
+      if (matcher.matches()) {
+        propertyName = matcher.group(1)
+      }
+
+      List<String> messageParams = [propertyName]
+      return new QueryException(ViolationInfo.makeForBadRequestWithCustomCodeKey(INVALID_PROPERTY_MESSAGE_KEY, messageParams))
+    }
+
+    throw invalidDataAccessApiUsageException
   }
 
   static PageInfo makePageInfoFromPage(Page page, PageRequirement pageRequirement, List<SortRequirement> sortRequirementList) {
