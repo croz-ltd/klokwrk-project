@@ -27,6 +27,7 @@ import org.springframework.dao.InvalidDataAccessApiUsageException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.data.mapping.PropertyReferenceException
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -34,6 +35,7 @@ import java.util.regex.Pattern
 @CompileStatic
 class QueryHandlerSpringDataJpaUtil {
   private final static Pattern QUERY_EXCEPTION_PROPERTY_NAME_PATTERN = Pattern.compile(/(?s)^org.hibernate.QueryException:.could.not.resolve.property:\s(\w*)\sof:.*/)
+  private static final String INVALID_PROPERTY_MESSAGE_KEY = "badRequest.query.sorting.invalidProperty"
 
   static PageRequest makePageRequestFromPageAndSortRequirements(PageRequirement pageRequirement, List<SortRequirement> sortRequirementList) {
     List<Sort.Order> sortOrderList = sortRequirementList
@@ -44,6 +46,11 @@ class QueryHandlerSpringDataJpaUtil {
     return pageRequest
   }
 
+  static QueryException makeQueryExceptionFromPropertyReferenceException(PropertyReferenceException propertyReferenceException) {
+    List<String> messageParams = [propertyReferenceException.propertyName]
+    return new QueryException(ViolationInfo.makeForBadRequestWithCustomCodeKey(INVALID_PROPERTY_MESSAGE_KEY, messageParams))
+  }
+
   static QueryException makeQueryExceptionFromInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException invalidDataAccessApiUsageException) {
     if (invalidDataAccessApiUsageException.message.startsWith("org.hibernate.QueryException: could not resolve property:")) {
       String propertyName = "unknown"
@@ -52,10 +59,8 @@ class QueryHandlerSpringDataJpaUtil {
         propertyName = matcher.group(1)
       }
 
-      String messageKey = "badRequest.query.sorting.invalidProperty"
       List<String> messageParams = [propertyName]
-
-      return new QueryException(ViolationInfo.makeForBadRequestWithCustomCodeKey(messageKey, messageParams))
+      return new QueryException(ViolationInfo.makeForBadRequestWithCustomCodeKey(INVALID_PROPERTY_MESSAGE_KEY, messageParams))
     }
 
     throw invalidDataAccessApiUsageException

@@ -36,6 +36,7 @@ import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.springframework.dao.InvalidDataAccessApiUsageException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.mapping.PropertyReferenceException
 import org.springframework.stereotype.Service
 
 /**
@@ -152,8 +153,8 @@ class BookingOfferSummaryQueryHandlerService {
     try {
       pageOfBookingOfferIdentifierDtos = bookingOfferSummaryViewJpaRepository.findAll(bookingOfferSummarySearchAllQueryRequest, searchConfiguration, pageRequest)
     }
-    catch (InvalidDataAccessApiUsageException idaaue) {
-      throw QueryHandlerSpringDataJpaUtil.makeQueryExceptionFromInvalidDataAccessApiUsageException(idaaue)
+    catch (PropertyReferenceException pre) {
+      throw QueryHandlerSpringDataJpaUtil.makeQueryExceptionFromPropertyReferenceException(pre)
     }
 
     List<UUID> foundBookingOfferIdentifiers = pageOfBookingOfferIdentifierDtos.content.collect({ BookingOfferIdentifierDto dto -> dto.bookingOfferIdentifier })

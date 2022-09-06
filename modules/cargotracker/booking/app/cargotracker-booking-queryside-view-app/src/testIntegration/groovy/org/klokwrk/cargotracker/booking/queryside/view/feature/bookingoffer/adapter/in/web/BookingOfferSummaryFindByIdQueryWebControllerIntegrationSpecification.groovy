@@ -45,7 +45,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class BookingOfferQueryWebControllerIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
+class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
   @TestConfiguration
   static class TestSpringBootConfiguration {
     @Bean

@@ -153,4 +153,63 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
     "hr-HR"        | "hr_HR"
     "en"           | "en"
   }
+
+  void "should fail for invalid property name in sort requirements"() {
+    String webRequestBody = objectMapper.writeValueAsString([
+        userIdentifier: "standard-customer@cargotracker.com",
+        customerTypeSearchList: [CustomerType.STANDARD, CustomerType.GOLD],
+        pageRequirement: [ordinal: 0, size: 25],
+        sortRequirementList: [
+            [propertyName: "nonExistingProperty", direction: "ASC"]
+        ]
+    ])
+
+    when:
+    MvcResult mvcResult = mockMvc.perform(
+        post("/booking-offer/booking-offer-summary-search-all")
+            .content(webRequestBody)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+    ).andReturn()
+
+    Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
+
+    then:
+    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
+
+    verifyAll(responseContentMap as Map) {
+      verifyAll(it.metaData as Map) {
+        size() == 3
+
+        verifyAll(it.general as Map) {
+          size() == 3
+          locale == localeString
+          severity == org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity.WARNING.name().toLowerCase()
+          timestamp
+        }
+
+        verifyAll(it.http as Map) {
+          size() == 2
+          message == HttpStatus.BAD_REQUEST.reasonPhrase
+          status == "${ HttpStatus.BAD_REQUEST.value() }"
+        }
+
+        verifyAll(it.violation as Map) {
+          size() == 3
+          code == "${ HttpStatus.BAD_REQUEST.value() }"
+          type == "domain"
+          message == messageParam
+        }
+      }
+
+      (payload as Map).size() == 0
+    }
+
+    where:
+    acceptLanguage | localeString | messageParam
+    "hr-HR"        | "hr_HR"      | "Nije moguće sortirati po podatku s nazivom 'nonExistingProperty'. Naziv ne postoji."
+    "en"           | "en"         | "Can't sort by property with name 'nonExistingProperty'. Property name does not exist."
+  }
 }
