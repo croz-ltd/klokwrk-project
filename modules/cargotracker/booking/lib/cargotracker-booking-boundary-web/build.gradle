@@ -19,6 +19,7 @@ plugins {
   id "java-library"
   id "klokwrk-gradle-plugin-convention-module-base"
   id "klokwrk-gradle-plugin-convention-module-groovy"
+  id "java-test-fixtures"
 }
 
 dependencies {
@@ -28,4 +29,10 @@ dependencies {
   implementation project(":klokwrk-lang-groovy")
 
   implementation "org.codehaus.groovy:groovy"
+
+  testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
+
+  testFixturesImplementation project(":cargotracker-lib-boundary-api")
+
+  testFixturesImplementation "org.codehaus.groovy:groovy"
 }
