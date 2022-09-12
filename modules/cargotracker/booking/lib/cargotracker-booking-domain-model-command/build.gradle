@@ -19,6 +19,7 @@ plugins {
   id "java-library"
   id "klokwrk-gradle-plugin-convention-module-base"
   id "klokwrk-gradle-plugin-convention-module-groovy"
+  id "java-test-fixtures"
 }
 
 dependencies {
@@ -36,6 +37,18 @@ dependencies {
   implementation "org.codehaus.groovy:groovy"
   implementation "org.codehaus.groovy:groovy-macro"
   implementation "org.hamcrest:hamcrest"
+
+  testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
+
+  testFixturesImplementation project(":cargotracker-booking-domain-model-value")
+  testFixturesImplementation project(":cargotracker-lib-domain-model-command")
+  testFixturesImplementation project(":klokwrk-lang-groovy")
+
+  testFixturesImplementation testFixtures(project(":cargotracker-booking-domain-model-value"))
+
+  testFixturesImplementation "javax.measure:unit-api"
+  testFixturesImplementation "org.codehaus.groovy:groovy"
+  testFixturesImplementation "tech.units:indriya"
 
   testImplementation "org.spockframework:spock-core"
 }
