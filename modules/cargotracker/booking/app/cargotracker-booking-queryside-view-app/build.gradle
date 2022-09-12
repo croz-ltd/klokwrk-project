@@ -69,6 +69,8 @@ dependencies {
   testIntegrationImplementation project(":cargotracker-booking-queryside-test-support")
   testIntegrationImplementation project(":cargotracker-lib-domain-model-event")
 
+  testIntegrationImplementation testFixtures(project(":cargotracker-booking-domain-model-event"))
+
   testIntegrationImplementation "javax.measure:unit-api"
   testIntegrationImplementation "org.awaitility:awaitility"
   testIntegrationImplementation "org.codehaus.groovy:groovy-sql"

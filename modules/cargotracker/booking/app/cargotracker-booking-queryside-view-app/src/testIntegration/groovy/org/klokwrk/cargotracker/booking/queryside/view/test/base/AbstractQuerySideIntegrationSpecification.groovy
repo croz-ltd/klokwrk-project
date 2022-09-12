@@ -22,10 +22,10 @@ import groovy.sql.Sql
 import org.awaitility.Awaitility
 import org.axonframework.eventhandling.EventBus
 import org.axonframework.eventhandling.GenericDomainEventMessage
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.feature.bookingoffer.BookingOfferCreatedEventFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
 import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.AxonServerTestcontainersFactory
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
+import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEventFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
@@ -38,8 +38,8 @@ import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerReg
 import org.klokwrk.cargotracker.booking.queryside.test.axon.GenericDomainEventMessageFactory
 import org.klokwrk.cargotracker.booking.queryside.test.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
-import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.QuerySideProjectionRdbmsAppTestcontainersFactory
+import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
 import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
@@ -81,7 +81,7 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
   }
 
   static String publishAndWaitForProjectedBookingOfferCreatedEvent(
-      EventBus eventBus, Sql groovySql, BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtures.eventValidRouteSpecification())
+      EventBus eventBus, Sql groovySql, BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build())
   {
     Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
     String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
