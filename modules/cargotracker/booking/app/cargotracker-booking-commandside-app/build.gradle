@@ -60,12 +60,15 @@ dependencies {
 
   runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
 
-  testImplementation project(":cargotracker-booking-commandside-test-support")
   testImplementation project(":klokwrk-lib-archunit")
 
   testImplementation "com.tngtech.archunit:archunit-junit5"
   testImplementation "org.axonframework:axon-test"
   testImplementation "org.spockframework:spock-core"
+
+  testIntegrationImplementation project(":cargotracker-booking-commandside-test-support")
+
+  testIntegrationImplementation testFixtures(project(":cargotracker-booking-boundary-web"))
 
   testIntegrationImplementation "org.springframework:spring-test"
   testIntegrationImplementation "org.springframework.boot:spring-boot-test"

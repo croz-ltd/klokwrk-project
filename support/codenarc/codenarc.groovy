@@ -1,4 +1,4 @@
-final TEST_FILES = ".*/(test|testIntegration)/.*\\.groovy"
+final TEST_FILES = ".*/(test|testFixtures|testIntegration)/.*\\.groovy"
 
 ruleset {
 

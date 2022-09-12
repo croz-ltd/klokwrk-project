@@ -41,7 +41,8 @@ dependencies {
   implementation "org.codehaus.groovy:groovy"
   implementation "tech.units:indriya"
 
-  testImplementation project(":cargotracker-booking-commandside-test-support")
+  testImplementation testFixtures(project(":cargotracker-booking-domain-model-command"))
+  testImplementation testFixtures(project(":cargotracker-booking-domain-model-event"))
 
   testImplementation "org.axonframework:axon-test"
   testImplementation "org.spockframework:spock-core"

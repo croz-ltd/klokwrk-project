@@ -26,7 +26,6 @@ dependencies {
   implementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
 
   implementation project(":cargotracker-lib-domain-model-event")
-  implementation project(":klokwrk-lang-groovy")
 
   implementation "org.codehaus.groovy:groovy"
   implementation "org.codehaus.groovy:groovy-sql"
