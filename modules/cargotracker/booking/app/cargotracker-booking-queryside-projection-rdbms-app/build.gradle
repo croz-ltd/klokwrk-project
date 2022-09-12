@@ -66,6 +66,7 @@ dependencies {
   testIntegrationImplementation project(":cargotracker-booking-queryside-test-support")
   testIntegrationImplementation project(":cargotracker-lib-domain-model-command")
 
+  testIntegrationImplementation testFixtures(project(":cargotracker-booking-boundary-web"))
   testIntegrationImplementation testFixtures(project(":cargotracker-booking-domain-model-event"))
 
   testIntegrationImplementation "org.codehaus.groovy:groovy-sql"

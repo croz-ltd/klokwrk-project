@@ -22,7 +22,7 @@ import groovy.sql.Sql
 import org.awaitility.Awaitility
 import org.axonframework.eventhandling.EventBus
 import org.axonframework.eventhandling.GenericDomainEventMessage
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
+import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFixtureBuilder
 import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.AxonServerTestcontainersFactory
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEventFixtureBuilder
@@ -87,7 +87,7 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
     String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage =
-        GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, WebMetaDataFixtures.metaDataMapForWebBookingChannel())
+        GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, WebMetaDataFixtureBuilder.webMetaData_booking_default().build())
 
     eventBus.publish(genericDomainEventMessage)
 

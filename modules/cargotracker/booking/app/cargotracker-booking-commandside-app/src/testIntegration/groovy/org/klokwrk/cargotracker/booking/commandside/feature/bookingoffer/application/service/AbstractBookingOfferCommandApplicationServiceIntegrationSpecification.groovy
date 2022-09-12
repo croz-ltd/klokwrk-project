@@ -26,6 +26,7 @@ import org.axonframework.common.Registration
 import org.axonframework.messaging.InterceptorChain
 import org.axonframework.messaging.MessageHandlerInterceptor
 import org.axonframework.messaging.unitofwork.UnitOfWork
+import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFixtureBuilder
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CommodityInfoData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandPortIn
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequest
@@ -33,7 +34,6 @@ import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applica
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.RouteSpecificationData
 import org.klokwrk.cargotracker.booking.commandside.infrastructure.springbootconfig.SpringBootConfig
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
-import org.klokwrk.cargotracker.booking.commandside.test.fixtures.metadata.WebMetaDataFixtures
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferCommodities
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
@@ -82,7 +82,7 @@ abstract class AbstractBookingOfferCommandApplicationServiceIntegrationSpecifica
         commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY.name(), totalWeightInKilograms: 1000),
         containerDimensionType: "DIMENSION_ISO_22"
     )
-    Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
+    Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
 
     BookingOfferCommodities expectedBookingOfferCommodities = new BookingOfferCommodities()
     expectedBookingOfferCommodities.storeCommodity(Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 1000), Quantities.getQuantity(20_615, Units.KILOGRAM)))
@@ -153,7 +153,7 @@ abstract class AbstractBookingOfferCommandApplicationServiceIntegrationSpecifica
         commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY.name(), totalWeightInKilograms: 1000),
         containerDimensionType: "DIMENSION_ISO_22"
     )
-    Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
+    Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
 
     when:
     OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommandOperationResponse =
@@ -217,7 +217,7 @@ abstract class AbstractBookingOfferCommandApplicationServiceIntegrationSpecifica
         commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY.name(), totalWeightInKilograms: 1000),
         containerDimensionType: "DIMENSION_ISO_22"
     )
-    Map requestMetadataMap = WebMetaDataFixtures.metaDataMapForWebBookingChannel()
+    Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
 
     when:
     createBookingOfferCommandPortIn.createBookingOfferCommand(new OperationRequest<>(payload: createBookingOfferCommandRequest, metaData: requestMetadataMap))
