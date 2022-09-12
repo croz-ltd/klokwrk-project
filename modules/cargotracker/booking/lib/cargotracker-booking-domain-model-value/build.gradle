@@ -19,6 +19,7 @@ plugins {
   id "java-library"
   id "klokwrk-gradle-plugin-convention-module-base"
   id "klokwrk-gradle-plugin-convention-module-groovy"
+  id "java-test-fixtures"
 }
 
 dependencies {
@@ -34,6 +35,12 @@ dependencies {
   implementation "org.codehaus.groovy:groovy-macro"
   implementation "org.hamcrest:hamcrest"
   implementation "tech.units:indriya"
+
+  testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
+
+  testFixturesImplementation project(":klokwrk-lang-groovy")
+
+  testFixturesImplementation "org.codehaus.groovy:groovy"
 
   testImplementation "org.objenesis:objenesis"
   testImplementation "org.spockframework:spock-core"
