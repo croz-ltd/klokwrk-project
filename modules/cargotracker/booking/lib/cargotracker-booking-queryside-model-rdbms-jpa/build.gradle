@@ -39,7 +39,7 @@ dependencies {
   implementation "org.hibernate:hibernate-core"
   implementation "tech.units:indriya"
 
-  testIntegrationImplementation project(":cargotracker-booking-queryside-test-support")
+  testIntegrationImplementation project(":cargotracker-booking-test-support-testcontainers")
   testIntegrationImplementation project(":klokwrk-lib-datasourceproxy-springboot")
   testIntegrationImplementation project(":klokwrk-lib-hibernate")
 

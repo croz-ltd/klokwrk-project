@@ -30,8 +30,8 @@ import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEv
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEventFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.queryside.projection.rdbms.test.base.AbstractProjectionRdbmsIntegrationSpecification
-import org.klokwrk.cargotracker.booking.queryside.test.axon.GenericDomainEventMessageFactory
-import org.klokwrk.cargotracker.booking.queryside.test.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
+import org.klokwrk.cargotracker.booking.test.support.queryside.axon.GenericDomainEventMessageFactory
+import org.klokwrk.cargotracker.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.lang.groovy.constant.CommonConstants
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

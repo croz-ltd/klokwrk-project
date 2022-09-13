@@ -18,12 +18,12 @@
 package org.klokwrk.cargotracker.booking.test.component.test.base
 
 import com.github.dockerjava.api.command.CreateNetworkCmd
-import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.AxonServerTestcontainersFactory
-import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.CommandSideAppTestcontainersFactory
-import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
-import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.QuerySideViewAppTestcontainersFactory
-import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
-import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.QuerySideProjectionRdbmsAppTestcontainersFactory
+import org.klokwrk.cargotracker.booking.test.support.testcontainers.AxonServerTestcontainersFactory
+import org.klokwrk.cargotracker.booking.test.support.testcontainers.CommandSideAppTestcontainersFactory
+import org.klokwrk.cargotracker.booking.test.support.testcontainers.PostgreSqlTestcontainersFactory
+import org.klokwrk.cargotracker.booking.test.support.testcontainers.QuerySideProjectionRdbmsAppTestcontainersFactory
+import org.klokwrk.cargotracker.booking.test.support.testcontainers.QuerySideViewAppTestcontainersFactory
+import org.klokwrk.cargotracker.booking.test.support.testcontainers.RdbmsManagementAppTestcontainersFactory
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.containers.PostgreSQLContainer

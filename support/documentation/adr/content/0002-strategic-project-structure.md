@@ -42,7 +42,6 @@ In this structure variant, all structure-related directories are placed directly
     ├── cargotracker
     │   ├── cargotracker-booking-boundary-web
     │   ├── cargotracker-booking-commandside-app
-    │   ├── cargotracker-booking-commandside-test-support
     │   ├── cargotracker-booking-domain-model-aggregate
     │   ├── cargotracker-booking-domain-model-command
     │   ├── cargotracker-booking-domain-model-event
@@ -51,10 +50,11 @@ In this structure variant, all structure-related directories are placed directly
     │   ├── cargotracker-booking-out-customer
     │   ├── cargotracker-booking-queryside-model-rdbms-jpa
     │   ├── cargotracker-booking-queryside-projection-rdbms-app
-    │   ├── cargotracker-booking-queryside-test-support
     │   ├── cargotracker-booking-queryside-view-app
     │   ├── cargotracker-booking-rdbms-management-app
     │   ├── cargotracker-booking-test-component
+    │   ├── cargotracker-booking-test-support-queryside
+    │   ├── cargotracker-booking-test-support-testcontainers
     │   ├── cargotracker-lib-axon-cqrs
     │   ├── cargotracker-lib-axon-logging
     │   ├── cargotracker-lib-boundary-api
@@ -135,7 +135,6 @@ The following listing shows the example of the elaborate strategic structure as 
     │   │   │   │   └── cargotracker-booking-rdbms-management-app
     │   │   │   └── lib
     │   │   │       ├── cargotracker-booking-boundary-web
-    │   │   │       ├── cargotracker-booking-commandside-test-support
     │   │   │       ├── cargotracker-booking-domain-model-aggregate
     │   │   │       ├── cargotracker-booking-domain-model-command
     │   │   │       ├── cargotracker-booking-domain-model-event
@@ -143,8 +142,9 @@ The following listing shows the example of the elaborate strategic structure as 
     │   │   │       ├── cargotracker-booking-domain-model-value
     │   │   │       ├── cargotracker-booking-out-customer
     │   │   │       ├── cargotracker-booking-queryside-model-rdbms-jpa
-    │   │   │       ├── cargotracker-booking-queryside-test-support
-    │   │   │       └── cargotracker-booking-test-component
+    │   │   │       ├── cargotracker-booking-test-component
+    │   │   │       ├── cargotracker-booking-test-support-queryside
+    │   │   │       └── cargotracker-booking-test-support-testcontainers
     │   │   └── lib
     │   │       ├── cargotracker-lib-axon-cqrs
     │   │       ├── cargotracker-lib-axon-logging

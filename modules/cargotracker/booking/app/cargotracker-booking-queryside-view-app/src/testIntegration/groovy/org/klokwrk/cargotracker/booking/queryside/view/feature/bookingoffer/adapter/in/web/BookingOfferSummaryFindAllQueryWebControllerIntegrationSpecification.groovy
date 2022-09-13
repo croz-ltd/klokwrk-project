@@ -21,8 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerRegistryService
-import org.klokwrk.cargotracker.booking.queryside.test.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.cargotracker.booking.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
+import org.klokwrk.cargotracker.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageRequirement
 import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortDirection
