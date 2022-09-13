@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.queryside.test.axon
+package org.klokwrk.cargotracker.booking.test.support.queryside.axon
 
 import groovy.transform.CompileStatic
 import org.axonframework.eventhandling.GenericDomainEventMessage
