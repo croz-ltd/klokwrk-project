@@ -66,7 +66,7 @@ dependencies {
   testImplementation "org.axonframework:axon-test"
   testImplementation "org.spockframework:spock-core"
 
-  testIntegrationImplementation project(":cargotracker-booking-commandside-test-support")
+  testIntegrationImplementation project(":cargotracker-booking-test-support-testcontainers")
 
   testIntegrationImplementation testFixtures(project(":cargotracker-booking-boundary-web"))
 

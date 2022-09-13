@@ -61,7 +61,7 @@ dependencies {
   testImplementation "org.spockframework:spock-core"
 
   testIntegrationImplementation project(":cargotracker-booking-boundary-web")
-  testIntegrationImplementation project(":cargotracker-booking-commandside-test-support")
+  testIntegrationImplementation project(":cargotracker-booking-test-support-testcontainers")
   testIntegrationImplementation project(":cargotracker-booking-domain-model-command")
   testIntegrationImplementation project(":cargotracker-booking-queryside-test-support")
   testIntegrationImplementation project(":cargotracker-lib-domain-model-command")

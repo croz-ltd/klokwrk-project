@@ -22,10 +22,8 @@ plugins {
 }
 
 dependencies {
-  implementation platform(project(":klokwrk-platform-spring-boot"))
+  implementation platform(project(":klokwrk-platform-base"))
   implementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
-
-  implementation project(":cargotracker-booking-boundary-web")
 
   implementation "org.codehaus.groovy:groovy"
   implementation "org.testcontainers:testcontainers"

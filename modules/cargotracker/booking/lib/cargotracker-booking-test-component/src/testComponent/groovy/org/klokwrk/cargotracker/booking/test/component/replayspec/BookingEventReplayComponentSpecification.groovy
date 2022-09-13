@@ -25,10 +25,10 @@ import groovy.util.logging.Slf4j
 import org.apache.http.HttpResponse
 import org.apache.http.client.fluent.Request
 import org.apache.http.entity.ContentType
-import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.AxonServerTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.QuerySideProjectionRdbmsAppTestcontainersFactory
+import org.klokwrk.cargotracker.booking.test.support.testcontainers.AxonServerTestcontainersFactory
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.containers.PostgreSQLContainer

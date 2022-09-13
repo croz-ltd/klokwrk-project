@@ -23,7 +23,6 @@ import org.awaitility.Awaitility
 import org.axonframework.eventhandling.EventBus
 import org.axonframework.eventhandling.GenericDomainEventMessage
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFixtureBuilder
-import org.klokwrk.cargotracker.booking.commandside.test.testcontainers.AxonServerTestcontainersFactory
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEventFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
@@ -40,6 +39,7 @@ import org.klokwrk.cargotracker.booking.queryside.test.feature.bookingoffer.sql.
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.PostgreSqlTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.QuerySideProjectionRdbmsAppTestcontainersFactory
 import org.klokwrk.cargotracker.booking.queryside.test.testcontainers.RdbmsManagementAppTestcontainersFactory
+import org.klokwrk.cargotracker.booking.test.support.testcontainers.AxonServerTestcontainersFactory
 import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
