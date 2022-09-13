@@ -23,13 +23,10 @@ plugins {
 
 dependencies {
   implementation platform(project(":klokwrk-platform-base"))
-  implementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
 
   implementation project(":cargotracker-lib-domain-model-event")
 
   implementation "org.codehaus.groovy:groovy"
   implementation "org.codehaus.groovy:groovy-sql"
   implementation "org.axonframework:axon-messaging"
-  implementation "org.testcontainers:postgresql"
-  implementation "org.testcontainers:testcontainers"
 }

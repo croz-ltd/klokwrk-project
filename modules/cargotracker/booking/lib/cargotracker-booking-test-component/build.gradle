@@ -28,8 +28,8 @@ dependencies {
   // Need to have Groovy as implementation dependency (instead as only testIntegrationImplementation dependency) as otherwise groovydoc task fails.
   implementation "org.codehaus.groovy:groovy"
 
-  testComponentImplementation project(":cargotracker-booking-test-support-testcontainers")
   testComponentImplementation project(":cargotracker-booking-queryside-test-support")
+  testComponentImplementation project(":cargotracker-booking-test-support-testcontainers")
 
   testComponentImplementation "org.apache.httpcomponents:fluent-hc"
   testComponentImplementation "org.apache.httpcomponents:httpclient"
