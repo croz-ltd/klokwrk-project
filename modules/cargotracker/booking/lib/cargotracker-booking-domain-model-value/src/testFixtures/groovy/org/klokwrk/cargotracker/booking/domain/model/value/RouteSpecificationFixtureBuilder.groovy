@@ -44,12 +44,12 @@ class RouteSpecificationFixtureBuilder {
     return builder
   }
 
+  Clock creationTimeClock = Clock.systemUTC()
   Location originLocation
   Location destinationLocation
-  Instant departureEarliestTime
-  Instant departureLatestTime
-  Instant arrivalLatestTime
-  Clock creationTimeClock
+  Instant departureEarliestTime = Instant.now(creationTimeClock) + Duration.ofHours(1)
+  Instant departureLatestTime = Instant.now(creationTimeClock) + Duration.ofHours(2)
+  Instant arrivalLatestTime = Instant.now(creationTimeClock) + Duration.ofHours(3)
 
   RouteSpecification build() {
     RouteSpecification routeSpecification = RouteSpecification.make(originLocation, destinationLocation, departureEarliestTime, departureLatestTime, arrivalLatestTime, creationTimeClock)

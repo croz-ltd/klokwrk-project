@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.ada
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
-import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerRegistryService
+import org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder
 import org.klokwrk.cargotracker.booking.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
@@ -79,7 +79,7 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
   MockMvc mockMvc
 
   void setupSpec() {
-    String customerIdentifier = InMemoryCustomerRegistryService.CustomerSample.CUSTOMER_SAMPLE_MAP.get("standard-customer@cargotracker.com").customerId.identifier
+    String customerIdentifier = CustomerFixtureBuilder.customer_standard().build().customerId.identifier
     initialBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount_forCustomerIdentifier(groovySql, customerIdentifier)
     5.times { publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql) }
   }

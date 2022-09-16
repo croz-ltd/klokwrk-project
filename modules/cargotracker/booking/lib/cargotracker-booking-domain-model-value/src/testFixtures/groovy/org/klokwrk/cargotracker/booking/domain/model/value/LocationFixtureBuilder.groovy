@@ -24,26 +24,32 @@ import groovy.transform.builder.SimpleStrategy
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic
 class LocationFixtureBuilder {
-  static LocationFixtureBuilder location_krk() {
-    Location location = Location.make("HRKRK", "Krk", "Croatia", "1-3-----", "4502N 01435E", PortCapabilities.SEA_PORT_CAPABILITIES)
-    LocationFixtureBuilder locationFixtures = makeFromLocation(location)
-    return locationFixtures
-  }
-
   static LocationFixtureBuilder location_rijeka() {
     Location location = Location.make("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES)
     LocationFixtureBuilder locationFixtures = makeFromLocation(location)
     return locationFixtures
   }
 
-  static LocationFixtureBuilder location_zagreb() {
-    Location location = Location.make("HRZAG", "Zagreb", "Croatia", "-2345---", "4548N 01600E", PortCapabilities.NO_PORT_CAPABILITIES)
+  static LocationFixtureBuilder location_rotterdam() {
+    Location location = Location.make("NLRTM", "Rotterdam", "Netherlands", "12345---", "5155N 00430E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES)
     LocationFixtureBuilder locationFixtures = makeFromLocation(location)
     return locationFixtures
   }
 
-  static LocationFixtureBuilder location_rotterdam() {
-    Location location = Location.make("NLRTM", "Rotterdam", "Netherlands", "12345---", "5155N 00430E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES)
+  static LocationFixtureBuilder location_hamburg() {
+    Location location = Location.make("DEHAM", "Hamburg", "Germany", "12345---", "5331N 00956E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES)
+    LocationFixtureBuilder locationFixtures = makeFromLocation(location)
+    return locationFixtures
+  }
+
+  static LocationFixtureBuilder location_losAngeles() {
+    Location location = Location.make("USLAX", "Los Angeles", "The United States of America", "1--45---", "3344N 11816W", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES)
+    LocationFixtureBuilder locationFixtures = makeFromLocation(location)
+    return locationFixtures
+  }
+
+  static LocationFixtureBuilder location_newYork() {
+    Location location = Location.make("USNYC", "New York", "The United States of America", "12345---", "4042N 07400W", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES)
     LocationFixtureBuilder locationFixtures = makeFromLocation(location)
     return locationFixtures
   }

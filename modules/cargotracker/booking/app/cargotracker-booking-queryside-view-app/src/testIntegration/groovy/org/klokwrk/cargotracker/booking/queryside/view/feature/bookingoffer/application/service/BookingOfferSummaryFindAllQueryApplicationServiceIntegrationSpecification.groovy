@@ -23,8 +23,8 @@ import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.read.ListAppender
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
+import org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
-import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerRegistryService
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryResponse
@@ -78,7 +78,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
   Integer initialBookingOfferSummaryRecordsCount = null
 
   void setupSpec() {
-    String customerIdentifier = InMemoryCustomerRegistryService.CustomerSample.CUSTOMER_SAMPLE_MAP.get("standard-customer@cargotracker.com").customerId.identifier
+    String customerIdentifier = CustomerFixtureBuilder.customer_standard().build().customerId.identifier
     initialBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount_forCustomerIdentifier(groovySql, customerIdentifier)
     5.times { publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql) }
   }

@@ -71,6 +71,7 @@ dependencies {
 
   testIntegrationImplementation testFixtures(project(":cargotracker-booking-boundary-web"))
   testIntegrationImplementation testFixtures(project(":cargotracker-booking-domain-model-event"))
+  testIntegrationImplementation testFixtures(project(":cargotracker-booking-domain-model-value"))
 
   testIntegrationImplementation "javax.measure:unit-api"
   testIntegrationImplementation "org.awaitility:awaitility"

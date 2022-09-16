@@ -30,10 +30,8 @@ import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
-import org.klokwrk.cargotracker.booking.domain.model.value.Location
-import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
-import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
-import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerRegistryService
+import org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder
+import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecificationFixtureBuilder
 import org.klokwrk.cargotracker.booking.test.support.queryside.axon.GenericDomainEventMessageFactory
 import org.klokwrk.cargotracker.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.cargotracker.booking.test.support.testcontainers.AxonServerTestcontainersFactory
@@ -51,7 +49,13 @@ import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.Units
 
 import java.time.Duration
-import java.time.Instant
+
+import static org.klokwrk.cargotracker.booking.domain.model.value.LocationFixtureBuilder.location_hamburg
+import static org.klokwrk.cargotracker.booking.domain.model.value.LocationFixtureBuilder.location_losAngeles
+import static org.klokwrk.cargotracker.booking.domain.model.value.LocationFixtureBuilder.location_newYork
+import static org.klokwrk.cargotracker.booking.domain.model.value.LocationFixtureBuilder.location_rijeka
+import static org.klokwrk.cargotracker.booking.domain.model.value.LocationFixtureBuilder.location_rotterdam
+import static org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecificationFixtureBuilder.routeSpecification_rijekaToRotterdam
 
 @SuppressWarnings("CodeNarc.AbcMetric")
 abstract class AbstractQuerySideIntegrationSpecification extends Specification {
@@ -97,156 +101,122 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
     return bookingOfferIdentifier
   }
 
-  @SuppressWarnings(["CodeNarc.MethodSize", "CodeNarc.AbcMetric"])
   static List<BookingOfferCreatedEvent> makeForSearch_pastBookingOfferCreatedEvents(Integer numOfRepetitions = 1) {
     List<BookingOfferCreatedEvent> bookingOfferCreatedEventList = []
 
     numOfRepetitions.times {
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: InMemoryCustomerRegistryService.CustomerSample.CUSTOMER_SAMPLE_MAP.get("standard-customer@cargotracker.com"),
+          customer: CustomerFixtureBuilder.customer_standard().build(),
           bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: RouteSpecification.make(
-              Location.make("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Location.make("NLRTM", "Rotterdam", "Netherlands", "12345---", "5155N 00430E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Instant.now() + Duration.ofHours(1),
-              Instant.now() + Duration.ofHours(2),
-              Instant.now() + Duration.ofHours(3),
-              ),
+          routeSpecification: routeSpecification_rijekaToRotterdam().build(),
           commodity: Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 30_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
           bookingTotalCommodityWeight: Quantities.getQuantity(30_000, Units.KILOGRAM),
           bookingTotalContainerTeuCount: 2.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: InMemoryCustomerRegistryService.CustomerSample.CUSTOMER_SAMPLE_MAP.get("standard-customer@cargotracker.com"),
+          customer: CustomerFixtureBuilder.customer_standard().build(),
           bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: RouteSpecification.make(
-              Location.make("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Location.make("DEHAM", "Hamburg", "Germany", "12345---", "5331N 00956E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Instant.now() + Duration.ofHours(1),
-              Instant.now() + Duration.ofHours(2),
-              Instant.now() + Duration.ofHours(3),
-              ),
+          routeSpecification: new RouteSpecificationFixtureBuilder()
+              .originLocation(location_rijeka().build())
+              .destinationLocation(location_hamburg().build())
+              .build(),
           commodity: Commodity.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, CommodityInfo.make(CommodityType.AIR_COOLED, 30_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
           bookingTotalCommodityWeight: Quantities.getQuantity(30_000, Units.KILOGRAM),
           bookingTotalContainerTeuCount: 2.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: InMemoryCustomerRegistryService.CustomerSample.CUSTOMER_SAMPLE_MAP.get("standard-customer@cargotracker.com"),
+          customer: CustomerFixtureBuilder.customer_standard().build(),
           bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: RouteSpecification.make(
-              Location.make("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Location.make("USLAX", "Los Angeles", "The United States of America", "1--45---", "3344N 11816W", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Instant.now() + Duration.ofHours(1),
-              Instant.now() + Duration.ofHours(2),
-              Instant.now() + Duration.ofHours(3),
-              ),
+          routeSpecification: new RouteSpecificationFixtureBuilder()
+              .originLocation(location_rijeka().build())
+              .destinationLocation(location_losAngeles().build())
+              .build(),
           commodity: Commodity.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, CommodityInfo.make(CommodityType.CHILLED, 30_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
           bookingTotalCommodityWeight: Quantities.getQuantity(30_000, Units.KILOGRAM),
           bookingTotalContainerTeuCount: 2.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: InMemoryCustomerRegistryService.CustomerSample.CUSTOMER_SAMPLE_MAP.get("standard-customer@cargotracker.com"),
+          customer: CustomerFixtureBuilder.customer_standard().build(),
           bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: RouteSpecification.make(
-              Location.make("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Location.make("USNYC", "New York", "The United States of America", "12345---", "4042N 07400W", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Instant.now() + Duration.ofHours(1),
-              Instant.now() + Duration.ofHours(2),
-              Instant.now() + Duration.ofHours(3),
-              ),
+          routeSpecification: new RouteSpecificationFixtureBuilder()
+              .originLocation(location_rijeka().build())
+              .destinationLocation(location_newYork().build())
+              .build(),
           commodity: Commodity.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, CommodityInfo.make(CommodityType.FROZEN, 30_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
           bookingTotalCommodityWeight: Quantities.getQuantity(30_000, Units.KILOGRAM),
           bookingTotalContainerTeuCount: 2.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: InMemoryCustomerRegistryService.CustomerSample.CUSTOMER_SAMPLE_MAP.get("gold-customer@cargotracker.com"),
+          customer: CustomerFixtureBuilder.customer_standard().build(),
           bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: RouteSpecification.make(
-              Location.make("DEHAM", "Hamburg", "Germany", "12345---", "5331N 00956E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Location.make("USLAX", "Los Angeles", "The United States of America", "1--45---", "3344N 11816W", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Instant.now() + Duration.ofHours(1),
-              Instant.now() + Duration.ofHours(2),
-              Instant.now() + Duration.ofHours(3),
-              ),
+          routeSpecification: new RouteSpecificationFixtureBuilder()
+              .originLocation(location_hamburg().build())
+              .destinationLocation(location_losAngeles().build())
+              .build(),
           commodity: Commodity.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, CommodityInfo.make(CommodityType.AIR_COOLED, 70_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
           bookingTotalCommodityWeight: Quantities.getQuantity(70_000, Units.KILOGRAM),
           bookingTotalContainerTeuCount: 4.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: InMemoryCustomerRegistryService.CustomerSample.CUSTOMER_SAMPLE_MAP.get("platinum-customer@cargotracker.com"),
+          customer: CustomerFixtureBuilder.customer_standard().build(),
           bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: RouteSpecification.make(
-              Location.make("NLRTM", "Rotterdam", "Netherlands", "12345---", "5155N 00430E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Location.make("USNYC", "New York", "The United States of America", "12345---", "4042N 07400W", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Instant.now() + Duration.ofHours(1),
-              Instant.now() + Duration.ofHours(2),
-              Instant.now() + Duration.ofHours(3),
-              ),
+          routeSpecification: new RouteSpecificationFixtureBuilder()
+              .originLocation(location_rotterdam().build())
+              .destinationLocation(location_newYork().build())
+              .build(),
           commodity: Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 40_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
           bookingTotalCommodityWeight: Quantities.getQuantity(40_000, Units.KILOGRAM),
           bookingTotalContainerTeuCount: 2.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: InMemoryCustomerRegistryService.CustomerSample.CUSTOMER_SAMPLE_MAP.get("standard-customer@cargotracker.com"),
+          customer: CustomerFixtureBuilder.customer_standard().build(),
           bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: RouteSpecification.make(
-              Location.make("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Location.make("DEHAM", "Hamburg", "Germany", "12345---", "5331N 00956E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Instant.now() + Duration.ofHours(1),
-              Instant.now() + Duration.ofHours(2),
-              Instant.now() + Duration.ofHours(3),
-              ),
+          routeSpecification: new RouteSpecificationFixtureBuilder()
+              .originLocation(location_rijeka().build())
+              .destinationLocation(location_hamburg().build())
+              .build(),
           commodity: Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 1_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
           bookingTotalCommodityWeight: Quantities.getQuantity(1_000, Units.KILOGRAM),
           bookingTotalContainerTeuCount: 1.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: InMemoryCustomerRegistryService.CustomerSample.CUSTOMER_SAMPLE_MAP.get("standard-customer@cargotracker.com"),
+          customer: CustomerFixtureBuilder.customer_standard().build(),
           bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: RouteSpecification.make(
-              Location.make("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Location.make("USLAX", "Los Angeles", "The United States of America", "1--45---", "3344N 11816W", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Instant.now() + Duration.ofHours(1),
-              Instant.now() + Duration.ofHours(2),
-              Instant.now() + Duration.ofHours(3),
-              ),
+          routeSpecification: new RouteSpecificationFixtureBuilder()
+              .originLocation(location_rijeka().build())
+              .destinationLocation(location_losAngeles().build())
+              .build(),
           commodity: Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 15_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
           bookingTotalCommodityWeight: Quantities.getQuantity(15_000, Units.KILOGRAM),
           bookingTotalContainerTeuCount: 1.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: InMemoryCustomerRegistryService.CustomerSample.CUSTOMER_SAMPLE_MAP.get("standard-customer@cargotracker.com"),
+          customer: CustomerFixtureBuilder.customer_standard().build(),
           bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: RouteSpecification.make(
-              Location.make("HRRJK", "Rijeka", "Croatia", "1234----", "4520N 01424E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Location.make("USNYC", "New York", "The United States of America", "12345---", "4042N 07400W", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Instant.now() + Duration.ofHours(1),
-              Instant.now() + Duration.ofHours(2),
-              Instant.now() + Duration.ofHours(3),
-              ),
+          routeSpecification: new RouteSpecificationFixtureBuilder()
+              .originLocation(location_rijeka().build())
+              .destinationLocation(location_newYork().build())
+              .build(),
           commodity: Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 100_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
           bookingTotalCommodityWeight: Quantities.getQuantity(100_000, Units.KILOGRAM),
           bookingTotalContainerTeuCount: 5.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: InMemoryCustomerRegistryService.CustomerSample.CUSTOMER_SAMPLE_MAP.get("standard-customer@cargotracker.com"),
+          customer: CustomerFixtureBuilder.customer_standard().build(),
           bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: RouteSpecification.make(
-              Location.make("DEHAM", "Hamburg", "Germany", "12345---", "5331N 00956E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Location.make("NLRTM", "Rotterdam", "Netherlands", "12345---", "5155N 00430E", PortCapabilities.SEA_CONTAINER_PORT_CAPABILITIES),
-              Instant.now() + Duration.ofHours(1),
-              Instant.now() + Duration.ofHours(2),
-              Instant.now() + Duration.ofHours(3),
-              ),
+          routeSpecification: new RouteSpecificationFixtureBuilder()
+              .originLocation(location_hamburg().build())
+              .destinationLocation(location_rotterdam().build())
+              .build(),
           commodity: Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 45_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
           bookingTotalCommodityWeight: Quantities.getQuantity(45_000, Units.KILOGRAM),
           bookingTotalContainerTeuCount: 3.00G
