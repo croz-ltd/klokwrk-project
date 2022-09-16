@@ -30,6 +30,8 @@ dependencies {
   implementation project(":klokwrk-lang-groovy-contracts-match")
   implementation project(":klokwrk-lang-groovy-contracts-simple")
 
+  implementation testFixtures(project(":cargotracker-booking-domain-model-value"))
+
   implementation "org.codehaus.groovy:groovy"
   implementation "org.codehaus.groovy:groovy-macro"
   implementation "org.hamcrest:hamcrest"

@@ -25,6 +25,10 @@ import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainExceptio
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 
 import static org.hamcrest.Matchers.notNullValue
+import static org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder.customer_anonymous
+import static org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder.customer_gold
+import static org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder.customer_platinum
+import static org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder.customer_standard
 
 /**
  * In-memory implementation of customer management bounded context.
@@ -57,10 +61,10 @@ class InMemoryCustomerRegistryService implements CustomerByUserIdentifierPortOut
 
   static class CustomerSample {
     static final Map<String, Customer> CUSTOMER_SAMPLE_MAP = [
-        "anonymous123": Customer.make("44f57e34-cfa5-4413-9329-4c2cc338c997", CustomerType.ANONYMOUS),
-        "standard-customer@cargotracker.com": Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),
-        "gold-customer@cargotracker.com": Customer.make("7517d07c-0031-4d4f-8d8f-58daeb3fad3c", CustomerType.GOLD),
-        "platinum-customer@cargotracker.com": Customer.make("46af8019-f5fe-4b67-a514-e784b8bdde27", CustomerType.PLATINUM)
+        "anonymous123": customer_anonymous().build(),
+        "standard-customer@cargotracker.com": customer_standard().build(),
+        "gold-customer@cargotracker.com": customer_gold().build(),
+        "platinum-customer@cargotracker.com": customer_platinum().build()
     ]
 
     static Customer findCustomerByUserIdentifier(String userIdentifier) {
