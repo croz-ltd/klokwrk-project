@@ -21,7 +21,6 @@ import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import net.croz.nrich.search.api.model.AdditionalRestrictionResolver
 import net.croz.nrich.search.api.model.SearchConfiguration
-import net.croz.nrich.search.api.model.SearchProjection
 import net.croz.nrich.search.api.model.property.SearchPropertyConfiguration
 import org.axonframework.queryhandling.QueryHandler
 import org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.BookingOfferSummaryJpaEntity
@@ -136,15 +135,13 @@ class BookingOfferSummaryQueryHandlerService {
 
   @QueryHandler
   BookingOfferSummarySearchAllQueryResponse handleBookingOfferSummarySearchAllQueryRequest(BookingOfferSummarySearchAllQueryRequest bookingOfferSummarySearchAllQueryRequest) {
-    SearchConfiguration<BookingOfferSummaryJpaEntity, BookingOfferIdentifierDto, BookingOfferSummarySearchAllQueryRequest> searchConfiguration =
-        SearchConfiguration
-            .<BookingOfferSummaryJpaEntity, BookingOfferIdentifierDto, BookingOfferSummarySearchAllQueryRequest>builder()
-            .resultClass(BookingOfferIdentifierDto)
-            .projectionList([SearchProjection.builder().path(BOOKING_OFFER_IDENTIFIER).build()])
-            .anyMatch(false)
-            .searchPropertyConfiguration(SearchPropertyConfiguration.defaultSearchPropertyConfiguration().tap { searchIgnoredPropertyList = ["customerIdentifier"] })
-            .additionalRestrictionResolverList([new BookingOfferSummaryJpaEntityAdditionalRestrictionResolver()] as List<AdditionalRestrictionResolver>) // codenarc-disable-line UnnecessaryCast
-            .build()
+    SearchConfiguration<BookingOfferSummaryJpaEntity, BookingOfferIdentifierDto, BookingOfferSummarySearchAllQueryRequest> searchConfiguration = SearchConfiguration
+        .<BookingOfferSummaryJpaEntity, BookingOfferIdentifierDto, BookingOfferSummarySearchAllQueryRequest>builder()
+        .resultClass(BookingOfferIdentifierDto)
+        .anyMatch(false)
+        .searchPropertyConfiguration(SearchPropertyConfiguration.defaultSearchPropertyConfiguration().tap { searchIgnoredPropertyList = ["customerIdentifier"] })
+        .additionalRestrictionResolverList([new BookingOfferSummaryJpaEntityAdditionalRestrictionResolver()] as List<AdditionalRestrictionResolver>) // codenarc-disable-line UnnecessaryCast
+        .build()
 
     PageRequest pageRequest =
         QueryHandlerSpringDataJpaUtil.makePageRequestFromPageAndSortRequirements(bookingOfferSummarySearchAllQueryRequest.pageRequirement, bookingOfferSummarySearchAllQueryRequest.sortRequirementList)
