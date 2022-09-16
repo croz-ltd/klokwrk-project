@@ -255,7 +255,6 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
     thrown(DomainException)
   }
 
-  @SuppressWarnings("CodeNarc.MethodSize")
   void "makeCreateBookingOfferCommandResponse - should create expected response"() {
     given:
     String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()

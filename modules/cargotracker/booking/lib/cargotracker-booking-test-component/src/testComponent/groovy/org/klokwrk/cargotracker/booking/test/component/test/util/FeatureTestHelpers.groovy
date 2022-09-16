@@ -133,12 +133,17 @@ class FeatureTestHelpers {
     return commandRequestBody
   }
 
-  @SuppressWarnings("CodeNarc.MethodSize")
   static List<String> makeCommandRequestBodyList_createBookingOffer() {
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
+
+    String departureArrivalTimesFragment = """
+        "departureEarliestTime": "${ departureEarliestTime }",
+        "departureLatestTime": "${ departureLatestTime }",
+        "arrivalLatestTime": "${ arrivalLatestTime }"
+    """
 
     List<String> commandRequestBodyList = []
     commandRequestBodyList << """
@@ -147,9 +152,7 @@ class FeatureTestHelpers {
           "routeSpecification": {
             "originLocation": "HRRJK",
             "destinationLocation": "NLRTM",
-            "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }",
-            "arrivalLatestTime": "${ arrivalLatestTime }"
+            ${ departureArrivalTimesFragment }
           },
           "commodityInfo": {
             "commodityType": "dry",
@@ -165,9 +168,7 @@ class FeatureTestHelpers {
           "routeSpecification": {
             "originLocation": "HRRJK",
             "destinationLocation": "DEHAM",
-            "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }",
-            "arrivalLatestTime": "${ arrivalLatestTime }"
+            ${ departureArrivalTimesFragment }
           },
           "commodityInfo": {
             "commodityType": "air_cooled",
@@ -183,9 +184,7 @@ class FeatureTestHelpers {
           "routeSpecification": {
             "originLocation": "HRRJK",
             "destinationLocation": "USLAX",
-            "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }",
-            "arrivalLatestTime": "${ arrivalLatestTime }"
+            ${ departureArrivalTimesFragment }
           },
           "commodityInfo": {
             "commodityType": "chilled",
@@ -201,9 +200,7 @@ class FeatureTestHelpers {
           "routeSpecification": {
             "originLocation": "HRRJK",
             "destinationLocation": "USNYC",
-            "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }",
-            "arrivalLatestTime": "${ arrivalLatestTime }"
+            ${ departureArrivalTimesFragment }
           },
           "commodityInfo": {
             "commodityType": "frozen",
@@ -219,9 +216,7 @@ class FeatureTestHelpers {
           "routeSpecification": {
             "originLocation": "DEHAM",
             "destinationLocation": "USLAX",
-            "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }",
-            "arrivalLatestTime": "${ arrivalLatestTime }"
+            ${ departureArrivalTimesFragment }
           },
           "commodityInfo": {
             "commodityType": "air_cooled",
@@ -237,9 +232,7 @@ class FeatureTestHelpers {
           "routeSpecification": {
             "originLocation": "NLRTM",
             "destinationLocation": "USNYC",
-            "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }",
-            "arrivalLatestTime": "${ arrivalLatestTime }"
+            ${ departureArrivalTimesFragment }
           },
           "commodityInfo": {
             "commodityType": "dry",
@@ -255,9 +248,7 @@ class FeatureTestHelpers {
           "routeSpecification": {
             "originLocation": "HRRJK",
             "destinationLocation": "DEHAM",
-            "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }",
-            "arrivalLatestTime": "${ arrivalLatestTime }"
+            ${ departureArrivalTimesFragment }
           },
           "commodityInfo": {
             "commodityType": "dry",
@@ -273,9 +264,7 @@ class FeatureTestHelpers {
           "routeSpecification": {
             "originLocation": "HRRJK",
             "destinationLocation": "USLAX",
-            "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }",
-            "arrivalLatestTime": "${ arrivalLatestTime }"
+            ${ departureArrivalTimesFragment }
           },
           "commodityInfo": {
             "commodityType": "dry",
@@ -291,9 +280,7 @@ class FeatureTestHelpers {
           "routeSpecification": {
             "originLocation": "HRRJK",
             "destinationLocation": "USNYC",
-            "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }",
-            "arrivalLatestTime": "${ arrivalLatestTime }"
+            ${ departureArrivalTimesFragment }
           },
           "commodityInfo": {
             "commodityType": "dry",
@@ -309,9 +296,7 @@ class FeatureTestHelpers {
           "routeSpecification": {
             "originLocation": "DEHAM",
             "destinationLocation": "NLRTM",
-            "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }",
-            "arrivalLatestTime": "${ arrivalLatestTime }"
+            ${ departureArrivalTimesFragment }
           },
           "commodityInfo": {
             "commodityType": "dry",

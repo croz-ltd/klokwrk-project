@@ -447,7 +447,17 @@ ruleset {
   }
   CyclomaticComplexity   // Requires the GMetrics jar
   MethodCount
-  MethodSize
+  MethodSize {
+    name = "MethodSize - main"
+    description = "For 'main' source set, verifies that the size of each method does not exceeds 100 lines."
+    doNotApplyToFilesMatching = TEST_FILES
+  }
+  MethodSize {
+    name = "MethodSize - test"
+    description = "For all 'test*' source sets, verifies that the size of each method is not greather then 200 lines."
+    applyToFilesMatching = TEST_FILES
+    maxLines = 200
+  }
   NestedBlockDepth
   ParameterCount
 

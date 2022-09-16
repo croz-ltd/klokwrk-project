@@ -56,7 +56,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mockMvc ?= webAppContextSetup(webApplicationContext).build()
   }
 
-  @SuppressWarnings(["CodeNarc.AbcMetric", "CodeNarc.MethodSize"])
+  @SuppressWarnings("CodeNarc.AbcMetric")
   void "should work for correct request - [acceptLanguage: #acceptLanguageParam]"() {
     given:
     Instant currentTime = Instant.now()
