@@ -161,6 +161,60 @@ class FeatureTestHelpers {
 
     commandRequestBodyList << """
         {
+          "userIdentifier": "standard-customer@cargotracker.com",
+          "routeSpecification": {
+            "originLocation": "HRRJK",
+            "destinationLocation": "DEHAM",
+            "departureEarliestTime": "${ departureEarliestTime }",
+            "departureLatestTime": "${ departureLatestTime }",
+            "arrivalLatestTime": "${ arrivalLatestTime }"
+          },
+          "commodityInfo": {
+            "commodityType": "air_cooled",
+            "totalWeightInKilograms": 30000
+          },
+          "containerDimensionType": "DIMENSION_ISO_22"
+        }
+        """.toString()
+
+    commandRequestBodyList << """
+        {
+          "userIdentifier": "standard-customer@cargotracker.com",
+          "routeSpecification": {
+            "originLocation": "HRRJK",
+            "destinationLocation": "USLAX",
+            "departureEarliestTime": "${ departureEarliestTime }",
+            "departureLatestTime": "${ departureLatestTime }",
+            "arrivalLatestTime": "${ arrivalLatestTime }"
+          },
+          "commodityInfo": {
+            "commodityType": "chilled",
+            "totalWeightInKilograms": 30000
+          },
+          "containerDimensionType": "DIMENSION_ISO_22"
+        }
+        """.toString()
+
+    commandRequestBodyList << """
+        {
+          "userIdentifier": "standard-customer@cargotracker.com",
+          "routeSpecification": {
+            "originLocation": "HRRJK",
+            "destinationLocation": "USNYC",
+            "departureEarliestTime": "${ departureEarliestTime }",
+            "departureLatestTime": "${ departureLatestTime }",
+            "arrivalLatestTime": "${ arrivalLatestTime }"
+          },
+          "commodityInfo": {
+            "commodityType": "frozen",
+            "totalWeightInKilograms": 30000
+          },
+          "containerDimensionType": "DIMENSION_ISO_22"
+        }
+        """.toString()
+
+    commandRequestBodyList << """
+        {
           "userIdentifier": "gold-customer@cargotracker.com",
           "routeSpecification": {
             "originLocation": "DEHAM",
