@@ -264,7 +264,6 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
     })
   }
 
-//  @SuppressWarnings("CodeNarc.UnnecessaryObjectReferences")
   void "query - bookingOfferSummary_searchAll - should find existing booking offers with default paging and sorting"() {
     given:
     Request queryRequest = makeRequest(makeQueryRequestUrl_bookingOfferSummary_searchAll(querySideViewApp), makeQueryRequestBody_bookingOfferSummary_searchAll(), "en")
@@ -315,7 +314,7 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
       })
 
       verifyAll(pageContent as List<Map>, {
-        size() >= 2
+        size() >= 4
         it.every({ Map pageElement -> pageElement.customerType == "STANDARD" })
         it.every({ Map pageElement -> pageElement.originLocationName == "Rijeka" })
         it.every({ Map pageElement -> pageElement.destinationLocationCountryName == "The United States of America" })

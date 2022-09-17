@@ -19,6 +19,7 @@ package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.app
 
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryRequest
@@ -73,7 +74,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
     }
   }
 
-  void "should work for minimal search request with default paging and sorting"() {
+  void "should work for minimal search request with default paging and sorting of request"() {
     given:
     OperationRequest<BookingOfferSummarySearchAllQueryRequest> operationRequest = new OperationRequest(
         payload: new BookingOfferSummarySearchAllQueryRequest(userIdentifier: "standard-customer@cargotracker.com"),
@@ -87,7 +88,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
     verifyAll(operationResponse.payload.pageInfo) {
       propertiesFiltered.size() == 8
       pageOrdinal == 0
-      pageElementsCount >= 5
+      pageElementsCount >= 8
       first
       requestedPageRequirement == PageRequirement.PAGE_REQUIREMENT_INSTANCE_DEFAULT
       requestedSortRequirementList == [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.DESC)]
@@ -105,7 +106,43 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
     }
   }
 
-  void "should work for customized search request with default paging and sorting"() {
+  void "should work for minimal search request with explicit paging and sorting of request"() {
+    given:
+    OperationRequest<BookingOfferSummarySearchAllQueryRequest> operationRequest = new OperationRequest(
+        payload: new BookingOfferSummarySearchAllQueryRequest(
+            userIdentifier: "standard-customer@cargotracker.com",
+            pageRequirement: new PageRequirement(ordinal: 0, size: 10),
+            sortRequirementList: [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.DESC)]
+        ),
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
+    )
+
+    when:
+    OperationResponse<BookingOfferSummarySearchAllQueryResponse> operationResponse = bookingOfferSummarySearchAllQueryPortIn.bookingOfferSummarySearchAllQuery(operationRequest)
+
+    then:
+    verifyAll(operationResponse.payload.pageInfo) {
+      propertiesFiltered.size() == 8
+      pageOrdinal == 0
+      pageElementsCount >= 8
+      first
+      requestedPageRequirement == new PageRequirement(ordinal: 0, size: 10)
+      requestedSortRequirementList == [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.DESC)]
+    }
+
+    verifyAll(operationResponse.payload.pageContent.first()) {
+      propertiesFiltered.size() == 17
+
+      customerType == CustomerType.STANDARD
+      originLocationName == "Hamburg"
+      destinationLocationName == "Rotterdam"
+      commodityTotalWeightKg == 45_000
+      commodityTotalContainerTeuCount == 3.00G
+      lastEventSequenceNumber == 0
+    }
+  }
+
+  void "should work for customized search request with default paging and sorting of request"() {
     given:
     OperationRequest<BookingOfferSummarySearchAllQueryRequest> operationRequest = new OperationRequest(
         payload: new BookingOfferSummarySearchAllQueryRequest(
@@ -125,7 +162,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
     verifyAll(operationResponse.payload.pageInfo) {
       propertiesFiltered.size() == 8
       pageOrdinal == 0
-      pageElementsCount >= 2
+      pageElementsCount >= 5
       first
       requestedPageRequirement == PageRequirement.PAGE_REQUIREMENT_INSTANCE_DEFAULT
       requestedSortRequirementList == [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.DESC)]
@@ -143,7 +180,43 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
     }
   }
 
-  void "should fail for invalid property name in sort requirements"() {
+  void "should search over commodityTypes element collection with default paging and sorting of request"() {
+    given:
+    OperationRequest<BookingOfferSummarySearchAllQueryRequest> operationRequest = new OperationRequest(
+        payload: new BookingOfferSummarySearchAllQueryRequest(
+            userIdentifier: "standard-customer@cargotracker.com",
+            originLocationName: "Rijeka",
+            commodityTypes: [CommodityType.AIR_COOLED, CommodityType.FROZEN, CommodityType.CHILLED]
+        ),
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
+    )
+
+    when:
+    OperationResponse<BookingOfferSummarySearchAllQueryResponse> operationResponse = bookingOfferSummarySearchAllQueryPortIn.bookingOfferSummarySearchAllQuery(operationRequest)
+
+    then:
+    verifyAll(operationResponse.payload.pageInfo) {
+      propertiesFiltered.size() == 8
+      pageOrdinal == 0
+      pageElementsCount >= 3
+      first
+      requestedPageRequirement == PageRequirement.PAGE_REQUIREMENT_INSTANCE_DEFAULT
+      requestedSortRequirementList == [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.DESC)]
+    }
+
+    verifyAll(operationResponse.payload.pageContent.first()) { // first is an equivalent of lastEventRecorded DESC
+      propertiesFiltered.size() == 17
+
+      customerType == CustomerType.STANDARD
+      originLocationName == "Rijeka"
+      destinationLocationName == "New York"
+      commodityTotalWeightKg == 30_000
+      commodityTotalContainerTeuCount == 2.00G
+      lastEventSequenceNumber == 0
+    }
+  }
+
+  void "should fail for invalid property name in sort requirements of request"() {
     given:
     OperationRequest<BookingOfferSummarySearchAllQueryRequest> operationRequest = new OperationRequest(
         payload: new BookingOfferSummarySearchAllQueryRequest(

@@ -18,6 +18,7 @@
 package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in
 
 import groovy.transform.CompileStatic
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageRequirement
 import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortDirection
@@ -74,6 +75,9 @@ class BookingOfferSummarySearchAllQueryRequest {
   @TrimmedStringConstraint(groups = [Level2])
   @NotBlankWhenNullableConstraint(groups = [Level1])
   String destinationLocationCountryName
+
+  @SuppressWarnings("unused")
+  Set<CommodityType> commodityTypes
 
   @SuppressWarnings("unused")
   @Min(groups = [Level1], value = 1L)

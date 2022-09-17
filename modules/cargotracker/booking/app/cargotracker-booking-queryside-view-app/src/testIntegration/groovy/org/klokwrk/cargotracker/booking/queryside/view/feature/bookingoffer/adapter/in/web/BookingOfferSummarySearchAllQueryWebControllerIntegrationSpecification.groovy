@@ -123,7 +123,7 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
         verifyAll(it.pageInfo as Map) {
           size() == 8
           pageOrdinal == 0
-          pageElementsCount >= 2
+          pageElementsCount >= 5
           first
 
           verifyAll(it.requestedPageRequirement as Map) {
