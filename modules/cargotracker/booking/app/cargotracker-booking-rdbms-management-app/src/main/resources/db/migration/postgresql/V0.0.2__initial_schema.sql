@@ -15,7 +15,6 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 --
-
 CREATE TABLE token_entry (
   processor_name text NOT NULL,
   segment integer NOT NULL,
@@ -26,10 +25,6 @@ CREATE TABLE token_entry (
 
   PRIMARY KEY (processor_name, segment)
 );
-
--- after this point, cargotracker_readonly will be given SELECT grant on all created tables
-CREATE USER cargotracker_readonly WITH PASSWORD 'cargotracker_readonly';
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO cargotracker_readonly;
 
 CREATE TABLE booking_offer_summary (
   booking_offer_identifier uuid PRIMARY KEY,
