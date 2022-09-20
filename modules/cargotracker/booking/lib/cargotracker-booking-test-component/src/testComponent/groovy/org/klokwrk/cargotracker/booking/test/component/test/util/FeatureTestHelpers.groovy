@@ -29,25 +29,25 @@ import java.time.Instant
 class FeatureTestHelpers {
   static String makeCommandRequestUrl_createBookingOffer(GenericContainer commandSideApp) {
     //noinspection HttpUrlsUsage
-    String createBookingOfferCommandUrl = "http://${ commandSideApp.host }:${ commandSideApp.firstMappedPort }/cargotracker-booking-commandside/booking-offer/create-booking-offer"
+    String createBookingOfferCommandUrl = "http://${ commandSideApp.host }:${ commandSideApp.getMappedPort(8080) }/cargotracker-booking-commandside/booking-offer/create-booking-offer"
     return createBookingOfferCommandUrl
   }
 
   static String makeQueryRequestUrl_bookingOfferSummary_findById(GenericContainer querySideViewApp) {
     //noinspection HttpUrlsUsage
-    String bookingOfferSummaryQueryUrl = "http://${ querySideViewApp.host }:${ querySideViewApp.firstMappedPort }/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-by-id"
+    String bookingOfferSummaryQueryUrl = "http://${ querySideViewApp.host }:${ querySideViewApp.getMappedPort(8084) }/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-by-id"
     return bookingOfferSummaryQueryUrl
   }
 
   static String makeQueryRequestUrl_bookingOfferSummary_findAll(GenericContainer querySideViewApp) {
     //noinspection HttpUrlsUsage
-    String bookingOfferSummaryQueryUrl = "http://${ querySideViewApp.host }:${ querySideViewApp.firstMappedPort }/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-all"
+    String bookingOfferSummaryQueryUrl = "http://${ querySideViewApp.host }:${ querySideViewApp.getMappedPort(8084) }/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-all"
     return bookingOfferSummaryQueryUrl
   }
 
   static String makeQueryRequestUrl_bookingOfferSummary_searchAll(GenericContainer querySideViewApp) {
     //noinspection HttpUrlsUsage
-    String bookingOfferSummaryQueryUrl = "http://${ querySideViewApp.host }:${ querySideViewApp.firstMappedPort }/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-search-all"
+    String bookingOfferSummaryQueryUrl = "http://${ querySideViewApp.host }:${ querySideViewApp.getMappedPort(8084) }/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-search-all"
     return bookingOfferSummaryQueryUrl
   }
 

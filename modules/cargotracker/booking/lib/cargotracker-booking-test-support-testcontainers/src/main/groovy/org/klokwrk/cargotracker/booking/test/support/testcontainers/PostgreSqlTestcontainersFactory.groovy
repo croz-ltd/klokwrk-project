@@ -37,9 +37,10 @@ class PostgreSqlTestcontainersFactory {
       withNetwork(klokwrkNetwork)
       // Here we are explicitly configuring the UTC time zone for the database. For more information, take a look at support/docker/README.md
       withCommand("postgres -c timezone=UTC -c log_timezone=UTC")
-      withDatabaseName("cargotracker_booking_query_database")
-      withUsername("cargotracker")
-      withPassword("cargotracker")
+      withDatabaseName("postgres")
+      withUsername("postgres")
+      withPassword("postgres")
+      withInitScript("postgresql/init/001-init-cargotracker_booking_query_database.sql")
 
       start()
     }

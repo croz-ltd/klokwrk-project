@@ -81,8 +81,9 @@ class BookingEventReplayComponentSpecification extends Specification {
   }
 
   private static void sendAxonEventMessages(GenericContainer axonServerContainer, List<String> messageList) {
+    Integer axonServerHttpPort = 8024
     //noinspection HttpUrlsUsage
-    String axonServerBaseUrl = "http://${ axonServerContainer.host }:${ axonServerContainer.firstMappedPort }"
+    String axonServerBaseUrl = "http://${ axonServerContainer.host }:${ axonServerContainer.getMappedPort(axonServerHttpPort) }"
 
     String axonServerApiEventsUrl = "$axonServerBaseUrl/v1/events"
 
@@ -104,7 +105,12 @@ class BookingEventReplayComponentSpecification extends Specification {
   static Integer fetchEventGlobalIndexFromProjectionRdbms(PostgreSQLContainer postgresqlServer) {
     Integer storedGlobalIndex = -1
 
-    Sql.withInstance(postgresqlServer.jdbcUrl, postgresqlServer.username, postgresqlServer.password, postgresqlServer.driverClassName) { Sql groovySql ->
+    String postgresqlServerJdbcUrl = "jdbc:postgresql://${ postgresqlServer.host }:${ postgresqlServer.getMappedPort(5432) }/cargotracker_booking_query_database"
+    String postgresqlServerUsername = "cargotracker_readonly"
+    String postgresqlServerPassword = "cargotracker_readonly"
+    String postgresqlServerDriverClassName = "org.postgresql.Driver"
+
+    Sql.withInstance(postgresqlServerJdbcUrl, postgresqlServerUsername, postgresqlServerPassword, postgresqlServerDriverClassName) { Sql groovySql ->
       GroovyRowResult queryRowResult = groovySql.firstRow("SELECT token as tokenBlob FROM token_entry WHERE processor_name != '__config'")
 
       byte[] tokenBlobByteArray = queryRowResult.tokenBlob as byte[]

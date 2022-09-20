@@ -74,14 +74,16 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
   }
 
   @DynamicPropertySource
-  static void configureAxonServerProperties(DynamicPropertyRegistry registry) {
-    String axonContainerIpAddress = axonServer.host
+  static void configureDynamicTestcontainersProperties(DynamicPropertyRegistry registry) {
+    String axonContainerHost = axonServer.host
     Integer axonContainerGrpcPort = axonServer.getMappedPort(8124)
-    registry.add("axon.axonserver.servers", { "${ axonContainerIpAddress }:${ axonContainerGrpcPort }" })
+    registry.add("CARGOTRACKER_AXON_SERVER_HOSTNAME", { axonContainerHost })
+    registry.add("CARGOTRACKER_AXON_SERVER_PORT_GRPC", { "${ axonContainerGrpcPort }" })
 
-    registry.add("spring.datasource.url", { postgresqlServer.jdbcUrl })
-    registry.add("spring.datasource.username", { postgresqlServer.username })
-    registry.add("spring.datasource.password", { postgresqlServer.password })
+    String postgresqlServerHost = postgresqlServer.host
+    Integer postgresqlServerPort = postgresqlServer.getMappedPort(5432)
+    registry.add("CARGOTRACKER_POSTGRES_HOSTNAME", { "${ postgresqlServerHost }" })
+    registry.add("CARGOTRACKER_POSTGRES_PORT", { "${ postgresqlServerPort }" })
   }
 
   static String publishAndWaitForProjectedBookingOfferCreatedEvent(

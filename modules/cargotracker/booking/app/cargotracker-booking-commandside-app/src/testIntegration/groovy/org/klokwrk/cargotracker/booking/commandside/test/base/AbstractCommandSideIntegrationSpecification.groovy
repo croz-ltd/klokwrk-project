@@ -48,17 +48,17 @@ abstract class AbstractCommandSideIntegrationSpecification extends Specification
   }
 
   @DynamicPropertySource
-  static void configureAxonServerProperties(DynamicPropertyRegistry registry) {
-    String axonContainerIpAddress = axonServer.host
-    Integer axonContainerGrpcPort = axonServer.getMappedPort(8124)
-
+  static void configureDynamicTestcontainersProperties(DynamicPropertyRegistry registry) {
     // Properties axonServerFirstInstanceUrl and axonServerSecondInstanceUrl are used as values for configuring 'axon.axonserver.servers' property at the level of a test class.
     // For concrete example, take a look SpringBootTest annotations of BookingOfferCommandWebControllerIntegrationSpecification,
     // BookingOfferCommandApplicationServiceWithTracingGatewayIntegrationSpecification or BookingOfferCommandApplicationServiceWithDefaultGatewayIntegrationSpecification classes.
-    registry.add("axonServerFirstInstanceUrl", { "${ axonContainerIpAddress }:${ axonContainerGrpcPort }" })
 
-    String axonContainerIpAddressSecondInstance = axonServerSecondInstance.host
+    String axonContainerHost = axonServer.host
+    Integer axonContainerGrpcPort = axonServer.getMappedPort(8124)
+    registry.add("axonServerFirstInstanceUrl", { "${ axonContainerHost }:${ axonContainerGrpcPort }" })
+
+    String axonContainerHostSecondInstance = axonServerSecondInstance.host
     Integer axonContainerGrpcPortSecondInstance = axonServerSecondInstance.getMappedPort(9124)
-    registry.add("axonServerSecondInstanceUrl", { "${ axonContainerIpAddressSecondInstance }:${ axonContainerGrpcPortSecondInstance }" })
+    registry.add("axonServerSecondInstanceUrl", { "${ axonContainerHostSecondInstance }:${ axonContainerGrpcPortSecondInstance }" })
   }
 }

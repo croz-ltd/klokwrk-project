@@ -14,7 +14,7 @@ services:
       - klokwrk-project-network
     volumes:
       - ./postgres/postgresql.conf:/etc/postgresql/postgresql.conf
-      - ./postgres/1-init-user-db.sh:/docker-entrypoint-initdb.d/1-init-user-db.sh
+      - ./postgres/1-init_db.sh:/docker-entrypoint-initdb.d/1-init_db.sh
       - klokwrk-project-postgres:/data/postgres
     command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
     restart: unless-stopped
