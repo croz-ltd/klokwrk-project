@@ -38,8 +38,8 @@ class RdbmsManagementAppTestcontainersFactory {
         "TZ": "Europe/Zagreb",
         "CARGOTRACKER_POSTGRES_HOSTNAME": "${ postgresqlServer.containerInfo.name - "/" }".toString(),
         "CARGOTRACKER_POSTGRES_PORT": "5432",
-        "CARGOTRACKER_POSTGRES_USERNAME": "cargotracker",
-        "CARGOTRACKER_POSTGRES_PASSWORD": "cargotracker"
+        "CARGOTRACKER_POSTGRES_DB_MIGRATION_USERNAME": "db_migration",
+        "CARGOTRACKER_POSTGRES_DB_MIGRATION_PASSWORD": "db_migration"
     ])
     rdbmsManagementApp.withNetwork(klokwrkNetwork)
     rdbmsManagementApp.waitingFor(Wait.forLogMessage(/.*Successfully applied.*migration.*to schema "public".*/, 1))

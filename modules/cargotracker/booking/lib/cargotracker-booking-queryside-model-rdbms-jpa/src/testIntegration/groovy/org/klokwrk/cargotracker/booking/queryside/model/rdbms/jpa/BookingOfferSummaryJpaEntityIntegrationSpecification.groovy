@@ -52,10 +52,12 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
   }
 
   @DynamicPropertySource
-  static void configureAxonServerProperties(DynamicPropertyRegistry registry) {
-    registry.add("spring.datasource.url", { postgresqlServer.jdbcUrl })
-    registry.add("spring.datasource.username", { postgresqlServer.username })
-    registry.add("spring.datasource.password", { postgresqlServer.password })
+  static void configureDynamicTestcontainersProperties(DynamicPropertyRegistry registry) {
+    String postgresqlServerHost = postgresqlServer.host
+    Integer postgresqlServerPort = postgresqlServer.getMappedPort(5432)
+
+    registry.add("CARGOTRACKER_POSTGRES_HOSTNAME", { "${ postgresqlServerHost }" })
+    registry.add("CARGOTRACKER_POSTGRES_PORT", { "${ postgresqlServerPort }" })
   }
 
   @Autowired
