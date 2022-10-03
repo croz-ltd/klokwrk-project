@@ -109,7 +109,7 @@
         </cell>
       </row>
       <row>
-        <cell name="cargotracker-lib (domain libraries)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+        <cell name="cargotracker-lib (bounded context libraries)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
             <row>
               <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
