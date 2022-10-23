@@ -77,6 +77,9 @@ dependencies {
   testImplementation "com.google.jimfs:jimfs"
   testImplementation "ch.qos.logback:logback-classic"
 
+  testRuntimeOnly "net.bytebuddy:byte-buddy"
+  testRuntimeOnly "org.objenesis:objenesis"
+
   runtimeOnly "ch.qos.logback:logback-classic"
 }
 

@@ -53,4 +53,8 @@ publishing {
 dependencies {
   api platform(project(":klokwrk-platform-base"))
   api platform("io.micronaut:micronaut-bom:$micronautVersion")
+
+  constraints {
+    api "net.bytebuddy:byte-buddy:$byteBuddyVersion"
+  }
 }
