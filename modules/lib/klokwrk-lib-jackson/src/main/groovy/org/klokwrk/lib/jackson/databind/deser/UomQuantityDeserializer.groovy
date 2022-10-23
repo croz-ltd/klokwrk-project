@@ -222,7 +222,7 @@ class UomQuantityDeserializer extends StdDeserializer<Quantity> implements Conte
       throw new MeasurementParseException("Failed to parse Quantity from '${ quantityJsonNode }'.")
     }
 
-    Quantity quantityParsed = Quantities.getQuantity(valueJsonNode.asText().trim().toBigDecimal(), parsedUnit)
+    Quantity quantityParsed = Quantities.getQuantity(valueJsonNode.asText().trim().toBigDecimal(), parsedUnit as Unit)
     return quantityParsed
   }
 
