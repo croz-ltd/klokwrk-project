@@ -56,7 +56,7 @@ class BookingQuerySideViewAppArchitectureSpecification extends Specification {
             .and().containAnyMethodsThat(
                 new DescribedPredicate<JavaMethod>("annotated with org.axonframework.queryhandling.QueryHandler") {
                   @Override
-                  boolean apply(JavaMethod javaMethod) { return javaMethod.isAnnotatedWith(QueryHandler) }
+                  boolean test(JavaMethod javaMethod) { return javaMethod.isAnnotatedWith(QueryHandler) }
                 }
             )
         .should()

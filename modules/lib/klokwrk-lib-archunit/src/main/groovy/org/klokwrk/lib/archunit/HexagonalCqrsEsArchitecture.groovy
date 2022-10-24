@@ -245,7 +245,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
   }
 
   private LayeredArchitecture layeredArchitectureDelegate() {
-    LayeredArchitecture layeredArchitectureDelegate = Architectures.layeredArchitecture()
+    LayeredArchitecture layeredArchitectureDelegate = Architectures.layeredArchitecture().consideringAllDependencies()
 
     switch (architectureSubType) {
       case ArchitectureSubType.COMMANDSIDE:

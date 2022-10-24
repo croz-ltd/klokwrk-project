@@ -17,6 +17,7 @@
  */
 package org.klokwrk.cargotracker.booking.queryside.projection.rdbms.architecture
 
+import com.tngtech.archunit.base.DescribedPredicate
 import com.tngtech.archunit.core.domain.JavaClass
 import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.lang.ArchRule
@@ -89,7 +90,7 @@ class BookingQuerySideProjectionRdbmsAppDependenciesSpecification extends Specif
     ArchRule rule = ArchRuleDefinition
         .classes().that(
             JavaClass.Predicates.resideInAnyPackage(cargotrackerBookingProjectionRdbmsAppAllPackages)
-                                .or(JavaClass.Predicates.belongToAnyOf(BookingQuerySideProjectionRdbmsApplication))
+                                .or(JavaClass.Predicates.belongToAnyOf(BookingQuerySideProjectionRdbmsApplication) as DescribedPredicate<JavaClass>)
         )
         .should().onlyAccessClassesThat(JavaClass.Predicates
             .resideInAnyPackage(
@@ -108,7 +109,7 @@ class BookingQuerySideProjectionRdbmsAppDependenciesSpecification extends Specif
 
                 thirdPartyDependencyAllPackages as String[]
             )
-            .or(JavaClass.Predicates.belongToAnyOf(BookingQuerySideProjectionRdbmsApplication))
+            .or(JavaClass.Predicates.belongToAnyOf(BookingQuerySideProjectionRdbmsApplication) as DescribedPredicate<JavaClass>)
        )
     // @formatter:on
 
