@@ -135,6 +135,7 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
   String executable = isWindows() ? "native-image.cmd" : "native-image"
   thisExecTask.setExecutable(executable)
   thisExecTask.setWorkingDir(workingDir)
+  thisExecTask.environment("USE_NATIVE_IMAGE_JAVA_PLATFORM_MODULE_SYSTEM", false)
   thisExecTask.setArgs([
       // Enables verbose output that display full configuration used for creating a native image.
       "--verbose",

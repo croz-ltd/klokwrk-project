@@ -43,11 +43,12 @@ jobs:
             ${{ matrix.version }}-gradle-wrapper-
 
       - name: Set up GraalVM
-        uses: ayltai/setup-graalvm@v1
+        uses: graalvm/setup-graalvm@v1
         with:
+          version: 22.2.0
           java-version: 11
-          graalvm-version: 22.0.0.2
-          native-image: true
+          components: native-image
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Assemble
         uses: gradle/gradle-build-action@v2
@@ -137,11 +138,12 @@ jobs:
             ${{ matrix.version }}-gradle-wrapper-
 
       - name: Set up GraalVM
-        uses: ayltai/setup-graalvm@v1
+        uses: graalvm/setup-graalvm@v1
         with:
+          version: 22.2.0
           java-version: 11
-          graalvm-version: 22.0.0.2
-          native-image: true
+          components: native-image
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Assemble
         uses: gradle/gradle-build-action@v2
