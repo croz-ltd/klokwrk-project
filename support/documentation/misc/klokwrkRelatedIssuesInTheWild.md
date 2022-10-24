@@ -24,9 +24,9 @@ This is a list of all issues, categorized per 3rd party software, that are repor
   * https://github.com/AxonFramework/AxonFramework/pull/1371#issuecomment-648673152
 * VERIFIED (4.4.2) - https://github.com/AxonFramework/AxonFramework/issues/1481
 * VERIFIED (4.5.1) - https://github.com/AxonFramework/AxonFramework/issues/1805
-* FIXED (4.6.0) - https://github.com/AxonFramework/AxonFramework/issues/1901
+* IN PROGRESS (4.6.0) - https://github.com/AxonFramework/AxonFramework/issues/1901
   * https://github.com/AxonFramework/AxonFramework/pull/1905
-* FIXED (4.6.0) - https://github.com/AxonFramework/AxonFramework/pull/1910
+* VERIFIED (4.6.0) - https://github.com/AxonFramework/AxonFramework/pull/1910
 
 ### Axon Framework - IDEA Plugin
 * IN PROGRESS - https://github.com/AxonFramework/IdeaPlugin/issues/64

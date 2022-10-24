@@ -231,7 +231,7 @@ abstract class AbstractBookingOfferCommandApplicationServiceIntegrationSpecifica
       loggingEventList[0].level == Level.INFO
       loggingEventList[0].formattedMessage.contains("Processing of Command [CreateBookingOfferCommand] resulted in an exception. Will retry 2 more time(s)...")
 
-      loggingEventList[maxRetryCount].level == Level.INFO
+      loggingEventList[maxRetryCount].level == Level.WARN
       loggingEventList[maxRetryCount].formattedMessage.contains("Processing of Command [CreateBookingOfferCommand] resulted in an exception 4 times. Giving up permanently.")
     })
 
