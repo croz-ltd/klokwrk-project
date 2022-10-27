@@ -148,7 +148,7 @@ jobs:
 
       - name: Publish Groovydoc on GitHub Pages
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' && github.ref == 'refs/heads/master' && github.event_name == 'push' }}
-        uses: JamesIves/github-pages-deploy-action@releases/v4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
           token: ${{ secrets.GITHUB_TOKEN }}
