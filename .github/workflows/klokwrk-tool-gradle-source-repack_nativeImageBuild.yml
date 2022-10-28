@@ -26,22 +26,6 @@ jobs:
         with:
           fetch-depth: 0    # We need a full history here because the Gradle Jgitver plugin requires it for calculating the correct project version.
 
-      - name: Cache Gradle caches
-        uses: actions/cache@v3
-        with:
-          path: ~/.gradle/caches
-          key: ${{ matrix.version }}-gradle-caches-${{ hashFiles('**/*.gradle') }}
-          restore-keys: |
-            ${{ matrix.version }}-gradle-caches-
-
-      - name: Cache Gradle wrapper
-        uses: actions/cache@v3
-        with:
-          path: ~/.gradle/wrapper
-          key: ${{ matrix.version }}-gradle-wrapper-${{ hashFiles('**/*.gradle') }}
-          restore-keys: |
-            ${{ matrix.version }}-gradle-wrapper-
-
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
         with:
@@ -49,6 +33,9 @@ jobs:
           java-version: 11
           components: native-image
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
 
       - name: Assemble
         uses: gradle/gradle-build-action@v2
@@ -121,22 +108,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Cache Gradle caches
-        uses: actions/cache@v3
-        with:
-          path: ~/.gradle/caches
-          key: ${{ matrix.version }}-gradle-caches-${{ hashFiles('**/*.gradle') }}
-          restore-keys: |
-            ${{ matrix.version }}-gradle-caches-
-
-      - name: Cache Gradle wrapper
-        uses: actions/cache@v3
-        with:
-          path: ~/.gradle/wrapper
-          key: ${{ matrix.version }}-gradle-wrapper-${{ hashFiles('**/*.gradle') }}
-          restore-keys: |
-            ${{ matrix.version }}-gradle-wrapper-
-
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
         with:
@@ -144,6 +115,9 @@ jobs:
           java-version: 11
           components: native-image
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
 
       - name: Assemble
         uses: gradle/gradle-build-action@v2
