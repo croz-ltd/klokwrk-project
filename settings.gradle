@@ -16,9 +16,20 @@
  * limitations under the License.
  */
 plugins {
+  id "com.gradle.enterprise" version "$gradleEnterprisePluginVersion"
   id "org.kordamp.gradle.inline" version "$gradleKordampPluginVersion"
   id "org.kordamp.gradle.insight" version "$gradleKordampPluginVersion"
   id "org.kordamp.gradle.settings" version "$gradleKordampPluginVersion"
+}
+
+gradleEnterprise {
+  if (System.getenv("CI") != null) {
+    buildScan {
+      publishAlways()
+      termsOfServiceUrl = "https://gradle.com/terms-of-service"
+      termsOfServiceAgree = "yes"
+    }
+  }
 }
 
 dependencyResolutionManagement {

@@ -53,12 +53,12 @@ jobs:
       - name: Assemble
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: --project-dir modules/tool/klokwrk-tool-gradle-source-repack --continue --exclude-task groovydoc clean assemble testClasses
+          arguments: --project-dir modules/tool/klokwrk-tool-gradle-source-repack --continue --exclude-task groovydoc --scan clean assemble testClasses
 
       - name: Test Unit
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: --project-dir modules/tool/klokwrk-tool-gradle-source-repack --continue check
+          arguments: --project-dir modules/tool/klokwrk-tool-gradle-source-repack --continue --scan check
 
       - name: Get upload version
         shell: bash
@@ -75,7 +75,7 @@ jobs:
       - name: Build GraalVM native image
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: --project-dir modules/tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
+          arguments: --project-dir modules/tool/klokwrk-tool-gradle-source-repack --continue --scan kwrkNativeImage
 
       - name: GraalVM native image upload
         uses: actions/upload-artifact@v3
@@ -148,12 +148,12 @@ jobs:
       - name: Assemble
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: --project-dir modules/tool/klokwrk-tool-gradle-source-repack --continue --exclude-task groovydoc clean assemble testClasses
+          arguments: --project-dir modules/tool/klokwrk-tool-gradle-source-repack --continue --exclude-task groovydoc --scan clean assemble testClasses
 
       - name: Test Unit
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: --project-dir modules/tool/klokwrk-tool-gradle-source-repack --continue check
+          arguments: --project-dir modules/tool/klokwrk-tool-gradle-source-repack --continue --scan check
 
       - name: Get upload version
         shell: bash

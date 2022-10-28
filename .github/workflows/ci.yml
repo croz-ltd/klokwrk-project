@@ -56,18 +56,18 @@ jobs:
       - name: Assemble
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: assemble testClasses testIntegrationClasses --continue --exclude-task groovydoc
+          arguments: assemble testFixturesClasses testClasses testIntegrationClasses testComponentClasses --continue --exclude-task groovydoc --scan
 
       - name: Test Unit
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: test --parallel --continue
+          arguments: test --parallel --continue --scan
 
       - name: Test Unit Report
         if: ${{ always() }}
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: allTestUnitReports
+          arguments: allTestUnitReports --scan
 
       - name: Test Unit Report Publish
         if: ${{ always() }}
@@ -80,13 +80,13 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: testIntegration --parallel --continue
+          arguments: testIntegration --parallel --continue --scan
 
       - name: Test Integration Report
         if: ${{ matrix.os == 'ubuntu-latest' && always() }}
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: allTestIntegrationReports
+          arguments: allTestIntegrationReports --scan
 
       - name: Test Integration Report Publish
         if: ${{ matrix.os == 'ubuntu-latest' &&  always() }}
@@ -99,13 +99,13 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: testComponent --parallel --continue
+          arguments: testComponent --parallel --continue --scan
 
       - name: Test Component Report
         if: ${{ matrix.os == 'ubuntu-latest' && always() }}
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: allTestComponentReports
+          arguments: allTestComponentReports --scan
 
       - name: Test Component Report Publish
         if: ${{ matrix.os == 'ubuntu-latest' &&  always() }}
@@ -118,7 +118,7 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' }}
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: aggregateCodenarc
+          arguments: aggregateCodenarc --scan
 
       - name: Publish CodeNarc Report
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' && always() }}
@@ -131,7 +131,7 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' }}
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: aggregateJacocoReport
+          arguments: aggregateJacocoReport --scan
 
       - name: Publish JaCoCo Coverage Report
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' }}
@@ -144,7 +144,7 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' && github.ref == 'refs/heads/master' && github.event_name == 'push' }}
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: aggregateGroovydoc
+          arguments: aggregateGroovydoc --scan
 
       - name: Publish Groovydoc on GitHub Pages
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '11' && github.ref == 'refs/heads/master' && github.event_name == 'push' }}
