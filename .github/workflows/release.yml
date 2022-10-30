@@ -96,7 +96,7 @@ jobs:
           # You may use "latest" to pull the latest stable release or "early-access" to pull the latest snapshot.
           version: latest
           arguments: full-release --basedir=${{ github.workspace }} --config-file=${{ github.workspace }}/support/jreleaser/jreleaser-${{ github.event.inputs.release-type }}.yml
-          setup-java: 'false'
+          setup-java: false
         env:
           CURRENT_DATE: ${{env.CURRENT_DATE}}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
