@@ -76,7 +76,9 @@ class BookingOfferSummaryQueryHandlerService {
   }
 
   protected Map<String, Object> fetchBookingOfferSummaryJpaEntityProperties(BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity) {
-    return bookingOfferSummaryJpaEntity.properties.tap({ it[this.BOOKING_OFFER_IDENTIFIER] = bookingOfferSummaryJpaEntity.bookingOfferIdentifier.toString() })
+    return bookingOfferSummaryJpaEntity.getProperties().tap({ // codenarc-disable-line UnnecessaryGetter
+      it[this.BOOKING_OFFER_IDENTIFIER] = bookingOfferSummaryJpaEntity.bookingOfferIdentifier.toString()
+    })
   }
 
   // Implementation notes:

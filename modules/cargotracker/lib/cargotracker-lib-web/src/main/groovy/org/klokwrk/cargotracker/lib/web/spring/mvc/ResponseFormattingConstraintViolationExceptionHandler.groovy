@@ -113,7 +113,7 @@ class ResponseFormattingConstraintViolationExceptionHandler implements MessageSo
     HttpStatus httpStatus = HttpStatus.BAD_REQUEST
 
     HttpResponseMetaData httpResponseMetaData = makeHttpResponseMetaData(constraintViolationException, handlerMethod, locale)
-    OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseMetaData.propertiesFiltered)
+    OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseMetaData.getPropertiesFiltered()) // codenarc-disable-line UnnecessaryGetter
     ResponseEntity responseEntity = new ResponseEntity(operationResponse, new HttpHeaders(), httpStatus)
 
     return responseEntity

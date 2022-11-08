@@ -103,7 +103,7 @@ class ResponseFormattingResponseBodyAdvice implements ResponseBodyAdvice<Operati
     HttpServletResponse httpServletResponse = (serverHttpResponse as ServletServerHttpResponse).servletResponse
 
     HttpResponseMetaData httpResponseMetaData = makeHttpResponseMetaData(httpServletResponse, httpServletRequest)
-    operationResponseBody.metaData = httpResponseMetaData.propertiesFiltered
+    operationResponseBody.metaData = httpResponseMetaData.getPropertiesFiltered() // codenarc-disable-line UnnecessaryGetter
 
     return operationResponseBody
   }
