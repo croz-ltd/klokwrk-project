@@ -93,7 +93,4 @@ dependencies {
 
   codenarc "org.codenarc:CodeNarc"
 //  codenarc "com.github.codenarc:codenarc"
-
-  codenarc "org.codehaus.groovy:groovy"
-  codenarc "org.codehaus.groovy:groovy-templates"
 }
