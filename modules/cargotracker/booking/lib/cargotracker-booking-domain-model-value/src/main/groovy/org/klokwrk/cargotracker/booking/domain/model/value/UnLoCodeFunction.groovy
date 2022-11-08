@@ -67,31 +67,31 @@ class UnLoCodeFunction implements PostMapConstructorCheckable {
     requireMatch(functionEncoded, matchesPattern(CODE_PATTERN))
   }
 
-  Boolean isSpecified() {
+  boolean isSpecified() {
     return functionEncoded[0] != "0"
   }
 
-  Boolean isPort() {
+  boolean isPort() {
     return functionEncoded[0] == "1"
   }
 
-  Boolean isRailTerminal() {
+  boolean isRailTerminal() {
     return functionEncoded[1] == "2"
   }
 
-  Boolean isRoadTerminal() {
+  boolean isRoadTerminal() {
     return functionEncoded[2] == "3"
   }
 
-  Boolean isAirport() {
+  boolean isAirport() {
     return functionEncoded[3] == "4"
   }
 
-  Boolean isPostalExchangeOffice() {
+  boolean isPostalExchangeOffice() {
     return functionEncoded[4] == "5"
   }
 
-  Boolean isBorderCrossing() {
+  boolean isBorderCrossing() {
     return functionEncoded[7] == "B"
   }
 }
