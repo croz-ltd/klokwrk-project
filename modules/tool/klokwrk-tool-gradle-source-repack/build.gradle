@@ -55,7 +55,7 @@ configurations {
 }
 
 dependencies {
-  graalNativeImageDependencies platform(project(":klokwrk-platform-base"))
+  graalNativeImageDependencies platform(project(":klokwrk-platform-micronaut"))
   implementation platform(project(":klokwrk-platform-micronaut"))
 
   graalNativeImageDependencies "io.github.classgraph:classgraph"
@@ -76,6 +76,7 @@ dependencies {
   testImplementation "com.github.tomakehurst:wiremock-jre8"
   testImplementation "com.google.jimfs:jimfs"
   testImplementation "ch.qos.logback:logback-classic"
+  testImplementation "org.spockframework:spock-core"
 
   testRuntimeOnly "net.bytebuddy:byte-buddy"
   testRuntimeOnly "org.objenesis:objenesis"

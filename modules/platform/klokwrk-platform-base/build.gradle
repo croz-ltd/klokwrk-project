@@ -57,8 +57,6 @@ dependencies {
 
   constraints {
     api "com.github.f4b6a3:uuid-creator:$uuidCreatorVersion"
-    api "com.github.tomakehurst:wiremock-jre8:$wireMockVersion"
-    api "com.google.jimfs:jimfs:$jimfsVersion"
     api "com.tngtech.archunit:archunit-junit5:$archUnitVersion"
     api "com.vladmihalcea:hibernate-types-55:$hibernateTypesVersion"
     api "io.github.classgraph:classgraph:$classGraphVersion"
