@@ -52,13 +52,24 @@ processResources {
 
 configurations {
   graalNativeImageDependencies
+  groovydocMicronautClasspath
+}
+
+groovydoc {
+  groovyClasspath = project.configurations.groovydocMicronautClasspath
 }
 
 dependencies {
   graalNativeImageDependencies platform(project(":klokwrk-platform-micronaut"))
+  groovydocMicronautClasspath platform(project(":klokwrk-platform-micronaut"))
   implementation platform(project(":klokwrk-platform-micronaut"))
 
   graalNativeImageDependencies "io.github.classgraph:classgraph"
+
+  groovydocMicronautClasspath "org.codehaus.groovy:groovy"
+  groovydocMicronautClasspath "org.codehaus.groovy:groovy-ant"
+  groovydocMicronautClasspath "org.codehaus.groovy:groovy-templates"
+  groovydocMicronautClasspath "com.github.javaparser:javaparser-core"
 
   compileOnly "info.picocli:picocli-codegen"
   compileOnly "io.github.classgraph:classgraph"
