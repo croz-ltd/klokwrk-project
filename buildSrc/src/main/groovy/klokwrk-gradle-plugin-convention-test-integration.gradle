@@ -54,7 +54,7 @@ tasks.register("testIntegration", Test) { Test testIntegrationTask ->
   testClassesDirs = sourceSets.testIntegration.output.classesDirs
   classpath = sourceSets.testIntegration.runtimeClasspath
 
-  jvmArgs = ["-noverify", "-XX:TieredStopAtLevel=1"]
+  jvmArgs = ["-XX:TieredStopAtLevel=1"]
 
   // Docker based tests in CI environments (like GitHub Actions) may be flaky. Therefore, we will retry 2 times (3 test execution in total) before giving up.
   retry {

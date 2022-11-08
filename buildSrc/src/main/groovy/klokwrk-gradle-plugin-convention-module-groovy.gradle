@@ -28,7 +28,7 @@ java {
 }
 
 test {
-  jvmArgs = ["-noverify", "-XX:TieredStopAtLevel=1"]
+  jvmArgs = ["-XX:TieredStopAtLevel=1"]
   useJUnitPlatform()
 }
 
