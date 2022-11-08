@@ -57,5 +57,5 @@ dependencies {
   implementation "org.kordamp.gradle:publishing-gradle-plugin:$gradleKordampPluginVersion"
   implementation "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
 
-  testImplementation "org.spockframework:spock-core:$spockVersion"
+  testImplementation "org.spockframework:spock-core:$gradleSpockLibraryVersion"
 }
