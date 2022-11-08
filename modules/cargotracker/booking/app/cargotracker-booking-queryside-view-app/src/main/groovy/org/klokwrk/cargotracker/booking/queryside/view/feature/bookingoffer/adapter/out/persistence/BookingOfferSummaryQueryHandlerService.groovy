@@ -154,7 +154,7 @@ class BookingOfferSummaryQueryHandlerService {
       throw QueryHandlerSpringDataJpaUtil.makeQueryExceptionFromPropertyReferenceException(pre)
     }
 
-    List<UUID> foundBookingOfferIdentifiers = pageOfBookingOfferIdentifierDtos.content.collect({ BookingOfferIdentifierDto dto -> dto.bookingOfferIdentifier })
+    List<UUID> foundBookingOfferIdentifiers = (pageOfBookingOfferIdentifierDtos.content as List<BookingOfferIdentifierDto>).collect({ BookingOfferIdentifierDto dto -> dto.bookingOfferIdentifier })
     List<BookingOfferSummaryJpaEntity> foundBookingOfferSummaryJpaEntities =
         bookingOfferSummaryViewJpaRepository.findAllByBookingOfferIdentifiersAndCustomerIdentifier(foundBookingOfferIdentifiers, bookingOfferSummarySearchAllQueryRequest.customerIdentifier)
 
