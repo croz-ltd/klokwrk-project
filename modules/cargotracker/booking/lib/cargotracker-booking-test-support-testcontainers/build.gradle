@@ -25,7 +25,7 @@ dependencies {
   implementation platform(project(":klokwrk-platform-base"))
   implementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
 
-  implementation "org.codehaus.groovy:groovy"
+  implementation "org.apache.groovy:groovy"
   implementation "org.testcontainers:postgresql"
   implementation "org.testcontainers:testcontainers"
 }

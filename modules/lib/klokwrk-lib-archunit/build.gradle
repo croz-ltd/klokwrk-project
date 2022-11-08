@@ -27,8 +27,8 @@ dependencies {
   implementation project(":klokwrk-lang-groovy-contracts-match")
 
   implementation "com.tngtech.archunit:archunit-junit5"
-  implementation "org.codehaus.groovy:groovy"
-  implementation "org.codehaus.groovy:groovy-macro"
+  implementation "org.apache.groovy:groovy"
+  implementation "org.apache.groovy:groovy-macro"
   implementation "org.hamcrest:hamcrest"
 
   testImplementation "ch.qos.logback:logback-classic"

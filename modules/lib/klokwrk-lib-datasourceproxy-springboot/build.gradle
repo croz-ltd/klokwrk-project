@@ -34,7 +34,7 @@ dependencies {
   implementation project(":klokwrk-lib-datasourceproxy")
 
   implementation "net.ttddyy:datasource-proxy"
-  implementation "org.codehaus.groovy:groovy"
+  implementation "org.apache.groovy:groovy"
 
   // Note: although currently there is no direct code dependencies to the slf4j-api module, need to have it as implementation dependency for CompileStatic to work. Otherwise,
   // java.lang.NoClassDefFoundError id thrown for org.slf4j.Logger class.

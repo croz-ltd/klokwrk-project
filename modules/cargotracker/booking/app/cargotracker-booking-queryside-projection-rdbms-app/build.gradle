@@ -43,7 +43,7 @@ dependencies {
   implementation "com.vladmihalcea:hibernate-types-55"
   implementation "javax.measure:unit-api"
   implementation "org.axonframework:axon-spring-boot-starter"
-  implementation "org.codehaus.groovy:groovy"
+  implementation "org.apache.groovy:groovy"
   implementation "org.springframework.boot:spring-boot-starter-actuator"
   implementation "org.springframework.boot:spring-boot-starter-data-jpa"
   implementation "org.springframework.boot:spring-boot-starter-web"
@@ -51,7 +51,9 @@ dependencies {
 
   runtimeOnly "com.fasterxml.jackson.core:jackson-databind"
   runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
-  runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"
+  runtimeOnly("io.opentracing.contrib:opentracing-spring-cloud-starter") {
+    exclude group: "org.codehaus.groovy"
+  }
   runtimeOnly "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
   runtimeOnly "org.postgresql:postgresql"
 
@@ -69,7 +71,7 @@ dependencies {
   testIntegrationImplementation testFixtures(project(":cargotracker-booking-boundary-web"))
   testIntegrationImplementation testFixtures(project(":cargotracker-booking-domain-model-event"))
 
-  testIntegrationImplementation "org.codehaus.groovy:groovy-sql"
+  testIntegrationImplementation "org.apache.groovy:groovy-sql"
   testIntegrationImplementation "org.springframework:spring-test"
   testIntegrationImplementation "org.springframework.boot:spring-boot-test"
   testIntegrationImplementation "org.testcontainers:postgresql"

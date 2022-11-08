@@ -33,8 +33,8 @@ dependencies {
 
   implementation "jakarta.persistence:jakarta.persistence-api"
   implementation "javax.measure:unit-api"
-  implementation "org.codehaus.groovy:groovy"
-  implementation "org.codehaus.groovy:groovy-macro"
+  implementation "org.apache.groovy:groovy"
+  implementation "org.apache.groovy:groovy-macro"
   implementation "org.hamcrest:hamcrest"
   implementation "org.hibernate:hibernate-core"
   implementation "tech.units:indriya"

@@ -34,8 +34,8 @@ dependencies {
 
   implementation "javax.measure:unit-api"
   implementation("org.axonframework:axon-modelling") { transitive(false) }
-  implementation "org.codehaus.groovy:groovy"
-  implementation "org.codehaus.groovy:groovy-macro"
+  implementation "org.apache.groovy:groovy"
+  implementation "org.apache.groovy:groovy-macro"
   implementation "org.hamcrest:hamcrest"
 
   testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
@@ -47,7 +47,7 @@ dependencies {
   testFixturesImplementation testFixtures(project(":cargotracker-booking-domain-model-value"))
 
   testFixturesImplementation "javax.measure:unit-api"
-  testFixturesImplementation "org.codehaus.groovy:groovy"
+  testFixturesImplementation "org.apache.groovy:groovy"
   testFixturesImplementation "tech.units:indriya"
 
   testImplementation "org.spockframework:spock-core"

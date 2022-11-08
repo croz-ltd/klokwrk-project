@@ -30,7 +30,7 @@ dependencies {
   implementation project(":klokwrk-lang-groovy")
 
   implementation "javax.measure:unit-api"
-  implementation "org.codehaus.groovy:groovy"
+  implementation "org.apache.groovy:groovy"
 
   testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
 
@@ -41,7 +41,7 @@ dependencies {
   testFixturesImplementation testFixtures(project(":cargotracker-booking-domain-model-value"))
 
   testFixturesImplementation "javax.measure:unit-api"
-  testFixturesImplementation "org.codehaus.groovy:groovy"
+  testFixturesImplementation "org.apache.groovy:groovy"
   testFixturesImplementation "tech.units:indriya"
 
   testImplementation "org.spockframework:spock-core"

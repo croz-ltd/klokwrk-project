@@ -32,8 +32,8 @@ dependencies {
 
   implementation testFixtures(project(":cargotracker-booking-domain-model-value"))
 
-  implementation "org.codehaus.groovy:groovy"
-  implementation "org.codehaus.groovy:groovy-macro"
+  implementation "org.apache.groovy:groovy"
+  implementation "org.apache.groovy:groovy-macro"
   implementation "org.hamcrest:hamcrest"
 
   testImplementation "org.spockframework:spock-core"

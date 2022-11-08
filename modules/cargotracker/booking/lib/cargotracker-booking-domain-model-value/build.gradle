@@ -31,8 +31,8 @@ dependencies {
   implementation project(":klokwrk-lang-groovy-contracts-simple")
 
   implementation "javax.measure:unit-api"
-  implementation "org.codehaus.groovy:groovy"
-  implementation "org.codehaus.groovy:groovy-macro"
+  implementation "org.apache.groovy:groovy"
+  implementation "org.apache.groovy:groovy-macro"
   implementation "org.hamcrest:hamcrest"
   implementation "tech.units:indriya"
 
@@ -40,7 +40,7 @@ dependencies {
 
   testFixturesImplementation project(":klokwrk-lang-groovy")
 
-  testFixturesImplementation "org.codehaus.groovy:groovy"
+  testFixturesImplementation "org.apache.groovy:groovy"
 
   testImplementation "org.objenesis:objenesis"
   testImplementation "org.spockframework:spock-core"

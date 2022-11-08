@@ -24,7 +24,7 @@ plugins {
 dependencies {
   implementation platform(project(":klokwrk-platform-spring-boot"))
 
-  implementation "org.codehaus.groovy:groovy"
+  implementation "org.apache.groovy:groovy"
   implementation "org.hibernate:hibernate-core"
 
   testImplementation "org.spockframework:spock-core"
