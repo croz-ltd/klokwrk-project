@@ -33,6 +33,10 @@ import org.codehaus.groovy.transform.GroovyASTTransformation
 
 import java.lang.annotation.Annotation
 
+import static groovyjarjarasm.asm.Opcodes.ACC_PRIVATE
+import static groovyjarjarasm.asm.Opcodes.ACC_PROTECTED
+import static groovyjarjarasm.asm.Opcodes.ACC_PUBLIC
+
 @CompileStatic
 @GroovyASTTransformation(phase = CompilePhase.INSTRUCTION_SELECTION)
 class KwrkMapConstructorNoArgHideableAstTransformation extends AbstractASTTransformation {

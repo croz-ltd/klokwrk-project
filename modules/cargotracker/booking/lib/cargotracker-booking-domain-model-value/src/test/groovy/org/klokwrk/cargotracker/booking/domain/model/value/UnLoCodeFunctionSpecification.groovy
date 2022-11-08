@@ -98,6 +98,7 @@ class UnLoCodeFunctionSpecification extends Specification {
 
     expect:
     unLoCodeFunction.isSpecified() == result
+    unLoCodeFunction.specified == result
 
     where:
     functionParameter | result
@@ -114,6 +115,7 @@ class UnLoCodeFunctionSpecification extends Specification {
 
     expect:
     unLoCodeFunction.isPort() == result
+    unLoCodeFunction.port == result
 
     where:
     functionParameter | result
@@ -130,6 +132,7 @@ class UnLoCodeFunctionSpecification extends Specification {
 
     expect:
     unLoCodeFunction.isRailTerminal() == result
+    unLoCodeFunction.railTerminal == result
 
     where:
     functionParameter | result
@@ -146,6 +149,7 @@ class UnLoCodeFunctionSpecification extends Specification {
 
     expect:
     unLoCodeFunction.isRoadTerminal() == result
+    unLoCodeFunction.roadTerminal == result
 
     where:
     functionParameter | result
@@ -163,6 +167,7 @@ class UnLoCodeFunctionSpecification extends Specification {
 
     expect:
     unLoCodeFunction.isAirport() == result
+    unLoCodeFunction.airport == result
 
     where:
     functionParameter | result
@@ -181,6 +186,7 @@ class UnLoCodeFunctionSpecification extends Specification {
 
     expect:
     unLoCodeFunction.isPostalExchangeOffice() == result
+    unLoCodeFunction.postalExchangeOffice == result
 
     where:
     functionParameter | result

@@ -28,34 +28,16 @@ java {
 }
 
 test {
-  jvmArgs = ["-noverify", "-XX:TieredStopAtLevel=1"]
+  jvmArgs = ["-XX:TieredStopAtLevel=1"]
   useJUnitPlatform()
 }
 
-// When Groovy project contains Java files, and these Java files contain javadoc comments, javaparser-core needs to be added into groovydoc classpath (otherwise, groovydoc task might fail).
-// Do note that javaparser-core is a dependency of groovy-groovydoc, and its version should be updated when Groovy version changes.
-// Helpful documentation link: https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/GroovyRuntime.html
-def createGroovyDocGroovyClasspathFileCollection = { Project project ->
-  Dependency javaParserDependency = project.getDependencies().create("com.github.javaparser:javaparser-core:$javaparserCoreVersion")
-  FileCollection javaParserDependencyFileCollection = project.getConfigurations().detachedConfiguration(javaParserDependency)
-
-  FileCollection groovyClasspath = project.groovyRuntime.inferGroovyClasspath(configurations.runtimeClasspath) + javaParserDependencyFileCollection
-  return groovyClasspath
-}
-
-// Sometimes groovydoc needs additional dependencies in its classpath. With configuration bellow project can configure additional groovydoc dependencies by using
-// groovydocExtendedClasspath. For example:
-//
-//   dependencies {
-//     ...
-//     groovydocExtendedClasspath "org.apache.tomcat.embed:tomcat-embed-core"
-//   }
 configurations {
-  groovydocExtendedClasspath.extendsFrom(runtimeClasspath)
+  groovydocCustomClasspath
 }
 
 groovydoc {
-  groovyClasspath = createGroovyDocGroovyClasspathFileCollection(project) + project.configurations.groovydocExtendedClasspath
+  groovyClasspath = project.configurations.groovydocCustomClasspath
 }
 
 config {
@@ -90,10 +72,13 @@ idea {
 
 dependencies {
   codenarc platform(project(":klokwrk-platform-base"))
+  groovydocCustomClasspath platform(project(":klokwrk-platform-base"))
 
   codenarc "org.codenarc:CodeNarc"
 //  codenarc "com.github.codenarc:codenarc"
 
-  codenarc "org.codehaus.groovy:groovy"
-  codenarc "org.codehaus.groovy:groovy-templates"
+  groovydocCustomClasspath "org.apache.groovy:groovy"
+  groovydocCustomClasspath "org.apache.groovy:groovy-ant"
+  groovydocCustomClasspath "org.apache.groovy:groovy-templates"
+  groovydocCustomClasspath "com.github.javaparser:javaparser-core"
 }

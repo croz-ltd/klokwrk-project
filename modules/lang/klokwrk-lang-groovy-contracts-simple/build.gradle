@@ -39,8 +39,8 @@ dependencies {
 
   implementation project(":klokwrk-lang-groovy")
 
-  implementation "org.codehaus.groovy:groovy"
-  implementation "org.codehaus.groovy:groovy-macro"
+  implementation "org.apache.groovy:groovy"
+  implementation "org.apache.groovy:groovy-macro"
 
   testImplementation "org.spockframework:spock-core"
 }

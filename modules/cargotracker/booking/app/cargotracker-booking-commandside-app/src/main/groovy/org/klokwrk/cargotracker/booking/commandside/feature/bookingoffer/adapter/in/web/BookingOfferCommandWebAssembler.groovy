@@ -34,8 +34,10 @@ class BookingOfferCommandWebAssembler {
   {
     Map metadataMap = WebMetaDataFactory.makeMetaDataMapForWebBookingChannel(ClientIpAddressExtractor.extractClientIpAddress(httpServletRequest))
 
+    // TODO dmurat: Remove CodeNarc disabling if and when https://issues.apache.org/jira/browse/GROOVY-10815 will be fixed.
+    //              Also remove for other usages of getProperties().
     OperationRequest<CreateBookingOfferCommandRequest> createBookingOfferCommandOperationRequest =
-        new OperationRequest(payload: new CreateBookingOfferCommandRequest(createBookingOfferCommandWebRequest.properties), metaData: metadataMap)
+        new OperationRequest(payload: new CreateBookingOfferCommandRequest(createBookingOfferCommandWebRequest.getProperties()), metaData: metadataMap) // codenarc-disable-line UnnecessaryGetter
 
     return createBookingOfferCommandOperationRequest
   }

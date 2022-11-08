@@ -46,8 +46,8 @@ dependencies {
 
   implementation "net.croz.nrich:nrich-search"
   implementation "org.axonframework:axon-spring-boot-starter"
-  implementation "org.codehaus.groovy:groovy"
-  implementation "org.codehaus.groovy:groovy-macro"
+  implementation "org.apache.groovy:groovy"
+  implementation "org.apache.groovy:groovy-macro"
   implementation "org.hamcrest:hamcrest"
   implementation "org.springframework.boot:spring-boot-starter-actuator"
   implementation "org.springframework.boot:spring-boot-starter-data-jpa"
@@ -55,7 +55,9 @@ dependencies {
   implementation "org.springframework.boot:spring-boot-starter-web"
 
   runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
-  runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"
+  runtimeOnly("io.opentracing.contrib:opentracing-spring-cloud-starter") {
+    exclude group: "org.codehaus.groovy"
+  }
   runtimeOnly "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
   runtimeOnly "org.postgresql:postgresql"
 
@@ -75,7 +77,7 @@ dependencies {
 
   testIntegrationImplementation "javax.measure:unit-api"
   testIntegrationImplementation "org.awaitility:awaitility"
-  testIntegrationImplementation "org.codehaus.groovy:groovy-sql"
+  testIntegrationImplementation "org.apache.groovy:groovy-sql"
   testIntegrationImplementation "org.spockframework:spock-spring"
   testIntegrationImplementation "org.springframework:spring-test"
   testIntegrationImplementation "org.springframework.boot:spring-boot-test"

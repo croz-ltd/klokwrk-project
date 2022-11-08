@@ -70,7 +70,10 @@ class BookingOfferQueryApplicationService implements BookingOfferSummaryFindById
 
   protected <T> OperationResponse<T> operationResponseFromQueryResponse(T queryResponse) {
     ResponseMetaData responseMetaData = ResponseMetaData.makeBasicInfoResponseMetaData()
-    return new OperationResponse<T>(payload: queryResponse, metaData: responseMetaData.propertiesFiltered)
+
+    // TODO dmurat: Remove CodeNarc disabling if and when https://issues.apache.org/jira/browse/GROOVY-10815 will be fixed.
+    //              Also remove for other usages of getPropertiesFiltered().
+    return new OperationResponse<T>(payload: queryResponse, metaData: responseMetaData.getPropertiesFiltered()) // codenarc-disable-line UnnecessaryGetter
   }
 
   @Override

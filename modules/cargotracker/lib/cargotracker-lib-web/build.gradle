@@ -29,7 +29,7 @@ dependencies {
   implementation project(":klokwrk-lang-groovy")
 
   implementation "jakarta.validation:jakarta.validation-api"
-  implementation "org.codehaus.groovy:groovy"
+  implementation "org.apache.groovy:groovy"
   implementation "org.hibernate.validator:hibernate-validator"
   implementation "org.slf4j:slf4j-api"
   implementation "org.springframework:spring-context"
@@ -38,8 +38,8 @@ dependencies {
   implementation "org.apache.tomcat.embed:tomcat-embed-core"
 
   testImplementation "org.apache.tomcat.embed:tomcat-embed-el"
-  testImplementation "org.codehaus.groovy:groovy-json"
-  testImplementation "org.codehaus.groovy:groovy-datetime"
+  testImplementation "org.apache.groovy:groovy-json"
+  testImplementation "org.apache.groovy:groovy-datetime"
   testImplementation "com.fasterxml.jackson.core:jackson-databind"
   testImplementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
   testImplementation "org.spockframework:spock-core"

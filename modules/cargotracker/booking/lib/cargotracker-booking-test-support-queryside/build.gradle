@@ -26,7 +26,7 @@ dependencies {
 
   implementation project(":cargotracker-lib-domain-model-event")
 
-  implementation "org.codehaus.groovy:groovy"
-  implementation "org.codehaus.groovy:groovy-sql"
+  implementation "org.apache.groovy:groovy"
+  implementation "org.apache.groovy:groovy-sql"
   implementation "org.axonframework:axon-messaging"
 }

@@ -27,7 +27,7 @@ dependencies {
   implementation project(":klokwrk-lang-groovy")
   implementation project(":klokwrk-lib-validation-constraint")
 
-  implementation "org.codehaus.groovy:groovy"
+  implementation "org.apache.groovy:groovy"
   implementation "jakarta.validation:jakarta.validation-api"
 
   runtimeOnly project(":klokwrk-lib-validation-validator")

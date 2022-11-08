@@ -51,8 +51,8 @@ publishing {
 }
 
 dependencies {
-  api platform(project(":klokwrk-platform-base"))
   api platform("io.micronaut:micronaut-bom:$micronautVersion")
+  api platform("org.codehaus.groovy:groovy-bom:$micronautGroovyVersion")
 
   //Note: WireMock:2.34.x (2.34.0 at the time of writing) depends on slf4j:2.x (2.0.1 at the time of writing) that introduces a new mechanism for resolving slf4j bindings.
   //      Since Micronaut still relies on the older (1.7.x) slf4j binding mechanics, we are constraining the version of slf4j dependencies.
@@ -64,5 +64,15 @@ dependencies {
 
   constraints {
     api "net.bytebuddy:byte-buddy:$byteBuddyVersion"
+
+    api "com.github.javaparser:javaparser-core:$micronautJavaparserCoreVersion"
+    api "com.github.tomakehurst:wiremock-jre8:$wireMockVersion"
+    api "com.google.jimfs:jimfs:$jimfsVersion"
+    api "io.github.classgraph:classgraph:$classGraphVersion"
+    api "org.objenesis:objenesis:$objenesisVersion"
+    api "org.spockframework:spock-core:$micronautSpockVersion"
+
+    api "org.codenarc:CodeNarc:$codeNarcVersion"
+//    api "com.github.codenarc:codenarc:$codeNarcJitpackVersion"
   }
 }

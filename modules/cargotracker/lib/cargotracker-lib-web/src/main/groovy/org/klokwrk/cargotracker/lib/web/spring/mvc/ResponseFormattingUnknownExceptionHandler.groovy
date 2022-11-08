@@ -112,7 +112,7 @@ class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {
     }
 
     HttpResponseMetaData httpResponseMetaData = makeHttpResponseMetaData(unknownException, handlerMethod, locale, logUuid)
-    OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseMetaData.propertiesFiltered)
+    OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseMetaData.getPropertiesFiltered()) // codenarc-disable-line UnnecessaryGetter
     ResponseEntity responseEntity = new ResponseEntity(operationResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR)
 
     return responseEntity

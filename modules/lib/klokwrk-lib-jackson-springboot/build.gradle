@@ -37,7 +37,7 @@ dependencies {
   implementation "com.fasterxml.jackson.core:jackson-core"
   implementation "com.fasterxml.jackson.core:jackson-databind"
   implementation "javax.measure:unit-api"
-  implementation "org.codehaus.groovy:groovy"
+  implementation "org.apache.groovy:groovy"
   implementation "org.springframework:spring-web"
   implementation "org.springframework.boot:spring-boot-autoconfigure"
 

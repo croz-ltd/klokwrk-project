@@ -26,16 +26,16 @@ dependencies {
   testComponentImplementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
 
   // Need to have Groovy as implementation dependency (instead as only testIntegrationImplementation dependency) as otherwise groovydoc task fails.
-  implementation "org.codehaus.groovy:groovy"
+  implementation "org.apache.groovy:groovy"
 
   testComponentImplementation project(":cargotracker-booking-test-support-testcontainers")
 
   testComponentImplementation "org.apache.httpcomponents:fluent-hc"
   testComponentImplementation "org.apache.httpcomponents:httpclient"
   testComponentImplementation "org.awaitility:awaitility"
-  testComponentImplementation "org.codehaus.groovy:groovy"
-  testComponentImplementation "org.codehaus.groovy:groovy-json"
-  testComponentImplementation "org.codehaus.groovy:groovy-sql"
+  testComponentImplementation "org.apache.groovy:groovy"
+  testComponentImplementation "org.apache.groovy:groovy-json"
+  testComponentImplementation "org.apache.groovy:groovy-sql"
   testComponentImplementation "org.spockframework:spock-core"
   testComponentImplementation "org.testcontainers:postgresql"
   testComponentImplementation "org.testcontainers:testcontainers"
