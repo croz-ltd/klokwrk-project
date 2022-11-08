@@ -93,6 +93,9 @@ config {
         link("https://docs.spring.io/spring-framework/docs/current/javadoc-api", "org.aopalliance.", "org.springframework.")
         link("https://apidocs.axoniq.io/4.3/", "org.axonframework.", "io.axoniq.axonserver.grpc.")
       }
+      aggregate {
+        getExcludedProjects().add(project(":klokwrk-tool-gradle-source-repack"))
+      }
     }
   }
 
