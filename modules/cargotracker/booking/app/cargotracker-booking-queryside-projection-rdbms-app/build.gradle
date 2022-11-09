@@ -51,9 +51,7 @@ dependencies {
 
   runtimeOnly "com.fasterxml.jackson.core:jackson-databind"
   runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
-  runtimeOnly("io.opentracing.contrib:opentracing-spring-cloud-starter") {
-    exclude group: "org.codehaus.groovy"
-  }
+  runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"
   runtimeOnly "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
   runtimeOnly "org.postgresql:postgresql"
 

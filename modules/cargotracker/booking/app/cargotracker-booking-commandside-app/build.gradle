@@ -46,9 +46,7 @@ dependencies {
   implementation project(":klokwrk-lang-groovy-contracts-match")
   implementation project(":klokwrk-lang-groovy-contracts-simple")
 
-  implementation("io.opentracing.contrib:opentracing-spring-cloud-starter") {
-    exclude group: "org.codehaus.groovy"
-  }
+  implementation "io.opentracing:opentracing-api"
   implementation "javax.measure:unit-api"
   implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
@@ -61,6 +59,7 @@ dependencies {
   implementation "tech.units:indriya"
 
   runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
+  runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"
 
   testImplementation project(":klokwrk-lib-archunit")
 
