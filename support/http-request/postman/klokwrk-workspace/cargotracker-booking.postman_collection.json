@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b269f22d-fe5e-4493-815a-aaebfc43ceaf",
+		"_postman_id": "96e4b5c6-2c43-4e0c-8677-bbf34862e6a2",
 		"name": "cargotracker-booking",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "1601377"
@@ -1786,6 +1786,9 @@
 									"listen": "test",
 									"script": {
 										"exec": [
+											"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+											"postman.setNextRequest(null);",
+											"",
 											"pm.test(\"locale is en\", function () {",
 											"    pm.expect(pm.response.json().metaData.general.locale).to.equal(\"en\");",
 											"});",
@@ -1807,6 +1810,15 @@
 										],
 										"type": "text/javascript"
 									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.klokwrk_cargotracker_booking.setCurrentTimeVariables(pm.collectionVariables);"
+										],
+										"type": "text/javascript"
+									}
 								}
 							],
 							"request": {
@@ -1825,7 +1837,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"originLocationCountryName\": \"Netherlands\",\n  \"destinationLocationName\": \"New York\",\n  \"commodityTotalContainerTeuCountFromIncluding\": 0.5,\n  \"commodityTotalContainerTeuCountToIncluding\": 4.5,\n  \"lastEventRecordedAtFromIncluding\": \"{{currentHourStart}}\",  \n  \"lastEventRecordedAtToIncluding\": \"{{currentHourEnd}}\",\n  \"commodityTypes\": [\"chilled\", \"dry\"],\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}",
+									"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationCountryName\": \"Netherlands\",\n  \"destinationLocationName\": \"New York\",\n  \"commodityTotalContainerTeuCountFromIncluding\": 0.5,\n  \"commodityTotalContainerTeuCountToIncluding\": 4.5,\n  \"lastEventRecordedAtFromIncluding\": \"{{currentHourStart}}\",  \n  \"lastEventRecordedAtToIncluding\": \"{{currentHourEnd}}\",\n  \"commodityTypes\": [\"chilled\", \"dry\"],\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1833,7 +1845,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-all",
+									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-search-all",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -1842,7 +1854,7 @@
 									"path": [
 										"cargotracker-booking-queryside-view",
 										"booking-offer",
-										"booking-offer-summary-find-all"
+										"booking-offer-summary-search-all"
 									]
 								},
 								"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
