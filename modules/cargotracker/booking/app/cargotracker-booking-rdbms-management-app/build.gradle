@@ -17,7 +17,7 @@
  */
 plugins {
   id "klokwrk-gradle-plugin-convention-base"
-  id "klokwrk-gradle-plugin-convention-module-groovy"
+  id "klokwrk-gradle-plugin-convention-groovy"
   id "klokwrk-gradle-plugin-convention-springboot-app"
 }
 

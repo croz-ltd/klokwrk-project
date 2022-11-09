@@ -20,7 +20,7 @@ import org.gradle.internal.deprecation.DeprecatableConfiguration
 
 plugins {
   id "klokwrk-gradle-plugin-convention-base"
-  id "klokwrk-gradle-plugin-convention-module-groovy"
+  id "klokwrk-gradle-plugin-convention-groovy"
   id "klokwrk-gradle-plugin-convention-micronaut-app-minimal"
 }
 

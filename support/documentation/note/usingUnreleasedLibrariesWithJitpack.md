@@ -83,7 +83,7 @@ example. For other libraries, one needs to adapt them as appropriate.
   There is no need to comment out the original library dependency as Gradle platforms only manage dependency versions. They are not included anywhere yet.
 
 - replace original library dependency references with pre-release references. For our case, CodeNarc dependencies are declared only in
-  `buildSrc/src/main/groovy/klokwrk-gradle-plugin-convention-module-groovy.gradle`:
+  `buildSrc/src/main/groovy/klokwrk-gradle-plugin-convention-groovy.gradle`:
 
       ...
       dependencies {
