@@ -48,7 +48,10 @@ dependencies {
 
   implementation "io.opentracing:opentracing-api"
   implementation "javax.measure:unit-api"
-  implementation "org.axonframework:axon-spring-boot-starter"
+  implementation("org.axonframework:axon-spring-boot-starter") {
+    // Remove unnecessary dependency to avoid a warning in the log when executing the first command.
+    exclude group: "jakarta.persistence", module: "jakarta.persistence-api"
+  }
   implementation "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
   implementation "org.apache.groovy:groovy"
   implementation "org.apache.groovy:groovy-macro"
