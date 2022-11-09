@@ -15,28 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-buildscript {
-  repositories {
-    mavenCentral()
-    gradlePluginPortal()
-    jcenter() // TODO dmurat: remove jcenter repository when issue described bellow is resolved.
-  }
-
-// The problem with jcenter (https://status.gradle.com/incidents/9j9bx7nlwwf1) causes the build to fail as it cannot resolve the "org.ajoberstar.grgit:grgit-core:4.0.1" dependency. Gradle Portal
-// tried to remedy temporal jcenter issues by redirecting requests to Maven Central. Unfortunately, the grgit-core:4.0.1 was published only on jcenter (grgit-core has been published on Maven Central
-// since version 4.1.1), so the Gradle Portal's workaround does not work in this case.
-//
-// Therefore, we can either include jcenter() in the list of repositories or force an upgrade of the grgit-core version.
-//
-// The following commented configuration is alternative for using deprecated jcenter() repository above.
-
-//  configurations.all {
-//    resolutionStrategy {
-//      force "org.ajoberstar.grgit:grgit-core:4.1.1"
-//    }
-//  }
-}
-
 plugins {
   id "klokwrk-gradle-plugin-convention-root-project"
   id "org.kordamp.gradle.codenarc" version "$gradleKordampPluginVersion"
