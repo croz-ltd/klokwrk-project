@@ -17,7 +17,7 @@
  */
 plugins {
   id "java-platform"
-  id "klokwrk-gradle-plugin-convention-module-base"
+  id "klokwrk-gradle-plugin-convention-base"
 }
 
 description = "Base dependencies platform for klokwrk-project modules."

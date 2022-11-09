@@ -16,9 +16,9 @@
  * limitations under the License.
  */
 plugins {
-  id "klokwrk-gradle-plugin-convention-module-base"
   id "groovy"
   id "idea"
+  id "klokwrk-gradle-plugin-convention-base"
   id "org.kordamp.gradle.publishing"
 }
 
