@@ -26,12 +26,12 @@ dependencies {
 
   implementation project(":klokwrk-lang-groovy")
 
+  implementation "org.apache.groovy:groovy"
   implementation "org.axonframework:axon-eventsourcing"
   implementation "org.axonframework:axon-messaging"
-  implementation "org.apache.groovy:groovy"
 
+  testImplementation "org.axonframework:axon-configuration"
   testImplementation "org.slf4j:slf4j-api"
   testImplementation "org.spockframework:spock-core"
-  testImplementation "org.axonframework:axon-configuration"
   testImplementation "uk.org.lidalia:slf4j-test"
 }

@@ -26,8 +26,8 @@ compileGroovy {
 }
 
 dependencies {
-  implementation platform(project(":klokwrk-platform-spring-boot"))
   annotationProcessor platform(project(":klokwrk-platform-spring-boot"))
+  implementation platform(project(":klokwrk-platform-spring-boot"))
 
   annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 

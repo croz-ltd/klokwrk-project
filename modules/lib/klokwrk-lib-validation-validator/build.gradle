@@ -28,8 +28,8 @@ dependencies {
   implementation project(":klokwrk-lib-validation-constraint")
 
   implementation "jakarta.validation:jakarta.validation-api"
-  implementation "org.apache.tomcat.embed:tomcat-embed-el"
   implementation "org.apache.groovy:groovy"
+  implementation "org.apache.tomcat.embed:tomcat-embed-el"
   implementation "org.hibernate.validator:hibernate-validator"
 
   testImplementation "org.spockframework:spock-core"

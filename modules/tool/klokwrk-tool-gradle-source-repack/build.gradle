@@ -66,10 +66,10 @@ dependencies {
 
   graalNativeImageDependencies "io.github.classgraph:classgraph"
 
+  groovydocMicronautClasspath "com.github.javaparser:javaparser-core"
   groovydocMicronautClasspath "org.codehaus.groovy:groovy"
   groovydocMicronautClasspath "org.codehaus.groovy:groovy-ant"
   groovydocMicronautClasspath "org.codehaus.groovy:groovy-templates"
-  groovydocMicronautClasspath "com.github.javaparser:javaparser-core"
 
   compileOnly "info.picocli:picocli-codegen"
   compileOnly "io.github.classgraph:classgraph"
@@ -84,9 +84,9 @@ dependencies {
   implementation "org.codehaus.groovy:groovy"
   implementation "org.slf4j:slf4j-api"
 
+  testImplementation "ch.qos.logback:logback-classic"
   testImplementation "com.github.tomakehurst:wiremock-jre8"
   testImplementation "com.google.jimfs:jimfs"
-  testImplementation "ch.qos.logback:logback-classic"
   testImplementation "org.spockframework:spock-core"
 
   testRuntimeOnly "net.bytebuddy:byte-buddy"

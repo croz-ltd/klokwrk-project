@@ -42,8 +42,8 @@ dependencies {
 
   implementation "com.vladmihalcea:hibernate-types-55"
   implementation "javax.measure:unit-api"
-  implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.apache.groovy:groovy"
+  implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.springframework.boot:spring-boot-starter-actuator"
   implementation "org.springframework.boot:spring-boot-starter-data-jpa"
   implementation "org.springframework.boot:spring-boot-starter-web"

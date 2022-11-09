@@ -63,16 +63,14 @@ dependencies {
   }
 
   constraints {
-    api "net.bytebuddy:byte-buddy:$byteBuddyVersion"
-
     api "com.github.javaparser:javaparser-core:$micronautJavaparserCoreVersion"
     api "com.github.tomakehurst:wiremock-jre8:$wireMockVersion"
     api "com.google.jimfs:jimfs:$jimfsVersion"
+    api "net.bytebuddy:byte-buddy:$byteBuddyVersion"
     api "io.github.classgraph:classgraph:$classGraphVersion"
-    api "org.objenesis:objenesis:$objenesisVersion"
-    api "org.spockframework:spock-core:$micronautSpockVersion"
-
     api "org.codenarc:CodeNarc:$codeNarcVersion"
 //    api "com.github.codenarc:codenarc:$codeNarcJitpackVersion"
+    api "org.objenesis:objenesis:$objenesisVersion"
+    api "org.spockframework:spock-core:$micronautSpockVersion"
   }
 }

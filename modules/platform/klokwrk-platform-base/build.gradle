@@ -52,8 +52,8 @@ publishing {
 
 dependencies {
   api platform("net.croz.nrich:nrich-bom:$nrichVersion")
-  api platform("org.axonframework:axon-bom:$axonBomVersion")
   api platform("org.apache.groovy:groovy-bom:$groovyVersion")
+  api platform("org.axonframework:axon-bom:$axonBomVersion")
 
   constraints {
     api "com.github.f4b6a3:uuid-creator:$uuidCreatorVersion"
@@ -67,13 +67,12 @@ dependencies {
     // TODO dmurat: remove when tracing extension 4.6.1 will be included in the axon bom
     api "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter:$axonExtensionTracingVersion"
 
+    api "org.codenarc:CodeNarc:$codeNarcVersion"
+//    api "com.github.codenarc:codenarc:$codeNarcJitpackVersion"
     api "org.objenesis:objenesis:$objenesisVersion"
     api "org.spockframework:spock-core:$spockVersion"
     api "org.spockframework:spock-spring:$spockVersion"
     api "tech.units:indriya:$uomReferenceImplementationVersion"
     api "uk.org.lidalia:slf4j-test:$slf4jTestVersion"
-
-    api "org.codenarc:CodeNarc:$codeNarcVersion"
-//    api "com.github.codenarc:codenarc:$codeNarcJitpackVersion"
   }
 }

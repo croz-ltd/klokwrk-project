@@ -45,9 +45,9 @@ dependencies {
   implementation project(":klokwrk-lang-groovy-contracts-simple")
 
   implementation "net.croz.nrich:nrich-search"
-  implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.apache.groovy:groovy"
   implementation "org.apache.groovy:groovy-macro"
+  implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.hamcrest:hamcrest"
   implementation "org.springframework.boot:spring-boot-starter-actuator"
   implementation "org.springframework.boot:spring-boot-starter-data-jpa"
@@ -74,8 +74,8 @@ dependencies {
   testIntegrationImplementation testFixtures(project(":cargotracker-booking-domain-model-value"))
 
   testIntegrationImplementation "javax.measure:unit-api"
-  testIntegrationImplementation "org.awaitility:awaitility"
   testIntegrationImplementation "org.apache.groovy:groovy-sql"
+  testIntegrationImplementation "org.awaitility:awaitility"
   testIntegrationImplementation "org.spockframework:spock-spring"
   testIntegrationImplementation "org.springframework:spring-test"
   testIntegrationImplementation "org.springframework.boot:spring-boot-test"

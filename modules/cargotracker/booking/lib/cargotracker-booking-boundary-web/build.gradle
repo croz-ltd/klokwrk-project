@@ -17,9 +17,9 @@
  */
 plugins {
   id "java-library"
+  id "java-test-fixtures"
   id "klokwrk-gradle-plugin-convention-module-base"
   id "klokwrk-gradle-plugin-convention-module-groovy"
-  id "java-test-fixtures"
 }
 
 dependencies {

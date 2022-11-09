@@ -26,15 +26,15 @@ compileGroovy {
 }
 
 dependencies {
-  implementation platform(project(":klokwrk-platform-spring-boot"))
   annotationProcessor platform(project(":klokwrk-platform-spring-boot"))
+  implementation platform(project(":klokwrk-platform-spring-boot"))
 
   annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
   implementation "io.github.classgraph:classgraph"
   implementation "jakarta.validation:jakarta.validation-api"
-  implementation "org.apache.tomcat.embed:tomcat-embed-el"
   implementation "org.apache.groovy:groovy"
+  implementation "org.apache.tomcat.embed:tomcat-embed-el"
   implementation "org.hibernate.validator:hibernate-validator"
   implementation "org.springframework:spring-context"
   implementation "org.springframework.boot:spring-boot"

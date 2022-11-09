@@ -17,9 +17,9 @@
  */
 plugins {
   id "java-library"
+  id "java-test-fixtures"
   id "klokwrk-gradle-plugin-convention-module-base"
   id "klokwrk-gradle-plugin-convention-module-groovy"
-  id "java-test-fixtures"
 }
 
 dependencies {
@@ -33,9 +33,9 @@ dependencies {
   implementation project(":klokwrk-lang-groovy-contracts-simple")
 
   implementation "javax.measure:unit-api"
-  implementation("org.axonframework:axon-modelling") { transitive(false) }
   implementation "org.apache.groovy:groovy"
   implementation "org.apache.groovy:groovy-macro"
+  implementation("org.axonframework:axon-modelling") { transitive(false) }
   implementation "org.hamcrest:hamcrest"
 
   testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))

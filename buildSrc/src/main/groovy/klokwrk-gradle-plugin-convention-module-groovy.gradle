@@ -77,8 +77,8 @@ dependencies {
   codenarc "org.codenarc:CodeNarc"
 //  codenarc "com.github.codenarc:codenarc"
 
+  groovydocCustomClasspath "com.github.javaparser:javaparser-core"
   groovydocCustomClasspath "org.apache.groovy:groovy"
   groovydocCustomClasspath "org.apache.groovy:groovy-ant"
   groovydocCustomClasspath "org.apache.groovy:groovy-templates"
-  groovydocCustomClasspath "com.github.javaparser:javaparser-core"
 }
