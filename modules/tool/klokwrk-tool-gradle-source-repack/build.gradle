@@ -173,6 +173,17 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
       // results with GraalVM UnsupportedFeatureException during native image compilation.
       "--report-unsupported-elements-at-runtime",
 
+      "--features=".concat(String.join(",", [
+          "org.klokwrk.tool.gradle.source.repack.graal.GroovyDgmClassesRegistrationFeature",
+          "org.klokwrk.tool.gradle.source.repack.graal.GroovyApplicationRegistrationFeature",
+
+          // Add micronaut features, currently annotated with @AutomaticFeature (just to be sure I'll not skip those if annotations will be removed)
+          "io.micronaut.buffer.netty.NettyFeature",
+          "io.micronaut.core.graal.ServiceLoaderFeature",
+          "io.micronaut.http.netty.graal.HttpNettyFeature",
+          "io.micronaut.jackson.JacksonDatabindFeature"
+      ])),
+
       // A comma-separated list of packages and classes (and implicitly all of their superclasses) that are initialized during image generation. An empty string designates all packages.
       // As of Graal 21.2, this list should not be empty (https://www.graalvm.org/release-notes/21_2/#native-image)
       "--initialize-at-build-time=".concat(String.join(",", [
@@ -188,6 +199,7 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
       // supported.
       "--initialize-at-run-time=".concat(String.join(",", [
           "org.codehaus.groovy.control.XStreamUtils",
+          "org.codehaus.groovy.vmplugin.v8.Java8\$LookupHolder",
           "groovy.grape.GrapeIvy"
       ])),
 
