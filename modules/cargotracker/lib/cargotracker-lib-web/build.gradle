@@ -46,4 +46,6 @@ dependencies {
   testImplementation "org.spockframework:spock-spring"
   testImplementation "org.springframework:spring-test"
   testImplementation "uk.org.lidalia:slf4j-test"
+
+  testRuntimeOnly "org.apache.groovy:groovy-jsr223"
 }
