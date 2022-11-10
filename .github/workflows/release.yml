@@ -84,7 +84,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: temurin    # We are using Eclipse Temurin here since it is available locally on GitHub runners (no need to download and install).
-          java-version: 11
+          java-version: 17
 
       - name: Setup current date
         run: |
