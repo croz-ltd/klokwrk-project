@@ -46,12 +46,12 @@ testReportConfigMap.each { testReportConfigMapEntry ->
     testReport.group = "reporting"
     testReport.description = description
 
-    testReport.destinationDir = rootProject.layout.buildDirectory.dir("reports/$testReportName").get().asFile
+    testReport.destinationDirectory.fileValue(rootProject.layout.buildDirectory.dir("reports/$testReportName").get().asFile)
 
     FileTree fileTree = rootProject.layout.getProjectDirectory().asFileTree.matching({ PatternFilterable patternFilterable -> patternFilterable.include(testReportIncludeFilter) })
     Set<File> directories = fileTree.collect({File file -> file.parentFile })
 
-    testReport.testResultDirs = directories
+    testReport.testResults.from(directories)
   }
 }
 // ----- configuring aggregated test reports - end

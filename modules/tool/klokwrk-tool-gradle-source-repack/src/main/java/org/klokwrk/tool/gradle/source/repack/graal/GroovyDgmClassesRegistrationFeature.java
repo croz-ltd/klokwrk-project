@@ -17,7 +17,6 @@
  */
 package org.klokwrk.tool.gradle.source.repack.graal;
 
-import com.oracle.svm.core.annotate.AutomaticFeature;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
@@ -37,9 +36,9 @@ import java.util.Properties;
  * In addition, all {@code groovy.lang.Closure} extending classes from {@code org.codehaus.groovy.runtime} are also registered as some of them are required and accessed from
  * {@code org.codehaus.groovy.runtime.DefaultGroovyMethods} class and other similar classes (see {@code org.codehaus.groovy.runtime.DefaultGroovyMethods.DGM_LIKE_CLASSES} constant).
  * <p/>
- * This class is used during compilation of GraalVM native image. It is auto-discovered by native image compiler. Needs to be written in Java.
+ * This class should be used during compilation of GraalVM native image. It can be configured via {@code --features} option of native image compiler. Needs to be written in Java.
  */
-@AutomaticFeature
+@SuppressWarnings("unused")
 public class GroovyDgmClassesRegistrationFeature implements Feature {
   @Override
   public void beforeAnalysis(BeforeAnalysisAccess beforeAnalysisAccess) {
@@ -64,6 +63,7 @@ public class GroovyDgmClassesRegistrationFeature implements Feature {
     }
   }
 
+  @SuppressWarnings({"EnhancedSwitchMigration", "ReassignedVariable", "ConstantConditions"})
   private GroovyDgmClassesRegistrationFeatureConfiguration calculateConfiguration(ClassLoader classLoader) {
     boolean isEnabled = true;
 

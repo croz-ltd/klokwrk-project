@@ -64,7 +64,7 @@ class ResponseFormattingConstraintViolationExceptionHandlerSpecification extends
     NestedTestObject nestedTestObject
   }
 
-  @ScriptAssert(lang = "javascript", script = "!_this.nestedStringProperty.endsWith('bla')")
+  @ScriptAssert(lang = "groovy", script = "!_this.nestedStringProperty.endsWith('bla')")
   static class NestedTestObject {
     @NotBlank
     @Size(min = 1, max = 15)

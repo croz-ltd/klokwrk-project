@@ -31,12 +31,12 @@ properties.each { key, val -> project.ext."$key" = val }
 // reuse versions from rootDir gradle.properties - end
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_1_8
-  targetCompatibility = JavaVersion.VERSION_1_8
+  sourceCompatibility = JavaVersion.VERSION_17
+  targetCompatibility = JavaVersion.VERSION_17
 }
 
 tasks.withType(Test).configureEach {
-  setJvmArgs(["-noverify", "-XX:TieredStopAtLevel=1"])
+  setJvmArgs(["-XX:TieredStopAtLevel=1"])
   useJUnitPlatform()
 }
 

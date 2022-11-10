@@ -29,7 +29,7 @@ sourceSets {
     runtimeClasspath += sourceSets.main.output
 
     java {
-      outputDir = file("build/classes/groovy/testIntegration")
+      destinationDirectory.file("build/classes/groovy/testIntegration")
       srcDirs = [file("src/testIntegration/groovy")]
     }
 

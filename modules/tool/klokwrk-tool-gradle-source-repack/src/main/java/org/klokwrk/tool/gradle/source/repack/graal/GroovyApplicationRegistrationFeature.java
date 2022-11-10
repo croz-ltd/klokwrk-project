@@ -17,7 +17,6 @@
  */
 package org.klokwrk.tool.gradle.source.repack.graal;
 
-import com.oracle.svm.core.annotate.AutomaticFeature;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
@@ -35,10 +34,9 @@ import java.util.Properties;
  *   <li>{@code kwrk-graal.classgraph-app-scan.packages}: comma separated list of root packages which will be considered by ClassGraph.</li>
  *   <li>{@code kwrk-graal.classgraph-app-scan.verbose}: boolean flag for turning on/off ClassGraph verbose output</li>
  * <p/>
- * This class is used during compilation of GraalVM native image. It is auto-discovered by native image compiler. Needs to be written in Java.
+ * This class should be used during compilation of GraalVM native image. It can be configured via {@code --features} option of native image compiler. Needs to be written in Java.
  */
 @SuppressWarnings("unused")
-@AutomaticFeature
 public class GroovyApplicationRegistrationFeature implements Feature {
 
   @Override
@@ -64,6 +62,7 @@ public class GroovyApplicationRegistrationFeature implements Feature {
     }
   }
 
+  @SuppressWarnings({"ReassignedVariable", "ConstantConditions", "EnhancedSwitchMigration"})
   private GroovyApplicationRegistrationFeatureConfiguration calculateConfiguration(ClassLoader classLoader) {
     boolean isEnabled = true;
 
@@ -110,7 +109,7 @@ public class GroovyApplicationRegistrationFeature implements Feature {
   /**
    * Registers generated Groovy closure classes with Graal native image compiler.
    * <p/>
-   * For some well known Groovy methods that take closures as parameters (i.e. each), Groovy generates helper classes in the fly next to the class that uses these methods with closure parameters.
+   * For some well known Groovy methods that take closures as parameters (i.e. each), Groovy generates helper classes in the fly next to the class using these methods with closure parameters.
    * For closures calls to work correctly, Groovy generated helper classes needs to be registered with GraalVM native image compiler.
    */
   private static void registerGeneratedClosureClasses(ScanResult scanResult, boolean isVerboseOutputEnabled) {
