@@ -201,8 +201,8 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
     BookingOfferSummaryJpaEntity foundEntity = testEntityManager.find(BookingOfferSummaryJpaEntity, originalEntity.bookingOfferIdentifier)
 
     then:
-    foundEntity.firstEventRecordedAt == currentInstant
-    foundEntity.lastEventRecordedAt == currentInstant
+    foundEntity.firstEventRecordedAt.truncatedTo(ChronoUnit.MILLIS) == currentInstant.truncatedTo(ChronoUnit.MILLIS)
+    foundEntity.lastEventRecordedAt.truncatedTo(ChronoUnit.MILLIS) == currentInstant.truncatedTo(ChronoUnit.MILLIS)
     foundEntity.lastEventSequenceNumber == 0
   }
 }
