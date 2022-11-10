@@ -1,13 +1,13 @@
 # Starting up and trying the whole thing
 * **Author:** Damir Murat
 * **Created:** 26.05.2020.
-* **Updated:** 16.07.2022.
+* **Updated:** 10.11.2022.
 
 Environment:
 - OSX (should work with any desktop Linux distro and with Windows with appropriate bash-shell like git-bash)
-- JDK 11 (should work with JDK 8)
-- Gradle 7.0.2 (exact version)
-- IDEA Community/Ultimate 2022.2
+- JDK 17
+- Gradle 7.4.2 (exact version)
+- IDEA Community/Ultimate 2022.2.3
 - Docker
 - Postman
 
@@ -33,7 +33,7 @@ and you should be fine.
 ### Application artifacts
 For **compiling classes and tests**, from the project root directory, execute the following command (when executed for the first time, this can take a while):
 
-    gw assemble testClasses testIntegrationClasses testComponentClasses --parallel -x groovydoc
+    gw assemble testFixturesClasses testClasses testIntegrationClasses testComponentClasses --parallel -x groovydoc
 
 When the command finishes, we have all the necessary artifacts for running applications. Therefore, just for running applications, the following commands are not required, but you will need them to
 develop or contribute to the `klokwrk-project`.
@@ -68,7 +68,7 @@ However, if you are interested, there is a way to generate a changelog in a loca
 
 - execute the following commands:
 
-      env JRELEASER_PROJECT_VERSION=1.1.0 JRELEASER_GITHUB_TOKEN=1 \
+      env JRELEASER_PROJECT_VERSION=1.3.1 JRELEASER_GITHUB_TOKEN=1 \
       jreleaser changelog --basedir=. --config-file=./support/jreleaser/jreleaser-draft.yml --debug
 
       open out/jreleaser/release/CHANGELOG.md
