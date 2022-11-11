@@ -15,6 +15,7 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 --
+
 CREATE TABLE token_entry (
   processor_name text NOT NULL,
   segment integer NOT NULL,

@@ -15,6 +15,7 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 --
+
 CREATE ROLE read_write_role;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO read_write_role;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE ON SEQUENCES TO read_write_role;
