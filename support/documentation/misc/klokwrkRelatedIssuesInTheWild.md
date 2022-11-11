@@ -27,6 +27,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * IN PROGRESS (4.6.0) - https://github.com/AxonFramework/AxonFramework/issues/1901
   * https://github.com/AxonFramework/AxonFramework/pull/1905
 * VERIFIED (4.6.0) - https://github.com/AxonFramework/AxonFramework/pull/1910
+* VERIFIED (4.6.2) - https://github.com/AxonFramework/AxonFramework/issues/2454
 
 ### Axon Framework - IDEA Plugin
 * IN PROGRESS - https://github.com/AxonFramework/IdeaPlugin/issues/64
@@ -81,9 +82,10 @@ This is a list of all issues, categorized per 3rd party software, that are repor
   * https://groovy.markmail.org/thread/gmcivt4ywcntszwx
   * https://github.com/apache/groovy/pull/1448
 * VERIFIED (3.0.9) - https://issues.apache.org/jira/browse/GROOVY-10052
-* FIXED (4.0.0) - https://issues.apache.org/jira/browse/GROOVY-10055
+* VERIFIED (4.0.0) - https://issues.apache.org/jira/browse/GROOVY-10055
 * IN PROGRESS - https://issues.apache.org/jira/browse/GROOVY-10156
 * VERIFIED (3.0.10) - https://issues.apache.org/jira/browse/GROOVY-10318
+* FIXED (4.0.7) - https://issues.apache.org/jira/browse/GROOVY-10815
 
 ### IDEA
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-216308
@@ -97,6 +99,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-285736
 * FIXED (2022.2) - https://youtrack.jetbrains.com/issue/IDEA-286813
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-292254
+* RESOLVED - https://youtrack.jetbrains.com/issue/IDEA-295389
 
 ### JReleaser
 * VERIFIED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/85
@@ -109,7 +112,9 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (0.4.0) - https://github.com/jreleaser/jreleaser/issues/121
 
 ### JReleaser - GitHub action release-action
-* REPORTED - https://github.com/jreleaser/release-action/issues/7
+* VERIFIED - https://github.com/jreleaser/release-action/issues/7
+* VERIFIED - https://github.com/jreleaser/release-action/issues/9
+* VERIFIED - https://github.com/jreleaser/release-action/issues/10
 
 ### Kordamp Gradle Plugins
 * VERIFIED (0.36.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/291
