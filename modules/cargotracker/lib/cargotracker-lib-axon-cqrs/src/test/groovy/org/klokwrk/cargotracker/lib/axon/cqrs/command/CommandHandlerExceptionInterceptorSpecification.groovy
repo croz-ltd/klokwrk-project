@@ -75,6 +75,7 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
     then:
     CommandExecutionException commandExecutionException = thrown()
 
+    commandExecutionException.stackTrace.size() == 0
     commandExecutionException.details.present
     verifyAll(commandExecutionException.details.get(), DomainException, { DomainException domainException ->
       domainException.violationInfo == ViolationInfo.BAD_REQUEST
@@ -102,6 +103,7 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
     then:
     CommandExecutionException commandExecutionException = thrown()
 
+    commandExecutionException.stackTrace.size() == 0
     commandExecutionException.details.present
     commandExecutionException.message == "Execution of 'StubCommand' command failed for business reasons (normal execution flow): ${ domainExceptionMessageParam }"
     verifyAll(commandExecutionException.details.get(), DomainException, { DomainException domainException ->
@@ -148,6 +150,7 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
     then:
     CommandExecutionException commandExecutionException = thrown()
 
+    commandExecutionException.stackTrace.size() == 0
     commandExecutionException.details.present
     commandExecutionException.message == "Execution of 'StubCommand' command failed for business reasons (normal execution flow): Bad Request"
     verifyAll(commandExecutionException.details.get(), DomainException, { DomainException domainException ->
@@ -183,6 +186,7 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
     then:
     CommandExecutionException commandExecutionException = thrown()
 
+    commandExecutionException.stackTrace.size() == 0
     commandExecutionException.details.present
     commandExecutionException.message == "Execution of 'StubCommand' command failed for business reasons (normal execution flow): Bad Request"
     verifyAll(commandExecutionException.details.get(), QueryException, { QueryException queryException ->
@@ -216,6 +220,7 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
     then:
     CommandExecutionException commandExecutionException = thrown()
 
+    commandExecutionException.stackTrace.size() == 0
     commandExecutionException.details.present
     commandExecutionException.message == "Execution of 'StubCommand' command failed for business reasons (normal execution flow): Bad Request"
     verifyAll(commandExecutionException.details.get(), QueryException, { QueryException queryException ->
@@ -246,6 +251,7 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
     then:
     CommandExecutionException commandExecutionException = thrown()
 
+    commandExecutionException.stackTrace.size() == 0
     commandExecutionException.details.present
     commandExecutionException.cause instanceof IllegalArgumentException
     commandExecutionException.cause.message == causeExceptionMessageParam
@@ -289,6 +295,7 @@ class CommandHandlerExceptionInterceptorSpecification extends Specification {
     then:
     CommandExecutionException commandExecutionException = thrown()
 
+    commandExecutionException.stackTrace.size() == 0
     commandExecutionException.details.present
     commandExecutionException.cause instanceof IllegalArgumentException
     commandExecutionException.cause.message == "Some illegal arguments"

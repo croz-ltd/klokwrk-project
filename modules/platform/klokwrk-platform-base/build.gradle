@@ -63,10 +63,6 @@ dependencies {
     api "io.github.classgraph:classgraph:$classGraphVersion"
     api "javax.measure:unit-api:$uomApiVersion"
     api "net.ttddyy:datasource-proxy:$dataSourceProxyVersion"
-
-    // TODO dmurat: remove when tracing extension 4.6.1 will be included in the axon bom
-    api "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter:$axonExtensionTracingVersion"
-
     api "org.codenarc:CodeNarc:$codeNarcVersion"
 //    api "com.github.codenarc:codenarc:$codeNarcJitpackVersion"
     api "org.objenesis:objenesis:$objenesisVersion"

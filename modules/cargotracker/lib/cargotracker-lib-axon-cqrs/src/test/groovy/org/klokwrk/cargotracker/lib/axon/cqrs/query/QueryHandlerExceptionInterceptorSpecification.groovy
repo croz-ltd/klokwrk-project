@@ -75,6 +75,7 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     then:
     QueryExecutionException queryExecutionException = thrown()
 
+    queryExecutionException.stackTrace.size() == 0
     queryExecutionException.details.present
     verifyAll(queryExecutionException.details.get(), DomainException, { DomainException domainException ->
       domainException.violationInfo == ViolationInfo.BAD_REQUEST
@@ -102,6 +103,7 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     then:
     QueryExecutionException queryExecutionException = thrown()
 
+    queryExecutionException.stackTrace.size() == 0
     queryExecutionException.details.present
     queryExecutionException.message == "Execution of 'StubQuery' query failed for business reasons (normal execution flow): ${ domainExceptionMessageParam }"
     verifyAll(queryExecutionException.details.get(), DomainException, { DomainException domainException ->
@@ -148,6 +150,7 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     then:
     QueryExecutionException queryExecutionException = thrown()
 
+    queryExecutionException.stackTrace.size() == 0
     queryExecutionException.details.present
     queryExecutionException.message == "Execution of 'StubQuery' query failed for business reasons (normal execution flow): Bad Request"
     verifyAll(queryExecutionException.details.get(), DomainException, { DomainException domainException ->
@@ -183,6 +186,7 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     then:
     QueryExecutionException queryExecutionException = thrown()
 
+    queryExecutionException.stackTrace.size() == 0
     queryExecutionException.details.present
     queryExecutionException.message == "Execution of 'StubQuery' query failed for business reasons (normal execution flow): Bad Request"
     verifyAll(queryExecutionException.details.get(), CommandException, { CommandException commandException ->
@@ -216,6 +220,7 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     then:
     QueryExecutionException queryExecutionException = thrown()
 
+    queryExecutionException.stackTrace.size() == 0
     queryExecutionException.details.present
     queryExecutionException.message == "Execution of 'StubQuery' query failed for business reasons (normal execution flow): Bad Request"
     verifyAll(queryExecutionException.details.get(), CommandException, { CommandException commandException ->
@@ -246,11 +251,11 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     then:
     QueryExecutionException queryExecutionException = thrown()
 
+    queryExecutionException.stackTrace.size() == 0
     queryExecutionException.details.present
     queryExecutionException.cause instanceof IllegalArgumentException
     queryExecutionException.cause.message == causeExceptionMessageParam
 
-    queryExecutionException.details.present
     verifyAll(queryExecutionException.details.get(), RemoteHandlerException, { RemoteHandlerException remoteHandlerException ->
       queryExecutionException.message == "Execution of 'StubQuery' query failed [detailsException.exceptionId: ${ remoteHandlerException.exceptionId }]"
       remoteHandlerException.message == remoteHandlerExceptionMessageParam
@@ -289,11 +294,11 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     then:
     QueryExecutionException queryExecutionException = thrown()
 
+    queryExecutionException.stackTrace.size() == 0
     queryExecutionException.details.present
     queryExecutionException.cause instanceof IllegalArgumentException
     queryExecutionException.cause.message == "Some illegal arguments"
 
-    queryExecutionException.details.present
     verifyAll(queryExecutionException.details.get(), RemoteHandlerException, { RemoteHandlerException remoteHandlerException ->
       queryExecutionException.message == "Execution of 'StubQuery' query failed [detailsException.exceptionId: ${ remoteHandlerException.exceptionId }]"
       remoteHandlerException.message == "Execution of 'StubQuery' query failed because of java.lang.IllegalArgumentException: Some illegal arguments"
