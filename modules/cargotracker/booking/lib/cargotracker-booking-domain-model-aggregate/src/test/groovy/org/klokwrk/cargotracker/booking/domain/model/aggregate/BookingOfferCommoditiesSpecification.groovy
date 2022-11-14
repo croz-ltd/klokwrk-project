@@ -49,7 +49,7 @@ class BookingOfferCommoditiesSpecification extends Specification {
     BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
     when:
-    Boolean canAcceptCommodityResult = bookingOfferCommodities.canAcceptCommodity(commodity, maxAllowedTeuCountPolicy)
+    boolean canAcceptCommodityResult = bookingOfferCommodities.canAcceptCommodity(commodity, maxAllowedTeuCountPolicy)
 
     then:
     canAcceptCommodityResult == canAcceptCommodityResultParam
@@ -69,7 +69,7 @@ class BookingOfferCommoditiesSpecification extends Specification {
     BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
     when:
-    Boolean canAcceptCommodityResult = bookingOfferCommodities.canAcceptCommodity(commodity, maxAllowedTeuCountPolicy)
+    boolean canAcceptCommodityResult = bookingOfferCommodities.canAcceptCommodity(commodity, maxAllowedTeuCountPolicy)
 
     then:
     canAcceptCommodityResult == canAcceptCommodityResultParam
@@ -89,7 +89,7 @@ class BookingOfferCommoditiesSpecification extends Specification {
     BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
     when:
-    Boolean canAcceptCommodityResult = bookingOfferCommodities.canAcceptCommodity(commodity, maxAllowedTeuCountPolicy)
+    boolean canAcceptCommodityResult = bookingOfferCommodities.canAcceptCommodity(commodity, maxAllowedTeuCountPolicy)
 
     then:
     canAcceptCommodityResult == canAcceptCommodityResultParam

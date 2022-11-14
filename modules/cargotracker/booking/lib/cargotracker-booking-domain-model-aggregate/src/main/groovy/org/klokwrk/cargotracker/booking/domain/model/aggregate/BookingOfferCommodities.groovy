@@ -58,7 +58,7 @@ class BookingOfferCommodities {
    * We should use this method from the aggregate's command handler to check if it is valid to add the {@code Commodity} instance to the aggregate state. Actual state change happens later in the
    * event sourcing handler. Note that we cannot make this check in the event sourcing handler because it must make changes unconditionally to support rehydration from past events.
    */
-  Boolean canAcceptCommodity(Commodity commodity, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
+  boolean canAcceptCommodity(Commodity commodity, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
     BigDecimal newTotalContainerTeuCount = totalContainerTeuCount + commodity.containerTeuCount
     return maxAllowedTeuCountPolicy.isTeuCountAllowed(newTotalContainerTeuCount)
   }

@@ -40,7 +40,7 @@ class ConstantBasedMaxAllowedTeuCountPolicy implements MaxAllowedTeuCountPolicy 
   }
 
   @Override
-  Boolean isTeuCountAllowed(BigDecimal teuCountToCheck) {
+  boolean isTeuCountAllowed(BigDecimal teuCountToCheck) {
     if (teuCountToCheck <= maxAllowedTeuCount) {
       return true
     }

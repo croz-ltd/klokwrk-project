@@ -26,6 +26,6 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 interface MaxAllowedTeuCountPolicy {
-  Boolean isTeuCountAllowed(BigDecimal teuCount)
+  boolean isTeuCountAllowed(BigDecimal teuCount)
   BigDecimal getMaxAllowedTeuCount()
 }

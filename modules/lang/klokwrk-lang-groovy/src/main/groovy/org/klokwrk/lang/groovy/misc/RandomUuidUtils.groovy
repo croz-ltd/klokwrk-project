@@ -31,7 +31,7 @@ class RandomUuidUtils {
    * Checks if provided string represents random UUID (uuid version 4 and uuid variant 2, i.e. {@code 00000000-0000-4000-8000-000000000000}).
    */
   @SuppressWarnings("CodeNarc.CatchException")
-  static Boolean checkIfRandomUuidString(String uuidStringToCheck) {
+  static boolean checkIfRandomUuidString(String uuidStringToCheck) {
     if (!uuidStringToCheck) {
       return false
     }
@@ -51,13 +51,13 @@ class RandomUuidUtils {
   /**
    * Checks if provided UUID is of version 4 and variant 2, i.e. {@code 00000000-0000-4000-8000-000000000000}).
    */
-  static Boolean checkIfRandomUuid(UUID uuidToCheck) {
+  static boolean checkIfRandomUuid(UUID uuidToCheck) {
     if (!uuidToCheck) {
       return false
     }
 
-    Boolean isVersionValid = uuidToCheck.version() == VALID_UUID_VERSION
-    Boolean isVariantValid = uuidToCheck.variant() == VALID_UUID_VARIANT
+    boolean isVersionValid = uuidToCheck.version() == VALID_UUID_VERSION
+    boolean isVariantValid = uuidToCheck.variant() == VALID_UUID_VARIANT
     return isVersionValid && isVariantValid
   }
 }

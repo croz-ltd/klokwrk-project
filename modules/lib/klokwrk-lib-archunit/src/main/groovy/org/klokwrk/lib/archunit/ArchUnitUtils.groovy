@@ -80,7 +80,7 @@ class ArchUnitUtils {
 
     @Override
     boolean includes(Location location) {
-      Boolean shouldExclude = patternToExcludeCollection.any { Pattern pattern -> location.matches(pattern) }
+      boolean shouldExclude = patternToExcludeCollection.any { Pattern pattern -> location.matches(pattern) }
       return !shouldExclude
     }
   }

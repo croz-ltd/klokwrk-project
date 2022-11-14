@@ -56,7 +56,7 @@ class RandomUuidFormatConstraintValidator implements ConstraintValidator<RandomU
       return false
     }
 
-    Boolean isValidRandomUuid = (parsedUuid.version() == 4) && (parsedUuid.variant() == 2)
+    boolean isValidRandomUuid = (parsedUuid.version() == 4) && (parsedUuid.variant() == 2)
     if (!isValidRandomUuid) {
       configureContextAndAddConstraintViolation(message, context, "{${ RandomUuidFormatConstraint.INVALID_RANDOM_UUID_FORMAT_MESSAGE_KEY }}")
       return false

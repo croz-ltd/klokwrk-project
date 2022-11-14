@@ -34,7 +34,7 @@ class ConstantBasedMaxAllowedTeuCountPolicySpecification extends Specification {
     ConstantBasedMaxAllowedTeuCountPolicy constantBasedMaxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
 
     when:
-    Boolean isAllowed = constantBasedMaxAllowedTeuCountPolicy.isTeuCountAllowed(teuCountToCheckParam)
+    boolean isAllowed = constantBasedMaxAllowedTeuCountPolicy.isTeuCountAllowed(teuCountToCheckParam)
 
     then:
     isAllowed == isAllowedParam

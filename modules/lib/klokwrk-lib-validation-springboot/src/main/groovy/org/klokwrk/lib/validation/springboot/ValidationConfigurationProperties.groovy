@@ -44,7 +44,7 @@ class ValidationConfigurationProperties {
   /**
    * By default ValidationService is enabled. Set to <code>false</code> to disable it.
    */
-  Boolean enabled = true
+  boolean enabled = true
 
   /**
    * The list of message source base names to be used with {@code ValidationService}. By default it includes only "klokwrkValidationConstraintMessages".

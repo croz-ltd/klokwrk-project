@@ -37,7 +37,7 @@ class ContractsBase {
    * <p/>
    * When condition evaluates to {@code false}, throws {@link AssertionError}.
    */
-  static void requireTrueBase(Boolean condition, String message = "$REQUIRE_TRUE_MESSAGE_DEFAULT.") {
+  static void requireTrueBase(boolean condition, String message = "$REQUIRE_TRUE_MESSAGE_DEFAULT.") {
     if (!condition) {
       String myMessage = message?.trim() ?: "$REQUIRE_TRUE_MESSAGE_DEFAULT."
       throw new AssertionError(myMessage as Object)

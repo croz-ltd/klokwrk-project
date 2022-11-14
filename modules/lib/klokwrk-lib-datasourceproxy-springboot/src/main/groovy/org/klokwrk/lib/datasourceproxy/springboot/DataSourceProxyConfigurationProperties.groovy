@@ -36,7 +36,7 @@ class DataSourceProxyConfigurationProperties {
   /**
    * By default data source proxy is enabled. Set to <code>false</code> to disable it.
    */
-  Boolean enabled = true
+  boolean enabled = true
 
   /**
    * The prefix of a proxying data source name.

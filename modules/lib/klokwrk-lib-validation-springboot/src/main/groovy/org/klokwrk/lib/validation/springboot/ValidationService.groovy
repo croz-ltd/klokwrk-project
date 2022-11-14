@@ -54,7 +54,7 @@ import javax.validation.Validator
  */
 @CompileStatic
 class ValidationService implements InitializingBean {
-  Boolean enabled
+  boolean enabled
   String[] messageSourceBaseNames
   String[] validatorImplementationPackagesToScan
 

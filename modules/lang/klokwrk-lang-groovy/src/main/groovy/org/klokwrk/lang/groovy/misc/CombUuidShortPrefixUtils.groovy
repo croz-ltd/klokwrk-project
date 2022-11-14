@@ -84,7 +84,7 @@ class CombUuidShortPrefixUtils {
    *
    * @see #checkIfCombShortPrefixStringIsBounded(java.lang.String)
    */
-  static Boolean checkIfCombShortPrefixIsBounded(
+  static boolean checkIfCombShortPrefixIsBounded(
       UUID uuid, Clock clock = Clock.systemUTC(), Integer inPastMinutesBound = IN_PAST_MINUTES_BOUND_DEFAULT, Integer inFutureMinutesBound = IN_FUTURE_MINUTES_BOUND_DEFAULT)
   {
     ContractsBase.requireTrueBase(clock != null)
@@ -132,7 +132,7 @@ class CombUuidShortPrefixUtils {
    * @see #checkIfCombShortPrefixIsBounded(java.util.UUID)
    */
   @SuppressWarnings("CodeNarc.CatchException")
-  static Boolean checkIfCombShortPrefixStringIsBounded(
+  static boolean checkIfCombShortPrefixStringIsBounded(
       String uuidStringToCheck, Clock clock = Clock.systemUTC(), Integer inPastMinutesBound = IN_PAST_MINUTES_BOUND_DEFAULT, Integer inFutureMinutesBound = IN_FUTURE_MINUTES_BOUND_DEFAULT)
   {
     if (!uuidStringToCheck?.trim()) {

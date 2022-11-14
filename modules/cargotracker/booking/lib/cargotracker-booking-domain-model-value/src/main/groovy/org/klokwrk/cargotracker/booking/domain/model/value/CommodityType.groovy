@@ -96,7 +96,7 @@ enum CommodityType {
   /**
    * Answers if the storageTemperatureRange of this commodity type is limited (i.e., requires reefer container) or not.
    */
-  Boolean isStorageTemperatureLimited() {
+  boolean isStorageTemperatureLimited() {
     return storageTemperatureRange != Constants.UNLIMITED_TEMPERATURE_RANGE
   }
 
@@ -107,7 +107,7 @@ enum CommodityType {
    * Otherwise, when {@code recommendedStorageTemperature} of this commodity type is {@code null}, it returns {@code true}.<br/>
    * Otherwise, it checks if the provided temperature is contained in the storage temperature range of this commodity type.
    */
-  Boolean isStorageTemperatureAllowed(Quantity<Temperature> temperature) {
+  boolean isStorageTemperatureAllowed(Quantity<Temperature> temperature) {
     requireMatch(temperature, notNullValue())
 
     if (recommendedStorageTemperature == null) {
