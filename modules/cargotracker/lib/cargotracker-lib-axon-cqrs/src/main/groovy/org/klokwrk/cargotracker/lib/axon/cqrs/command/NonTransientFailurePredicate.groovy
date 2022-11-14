@@ -38,7 +38,7 @@ import java.util.function.Predicate
  *   </li>
  *
  * </ul>
- * This predicate is intended to be used as {@code nonTransientFailurePredicate} property in {@link CustomIntervalRetryScheduler}.
+ * This predicate is intended to be used as {@code nonTransientFailurePredicate} property of Axon's {@code AbstractRetryScheduler}.
  */
 @CompileStatic
 class NonTransientFailurePredicate implements Predicate<Throwable> {
@@ -51,7 +51,7 @@ class NonTransientFailurePredicate implements Predicate<Throwable> {
   @Override
   boolean test(Throwable failureToTest) {
     // First, check a list of coarse grained exceptions.
-    Boolean isNonTransient = NON_TRANSIENT_FAILURE_LIST.any({ Class<? extends Throwable> nonTransientFailure -> nonTransientFailure.isAssignableFrom(failureToTest.getClass()) })
+    boolean isNonTransient = NON_TRANSIENT_FAILURE_LIST.any({ Class<? extends Throwable> nonTransientFailure -> nonTransientFailure.isAssignableFrom(failureToTest.getClass()) })
 
     // Second, check details of CommandExecutionException
     if (!isNonTransient && CommandExecutionException.isAssignableFrom(failureToTest.getClass())) {

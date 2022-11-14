@@ -22,6 +22,7 @@ import io.opentracing.Tracer
 import org.axonframework.commandhandling.CommandBus
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.commandhandling.gateway.DefaultCommandGateway
+import org.axonframework.commandhandling.gateway.IntervalRetryScheduler
 import org.axonframework.commandhandling.gateway.RetryScheduler
 import org.axonframework.extensions.tracing.MessageTagBuilderService
 import org.axonframework.extensions.tracing.OpenTraceDispatchInterceptor
@@ -37,7 +38,6 @@ import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedWeightPer
 import org.klokwrk.cargotracker.booking.domain.model.service.PercentBasedMaxAllowedWeightPerContainerPolicy
 import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerRegistryService
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor
-import org.klokwrk.cargotracker.lib.axon.cqrs.command.CustomIntervalRetryScheduler
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.NonTransientFailurePredicate
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingCommandHandlerEnhancerDefinition
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingEventSourcingHandlerEnhancerDefinition
@@ -59,7 +59,7 @@ import java.util.concurrent.ScheduledExecutorService
 class SpringBootConfig {
 
   static final Integer MAX_RETRY_COUNT_DEFAULT = 3
-  static final Long RETRY_INTERVAL_DEFAULT = 1000L
+  static final Integer RETRY_INTERVAL_MILLIS_DEFAULT = 1000
   private static final Integer RETRY_EXECUTOR_POOL_SIZE_DEFAULT = 4
 
   @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
@@ -118,16 +118,19 @@ class SpringBootConfig {
   //
   //       When and if this happens, we should update this setup.
   //
+  // TODO dmurat: revise/update/remove after upgrading to Spring Boot 3 and Axon Framework 4.6.0
+  //
   @ConditionalOnProperty(value = "axon.extension.tracing.enabled", havingValue = "false", matchIfMissing = false)
   @Bean
   CommandGateway defaultCommandGateway(CommandBus commandBus) {
     ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(RETRY_EXECUTOR_POOL_SIZE_DEFAULT)
-    RetryScheduler retryScheduler = CustomIntervalRetryScheduler
+    RetryScheduler retryScheduler = IntervalRetryScheduler
         .builder()
         .retryExecutor(scheduledExecutorService)
         .nonTransientFailurePredicate(new NonTransientFailurePredicate())
         .maxRetryCount(MAX_RETRY_COUNT_DEFAULT)
-        .retryInterval(RETRY_INTERVAL_DEFAULT).build()
+        .retryInterval(RETRY_INTERVAL_MILLIS_DEFAULT)
+        .build()
 
     CommandGateway defaultCommandGateway = DefaultCommandGateway
         .builder()
@@ -147,12 +150,13 @@ class SpringBootConfig {
     commandBus.registerHandlerInterceptor(openTraceHandlerInterceptor as MessageHandlerInterceptor)
 
     ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(RETRY_EXECUTOR_POOL_SIZE_DEFAULT)
-    RetryScheduler retryScheduler = CustomIntervalRetryScheduler
+    RetryScheduler retryScheduler = IntervalRetryScheduler
         .builder()
         .retryExecutor(scheduledExecutorService)
         .nonTransientFailurePredicate(new NonTransientFailurePredicate())
         .maxRetryCount(MAX_RETRY_COUNT_DEFAULT)
-        .retryInterval(RETRY_INTERVAL_DEFAULT).build()
+        .retryInterval(RETRY_INTERVAL_MILLIS_DEFAULT)
+        .build()
 
     CommandGateway commandGatewayDelegate = DefaultCommandGateway
         .builder()
