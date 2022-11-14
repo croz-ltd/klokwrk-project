@@ -475,7 +475,7 @@ class MessageSourceResolvableHelper {
   }
 
   protected static String prefixWithDotIfNotEmpty(String stringParam) {
-    String stringToReturn = stringParam ? ".${ stringParam }" : stringParam
+    String stringToReturn = !stringParam.isEmpty() ? ".${ stringParam }" : stringParam // codenarc-disable-line ConfusingTernary
     return stringToReturn
   }
 

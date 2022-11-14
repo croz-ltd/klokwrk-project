@@ -465,7 +465,7 @@ class HexagonalCqrsEsArchitecture implements ArchRule {
   private List<String> describeStandardPackageIdentifiers(String[] packageIdentifiers, String packageIdentifiersName) {
     List<String> packageIdentifiersDescription = []
 
-    if (packageIdentifiers) {
+    if (packageIdentifiers.size() > 0) {
       packageIdentifiersDescription << "${packageIdentifiersName} ('${ packageIdentifiers.join(QUOTED_SPACED_COMMA_SEPARATOR) }')".toString()
     }
 

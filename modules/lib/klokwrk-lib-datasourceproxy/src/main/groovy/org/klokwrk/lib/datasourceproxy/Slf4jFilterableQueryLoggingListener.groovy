@@ -58,7 +58,7 @@ class Slf4jFilterableQueryLoggingListener extends SLF4JQueryLoggingListener {
       }
       else {
         List<QueryInfo> filteredOutQueryInfoList = filterOutQueryInfoList(originalQueryInfoList)
-        if (filteredOutQueryInfoList) {
+        if (!filteredOutQueryInfoList.isEmpty()) {
           String entry = getEntry(execInfo, filteredOutQueryInfoList)
           writeLog(entry)
         }
