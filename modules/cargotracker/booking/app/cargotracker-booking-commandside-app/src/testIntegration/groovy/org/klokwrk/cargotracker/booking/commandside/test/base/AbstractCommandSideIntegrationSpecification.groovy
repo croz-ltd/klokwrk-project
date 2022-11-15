@@ -51,7 +51,7 @@ abstract class AbstractCommandSideIntegrationSpecification extends Specification
   static void configureDynamicTestcontainersProperties(DynamicPropertyRegistry registry) {
     // Properties axonServerFirstInstanceUrl and axonServerSecondInstanceUrl are used as values for configuring 'axon.axonserver.servers' property at the level of a test class.
     // For concrete example, take a look SpringBootTest annotations of BookingOfferCommandWebControllerIntegrationSpecification,
-    // BookingOfferCommandApplicationServiceWithTracingGatewayIntegrationSpecification or BookingOfferCommandApplicationServiceWithDefaultGatewayIntegrationSpecification classes.
+    // CommandRetrySchedulerWithTracingGatewayIntegrationSpecification or CommandRetrySchedulerWithDefaultGatewayIntegrationSpecification classes.
 
     String axonContainerHost = axonServer.host
     Integer axonContainerGrpcPort = axonServer.getMappedPort(8124)

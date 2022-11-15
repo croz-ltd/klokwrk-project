@@ -34,88 +34,23 @@ import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applica
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.RouteSpecificationData
 import org.klokwrk.cargotracker.booking.commandside.infrastructure.springbootconfig.SpringBootConfig
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
-import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferCommodities
-import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
-import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 import org.klokwrk.cargotracker.lib.boundary.api.application.exception.RemoteHandlerException
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
 import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
-import org.klokwrk.lang.groovy.misc.InstantUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import java.time.Duration
 import java.time.Instant
 
-abstract class AbstractBookingOfferCommandApplicationServiceIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
+abstract class AbstractCommandRetrySchedulerIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
   @Autowired
   CreateBookingOfferCommandPortIn createBookingOfferCommandPortIn
 
   @Autowired
   CommandBus commandBus
-
-  void "should work for correct request"() {
-    given:
-    Instant currentInstant = Instant.now()
-    Instant currentInstantAndOneHour = currentInstant + Duration.ofHours(1)
-    Instant currentInstantAndTwoHours = currentInstant + Duration.ofHours(2)
-    Instant currentInstantAndThreeHours = currentInstant + Duration.ofHours(3)
-
-    Instant currentInstantRoundedAndOneHour = InstantUtils.roundUpInstantToTheHour(currentInstantAndOneHour)
-    Instant currentInstantRoundedAndTwoHours = InstantUtils.roundUpInstantToTheHour(currentInstantAndTwoHours)
-    Instant currentInstantRoundedAndThreeHours = InstantUtils.roundUpInstantToTheHour(currentInstantAndThreeHours)
-
-    String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
-    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "standard-customer@cargotracker.com",
-        bookingOfferIdentifier: myBookingOfferIdentifier,
-        routeSpecification: new RouteSpecificationData(
-            originLocation: "NLRTM", destinationLocation: "HRRJK",
-            departureEarliestTime: currentInstantAndOneHour, departureLatestTime: currentInstantAndTwoHours,
-            arrivalLatestTime: currentInstantAndThreeHours
-        ),
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY.name(), totalWeightInKilograms: 1000),
-        containerDimensionType: "DIMENSION_ISO_22"
-    )
-    Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
-
-    BookingOfferCommodities expectedBookingOfferCommodities = new BookingOfferCommodities()
-    expectedBookingOfferCommodities.storeCommodity(Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 1000), Quantities.getQuantity(20_615, Units.KILOGRAM)))
-
-    when:
-    OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommandOperationResponse =
-        createBookingOfferCommandPortIn.createBookingOfferCommand(new OperationRequest<>(payload: createBookingOfferCommandRequest, metaData: requestMetadataMap))
-
-    CreateBookingOfferCommandResponse createBookingOfferCommandResponsePayload = createBookingOfferCommandOperationResponse.payload
-    Map createBookingOfferCommandResponseMetadata = createBookingOfferCommandOperationResponse.metaData
-
-    then:
-    createBookingOfferCommandResponseMetadata.isEmpty()
-    verifyAll(createBookingOfferCommandResponsePayload) {
-      bookingOfferId.identifier == myBookingOfferIdentifier
-
-      routeSpecification.with {
-        originLocation.name == "Rotterdam"
-        destinationLocation.name == "Rijeka"
-        departureEarliestTime == currentInstantRoundedAndOneHour
-        departureLatestTime == currentInstantRoundedAndTwoHours
-        arrivalLatestTime == currentInstantRoundedAndThreeHours
-      }
-
-      bookingOfferCommodities.with {
-        size() == 3
-
-        commodityTypeToCommodityMap == expectedBookingOfferCommodities.commodityTypeToCommodityMap
-        totalCommodityWeight == Quantities.getQuantity(1000, Units.KILOGRAM)
-        totalContainerTeuCount == 1
-      }
-    }
-  }
 
   // Note (logging testing): Here we have an example of testing logging entries with pure logback, without any additional library.
   void "should retry for transient failures"() {
