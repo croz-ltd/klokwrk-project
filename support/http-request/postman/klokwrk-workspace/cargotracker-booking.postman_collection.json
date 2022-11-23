@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "96e4b5c6-2c43-4e0c-8677-bbf34862e6a2",
+		"_postman_id": "170f9704-0aec-4de9-8aaf-e52a654aeee1",
 		"name": "cargotracker-booking",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "1601377"
@@ -1205,7 +1205,7 @@
 											"response": []
 										},
 										{
-											"name": "ok, en - sorting failure",
+											"name": "nok, en - sorting failure",
 											"event": [
 												{
 													"listen": "test",
