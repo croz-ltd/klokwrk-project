@@ -50,6 +50,7 @@ class BookingOfferSummaryJpaEntityFactory {
         arrivalLatestTime: bookingOfferCreatedEvent.routeSpecification.arrivalLatestTime,
 
         commodityTypes: bookingOfferCreatedEvent.commodities*.commodityType.toSet(),
+        commodityTotalWeight: bookingOfferCreatedEvent.commodityTotalWeight,
         commodityTotalWeightKg: QuantityFormatter.instance.parse(bookingOfferCreatedEvent.commodityTotalWeight).value,
         commodityTotalContainerTeuCount: bookingOfferCreatedEvent.commodityTotalContainerTeuCount,
 

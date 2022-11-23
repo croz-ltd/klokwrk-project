@@ -45,6 +45,7 @@ CREATE TABLE booking_offer_summary (
   departure_latest_time timestamptz NOT NULL,
   arrival_latest_time timestamptz NOT NULL,
 
+  commodity_total_weight text NOT NULL,
   commodity_total_weight_kg integer NOT NULL,
   commodity_total_container_teu_count numeric(8, 2) NOT NULL,
 

@@ -47,7 +47,7 @@ class BookingOfferSummaryFindByIdQueryResponse {
   Instant arrivalLatestTime
 
   Set<CommodityType> commodityTypes
-  Integer commodityTotalWeightKg
+  String commodityTotalWeight
   BigDecimal commodityTotalContainerTeuCount
 
   Instant firstEventRecordedAt

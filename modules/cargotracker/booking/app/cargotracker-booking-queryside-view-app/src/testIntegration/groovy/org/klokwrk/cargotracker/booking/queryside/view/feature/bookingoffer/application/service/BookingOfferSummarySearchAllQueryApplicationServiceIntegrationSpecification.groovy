@@ -100,7 +100,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       customerType == CustomerType.STANDARD
       originLocationName == "Hamburg"
       destinationLocationName == "Rotterdam"
-      commodityTotalWeightKg == 45_000
+      commodityTotalWeight == "45000 kg"
       commodityTotalContainerTeuCount == 3.00G
       lastEventSequenceNumber == 0
     }
@@ -136,7 +136,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       customerType == CustomerType.STANDARD
       originLocationName == "Hamburg"
       destinationLocationName == "Rotterdam"
-      commodityTotalWeightKg == 45_000
+      commodityTotalWeight == "45000 kg"
       commodityTotalContainerTeuCount == 3.00G
       lastEventSequenceNumber == 0
     }
@@ -174,7 +174,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       customerType == CustomerType.STANDARD
       originLocationName == "Rijeka"
       destinationLocationName == "Los Angeles"
-      commodityTotalWeightKg == 15_000
+      commodityTotalWeight == "15000 kg"
       commodityTotalContainerTeuCount == 1.00G
       lastEventSequenceNumber == 0
     }
@@ -210,7 +210,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       customerType == CustomerType.STANDARD
       originLocationName == "Rijeka"
       destinationLocationName == "New York"
-      commodityTotalWeightKg == 30_000
+      commodityTotalWeight == "30000 kg"
       commodityTotalContainerTeuCount == 2.00G
       lastEventSequenceNumber == 0
     }
