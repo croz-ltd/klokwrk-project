@@ -15,28 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.domain.model.event
+package org.klokwrk.cargotracker.booking.domain.model.event.data
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventData
-import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
-import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
-import org.klokwrk.cargotracker.lib.domain.model.event.BaseEvent
+import org.klokwrk.cargotracker.booking.domain.model.value.Customer
+import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
 @KwrkImmutable
 @CompileStatic
-class BookingOfferCreatedEvent implements BaseEvent {
-  String bookingOfferId
-  CustomerEventData customer
+class CustomerEventData {
+  String customerId
+  CustomerType customerType
 
-  Collection<CommodityEventData> commodities
-  String commodityTotalWeight
-  BigDecimal commodityTotalContainerTeuCount
+  static CustomerEventData fromCustomer(Customer customer) {
+    return new CustomerEventData(customerId: customer.customerId.identifier, customerType: customer.customerType)
+  }
 
-  RouteSpecificationEventData routeSpecification
-
-  String getAggregateIdentifier() {
-    return bookingOfferId
+  Customer toCustomer() {
+    return Customer.make(customerId, customerType)
   }
 }

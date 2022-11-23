@@ -24,6 +24,10 @@ import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferC
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommandFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEventFixtureBuilder
+import org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter
 import org.klokwrk.cargotracker.booking.domain.model.service.CommodityCreatorService
 import org.klokwrk.cargotracker.booking.domain.model.service.ConstantBasedMaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.service.DefaultCommodityCreatorService
@@ -82,12 +86,12 @@ class BookingOfferAggregateSpecification extends Specification {
     Commodity expectedCommodity = Commodity.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommandWithAcceptableCommodity.commodityInfo, Quantities.getQuantity(20_615, Units.KILOGRAM))
 
     BookingOfferCreatedEvent expectedBookingOfferCreatedEvent = new BookingOfferCreatedEvent(
-        customer: createBookingOfferCommandWithAcceptableCommodity.customer,
-        bookingOfferId: createBookingOfferCommandWithAcceptableCommodity.bookingOfferId,
-        routeSpecification: createBookingOfferCommandWithAcceptableCommodity.routeSpecification,
-        commodity: expectedCommodity,
-        bookingTotalCommodityWeight: Quantities.getQuantity(10_000, Units.KILOGRAM),
-        bookingTotalContainerTeuCount: 1
+        customer: CustomerEventData.fromCustomer(createBookingOfferCommandWithAcceptableCommodity.customer),
+        bookingOfferId: createBookingOfferCommandWithAcceptableCommodity.bookingOfferId.identifier,
+        routeSpecification: RouteSpecificationEventData.fromRouteSpecification(createBookingOfferCommandWithAcceptableCommodity.routeSpecification),
+        commodities: [CommodityEventData.fromCommodity(expectedCommodity)],
+        commodityTotalWeight: QuantityFormatter.instance.format(Quantities.getQuantity(10_000, Units.KILOGRAM)),
+        commodityTotalContainerTeuCount: 1
     )
 
     when:

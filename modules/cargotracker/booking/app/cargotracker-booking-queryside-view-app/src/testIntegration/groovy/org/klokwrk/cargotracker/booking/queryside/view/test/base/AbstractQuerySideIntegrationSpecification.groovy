@@ -25,6 +25,10 @@ import org.axonframework.eventhandling.GenericDomainEventMessage
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEventFixtureBuilder
+import org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
@@ -90,7 +94,7 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
       EventBus eventBus, Sql groovySql, BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build())
   {
     Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
-    String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId.identifier
+    String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage =
         GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, WebMetaDataFixtureBuilder.webMetaData_booking_default().build())
@@ -108,120 +112,170 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
 
     numOfRepetitions.times {
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: CustomerFixtureBuilder.customer_standard().build(),
-          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: routeSpecification_rijekaToRotterdam().build(),
-          commodity: Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 30_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
-          bookingTotalCommodityWeight: Quantities.getQuantity(30_000, Units.KILOGRAM),
-          bookingTotalContainerTeuCount: 2.00G
+          customer: CustomerEventData.fromCustomer(CustomerFixtureBuilder.customer_standard().build()),
+          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()).identifier,
+          routeSpecification: RouteSpecificationEventData.fromRouteSpecification(routeSpecification_rijekaToRotterdam().build()),
+          commodities: [CommodityEventData.fromCommodity(Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 30_000), Quantities.getQuantity(20_615, Units.KILOGRAM)))],
+          commodityTotalWeight: QuantityFormatter.instance.format(Quantities.getQuantity(30_000, Units.KILOGRAM)),
+          commodityTotalContainerTeuCount: 2.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: CustomerFixtureBuilder.customer_standard().build(),
-          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: new RouteSpecificationFixtureBuilder()
-              .originLocation(location_rijeka().build())
-              .destinationLocation(location_hamburg().build())
-              .build(),
-          commodity: Commodity.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, CommodityInfo.make(CommodityType.AIR_COOLED, 30_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
-          bookingTotalCommodityWeight: Quantities.getQuantity(30_000, Units.KILOGRAM),
-          bookingTotalContainerTeuCount: 2.00G
+          customer: CustomerEventData.fromCustomer(CustomerFixtureBuilder.customer_standard().build()),
+          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()).identifier,
+          routeSpecification: RouteSpecificationEventData.fromRouteSpecification(
+              new RouteSpecificationFixtureBuilder()
+                  .originLocation(location_rijeka().build())
+                  .destinationLocation(location_hamburg().build())
+                  .build()
+          ),
+          commodities: [
+              CommodityEventData.fromCommodity(
+                  Commodity.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, CommodityInfo.make(CommodityType.AIR_COOLED, 30_000), Quantities.getQuantity(20_615, Units.KILOGRAM))
+              )
+          ],
+          commodityTotalWeight: QuantityFormatter.instance.format(Quantities.getQuantity(30_000, Units.KILOGRAM)),
+          commodityTotalContainerTeuCount: 2.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: CustomerFixtureBuilder.customer_standard().build(),
-          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: new RouteSpecificationFixtureBuilder()
-              .originLocation(location_rijeka().build())
-              .destinationLocation(location_losAngeles().build())
-              .build(),
-          commodity: Commodity.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, CommodityInfo.make(CommodityType.CHILLED, 30_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
-          bookingTotalCommodityWeight: Quantities.getQuantity(30_000, Units.KILOGRAM),
-          bookingTotalContainerTeuCount: 2.00G
+          customer: CustomerEventData.fromCustomer(CustomerFixtureBuilder.customer_standard().build()),
+          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()).identifier,
+          routeSpecification: RouteSpecificationEventData.fromRouteSpecification(
+              new RouteSpecificationFixtureBuilder()
+                  .originLocation(location_rijeka().build())
+                  .destinationLocation(location_losAngeles().build())
+                  .build()
+          ),
+          commodities: [
+              CommodityEventData.fromCommodity(
+                  Commodity.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, CommodityInfo.make(CommodityType.CHILLED, 30_000), Quantities.getQuantity(20_615, Units.KILOGRAM))
+              )
+          ],
+          commodityTotalWeight: QuantityFormatter.instance.format(Quantities.getQuantity(30_000, Units.KILOGRAM)),
+          commodityTotalContainerTeuCount: 2.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: CustomerFixtureBuilder.customer_standard().build(),
-          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: new RouteSpecificationFixtureBuilder()
-              .originLocation(location_rijeka().build())
-              .destinationLocation(location_newYork().build())
-              .build(),
-          commodity: Commodity.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, CommodityInfo.make(CommodityType.FROZEN, 30_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
-          bookingTotalCommodityWeight: Quantities.getQuantity(30_000, Units.KILOGRAM),
-          bookingTotalContainerTeuCount: 2.00G
+          customer: CustomerEventData.fromCustomer(CustomerFixtureBuilder.customer_standard().build()),
+          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()).identifier,
+          routeSpecification: RouteSpecificationEventData.fromRouteSpecification(
+              new RouteSpecificationFixtureBuilder()
+                  .originLocation(location_rijeka().build())
+                  .destinationLocation(location_newYork().build())
+                  .build()
+          ),
+          commodities: [
+              CommodityEventData.fromCommodity(
+                  Commodity.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, CommodityInfo.make(CommodityType.FROZEN, 30_000), Quantities.getQuantity(20_615, Units.KILOGRAM))
+              )
+          ],
+          commodityTotalWeight: QuantityFormatter.instance.format(Quantities.getQuantity(30_000, Units.KILOGRAM)),
+          commodityTotalContainerTeuCount: 2.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: CustomerFixtureBuilder.customer_standard().build(),
-          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: new RouteSpecificationFixtureBuilder()
-              .originLocation(location_hamburg().build())
-              .destinationLocation(location_losAngeles().build())
-              .build(),
-          commodity: Commodity.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, CommodityInfo.make(CommodityType.AIR_COOLED, 70_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
-          bookingTotalCommodityWeight: Quantities.getQuantity(70_000, Units.KILOGRAM),
-          bookingTotalContainerTeuCount: 4.00G
+          customer: CustomerEventData.fromCustomer(CustomerFixtureBuilder.customer_standard().build()),
+          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()).identifier,
+          routeSpecification: RouteSpecificationEventData.fromRouteSpecification(
+              new RouteSpecificationFixtureBuilder()
+                  .originLocation(location_hamburg().build())
+                  .destinationLocation(location_losAngeles().build())
+                  .build()
+          ),
+          commodities: [
+              CommodityEventData.fromCommodity(
+                  Commodity.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, CommodityInfo.make(CommodityType.AIR_COOLED, 70_000), Quantities.getQuantity(20_615, Units.KILOGRAM))
+              )
+          ],
+          commodityTotalWeight: QuantityFormatter.instance.format(Quantities.getQuantity(70_000, Units.KILOGRAM)),
+          commodityTotalContainerTeuCount: 4.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: CustomerFixtureBuilder.customer_standard().build(),
-          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: new RouteSpecificationFixtureBuilder()
-              .originLocation(location_rotterdam().build())
-              .destinationLocation(location_newYork().build())
-              .build(),
-          commodity: Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 40_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
-          bookingTotalCommodityWeight: Quantities.getQuantity(40_000, Units.KILOGRAM),
-          bookingTotalContainerTeuCount: 2.00G
+          customer: CustomerEventData.fromCustomer(CustomerFixtureBuilder.customer_standard().build()),
+          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()).identifier,
+          routeSpecification: RouteSpecificationEventData.fromRouteSpecification(
+              new RouteSpecificationFixtureBuilder()
+                  .originLocation(location_rotterdam().build())
+                  .destinationLocation(location_newYork().build())
+                  .build()
+          ),
+          commodities: [
+              CommodityEventData.fromCommodity(
+                  Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 40_000), Quantities.getQuantity(20_615, Units.KILOGRAM))
+              )
+          ],
+          commodityTotalWeight: QuantityFormatter.instance.format(Quantities.getQuantity(40_000, Units.KILOGRAM)),
+          commodityTotalContainerTeuCount: 2.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: CustomerFixtureBuilder.customer_standard().build(),
-          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: new RouteSpecificationFixtureBuilder()
-              .originLocation(location_rijeka().build())
-              .destinationLocation(location_hamburg().build())
-              .build(),
-          commodity: Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 1_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
-          bookingTotalCommodityWeight: Quantities.getQuantity(1_000, Units.KILOGRAM),
-          bookingTotalContainerTeuCount: 1.00G
+          customer: CustomerEventData.fromCustomer(CustomerFixtureBuilder.customer_standard().build()),
+          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()).identifier,
+          routeSpecification: RouteSpecificationEventData.fromRouteSpecification(
+              new RouteSpecificationFixtureBuilder()
+                  .originLocation(location_rijeka().build())
+                  .destinationLocation(location_hamburg().build())
+                  .build()
+          ),
+          commodities: [
+              CommodityEventData.fromCommodity(
+                  Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 1_000), Quantities.getQuantity(20_615, Units.KILOGRAM))
+              )
+          ],
+          commodityTotalWeight: QuantityFormatter.instance.format(Quantities.getQuantity(1_000, Units.KILOGRAM)),
+          commodityTotalContainerTeuCount: 1.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: CustomerFixtureBuilder.customer_standard().build(),
-          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: new RouteSpecificationFixtureBuilder()
-              .originLocation(location_rijeka().build())
-              .destinationLocation(location_losAngeles().build())
-              .build(),
-          commodity: Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 15_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
-          bookingTotalCommodityWeight: Quantities.getQuantity(15_000, Units.KILOGRAM),
-          bookingTotalContainerTeuCount: 1.00G
+          customer: CustomerEventData.fromCustomer(CustomerFixtureBuilder.customer_standard().build()),
+          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()).identifier,
+          routeSpecification: RouteSpecificationEventData.fromRouteSpecification(
+              new RouteSpecificationFixtureBuilder()
+                  .originLocation(location_rijeka().build())
+                  .destinationLocation(location_losAngeles().build())
+                  .build()
+          ),
+          commodities: [
+              CommodityEventData.fromCommodity(
+                  Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 15_000), Quantities.getQuantity(20_615, Units.KILOGRAM))
+              )
+          ],
+          commodityTotalWeight: QuantityFormatter.instance.format(Quantities.getQuantity(15_000, Units.KILOGRAM)),
+          commodityTotalContainerTeuCount: 1.00G
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: CustomerFixtureBuilder.customer_standard().build(),
-          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: new RouteSpecificationFixtureBuilder()
-              .originLocation(location_rijeka().build())
-              .destinationLocation(location_newYork().build())
-              .build(),
-          commodity: Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 100_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
-          bookingTotalCommodityWeight: Quantities.getQuantity(100_000, Units.KILOGRAM),
-          bookingTotalContainerTeuCount: 5.00G
+          customer: CustomerEventData.fromCustomer(CustomerFixtureBuilder.customer_standard().build()),
+          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()).identifier,
+          routeSpecification: RouteSpecificationEventData.fromRouteSpecification(
+              new RouteSpecificationFixtureBuilder()
+                  .originLocation(location_rijeka().build())
+                  .destinationLocation(location_newYork().build())
+                  .build()
+          ),
+          commodities: [
+              CommodityEventData.fromCommodity(
+                  Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 100_000), Quantities.getQuantity(20_615, Units.KILOGRAM))
+              )
+          ],
+          commodityTotalWeight: QuantityFormatter.instance.format(Quantities.getQuantity(100_000, Units.KILOGRAM)),
+          commodityTotalContainerTeuCount: 5.00G,
       )
 
       bookingOfferCreatedEventList << new BookingOfferCreatedEvent(
-          customer: CustomerFixtureBuilder.customer_standard().build(),
-          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()),
-          routeSpecification: new RouteSpecificationFixtureBuilder()
-              .originLocation(location_hamburg().build())
-              .destinationLocation(location_rotterdam().build())
-              .build(),
-          commodity: Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 45_000), Quantities.getQuantity(20_615, Units.KILOGRAM)),
-          bookingTotalCommodityWeight: Quantities.getQuantity(45_000, Units.KILOGRAM),
-          bookingTotalContainerTeuCount: 3.00G
+          customer: CustomerEventData.fromCustomer(CustomerFixtureBuilder.customer_standard().build()),
+          bookingOfferId: BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix().toString()).identifier,
+          routeSpecification: RouteSpecificationEventData.fromRouteSpecification(
+              new RouteSpecificationFixtureBuilder()
+                  .originLocation(location_hamburg().build())
+                  .destinationLocation(location_rotterdam().build())
+                  .build()
+          ),
+          commodities: [CommodityEventData.fromCommodity(Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 45_000), Quantities.getQuantity(20_615, Units.KILOGRAM)))],
+          commodityTotalWeight: QuantityFormatter.instance.format(Quantities.getQuantity(45_000, Units.KILOGRAM)),
+          commodityTotalContainerTeuCount: 3.00G
       )
     }
 

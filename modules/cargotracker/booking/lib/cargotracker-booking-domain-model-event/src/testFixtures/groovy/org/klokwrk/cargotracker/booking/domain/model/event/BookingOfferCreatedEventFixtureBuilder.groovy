@@ -20,6 +20,10 @@ package org.klokwrk.cargotracker.booking.domain.model.event
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
+import org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
@@ -53,7 +57,7 @@ class BookingOfferCreatedEventFixtureBuilder {
         .customer(customer_standard().build())
         .bookingOfferId(BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix(currentTimeClock).toString()))
         .routeSpecification(routeSpecification_rijekaToRotterdam(currentTimeClock).build())
-        .commodity(commodity)
+        .commodities([commodity])
         .bookingTotalCommodityWeight(Quantities.getQuantity(1_000, Units.KILOGRAM))
         .bookingTotalContainerTeuCount(1.00G)
 
@@ -63,18 +67,18 @@ class BookingOfferCreatedEventFixtureBuilder {
   Customer customer
   BookingOfferId bookingOfferId
   RouteSpecification routeSpecification
-  Commodity commodity
+  Collection<Commodity> commodities
   Quantity<Mass> bookingTotalCommodityWeight
   BigDecimal bookingTotalContainerTeuCount
 
   BookingOfferCreatedEvent build() {
     BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
-        customer: customer,
-        bookingOfferId: bookingOfferId,
-        routeSpecification: routeSpecification,
-        commodity: commodity,
-        bookingTotalCommodityWeight: bookingTotalCommodityWeight,
-        bookingTotalContainerTeuCount: bookingTotalContainerTeuCount
+        customer: CustomerEventData.fromCustomer(customer),
+        bookingOfferId: bookingOfferId.identifier,
+        routeSpecification: RouteSpecificationEventData.fromRouteSpecification(routeSpecification),
+        commodities: commodities.collect({ Commodity commodity -> CommodityEventData.fromCommodity(commodity) }),
+        commodityTotalWeight: QuantityFormatter.instance.format(bookingTotalCommodityWeight),
+        commodityTotalContainerTeuCount: bookingTotalContainerTeuCount
     )
 
     return bookingOfferCreatedEvent

@@ -70,8 +70,8 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build()
-    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId.identifier)
-    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId.identifier
+    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
+    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId
     CustomerType customerType = bookingOfferCreatedEvent.customer.customerType
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage =
@@ -123,8 +123,8 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build()
-    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId.identifier)
-    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId.identifier
+    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
+    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId
     CustomerType customerType = bookingOfferCreatedEvent.customer.customerType
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, [:])
@@ -180,8 +180,8 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     logger.addAppender(listAppender)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build()
-    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId.identifier)
-    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId.identifier
+    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
+    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, [:])
 

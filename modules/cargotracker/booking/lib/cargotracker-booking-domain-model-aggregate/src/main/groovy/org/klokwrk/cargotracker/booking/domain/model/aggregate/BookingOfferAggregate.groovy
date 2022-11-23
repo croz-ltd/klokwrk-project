@@ -29,6 +29,10 @@ import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
+import org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter
 import org.klokwrk.cargotracker.booking.domain.model.service.CommodityCreatorService
 import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
@@ -89,12 +93,12 @@ class BookingOfferAggregate {
     BigDecimal bookingTotalContainerTeuCount = preCalculatedTotals.v2
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
-        customer: createBookingOfferCommand.customer,
-        bookingOfferId: createBookingOfferCommand.bookingOfferId,
-        routeSpecification: createBookingOfferCommand.routeSpecification,
-        commodity: commodity,
-        bookingTotalCommodityWeight: bookingTotalCommodityWeight,
-        bookingTotalContainerTeuCount: bookingTotalContainerTeuCount
+        customer: CustomerEventData.fromCustomer(createBookingOfferCommand.customer),
+        bookingOfferId: createBookingOfferCommand.bookingOfferId.identifier,
+        routeSpecification: RouteSpecificationEventData.fromRouteSpecification(createBookingOfferCommand.routeSpecification),
+        commodities: CommodityEventData.fromCommodityCollection([commodity]),
+        commodityTotalWeight: QuantityFormatter.instance.format(bookingTotalCommodityWeight),
+        commodityTotalContainerTeuCount: bookingTotalContainerTeuCount
     )
 
     apply(bookingOfferCreatedEvent, metaData)
@@ -103,9 +107,11 @@ class BookingOfferAggregate {
 
   @EventSourcingHandler
   void onBookingOfferCreatedEvent(BookingOfferCreatedEvent bookingOfferCreatedEvent) {
-    customer = bookingOfferCreatedEvent.customer
-    bookingOfferId = bookingOfferCreatedEvent.bookingOfferId
-    routeSpecification = bookingOfferCreatedEvent.routeSpecification
-    bookingOfferCommodities.storeCommodity(bookingOfferCreatedEvent.commodity)
+    customer = bookingOfferCreatedEvent.customer.toCustomer()
+    bookingOfferId = BookingOfferId.make(bookingOfferCreatedEvent.bookingOfferId)
+    routeSpecification = bookingOfferCreatedEvent.routeSpecification.toRouteSpecification()
+
+    Collection<Commodity> commodityCollection = bookingOfferCreatedEvent.commodities.collect({ CommodityEventData commodityEventData -> commodityEventData.toCommodity() })
+    bookingOfferCommodities.storeCommodity(commodityCollection.first())
   }
 }
