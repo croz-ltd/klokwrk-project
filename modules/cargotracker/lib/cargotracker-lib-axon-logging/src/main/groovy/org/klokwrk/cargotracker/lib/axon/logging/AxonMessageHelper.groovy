@@ -56,9 +56,14 @@ class AxonMessageHelper {
     return eventGlobalIndex
   }
 
+  @SuppressWarnings("CodeNarc.CatchRuntimeException")
   static String fetchAggregateIdentifierIfPossible(Message<?> message, String nonExistingPlaceholder = NOT_AVAILABLE) {
     String eventAggregateIdentifier = nonExistingPlaceholder
-    Object event = message.payload
+    Object event = null
+    try {
+      event = message.payload
+    }
+    catch (RuntimeException ignore) {}
 
     if (event?.hasProperty(AGGREGATE_IDENTIFIER)) {
       eventAggregateIdentifier = event[AGGREGATE_IDENTIFIER]

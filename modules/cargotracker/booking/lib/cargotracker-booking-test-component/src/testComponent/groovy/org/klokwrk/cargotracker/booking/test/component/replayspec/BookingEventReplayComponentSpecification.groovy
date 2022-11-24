@@ -33,13 +33,16 @@ import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.containers.PostgreSQLContainer
 import spock.lang.Specification
+import spock.lang.Stepwise
 import spock.util.concurrent.PollingConditions
 
 @Slf4j
+@Stepwise
 class BookingEventReplayComponentSpecification extends Specification {
   static GenericContainer axonServer
   static PostgreSQLContainer postgresqlServer
   static Network klokwrkNetwork
+  static GenericContainer querySideProjectionRdbmsApp
 
   static {
     klokwrkNetwork = Network.builder().createNetworkCmdModifier({ CreateNetworkCmd createNetworkCmd -> createNetworkCmd.withName("klokwrk-network-${ UUID.randomUUID() }") }).build()
@@ -47,11 +50,22 @@ class BookingEventReplayComponentSpecification extends Specification {
     postgresqlServer = PostgreSqlTestcontainersFactory.makeAndStartPostgreSqlServer(klokwrkNetwork)
     RdbmsManagementAppTestcontainersFactory.makeAndStartRdbmsManagementApp(klokwrkNetwork, postgresqlServer)
     axonServer = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetwork)
-    QuerySideProjectionRdbmsAppTestcontainersFactory.makeAndStartQuerySideProjectionRdbmsApp(klokwrkNetwork, axonServer, postgresqlServer)
+    querySideProjectionRdbmsApp = QuerySideProjectionRdbmsAppTestcontainersFactory.makeAndStartQuerySideProjectionRdbmsApp(klokwrkNetwork, axonServer, postgresqlServer)
   }
 
-  static Integer populateAxonEventStore(GenericContainer axonServerContainer) {
-    String replayEventListClasspathLocation = "replayspec/eventList.txt"
+  static Integer populateAxonEventStoreWithValidEvents(GenericContainer axonServerContainer) {
+    String replayEventListClasspathLocation = "replayspec/validEventList.txt"
+    Integer populatedEventsCount = populateAxonEventStore(axonServerContainer, replayEventListClasspathLocation)
+    return populatedEventsCount
+  }
+
+  static Integer populateAxonEventStoreWithInvalidEvents(GenericContainer axonServerContainer) {
+    String replayEventListClasspathLocation = "replayspec/invalidEventList.txt"
+    Integer populatedEventsCount = populateAxonEventStore(axonServerContainer, replayEventListClasspathLocation)
+    return populatedEventsCount
+  }
+
+  static Integer populateAxonEventStore(GenericContainer axonServerContainer, String replayEventListClasspathLocation) {
     File replayEventListFile = new File(Thread.currentThread().contextClassLoader.getSystemResource(replayEventListClasspathLocation).toURI())
 
     Integer eventsCount = 0
@@ -124,16 +138,34 @@ class BookingEventReplayComponentSpecification extends Specification {
     return storedGlobalIndex
   }
 
-  void "should replay rdbms PostgreSQL projection"() {
+  void "should correctly project valid events"() {
     given:
     Integer axonServerEventGlobalIndexStart = 0
 
     when:
-    Integer sentEventsCount = populateAxonEventStore(axonServer)
+    Integer sentEventsCount = populateAxonEventStoreWithValidEvents(axonServer)
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0, delay: 0.05).eventually {
       fetchEventGlobalIndexFromProjectionRdbms(postgresqlServer) == axonServerEventGlobalIndexStart + sentEventsCount - 1
     }
+
+    !querySideProjectionRdbmsApp.logs.contains("ERROR")
+  }
+
+  void "should not project invalid events"() {
+    given:
+    Integer axonServerEventGlobalIndexStart = fetchEventGlobalIndexFromProjectionRdbms(postgresqlServer)
+
+    when:
+    populateAxonEventStoreWithInvalidEvents(axonServer)
+
+    then:
+    new PollingConditions(timeout: 5, initialDelay: 3, delay: 0.05).eventually {
+      fetchEventGlobalIndexFromProjectionRdbms(postgresqlServer) == axonServerEventGlobalIndexStart
+    }
+
+    querySideProjectionRdbmsApp.logs.contains("org.axonframework.serialization.SerializationException: Error while deserializing payload of message")
+    querySideProjectionRdbmsApp.logs.contains("Releasing claim on token and preparing for retry")
   }
 }
