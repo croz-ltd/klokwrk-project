@@ -110,11 +110,17 @@ class Commodity implements PostMapConstructorCheckable {
    * Creates {@code Commodity} instance based on required properties and calculates derived properties.
    * <p/>
    * It is recommended to always use this factory method instead of map constructor because map constructor requires that all derived values are correctly precalculated.
+   * <p/>
+   * When {@code maxAllowedWeightPerContainer} parameter is null, {@code maxAllowedWeightPerContainer} is equal to the {@code containerType.maxCommodityWeight}.
    */
   @SuppressWarnings("CodeNarc.DuplicateNumberLiteral")
-  static Commodity make(ContainerType containerType, CommodityInfo commodityInfo, Quantity<Mass> maxAllowedWeightPerContainer) {
+  static Commodity make(ContainerType containerType, CommodityInfo commodityInfo, Quantity<Mass> maxAllowedWeightPerContainer = null) {
     BigDecimal totalWeightValueInKilograms = commodityInfo.totalWeight.value
-    Quantity<Mass> maxAllowedWeightPerContainerInKilograms = maxAllowedWeightPerContainer.to(Units.KILOGRAM)
+    Quantity<Mass> maxAllowedWeightPerContainerInKilograms = maxAllowedWeightPerContainer?.to(Units.KILOGRAM)
+    if (maxAllowedWeightPerContainerInKilograms == null) {
+      maxAllowedWeightPerContainerInKilograms = containerType.maxCommodityWeight.to(Units.KILOGRAM)
+    }
+
     MathContext mathContext = new MathContext(7, RoundingMode.HALF_UP)
 
     Integer containerCount = totalWeightValueInKilograms

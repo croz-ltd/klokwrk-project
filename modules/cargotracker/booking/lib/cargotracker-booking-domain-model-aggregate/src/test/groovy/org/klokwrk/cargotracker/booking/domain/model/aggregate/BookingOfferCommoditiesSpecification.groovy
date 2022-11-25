@@ -44,7 +44,8 @@ class BookingOfferCommoditiesSpecification extends Specification {
 
   void "canAcceptCommodity() method should work as expected for 10ft container"() {
     given:
-    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_12G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * 9_900), Quantities.getQuantity(9_900, Units.KILOGRAM))
+    Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_12G1.maxCommodityWeight.value.toInteger()
+    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_12G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
     BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
@@ -64,7 +65,8 @@ class BookingOfferCommoditiesSpecification extends Specification {
 
   void "canAcceptCommodity() method should work as expected for 20ft container"() {
     given:
-    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * 21_700), Quantities.getQuantity(21_700, Units.KILOGRAM))
+    Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_22G1.maxCommodityWeight.value.toInteger()
+    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
     BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
@@ -84,7 +86,8 @@ class BookingOfferCommoditiesSpecification extends Specification {
 
   void "canAcceptCommodity() method should work as expected for 40ft container"() {
     given:
-    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_42G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * 26_500), Quantities.getQuantity(26_500, Units.KILOGRAM))
+    Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_42G1.maxCommodityWeight.value.toInteger()
+    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_42G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
     BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
@@ -146,7 +149,8 @@ class BookingOfferCommoditiesSpecification extends Specification {
 
   void "preCalculateTotals() method should throw when commodity cannot be accepted"() {
     given:
-    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * 21_700), Quantities.getQuantity(21_700, Units.KILOGRAM))
+    Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_22G1.maxCommodityWeight.value.toInteger()
+    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
     BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
@@ -165,7 +169,8 @@ class BookingOfferCommoditiesSpecification extends Specification {
 
   void "preCalculateTotals() method should work as expected for acceptable commodity"() {
     given:
-    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * 21_700), Quantities.getQuantity(21_700, Units.KILOGRAM))
+    Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_22G1.maxCommodityWeight.value.toInteger()
+    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
     BookingOfferCommodities bookingOfferCommodities = new BookingOfferCommodities()
 
