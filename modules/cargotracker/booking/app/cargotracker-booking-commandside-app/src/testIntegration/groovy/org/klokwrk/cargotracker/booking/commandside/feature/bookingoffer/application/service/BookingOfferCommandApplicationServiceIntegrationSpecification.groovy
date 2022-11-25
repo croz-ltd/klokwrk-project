@@ -68,7 +68,7 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
             departureEarliestTime: currentInstantAndOneHour, departureLatestTime: currentInstantAndTwoHours,
             arrivalLatestTime: currentInstantAndThreeHours
         ),
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY.name(), totalWeightInKilograms: 1000),
+        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY.name(), weightKg: 1000),
         containerDimensionType: "DIMENSION_ISO_22"
     )
     Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()

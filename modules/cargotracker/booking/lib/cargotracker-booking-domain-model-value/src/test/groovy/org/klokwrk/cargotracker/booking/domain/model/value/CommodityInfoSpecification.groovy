@@ -40,7 +40,7 @@ class CommodityInfoSpecification extends Specification {
 
   void "map constructor should work for correct requestedStorageTemperature param"() {
     when:
-    CommodityInfo commodityInfo = new CommodityInfo(commodityType: commodityTypeParam, totalWeight: oneKilogram, requestedStorageTemperature: requestedStorageTemperatureParam)
+    CommodityInfo commodityInfo = new CommodityInfo(commodityType: commodityTypeParam, weight: oneKilogram, requestedStorageTemperature: requestedStorageTemperatureParam)
 
     then:
     commodityInfo
@@ -63,16 +63,16 @@ class CommodityInfoSpecification extends Specification {
     FROZEN             | getQuantity(-8, CELSIUS)
   }
 
-  void "map constructor should work for correct totalWeight param"() {
+  void "map constructor should work for correct weight param"() {
     when:
-    CommodityInfo commodityInfo = new CommodityInfo(commodityType: DRY, totalWeight: totalWeightParam, requestedStorageTemperature: null)
+    CommodityInfo commodityInfo = new CommodityInfo(commodityType: DRY, weight: weightParam, requestedStorageTemperature: null)
 
     then:
     commodityInfo
-    commodityInfo.totalWeight.value.toBigDecimal() == totalWeightValueParam
+    commodityInfo.weight.value.toBigDecimal() == weightValueParam
 
     where:
-    totalWeightParam                   | totalWeightValueParam
+    weightParam                        | weightValueParam
     getQuantity(1, KILOGRAM)           | 1G
     getQuantity(1000, KILOGRAM)        | 1000G
     getQuantity(1000.0, KILOGRAM)      | 1000G
@@ -81,54 +81,54 @@ class CommodityInfoSpecification extends Specification {
 
   void "map constructor should fail for null input params"() {
     when:
-    new CommodityInfo(commodityType: commodityTypeParam, totalWeight: totalWeightParam, requestedStorageTemperature: requestedStorageTemperatureParam)
+    new CommodityInfo(commodityType: commodityTypeParam, weight: weightParam, requestedStorageTemperature: requestedStorageTemperatureParam)
 
     then:
     AssertionError assertionError = thrown()
     assertionError.message.contains("notNullValue")
 
     where:
-    commodityTypeParam | totalWeightParam         | requestedStorageTemperatureParam
+    commodityTypeParam | weightParam              | requestedStorageTemperatureParam
     null               | getQuantity(1, KILOGRAM) | getQuantity(1, CELSIUS)
     DRY                | null                     | getQuantity(1, CELSIUS)
   }
 
-  void "map constructor should fail when totalWeight is less than one kilogram"() {
+  void "map constructor should fail when weight is less than one kilogram"() {
     when:
-    new CommodityInfo(commodityType: DRY, totalWeight: getQuantity(totalWeightValueParam, KILOGRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
+    new CommodityInfo(commodityType: DRY, weight: getQuantity(weightValueParam, KILOGRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message.contains("boolean condition is false - [condition: Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(totalWeight)]")
+    assertionError.message.contains("boolean condition is false - [condition: Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(weight)]")
 
     where:
-    totalWeightValueParam | _
-    0                     | _
-    0.1                   | _
-    -1                    | _
+    weightValueParam | _
+    0                | _
+    0.1              | _
+    -1               | _
   }
 
-  void "map constructor should fail when totalWeight is not in kilograms"() {
+  void "map constructor should fail when weight is not in kilograms"() {
     when:
-    new CommodityInfo(commodityType: DRY, totalWeight: getQuantity(1500, GRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
+    new CommodityInfo(commodityType: DRY, weight: getQuantity(1500, GRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message == "Require violation detected - boolean condition is false - [condition: (totalWeight.unit == Units.KILOGRAM)]"
+    assertionError.message == "Require violation detected - boolean condition is false - [condition: (weight.unit == Units.KILOGRAM)]"
   }
 
-  void "map constructor should fail when totalWeight value is not a whole number"() {
+  void "map constructor should fail when weight value is not a whole number"() {
     when:
-    new CommodityInfo(commodityType: DRY, totalWeight: getQuantity(10.5, KILOGRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
+    new CommodityInfo(commodityType: DRY, weight: getQuantity(10.5, KILOGRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message == "Require violation detected - boolean condition is false - [condition: (totalWeight.value.toBigDecimal().scale() == 0)]"
+    assertionError.message == "Require violation detected - boolean condition is false - [condition: (weight.value.toBigDecimal().scale() == 0)]"
   }
 
   void "map constructor should fail for null requestedStorageTemperature when requestedStorageTemperature is required"() {
     when:
-    new CommodityInfo(commodityType: commodityTypeParam, totalWeight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
+    new CommodityInfo(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
 
     then:
     AssertionError assertionError = thrown()
@@ -143,7 +143,7 @@ class CommodityInfoSpecification extends Specification {
 
   void "map constructor should fail for requestedStorageTemperature not in required range"() {
     when:
-    new CommodityInfo(commodityType: commodityTypeParam, totalWeight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
+    new CommodityInfo(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
 
     then:
     DomainException domainException = thrown()
@@ -184,7 +184,7 @@ class CommodityInfoSpecification extends Specification {
     }
 
     when:
-    new CommodityInfo(commodityType: nonExistentEnumValue, totalWeight: getQuantity(1, KILOGRAM), requestedStorageTemperature: getQuantity(50, CELSIUS))
+    new CommodityInfo(commodityType: nonExistentEnumValue, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: getQuantity(50, CELSIUS))
 
     then:
     AssertionError assertionError = thrown()
@@ -238,16 +238,16 @@ class CommodityInfoSpecification extends Specification {
     thrown(AssertionError)
   }
 
-  void "make(CommodityType, Quantity, Quantity) factory method should convert totalWeight in kilograms and round it up to the whole number"() {
+  void "make(CommodityType, Quantity, Quantity) factory method should convert weight in kilograms and round it up to the whole number"() {
     when:
-    CommodityInfo commodityInfo = CommodityInfo.make(DRY, totalWeightParam, null)
+    CommodityInfo commodityInfo = CommodityInfo.make(DRY, weightParam, null)
 
     then:
     commodityInfo
-    commodityInfo.totalWeight.value == 2
+    commodityInfo.weight.value == weightValueParam
 
     where:
-    totalWeightParam             | totalWeightValueParam
+    weightParam                  | weightValueParam
     getQuantity(1500, GRAM)      | 2
     getQuantity(1.5, KILOGRAM)   | 2
     getQuantity(1.001, KILOGRAM) | 2

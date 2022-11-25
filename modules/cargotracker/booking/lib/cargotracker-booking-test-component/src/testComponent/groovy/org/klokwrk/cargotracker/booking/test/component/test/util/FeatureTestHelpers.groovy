@@ -68,7 +68,7 @@ class FeatureTestHelpers {
           },
           "commodityInfo": {
             "commodityType": "dry",
-            "totalWeightInKilograms": 1000
+            "weightKg": 1000
           },
           "containerDimensionType": "DIMENSION_ISO_22"
         }
@@ -94,7 +94,7 @@ class FeatureTestHelpers {
           },
           "commodityInfo": {
             "commodityType": "chilled",
-            "totalWeightInKilograms": 1000,
+            "weightKg": 1000,
             "requestedStorageTemperatureInCelsius": 5
           },
           "containerDimensionType": "DIMENSION_ISO_22"
@@ -123,7 +123,7 @@ class FeatureTestHelpers {
           },
           "commodityInfo": {
             "commodityType": "chilled",
-            "totalWeightInKilograms": 1000,
+            "weightKg": 1000,
             "requestedStorageTemperatureInCelsius": 5
           },
           "containerDimensionType": "DIMENSION_ISO_22"
@@ -156,7 +156,7 @@ class FeatureTestHelpers {
           },
           "commodityInfo": {
             "commodityType": "dry",
-            "totalWeightInKilograms": 30000
+            "weightKg": 30000
           },
           "containerDimensionType": "DIMENSION_ISO_22"
         }
@@ -172,7 +172,7 @@ class FeatureTestHelpers {
           },
           "commodityInfo": {
             "commodityType": "air_cooled",
-            "totalWeightInKilograms": 30000
+            "weightKg": 30000
           },
           "containerDimensionType": "DIMENSION_ISO_22"
         }
@@ -188,7 +188,7 @@ class FeatureTestHelpers {
           },
           "commodityInfo": {
             "commodityType": "chilled",
-            "totalWeightInKilograms": 30000
+            "weightKg": 30000
           },
           "containerDimensionType": "DIMENSION_ISO_22"
         }
@@ -204,7 +204,7 @@ class FeatureTestHelpers {
           },
           "commodityInfo": {
             "commodityType": "frozen",
-            "totalWeightInKilograms": 30000
+            "weightKg": 30000
           },
           "containerDimensionType": "DIMENSION_ISO_22"
         }
@@ -220,7 +220,7 @@ class FeatureTestHelpers {
           },
           "commodityInfo": {
             "commodityType": "air_cooled",
-            "totalWeightInKilograms": 70000
+            "weightKg": 70000
           },
           "containerDimensionType": "DIMENSION_ISO_22"
         }
@@ -236,7 +236,7 @@ class FeatureTestHelpers {
           },
           "commodityInfo": {
             "commodityType": "dry",
-            "totalWeightInKilograms": 40000
+            "weightKg": 40000
           },
           "containerDimensionType": "DIMENSION_ISO_22"
         }
@@ -252,7 +252,7 @@ class FeatureTestHelpers {
           },
           "commodityInfo": {
             "commodityType": "dry",
-            "totalWeightInKilograms": 1000
+            "weightKg": 1000
           },
           "containerDimensionType": "DIMENSION_ISO_22"
         }
@@ -268,7 +268,7 @@ class FeatureTestHelpers {
           },
           "commodityInfo": {
             "commodityType": "dry",
-            "totalWeightInKilograms": 15000
+            "weightKg": 15000
           },
           "containerDimensionType": "DIMENSION_ISO_22"
         }
@@ -284,7 +284,7 @@ class FeatureTestHelpers {
           },
           "commodityInfo": {
             "commodityType": "dry",
-            "totalWeightInKilograms": 100000
+            "weightKg": 100000
           },
           "containerDimensionType": "DIMENSION_ISO_22"
         }
@@ -300,7 +300,7 @@ class FeatureTestHelpers {
           },
           "commodityInfo": {
             "commodityType": "dry",
-            "totalWeightInKilograms": 45000
+            "weightKg": 45000
           },
           "containerDimensionType": "DIMENSION_ISO_22"
         }

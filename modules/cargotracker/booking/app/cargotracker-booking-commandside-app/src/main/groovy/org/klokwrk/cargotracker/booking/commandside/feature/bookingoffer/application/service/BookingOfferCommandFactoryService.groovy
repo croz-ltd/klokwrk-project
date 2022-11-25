@@ -80,7 +80,7 @@ class BookingOfferCommandFactoryService {
         ),
         commodityInfo: CommodityInfo.make(
             CommodityType.valueOf(createBookingOfferCommandRequest.commodityInfo.commodityType.toUpperCase()),
-            createBookingOfferCommandRequest.commodityInfo.totalWeightInKilograms,
+            createBookingOfferCommandRequest.commodityInfo.weightKg,
             createBookingOfferCommandRequest.commodityInfo.requestedStorageTemperatureInCelsius
         ),
         containerDimensionType: ContainerDimensionType.valueOf(createBookingOfferCommandRequest.containerDimensionType.toUpperCase())

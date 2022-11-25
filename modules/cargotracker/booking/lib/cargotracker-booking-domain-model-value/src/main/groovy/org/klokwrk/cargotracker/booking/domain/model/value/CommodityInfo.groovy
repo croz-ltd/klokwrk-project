@@ -46,14 +46,14 @@ class CommodityInfo implements PostMapConstructorCheckable {
   CommodityType commodityType
 
   /**
-   * Total commodity weight.
+   * The weight of commodity.
    * <p/>
    * This weight might exceed what a single container can carry (in that case, multiple containers will be allocated based on this commodity info).
    * <p/>
    * Must not be {@code null}, and must be at least 1 kg or greater. It must be specified in kilogram units and a value must be the whole number.
    * For conversion from other {@code Mass} units, and for a conversion of decimal numbers, use {@code make()} factory methods.
    */
-  Quantity<Mass> totalWeight
+  Quantity<Mass> weight
 
   /**
    * Requested storage temperature for a commodity.
@@ -84,7 +84,7 @@ class CommodityInfo implements PostMapConstructorCheckable {
     BigDecimal weightValueToUse = weight.to(Units.KILOGRAM).value.toBigDecimal().setScale(0, RoundingMode.UP)
     Quantity<Mass> weightToUse = Quantities.getQuantity(weightValueToUse, Units.KILOGRAM)
 
-    CommodityInfo commodityInfo = new CommodityInfo(commodityType: commodityType, totalWeight: weightToUse, requestedStorageTemperature: requestedStorageTemperatureToUse)
+    CommodityInfo commodityInfo = new CommodityInfo(commodityType: commodityType, weight: weightToUse, requestedStorageTemperature: requestedStorageTemperatureToUse)
     return commodityInfo
   }
 
@@ -106,11 +106,11 @@ class CommodityInfo implements PostMapConstructorCheckable {
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     requireMatch(commodityType, notNullValue())
-    requireMatch(totalWeight, notNullValue())
+    requireMatch(weight, notNullValue())
 
-    requireTrue(Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(totalWeight))
-    requireTrue(totalWeight.unit == Units.KILOGRAM)
-    requireTrue(totalWeight.value.toBigDecimal().scale() == 0)
+    requireTrue(Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(weight))
+    requireTrue(weight.unit == Units.KILOGRAM)
+    requireTrue(weight.value.toBigDecimal().scale() == 0)
 
     requireTrue(isRequestedStorageTemperatureAvailableWhenNeeded(requestedStorageTemperature, commodityType))
     requireRequestedStorageTemperatureInAllowedRange(requestedStorageTemperature, commodityType)

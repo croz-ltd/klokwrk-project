@@ -52,7 +52,7 @@ class CommodityEventData {
     return new CommodityEventData(
         commodityType: commodity.commodityInfo.commodityType,
         commodityRequestedStorageTemperature: commodity.commodityInfo.requestedStorageTemperature == null ? null : quantityFormatter.format(commodity.commodityInfo.requestedStorageTemperature),
-        commodityWeight: quantityFormatter.format(commodity.commodityInfo.totalWeight),
+        commodityWeight: quantityFormatter.format(commodity.commodityInfo.weight),
         containerCount: commodity.containerCount,
         containerTeuCount: commodity.containerTeuCount,
         containerType: commodity.containerType,

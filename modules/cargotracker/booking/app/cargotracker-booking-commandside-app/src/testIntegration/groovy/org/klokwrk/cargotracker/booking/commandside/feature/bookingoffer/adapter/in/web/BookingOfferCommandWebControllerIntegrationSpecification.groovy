@@ -76,7 +76,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             ],
             commodityInfo: [
                 commodityType: "dry",
-                totalWeightInKilograms: 1000
+                weightKg: 1000
             ],
             containerDimensionType: "DIMENSION_ISO_22"
         ]
@@ -181,7 +181,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
               containerType: "TYPE_ISO_22G1",
               commodityInfo: [
                   commodityType: "DRY",
-                  totalWeight: [
+                  weight: [
                       value: 1000,
                       unit: [
                           name: "Kilogram",
@@ -234,7 +234,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             userIdentifier: "standard-customer@cargotracker.com",
             bookingOfferIdentifier: bookingOfferIdentifier,
             routeSpecification: [originLocation: null, destinationLocation: null, departureEarliestTime: null, departureLatestTime: null, arrivalLatestTime: null],
-            commodityInfo: [commodityType: "dry", totalWeightInKilograms: 1000],
+            commodityInfo: [commodityType: "dry", weightKg: 1000],
             containerDimensionType: "DIMENSION_ISO_22"
         ]
     )
@@ -315,7 +315,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             ],
             commodityInfo: [
                 commodityType: "dry",
-                totalWeightInKilograms: 1000
+                weightKg: 1000
             ],
             containerDimensionType: "DIMENSION_ISO_22"
         ]
@@ -381,7 +381,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "HRRJK", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [commodityType: "dry", totalWeightInKilograms: 1000],
+            commodityInfo: [commodityType: "dry", weightKg: 1000],
             containerDimensionType: "DIMENSION_ISO_22"
         ]
     )
@@ -446,7 +446,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRZAG", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [commodityType: "dry", totalWeightInKilograms: 1000],
+            commodityInfo: [commodityType: "dry", weightKg: 1000],
             containerDimensionType: "DIMENSION_ISO_22"
         ]
     )
@@ -511,7 +511,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [commodityType: "dry", totalWeightInKilograms: 125_000_000],
+            commodityInfo: [commodityType: "dry", weightKg: 125_000_000],
             containerDimensionType: "dimension_ISO_22"
         ]
     )
@@ -565,7 +565,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [commodityType: "$commodityTypeStringParam", totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: requestedStorageTemperatureInCelsiusParam],
+            commodityInfo: [commodityType: "$commodityTypeStringParam", weightKg: 1000, requestedStorageTemperatureInCelsius: requestedStorageTemperatureInCelsiusParam],
             containerDimensionType: "dimension_ISO_22"
         ]
     )

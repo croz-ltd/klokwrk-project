@@ -53,13 +53,13 @@ class CommodityInfoData {
   String commodityType
 
   /**
-   * Commodity total weight in kilograms.
+   * Commodity weight in kilograms.
    * <p/>
    * Not {@code null} and must be 1 or greater.
    */
   @Min(value = 1L, groups = [Level2])
   @NotNull(groups = [Level1])
-  Integer totalWeightInKilograms
+  Integer weightKg
 
   /**
    * The requested storage temperature in Celsius degree.
