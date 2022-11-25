@@ -61,7 +61,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
       departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
       arrivalLatestTime: currentInstantRoundedAndThreeHours
   )
-  static CommodityInfoData validCommodityInfoData = new CommodityInfoData(commodityType: CommodityType.DRY.name(), weightKg: 1000, requestedStorageTemperatureInCelsius: null)
+  static CommodityInfoData validCommodityInfoData = new CommodityInfoData(commodityType: CommodityType.DRY.name(), weightKg: 1000, requestedStorageTemperatureDegC: null)
   static String validContainerDimensionData = "DIMENSION_ISO_22"
 
   BookingOfferCommandFactoryService bookingOfferCommandFactoryService

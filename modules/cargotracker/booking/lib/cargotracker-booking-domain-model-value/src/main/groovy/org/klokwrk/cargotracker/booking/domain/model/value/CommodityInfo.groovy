@@ -93,11 +93,11 @@ class CommodityInfo implements PostMapConstructorCheckable {
     return commodityInfo
   }
 
-  static CommodityInfo make(CommodityType commodityType, Integer weightInKilograms, Integer requestedStorageTemperatureInCelsius) {
+  static CommodityInfo make(CommodityType commodityType, Integer weightInKilograms, Integer requestedStorageTemperatureDegC) {
     CommodityInfo commodityInfo = make(
         commodityType,
         Quantities.getQuantity(weightInKilograms, Units.KILOGRAM),
-        requestedStorageTemperatureInCelsius == null ? null : Quantities.getQuantity(requestedStorageTemperatureInCelsius, Units.CELSIUS)
+        requestedStorageTemperatureDegC == null ? null : Quantities.getQuantity(requestedStorageTemperatureDegC, Units.CELSIUS)
     )
 
     return commodityInfo

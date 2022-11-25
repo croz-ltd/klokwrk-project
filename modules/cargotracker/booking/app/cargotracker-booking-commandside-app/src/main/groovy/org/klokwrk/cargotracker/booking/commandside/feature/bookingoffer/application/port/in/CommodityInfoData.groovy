@@ -71,5 +71,5 @@ class CommodityInfoData {
    */
   @Max(value = 30L, groups = [Level2])
   @Min(value = -30L, groups = [Level2])
-  Integer requestedStorageTemperatureInCelsius
+  Integer requestedStorageTemperatureDegC
 }

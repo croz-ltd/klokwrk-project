@@ -565,7 +565,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [commodityType: "$commodityTypeStringParam", weightKg: 1000, requestedStorageTemperatureInCelsius: requestedStorageTemperatureInCelsiusParam],
+            commodityInfo: [commodityType: "$commodityTypeStringParam", weightKg: 1000, requestedStorageTemperatureDegC: requestedStorageTemperatureDegCParam],
             containerDimensionType: "dimension_ISO_22"
         ]
     )
@@ -610,15 +610,15 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     "hr-HR"             | "hr_HR"
     "en"                | "en"
     ___
-    commodityTypeStringParam | requestedStorageTemperatureInCelsiusParam | violationMessageParam
-    "air_cooled"             | 13                                        | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za zrakom hlađenu robu: [2, 12] Celzija."
-    "air_cooled"             | 1                                         | "Requested storage temperature is not in supported range for air cooled commodities: [2, 12] Celsius."
+    commodityTypeStringParam | requestedStorageTemperatureDegCParam | violationMessageParam
+    "air_cooled"             | 13                                   | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za zrakom hlađenu robu: [2, 12] Celzija."
+    "air_cooled"             | 1                                    | "Requested storage temperature is not in supported range for air cooled commodities: [2, 12] Celsius."
 
-    "chilled"                | 7                                         | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za rashlađenu robu: [-2, 6] Celzija."
-    "chilled"                | -3                                        | "Requested storage temperature is not in supported range for chilled commodities: [-2, 6] Celsius."
+    "chilled"                | 7                                    | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za rashlađenu robu: [-2, 6] Celzija."
+    "chilled"                | -3                                   | "Requested storage temperature is not in supported range for chilled commodities: [-2, 6] Celsius."
 
-    "frozen"                 | -7                                        | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za smrznutu robu: [-20, -8] Celzija."
-    "frozen"                 | -21                                       | "Requested storage temperature is not in supported range for frozen commodities: [-20, -8] Celsius."
+    "frozen"                 | -7                                   | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za smrznutu robu: [-20, -8] Celzija."
+    "frozen"                 | -21                                  | "Requested storage temperature is not in supported range for frozen commodities: [-20, -8] Celsius."
     //@formatter:on
   }
 
