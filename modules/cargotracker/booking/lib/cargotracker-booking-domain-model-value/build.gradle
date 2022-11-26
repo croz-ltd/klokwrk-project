@@ -40,7 +40,9 @@ dependencies {
 
   testFixturesImplementation project(":klokwrk-lang-groovy")
 
+  testFixturesImplementation "javax.measure:unit-api"
   testFixturesImplementation "org.apache.groovy:groovy"
+  testFixturesImplementation "tech.units:indriya"
 
   testImplementation "org.objenesis:objenesis"
   testImplementation "org.spockframework:spock-core"
