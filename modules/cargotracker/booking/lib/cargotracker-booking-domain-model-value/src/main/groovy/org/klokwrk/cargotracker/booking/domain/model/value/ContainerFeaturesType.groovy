@@ -83,7 +83,7 @@ enum ContainerFeaturesType {
   /**
    * Answers if this container feature type controls internal temperature or not.
    */
-  Boolean isContainerTemperatureControlled() {
+  boolean isContainerTemperatureControlled() {
     if (getContainerTemperatureRange() == Constants.UNBOUNDED_TEMPERATURE_RANGE) {
       return false
     }

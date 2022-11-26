@@ -45,7 +45,7 @@ class ContainerFeaturesTypeSpecification extends Specification {
     ContainerFeaturesType containerFeaturesType = containerFeturesTypeParam
 
     when:
-    Boolean result = containerFeaturesType.isContainerTemperatureControlled()
+    boolean result = containerFeaturesType.isContainerTemperatureControlled()
 
     then:
     result == resultParam

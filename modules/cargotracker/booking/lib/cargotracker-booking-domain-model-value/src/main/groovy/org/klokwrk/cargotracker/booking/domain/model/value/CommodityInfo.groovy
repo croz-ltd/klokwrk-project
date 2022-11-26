@@ -58,9 +58,14 @@ class CommodityInfo implements PostMapConstructorCheckable {
   /**
    * Requested storage temperature for a commodity.
    * <p/>
-   * Whether it is required or not depends on the commodity type. If required, it must be inside of temperature range boundaries of the corresponding commodity type.
+   * Whether it is necessary depends on the commodity type. If commodity type supports storage temperature, {@code requestedStorageTemperature} must be inside of temperature range boundaries of the
+   * corresponding commodity type.
    * <p/>
-   * When using factory {@code make()} methods, if not provided, the requested storage temperature is populated from the recommended storage temperature of the corresponding commodity type.
+   * When using factory {@code make()} methods, if not provided, the requested storage temperature is populated from the recommended storage temperature of the corresponding commodity type that
+   * supports storage temperature.
+   * <p/>
+   * Map constructor will throw an {@code DomainException} when {@code requestedStorageTemperature} is non-null and {@code commodityType} does not support storage temperature
+   * ({@code commodityType.containerFeaturesType.isContainerTemperatureControlled()} returns {@code false}).
    */
   Quantity<Temperature> requestedStorageTemperature
 
@@ -77,7 +82,7 @@ class CommodityInfo implements PostMapConstructorCheckable {
    */
   static CommodityInfo make(CommodityType commodityType, Quantity<Mass> weight, Quantity<Temperature> requestedStorageTemperature) {
     Quantity<Temperature> requestedStorageTemperatureToUse = requestedStorageTemperature
-    if (requestedStorageTemperature == null && commodityType != null) {
+    if (commodityType != null && commodityType.isStorageTemperatureLimited() && requestedStorageTemperature == null) {
       requestedStorageTemperatureToUse = commodityType.recommendedStorageTemperature
     }
 
@@ -112,8 +117,18 @@ class CommodityInfo implements PostMapConstructorCheckable {
     requireTrue(weight.unit == Units.KILOGRAM)
     requireTrue(weight.value.toBigDecimal().scale() == 0)
 
+    requireNullRequestedStorageTemperatureWhenNotAllowed(requestedStorageTemperature, commodityType)
+
     requireTrue(isRequestedStorageTemperatureAvailableWhenNeeded(requestedStorageTemperature, commodityType))
     requireRequestedStorageTemperatureInAllowedRange(requestedStorageTemperature, commodityType)
+  }
+
+  private void requireNullRequestedStorageTemperatureWhenNotAllowed(Quantity<Temperature> requestedStorageTemperature, CommodityType commodityType) {
+    if (requestedStorageTemperature != null && !commodityType.containerFeaturesType.isContainerTemperatureControlled()) {
+      String messageKey = "commodityInfo.requestedStorageTemperatureNotAllowedForCommodityType"
+      List<String> messageParams = [commodityType.name()]
+      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey(messageKey, messageParams))
+    }
   }
 
   private Boolean isRequestedStorageTemperatureAvailableWhenNeeded(Quantity<Temperature> requestedStorageTemperature, CommodityType commodityType) {

@@ -44,10 +44,10 @@ class CommodityInfoSpecification extends Specification {
 
     then:
     commodityInfo
+    commodityInfo.requestedStorageTemperature == requestedStorageTemperatureParam
 
     where:
     commodityTypeParam | requestedStorageTemperatureParam
-    DRY                | getQuantity(25, CELSIUS)
     DRY                | null
 
     AIR_COOLED         | getQuantity(2, CELSIUS)
@@ -126,6 +126,22 @@ class CommodityInfoSpecification extends Specification {
     assertionError.message == "Require violation detected - boolean condition is false - [condition: (weight.value.toBigDecimal().scale() == 0)]"
   }
 
+  void "map constructor should fail for non-null requestedStorageTemperature for commodity types that do not support storage temperature"() {
+    when:
+    new CommodityInfo(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
+
+    then:
+    DomainException domainException = thrown()
+    domainException.message == "Bad Request"
+    domainException.violationInfo.violationCode.code == "400"
+    domainException.violationInfo.violationCode.resolvableMessageKey == "commodityInfo.requestedStorageTemperatureNotAllowedForCommodityType"
+    domainException.violationInfo.violationCode.resolvableMessageParameters == resolvableMessageParametersParam
+
+    where:
+    commodityTypeParam | requestedStorageTemperatureParam | resolvableMessageParametersParam
+    DRY                | getQuantity(1, CELSIUS)          | ["DRY"]
+  }
+
   void "map constructor should fail for null requestedStorageTemperature when requestedStorageTemperature is required"() {
     when:
     new CommodityInfo(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
@@ -197,6 +213,7 @@ class CommodityInfoSpecification extends Specification {
 
     then:
     commodityInfo
+    commodityInfo.requestedStorageTemperature == requestedStorageTemperatureParam
 
     where:
     commodityTypeParam | requestedStorageTemperatureParam
@@ -275,22 +292,23 @@ class CommodityInfoSpecification extends Specification {
 
     then:
     commodityInfo
+    commodityInfo.requestedStorageTemperature == requestedStorageTemperatureExpectedParam
 
     where:
-    commodityTypeParam | requestedStorageTemperatureParam
-    DRY                | null
+    commodityTypeParam | requestedStorageTemperatureParam | requestedStorageTemperatureExpectedParam
+    DRY                | null                             | requestedStorageTemperatureParam
 
-    AIR_COOLED         | 2
-    AIR_COOLED         | 8
-    AIR_COOLED         | 12
+    AIR_COOLED         | 2                                | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+    AIR_COOLED         | 8                                | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+    AIR_COOLED         | 12                               | getQuantity(requestedStorageTemperatureParam, CELSIUS)
 
-    CHILLED            | -2
-    CHILLED            | 3
-    CHILLED            | 6
+    CHILLED            | -2                               | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+    CHILLED            | 3                                | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+    CHILLED            | 6                                | getQuantity(requestedStorageTemperatureParam, CELSIUS)
 
-    FROZEN             | -20
-    FROZEN             | -15
-    FROZEN             | -8
+    FROZEN             | -20                              | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+    FROZEN             | -15                              | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+    FROZEN             | -8                               | getQuantity(requestedStorageTemperatureParam, CELSIUS)
   }
 
   void "make(CommodityType, Integer) factory method should work for correct input params"() {
