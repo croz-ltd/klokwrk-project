@@ -25,6 +25,7 @@ import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferC
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEventFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventDataFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter
@@ -59,9 +60,10 @@ class BookingOfferAggregateSpecification extends Specification {
     CreateBookingOfferCommand createBookingOfferCommand = CreateBookingOfferCommandFixtureBuilder.createBookingOfferCommand_default().build()
     BookingOfferCreatedEvent expectedBookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder
         .bookingOfferCreatedEvent_default()
-        .customer(createBookingOfferCommand.customer)
-        .bookingOfferId(createBookingOfferCommand.bookingOfferId)
-        .routeSpecification(createBookingOfferCommand.routeSpecification)
+        .customer(CustomerEventData.fromCustomer(createBookingOfferCommand.customer))
+        .bookingOfferId(createBookingOfferCommand.bookingOfferId.identifier)
+        .routeSpecification(RouteSpecificationEventData.fromRouteSpecification(createBookingOfferCommand.routeSpecification))
+        .commodities([CommodityEventDataFixtureBuilder.dry_default().maxAllowedWeightPerContainer("20615 kg").build()])
         .build()
 
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
