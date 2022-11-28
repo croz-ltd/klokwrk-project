@@ -45,5 +45,7 @@ dependencies {
   testFixturesImplementation "org.apache.groovy:groovy"
   testFixturesImplementation "tech.units:indriya"
 
+  testImplementation testFixtures(project(":cargotracker-booking-domain-model-value"))
+
   testImplementation "org.spockframework:spock-core"
 }

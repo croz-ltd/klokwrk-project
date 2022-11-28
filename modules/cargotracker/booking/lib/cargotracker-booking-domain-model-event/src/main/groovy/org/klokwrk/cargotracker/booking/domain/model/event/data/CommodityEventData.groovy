@@ -61,18 +61,21 @@ class CommodityEventData {
     )
   }
 
+  static Collection<Commodity> toCommodityCollection(Collection<CommodityEventData> commodityEventDataCollection) {
+    return commodityEventDataCollection.collect({ CommodityEventData commodityEventData -> commodityEventData.toCommodity() })
+  }
+
   Commodity toCommodity() {
-    return new Commodity(
-        containerType: containerType,
-        commodityInfo: CommodityInfo.make(
+    Commodity commodity = Commodity.make(
+        containerType,
+        CommodityInfo.make(
             commodityType,
             quantityParser.parse(commodityWeight) as Quantity<Mass>,
             commodityRequestedStorageTemperature == null ? null : quantityParser.parse(commodityRequestedStorageTemperature) as Quantity<Temperature>
         ),
-        maxAllowedWeightPerContainer: quantityParser.parse(maxAllowedWeightPerContainer) as Quantity<Mass>,
-        maxRecommendedWeightPerContainer: quantityParser.parse(maxRecommendedWeightPerContainer) as Quantity<Mass>,
-        containerCount: containerCount,
-        containerTeuCount: containerTeuCount
+        quantityParser.parse(maxAllowedWeightPerContainer) as Quantity<Mass>
     )
+
+    return commodity
   }
 }
