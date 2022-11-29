@@ -12,7 +12,7 @@ import javax.measure.quantity.Mass
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic
 class CommodityFixtureBuilder {
-  static CommodityFixtureBuilder dry_default() {
+  static CommodityFixtureBuilder commodity_dry() {
     CommodityFixtureBuilder commodityFixtureBuilder = new CommodityFixtureBuilder()
         .containerType(ContainerType.TYPE_ISO_22G1)
         .commodityInfo(CommodityInfoFixtureBuilder.dry_default().build())
@@ -20,7 +20,7 @@ class CommodityFixtureBuilder {
     return commodityFixtureBuilder
   }
 
-  static CommodityFixtureBuilder airCooled_default() {
+  static CommodityFixtureBuilder commodity_airCooled() {
     CommodityFixtureBuilder commodityFixtureBuilder = new CommodityFixtureBuilder()
         .containerType(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER)
         .commodityInfo(CommodityInfoFixtureBuilder.airCooled_default().build())
@@ -28,7 +28,7 @@ class CommodityFixtureBuilder {
     return commodityFixtureBuilder
   }
 
-  static CommodityFixtureBuilder chilled_default() {
+  static CommodityFixtureBuilder commodity_chilled() {
     CommodityFixtureBuilder commodityFixtureBuilder = new CommodityFixtureBuilder()
         .containerType(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER)
         .commodityInfo(CommodityInfoFixtureBuilder.chilled_default().build())
@@ -36,7 +36,7 @@ class CommodityFixtureBuilder {
     return commodityFixtureBuilder
   }
 
-  static CommodityFixtureBuilder frozen_default() {
+  static CommodityFixtureBuilder commodity_frozen() {
     CommodityFixtureBuilder commodityFixtureBuilder = new CommodityFixtureBuilder()
         .containerType(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER)
         .commodityInfo(CommodityInfoFixtureBuilder.frozen_default().build())

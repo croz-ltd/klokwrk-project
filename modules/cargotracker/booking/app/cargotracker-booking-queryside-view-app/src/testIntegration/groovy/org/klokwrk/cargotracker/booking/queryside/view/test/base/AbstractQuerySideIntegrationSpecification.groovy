@@ -25,8 +25,6 @@ import org.axonframework.eventhandling.GenericDomainEventMessage
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEventFixtureBuilder
-import org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventDataFixtureBuilder
-import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder
 import org.klokwrk.cargotracker.booking.test.support.queryside.axon.GenericDomainEventMessageFactory
 import org.klokwrk.cargotracker.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.cargotracker.booking.test.support.testcontainers.AxonServerTestcontainersFactory
@@ -41,6 +39,18 @@ import org.testcontainers.containers.PostgreSQLContainer
 import spock.lang.Specification
 
 import java.time.Duration
+
+import static org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventDataFixtureBuilder.commodity_airCooled
+import static org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventDataFixtureBuilder.commodity_chilled
+import static org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventDataFixtureBuilder.commodity_dry
+import static org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventDataFixtureBuilder.commodity_frozen
+import static org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_hamburgToLosAngeles
+import static org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_hamburgToRotterdam
+import static org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToHamburg
+import static org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToLosAngeles
+import static org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToNewYork
+import static org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToRotterdam
+import static org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_rotterdamToNewYork
 
 abstract class AbstractQuerySideIntegrationSpecification extends Specification {
   static GenericContainer axonServer
@@ -93,53 +103,53 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
 
     numOfRepetitions.times {
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
-          .routeSpecification(RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToRotterdam().build())
-          .commodities([CommodityEventDataFixtureBuilder.dry_default().commodityWeight("30000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .routeSpecification(routeSpecification_rijekaToRotterdam().build())
+          .commodities([commodity_dry().commodityWeight("30000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
-          .routeSpecification(RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToHamburg().build())
-          .commodities([CommodityEventDataFixtureBuilder.airCooled_default().commodityWeight("30000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .routeSpecification(routeSpecification_rijekaToHamburg().build())
+          .commodities([commodity_airCooled().commodityWeight("30000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
-          .routeSpecification(RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToLosAngeles().build())
-          .commodities([CommodityEventDataFixtureBuilder.chilled_default().commodityWeight("30000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .routeSpecification(routeSpecification_rijekaToLosAngeles().build())
+          .commodities([commodity_chilled().commodityWeight("30000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
-          .routeSpecification(RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToNewYork().build())
-          .commodities([CommodityEventDataFixtureBuilder.frozen_default().commodityWeight("30000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .routeSpecification(routeSpecification_rijekaToNewYork().build())
+          .commodities([commodity_frozen().commodityWeight("30000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
-          .routeSpecification(RouteSpecificationEventDataFixtureBuilder.routeSpecification_hamburgToLosAngeles().build())
-          .commodities([CommodityEventDataFixtureBuilder.airCooled_default().commodityWeight("70000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .routeSpecification(routeSpecification_hamburgToLosAngeles().build())
+          .commodities([commodity_airCooled().commodityWeight("70000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
-          .routeSpecification(RouteSpecificationEventDataFixtureBuilder.routeSpecification_rotterdamToNewYork().build())
-          .commodities([CommodityEventDataFixtureBuilder.dry_default().commodityWeight("40000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .routeSpecification(routeSpecification_rotterdamToNewYork().build())
+          .commodities([commodity_dry().commodityWeight("40000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
-          .routeSpecification(RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToHamburg().build())
-          .commodities([CommodityEventDataFixtureBuilder.dry_default().commodityWeight("1000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .routeSpecification(routeSpecification_rijekaToHamburg().build())
+          .commodities([commodity_dry().commodityWeight("1000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
-          .routeSpecification(RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToLosAngeles().build())
-          .commodities([CommodityEventDataFixtureBuilder.dry_default().commodityWeight("15000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .routeSpecification(routeSpecification_rijekaToLosAngeles().build())
+          .commodities([commodity_dry().commodityWeight("15000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
-          .routeSpecification(RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToNewYork().build())
-          .commodities([CommodityEventDataFixtureBuilder.dry_default().commodityWeight("100000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .routeSpecification(routeSpecification_rijekaToNewYork().build())
+          .commodities([commodity_dry().commodityWeight("100000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
-          .routeSpecification(RouteSpecificationEventDataFixtureBuilder.routeSpecification_hamburgToRotterdam().build())
-          .commodities([CommodityEventDataFixtureBuilder.dry_default().commodityWeight("45000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .routeSpecification(routeSpecification_hamburgToRotterdam().build())
+          .commodities([commodity_dry().commodityWeight("45000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
           .build()
     }
 

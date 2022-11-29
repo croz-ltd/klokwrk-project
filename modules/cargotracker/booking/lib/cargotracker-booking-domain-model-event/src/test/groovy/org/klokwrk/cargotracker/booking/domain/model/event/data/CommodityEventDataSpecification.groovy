@@ -33,22 +33,22 @@ class CommodityEventDataSpecification extends Specification {
     commodityEventData == commodityEventDataExpectedParam
 
     where:
-    commodityParam                                      | commodityEventDataExpectedParam
-    CommodityFixtureBuilder.dry_default().build()       | CommodityEventDataFixtureBuilder.dry_default().build()
-    CommodityFixtureBuilder.airCooled_default().build() | CommodityEventDataFixtureBuilder.airCooled_default().build()
-    CommodityFixtureBuilder.chilled_default().build()   | CommodityEventDataFixtureBuilder.chilled_default().build()
-    CommodityFixtureBuilder.frozen_default().build()    | CommodityEventDataFixtureBuilder.frozen_default().build()
+    commodityParam                                        | commodityEventDataExpectedParam
+    CommodityFixtureBuilder.commodity_dry().build()       | CommodityEventDataFixtureBuilder.commodity_dry().build()
+    CommodityFixtureBuilder.commodity_airCooled().build() | CommodityEventDataFixtureBuilder.commodity_airCooled().build()
+    CommodityFixtureBuilder.commodity_chilled().build()   | CommodityEventDataFixtureBuilder.commodity_chilled().build()
+    CommodityFixtureBuilder.commodity_frozen().build()    | CommodityEventDataFixtureBuilder.commodity_frozen().build()
   }
 
   void "fromCommodityCollection() should work as expected"() {
     given:
-    Collection<Commodity> commodityCollection = [CommodityFixtureBuilder.dry_default().build(), CommodityFixtureBuilder.airCooled_default().build()]
+    Collection<Commodity> commodityCollection = [CommodityFixtureBuilder.commodity_dry().build(), CommodityFixtureBuilder.commodity_airCooled().build()]
 
     when:
     Collection<CommodityEventData> commodityEventDataCollection = CommodityEventData.fromCommodityCollection(commodityCollection)
 
     then:
-    commodityEventDataCollection.containsAll([CommodityEventDataFixtureBuilder.dry_default().build(), CommodityEventDataFixtureBuilder.airCooled_default().build()])
+    commodityEventDataCollection.containsAll([CommodityEventDataFixtureBuilder.commodity_dry().build(), CommodityEventDataFixtureBuilder.commodity_airCooled().build()])
   }
 
   void "toCommodity() should work as expected"() {
@@ -62,21 +62,21 @@ class CommodityEventDataSpecification extends Specification {
     commodity == commodityExpectedParam
 
     where:
-    commodityEventDataParam                                      | commodityExpectedParam
-    CommodityEventDataFixtureBuilder.dry_default().build()       | CommodityFixtureBuilder.dry_default().build()
-    CommodityEventDataFixtureBuilder.airCooled_default().build() | CommodityFixtureBuilder.airCooled_default().build()
-    CommodityEventDataFixtureBuilder.chilled_default().build()   | CommodityFixtureBuilder.chilled_default().build()
-    CommodityEventDataFixtureBuilder.frozen_default().build()    | CommodityFixtureBuilder.frozen_default().build()
+    commodityEventDataParam                                        | commodityExpectedParam
+    CommodityEventDataFixtureBuilder.commodity_dry().build()       | CommodityFixtureBuilder.commodity_dry().build()
+    CommodityEventDataFixtureBuilder.commodity_airCooled().build() | CommodityFixtureBuilder.commodity_airCooled().build()
+    CommodityEventDataFixtureBuilder.commodity_chilled().build()   | CommodityFixtureBuilder.commodity_chilled().build()
+    CommodityEventDataFixtureBuilder.commodity_frozen().build()    | CommodityFixtureBuilder.commodity_frozen().build()
   }
 
   void "toCommodityCollection() should work as expected"() {
     given:
-    Collection<CommodityEventData> commodityEventDataCollection = [CommodityEventDataFixtureBuilder.dry_default().build(), CommodityEventDataFixtureBuilder.airCooled_default().build()]
+    Collection<CommodityEventData> commodityEventDataCollection = [CommodityEventDataFixtureBuilder.commodity_dry().build(), CommodityEventDataFixtureBuilder.commodity_airCooled().build()]
 
     when:
     Collection<Commodity> commodityCollection = CommodityEventData.toCommodityCollection(commodityEventDataCollection)
 
     then:
-    commodityCollection.containsAll([CommodityFixtureBuilder.dry_default().build(), CommodityFixtureBuilder.airCooled_default().build()])
+    commodityCollection.containsAll([CommodityFixtureBuilder.commodity_dry().build(), CommodityFixtureBuilder.commodity_airCooled().build()])
   }
 }

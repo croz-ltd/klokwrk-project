@@ -33,7 +33,7 @@ import javax.measure.quantity.Temperature
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic
 class CommodityEventDataFixtureBuilder {
-  static CommodityEventDataFixtureBuilder dry_default() {
+  static CommodityEventDataFixtureBuilder commodity_dry() {
     CommodityEventDataFixtureBuilder commodityEventDataFixtureBuilder = new CommodityEventDataFixtureBuilder()
         .commodityType(CommodityType.DRY)
         .commodityRequestedStorageTemperature(null)
@@ -44,7 +44,7 @@ class CommodityEventDataFixtureBuilder {
     return commodityEventDataFixtureBuilder
   }
 
-  static CommodityEventDataFixtureBuilder airCooled_default() {
+  static CommodityEventDataFixtureBuilder commodity_airCooled() {
     CommodityEventDataFixtureBuilder commodityEventDataFixtureBuilder = new CommodityEventDataFixtureBuilder()
         .commodityType(CommodityType.AIR_COOLED)
         .commodityRequestedStorageTemperature(QuantityFormatter.instance.format(CommodityType.AIR_COOLED.recommendedStorageTemperature))
@@ -55,7 +55,7 @@ class CommodityEventDataFixtureBuilder {
     return commodityEventDataFixtureBuilder
   }
 
-  static CommodityEventDataFixtureBuilder chilled_default() {
+  static CommodityEventDataFixtureBuilder commodity_chilled() {
     CommodityEventDataFixtureBuilder commodityEventDataFixtureBuilder = new CommodityEventDataFixtureBuilder()
         .commodityType(CommodityType.CHILLED)
         .commodityRequestedStorageTemperature(QuantityFormatter.instance.format(CommodityType.CHILLED.recommendedStorageTemperature))
@@ -66,7 +66,7 @@ class CommodityEventDataFixtureBuilder {
     return commodityEventDataFixtureBuilder
   }
 
-  static CommodityEventDataFixtureBuilder frozen_default() {
+  static CommodityEventDataFixtureBuilder commodity_frozen() {
     CommodityEventDataFixtureBuilder commodityEventDataFixtureBuilder = new CommodityEventDataFixtureBuilder()
         .commodityType(CommodityType.FROZEN)
         .commodityRequestedStorageTemperature(QuantityFormatter.instance.format(CommodityType.FROZEN.recommendedStorageTemperature))

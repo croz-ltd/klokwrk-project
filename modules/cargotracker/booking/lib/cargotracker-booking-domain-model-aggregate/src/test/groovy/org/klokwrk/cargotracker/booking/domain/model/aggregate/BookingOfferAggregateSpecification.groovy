@@ -63,7 +63,7 @@ class BookingOfferAggregateSpecification extends Specification {
         .customer(CustomerEventData.fromCustomer(createBookingOfferCommand.customer))
         .bookingOfferId(createBookingOfferCommand.bookingOfferId.identifier)
         .routeSpecification(RouteSpecificationEventData.fromRouteSpecification(createBookingOfferCommand.routeSpecification))
-        .commodities([CommodityEventDataFixtureBuilder.dry_default().maxAllowedWeightPerContainer("20615 kg").build()])
+        .commodities([CommodityEventDataFixtureBuilder.commodity_dry().maxAllowedWeightPerContainer("20615 kg").build()])
         .build()
 
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()

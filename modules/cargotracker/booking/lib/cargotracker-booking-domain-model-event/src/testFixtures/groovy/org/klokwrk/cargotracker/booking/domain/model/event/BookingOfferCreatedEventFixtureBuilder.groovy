@@ -43,7 +43,7 @@ class BookingOfferCreatedEventFixtureBuilder {
    * {@code CreateBookingOfferCommandFixtureBuilder.createBookingOfferCommand_default()}.
    */
   static BookingOfferCreatedEventFixtureBuilder bookingOfferCreatedEvent_default(Clock currentTimeClock = Clock.systemUTC()) {
-    CommodityEventData commodity = CommodityEventDataFixtureBuilder.dry_default().build()
+    CommodityEventData commodity = CommodityEventDataFixtureBuilder.commodity_dry().build()
 
     BookingOfferCreatedEventFixtureBuilder builder = new BookingOfferCreatedEventFixtureBuilder()
         .customer(CustomerEventDataFixtureBuilder.customer_standard().build())
