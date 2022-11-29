@@ -97,7 +97,11 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Column(nullable = false, name = "commodity_type")
   Set<CommodityType> commodityTypes
 
+  @Column(nullable = false) String commodityTotalWeight
+
+  // commodityTotalWeightKg should be used only for easier and more flexible searching. Should not be used in returned results.
   @Column(nullable = false) Integer commodityTotalWeightKg
+
   @Column(nullable = false, precision = 8, scale = 2) BigDecimal commodityTotalContainerTeuCount
 
   @Column(nullable = false) String inboundChannelName

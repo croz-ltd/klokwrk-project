@@ -20,13 +20,13 @@ package org.klokwrk.cargotracker.booking.domain.model.event
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
-import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
-import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
-import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
-import org.klokwrk.cargotracker.booking.domain.model.value.Customer
-import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
+import org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventDataFixtureBuilder
+import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventDataFixtureBuilder
+import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder
+import org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter
 import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
 import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.Units
@@ -34,9 +34,6 @@ import tech.units.indriya.unit.Units
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
 import java.time.Clock
-
-import static org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder.customer_standard
-import static org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecificationFixtureBuilder.routeSpecification_rijekaToRotterdam
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic
@@ -46,35 +43,43 @@ class BookingOfferCreatedEventFixtureBuilder {
    * {@code CreateBookingOfferCommandFixtureBuilder.createBookingOfferCommand_default()}.
    */
   static BookingOfferCreatedEventFixtureBuilder bookingOfferCreatedEvent_default(Clock currentTimeClock = Clock.systemUTC()) {
-    CommodityInfo commodityInfo = CommodityInfo.make(CommodityType.DRY, 1_000)
-    Commodity commodity = Commodity.make(ContainerType.TYPE_ISO_22G1, commodityInfo, Quantities.getQuantity(20_615, Units.KILOGRAM))
+    CommodityEventData commodity = CommodityEventDataFixtureBuilder.commodity_dry().build()
 
     BookingOfferCreatedEventFixtureBuilder builder = new BookingOfferCreatedEventFixtureBuilder()
-        .customer(customer_standard().build())
-        .bookingOfferId(BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix(currentTimeClock).toString()))
-        .routeSpecification(routeSpecification_rijekaToRotterdam(currentTimeClock).build())
-        .commodity(commodity)
-        .bookingTotalCommodityWeight(Quantities.getQuantity(1_000, Units.KILOGRAM))
-        .bookingTotalContainerTeuCount(1.00G)
+        .customer(CustomerEventDataFixtureBuilder.customer_standard().build())
+        .bookingOfferId(CombUuidShortPrefixUtils.makeCombShortPrefix(currentTimeClock).toString())
+        .routeSpecification(RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToRotterdam(currentTimeClock).build())
+        .commodities([commodity])
 
     return builder
   }
 
-  Customer customer
-  BookingOfferId bookingOfferId
-  RouteSpecification routeSpecification
-  Commodity commodity
-  Quantity<Mass> bookingTotalCommodityWeight
-  BigDecimal bookingTotalContainerTeuCount
+  CustomerEventData customer
+  String bookingOfferId
+  RouteSpecificationEventData routeSpecification
+  Collection<CommodityEventData> commodities = []
 
   BookingOfferCreatedEvent build() {
+    String commodityTotalWeight
+    Quantity<Mass> commodityTotalWeightQuantity = Quantities.getQuantity(0, Units.KILOGRAM)
+    commodities.each({ CommodityEventData commodityEventData ->
+      Quantity<Mass> commodityWeightQuantity = QuantityFormatter.instance.parse(commodityEventData.commodityWeight) as Quantity<Mass>
+      commodityTotalWeightQuantity = commodityTotalWeightQuantity.add(commodityWeightQuantity)
+    })
+    commodityTotalWeight = QuantityFormatter.instance.format(commodityTotalWeightQuantity.to(Units.KILOGRAM))
+
+    BigDecimal commodityTotalContainerTeuCount = 0
+    commodities.each({ CommodityEventData commodityEventData ->
+      commodityTotalContainerTeuCount += commodityEventData.containerTeuCount
+    })
+
     BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
         customer: customer,
         bookingOfferId: bookingOfferId,
         routeSpecification: routeSpecification,
-        commodity: commodity,
-        bookingTotalCommodityWeight: bookingTotalCommodityWeight,
-        bookingTotalContainerTeuCount: bookingTotalContainerTeuCount
+        commodities: commodities,
+        commodityTotalWeight: commodityTotalWeight,
+        commodityTotalContainerTeuCount: commodityTotalContainerTeuCount
     )
 
     return bookingOfferCreatedEvent

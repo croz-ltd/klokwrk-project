@@ -112,11 +112,11 @@ class BookingOfferCommodities {
 
     Commodity commodityContainerInfoOld = commodityTypeToCommodityMap.get(commodity.commodityInfo.commodityType)
     if (commodityContainerInfoOld == null) {
-      newTotalCommodityWeight = totalCommodityWeight.add(commodity.commodityInfo.totalWeight)
+      newTotalCommodityWeight = totalCommodityWeight.add(commodity.commodityInfo.weight)
       newTotalContainerTeuCount = totalContainerTeuCount + commodity.containerTeuCount
     }
     else {
-      newTotalCommodityWeight = totalCommodityWeight.subtract(commodityContainerInfoOld.commodityInfo.totalWeight).add(commodity.commodityInfo.totalWeight)
+      newTotalCommodityWeight = totalCommodityWeight.subtract(commodityContainerInfoOld.commodityInfo.weight).add(commodity.commodityInfo.weight)
       newTotalContainerTeuCount = totalContainerTeuCount - commodityContainerInfoOld.containerTeuCount + commodity.containerTeuCount
     }
 

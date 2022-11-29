@@ -104,7 +104,7 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
       arrivalLatestTime >= startedAt + Duration.ofHours(3)
 
       commodityTypes == [CommodityType.DRY].toSet()
-      commodityTotalWeightKg == 1000
+      commodityTotalWeight == "1000 kg"
       commodityTotalContainerTeuCount == 1.00G
 
       firstEventRecordedAt >= startedAt

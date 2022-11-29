@@ -18,6 +18,11 @@
 package org.klokwrk.cargotracker.booking.queryside.projection.rdbms.infrastructure.springbootconfig
 
 import groovy.transform.CompileStatic
+import org.axonframework.config.Configuration as AxonConfiguration
+import org.axonframework.config.Configurer
+import org.axonframework.config.ConfigurerModule
+import org.axonframework.config.EventProcessingConfigurer
+import org.axonframework.eventhandling.PropagatingErrorHandler
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingEventHandlerEnhancerDefinition
 import org.klokwrk.lib.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
@@ -49,5 +54,16 @@ class SpringBootConfig {
   @Bean
   HandlerEnhancerDefinition loggingEventHandlerEnhancerDefinition() {
     return new LoggingEventHandlerEnhancerDefinition()
+  }
+
+  @Bean
+  ConfigurerModule errorHandlingConfigurerModule() {
+    return { Configurer configurer ->
+      configurer.eventProcessing({ EventProcessingConfigurer eventProcessingConfigurer ->
+        eventProcessingConfigurer.registerDefaultListenerInvocationErrorHandler({ AxonConfiguration configuration ->
+          return PropagatingErrorHandler.instance()
+        })
+      })
+    }
   }
 }

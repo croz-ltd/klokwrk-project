@@ -46,21 +46,26 @@ class CommodityInfo implements PostMapConstructorCheckable {
   CommodityType commodityType
 
   /**
-   * Total commodity weight.
+   * The weight of commodity.
    * <p/>
    * This weight might exceed what a single container can carry (in that case, multiple containers will be allocated based on this commodity info).
    * <p/>
    * Must not be {@code null}, and must be at least 1 kg or greater. It must be specified in kilogram units and a value must be the whole number.
    * For conversion from other {@code Mass} units, and for a conversion of decimal numbers, use {@code make()} factory methods.
    */
-  Quantity<Mass> totalWeight
+  Quantity<Mass> weight
 
   /**
    * Requested storage temperature for a commodity.
    * <p/>
-   * Whether it is required or not depends on the commodity type. If required, it must be inside of temperature range boundaries of the corresponding commodity type.
+   * Whether it is necessary depends on the commodity type. If commodity type supports storage temperature, {@code requestedStorageTemperature} must be inside of temperature range boundaries of the
+   * corresponding commodity type.
    * <p/>
-   * When using factory {@code make()} methods, if not provided, the requested storage temperature is populated from the recommended storage temperature of the corresponding commodity type.
+   * When using factory {@code make()} methods, if not provided, the requested storage temperature is populated from the recommended storage temperature of the corresponding commodity type that
+   * supports storage temperature.
+   * <p/>
+   * Map constructor will throw an {@code DomainException} when {@code requestedStorageTemperature} is non-null and {@code commodityType} does not support storage temperature
+   * ({@code commodityType.containerFeaturesType.isContainerTemperatureControlled()} returns {@code false}).
    */
   Quantity<Temperature> requestedStorageTemperature
 
@@ -77,14 +82,14 @@ class CommodityInfo implements PostMapConstructorCheckable {
    */
   static CommodityInfo make(CommodityType commodityType, Quantity<Mass> weight, Quantity<Temperature> requestedStorageTemperature) {
     Quantity<Temperature> requestedStorageTemperatureToUse = requestedStorageTemperature
-    if (requestedStorageTemperature == null && commodityType != null) {
+    if (commodityType != null && commodityType.isStorageTemperatureLimited() && requestedStorageTemperature == null) {
       requestedStorageTemperatureToUse = commodityType.recommendedStorageTemperature
     }
 
     BigDecimal weightValueToUse = weight.to(Units.KILOGRAM).value.toBigDecimal().setScale(0, RoundingMode.UP)
     Quantity<Mass> weightToUse = Quantities.getQuantity(weightValueToUse, Units.KILOGRAM)
 
-    CommodityInfo commodityInfo = new CommodityInfo(commodityType: commodityType, totalWeight: weightToUse, requestedStorageTemperature: requestedStorageTemperatureToUse)
+    CommodityInfo commodityInfo = new CommodityInfo(commodityType: commodityType, weight: weightToUse, requestedStorageTemperature: requestedStorageTemperatureToUse)
     return commodityInfo
   }
 
@@ -93,11 +98,11 @@ class CommodityInfo implements PostMapConstructorCheckable {
     return commodityInfo
   }
 
-  static CommodityInfo make(CommodityType commodityType, Integer weightInKilograms, Integer requestedStorageTemperatureInCelsius) {
+  static CommodityInfo make(CommodityType commodityType, Integer weightInKilograms, Integer requestedStorageTemperatureDegC) {
     CommodityInfo commodityInfo = make(
         commodityType,
         Quantities.getQuantity(weightInKilograms, Units.KILOGRAM),
-        requestedStorageTemperatureInCelsius == null ? null : Quantities.getQuantity(requestedStorageTemperatureInCelsius, Units.CELSIUS)
+        requestedStorageTemperatureDegC == null ? null : Quantities.getQuantity(requestedStorageTemperatureDegC, Units.CELSIUS)
     )
 
     return commodityInfo
@@ -106,14 +111,24 @@ class CommodityInfo implements PostMapConstructorCheckable {
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     requireMatch(commodityType, notNullValue())
-    requireMatch(totalWeight, notNullValue())
+    requireMatch(weight, notNullValue())
 
-    requireTrue(Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(totalWeight))
-    requireTrue(totalWeight.unit == Units.KILOGRAM)
-    requireTrue(totalWeight.value.toBigDecimal().scale() == 0)
+    requireTrue(Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(weight))
+    requireTrue(weight.unit == Units.KILOGRAM)
+    requireTrue(weight.value.toBigDecimal().scale() == 0)
+
+    requireNullRequestedStorageTemperatureWhenNotAllowed(requestedStorageTemperature, commodityType)
 
     requireTrue(isRequestedStorageTemperatureAvailableWhenNeeded(requestedStorageTemperature, commodityType))
     requireRequestedStorageTemperatureInAllowedRange(requestedStorageTemperature, commodityType)
+  }
+
+  private void requireNullRequestedStorageTemperatureWhenNotAllowed(Quantity<Temperature> requestedStorageTemperature, CommodityType commodityType) {
+    if (requestedStorageTemperature != null && !commodityType.containerFeaturesType.isContainerTemperatureControlled()) {
+      String messageKey = "commodityInfo.requestedStorageTemperatureNotAllowedForCommodityType"
+      List<String> messageParams = [commodityType.name()]
+      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey(messageKey, messageParams))
+    }
   }
 
   private Boolean isRequestedStorageTemperatureAvailableWhenNeeded(Quantity<Temperature> requestedStorageTemperature, CommodityType commodityType) {

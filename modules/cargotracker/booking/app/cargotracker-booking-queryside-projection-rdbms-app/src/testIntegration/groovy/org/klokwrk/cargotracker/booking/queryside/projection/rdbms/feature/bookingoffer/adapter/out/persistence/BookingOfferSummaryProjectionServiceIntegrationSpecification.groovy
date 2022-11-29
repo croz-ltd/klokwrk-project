@@ -70,8 +70,8 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build()
-    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId.identifier)
-    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId.identifier
+    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
+    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId
     CustomerType customerType = bookingOfferCreatedEvent.customer.customerType
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage =
@@ -83,7 +83,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
       verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
-        size() == 20
+        size() == 21
         booking_offer_identifier == bookingOfferIdentifier
 
         customer_identifier == customerIdentifier
@@ -101,6 +101,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         (departure_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(2)
         (arrival_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(3)
 
+        commodity_total_weight == "1000 kg"
         commodity_total_weight_kg == 1000
         commodity_total_container_teu_count == 1.00G
 
@@ -123,8 +124,8 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build()
-    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId.identifier)
-    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId.identifier
+    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
+    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId
     CustomerType customerType = bookingOfferCreatedEvent.customer.customerType
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, [:])
@@ -134,7 +135,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
       verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
-        size() == 20
+        size() == 21
         booking_offer_identifier == bookingOfferIdentifier
 
         customer_identifier == customerIdentifier
@@ -152,6 +153,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         (departure_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(2)
         (arrival_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(3)
 
+        commodity_total_weight == "1000 kg"
         commodity_total_weight_kg == 1000
         commodity_total_container_teu_count == 1.00G
 
@@ -180,8 +182,8 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     logger.addAppender(listAppender)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build()
-    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId.identifier)
-    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId.identifier
+    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
+    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, [:])
 

@@ -56,6 +56,7 @@ class BookingQuerySideProjectionRdbmsAppDependenciesSpecification extends Specif
         "org.codehaus.groovy..",
         "groovy..",
 
+        "org.axonframework.config..",
         "org.axonframework.eventhandling..",
         "org.axonframework.messaging..",
 

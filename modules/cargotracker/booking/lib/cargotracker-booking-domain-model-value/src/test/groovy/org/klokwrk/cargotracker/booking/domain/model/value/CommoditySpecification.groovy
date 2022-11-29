@@ -90,7 +90,7 @@ class CommoditySpecification extends Specification {
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message.endsWith("[condition: ((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= commodityInfo.totalWeight.value.toBigDecimal())]")
+    assertionError.message.endsWith("[condition: ((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= commodityInfo.weight.value.toBigDecimal())]")
   }
 
   void "map constructor should fail for invalid combination of commodityInfo and containerCount"() {
@@ -106,7 +106,7 @@ class CommoditySpecification extends Specification {
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message.endsWith("[condition: ((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= commodityInfo.totalWeight.value.toBigDecimal())]")
+    assertionError.message.endsWith("[condition: ((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= commodityInfo.weight.value.toBigDecimal())]")
   }
 
   void "map constructor should fail for invalid units of maxAllowedWeightPerContainer"() {

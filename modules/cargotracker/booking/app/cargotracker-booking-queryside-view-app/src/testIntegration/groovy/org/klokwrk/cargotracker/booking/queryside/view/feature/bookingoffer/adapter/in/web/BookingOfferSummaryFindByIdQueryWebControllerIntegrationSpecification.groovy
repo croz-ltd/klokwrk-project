@@ -131,7 +131,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
       Instant.parse(arrivalLatestTime as String) >= startedAt + java.time.Duration.ofHours(3)
 
       commodityTypes == ["DRY"]
-      commodityTotalWeightKg == 1000
+      commodityTotalWeight == "1000 kg"
       commodityTotalContainerTeuCount == 1.00G
 
       Instant.parse(firstEventRecordedAt as String) >= startedAt

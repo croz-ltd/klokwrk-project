@@ -87,6 +87,7 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
         arrivalLatestTime: currentInstant.plus(20, ChronoUnit.HOURS),
 
         commodityTypes: [CommodityType.DRY].toSet(),
+        commodityTotalWeight: "1000 kg",
         commodityTotalWeightKg: 1000,
         commodityTotalContainerTeuCount: 2.00G,
 
@@ -98,7 +99,7 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
         lastEventSequenceNumber: 0L
     )
 
-    assert originalEntity.propertiesFiltered.size() == 20
+    assert originalEntity.propertiesFiltered.size() == 21
     assert originalEntity.commodityTypes == [CommodityType.DRY].toSet()
 
     entitySet = [originalEntity] as HashSet

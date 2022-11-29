@@ -81,7 +81,7 @@ class Commodity implements PostMapConstructorCheckable {
    * Must be greater than or equal to one kilogram.<br/>
    * Must be less than or equal to {@code maxAllowedWeightPerContainer}.<br/>
    * Must have a kilogram units and a whole number value.<br/>
-   * Must be {@code maxRecommendedWeightPerContainer.value * containerCount >= commodityInfo.totalWeight.value}.<br/>
+   * Must be {@code maxRecommendedWeightPerContainer.value * containerCount >= commodityInfo.weight.value}.<br/>
    */
   Quantity<Mass> maxRecommendedWeightPerContainer
 
@@ -110,24 +110,30 @@ class Commodity implements PostMapConstructorCheckable {
    * Creates {@code Commodity} instance based on required properties and calculates derived properties.
    * <p/>
    * It is recommended to always use this factory method instead of map constructor because map constructor requires that all derived values are correctly precalculated.
+   * <p/>
+   * When {@code maxAllowedWeightPerContainer} parameter is null, {@code maxAllowedWeightPerContainer} is equal to the {@code containerType.maxCommodityWeight}.
    */
   @SuppressWarnings("CodeNarc.DuplicateNumberLiteral")
-  static Commodity make(ContainerType containerType, CommodityInfo commodityInfo, Quantity<Mass> maxAllowedWeightPerContainer) {
-    BigDecimal totalWeightValueInKilograms = commodityInfo.totalWeight.value
-    Quantity<Mass> maxAllowedWeightPerContainerInKilograms = maxAllowedWeightPerContainer.to(Units.KILOGRAM)
+  static Commodity make(ContainerType containerType, CommodityInfo commodityInfo, Quantity<Mass> maxAllowedWeightPerContainer = null) {
+    BigDecimal weightValueKg = commodityInfo.weight.value
+    Quantity<Mass> maxAllowedWeightPerContainerKg = maxAllowedWeightPerContainer?.to(Units.KILOGRAM)
+    if (maxAllowedWeightPerContainerKg == null) {
+      maxAllowedWeightPerContainerKg = containerType.maxCommodityWeight.to(Units.KILOGRAM)
+    }
+
     MathContext mathContext = new MathContext(7, RoundingMode.HALF_UP)
 
-    Integer containerCount = totalWeightValueInKilograms
-        .divide(maxAllowedWeightPerContainerInKilograms.value.toBigDecimal(), mathContext)
+    Integer containerCount = weightValueKg
+        .divide(maxAllowedWeightPerContainerKg.value.toBigDecimal(), mathContext)
         .setScale(0, RoundingMode.UP)
         .toInteger()
 
-    Integer maxRecommendedWeightPerContainerValueInKilograms = totalWeightValueInKilograms
+    Integer maxRecommendedWeightPerContainerValueKg = weightValueKg
         .divide(containerCount.toBigDecimal(), mathContext)
         .setScale(0, RoundingMode.UP)
         .toInteger()
 
-    Quantity<Mass> maxRecommendedWeightPerContainerInKilograms = Quantities.getQuantity(maxRecommendedWeightPerContainerValueInKilograms, Units.KILOGRAM)
+    Quantity<Mass> maxRecommendedWeightPerContainerKg = Quantities.getQuantity(maxRecommendedWeightPerContainerValueKg, Units.KILOGRAM)
 
     MathContext anotherMathContext = new MathContext(7, RoundingMode.UP)
     BigDecimal containerTeuCount = (containerCount * containerType.dimensionType.teu).round(anotherMathContext).setScale(2, RoundingMode.UP)
@@ -135,8 +141,8 @@ class Commodity implements PostMapConstructorCheckable {
     Commodity commodity = new Commodity(
         containerType: containerType,
         commodityInfo: commodityInfo,
-        maxAllowedWeightPerContainer: maxAllowedWeightPerContainerInKilograms,
-        maxRecommendedWeightPerContainer: maxRecommendedWeightPerContainerInKilograms,
+        maxAllowedWeightPerContainer: maxAllowedWeightPerContainerKg,
+        maxRecommendedWeightPerContainer: maxRecommendedWeightPerContainerKg,
         containerCount: containerCount,
         containerTeuCount: containerTeuCount
     )
@@ -176,6 +182,6 @@ class Commodity implements PostMapConstructorCheckable {
     MathContext mathContext = new MathContext(7, RoundingMode.UP)
     requireTrue(containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))
 
-    requireTrue((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= (commodityInfo.totalWeight.value.toBigDecimal()))
+    requireTrue((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= (commodityInfo.weight.value.toBigDecimal()))
   }
 }

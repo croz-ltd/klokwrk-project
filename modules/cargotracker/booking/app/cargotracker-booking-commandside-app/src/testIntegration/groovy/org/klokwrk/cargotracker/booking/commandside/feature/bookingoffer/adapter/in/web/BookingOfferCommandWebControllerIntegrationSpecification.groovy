@@ -19,6 +19,7 @@ package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.adapte
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
+import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
@@ -41,6 +42,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
+@SuppressWarnings("CodeNarc.AbcMetric")
 @SpringBootTest(properties = ['axon.axonserver.servers = ${axonServerFirstInstanceUrl}'])
 @ActiveProfiles("testIntegration")
 class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
@@ -56,7 +58,6 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mockMvc ?= webAppContextSetup(webApplicationContext).build()
   }
 
-  @SuppressWarnings("CodeNarc.AbcMetric")
   void "should work for correct request - [acceptLanguage: #acceptLanguageParam]"() {
     given:
     Instant currentTime = Instant.now()
@@ -76,7 +77,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             ],
             commodityInfo: [
                 commodityType: "dry",
-                totalWeightInKilograms: 1000
+                weightKg: 1000
             ],
             containerDimensionType: "DIMENSION_ISO_22"
         ]
@@ -181,7 +182,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
               containerType: "TYPE_ISO_22G1",
               commodityInfo: [
                   commodityType: "DRY",
-                  totalWeight: [
+                  weight: [
                       value: 1000,
                       unit: [
                           name: "Kilogram",
@@ -225,7 +226,188 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     "en"                | "en"
   }
 
-  @SuppressWarnings("CodeNarc.AbcMetric")
+  void "should work for correct request with requested storage temperature - [acceptLanguage: #acceptLanguageParam]"() {
+    given:
+    Instant currentTime = Instant.now()
+    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
+    Instant departureLatestTime = currentTime + Duration.ofHours(2)
+    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
+
+    String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
+    String webRequestBody = objectMapper.writeValueAsString(
+        [
+            userIdentifier: "standard-customer@cargotracker.com",
+            bookingOfferIdentifier: myBookingOfferIdentifier,
+            routeSpecification: [
+                originLocation: "NLRTM", destinationLocation: "HRRJK",
+                departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
+                arrivalLatestTime: arrivalLatestTime
+            ],
+            commodityInfo: [
+                commodityType: "${ commodityTypeParam.name().toLowerCase() }",
+                weightKg: 1000,
+                "requestedStorageTemperatureDegC": requestedStorageTemperatureDegCParam
+            ],
+            containerDimensionType: "DIMENSION_ISO_22"
+        ]
+    )
+
+    when:
+    MvcResult mvcResult = mockMvc.perform(
+        post("/booking-offer/create-booking-offer")
+            .content(webRequestBody)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
+    ).andReturn()
+
+    Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
+
+    then:
+    mvcResult.response.status == HttpStatus.OK.value()
+
+    verifyAll(responseContentMap.metaData.general as Map) {
+      size() == 3
+      locale == localeStringParam
+      severity == Severity.INFO.name().toLowerCase()
+      timestamp
+    }
+
+    verifyAll(responseContentMap.metaData.http as Map) {
+      size() == 2
+      message == HttpStatus.OK.reasonPhrase
+      status == HttpStatus.OK.value().toString()
+    }
+
+    verifyAll(responseContentMap.payload as Map) {
+      size() == 4
+      customer
+      bookingOfferId.identifier == myBookingOfferIdentifier
+      routeSpecification
+      bookingOfferCommodities
+    }
+
+    verifyAll(responseContentMap.payload.customer as Map) {
+      size() == 2
+      customerId == "26d5f7d8-9ded-4ce3-b320-03a75f674f4e"
+      customerType == "STANDARD"
+    }
+
+    verifyAll(responseContentMap.payload.routeSpecification as Map) {
+      size() == 5
+      originLocation
+      destinationLocation
+      it.departureEarliestTime == InstantUtils.roundUpInstantToTheHour(departureEarliestTime).toString()
+      it.departureLatestTime == InstantUtils.roundUpInstantToTheHour(departureLatestTime).toString()
+      it.arrivalLatestTime == InstantUtils.roundUpInstantToTheHour(arrivalLatestTime).toString()
+    }
+
+    verifyAll(responseContentMap.payload.routeSpecification.originLocation as Map) {
+      size() == 4
+      name == "Rotterdam"
+      countryName == "Netherlands"
+
+      unLoCode
+
+      unLoCode.code
+      unLoCode.code.encoded == "NLRTM"
+
+      unLoCode.function
+      unLoCode.function.encoded == "12345---"
+
+      unLoCode.coordinates
+      unLoCode.coordinates.encoded == "5155N 00430E"
+
+      portCapabilities
+      portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
+    }
+
+    verifyAll(responseContentMap.payload.routeSpecification.destinationLocation as Map) {
+      size() == 4
+      name == "Rijeka"
+      countryName == "Croatia"
+
+      unLoCode
+
+      unLoCode.code
+      unLoCode.code.encoded == "HRRJK"
+
+      unLoCode.coordinates
+      unLoCode.coordinates.encoded == "4520N 01424E"
+
+      unLoCode.function
+      unLoCode.function.encoded == "1234----"
+
+      portCapabilities
+      portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
+    }
+
+    verifyAll(responseContentMap.payload.bookingOfferCommodities as Map) {
+      size() == 3
+
+      commodityTypeToCommodityMap == [
+          ("${ commodityTypeParam.name() }".toString()): [
+              containerType: "TYPE_ISO_22R1_STANDARD_REEFER",
+              commodityInfo: [
+                  commodityType: "${ commodityTypeParam.name() }",
+                  weight: [
+                      value: 1000,
+                      unit: [
+                          name: "Kilogram",
+                          symbol: "kg"
+                      ]
+                  ],
+                  requestedStorageTemperature: [
+                      value: requestedStorageTemperatureDegCParam,
+                      unit: [
+                          name: "Celsius",
+                          symbol: "°C"
+                      ]
+                  ]
+              ],
+              maxAllowedWeightPerContainer: [
+                  value: 20520,
+                  unit: [
+                      name: "Kilogram",
+                      symbol: "kg"
+                  ]
+              ],
+              maxRecommendedWeightPerContainer: [
+                  value: 1000,
+                  unit: [
+                      name: "Kilogram",
+                      symbol: "kg"
+                  ]
+              ],
+              containerCount: 1,
+              containerTeuCount: 1
+          ]
+      ]
+
+      totalCommodityWeight == [
+          value: 1000,
+          unit: [
+              name: "Kilogram",
+              symbol: "kg"
+          ]
+      ]
+
+      totalContainerTeuCount == 1
+    }
+
+    where:
+    acceptLanguageParam | localeStringParam | commodityTypeParam       | requestedStorageTemperatureDegCParam
+    "hr-HR"             | "hr_HR"           | CommodityType.AIR_COOLED | 6
+    "en"                | "en"              | CommodityType.AIR_COOLED | 6
+
+    "hr-HR"             | "hr_HR"           | CommodityType.CHILLED    | 0
+    "en"                | "en"              | CommodityType.CHILLED    | 0
+
+    "hr-HR"             | "hr_HR"           | CommodityType.FROZEN     | -12
+    "en"                | "en"              | CommodityType.FROZEN     | -12
+  }
+
   void "should return expected response when request is not valid - validation failure - [acceptLanguage: #acceptLanguageParam]"() {
     given:
     String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
@@ -234,7 +416,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             userIdentifier: "standard-customer@cargotracker.com",
             bookingOfferIdentifier: bookingOfferIdentifier,
             routeSpecification: [originLocation: null, destinationLocation: null, departureEarliestTime: null, departureLatestTime: null, arrivalLatestTime: null],
-            commodityInfo: [commodityType: "dry", totalWeightInKilograms: 1000],
+            commodityInfo: [commodityType: "dry", weightKg: 1000],
             containerDimensionType: "DIMENSION_ISO_22"
         ]
     )
@@ -315,7 +497,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             ],
             commodityInfo: [
                 commodityType: "dry",
-                totalWeightInKilograms: 1000
+                weightKg: 1000
             ],
             containerDimensionType: "DIMENSION_ISO_22"
         ]
@@ -381,7 +563,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "HRRJK", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [commodityType: "dry", totalWeightInKilograms: 1000],
+            commodityInfo: [commodityType: "dry", weightKg: 1000],
             containerDimensionType: "DIMENSION_ISO_22"
         ]
     )
@@ -446,7 +628,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRZAG", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [commodityType: "dry", totalWeightInKilograms: 1000],
+            commodityInfo: [commodityType: "dry", weightKg: 1000],
             containerDimensionType: "DIMENSION_ISO_22"
         ]
     )
@@ -511,7 +693,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [commodityType: "dry", totalWeightInKilograms: 125_000_000],
+            commodityInfo: [commodityType: "dry", weightKg: 125_000_000],
             containerDimensionType: "dimension_ISO_22"
         ]
     )
@@ -550,6 +732,60 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     "en"                | "en"              | "Cannot accept commodity because it would exceed the maximum allowed count of TEU units (5000 TEU) per a booking offer."
   }
 
+  void "should fail when requested storage temperature is supplied but not supported for commodity type - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
+    given:
+    Instant currentTime = Instant.now()
+    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
+    Instant departureLatestTime = currentTime + Duration.ofHours(2)
+    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
+
+    String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
+    String webRequestBody = objectMapper.writeValueAsString(
+        [
+            userIdentifier: "standard-customer@cargotracker.com",
+            bookingOfferIdentifier: bookingOfferIdentifier,
+            routeSpecification: [
+                originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
+            ],
+            commodityInfo: [commodityType: "$commodityTypeStringParam", weightKg: 1000, requestedStorageTemperatureDegC: requestedStorageTemperatureDegCParam],
+            containerDimensionType: "dimension_ISO_22"
+        ]
+    )
+
+    when:
+    MvcResult mvcResult = mockMvc.perform(
+        post("/booking-offer/create-booking-offer")
+            .content(webRequestBody)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
+    ).andReturn()
+
+    Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
+
+    then:
+    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
+    responseContentMap.payload.size() == 0
+
+    verifyAll(responseContentMap.metaData as Map) {
+      general.severity == Severity.WARNING.name().toLowerCase()
+      general.locale == localeStringParam
+
+      http.message == HttpStatus.BAD_REQUEST.reasonPhrase
+      http.status == HttpStatus.BAD_REQUEST.value().toString()
+
+      violation.code == HttpStatus.BAD_REQUEST.value().toString()
+      violation.message == violationMessageParam
+      violation.type == ViolationType.DOMAIN.name().toLowerCase()
+    }
+
+    where:
+    acceptLanguageParam | localeStringParam | commodityTypeStringParam | requestedStorageTemperatureDegCParam | violationMessageParam
+    "hr-HR"             | "hr_HR"           | "dry"                    | 1                                    | "Zahtijevana temperatura skladištenja nije dozvoljena za DRY tip robe."
+    "en"                | "en"              | "dry"                    | 1                                    | "Requested storage temperature is not supported for DRY commodity type."
+  }
+
   void "should fail when requested storage temperature is out of range - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
     given:
     Instant currentTime = Instant.now()
@@ -565,7 +801,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [commodityType: "$commodityTypeStringParam", totalWeightInKilograms: 1000, requestedStorageTemperatureInCelsius: requestedStorageTemperatureInCelsiusParam],
+            commodityInfo: [commodityType: "$commodityTypeStringParam", weightKg: 1000, requestedStorageTemperatureDegC: requestedStorageTemperatureDegCParam],
             containerDimensionType: "dimension_ISO_22"
         ]
     )
@@ -610,15 +846,15 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     "hr-HR"             | "hr_HR"
     "en"                | "en"
     ___
-    commodityTypeStringParam | requestedStorageTemperatureInCelsiusParam | violationMessageParam
-    "air_cooled"             | 13                                        | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za zrakom hlađenu robu: [2, 12] Celzija."
-    "air_cooled"             | 1                                         | "Requested storage temperature is not in supported range for air cooled commodities: [2, 12] Celsius."
+    commodityTypeStringParam | requestedStorageTemperatureDegCParam | violationMessageParam
+    "air_cooled"             | 13                                   | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za zrakom hlađenu robu: [2, 12] Celzija."
+    "air_cooled"             | 1                                    | "Requested storage temperature is not in supported range for air cooled commodities: [2, 12] Celsius."
 
-    "chilled"                | 7                                         | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za rashlađenu robu: [-2, 6] Celzija."
-    "chilled"                | -3                                        | "Requested storage temperature is not in supported range for chilled commodities: [-2, 6] Celsius."
+    "chilled"                | 7                                    | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za rashlađenu robu: [-2, 6] Celzija."
+    "chilled"                | -3                                   | "Requested storage temperature is not in supported range for chilled commodities: [-2, 6] Celsius."
 
-    "frozen"                 | -7                                        | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za smrznutu robu: [-20, -8] Celzija."
-    "frozen"                 | -21                                       | "Requested storage temperature is not in supported range for frozen commodities: [-20, -8] Celsius."
+    "frozen"                 | -7                                   | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za smrznutu robu: [-20, -8] Celzija."
+    "frozen"                 | -21                                  | "Requested storage temperature is not in supported range for frozen commodities: [-20, -8] Celsius."
     //@formatter:on
   }
 
