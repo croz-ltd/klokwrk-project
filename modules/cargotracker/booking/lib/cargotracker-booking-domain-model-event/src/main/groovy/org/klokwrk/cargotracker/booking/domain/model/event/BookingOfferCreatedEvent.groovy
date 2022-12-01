@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.domain.model.event
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
 import org.klokwrk.cargotracker.lib.domain.model.event.BaseEvent
@@ -30,9 +30,9 @@ class BookingOfferCreatedEvent implements BaseEvent {
   String bookingOfferId
   CustomerEventData customer
 
-  Collection<CommodityEventData> commodities
-  String commodityTotalWeight
-  BigDecimal commodityTotalContainerTeuCount
+  Collection<CargoEventData> cargos
+  String totalCommodityWeight
+  BigDecimal totalContainerTeuCount
 
   RouteSpecificationEventData routeSpecification
 

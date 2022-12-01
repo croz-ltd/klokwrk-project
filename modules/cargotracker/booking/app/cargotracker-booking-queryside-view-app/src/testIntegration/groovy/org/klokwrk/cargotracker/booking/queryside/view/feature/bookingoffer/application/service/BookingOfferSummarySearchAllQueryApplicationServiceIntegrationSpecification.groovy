@@ -100,8 +100,8 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       customerType == CustomerType.STANDARD
       originLocationName == "Hamburg"
       destinationLocationName == "Rotterdam"
-      commodityTotalWeight == "45000 kg"
-      commodityTotalContainerTeuCount == 3.00G
+      totalCommodityWeight == "45000 kg"
+      totalContainerTeuCount == 3.00G
       lastEventSequenceNumber == 0
     }
   }
@@ -136,8 +136,8 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       customerType == CustomerType.STANDARD
       originLocationName == "Hamburg"
       destinationLocationName == "Rotterdam"
-      commodityTotalWeight == "45000 kg"
-      commodityTotalContainerTeuCount == 3.00G
+      totalCommodityWeight == "45000 kg"
+      totalContainerTeuCount == 3.00G
       lastEventSequenceNumber == 0
     }
   }
@@ -149,8 +149,8 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
             userIdentifier: "standard-customer@cargotracker.com",
             customerTypeSearchList: [CustomerType.STANDARD, CustomerType.GOLD],
             originLocationName: "Rijeka",
-            commodityTotalWeightKgFromIncluding: 5_000,
-            commodityTotalWeightKgToIncluding: 50_000
+            totalCommodityWeightKgFromIncluding: 5_000,
+            totalCommodityWeightKgToIncluding: 50_000
         ),
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
     )
@@ -174,8 +174,8 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       customerType == CustomerType.STANDARD
       originLocationName == "Rijeka"
       destinationLocationName == "Los Angeles"
-      commodityTotalWeight == "15000 kg"
-      commodityTotalContainerTeuCount == 1.00G
+      totalCommodityWeight == "15000 kg"
+      totalContainerTeuCount == 1.00G
       lastEventSequenceNumber == 0
     }
   }
@@ -210,8 +210,8 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       customerType == CustomerType.STANDARD
       originLocationName == "Rijeka"
       destinationLocationName == "New York"
-      commodityTotalWeight == "30000 kg"
-      commodityTotalContainerTeuCount == 2.00G
+      totalCommodityWeight == "30000 kg"
+      totalContainerTeuCount == 2.00G
       lastEventSequenceNumber == 0
     }
   }

@@ -116,7 +116,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
       customer
       bookingOfferId.identifier == myBookingOfferIdentifier
       routeSpecification
-      bookingOfferCommodities
+      bookingOfferCargos
     }
 
     verifyAll(responseContentMap.payload.customer as Map) {
@@ -174,10 +174,10 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
       portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
     }
 
-    verifyAll(responseContentMap.payload.bookingOfferCommodities as Map) {
+    verifyAll(responseContentMap.payload.bookingOfferCargos as Map) {
       size() == 3
 
-      commodityTypeToCommodityMap == [
+      commodityTypeToCargoMap == [
           DRY: [
               containerType: "TYPE_ISO_22G1",
               commodityInfo: [
@@ -285,7 +285,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
       customer
       bookingOfferId.identifier == myBookingOfferIdentifier
       routeSpecification
-      bookingOfferCommodities
+      bookingOfferCargos
     }
 
     verifyAll(responseContentMap.payload.customer as Map) {
@@ -343,10 +343,10 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
       portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
     }
 
-    verifyAll(responseContentMap.payload.bookingOfferCommodities as Map) {
+    verifyAll(responseContentMap.payload.bookingOfferCargos as Map) {
       size() == 3
 
-      commodityTypeToCommodityMap == [
+      commodityTypeToCargoMap == [
           ("${ commodityTypeParam.name() }".toString()): [
               containerType: "TYPE_ISO_22R1_STANDARD_REEFER",
               commodityInfo: [
@@ -728,8 +728,8 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
-    "hr-HR"             | "hr_HR"           | "Nije moguće prihvatiti robu jer bi premašili najveći dozvoljeni broj TEU jedinica (5000 TEU) po ponudi za rezervaciju."
-    "en"                | "en"              | "Cannot accept commodity because it would exceed the maximum allowed count of TEU units (5000 TEU) per a booking offer."
+    "hr-HR"             | "hr_HR"           | "Nije moguće prihvatiti teret jer bi premašili najveći dozvoljeni broj TEU jedinica (5000 TEU) po ponudi za rezervaciju."
+    "en"                | "en"              | "Cannot accept cargo because it would exceed the maximum allowed count of TEU units (5000 TEU) per a booking offer."
   }
 
   void "should fail when requested storage temperature is supplied but not supported for commodity type - domain failure - [acceptLanguage: #acceptLanguageParam]"() {

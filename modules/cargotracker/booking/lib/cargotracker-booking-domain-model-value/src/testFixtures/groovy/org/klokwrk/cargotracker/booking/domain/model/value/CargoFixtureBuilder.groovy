@@ -11,50 +11,50 @@ import javax.measure.quantity.Mass
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic
-class CommodityFixtureBuilder {
-  static CommodityFixtureBuilder commodity_dry() {
-    CommodityFixtureBuilder commodityFixtureBuilder = new CommodityFixtureBuilder()
+class CargoFixtureBuilder {
+  static CargoFixtureBuilder cargo_dry() {
+    CargoFixtureBuilder cargoFixtureBuilder = new CargoFixtureBuilder()
         .containerType(ContainerType.TYPE_ISO_22G1)
         .commodityInfo(CommodityInfoFixtureBuilder.dry_default().build())
 
-    return commodityFixtureBuilder
+    return cargoFixtureBuilder
   }
 
-  static CommodityFixtureBuilder commodity_airCooled() {
-    CommodityFixtureBuilder commodityFixtureBuilder = new CommodityFixtureBuilder()
+  static CargoFixtureBuilder cargo_airCooled() {
+    CargoFixtureBuilder cargoFixtureBuilder = new CargoFixtureBuilder()
         .containerType(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER)
         .commodityInfo(CommodityInfoFixtureBuilder.airCooled_default().build())
 
-    return commodityFixtureBuilder
+    return cargoFixtureBuilder
   }
 
-  static CommodityFixtureBuilder commodity_chilled() {
-    CommodityFixtureBuilder commodityFixtureBuilder = new CommodityFixtureBuilder()
+  static CargoFixtureBuilder cargo_chilled() {
+    CargoFixtureBuilder cargoFixtureBuilder = new CargoFixtureBuilder()
         .containerType(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER)
         .commodityInfo(CommodityInfoFixtureBuilder.chilled_default().build())
 
-    return commodityFixtureBuilder
+    return cargoFixtureBuilder
   }
 
-  static CommodityFixtureBuilder commodity_frozen() {
-    CommodityFixtureBuilder commodityFixtureBuilder = new CommodityFixtureBuilder()
+  static CargoFixtureBuilder cargo_frozen() {
+    CargoFixtureBuilder cargoFixtureBuilder = new CargoFixtureBuilder()
         .containerType(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER)
         .commodityInfo(CommodityInfoFixtureBuilder.frozen_default().build())
 
-    return commodityFixtureBuilder
+    return cargoFixtureBuilder
   }
 
   ContainerType containerType
   CommodityInfo commodityInfo
   Integer maxAllowedWeightPerContainerKg
 
-  Commodity build() {
+  Cargo build() {
     Quantity<Mass> maxAllowedWeightPerContainerToUse = null
     if (maxAllowedWeightPerContainerKg != null) {
       maxAllowedWeightPerContainerToUse = Quantities.getQuantity(maxAllowedWeightPerContainerKg, Units.KILOGRAM)
     }
 
-    Commodity commodity = Commodity.make(containerType, commodityInfo, maxAllowedWeightPerContainerToUse)
-    return commodity
+    Cargo cargo = Cargo.make(containerType, commodityInfo, maxAllowedWeightPerContainerToUse)
+    return cargo
   }
 }

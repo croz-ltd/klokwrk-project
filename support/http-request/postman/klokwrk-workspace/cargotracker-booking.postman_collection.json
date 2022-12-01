@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "170f9704-0aec-4de9-8aaf-e52a654aeee1",
+		"_postman_id": "b294d608-7cba-477b-8795-0412a789c393",
 		"name": "cargotracker-booking",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "1601377"
@@ -1291,7 +1291,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationName\": \"Rotterdam\",\n  \"destinationLocationCountryName\": \"The United States\",\n  \"commodityTotalWeightKgFromIncluding\": 50500,\n  \"commodityTotalWeightKgToIncluding\": 60500\n}",
+													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationName\": \"Rotterdam\",\n  \"destinationLocationCountryName\": \"The United States\",\n  \"totalCommodityWeightKgFromIncluding\": 50500,\n  \"totalCommodityWeightKgToIncluding\": 60500\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1354,7 +1354,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"originLocationCountryName\": \"Netherlands\",\n  \"destinationLocationName\": \"New York\",\n  \"commodityTotalContainerTeuCountFromIncluding\": 0.5,\n  \"commodityTotalContainerTeuCountToIncluding\": 4.5,\n  \"lastEventRecordedAtFromIncluding\": \"{{currentHourStart}}\",  \n  \"lastEventRecordedAtToIncluding\": \"{{currentHourEnd}}\",\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}\n",
+													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"originLocationCountryName\": \"Netherlands\",\n  \"destinationLocationName\": \"New York\",\n  \"totalContainerTeuCountFromIncluding\": 0.5,\n  \"totalContainerTeuCountToIncluding\": 4.5,\n  \"lastEventRecordedAtFromIncluding\": \"{{currentHourStart}}\",  \n  \"lastEventRecordedAtToIncluding\": \"{{currentHourEnd}}\",\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1407,7 +1407,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationName\": \"Rotterdam\",\n  \"destinationLocationCountryName\": \"The United States\",\n  \"commodityTotalWeightKgFromIncluding\": 1000,\n  \"commodityTotalWeightKgToIncluding\": 60500,\n  \"commodityTypes\": [\"chilled\", \"frozen\"]\n}",
+													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationName\": \"Rotterdam\",\n  \"destinationLocationCountryName\": \"The United States\",\n  \"totalCommodityWeightKgFromIncluding\": 1000,\n  \"totalCommodityWeightKgToIncluding\": 60500,\n  \"commodityTypes\": [\"chilled\", \"frozen\"]\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1837,7 +1837,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationCountryName\": \"Netherlands\",\n  \"destinationLocationName\": \"New York\",\n  \"commodityTotalContainerTeuCountFromIncluding\": 0.5,\n  \"commodityTotalContainerTeuCountToIncluding\": 4.5,\n  \"lastEventRecordedAtFromIncluding\": \"{{currentHourStart}}\",  \n  \"lastEventRecordedAtToIncluding\": \"{{currentHourEnd}}\",\n  \"commodityTypes\": [\"chilled\", \"dry\"],\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}",
+									"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationCountryName\": \"Netherlands\",\n  \"destinationLocationName\": \"New York\",\n  \"totalContainerTeuCountFromIncluding\": 0.5,\n  \"totalContainerTeuCountToIncluding\": 4.5,\n  \"lastEventRecordedAtFromIncluding\": \"{{currentHourStart}}\",  \n  \"lastEventRecordedAtToIncluding\": \"{{currentHourEnd}}\",\n  \"commodityTypes\": [\"chilled\", \"dry\"],\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"

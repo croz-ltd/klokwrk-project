@@ -30,9 +30,9 @@ import org.axonframework.extensions.tracing.OpenTraceHandlerInterceptor
 import org.axonframework.extensions.tracing.TracingCommandGateway
 import org.axonframework.messaging.MessageHandlerInterceptor
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
-import org.klokwrk.cargotracker.booking.domain.model.service.CommodityCreatorService
+import org.klokwrk.cargotracker.booking.domain.model.service.CargoCreatorService
 import org.klokwrk.cargotracker.booking.domain.model.service.ConstantBasedMaxAllowedTeuCountPolicy
-import org.klokwrk.cargotracker.booking.domain.model.service.DefaultCommodityCreatorService
+import org.klokwrk.cargotracker.booking.domain.model.service.DefaultCargoCreatorService
 import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedWeightPerContainerPolicy
 import org.klokwrk.cargotracker.booking.domain.model.service.PercentBasedMaxAllowedWeightPerContainerPolicy
@@ -95,8 +95,8 @@ class SpringBootConfig {
   }
 
   @Bean
-  CommodityCreatorService commodityCreatorService(MaxAllowedWeightPerContainerPolicy maxAllowedWeightPerContainerPolicy) {
-    return new DefaultCommodityCreatorService(maxAllowedWeightPerContainerPolicy)
+  CargoCreatorService cargoCreatorService(MaxAllowedWeightPerContainerPolicy maxAllowedWeightPerContainerPolicy) {
+    return new DefaultCargoCreatorService(maxAllowedWeightPerContainerPolicy)
   }
 
   @Bean

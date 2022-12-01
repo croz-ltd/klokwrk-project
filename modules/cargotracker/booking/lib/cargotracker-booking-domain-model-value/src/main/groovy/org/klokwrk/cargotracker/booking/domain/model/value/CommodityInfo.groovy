@@ -33,7 +33,7 @@ import java.math.RoundingMode
 import static org.hamcrest.Matchers.notNullValue
 
 /**
- * Encapsulates the base attributes for a {@link Commodity}.
+ * Encapsulates the attributes of a cargo's commodity.
  */
 @KwrkImmutable(knownImmutableClasses = [Quantity])
 @CompileStatic

@@ -28,11 +28,11 @@ import static tech.units.indriya.quantity.Quantities.getQuantity
 import static tech.units.indriya.unit.Units.GRAM
 import static tech.units.indriya.unit.Units.KILOGRAM
 
-class CommoditySpecification extends Specification {
+class CargoSpecification extends Specification {
 
   void "map constructor should work for correct parameters"() {
     when:
-    Commodity commodity = new Commodity(
+    Cargo cargo = new Cargo(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, 2_000),
         maxAllowedWeightPerContainer: getQuantity(2_200, KILOGRAM),
@@ -42,12 +42,12 @@ class CommoditySpecification extends Specification {
     )
 
     then:
-    commodity
+    cargo
   }
 
   void "map constructor should fail for invalid combination of containerType and commodityInfo"() {
     when:
-    new Commodity(
+    new Cargo(
         containerType: TYPE_ISO_22R1_STANDARD_REEFER, // It should be TYPE_ISO_22G1, for example.
         commodityInfo: CommodityInfo.make(DRY, 2_000),
         maxAllowedWeightPerContainer: getQuantity(2_200, KILOGRAM),
@@ -63,7 +63,7 @@ class CommoditySpecification extends Specification {
 
   void "map constructor should fail for invalid combination of containerType and maxAllowedWeightPerContainer"() {
     when:
-    new Commodity(
+    new Cargo(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(30_000, KILOGRAM), // It should be <= containerType.maxCommodityWeight.
@@ -79,7 +79,7 @@ class CommoditySpecification extends Specification {
 
   void "map constructor should fail for invalid combination of commodityInfo and maxRecommendedWeightPerContainer"() {
     when:
-    new Commodity(
+    new Cargo(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
@@ -95,7 +95,7 @@ class CommoditySpecification extends Specification {
 
   void "map constructor should fail for invalid combination of commodityInfo and containerCount"() {
     when:
-    new Commodity(
+    new Cargo(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, 50_000),
         maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
@@ -111,7 +111,7 @@ class CommoditySpecification extends Specification {
 
   void "map constructor should fail for invalid units of maxAllowedWeightPerContainer"() {
     when:
-    new Commodity(
+    new Cargo(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(21_000_000, GRAM),
@@ -127,7 +127,7 @@ class CommoditySpecification extends Specification {
 
   void "map constructor should fail for invalid values of maxAllowedWeightPerContainer"() {
     when:
-    new Commodity(
+    new Cargo(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(21_000.1, KILOGRAM),
@@ -143,7 +143,7 @@ class CommoditySpecification extends Specification {
 
   void "map constructor should fail for invalid units of maxRecommendedWeightPerContainer"() {
     when:
-    new Commodity(
+    new Cargo(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
@@ -159,7 +159,7 @@ class CommoditySpecification extends Specification {
 
   void "map constructor should fail for invalid values of maxRecommendedWeightPerContainer"() {
     when:
-    new Commodity(
+    new Cargo(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
@@ -175,7 +175,7 @@ class CommoditySpecification extends Specification {
 
   void "map constructor should fail for invalid value of containerTeuCount"() {
     when:
-    new Commodity(
+    new Cargo(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
@@ -201,7 +201,7 @@ class CommoditySpecification extends Specification {
 
   void "make() method should work as expected for standard 10ft container"() {
     given:
-    Commodity expectedCommodity = new Commodity(
+    Cargo expectedCargo = new Cargo(
         containerType: TYPE_ISO_12G1,
         commodityInfo: CommodityInfo.make(DRY, commodityWeightInKilogramsParam),
         maxAllowedWeightPerContainer: getQuantity(9_500, KILOGRAM),
@@ -211,10 +211,10 @@ class CommoditySpecification extends Specification {
     )
 
     when:
-    Commodity actualCommodity = Commodity.make(TYPE_ISO_12G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(9_500, KILOGRAM))
+    Cargo actualCargo = Cargo.make(TYPE_ISO_12G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(9_500, KILOGRAM))
 
     then:
-    expectedCommodity == actualCommodity
+    expectedCargo == actualCargo
 
     where:
     commodityWeightInKilogramsParam | maxRecommendedWeightPerContainerParam | containerCountParam | containerTeuCountParam
@@ -226,7 +226,7 @@ class CommoditySpecification extends Specification {
 
   void "make() method should work as expected for standard 20ft container"() {
     given:
-    Commodity expectedCommodity = new Commodity(
+    Cargo expectedCargo = new Cargo(
         containerType: TYPE_ISO_22G1,
         commodityInfo: CommodityInfo.make(DRY, commodityWeightInKilogramsParam),
         maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
@@ -236,10 +236,10 @@ class CommoditySpecification extends Specification {
     )
 
     when:
-    Commodity actualCommodity = Commodity.make(TYPE_ISO_22G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(21_000, KILOGRAM))
+    Cargo actualCargo = Cargo.make(TYPE_ISO_22G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(21_000, KILOGRAM))
 
     then:
-    expectedCommodity == actualCommodity
+    expectedCargo == actualCargo
 
     where:
     commodityWeightInKilogramsParam | maxRecommendedWeightPerContainerParam | containerCountParam | containerTeuCountParam
@@ -251,7 +251,7 @@ class CommoditySpecification extends Specification {
 
   void "make() method should work as expected for standard 40ft container"() {
     given:
-    Commodity expectedCommodity = new Commodity(
+    Cargo expectedCargo = new Cargo(
         containerType: TYPE_ISO_42G1,
         commodityInfo: CommodityInfo.make(DRY, commodityWeightInKilogramsParam),
         maxAllowedWeightPerContainer: getQuantity(26_000, KILOGRAM),
@@ -261,10 +261,10 @@ class CommoditySpecification extends Specification {
     )
 
     when:
-    Commodity actualCommodity = Commodity.make(TYPE_ISO_42G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(26_000, KILOGRAM))
+    Cargo actualCargo = Cargo.make(TYPE_ISO_42G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(26_000, KILOGRAM))
 
     then:
-    expectedCommodity == actualCommodity
+    expectedCargo == actualCargo
 
     where:
     commodityWeightInKilogramsParam | maxRecommendedWeightPerContainerParam | containerCountParam | containerTeuCountParam

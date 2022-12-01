@@ -21,7 +21,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
 import org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter
-import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
+import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
@@ -32,49 +32,49 @@ import javax.measure.quantity.Temperature
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic
-class CommodityEventDataFixtureBuilder {
-  static CommodityEventDataFixtureBuilder commodity_dry() {
-    CommodityEventDataFixtureBuilder commodityEventDataFixtureBuilder = new CommodityEventDataFixtureBuilder()
+class CargoEventDataFixtureBuilder {
+  static CargoEventDataFixtureBuilder cargo_dry() {
+    CargoEventDataFixtureBuilder cargoEventDataFixtureBuilder = new CargoEventDataFixtureBuilder()
         .commodityType(CommodityType.DRY)
         .commodityRequestedStorageTemperature(null)
         .commodityWeight("1000 kg")
         .containerType(ContainerType.TYPE_ISO_22G1)
         .maxAllowedWeightPerContainer(ContainerType.TYPE_ISO_22G1.maxCommodityWeight.value + " kg")
 
-    return commodityEventDataFixtureBuilder
+    return cargoEventDataFixtureBuilder
   }
 
-  static CommodityEventDataFixtureBuilder commodity_airCooled() {
-    CommodityEventDataFixtureBuilder commodityEventDataFixtureBuilder = new CommodityEventDataFixtureBuilder()
+  static CargoEventDataFixtureBuilder cargo_airCooled() {
+    CargoEventDataFixtureBuilder cargoEventDataFixtureBuilder = new CargoEventDataFixtureBuilder()
         .commodityType(CommodityType.AIR_COOLED)
         .commodityRequestedStorageTemperature(QuantityFormatter.instance.format(CommodityType.AIR_COOLED.recommendedStorageTemperature))
         .commodityWeight("1000 kg")
         .containerType(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER)
         .maxAllowedWeightPerContainer(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER.maxCommodityWeight.value + " kg")
 
-    return commodityEventDataFixtureBuilder
+    return cargoEventDataFixtureBuilder
   }
 
-  static CommodityEventDataFixtureBuilder commodity_chilled() {
-    CommodityEventDataFixtureBuilder commodityEventDataFixtureBuilder = new CommodityEventDataFixtureBuilder()
+  static CargoEventDataFixtureBuilder cargo_chilled() {
+    CargoEventDataFixtureBuilder cargoEventDataFixtureBuilder = new CargoEventDataFixtureBuilder()
         .commodityType(CommodityType.CHILLED)
         .commodityRequestedStorageTemperature(QuantityFormatter.instance.format(CommodityType.CHILLED.recommendedStorageTemperature))
         .commodityWeight("1000 kg")
         .containerType(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER)
         .maxAllowedWeightPerContainer(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER.maxCommodityWeight.value + " kg")
 
-    return commodityEventDataFixtureBuilder
+    return cargoEventDataFixtureBuilder
   }
 
-  static CommodityEventDataFixtureBuilder commodity_frozen() {
-    CommodityEventDataFixtureBuilder commodityEventDataFixtureBuilder = new CommodityEventDataFixtureBuilder()
+  static CargoEventDataFixtureBuilder cargo_frozen() {
+    CargoEventDataFixtureBuilder cargoEventDataFixtureBuilder = new CargoEventDataFixtureBuilder()
         .commodityType(CommodityType.FROZEN)
         .commodityRequestedStorageTemperature(QuantityFormatter.instance.format(CommodityType.FROZEN.recommendedStorageTemperature))
         .commodityWeight("1000 kg")
         .containerType(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER)
         .maxAllowedWeightPerContainer(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER.maxCommodityWeight.value + " kg")
 
-    return commodityEventDataFixtureBuilder
+    return cargoEventDataFixtureBuilder
   }
 
   CommodityType commodityType
@@ -83,8 +83,8 @@ class CommodityEventDataFixtureBuilder {
   ContainerType containerType
   String maxAllowedWeightPerContainer
 
-  CommodityEventData build() {
-    CommodityEventData commodityEventData = CommodityEventData.fromCommodity(Commodity.make(
+  CargoEventData build() {
+    CargoEventData cargoEventData = CargoEventData.fromCargo(Cargo.make(
         containerType,
         CommodityInfo.make(
             commodityType,
@@ -94,6 +94,6 @@ class CommodityEventDataFixtureBuilder {
         QuantityFormatter.instance.parse(maxAllowedWeightPerContainer) as Quantity<Mass>
     ))
 
-    return commodityEventData
+    return cargoEventData
   }
 }

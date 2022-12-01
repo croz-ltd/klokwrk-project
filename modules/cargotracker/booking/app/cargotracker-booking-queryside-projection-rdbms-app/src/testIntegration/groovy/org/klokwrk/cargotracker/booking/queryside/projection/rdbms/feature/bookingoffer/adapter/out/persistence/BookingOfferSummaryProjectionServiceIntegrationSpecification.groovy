@@ -101,9 +101,9 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         (departure_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(2)
         (arrival_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(3)
 
-        commodity_total_weight == "1000 kg"
-        commodity_total_weight_kg == 1000
-        commodity_total_container_teu_count == 1.00G
+        total_commodity_weight == "1000 kg"
+        total_commodity_weight_kg == 1000
+        total_container_teu_count == 1.00G
 
         inbound_channel_name == WebMetaDataConstant.WEB_BOOKING_CHANNEL_NAME
         inbound_channel_type == WebMetaDataConstant.WEB_BOOKING_CHANNEL_TYPE
@@ -153,9 +153,9 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         (departure_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(2)
         (arrival_latest_time as Timestamp).toInstant() >= startedAt + Duration.ofHours(3)
 
-        commodity_total_weight == "1000 kg"
-        commodity_total_weight_kg == 1000
-        commodity_total_container_teu_count == 1.00G
+        total_commodity_weight == "1000 kg"
+        total_commodity_weight_kg == 1000
+        total_container_teu_count == 1.00G
 
         inbound_channel_name == CommonConstants.NOT_AVAILABLE
         inbound_channel_type == CommonConstants.NOT_AVAILABLE

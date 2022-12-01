@@ -24,8 +24,8 @@ import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applica
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.RouteSpecificationData
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
-import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferCommodities
-import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
+import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferCargos
+import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
@@ -73,8 +73,8 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
     )
     Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
 
-    BookingOfferCommodities expectedBookingOfferCommodities = new BookingOfferCommodities()
-    expectedBookingOfferCommodities.storeCommodity(Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 1000)))
+    BookingOfferCargos expectedBookingOfferCargos = new BookingOfferCargos()
+    expectedBookingOfferCargos.storeCargo(Cargo.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 1000)))
 
     when:
     OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommandOperationResponse =
@@ -96,10 +96,10 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
         arrivalLatestTime == currentInstantRoundedAndThreeHours
       }
 
-      bookingOfferCommodities.with {
+      bookingOfferCargos.with {
         size() == 3
 
-        commodityTypeToCommodityMap == expectedBookingOfferCommodities.commodityTypeToCommodityMap
+        commodityTypeToCargoMap == expectedBookingOfferCargos.commodityTypeToCargoMap
         totalCommodityWeight == Quantities.getQuantity(1000, Units.KILOGRAM)
         totalContainerTeuCount == 1
       }

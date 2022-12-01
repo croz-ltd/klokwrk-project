@@ -125,10 +125,10 @@ class BookingOfferCommandFactoryService {
             departureEarliestTime: bookingOfferAggregate.routeSpecification.departureEarliestTime, departureLatestTime: bookingOfferAggregate.routeSpecification.departureLatestTime,
             arrivalLatestTime: bookingOfferAggregate.routeSpecification.arrivalLatestTime
         ],
-        bookingOfferCommodities: [
-            commodityTypeToCommodityMap: bookingOfferAggregate.bookingOfferCommodities.commodityTypeToCommodityMap,
-            totalCommodityWeight: bookingOfferAggregate.bookingOfferCommodities.totalCommodityWeight,
-            totalContainerTeuCount: bookingOfferAggregate.bookingOfferCommodities.totalContainerTeuCount
+        bookingOfferCargos: [
+            commodityTypeToCargoMap: bookingOfferAggregate.bookingOfferCargos.commodityTypeToCargoMap,
+            totalCommodityWeight: bookingOfferAggregate.bookingOfferCargos.totalCommodityWeight,
+            totalContainerTeuCount: bookingOfferAggregate.bookingOfferCargos.totalContainerTeuCount
         ]
     )
 

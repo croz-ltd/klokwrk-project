@@ -116,8 +116,8 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
       customerType == CustomerType.STANDARD
       originLocationName == "Rijeka"
       destinationLocationName == "Rotterdam"
-      commodityTotalWeight == "1000 kg"
-      commodityTotalContainerTeuCount == 1.00G
+      totalCommodityWeight == "1000 kg"
+      totalContainerTeuCount == 1.00G
       lastEventSequenceNumber == 0
     }
   }

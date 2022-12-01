@@ -32,17 +32,15 @@ import java.math.RoundingMode
 import static org.hamcrest.Matchers.notNullValue
 
 /**
- * Encapsulates all attributes for a commodity, including the assigned container type.
+ * Models a containerized cargo consisting of related commodity and container attributes, together with cargo attributes derived from contained commodity and container characteristics.
  * <p/>
- * All attributes can be calculated from {@link ContainerDimensionType} and {@link CommodityInfo}, as demonstrated in {@code BookingOfferAggregate}.
- * <p/>
- * Attributes of {@code Quantity<Mass>} type must have {@code Units.KILOGRAM} unit and a whole number value.
+ * Majority of cargo attributes are calculated from {@link ContainerDimensionType} and {@link CommodityInfo}, as demonstrated in {@code BookingOfferAggregate}.
  */
 @KwrkImmutable(knownImmutableClasses = [Quantity])
 @CompileStatic
-class Commodity implements PostMapConstructorCheckable {
+class Cargo implements PostMapConstructorCheckable {
   /**
-   * ContainerType associated with this Commodity.
+   * Container type associated with this cargo.
    * <p/>
    * Must not be {@code null}.<br/>
    * Must be {@code containerType.featuresType == commodityInfo.commodityType.containerFeaturesType}.<br/>
@@ -50,7 +48,7 @@ class Commodity implements PostMapConstructorCheckable {
   ContainerType containerType
 
   /**
-   * Base attributes of this commodity.
+   * Commodity attributes of this cargo's commodity.
    * <p/>
    * Must not be {@code null}.<br/>
    * Must be {@code containerType.featuresType == commodityInfo.commodityType.containerFeaturesType}.<br/>
@@ -58,24 +56,23 @@ class Commodity implements PostMapConstructorCheckable {
   CommodityInfo commodityInfo
 
   /**
-   * The maximally allowed weight per container for this commodity (usually dictated by some policy).
+   * The maximally allowed commodity weight per container for this cargo (usually dictated by some policy).
    * <p/>
-   * Note that this weight is always lesser than or equal to the maximally allowed weight of corresponding {@code containerType}. It can be lesser if some policy dictates that we should not reach
-   * the absolute maximum of the {@code containerType}.
+   * Note that this weight is always lesser than or equal to the maximally allowed commodity weight of corresponding {@code containerType}. It can be lesser if some policy dictates that we should not
+   * reach the absolute maximum of the commodity weight for particular {@code containerType}.
    * <p/>
    * Must not be {@code null}.<br/>
    * Must be greater than or equal to one kilogram.<br/>
    * Must be less than or equal to {@code containerType.maxCommodityWeight}.<br/>
    * Must be greater than or equal to {@code maxRecommendedWeightPerContainer}.<br/>
-   * Must have a kilogram units and a whole number value.<br/>
+   * Must have a kilogram units with a whole number value.<br/>
    */
   Quantity<Mass> maxAllowedWeightPerContainer
 
   /**
-   * The maximum recommended weight per container.
+   * Derived property representing the maximum recommended commodity weight per container.
    * <p/>
-   * This value is calculated when we spread the total weight of a commodity across all containers. In other words, this value is the rounded up quotient of commodity total weight and the number of
-   * containers.
+   * This value is calculated when we spread the weight of a commodity across all containers. In other words, this value is the rounded up quotient of commodity weight and the number of containers.
    * <p/>
    * Must not be {@code null}.<br/>
    * Must be greater than or equal to one kilogram.<br/>
@@ -86,11 +83,11 @@ class Commodity implements PostMapConstructorCheckable {
   Quantity<Mass> maxRecommendedWeightPerContainer
 
   /**
-   * The number of containers required to carry the total weight of a commodity.
+   * Derived property representing the number of containers required to carry the weight of a related commodity.
    * <p/>
    * During calculation, maxAllowedWeightPerContainer is taken into account.
    * <p/>
-   * Note that in shipping containerCount is just informal information. On the other side, TEU count is much more valuable as it is used for determining container size.
+   * Note that, in shipping, containerCount is just informal information. On the other side, TEU count is much more valuable as standard measurement for container quantity.
    * <p/>
    * Must not be {@code null}.<br/>
    * Must be greater than or equal to {@code 1}.<br/>
@@ -98,7 +95,7 @@ class Commodity implements PostMapConstructorCheckable {
   Integer containerCount
 
   /**
-   * The number of containers expressed as Twenty-foot Equivalent Units (TEU).
+   * Derived property representing the number of containers expressed as Twenty-foot Equivalent Units (TEU).
    * <p/>
    * Must not be {@code null}.<br/>
    * Must have a {@code scale} between 0 and 2 inclusive.<br/>
@@ -107,15 +104,15 @@ class Commodity implements PostMapConstructorCheckable {
   BigDecimal containerTeuCount
 
   /**
-   * Creates {@code Commodity} instance based on required properties and calculates derived properties.
+   * Creates a {@code Cargo} instance based on required properties and calculates derived properties.
    * <p/>
    * It is recommended to always use this factory method instead of map constructor because map constructor requires that all derived values are correctly precalculated.
    * <p/>
    * When {@code maxAllowedWeightPerContainer} parameter is null, {@code maxAllowedWeightPerContainer} is equal to the {@code containerType.maxCommodityWeight}.
    */
   @SuppressWarnings("CodeNarc.DuplicateNumberLiteral")
-  static Commodity make(ContainerType containerType, CommodityInfo commodityInfo, Quantity<Mass> maxAllowedWeightPerContainer = null) {
-    BigDecimal weightValueKg = commodityInfo.weight.value
+  static Cargo make(ContainerType containerType, CommodityInfo commodityInfo, Quantity<Mass> maxAllowedWeightPerContainer = null) {
+    BigDecimal weightValueKg = commodityInfo.weight.to(Units.KILOGRAM).value
     Quantity<Mass> maxAllowedWeightPerContainerKg = maxAllowedWeightPerContainer?.to(Units.KILOGRAM)
     if (maxAllowedWeightPerContainerKg == null) {
       maxAllowedWeightPerContainerKg = containerType.maxCommodityWeight.to(Units.KILOGRAM)
@@ -138,7 +135,7 @@ class Commodity implements PostMapConstructorCheckable {
     MathContext anotherMathContext = new MathContext(7, RoundingMode.UP)
     BigDecimal containerTeuCount = (containerCount * containerType.dimensionType.teu).round(anotherMathContext).setScale(2, RoundingMode.UP)
 
-    Commodity commodity = new Commodity(
+    Cargo cargo = new Cargo(
         containerType: containerType,
         commodityInfo: commodityInfo,
         maxAllowedWeightPerContainer: maxAllowedWeightPerContainerKg,
@@ -147,7 +144,7 @@ class Commodity implements PostMapConstructorCheckable {
         containerTeuCount: containerTeuCount
     )
 
-    return commodity
+    return cargo
   }
 
   @SuppressWarnings(["CodeNarc.AbcMetric", "CodeNarc.DuplicateNumberLiteral"])

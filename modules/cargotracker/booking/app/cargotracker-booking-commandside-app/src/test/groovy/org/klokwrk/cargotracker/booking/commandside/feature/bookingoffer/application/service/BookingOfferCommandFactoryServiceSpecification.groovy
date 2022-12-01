@@ -24,10 +24,10 @@ import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applica
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.RouteSpecificationData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.out.LocationByUnLoCodeQueryPortOut
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
-import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferCommodities
+import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferCargos
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
-import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
+import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
@@ -261,8 +261,8 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
     Location myOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRRJK")
     Location myDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("NLRTM")
 
-    BookingOfferCommodities expectedBookingOfferCommodities = new BookingOfferCommodities()
-    expectedBookingOfferCommodities.storeCommodity(Commodity.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 1000)))
+    BookingOfferCargos expectedBookingOfferCargos = new BookingOfferCargos()
+    expectedBookingOfferCargos.storeCargo(Cargo.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 1000)))
 
     BookingOfferAggregate bookingOfferAggregate = new BookingOfferAggregate(
         customer: Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),
@@ -273,7 +273,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
             arrivalLatestTime: currentInstantRoundedAndThreeHours
         ),
-        bookingOfferCommodities: expectedBookingOfferCommodities
+        bookingOfferCargos: expectedBookingOfferCargos
     )
 
     when:
@@ -350,8 +350,8 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
           arrivalLatestTime: currentInstantRoundedAndThreeHours
       ]
 
-      it.bookingOfferCommodities == [
-          commodityTypeToCommodityMap: expectedBookingOfferCommodities.commodityTypeToCommodityMap,
+      it.bookingOfferCargos == [
+          commodityTypeToCargoMap: expectedBookingOfferCargos.commodityTypeToCargoMap,
           totalCommodityWeight: Quantities.getQuantity(1000, Units.KILOGRAM),
           totalContainerTeuCount: 1.00G
       ]

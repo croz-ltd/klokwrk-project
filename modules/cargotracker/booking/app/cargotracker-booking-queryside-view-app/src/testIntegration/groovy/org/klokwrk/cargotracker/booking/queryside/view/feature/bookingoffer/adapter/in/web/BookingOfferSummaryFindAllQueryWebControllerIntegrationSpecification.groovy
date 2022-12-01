@@ -156,7 +156,7 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
             size() == 17
             bookingOfferIdentifier
             customerType == "STANDARD"
-            commodityTotalWeight
+            totalCommodityWeight
           }
         }
       }

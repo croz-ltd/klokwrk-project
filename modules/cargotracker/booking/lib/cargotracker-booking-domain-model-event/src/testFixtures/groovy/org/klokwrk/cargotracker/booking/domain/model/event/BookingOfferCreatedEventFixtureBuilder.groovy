@@ -20,8 +20,8 @@ package org.klokwrk.cargotracker.booking.domain.model.event
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
-import org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventData
-import org.klokwrk.cargotracker.booking.domain.model.event.data.CommodityEventDataFixtureBuilder
+import org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventData
+import org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventDataFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventDataFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
@@ -43,13 +43,13 @@ class BookingOfferCreatedEventFixtureBuilder {
    * {@code CreateBookingOfferCommandFixtureBuilder.createBookingOfferCommand_default()}.
    */
   static BookingOfferCreatedEventFixtureBuilder bookingOfferCreatedEvent_default(Clock currentTimeClock = Clock.systemUTC()) {
-    CommodityEventData commodity = CommodityEventDataFixtureBuilder.commodity_dry().build()
+    CargoEventData cargo = CargoEventDataFixtureBuilder.cargo_dry().build()
 
     BookingOfferCreatedEventFixtureBuilder builder = new BookingOfferCreatedEventFixtureBuilder()
         .customer(CustomerEventDataFixtureBuilder.customer_standard().build())
         .bookingOfferId(CombUuidShortPrefixUtils.makeCombShortPrefix(currentTimeClock).toString())
         .routeSpecification(RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToRotterdam(currentTimeClock).build())
-        .commodities([commodity])
+        .cargos([cargo])
 
     return builder
   }
@@ -57,29 +57,29 @@ class BookingOfferCreatedEventFixtureBuilder {
   CustomerEventData customer
   String bookingOfferId
   RouteSpecificationEventData routeSpecification
-  Collection<CommodityEventData> commodities = []
+  Collection<CargoEventData> cargos = []
 
   BookingOfferCreatedEvent build() {
-    String commodityTotalWeight
-    Quantity<Mass> commodityTotalWeightQuantity = Quantities.getQuantity(0, Units.KILOGRAM)
-    commodities.each({ CommodityEventData commodityEventData ->
-      Quantity<Mass> commodityWeightQuantity = QuantityFormatter.instance.parse(commodityEventData.commodityWeight) as Quantity<Mass>
-      commodityTotalWeightQuantity = commodityTotalWeightQuantity.add(commodityWeightQuantity)
+    String totalCommodityWeight
+    Quantity<Mass> totalCommodityWeightQuantity = Quantities.getQuantity(0, Units.KILOGRAM)
+    cargos.each({ CargoEventData cargoEventData ->
+      Quantity<Mass> commodityWeightQuantity = QuantityFormatter.instance.parse(cargoEventData.commodityWeight) as Quantity<Mass>
+      totalCommodityWeightQuantity = totalCommodityWeightQuantity.add(commodityWeightQuantity)
     })
-    commodityTotalWeight = QuantityFormatter.instance.format(commodityTotalWeightQuantity.to(Units.KILOGRAM))
+    totalCommodityWeight = QuantityFormatter.instance.format(totalCommodityWeightQuantity.to(Units.KILOGRAM))
 
-    BigDecimal commodityTotalContainerTeuCount = 0
-    commodities.each({ CommodityEventData commodityEventData ->
-      commodityTotalContainerTeuCount += commodityEventData.containerTeuCount
+    BigDecimal totalContainerTeuCount = 0
+    cargos.each({ CargoEventData cargoEventData ->
+      totalContainerTeuCount += cargoEventData.containerTeuCount
     })
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
         customer: customer,
         bookingOfferId: bookingOfferId,
         routeSpecification: routeSpecification,
-        commodities: commodities,
-        commodityTotalWeight: commodityTotalWeight,
-        commodityTotalContainerTeuCount: commodityTotalContainerTeuCount
+        cargos: cargos,
+        totalCommodityWeight: totalCommodityWeight,
+        totalContainerTeuCount: totalContainerTeuCount
     )
 
     return bookingOfferCreatedEvent
