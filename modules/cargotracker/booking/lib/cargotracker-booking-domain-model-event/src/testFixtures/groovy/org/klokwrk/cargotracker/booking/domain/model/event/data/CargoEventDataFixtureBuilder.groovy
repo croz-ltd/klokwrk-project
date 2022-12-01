@@ -22,7 +22,7 @@ import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
 import org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter
 import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 
@@ -86,7 +86,7 @@ class CargoEventDataFixtureBuilder {
   CargoEventData build() {
     CargoEventData cargoEventData = CargoEventData.fromCargo(Cargo.make(
         containerType,
-        CommodityInfo.make(
+        Commodity.make(
             commodityType,
             QuantityFormatter.instance.parse(commodityWeight) as Quantity<Mass>,
             commodityRequestedStorageTemperature == null ? null : QuantityFormatter.instance.parse(commodityRequestedStorageTemperature) as Quantity<Temperature>

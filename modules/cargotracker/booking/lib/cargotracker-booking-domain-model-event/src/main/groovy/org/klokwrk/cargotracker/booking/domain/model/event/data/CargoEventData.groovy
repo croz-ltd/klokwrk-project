@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.domain.model.event.data
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
@@ -50,9 +50,9 @@ class CargoEventData {
 
   static CargoEventData fromCargo(Cargo cargo) {
     return new CargoEventData(
-        commodityType: cargo.commodityInfo.commodityType,
-        commodityRequestedStorageTemperature: cargo.commodityInfo.requestedStorageTemperature == null ? null : quantityFormatter.format(cargo.commodityInfo.requestedStorageTemperature),
-        commodityWeight: quantityFormatter.format(cargo.commodityInfo.weight),
+        commodityType: cargo.commodity.commodityType,
+        commodityRequestedStorageTemperature: cargo.commodity.requestedStorageTemperature == null ? null : quantityFormatter.format(cargo.commodity.requestedStorageTemperature),
+        commodityWeight: quantityFormatter.format(cargo.commodity.weight),
         containerCount: cargo.containerCount,
         containerTeuCount: cargo.containerTeuCount,
         containerType: cargo.containerType,
@@ -68,7 +68,7 @@ class CargoEventData {
   Cargo toCargo() {
     Cargo cargo = Cargo.make(
         containerType,
-        CommodityInfo.make(
+        Commodity.make(
             commodityType,
             quantityParser.parse(commodityWeight) as Quantity<Mass>,
             commodityRequestedStorageTemperature == null ? null : quantityParser.parse(commodityRequestedStorageTemperature) as Quantity<Temperature>

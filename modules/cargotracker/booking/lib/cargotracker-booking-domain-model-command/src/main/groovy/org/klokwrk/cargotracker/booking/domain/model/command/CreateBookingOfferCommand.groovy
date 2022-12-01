@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.domain.model.command
 import groovy.transform.CompileStatic
 import groovy.transform.Generated
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 import org.klokwrk.cargotracker.booking.domain.model.value.Customer
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
@@ -39,7 +39,7 @@ class CreateBookingOfferCommand implements BaseCreateCommand, PostMapConstructor
   Customer customer
   BookingOfferId bookingOfferId
   RouteSpecification routeSpecification
-  CommodityInfo commodityInfo
+  Commodity commodity
   ContainerDimensionType containerDimensionType
 
   @Override
@@ -48,7 +48,7 @@ class CreateBookingOfferCommand implements BaseCreateCommand, PostMapConstructor
     requireMatch(customer, notNullValue())
     requireMatch(bookingOfferId, notNullValue())
     requireMatch(routeSpecification, notNullValue())
-    requireMatch(commodityInfo, notNullValue())
+    requireMatch(commodity, notNullValue())
     requireMatch(containerDimensionType, notNullValue())
 
     // Since they are pretty closely related to particular use-cases, commands can check for use-case-specific constraints (in contrast with, for example, value objects that are not

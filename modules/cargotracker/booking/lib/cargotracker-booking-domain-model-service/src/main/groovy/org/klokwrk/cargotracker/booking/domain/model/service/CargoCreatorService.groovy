@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.domain.model.service
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 
 /**
@@ -28,7 +28,7 @@ import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionTyp
 @CompileStatic
 interface CargoCreatorService {
   /**
-   * Creates {@link Cargo} instance from provided {@link ContainerDimensionType} and {@link CommodityInfo}.
+   * Creates {@link Cargo} instance from provided {@link ContainerDimensionType} and {@link Commodity}.
    */
-  Cargo from(ContainerDimensionType containerDimensionType, CommodityInfo commodityInfo)
+  Cargo from(ContainerDimensionType containerDimensionType, Commodity commodity)
 }

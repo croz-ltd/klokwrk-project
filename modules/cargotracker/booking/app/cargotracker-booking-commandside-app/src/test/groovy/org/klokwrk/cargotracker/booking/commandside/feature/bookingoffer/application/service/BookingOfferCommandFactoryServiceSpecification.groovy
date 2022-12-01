@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.service
 
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.adapter.out.remoting.InMemoryLocationRegistryService
-import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CommodityInfoData
+import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CommodityData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.RouteSpecificationData
@@ -28,7 +28,7 @@ import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferCargo
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 import org.klokwrk.cargotracker.booking.domain.model.value.Customer
@@ -61,7 +61,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
       departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
       arrivalLatestTime: currentInstantRoundedAndThreeHours
   )
-  static CommodityInfoData validCommodityInfoData = new CommodityInfoData(commodityType: CommodityType.DRY.name(), weightKg: 1000, requestedStorageTemperatureDegC: null)
+  static CommodityData validCommodityData = new CommodityData(commodityType: CommodityType.DRY.name(), weightKg: 1000, requestedStorageTemperatureDegC: null)
   static String validContainerDimensionData = "DIMENSION_ISO_22"
 
   BookingOfferCommandFactoryService bookingOfferCommandFactoryService
@@ -106,7 +106,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
             arrivalLatestTime: currentInstantRoundedAndThreeHours
         ),
-        commodityInfo: validCommodityInfoData
+        commodity: validCommodityData
     )
 
     when:
@@ -136,7 +136,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
             departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam,
             arrivalLatestTime: currentInstantRoundedAndThreeHours
         ),
-        commodityInfo: validCommodityInfoData
+        commodity: validCommodityData
     )
 
     when:
@@ -167,7 +167,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
             arrivalLatestTime: arrivalLatestTimeParam
         ),
-        commodityInfo: validCommodityInfoData
+        commodity: validCommodityData
     )
 
     when:
@@ -193,7 +193,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "standard-customer@cargotracker.com",
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: validCommodityInfoData,
+        commodity: validCommodityData,
         containerDimensionType: validContainerDimensionData
     )
 
@@ -220,7 +220,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
         userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: bookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: validCommodityInfoData,
+        commodity: validCommodityData,
         containerDimensionType: validContainerDimensionData
     )
 
@@ -245,7 +245,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
         userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: "invalid",
         routeSpecification: validRouteSpecificationData,
-        commodityInfo: validCommodityInfoData
+        commodity: validCommodityData
     )
 
     when:
@@ -262,7 +262,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
     Location myDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("NLRTM")
 
     BookingOfferCargos expectedBookingOfferCargos = new BookingOfferCargos()
-    expectedBookingOfferCargos.storeCargo(Cargo.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 1000)))
+    expectedBookingOfferCargos.storeCargo(Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 1000)))
 
     BookingOfferAggregate bookingOfferAggregate = new BookingOfferAggregate(
         customer: Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),

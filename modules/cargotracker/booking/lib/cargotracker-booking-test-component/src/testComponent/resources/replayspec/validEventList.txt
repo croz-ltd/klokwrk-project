@@ -17,8 +17,8 @@
 ====
 
 ====
-At the moment, this is only a sample of events of the same type with slightly varying data (in commodityInfo). In more realistic test, here we will have all relevant events produced during typical
-usages of the app. Ideally, typical data variations should be included for each event type.
+At the moment, this is only a sample of events of the same type with slightly varying data. In more realistic test, here we will have all relevant events produced during typical usages of the app.
+Ideally, typical data variations should be included for each event type.
 ====
 
 id:1

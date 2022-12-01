@@ -33,11 +33,11 @@ import java.math.RoundingMode
 import static org.hamcrest.Matchers.notNullValue
 
 /**
- * Encapsulates the attributes of a cargo's commodity.
+ * The commodity of a cargo.
  */
 @KwrkImmutable(knownImmutableClasses = [Quantity])
 @CompileStatic
-class CommodityInfo implements PostMapConstructorCheckable {
+class Commodity implements PostMapConstructorCheckable {
   /**
    * Type of commodity.
    * <p/>
@@ -48,7 +48,7 @@ class CommodityInfo implements PostMapConstructorCheckable {
   /**
    * The weight of commodity.
    * <p/>
-   * This weight might exceed what a single container can carry (in that case, multiple containers will be allocated based on this commodity info).
+   * This weight might exceed what a single container can carry (in that case, multiple containers will be allocated based on this commodity).
    * <p/>
    * Must not be {@code null}, and must be at least 1 kg or greater. It must be specified in kilogram units and a value must be the whole number.
    * For conversion from other {@code Mass} units, and for a conversion of decimal numbers, use {@code make()} factory methods.
@@ -69,18 +69,18 @@ class CommodityInfo implements PostMapConstructorCheckable {
    */
   Quantity<Temperature> requestedStorageTemperature
 
-  static CommodityInfo make(CommodityType commodityType, Quantity<Mass> weight) {
-    CommodityInfo commodityInfo = make(commodityType, weight, null)
-    return commodityInfo
+  static Commodity make(CommodityType commodityType, Quantity<Mass> weight) {
+    Commodity commodity = make(commodityType, weight, null)
+    return commodity
   }
 
   /**
-   * The main factory method for creating {@code CommodityInfo} instance (all other {@code make()} factory methods delegate to this one).
+   * The main factory method for creating {@code Commodity} instance (all other {@code make()} factory methods delegate to this one).
    * <p/>
    * The only optional parameter (can be provided as {@code null}) is {@code requestedStorageTemperature}. When {@code null}, the actual {code requestedStorageTemperature} of the instance is set to
    * the {@code recommendedStorageTemperature} of provided {@code commodityType}. Note that the {@code recommendedStorageTemperature} of {@code commodityType} can be {@code null}.
    */
-  static CommodityInfo make(CommodityType commodityType, Quantity<Mass> weight, Quantity<Temperature> requestedStorageTemperature) {
+  static Commodity make(CommodityType commodityType, Quantity<Mass> weight, Quantity<Temperature> requestedStorageTemperature) {
     Quantity<Temperature> requestedStorageTemperatureToUse = requestedStorageTemperature
     if (commodityType != null && commodityType.isStorageTemperatureLimited() && requestedStorageTemperature == null) {
       requestedStorageTemperatureToUse = commodityType.recommendedStorageTemperature
@@ -89,23 +89,23 @@ class CommodityInfo implements PostMapConstructorCheckable {
     BigDecimal weightValueToUse = weight.to(Units.KILOGRAM).value.toBigDecimal().setScale(0, RoundingMode.UP)
     Quantity<Mass> weightToUse = Quantities.getQuantity(weightValueToUse, Units.KILOGRAM)
 
-    CommodityInfo commodityInfo = new CommodityInfo(commodityType: commodityType, weight: weightToUse, requestedStorageTemperature: requestedStorageTemperatureToUse)
-    return commodityInfo
+    Commodity commodity = new Commodity(commodityType: commodityType, weight: weightToUse, requestedStorageTemperature: requestedStorageTemperatureToUse)
+    return commodity
   }
 
-  static CommodityInfo make(CommodityType commodityType, Integer weightInKilograms) {
-    CommodityInfo commodityInfo = make(commodityType, weightInKilograms, null)
-    return commodityInfo
+  static Commodity make(CommodityType commodityType, Integer weightInKilograms) {
+    Commodity commodity = make(commodityType, weightInKilograms, null)
+    return commodity
   }
 
-  static CommodityInfo make(CommodityType commodityType, Integer weightInKilograms, Integer requestedStorageTemperatureDegC) {
-    CommodityInfo commodityInfo = make(
+  static Commodity make(CommodityType commodityType, Integer weightInKilograms, Integer requestedStorageTemperatureDegC) {
+    Commodity commodity = make(
         commodityType,
         Quantities.getQuantity(weightInKilograms, Units.KILOGRAM),
         requestedStorageTemperatureDegC == null ? null : Quantities.getQuantity(requestedStorageTemperatureDegC, Units.CELSIUS)
     )
 
-    return commodityInfo
+    return commodity
   }
 
   @Override
@@ -125,7 +125,7 @@ class CommodityInfo implements PostMapConstructorCheckable {
 
   private void requireNullRequestedStorageTemperatureWhenNotAllowed(Quantity<Temperature> requestedStorageTemperature, CommodityType commodityType) {
     if (requestedStorageTemperature != null && !commodityType.containerFeaturesType.isContainerTemperatureControlled()) {
-      String messageKey = "commodityInfo.requestedStorageTemperatureNotAllowedForCommodityType"
+      String messageKey = "commodity.requestedStorageTemperatureNotAllowedForCommodityType"
       List<String> messageParams = [commodityType.name()]
       throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey(messageKey, messageParams))
     }
@@ -144,13 +144,13 @@ class CommodityInfo implements PostMapConstructorCheckable {
       String messageKey
       switch (commodityType) {
         case CommodityType.AIR_COOLED:
-          messageKey = "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForAirCooledCommodityType"
+          messageKey = "commodity.requestedStorageTemperatureNotInAllowedRangeForAirCooledCommodityType"
           break
         case CommodityType.CHILLED:
-          messageKey = "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForChilledCommodityType"
+          messageKey = "commodity.requestedStorageTemperatureNotInAllowedRangeForChilledCommodityType"
           break
         case CommodityType.FROZEN:
-          messageKey = "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
+          messageKey = "commodity.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
           break
         default:
           // As we are switching over enum values, just make sure that we are not missing some of them.

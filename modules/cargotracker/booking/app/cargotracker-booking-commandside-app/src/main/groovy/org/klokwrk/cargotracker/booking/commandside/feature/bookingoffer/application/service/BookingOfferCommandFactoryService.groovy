@@ -24,7 +24,7 @@ import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applica
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 import org.klokwrk.cargotracker.booking.domain.model.value.Customer
@@ -78,10 +78,10 @@ class BookingOfferCommandFactoryService {
             createBookingOfferCommandRequest.routeSpecification.departureEarliestTime, createBookingOfferCommandRequest.routeSpecification.departureLatestTime,
             createBookingOfferCommandRequest.routeSpecification.arrivalLatestTime, clock
         ),
-        commodityInfo: CommodityInfo.make(
-            CommodityType.valueOf(createBookingOfferCommandRequest.commodityInfo.commodityType.toUpperCase()),
-            createBookingOfferCommandRequest.commodityInfo.weightKg,
-            createBookingOfferCommandRequest.commodityInfo.requestedStorageTemperatureDegC
+        commodity: Commodity.make(
+            CommodityType.valueOf(createBookingOfferCommandRequest.commodity.commodityType.toUpperCase()),
+            createBookingOfferCommandRequest.commodity.weightKg,
+            createBookingOfferCommandRequest.commodity.requestedStorageTemperatureDegC
         ),
         containerDimensionType: ContainerDimensionType.valueOf(createBookingOfferCommandRequest.containerDimensionType.toUpperCase())
     )

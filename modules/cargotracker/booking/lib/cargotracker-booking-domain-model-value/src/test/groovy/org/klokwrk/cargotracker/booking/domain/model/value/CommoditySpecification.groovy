@@ -35,16 +35,16 @@ import static tech.units.indriya.unit.Units.CELSIUS
 import static tech.units.indriya.unit.Units.GRAM
 import static tech.units.indriya.unit.Units.KILOGRAM
 
-class CommodityInfoSpecification extends Specification {
+class CommoditySpecification extends Specification {
   static Quantity<Mass> oneKilogram = getQuantity(1, KILOGRAM)
 
   void "map constructor should work for correct requestedStorageTemperature param"() {
     when:
-    CommodityInfo commodityInfo = new CommodityInfo(commodityType: commodityTypeParam, weight: oneKilogram, requestedStorageTemperature: requestedStorageTemperatureParam)
+    Commodity commodity = new Commodity(commodityType: commodityTypeParam, weight: oneKilogram, requestedStorageTemperature: requestedStorageTemperatureParam)
 
     then:
-    commodityInfo
-    commodityInfo.requestedStorageTemperature == requestedStorageTemperatureParam
+    commodity
+    commodity.requestedStorageTemperature == requestedStorageTemperatureParam
 
     where:
     commodityTypeParam | requestedStorageTemperatureParam
@@ -65,11 +65,11 @@ class CommodityInfoSpecification extends Specification {
 
   void "map constructor should work for correct weight param"() {
     when:
-    CommodityInfo commodityInfo = new CommodityInfo(commodityType: DRY, weight: weightParam, requestedStorageTemperature: null)
+    Commodity commodity = new Commodity(commodityType: DRY, weight: weightParam, requestedStorageTemperature: null)
 
     then:
-    commodityInfo
-    commodityInfo.weight.value.toBigDecimal() == weightValueParam
+    commodity
+    commodity.weight.value.toBigDecimal() == weightValueParam
 
     where:
     weightParam                        | weightValueParam
@@ -81,7 +81,7 @@ class CommodityInfoSpecification extends Specification {
 
   void "map constructor should fail for null input params"() {
     when:
-    new CommodityInfo(commodityType: commodityTypeParam, weight: weightParam, requestedStorageTemperature: requestedStorageTemperatureParam)
+    new Commodity(commodityType: commodityTypeParam, weight: weightParam, requestedStorageTemperature: requestedStorageTemperatureParam)
 
     then:
     AssertionError assertionError = thrown()
@@ -95,7 +95,7 @@ class CommodityInfoSpecification extends Specification {
 
   void "map constructor should fail when weight is less than one kilogram"() {
     when:
-    new CommodityInfo(commodityType: DRY, weight: getQuantity(weightValueParam, KILOGRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
+    new Commodity(commodityType: DRY, weight: getQuantity(weightValueParam, KILOGRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
 
     then:
     AssertionError assertionError = thrown()
@@ -110,7 +110,7 @@ class CommodityInfoSpecification extends Specification {
 
   void "map constructor should fail when weight is not in kilograms"() {
     when:
-    new CommodityInfo(commodityType: DRY, weight: getQuantity(1500, GRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
+    new Commodity(commodityType: DRY, weight: getQuantity(1500, GRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
 
     then:
     AssertionError assertionError = thrown()
@@ -119,7 +119,7 @@ class CommodityInfoSpecification extends Specification {
 
   void "map constructor should fail when weight value is not a whole number"() {
     when:
-    new CommodityInfo(commodityType: DRY, weight: getQuantity(10.5, KILOGRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
+    new Commodity(commodityType: DRY, weight: getQuantity(10.5, KILOGRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
 
     then:
     AssertionError assertionError = thrown()
@@ -128,13 +128,13 @@ class CommodityInfoSpecification extends Specification {
 
   void "map constructor should fail for non-null requestedStorageTemperature for commodity types that do not support storage temperature"() {
     when:
-    new CommodityInfo(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
+    new Commodity(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
 
     then:
     DomainException domainException = thrown()
     domainException.message == "Bad Request"
     domainException.violationInfo.violationCode.code == "400"
-    domainException.violationInfo.violationCode.resolvableMessageKey == "commodityInfo.requestedStorageTemperatureNotAllowedForCommodityType"
+    domainException.violationInfo.violationCode.resolvableMessageKey == "commodity.requestedStorageTemperatureNotAllowedForCommodityType"
     domainException.violationInfo.violationCode.resolvableMessageParameters == resolvableMessageParametersParam
 
     where:
@@ -144,7 +144,7 @@ class CommodityInfoSpecification extends Specification {
 
   void "map constructor should fail for null requestedStorageTemperature when requestedStorageTemperature is required"() {
     when:
-    new CommodityInfo(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
+    new Commodity(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
 
     then:
     AssertionError assertionError = thrown()
@@ -159,7 +159,7 @@ class CommodityInfoSpecification extends Specification {
 
   void "map constructor should fail for requestedStorageTemperature not in required range"() {
     when:
-    new CommodityInfo(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
+    new Commodity(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
 
     then:
     DomainException domainException = thrown()
@@ -168,14 +168,14 @@ class CommodityInfoSpecification extends Specification {
 
     where:
     commodityTypeParam | requestedStorageTemperatureParam | resolvableMessageKeyParam
-    AIR_COOLED         | getQuantity(1, CELSIUS)          | "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForAirCooledCommodityType"
-    AIR_COOLED         | getQuantity(13, CELSIUS)         | "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForAirCooledCommodityType"
+    AIR_COOLED         | getQuantity(1, CELSIUS)          | "commodity.requestedStorageTemperatureNotInAllowedRangeForAirCooledCommodityType"
+    AIR_COOLED         | getQuantity(13, CELSIUS)         | "commodity.requestedStorageTemperatureNotInAllowedRangeForAirCooledCommodityType"
 
-    CHILLED            | getQuantity(-3, CELSIUS)         | "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForChilledCommodityType"
-    CHILLED            | getQuantity(7, CELSIUS)          | "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForChilledCommodityType"
+    CHILLED            | getQuantity(-3, CELSIUS)         | "commodity.requestedStorageTemperatureNotInAllowedRangeForChilledCommodityType"
+    CHILLED            | getQuantity(7, CELSIUS)          | "commodity.requestedStorageTemperatureNotInAllowedRangeForChilledCommodityType"
 
-    FROZEN             | getQuantity(-21, CELSIUS)        | "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
-    FROZEN             | getQuantity(-7, CELSIUS)         | "commodityInfo.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
+    FROZEN             | getQuantity(-21, CELSIUS)        | "commodity.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
+    FROZEN             | getQuantity(-7, CELSIUS)         | "commodity.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
   }
 
   // Here we have an example of adding non existing value to the enum for testing "impossible" switch default cases.
@@ -200,7 +200,7 @@ class CommodityInfoSpecification extends Specification {
     }
 
     when:
-    new CommodityInfo(commodityType: nonExistentEnumValue, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: getQuantity(50, CELSIUS))
+    new Commodity(commodityType: nonExistentEnumValue, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: getQuantity(50, CELSIUS))
 
     then:
     AssertionError assertionError = thrown()
@@ -209,11 +209,11 @@ class CommodityInfoSpecification extends Specification {
 
   void "make(CommodityType, Quantity, Quantity) factory method should work for correct input params"() {
     when:
-    CommodityInfo commodityInfo = CommodityInfo.make(commodityTypeParam, oneKilogram, requestedStorageTemperatureParam)
+    Commodity commodity = Commodity.make(commodityTypeParam, oneKilogram, requestedStorageTemperatureParam)
 
     then:
-    commodityInfo
-    commodityInfo.requestedStorageTemperature == requestedStorageTemperatureParam
+    commodity
+    commodity.requestedStorageTemperature == requestedStorageTemperatureParam
 
     where:
     commodityTypeParam | requestedStorageTemperatureParam
@@ -234,10 +234,10 @@ class CommodityInfoSpecification extends Specification {
 
   void "make(CommodityType, Quantity, Quantity) factory method should acquire recommendedStorageTemperature when requestedStorageTemperature is not given"() {
     when:
-    CommodityInfo commodityInfo = CommodityInfo.make(commodityTypeParam, oneKilogram, null)
+    Commodity commodity = Commodity.make(commodityTypeParam, oneKilogram, null)
 
     then:
-    commodityInfo.requestedStorageTemperature == commodityTypeParam.recommendedStorageTemperature
+    commodity.requestedStorageTemperature == commodityTypeParam.recommendedStorageTemperature
 
     where:
     commodityTypeParam | _
@@ -249,7 +249,7 @@ class CommodityInfoSpecification extends Specification {
 
   void "make(CommodityType, Quantity, Quantity) factory method should skip requiring recommendedStorageTemperature for the combination of invalid input params"() {
     when:
-    CommodityInfo.make(null, oneKilogram, null)
+    Commodity.make(null, oneKilogram, null)
 
     then:
     thrown(AssertionError)
@@ -257,11 +257,11 @@ class CommodityInfoSpecification extends Specification {
 
   void "make(CommodityType, Quantity, Quantity) factory method should convert weight in kilograms and round it up to the whole number"() {
     when:
-    CommodityInfo commodityInfo = CommodityInfo.make(DRY, weightParam, null)
+    Commodity commodity = Commodity.make(DRY, weightParam, null)
 
     then:
-    commodityInfo
-    commodityInfo.weight.value == weightValueParam
+    commodity
+    commodity.weight.value == weightValueParam
 
     where:
     weightParam                  | weightValueParam
@@ -272,11 +272,11 @@ class CommodityInfoSpecification extends Specification {
 
   void "make(CommodityType, Quantity) factory method should work for correct input params"() {
     when:
-    CommodityInfo commodityInfo = CommodityInfo.make(commodityTypeParam, oneKilogram)
+    Commodity commodity = Commodity.make(commodityTypeParam, oneKilogram)
 
     then:
-    commodityInfo
-    commodityInfo.requestedStorageTemperature == recommendedStorageTemperatureParam
+    commodity
+    commodity.requestedStorageTemperature == recommendedStorageTemperatureParam
 
     where:
     commodityTypeParam | recommendedStorageTemperatureParam
@@ -288,11 +288,11 @@ class CommodityInfoSpecification extends Specification {
 
   void "make(CommodityType, Integer, Integer) factory method should work for correct input params"() {
     when:
-    CommodityInfo commodityInfo = CommodityInfo.make(commodityTypeParam, 1, requestedStorageTemperatureParam)
+    Commodity commodity = Commodity.make(commodityTypeParam, 1, requestedStorageTemperatureParam)
 
     then:
-    commodityInfo
-    commodityInfo.requestedStorageTemperature == requestedStorageTemperatureExpectedParam
+    commodity
+    commodity.requestedStorageTemperature == requestedStorageTemperatureExpectedParam
 
     where:
     commodityTypeParam | requestedStorageTemperatureParam | requestedStorageTemperatureExpectedParam
@@ -313,11 +313,11 @@ class CommodityInfoSpecification extends Specification {
 
   void "make(CommodityType, Integer) factory method should work for correct input params"() {
     when:
-    CommodityInfo commodityInfo = CommodityInfo.make(commodityTypeParam, 1)
+    Commodity commodity = Commodity.make(commodityTypeParam, 1)
 
     then:
-    commodityInfo
-    commodityInfo.requestedStorageTemperature == recommendedStorageTemperatureParam
+    commodity
+    commodity.requestedStorageTemperature == recommendedStorageTemperatureParam
 
     where:
     commodityTypeParam | recommendedStorageTemperatureParam

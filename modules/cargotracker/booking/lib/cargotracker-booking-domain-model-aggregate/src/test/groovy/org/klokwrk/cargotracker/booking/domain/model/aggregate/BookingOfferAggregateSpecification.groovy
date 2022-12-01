@@ -35,7 +35,7 @@ import org.klokwrk.cargotracker.booking.domain.model.service.DefaultCargoCreator
 import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.service.PercentBasedMaxAllowedWeightPerContainerPolicy
 import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
@@ -81,11 +81,11 @@ class BookingOfferAggregateSpecification extends Specification {
     given:
     CreateBookingOfferCommand createBookingOfferCommandWithAcceptableCargo = CreateBookingOfferCommandFixtureBuilder
         .createBookingOfferCommand_default()
-        .commodityInfo(CommodityInfo.make(CommodityType.DRY, 10_000))
+        .commodity(Commodity.make(CommodityType.DRY, 10_000))
         .build()
 
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
-    Cargo expectedCargo = Cargo.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommandWithAcceptableCargo.commodityInfo, Quantities.getQuantity(20_615, Units.KILOGRAM))
+    Cargo expectedCargo = Cargo.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommandWithAcceptableCargo.commodity, Quantities.getQuantity(20_615, Units.KILOGRAM))
 
     BookingOfferCreatedEvent expectedBookingOfferCreatedEvent = new BookingOfferCreatedEvent(
         customer: CustomerEventData.fromCustomer(createBookingOfferCommandWithAcceptableCargo.customer),
@@ -116,7 +116,7 @@ class BookingOfferAggregateSpecification extends Specification {
     given:
     CreateBookingOfferCommand createBookingOfferCommandWithInvalidCargo = CreateBookingOfferCommandFixtureBuilder
         .createBookingOfferCommand_default()
-        .commodityInfo(CommodityInfo.make(CommodityType.DRY, 5001 * 25_000))
+        .commodity(Commodity.make(CommodityType.DRY, 5001 * 25_000))
         .build()
 
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()

@@ -34,7 +34,7 @@ class CargoSpecification extends Specification {
     when:
     Cargo cargo = new Cargo(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 2_000),
+        commodity: Commodity.make(DRY, 2_000),
         maxAllowedWeightPerContainer: getQuantity(2_200, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(2_000, KILOGRAM),
         containerCount: 1,
@@ -45,11 +45,11 @@ class CargoSpecification extends Specification {
     cargo
   }
 
-  void "map constructor should fail for invalid combination of containerType and commodityInfo"() {
+  void "map constructor should fail for invalid combination of containerType and commodity"() {
     when:
     new Cargo(
         containerType: TYPE_ISO_22R1_STANDARD_REEFER, // It should be TYPE_ISO_22G1, for example.
-        commodityInfo: CommodityInfo.make(DRY, 2_000),
+        commodity: Commodity.make(DRY, 2_000),
         maxAllowedWeightPerContainer: getQuantity(2_200, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(2_000, KILOGRAM),
         containerCount: 1,
@@ -58,14 +58,14 @@ class CargoSpecification extends Specification {
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message.endsWith("boolean condition is false - [condition: (containerType.featuresType == commodityInfo.commodityType.containerFeaturesType)]")
+    assertionError.message.endsWith("boolean condition is false - [condition: (containerType.featuresType == commodity.commodityType.containerFeaturesType)]")
   }
 
   void "map constructor should fail for invalid combination of containerType and maxAllowedWeightPerContainer"() {
     when:
     new Cargo(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 20_000),
+        commodity: Commodity.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(30_000, KILOGRAM), // It should be <= containerType.maxCommodityWeight.
         maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
         containerCount: 1,
@@ -77,27 +77,27 @@ class CargoSpecification extends Specification {
     assertionError.message.endsWith("boolean condition is false - [condition: (ComparableQuantity) containerType.maxCommodityWeight.isGreaterThanOrEqualTo(maxAllowedWeightPerContainer)]")
   }
 
-  void "map constructor should fail for invalid combination of commodityInfo and maxRecommendedWeightPerContainer"() {
+  void "map constructor should fail for invalid combination of commodity and maxRecommendedWeightPerContainer"() {
     when:
     new Cargo(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 20_000),
+        commodity: Commodity.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
-        maxRecommendedWeightPerContainer: getQuantity(19_000, KILOGRAM), // It should be >= commodityInfo.totalWeight.
+        maxRecommendedWeightPerContainer: getQuantity(19_000, KILOGRAM), // It should be >= commodity.totalWeight.
         containerCount: 1,
         containerTeuCount: 1
     )
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message.endsWith("[condition: ((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= commodityInfo.weight.value.toBigDecimal())]")
+    assertionError.message.endsWith("[condition: ((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= commodity.weight.value.toBigDecimal())]")
   }
 
-  void "map constructor should fail for invalid combination of commodityInfo and containerCount"() {
+  void "map constructor should fail for invalid combination of commodity and containerCount"() {
     when:
     new Cargo(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 50_000),
+        commodity: Commodity.make(DRY, 50_000),
         maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
         containerCount: 2, // It should be 3 or more.
@@ -106,14 +106,14 @@ class CargoSpecification extends Specification {
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message.endsWith("[condition: ((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= commodityInfo.weight.value.toBigDecimal())]")
+    assertionError.message.endsWith("[condition: ((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= commodity.weight.value.toBigDecimal())]")
   }
 
   void "map constructor should fail for invalid units of maxAllowedWeightPerContainer"() {
     when:
     new Cargo(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 20_000),
+        commodity: Commodity.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(21_000_000, GRAM),
         maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
         containerCount: 1,
@@ -129,7 +129,7 @@ class CargoSpecification extends Specification {
     when:
     new Cargo(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 20_000),
+        commodity: Commodity.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(21_000.1, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
         containerCount: 1,
@@ -145,7 +145,7 @@ class CargoSpecification extends Specification {
     when:
     new Cargo(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 20_000),
+        commodity: Commodity.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(20_000_000, GRAM),
         containerCount: 1,
@@ -161,7 +161,7 @@ class CargoSpecification extends Specification {
     when:
     new Cargo(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 20_000),
+        commodity: Commodity.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(20_000.1, KILOGRAM),
         containerCount: 1,
@@ -177,7 +177,7 @@ class CargoSpecification extends Specification {
     when:
     new Cargo(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 20_000),
+        commodity: Commodity.make(DRY, 20_000),
         maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
         containerCount: 1,
@@ -203,7 +203,7 @@ class CargoSpecification extends Specification {
     given:
     Cargo expectedCargo = new Cargo(
         containerType: TYPE_ISO_12G1,
-        commodityInfo: CommodityInfo.make(DRY, commodityWeightInKilogramsParam),
+        commodity: Commodity.make(DRY, commodityWeightInKilogramsParam),
         maxAllowedWeightPerContainer: getQuantity(9_500, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(maxRecommendedWeightPerContainerParam, KILOGRAM),
         containerCount: containerCountParam,
@@ -211,7 +211,7 @@ class CargoSpecification extends Specification {
     )
 
     when:
-    Cargo actualCargo = Cargo.make(TYPE_ISO_12G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(9_500, KILOGRAM))
+    Cargo actualCargo = Cargo.make(TYPE_ISO_12G1, Commodity.make(DRY, commodityWeightInKilogramsParam), getQuantity(9_500, KILOGRAM))
 
     then:
     expectedCargo == actualCargo
@@ -228,7 +228,7 @@ class CargoSpecification extends Specification {
     given:
     Cargo expectedCargo = new Cargo(
         containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, commodityWeightInKilogramsParam),
+        commodity: Commodity.make(DRY, commodityWeightInKilogramsParam),
         maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(maxRecommendedWeightPerContainerParam, KILOGRAM),
         containerCount: containerCountParam,
@@ -236,7 +236,7 @@ class CargoSpecification extends Specification {
     )
 
     when:
-    Cargo actualCargo = Cargo.make(TYPE_ISO_22G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(21_000, KILOGRAM))
+    Cargo actualCargo = Cargo.make(TYPE_ISO_22G1, Commodity.make(DRY, commodityWeightInKilogramsParam), getQuantity(21_000, KILOGRAM))
 
     then:
     expectedCargo == actualCargo
@@ -253,7 +253,7 @@ class CargoSpecification extends Specification {
     given:
     Cargo expectedCargo = new Cargo(
         containerType: TYPE_ISO_42G1,
-        commodityInfo: CommodityInfo.make(DRY, commodityWeightInKilogramsParam),
+        commodity: Commodity.make(DRY, commodityWeightInKilogramsParam),
         maxAllowedWeightPerContainer: getQuantity(26_000, KILOGRAM),
         maxRecommendedWeightPerContainer: getQuantity(maxRecommendedWeightPerContainerParam, KILOGRAM),
         containerCount: containerCountParam,
@@ -261,7 +261,7 @@ class CargoSpecification extends Specification {
     )
 
     when:
-    Cargo actualCargo = Cargo.make(TYPE_ISO_42G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(26_000, KILOGRAM))
+    Cargo actualCargo = Cargo.make(TYPE_ISO_42G1, Commodity.make(DRY, commodityWeightInKilogramsParam), getQuantity(26_000, KILOGRAM))
 
     then:
     expectedCargo == actualCargo

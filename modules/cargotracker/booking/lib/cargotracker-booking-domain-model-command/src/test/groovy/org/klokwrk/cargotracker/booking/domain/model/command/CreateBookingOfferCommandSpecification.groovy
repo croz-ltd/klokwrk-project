@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.domain.model.command
 
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 import org.klokwrk.cargotracker.booking.domain.model.value.Customer
@@ -53,7 +53,7 @@ class CreateBookingOfferCommandSpecification extends Specification {
   static RouteSpecification validRouteSpecification = RouteSpecification.make(
       locationSampleMap["NLRTM"], locationSampleMap["DEHAM"], currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours, currentInstantRoundedAndThreeHours, clock
   )
-  static CommodityInfo validCommodityInfo = CommodityInfo.make(CommodityType.DRY, 1000, null)
+  static Commodity validCommodity = Commodity.make(CommodityType.DRY, 1000, null)
   static ContainerDimensionType validContainerDimensionType = ContainerDimensionType.DIMENSION_ISO_22
 
   void "map constructor should work for correct input params"() {
@@ -63,7 +63,7 @@ class CreateBookingOfferCommandSpecification extends Specification {
         customer: Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),
         bookingOfferId: bookingOfferId,
         routeSpecification: validRouteSpecification,
-        commodityInfo: validCommodityInfo,
+        commodity: validCommodity,
         containerDimensionType: validContainerDimensionType
     )
 
@@ -85,7 +85,7 @@ class CreateBookingOfferCommandSpecification extends Specification {
         customer: customerParam,
         bookingOfferId: bookingOfferIdParam,
         routeSpecification: routeSpecificationParam,
-        commodityInfo: commodityInfoParam,
+        commodity: commodityParam,
         containerDimensionType: containerDimensionTypeParam
     )
 
@@ -94,12 +94,12 @@ class CreateBookingOfferCommandSpecification extends Specification {
     assertionError.message.contains(messagePartParam)
 
     where:
-    customerParam         | bookingOfferIdParam                          | routeSpecificationParam | commodityInfoParam | containerDimensionTypeParam | messagePartParam
-    null                  | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | validCommodityInfo | validContainerDimensionType | "notNullValue"
-    validStandardCustomer | null                                         | validRouteSpecification | validCommodityInfo | validContainerDimensionType | "notNullValue"
-    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | null                    | validCommodityInfo | validContainerDimensionType | "notNullValue"
-    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | null               | validContainerDimensionType | "notNullValue"
-    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | validCommodityInfo | null                        | "notNullValue"
+    customerParam         | bookingOfferIdParam                          | routeSpecificationParam | commodityParam | containerDimensionTypeParam | messagePartParam
+    null                  | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | validCommodity | validContainerDimensionType | "notNullValue"
+    validStandardCustomer | null                                         | validRouteSpecification | validCommodity | validContainerDimensionType | "notNullValue"
+    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | null                    | validCommodity | validContainerDimensionType | "notNullValue"
+    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | null           | validContainerDimensionType | "notNullValue"
+    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | validCommodity | null                        | "notNullValue"
   }
 
   void "map constructor should fail when some of business rules of routeSpecification are not satisfied"() {

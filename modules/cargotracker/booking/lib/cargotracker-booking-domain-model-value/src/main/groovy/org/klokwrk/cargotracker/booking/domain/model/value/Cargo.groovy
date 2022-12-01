@@ -34,7 +34,7 @@ import static org.hamcrest.Matchers.notNullValue
 /**
  * Models a containerized cargo consisting of related commodity and container attributes, together with cargo attributes derived from contained commodity and container characteristics.
  * <p/>
- * Majority of cargo attributes are calculated from {@link ContainerDimensionType} and {@link CommodityInfo}, as demonstrated in {@code BookingOfferAggregate}.
+ * Majority of cargo attributes are calculated from {@link ContainerDimensionType} and {@link Commodity}, as demonstrated in {@code BookingOfferAggregate}.
  */
 @KwrkImmutable(knownImmutableClasses = [Quantity])
 @CompileStatic
@@ -43,17 +43,17 @@ class Cargo implements PostMapConstructorCheckable {
    * Container type associated with this cargo.
    * <p/>
    * Must not be {@code null}.<br/>
-   * Must be {@code containerType.featuresType == commodityInfo.commodityType.containerFeaturesType}.<br/>
+   * Must be {@code containerType.featuresType == commodity.commodityType.containerFeaturesType}.<br/>
    */
   ContainerType containerType
 
   /**
-   * Commodity attributes of this cargo's commodity.
+   * Commodity of this cargo.
    * <p/>
    * Must not be {@code null}.<br/>
-   * Must be {@code containerType.featuresType == commodityInfo.commodityType.containerFeaturesType}.<br/>
+   * Must be {@code containerType.featuresType == commodity.commodityType.containerFeaturesType}.<br/>
    */
-  CommodityInfo commodityInfo
+  Commodity commodity
 
   /**
    * The maximally allowed commodity weight per container for this cargo (usually dictated by some policy).
@@ -78,7 +78,7 @@ class Cargo implements PostMapConstructorCheckable {
    * Must be greater than or equal to one kilogram.<br/>
    * Must be less than or equal to {@code maxAllowedWeightPerContainer}.<br/>
    * Must have a kilogram units and a whole number value.<br/>
-   * Must be {@code maxRecommendedWeightPerContainer.value * containerCount >= commodityInfo.weight.value}.<br/>
+   * Must be {@code maxRecommendedWeightPerContainer.value * containerCount >= commodity.weight.value}.<br/>
    */
   Quantity<Mass> maxRecommendedWeightPerContainer
 
@@ -111,8 +111,8 @@ class Cargo implements PostMapConstructorCheckable {
    * When {@code maxAllowedWeightPerContainer} parameter is null, {@code maxAllowedWeightPerContainer} is equal to the {@code containerType.maxCommodityWeight}.
    */
   @SuppressWarnings("CodeNarc.DuplicateNumberLiteral")
-  static Cargo make(ContainerType containerType, CommodityInfo commodityInfo, Quantity<Mass> maxAllowedWeightPerContainer = null) {
-    BigDecimal weightValueKg = commodityInfo.weight.to(Units.KILOGRAM).value
+  static Cargo make(ContainerType containerType, Commodity commodity, Quantity<Mass> maxAllowedWeightPerContainer = null) {
+    BigDecimal weightValueKg = commodity.weight.to(Units.KILOGRAM).value
     Quantity<Mass> maxAllowedWeightPerContainerKg = maxAllowedWeightPerContainer?.to(Units.KILOGRAM)
     if (maxAllowedWeightPerContainerKg == null) {
       maxAllowedWeightPerContainerKg = containerType.maxCommodityWeight.to(Units.KILOGRAM)
@@ -137,7 +137,7 @@ class Cargo implements PostMapConstructorCheckable {
 
     Cargo cargo = new Cargo(
         containerType: containerType,
-        commodityInfo: commodityInfo,
+        commodity: commodity,
         maxAllowedWeightPerContainer: maxAllowedWeightPerContainerKg,
         maxRecommendedWeightPerContainer: maxRecommendedWeightPerContainerKg,
         containerCount: containerCount,
@@ -151,13 +151,13 @@ class Cargo implements PostMapConstructorCheckable {
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     requireMatch(containerType, notNullValue())
-    requireMatch(commodityInfo, notNullValue())
+    requireMatch(this.commodity, notNullValue())
     requireMatch(maxAllowedWeightPerContainer, notNullValue())
     requireMatch(maxRecommendedWeightPerContainer, notNullValue())
     requireMatch(containerCount, notNullValue())
     requireMatch(containerTeuCount, notNullValue())
 
-    requireTrue(containerType.featuresType == commodityInfo.commodityType.containerFeaturesType)
+    requireTrue(containerType.featuresType == commodity.commodityType.containerFeaturesType)
 
     requireTrue(Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(maxAllowedWeightPerContainer))
     requireTrue(((ComparableQuantity)containerType.maxCommodityWeight).isGreaterThanOrEqualTo(maxAllowedWeightPerContainer))
@@ -179,6 +179,6 @@ class Cargo implements PostMapConstructorCheckable {
     MathContext mathContext = new MathContext(7, RoundingMode.UP)
     requireTrue(containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))
 
-    requireTrue((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= (commodityInfo.weight.value.toBigDecimal()))
+    requireTrue((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= (commodity.weight.value.toBigDecimal()))
   }
 }

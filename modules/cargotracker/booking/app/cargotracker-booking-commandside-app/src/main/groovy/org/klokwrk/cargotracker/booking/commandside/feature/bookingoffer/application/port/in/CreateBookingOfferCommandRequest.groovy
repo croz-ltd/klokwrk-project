@@ -76,13 +76,13 @@ class CreateBookingOfferCommandRequest {
   RouteSpecificationData routeSpecification
 
   /**
-   * Commodity info data.
+   * Commodity data.
    * <p/>
    * Must be not {@code null} and valid.
    */
   @Valid
   @NotNull(groups = [Level1])
-  CommodityInfoData commodityInfo
+  CommodityData commodity
 
   /**
    * Container dimension type string corresponding to the names of constants from {@link ContainerDimensionType} enum.

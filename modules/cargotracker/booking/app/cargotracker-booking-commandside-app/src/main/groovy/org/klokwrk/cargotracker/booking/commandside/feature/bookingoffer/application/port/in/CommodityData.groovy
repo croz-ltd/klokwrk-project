@@ -35,13 +35,13 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 /**
- * DTO encapsulating commodity info data pieces gathered from external ports/adapters.
+ * DTO encapsulating commodity data pieces gathered from external ports/adapters.
  */
-@GroupSequence([CommodityInfoData, Level1, Level2, Level3])
+@GroupSequence([CommodityData, Level1, Level2, Level3])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
-class CommodityInfoData {
+class CommodityData {
   /**
    * Commodity type string corresponding to the names of constants from {@link CommodityType} enum.
    * <p/>

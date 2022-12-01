@@ -27,7 +27,7 @@ import org.axonframework.messaging.InterceptorChain
 import org.axonframework.messaging.MessageHandlerInterceptor
 import org.axonframework.messaging.unitofwork.UnitOfWork
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFixtureBuilder
-import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CommodityInfoData
+import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CommodityData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandPortIn
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponse
@@ -85,7 +85,7 @@ abstract class AbstractCommandRetrySchedulerIntegrationSpecification extends Abs
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
             arrivalLatestTime: Instant.now() + Duration.ofHours(2)
         ),
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY.name(), weightKg: 1000),
+        commodity: new CommodityData(commodityType: CommodityType.DRY.name(), weightKg: 1000),
         containerDimensionType: "DIMENSION_ISO_22"
     )
     Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
@@ -149,7 +149,7 @@ abstract class AbstractCommandRetrySchedulerIntegrationSpecification extends Abs
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
             arrivalLatestTime: Instant.now() + Duration.ofHours(2)
         ),
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY.name(), weightKg: 1000),
+        commodity: new CommodityData(commodityType: CommodityType.DRY.name(), weightKg: 1000),
         containerDimensionType: "DIMENSION_ISO_22"
     )
     Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()

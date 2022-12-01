@@ -16,10 +16,5 @@
     limitations under the License.
 ====
 
-====
-At the moment, this is only a sample of events of the same type with slightly varying data (in commodityInfo). In more realistic test, here we will have all relevant events produced during typical
-usages of the app. Ideally, typical data variations should be included for each event type.
-====
-
 id:1
 data:{"messageIdentifier":"e09c3601-1a4e-446c-b2b2-bc281b10c536","aggregateIdentifier":"d6901f60-0848-4a55-a21a-d121422042b9","aggregateSequenceNumber":0,"aggregateType":"BookingOfferAggregate","payload":{"type":"org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent","data":"{\"customer\":{\"customerId\":\"1\",\"customerType\":\"NON_EXISTING_CUSTOMER_TYPE\"}}","revision":""},"timestamp":1643195504489,"metaData":{"wf-ot-spanid":"599c82e5-2991-42bc-a5f2-f5e5e975704b","wf-ot-sample":"true","wf-ot-traceid":"41bc6a29-cab4-4661-acba-95f3af0ff4a0","INBOUND_CHANNEL_TYPE":"web","INBOUND_CHANNEL_REQUEST_IDENTIFIER":"0:0:0:0:0:0:0:1","INBOUND_CHANNEL_NAME":"booking"}}

@@ -66,7 +66,7 @@ class FeatureTestHelpers {
             "departureLatestTime": "${ departureLatestTime }",
             "arrivalLatestTime": "${ arrivalLatestTime }"
           },
-          "commodityInfo": {
+          "commodity": {
             "commodityType": "dry",
             "weightKg": 1000
           },
@@ -92,7 +92,7 @@ class FeatureTestHelpers {
             "departureLatestTime": "${ departureLatestTime }",
             "arrivalLatestTime": "${ arrivalLatestTime }"
           },
-          "commodityInfo": {
+          "commodity": {
             "commodityType": "chilled",
             "weightKg": 1000,
             "requestedStorageTemperatureDegC": 5
@@ -121,7 +121,7 @@ class FeatureTestHelpers {
             "departureLatestTime": "${ departureLatestTime }",
             "arrivalLatestTime": "${ arrivalLatestTime }"
           },
-          "commodityInfo": {
+          "commodity": {
             "commodityType": "chilled",
             "weightKg": 1000,
             "requestedStorageTemperatureDegC": 5
@@ -154,7 +154,7 @@ class FeatureTestHelpers {
             "destinationLocation": "NLRTM",
             ${ departureArrivalTimesFragment }
           },
-          "commodityInfo": {
+          "commodity": {
             "commodityType": "dry",
             "weightKg": 30000
           },
@@ -170,7 +170,7 @@ class FeatureTestHelpers {
             "destinationLocation": "DEHAM",
             ${ departureArrivalTimesFragment }
           },
-          "commodityInfo": {
+          "commodity": {
             "commodityType": "air_cooled",
             "weightKg": 30000
           },
@@ -186,7 +186,7 @@ class FeatureTestHelpers {
             "destinationLocation": "USLAX",
             ${ departureArrivalTimesFragment }
           },
-          "commodityInfo": {
+          "commodity": {
             "commodityType": "chilled",
             "weightKg": 30000
           },
@@ -202,7 +202,7 @@ class FeatureTestHelpers {
             "destinationLocation": "USNYC",
             ${ departureArrivalTimesFragment }
           },
-          "commodityInfo": {
+          "commodity": {
             "commodityType": "frozen",
             "weightKg": 30000
           },
@@ -218,7 +218,7 @@ class FeatureTestHelpers {
             "destinationLocation": "USLAX",
             ${ departureArrivalTimesFragment }
           },
-          "commodityInfo": {
+          "commodity": {
             "commodityType": "air_cooled",
             "weightKg": 70000
           },
@@ -234,7 +234,7 @@ class FeatureTestHelpers {
             "destinationLocation": "USNYC",
             ${ departureArrivalTimesFragment }
           },
-          "commodityInfo": {
+          "commodity": {
             "commodityType": "dry",
             "weightKg": 40000
           },
@@ -250,7 +250,7 @@ class FeatureTestHelpers {
             "destinationLocation": "DEHAM",
             ${ departureArrivalTimesFragment }
           },
-          "commodityInfo": {
+          "commodity": {
             "commodityType": "dry",
             "weightKg": 1000
           },
@@ -266,7 +266,7 @@ class FeatureTestHelpers {
             "destinationLocation": "USLAX",
             ${ departureArrivalTimesFragment }
           },
-          "commodityInfo": {
+          "commodity": {
             "commodityType": "dry",
             "weightKg": 15000
           },
@@ -282,7 +282,7 @@ class FeatureTestHelpers {
             "destinationLocation": "USNYC",
             ${ departureArrivalTimesFragment }
           },
-          "commodityInfo": {
+          "commodity": {
             "commodityType": "dry",
             "weightKg": 100000
           },
@@ -298,7 +298,7 @@ class FeatureTestHelpers {
             "destinationLocation": "NLRTM",
             ${ departureArrivalTimesFragment }
           },
-          "commodityInfo": {
+          "commodity": {
             "commodityType": "dry",
             "weightKg": 45000
           },

@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.domain.model.service
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 
@@ -48,10 +48,10 @@ class DefaultCargoCreatorService implements CargoCreatorService {
   }
 
   @Override
-  Cargo from(ContainerDimensionType containerDimensionType, CommodityInfo commodityInfo) {
-    ContainerType containerType = ContainerType.find(containerDimensionType, commodityInfo.commodityType.containerFeaturesType)
+  Cargo from(ContainerDimensionType containerDimensionType, Commodity commodity) {
+    ContainerType containerType = ContainerType.find(containerDimensionType, commodity.commodityType.containerFeaturesType)
     Quantity<Mass> maxAllowedWeightPerContainerPerPolicyInKilograms = maxAllowedWeightPerContainerPolicy.maxAllowedWeightPerContainer(containerType)
-    Cargo cargo = Cargo.make(containerType, commodityInfo, maxAllowedWeightPerContainerPerPolicyInKilograms)
+    Cargo cargo = Cargo.make(containerType, commodity, maxAllowedWeightPerContainerPerPolicyInKilograms)
 
     // Potentially we might also want the max container TEU count per commodity type policy.
     // This is very similar policy we have in BookingOfferCargos.canAcceptCargo(). There it is the cumulative across the whole BookingOffer.

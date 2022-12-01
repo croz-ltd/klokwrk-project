@@ -95,7 +95,7 @@ class BookingOfferCargos {
     totalCommodityWeight = totalsTuple.v1
     totalContainerTeuCount = totalsTuple.v2
 
-    commodityTypeToCargoMap.put(cargo.commodityInfo.commodityType, cargo)
+    commodityTypeToCargoMap.put(cargo.commodity.commodityType, cargo)
   }
 
   /**
@@ -109,14 +109,14 @@ class BookingOfferCargos {
     Quantity<Mass> newTotalCommodityWeight
     BigDecimal newTotalContainerTeuCount
 
-    Cargo commodityContainerInfoOld = commodityTypeToCargoMap.get(cargo.commodityInfo.commodityType)
-    if (commodityContainerInfoOld == null) {
-      newTotalCommodityWeight = totalCommodityWeight.add(cargo.commodityInfo.weight)
+    Cargo cargoOld = commodityTypeToCargoMap.get(cargo.commodity.commodityType)
+    if (cargoOld == null) {
+      newTotalCommodityWeight = totalCommodityWeight.add(cargo.commodity.weight)
       newTotalContainerTeuCount = totalContainerTeuCount + cargo.containerTeuCount
     }
     else {
-      newTotalCommodityWeight = totalCommodityWeight.subtract(commodityContainerInfoOld.commodityInfo.weight).add(cargo.commodityInfo.weight)
-      newTotalContainerTeuCount = totalContainerTeuCount - commodityContainerInfoOld.containerTeuCount + cargo.containerTeuCount
+      newTotalCommodityWeight = totalCommodityWeight.subtract(cargoOld.commodity.weight).add(cargo.commodity.weight)
+      newTotalContainerTeuCount = totalContainerTeuCount - cargoOld.containerTeuCount + cargo.containerTeuCount
     }
 
     return new Tuple2<Quantity<Mass>, BigDecimal>(newTotalCommodityWeight, newTotalContainerTeuCount)

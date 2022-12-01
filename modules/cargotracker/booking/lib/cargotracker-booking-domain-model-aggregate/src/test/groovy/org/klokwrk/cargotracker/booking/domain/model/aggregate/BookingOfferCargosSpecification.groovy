@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.domain.model.aggregate
 import org.klokwrk.cargotracker.booking.domain.model.service.ConstantBasedMaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 import spock.lang.Specification
@@ -45,7 +45,7 @@ class BookingOfferCargosSpecification extends Specification {
   void "canAcceptCargo() method should work as expected for 10ft container"() {
     given:
     Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_12G1.maxCommodityWeight.value.toInteger()
-    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_12G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
+    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_12G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
 
@@ -66,7 +66,7 @@ class BookingOfferCargosSpecification extends Specification {
   void "canAcceptCargo() method should work as expected for 20ft container"() {
     given:
     Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_22G1.maxCommodityWeight.value.toInteger()
-    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
+    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
 
@@ -87,7 +87,7 @@ class BookingOfferCargosSpecification extends Specification {
   void "canAcceptCargo() method should work as expected for 40ft container"() {
     given:
     Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_42G1.maxCommodityWeight.value.toInteger()
-    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_42G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
+    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_42G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
 
@@ -107,7 +107,7 @@ class BookingOfferCargosSpecification extends Specification {
 
   void "calculateNewTotals() method should work as expected for empty BookingOfferCommodities"() {
     given:
-    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 110_000), Quantities.getQuantity(21_000, Units.KILOGRAM))
+    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 110_000), Quantities.getQuantity(21_000, Units.KILOGRAM))
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
 
     when:
@@ -120,7 +120,7 @@ class BookingOfferCargosSpecification extends Specification {
 
   void "calculateNewTotals() method should work as expected for non-empty BookingOfferCommodities when calculating cargo of already stored commodity type"() {
     given:
-    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 110_000), Quantities.getQuantity(21_000, Units.KILOGRAM))
+    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 110_000), Quantities.getQuantity(21_000, Units.KILOGRAM))
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
     bookingOfferCommodities.storeCargo(cargo)
 
@@ -134,10 +134,10 @@ class BookingOfferCargosSpecification extends Specification {
 
   void "calculateNewTotals() method should work as expected for non-empty BookingOfferCommodities when calculating cargo of not-already-stored commodity type"() {
     given:
-    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 110_000), Quantities.getQuantity(21_000, Units.KILOGRAM))
+    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 110_000), Quantities.getQuantity(21_000, Units.KILOGRAM))
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
     bookingOfferCommodities.storeCargo(cargo)
-    Cargo nonStoredCargo = Cargo.make(ContainerType.TYPE_ISO_42R1_STANDARD_REEFER, CommodityInfo.make(CommodityType.AIR_COOLED, 110_000), Quantities.getQuantity(24_500, Units.KILOGRAM))
+    Cargo nonStoredCargo = Cargo.make(ContainerType.TYPE_ISO_42R1_STANDARD_REEFER, Commodity.make(CommodityType.AIR_COOLED, 110_000), Quantities.getQuantity(24_500, Units.KILOGRAM))
 
     when:
     Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCommodities.calculateNewTotals(nonStoredCargo)
@@ -150,7 +150,7 @@ class BookingOfferCargosSpecification extends Specification {
   void "preCalculateTotals() method should throw when cargo cannot be accepted"() {
     given:
     Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_22G1.maxCommodityWeight.value.toInteger()
-    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
+    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
 
@@ -170,7 +170,7 @@ class BookingOfferCargosSpecification extends Specification {
   void "preCalculateTotals() method should work as expected for acceptable cargo"() {
     given:
     Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_22G1.maxCommodityWeight.value.toInteger()
-    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
+    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
 
@@ -189,8 +189,8 @@ class BookingOfferCargosSpecification extends Specification {
 
   void "storeCargo() method should store cargo unconditionally"() {
     given:
-    Cargo cargo1 = Cargo.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
-    Cargo cargo2 = Cargo.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, CommodityInfo.make(CommodityType.AIR_COOLED, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
+    Cargo cargo1 = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
+    Cargo cargo2 = Cargo.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, Commodity.make(CommodityType.AIR_COOLED, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
 
     when:

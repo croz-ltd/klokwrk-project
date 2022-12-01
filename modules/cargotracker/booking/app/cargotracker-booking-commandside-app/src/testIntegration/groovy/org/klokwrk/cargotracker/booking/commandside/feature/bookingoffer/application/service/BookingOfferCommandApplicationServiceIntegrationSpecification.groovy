@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.service
 
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFixtureBuilder
-import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CommodityInfoData
+import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CommodityData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandPortIn
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponse
@@ -26,7 +26,7 @@ import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applica
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferCargos
 import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
@@ -68,13 +68,13 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
             departureEarliestTime: currentInstantAndOneHour, departureLatestTime: currentInstantAndTwoHours,
             arrivalLatestTime: currentInstantAndThreeHours
         ),
-        commodityInfo: new CommodityInfoData(commodityType: CommodityType.DRY.name(), weightKg: 1000),
+        commodity: new CommodityData(commodityType: CommodityType.DRY.name(), weightKg: 1000),
         containerDimensionType: "DIMENSION_ISO_22"
     )
     Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
 
     BookingOfferCargos expectedBookingOfferCargos = new BookingOfferCargos()
-    expectedBookingOfferCargos.storeCargo(Cargo.make(ContainerType.TYPE_ISO_22G1, CommodityInfo.make(CommodityType.DRY, 1000)))
+    expectedBookingOfferCargos.storeCargo(Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 1000)))
 
     when:
     OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommandOperationResponse =
