@@ -20,6 +20,7 @@ package org.klokwrk.cargotracker.booking.domain.model.command
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
+import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandData
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
@@ -42,8 +43,8 @@ class CreateBookingOfferCommandFixtureBuilder {
         .customer(customer_standard().build())
         .bookingOfferId(BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix(currentTimeClock).toString()))
         .routeSpecification(routeSpecification_rijekaToRotterdam(currentTimeClock).build())
-        .commodity(Commodity.make(CommodityType.DRY, 1000))
-        .containerDimensionType(ContainerDimensionType.DIMENSION_ISO_22)
+        .cargoCommodity(Commodity.make(CommodityType.DRY, 1000))
+        .cargoContainerDimensionType(ContainerDimensionType.DIMENSION_ISO_22)
 
     return builder
   }
@@ -51,16 +52,15 @@ class CreateBookingOfferCommandFixtureBuilder {
   Customer customer
   BookingOfferId bookingOfferId
   RouteSpecification routeSpecification
-  Commodity commodity
-  ContainerDimensionType containerDimensionType
+  Commodity cargoCommodity
+  ContainerDimensionType cargoContainerDimensionType
 
   CreateBookingOfferCommand build() {
     CreateBookingOfferCommand command = new CreateBookingOfferCommand(
         customer: customer,
         bookingOfferId: bookingOfferId,
         routeSpecification: routeSpecification,
-        commodity: commodity,
-        containerDimensionType: containerDimensionType
+        cargo: new CargoCommandData(commodity: cargoCommodity, containerDimensionType: cargoContainerDimensionType)
     )
 
     return command

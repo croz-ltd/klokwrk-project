@@ -81,11 +81,11 @@ class BookingOfferAggregateSpecification extends Specification {
     given:
     CreateBookingOfferCommand createBookingOfferCommandWithAcceptableCargo = CreateBookingOfferCommandFixtureBuilder
         .createBookingOfferCommand_default()
-        .commodity(Commodity.make(CommodityType.DRY, 10_000))
+        .cargoCommodity(Commodity.make(CommodityType.DRY, 10_000))
         .build()
 
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
-    Cargo expectedCargo = Cargo.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommandWithAcceptableCargo.commodity, Quantities.getQuantity(20_615, Units.KILOGRAM))
+    Cargo expectedCargo = Cargo.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommandWithAcceptableCargo.cargo.commodity, Quantities.getQuantity(20_615, Units.KILOGRAM))
 
     BookingOfferCreatedEvent expectedBookingOfferCreatedEvent = new BookingOfferCreatedEvent(
         customer: CustomerEventData.fromCustomer(createBookingOfferCommandWithAcceptableCargo.customer),
@@ -116,7 +116,7 @@ class BookingOfferAggregateSpecification extends Specification {
     given:
     CreateBookingOfferCommand createBookingOfferCommandWithInvalidCargo = CreateBookingOfferCommandFixtureBuilder
         .createBookingOfferCommand_default()
-        .commodity(Commodity.make(CommodityType.DRY, 5001 * 25_000))
+        .cargoCommodity(Commodity.make(CommodityType.DRY, 5001 * 25_000))
         .build()
 
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()

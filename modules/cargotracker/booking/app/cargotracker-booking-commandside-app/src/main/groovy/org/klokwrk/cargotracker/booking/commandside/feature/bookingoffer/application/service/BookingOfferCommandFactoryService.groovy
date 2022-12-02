@@ -23,6 +23,7 @@ import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applica
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.out.LocationByUnLoCodeQueryPortOut
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
+import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandData
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
@@ -78,12 +79,14 @@ class BookingOfferCommandFactoryService {
             createBookingOfferCommandRequest.routeSpecification.departureEarliestTime, createBookingOfferCommandRequest.routeSpecification.departureLatestTime,
             createBookingOfferCommandRequest.routeSpecification.arrivalLatestTime, clock
         ),
-        commodity: Commodity.make(
-            CommodityType.valueOf(createBookingOfferCommandRequest.cargo.commodityType.toUpperCase()),
-            createBookingOfferCommandRequest.cargo.commodityWeightKg,
-            createBookingOfferCommandRequest.cargo.commodityRequestedStorageTemperatureDegC
-        ),
-        containerDimensionType: ContainerDimensionType.valueOf(createBookingOfferCommandRequest.cargo.containerDimensionType.toUpperCase())
+        cargo: new CargoCommandData(
+            commodity: Commodity.make(
+                CommodityType.valueOf(createBookingOfferCommandRequest.cargo.commodityType.toUpperCase()),
+                createBookingOfferCommandRequest.cargo.commodityWeightKg,
+                createBookingOfferCommandRequest.cargo.commodityRequestedStorageTemperatureDegC
+            ),
+            containerDimensionType: ContainerDimensionType.valueOf(createBookingOfferCommandRequest.cargo.containerDimensionType.toUpperCase())
+        )
     )
 
     return createBookingOfferCommand

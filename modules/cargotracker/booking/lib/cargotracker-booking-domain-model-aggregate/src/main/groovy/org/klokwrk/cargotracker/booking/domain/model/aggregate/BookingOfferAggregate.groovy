@@ -71,7 +71,7 @@ class BookingOfferAggregate {
       CreateBookingOfferCommand createBookingOfferCommand, MetaData metaData,
       CargoCreatorService cargoCreatorService, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy)
   {
-    Cargo cargo = cargoCreatorService.from(createBookingOfferCommand.containerDimensionType, createBookingOfferCommand.commodity)
+    Cargo cargo = cargoCreatorService.from(createBookingOfferCommand.cargo.containerDimensionType, createBookingOfferCommand.cargo.commodity)
 
     // Check for container TEU count per commodity type.
     // The largest ship in the world can carry 24000 TEU of containers. We should limit container TEU count to the max of 5000 per a single booking, for example.

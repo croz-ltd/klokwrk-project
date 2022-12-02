@@ -17,6 +17,7 @@
  */
 package org.klokwrk.cargotracker.booking.domain.model.command
 
+import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandData
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
@@ -55,6 +56,7 @@ class CreateBookingOfferCommandSpecification extends Specification {
   )
   static Commodity validCommodity = Commodity.make(CommodityType.DRY, 1000, null)
   static ContainerDimensionType validContainerDimensionType = ContainerDimensionType.DIMENSION_ISO_22
+  static CargoCommandData validCargo = new CargoCommandData(commodity: validCommodity, containerDimensionType: validContainerDimensionType)
 
   void "map constructor should work for correct input params"() {
     when:
@@ -63,8 +65,7 @@ class CreateBookingOfferCommandSpecification extends Specification {
         customer: Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),
         bookingOfferId: bookingOfferId,
         routeSpecification: validRouteSpecification,
-        commodity: validCommodity,
-        containerDimensionType: validContainerDimensionType
+        cargo: validCargo
     )
 
     then:
@@ -85,8 +86,7 @@ class CreateBookingOfferCommandSpecification extends Specification {
         customer: customerParam,
         bookingOfferId: bookingOfferIdParam,
         routeSpecification: routeSpecificationParam,
-        commodity: commodityParam,
-        containerDimensionType: containerDimensionTypeParam
+        cargo: new CargoCommandData(commodity: commodityParam, containerDimensionType: containerDimensionTypeParam)
     )
 
     then:
