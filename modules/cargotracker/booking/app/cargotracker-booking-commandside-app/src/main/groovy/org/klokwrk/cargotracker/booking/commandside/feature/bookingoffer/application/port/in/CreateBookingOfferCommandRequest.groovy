@@ -20,12 +20,10 @@ package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applic
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
-import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 import org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint
 import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
 import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
-import org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint
 import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
 import org.klokwrk.lib.validation.group.Level3
@@ -76,21 +74,11 @@ class CreateBookingOfferCommandRequest {
   RouteSpecificationData routeSpecification
 
   /**
-   * Commodity data.
+   * Cargo data.
    * <p/>
    * Must be not {@code null} and valid.
    */
   @Valid
   @NotNull(groups = [Level1])
-  CommodityData commodity
-
-  /**
-   * Container dimension type string corresponding to the names of constants from {@link ContainerDimensionType} enum.
-   * <p/>
-   * Must be not {@code null}, not blank, and correspond to one of constant names (ignoring case) from {@link ContainerDimensionType} enum.
-   */
-  @ValueOfEnumConstraint(enumClass = ContainerDimensionType, groups = [Level3])
-  @TrimmedStringConstraint(groups = [Level2])
-  @NotBlank(groups = [Level1])
-  String containerDimensionType
+  CargoData cargo
 }

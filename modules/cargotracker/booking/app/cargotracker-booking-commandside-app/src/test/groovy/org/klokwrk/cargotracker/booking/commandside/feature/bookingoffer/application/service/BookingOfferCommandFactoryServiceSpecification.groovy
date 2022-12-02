@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.service
 
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.adapter.out.remoting.InMemoryLocationRegistryService
-import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CommodityData
+import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CargoData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.RouteSpecificationData
@@ -61,8 +61,10 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
       departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
       arrivalLatestTime: currentInstantRoundedAndThreeHours
   )
-  static CommodityData validCommodityData = new CommodityData(commodityType: CommodityType.DRY.name(), weightKg: 1000, requestedStorageTemperatureDegC: null)
   static String validContainerDimensionData = "DIMENSION_ISO_22"
+  static CargoData validCargoData = new CargoData(
+      commodityType: CommodityType.DRY.name(), commodityWeightKg: 1000, commodityRequestedStorageTemperatureDegC: null, containerDimensionType: validContainerDimensionData
+  )
 
   BookingOfferCommandFactoryService bookingOfferCommandFactoryService
   LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut
@@ -106,7 +108,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
             arrivalLatestTime: currentInstantRoundedAndThreeHours
         ),
-        commodity: validCommodityData
+        cargo: validCargoData
     )
 
     when:
@@ -136,7 +138,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
             departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam,
             arrivalLatestTime: currentInstantRoundedAndThreeHours
         ),
-        commodity: validCommodityData
+        cargo: validCargoData
     )
 
     when:
@@ -167,7 +169,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
             arrivalLatestTime: arrivalLatestTimeParam
         ),
-        commodity: validCommodityData
+        cargo: validCargoData
     )
 
     when:
@@ -193,8 +195,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "standard-customer@cargotracker.com",
         routeSpecification: validRouteSpecificationData,
-        commodity: validCommodityData,
-        containerDimensionType: validContainerDimensionData
+        cargo: validCargoData
     )
 
     when:
@@ -220,8 +221,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
         userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: bookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
-        commodity: validCommodityData,
-        containerDimensionType: validContainerDimensionData
+        cargo: validCargoData
     )
 
     when:
@@ -245,7 +245,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
         userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: "invalid",
         routeSpecification: validRouteSpecificationData,
-        commodity: validCommodityData
+        cargo: validCargoData
     )
 
     when:

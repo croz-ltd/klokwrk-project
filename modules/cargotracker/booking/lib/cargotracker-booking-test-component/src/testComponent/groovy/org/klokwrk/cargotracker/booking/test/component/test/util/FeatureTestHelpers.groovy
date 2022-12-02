@@ -66,11 +66,11 @@ class FeatureTestHelpers {
             "departureLatestTime": "${ departureLatestTime }",
             "arrivalLatestTime": "${ arrivalLatestTime }"
           },
-          "commodity": {
+          "cargo": {
             "commodityType": "dry",
-            "weightKg": 1000
-          },
-          "containerDimensionType": "DIMENSION_ISO_22"
+            "commodityWeightKg": 1000,
+            "containerDimensionType": "DIMENSION_ISO_22"
+          }
         }
         """
 
@@ -92,12 +92,12 @@ class FeatureTestHelpers {
             "departureLatestTime": "${ departureLatestTime }",
             "arrivalLatestTime": "${ arrivalLatestTime }"
           },
-          "commodity": {
+          "cargo": {
             "commodityType": "chilled",
-            "weightKg": 1000,
-            "requestedStorageTemperatureDegC": 5
-          },
-          "containerDimensionType": "DIMENSION_ISO_22"
+            "commodityWeightKg": 1000,
+            "commodityRequestedStorageTemperatureDegC": 5,
+            "containerDimensionType": "DIMENSION_ISO_22"
+          }
         }
         """
 
@@ -121,12 +121,12 @@ class FeatureTestHelpers {
             "departureLatestTime": "${ departureLatestTime }",
             "arrivalLatestTime": "${ arrivalLatestTime }"
           },
-          "commodity": {
+          "cargo": {
             "commodityType": "chilled",
-            "weightKg": 1000,
-            "requestedStorageTemperatureDegC": 5
-          },
-          "containerDimensionType": "DIMENSION_ISO_22"
+            "commodityWeightKg": 1000,
+            "commodityRequestedStorageTemperatureDegC": 5,
+            "containerDimensionType": "DIMENSION_ISO_22"
+          }
         }
         """
 
@@ -154,11 +154,11 @@ class FeatureTestHelpers {
             "destinationLocation": "NLRTM",
             ${ departureArrivalTimesFragment }
           },
-          "commodity": {
+          "cargo": {
             "commodityType": "dry",
-            "weightKg": 30000
-          },
-          "containerDimensionType": "DIMENSION_ISO_22"
+            "commodityWeightKg": 30000,
+            "containerDimensionType": "DIMENSION_ISO_22"
+          }
         }
         """.toString()
 
@@ -170,11 +170,11 @@ class FeatureTestHelpers {
             "destinationLocation": "DEHAM",
             ${ departureArrivalTimesFragment }
           },
-          "commodity": {
+          "cargo": {
             "commodityType": "air_cooled",
-            "weightKg": 30000
-          },
-          "containerDimensionType": "DIMENSION_ISO_22"
+            "commodityWeightKg": 30000,
+            "containerDimensionType": "DIMENSION_ISO_22"
+          }
         }
         """.toString()
 
@@ -186,11 +186,11 @@ class FeatureTestHelpers {
             "destinationLocation": "USLAX",
             ${ departureArrivalTimesFragment }
           },
-          "commodity": {
+          "cargo": {
             "commodityType": "chilled",
-            "weightKg": 30000
-          },
-          "containerDimensionType": "DIMENSION_ISO_22"
+            "commodityWeightKg": 30000,
+            "containerDimensionType": "DIMENSION_ISO_22"
+          }
         }
         """.toString()
 
@@ -202,11 +202,11 @@ class FeatureTestHelpers {
             "destinationLocation": "USNYC",
             ${ departureArrivalTimesFragment }
           },
-          "commodity": {
+          "cargo": {
             "commodityType": "frozen",
-            "weightKg": 30000
-          },
-          "containerDimensionType": "DIMENSION_ISO_22"
+            "commodityWeightKg": 30000,
+            "containerDimensionType": "DIMENSION_ISO_22"
+          }
         }
         """.toString()
 
@@ -218,11 +218,11 @@ class FeatureTestHelpers {
             "destinationLocation": "USLAX",
             ${ departureArrivalTimesFragment }
           },
-          "commodity": {
+          "cargo": {
             "commodityType": "air_cooled",
-            "weightKg": 70000
-          },
-          "containerDimensionType": "DIMENSION_ISO_22"
+            "commodityWeightKg": 70000,
+            "containerDimensionType": "DIMENSION_ISO_22"
+          }
         }
         """.toString()
 
@@ -234,11 +234,11 @@ class FeatureTestHelpers {
             "destinationLocation": "USNYC",
             ${ departureArrivalTimesFragment }
           },
-          "commodity": {
+          "cargo": {
             "commodityType": "dry",
-            "weightKg": 40000
-          },
-          "containerDimensionType": "DIMENSION_ISO_22"
+            "commodityWeightKg": 40000,
+            "containerDimensionType": "DIMENSION_ISO_22"
+          }
         }
         """.toString()
 
@@ -250,11 +250,11 @@ class FeatureTestHelpers {
             "destinationLocation": "DEHAM",
             ${ departureArrivalTimesFragment }
           },
-          "commodity": {
+          "cargo": {
             "commodityType": "dry",
-            "weightKg": 1000
-          },
-          "containerDimensionType": "DIMENSION_ISO_22"
+            "commodityWeightKg": 1000,
+            "containerDimensionType": "DIMENSION_ISO_22"
+          }
         }
         """.toString()
 
@@ -266,11 +266,11 @@ class FeatureTestHelpers {
             "destinationLocation": "USLAX",
             ${ departureArrivalTimesFragment }
           },
-          "commodity": {
+          "cargo": {
             "commodityType": "dry",
-            "weightKg": 15000
-          },
-          "containerDimensionType": "DIMENSION_ISO_22"
+            "commodityWeightKg": 15000,
+            "containerDimensionType": "DIMENSION_ISO_22"
+          }
         }
         """.toString()
 
@@ -282,11 +282,11 @@ class FeatureTestHelpers {
             "destinationLocation": "USNYC",
             ${ departureArrivalTimesFragment }
           },
-          "commodity": {
+          "cargo": {
             "commodityType": "dry",
-            "weightKg": 100000
-          },
-          "containerDimensionType": "DIMENSION_ISO_22"
+            "commodityWeightKg": 100000,
+            "containerDimensionType": "DIMENSION_ISO_22"
+          }
         }
         """.toString()
 
@@ -298,11 +298,11 @@ class FeatureTestHelpers {
             "destinationLocation": "NLRTM",
             ${ departureArrivalTimesFragment }
           },
-          "commodity": {
+          "cargo": {
             "commodityType": "dry",
-            "weightKg": 45000
-          },
-          "containerDimensionType": "DIMENSION_ISO_22"
+            "commodityWeightKg": 45000,
+            "containerDimensionType": "DIMENSION_ISO_22"
+          }
         }
         """.toString()
 

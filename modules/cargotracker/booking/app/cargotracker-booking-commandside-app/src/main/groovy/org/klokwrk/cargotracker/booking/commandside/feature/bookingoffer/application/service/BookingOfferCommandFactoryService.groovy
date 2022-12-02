@@ -79,11 +79,11 @@ class BookingOfferCommandFactoryService {
             createBookingOfferCommandRequest.routeSpecification.arrivalLatestTime, clock
         ),
         commodity: Commodity.make(
-            CommodityType.valueOf(createBookingOfferCommandRequest.commodity.commodityType.toUpperCase()),
-            createBookingOfferCommandRequest.commodity.weightKg,
-            createBookingOfferCommandRequest.commodity.requestedStorageTemperatureDegC
+            CommodityType.valueOf(createBookingOfferCommandRequest.cargo.commodityType.toUpperCase()),
+            createBookingOfferCommandRequest.cargo.commodityWeightKg,
+            createBookingOfferCommandRequest.cargo.commodityRequestedStorageTemperatureDegC
         ),
-        containerDimensionType: ContainerDimensionType.valueOf(createBookingOfferCommandRequest.containerDimensionType.toUpperCase())
+        containerDimensionType: ContainerDimensionType.valueOf(createBookingOfferCommandRequest.cargo.containerDimensionType.toUpperCase())
     )
 
     return createBookingOfferCommand

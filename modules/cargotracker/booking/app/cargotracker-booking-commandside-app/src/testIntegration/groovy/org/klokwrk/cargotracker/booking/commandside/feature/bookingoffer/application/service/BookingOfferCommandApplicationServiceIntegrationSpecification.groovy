@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.service
 
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFixtureBuilder
-import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CommodityData
+import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CargoData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandPortIn
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponse
@@ -68,8 +68,7 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
             departureEarliestTime: currentInstantAndOneHour, departureLatestTime: currentInstantAndTwoHours,
             arrivalLatestTime: currentInstantAndThreeHours
         ),
-        commodity: new CommodityData(commodityType: CommodityType.DRY.name(), weightKg: 1000),
-        containerDimensionType: "DIMENSION_ISO_22"
+        cargo: new CargoData(commodityType: CommodityType.DRY.name(), commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22")
     )
     Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
 

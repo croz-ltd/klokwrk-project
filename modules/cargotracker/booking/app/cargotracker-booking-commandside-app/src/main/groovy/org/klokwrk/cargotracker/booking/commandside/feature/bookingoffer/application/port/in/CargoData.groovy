@@ -21,6 +21,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
+import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint
@@ -35,13 +36,13 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 /**
- * DTO encapsulating commodity data pieces gathered from external ports/adapters.
+ * DTO encapsulating cargo data pieces gathered from external ports/adapters.
  */
-@GroupSequence([CommodityData, Level1, Level2, Level3])
+@GroupSequence([CargoData, Level1, Level2, Level3])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
-class CommodityData {
+class CargoData {
   /**
    * Commodity type string corresponding to the names of constants from {@link CommodityType} enum.
    * <p/>
@@ -59,10 +60,10 @@ class CommodityData {
    */
   @Min(value = 1L, groups = [Level2])
   @NotNull(groups = [Level1])
-  Integer weightKg
+  Integer commodityWeightKg
 
   /**
-   * The requested storage temperature in Celsius degree.
+   * The requested storage temperature in Celsius degree for a commodity.
    * <p/>
    * Definite storage temperature validation is done by business logic, and it depends on the supported temperature range of the selected commodity type.
    * <p/>
@@ -71,5 +72,15 @@ class CommodityData {
    */
   @Max(value = 30L, groups = [Level2])
   @Min(value = -30L, groups = [Level2])
-  Integer requestedStorageTemperatureDegC
+  Integer commodityRequestedStorageTemperatureDegC
+
+  /**
+   * Container dimension type string corresponding to the names of constants from {@link ContainerDimensionType} enum.
+   * <p/>
+   * Must be not {@code null}, not blank, and correspond to one of constant names (ignoring case) from {@link ContainerDimensionType} enum.
+   */
+  @ValueOfEnumConstraint(enumClass = ContainerDimensionType, groups = [Level3])
+  @TrimmedStringConstraint(groups = [Level2])
+  @NotBlank(groups = [Level1])
+  String containerDimensionType
 }
