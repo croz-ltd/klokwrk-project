@@ -81,21 +81,21 @@ class BookingOfferSummarySearchAllQueryRequest {
 
   @SuppressWarnings("unused")
   @Min(groups = [Level1], value = 1L)
-  Integer commodityTotalWeightKgFromIncluding
+  Integer totalCommodityWeightKgFromIncluding
 
   // Here we should validate if ToIncluding is greater than or equal to FromIncluding.
   // However, as the only consequence is execution of a single query returning an empty result we didn't implement this check.
   @SuppressWarnings("unused")
   @Min(groups = [Level1], value = 1L)
-  Integer commodityTotalWeightKgToIncluding
+  Integer totalCommodityWeightKgToIncluding
 
   @SuppressWarnings("unused")
   @Min(groups = [Level1], value = 0L)
-  BigDecimal commodityTotalContainerTeuCountFromIncluding
+  BigDecimal totalContainerTeuCountFromIncluding
 
   @SuppressWarnings("unused")
   @Min(groups = [Level1], value = 0L)
-  BigDecimal commodityTotalContainerTeuCountToIncluding
+  BigDecimal totalContainerTeuCountToIncluding
 
   @SuppressWarnings("unused")
   Instant firstEventRecordedAtFromIncluding

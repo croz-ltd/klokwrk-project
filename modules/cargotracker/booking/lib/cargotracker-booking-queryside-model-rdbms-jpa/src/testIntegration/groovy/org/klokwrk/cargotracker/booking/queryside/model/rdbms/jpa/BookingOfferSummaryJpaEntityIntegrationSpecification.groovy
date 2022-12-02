@@ -87,9 +87,9 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
         arrivalLatestTime: currentInstant.plus(20, ChronoUnit.HOURS),
 
         commodityTypes: [CommodityType.DRY].toSet(),
-        commodityTotalWeight: "1000 kg",
-        commodityTotalWeightKg: 1000,
-        commodityTotalContainerTeuCount: 2.00G,
+        totalCommodityWeight: "1000 kg",
+        totalCommodityWeightKg: 1000,
+        totalContainerTeuCount: 2.00G,
 
         inboundChannelName: "inboundChannelName",
         inboundChannelType: "inboundChannelType",

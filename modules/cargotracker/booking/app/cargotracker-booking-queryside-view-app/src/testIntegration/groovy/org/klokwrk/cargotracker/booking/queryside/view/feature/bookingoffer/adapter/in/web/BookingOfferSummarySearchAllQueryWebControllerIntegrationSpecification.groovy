@@ -89,8 +89,8 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
         userIdentifier: "standard-customer@cargotracker.com",
         customerTypeSearchList: [CustomerType.STANDARD, CustomerType.GOLD],
         originLocationName: "Rijeka",
-        commodityTotalWeightKgFromIncluding: 5_000,
-        commodityTotalWeightKgToIncluding: 50_000
+        totalCommodityWeightKgFromIncluding: 5_000,
+        totalCommodityWeightKgToIncluding: 50_000
     ])
 
     when:
@@ -141,8 +141,8 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
           customerType == CustomerType.STANDARD.name()
           originLocationName == "Rijeka"
           destinationLocationName == "Los Angeles"
-          commodityTotalWeight == "15000 kg"
-          commodityTotalContainerTeuCount == 1.00G
+          totalCommodityWeight == "15000 kg"
+          totalContainerTeuCount == 1.00G
           lastEventSequenceNumber == 0
         }
       }

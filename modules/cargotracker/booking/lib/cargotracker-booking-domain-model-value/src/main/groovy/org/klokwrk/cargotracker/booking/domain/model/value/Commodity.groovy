@@ -18,170 +18,150 @@
 package org.klokwrk.cargotracker.booking.domain.model.value
 
 import groovy.transform.CompileStatic
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
+import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
-import tech.units.indriya.ComparableQuantity
 import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
-import java.math.MathContext
+import javax.measure.quantity.Temperature
 import java.math.RoundingMode
 
 import static org.hamcrest.Matchers.notNullValue
 
 /**
- * Encapsulates all attributes for a commodity, including the assigned container type.
- * <p/>
- * All attributes can be calculated from {@link ContainerDimensionType} and {@link CommodityInfo}, as demonstrated in {@code BookingOfferAggregate}.
- * <p/>
- * Attributes of {@code Quantity<Mass>} type must have {@code Units.KILOGRAM} unit and a whole number value.
+ * The commodity of a cargo.
  */
 @KwrkImmutable(knownImmutableClasses = [Quantity])
 @CompileStatic
 class Commodity implements PostMapConstructorCheckable {
   /**
-   * ContainerType associated with this Commodity.
+   * Type of commodity.
    * <p/>
-   * Must not be {@code null}.<br/>
-   * Must be {@code containerType.featuresType == commodityInfo.commodityType.containerFeaturesType}.<br/>
+   * Must not be {@code null}.
    */
-  ContainerType containerType
+  CommodityType commodityType
 
   /**
-   * Base attributes of this commodity.
+   * The weight of commodity.
    * <p/>
-   * Must not be {@code null}.<br/>
-   * Must be {@code containerType.featuresType == commodityInfo.commodityType.containerFeaturesType}.<br/>
+   * This weight might exceed what a single container can carry (in that case, multiple containers will be allocated based on this commodity).
+   * <p/>
+   * Must not be {@code null}, and must be at least 1 kg or greater. It must be specified in kilogram units and a value must be the whole number.
+   * For conversion from other {@code Mass} units, and for a conversion of decimal numbers, use {@code make()} factory methods.
    */
-  CommodityInfo commodityInfo
+  Quantity<Mass> weight
 
   /**
-   * The maximally allowed weight per container for this commodity (usually dictated by some policy).
+   * Requested storage temperature for a commodity.
    * <p/>
-   * Note that this weight is always lesser than or equal to the maximally allowed weight of corresponding {@code containerType}. It can be lesser if some policy dictates that we should not reach
-   * the absolute maximum of the {@code containerType}.
+   * Whether it is necessary depends on the commodity type. If commodity type supports storage temperature, {@code requestedStorageTemperature} must be inside of temperature range boundaries of the
+   * corresponding commodity type.
    * <p/>
-   * Must not be {@code null}.<br/>
-   * Must be greater than or equal to one kilogram.<br/>
-   * Must be less than or equal to {@code containerType.maxCommodityWeight}.<br/>
-   * Must be greater than or equal to {@code maxRecommendedWeightPerContainer}.<br/>
-   * Must have a kilogram units and a whole number value.<br/>
+   * When using factory {@code make()} methods, if not provided, the requested storage temperature is populated from the recommended storage temperature of the corresponding commodity type that
+   * supports storage temperature.
+   * <p/>
+   * Map constructor will throw an {@code DomainException} when {@code requestedStorageTemperature} is non-null and {@code commodityType} does not support storage temperature
+   * ({@code commodityType.containerFeaturesType.isContainerTemperatureControlled()} returns {@code false}).
    */
-  Quantity<Mass> maxAllowedWeightPerContainer
+  Quantity<Temperature> requestedStorageTemperature
+
+  static Commodity make(CommodityType commodityType, Quantity<Mass> weight) {
+    Commodity commodity = make(commodityType, weight, null)
+    return commodity
+  }
 
   /**
-   * The maximum recommended weight per container.
+   * The main factory method for creating {@code Commodity} instance (all other {@code make()} factory methods delegate to this one).
    * <p/>
-   * This value is calculated when we spread the total weight of a commodity across all containers. In other words, this value is the rounded up quotient of commodity total weight and the number of
-   * containers.
-   * <p/>
-   * Must not be {@code null}.<br/>
-   * Must be greater than or equal to one kilogram.<br/>
-   * Must be less than or equal to {@code maxAllowedWeightPerContainer}.<br/>
-   * Must have a kilogram units and a whole number value.<br/>
-   * Must be {@code maxRecommendedWeightPerContainer.value * containerCount >= commodityInfo.weight.value}.<br/>
+   * The only optional parameter (can be provided as {@code null}) is {@code requestedStorageTemperature}. When {@code null}, the actual {code requestedStorageTemperature} of the instance is set to
+   * the {@code recommendedStorageTemperature} of provided {@code commodityType}. Note that the {@code recommendedStorageTemperature} of {@code commodityType} can be {@code null}.
    */
-  Quantity<Mass> maxRecommendedWeightPerContainer
-
-  /**
-   * The number of containers required to carry the total weight of a commodity.
-   * <p/>
-   * During calculation, maxAllowedWeightPerContainer is taken into account.
-   * <p/>
-   * Note that in shipping containerCount is just informal information. On the other side, TEU count is much more valuable as it is used for determining container size.
-   * <p/>
-   * Must not be {@code null}.<br/>
-   * Must be greater than or equal to {@code 1}.<br/>
-   */
-  Integer containerCount
-
-  /**
-   * The number of containers expressed as Twenty-foot Equivalent Units (TEU).
-   * <p/>
-   * Must not be {@code null}.<br/>
-   * Must have a {@code scale} between 0 and 2 inclusive.<br/>
-   * Must be equal to {@code containerCount * containerType.dimensionType.teu} rounded up to two decimals.<br/>
-   */
-  BigDecimal containerTeuCount
-
-  /**
-   * Creates {@code Commodity} instance based on required properties and calculates derived properties.
-   * <p/>
-   * It is recommended to always use this factory method instead of map constructor because map constructor requires that all derived values are correctly precalculated.
-   * <p/>
-   * When {@code maxAllowedWeightPerContainer} parameter is null, {@code maxAllowedWeightPerContainer} is equal to the {@code containerType.maxCommodityWeight}.
-   */
-  @SuppressWarnings("CodeNarc.DuplicateNumberLiteral")
-  static Commodity make(ContainerType containerType, CommodityInfo commodityInfo, Quantity<Mass> maxAllowedWeightPerContainer = null) {
-    BigDecimal weightValueKg = commodityInfo.weight.value
-    Quantity<Mass> maxAllowedWeightPerContainerKg = maxAllowedWeightPerContainer?.to(Units.KILOGRAM)
-    if (maxAllowedWeightPerContainerKg == null) {
-      maxAllowedWeightPerContainerKg = containerType.maxCommodityWeight.to(Units.KILOGRAM)
+  static Commodity make(CommodityType commodityType, Quantity<Mass> weight, Quantity<Temperature> requestedStorageTemperature) {
+    Quantity<Temperature> requestedStorageTemperatureToUse = requestedStorageTemperature
+    if (commodityType != null && commodityType.isStorageTemperatureLimited() && requestedStorageTemperature == null) {
+      requestedStorageTemperatureToUse = commodityType.recommendedStorageTemperature
     }
 
-    MathContext mathContext = new MathContext(7, RoundingMode.HALF_UP)
+    BigDecimal weightValueToUse = weight.to(Units.KILOGRAM).value.toBigDecimal().setScale(0, RoundingMode.UP)
+    Quantity<Mass> weightToUse = Quantities.getQuantity(weightValueToUse, Units.KILOGRAM)
 
-    Integer containerCount = weightValueKg
-        .divide(maxAllowedWeightPerContainerKg.value.toBigDecimal(), mathContext)
-        .setScale(0, RoundingMode.UP)
-        .toInteger()
+    Commodity commodity = new Commodity(commodityType: commodityType, weight: weightToUse, requestedStorageTemperature: requestedStorageTemperatureToUse)
+    return commodity
+  }
 
-    Integer maxRecommendedWeightPerContainerValueKg = weightValueKg
-        .divide(containerCount.toBigDecimal(), mathContext)
-        .setScale(0, RoundingMode.UP)
-        .toInteger()
+  static Commodity make(CommodityType commodityType, Integer weightInKilograms) {
+    Commodity commodity = make(commodityType, weightInKilograms, null)
+    return commodity
+  }
 
-    Quantity<Mass> maxRecommendedWeightPerContainerKg = Quantities.getQuantity(maxRecommendedWeightPerContainerValueKg, Units.KILOGRAM)
-
-    MathContext anotherMathContext = new MathContext(7, RoundingMode.UP)
-    BigDecimal containerTeuCount = (containerCount * containerType.dimensionType.teu).round(anotherMathContext).setScale(2, RoundingMode.UP)
-
-    Commodity commodity = new Commodity(
-        containerType: containerType,
-        commodityInfo: commodityInfo,
-        maxAllowedWeightPerContainer: maxAllowedWeightPerContainerKg,
-        maxRecommendedWeightPerContainer: maxRecommendedWeightPerContainerKg,
-        containerCount: containerCount,
-        containerTeuCount: containerTeuCount
+  static Commodity make(CommodityType commodityType, Integer weightInKilograms, Integer requestedStorageTemperatureDegC) {
+    Commodity commodity = make(
+        commodityType,
+        Quantities.getQuantity(weightInKilograms, Units.KILOGRAM),
+        requestedStorageTemperatureDegC == null ? null : Quantities.getQuantity(requestedStorageTemperatureDegC, Units.CELSIUS)
     )
 
     return commodity
   }
 
-  @SuppressWarnings(["CodeNarc.AbcMetric", "CodeNarc.DuplicateNumberLiteral"])
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
-    requireMatch(containerType, notNullValue())
-    requireMatch(commodityInfo, notNullValue())
-    requireMatch(maxAllowedWeightPerContainer, notNullValue())
-    requireMatch(maxRecommendedWeightPerContainer, notNullValue())
-    requireMatch(containerCount, notNullValue())
-    requireMatch(containerTeuCount, notNullValue())
+    requireMatch(commodityType, notNullValue())
+    requireMatch(weight, notNullValue())
 
-    requireTrue(containerType.featuresType == commodityInfo.commodityType.containerFeaturesType)
+    requireTrue(Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(weight))
+    requireTrue(weight.unit == Units.KILOGRAM)
+    requireTrue(weight.value.toBigDecimal().scale() == 0)
 
-    requireTrue(Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(maxAllowedWeightPerContainer))
-    requireTrue(((ComparableQuantity)containerType.maxCommodityWeight).isGreaterThanOrEqualTo(maxAllowedWeightPerContainer))
+    requireNullRequestedStorageTemperatureWhenNotAllowed(requestedStorageTemperature, commodityType)
 
-    requireTrue(Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(maxRecommendedWeightPerContainer))
-    requireTrue(((ComparableQuantity)maxAllowedWeightPerContainer).isGreaterThanOrEqualTo(maxRecommendedWeightPerContainer))
+    requireTrue(isRequestedStorageTemperatureAvailableWhenNeeded(requestedStorageTemperature, commodityType))
+    requireRequestedStorageTemperatureInAllowedRange(requestedStorageTemperature, commodityType)
+  }
 
-    // Note: all weights have to be in kilograms and rounded (without decimal part).
-    requireTrue(maxAllowedWeightPerContainer.unit == Units.KILOGRAM)
-    requireTrue(maxAllowedWeightPerContainer.value.toBigDecimal().scale() == 0)
+  private void requireNullRequestedStorageTemperatureWhenNotAllowed(Quantity<Temperature> requestedStorageTemperature, CommodityType commodityType) {
+    if (requestedStorageTemperature != null && !commodityType.containerFeaturesType.isContainerTemperatureControlled()) {
+      String messageKey = "commodity.requestedStorageTemperatureNotAllowedForCommodityType"
+      List<String> messageParams = [commodityType.name()]
+      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey(messageKey, messageParams))
+    }
+  }
 
-    requireTrue(maxRecommendedWeightPerContainer.unit == Units.KILOGRAM)
-    requireTrue(maxRecommendedWeightPerContainer.value.toBigDecimal().scale() == 0)
+  private Boolean isRequestedStorageTemperatureAvailableWhenNeeded(Quantity<Temperature> requestedStorageTemperature, CommodityType commodityType) {
+    if (commodityType.containerFeaturesType.isContainerTemperatureControlled() && requestedStorageTemperature == null) {
+      return false
+    }
 
-    requireTrue(containerCount >= 1)
-    requireTrue(containerTeuCount.scale() <= 2)
-    requireTrue(containerTeuCount.scale() >= 0)
+    return true
+  }
 
-    MathContext mathContext = new MathContext(7, RoundingMode.UP)
-    requireTrue(containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))
+  private void requireRequestedStorageTemperatureInAllowedRange(Quantity<Temperature> requestedStorageTemperature, CommodityType commodityType) {
+    if (commodityType.isStorageTemperatureLimited() && (!commodityType.isStorageTemperatureAllowed(requestedStorageTemperature))) {
+      String messageKey
+      switch (commodityType) {
+        case CommodityType.AIR_COOLED:
+          messageKey = "commodity.requestedStorageTemperatureNotInAllowedRangeForAirCooledCommodityType"
+          break
+        case CommodityType.CHILLED:
+          messageKey = "commodity.requestedStorageTemperatureNotInAllowedRangeForChilledCommodityType"
+          break
+        case CommodityType.FROZEN:
+          messageKey = "commodity.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
+          break
+        default:
+          // As we are switching over enum values, just make sure that we are not missing some of them.
+          throw new AssertionError("Unexpected CommodityType value: [value: ${ commodityType.name() }]", null)
+      }
 
-    requireTrue((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= (commodityInfo.weight.value.toBigDecimal()))
+      String minRangeBound = commodityType.storageTemperatureRange.minimum.value.toInteger()
+      String maxRangeBound = commodityType.storageTemperatureRange.maximum.value.toInteger()
+      List<String> messageParams = [minRangeBound, maxRangeBound]
+
+      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey(messageKey, messageParams))
+    }
   }
 }

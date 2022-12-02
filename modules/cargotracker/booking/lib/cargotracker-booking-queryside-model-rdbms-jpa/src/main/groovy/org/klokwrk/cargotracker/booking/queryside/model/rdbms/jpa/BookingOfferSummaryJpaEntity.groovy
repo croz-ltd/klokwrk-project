@@ -97,12 +97,12 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Column(nullable = false, name = "commodity_type")
   Set<CommodityType> commodityTypes
 
-  @Column(nullable = false) String commodityTotalWeight
+  @Column(nullable = false) String totalCommodityWeight
 
-  // commodityTotalWeightKg should be used only for easier and more flexible searching. Should not be used in returned results.
-  @Column(nullable = false) Integer commodityTotalWeightKg
+  // totalCommodityWeightKg should be used only for easier and more flexible searching. Should not be used in returned results.
+  @Column(nullable = false) Integer totalCommodityWeightKg
 
-  @Column(nullable = false, precision = 8, scale = 2) BigDecimal commodityTotalContainerTeuCount
+  @Column(nullable = false, precision = 8, scale = 2) BigDecimal totalContainerTeuCount
 
   @Column(nullable = false) String inboundChannelName
   @Column(nullable = false) String inboundChannelType
@@ -135,12 +135,12 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
     requireMatch(commodityTypes, not(empty()))
     requireMatch(commodityTypes, everyItem(not(emptyOrNullString())))
 
-    requireMatch(commodityTotalWeightKg, notNullValue())
-    requireMatch(commodityTotalWeightKg, greaterThanOrEqualTo(1))
+    requireMatch(totalCommodityWeightKg, notNullValue())
+    requireMatch(totalCommodityWeightKg, greaterThanOrEqualTo(1))
 
-    requireMatch(commodityTotalContainerTeuCount, notNullValue())
-    requireMatch(commodityTotalContainerTeuCount, greaterThanOrEqualTo(1.0G))
-    requireMatch(commodityTotalContainerTeuCount.scale(), lessThanOrEqualTo(2))
+    requireMatch(totalContainerTeuCount, notNullValue())
+    requireMatch(totalContainerTeuCount, greaterThanOrEqualTo(1.0G))
+    requireMatch(totalContainerTeuCount.scale(), lessThanOrEqualTo(2))
 
     requireMatch(inboundChannelName, not(emptyOrNullString()))
     requireMatch(inboundChannelType, not(emptyOrNullString()))

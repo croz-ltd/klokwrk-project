@@ -23,8 +23,9 @@ import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applica
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.out.LocationByUnLoCodeQueryPortOut
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
+import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandData
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 import org.klokwrk.cargotracker.booking.domain.model.value.Customer
@@ -78,12 +79,14 @@ class BookingOfferCommandFactoryService {
             createBookingOfferCommandRequest.routeSpecification.departureEarliestTime, createBookingOfferCommandRequest.routeSpecification.departureLatestTime,
             createBookingOfferCommandRequest.routeSpecification.arrivalLatestTime, clock
         ),
-        commodityInfo: CommodityInfo.make(
-            CommodityType.valueOf(createBookingOfferCommandRequest.commodityInfo.commodityType.toUpperCase()),
-            createBookingOfferCommandRequest.commodityInfo.weightKg,
-            createBookingOfferCommandRequest.commodityInfo.requestedStorageTemperatureDegC
-        ),
-        containerDimensionType: ContainerDimensionType.valueOf(createBookingOfferCommandRequest.containerDimensionType.toUpperCase())
+        cargo: new CargoCommandData(
+            commodity: Commodity.make(
+                CommodityType.valueOf(createBookingOfferCommandRequest.cargo.commodityType.toUpperCase()),
+                createBookingOfferCommandRequest.cargo.commodityWeightKg,
+                createBookingOfferCommandRequest.cargo.commodityRequestedStorageTemperatureDegC
+            ),
+            containerDimensionType: ContainerDimensionType.valueOf(createBookingOfferCommandRequest.cargo.containerDimensionType.toUpperCase())
+        )
     )
 
     return createBookingOfferCommand
@@ -125,10 +128,10 @@ class BookingOfferCommandFactoryService {
             departureEarliestTime: bookingOfferAggregate.routeSpecification.departureEarliestTime, departureLatestTime: bookingOfferAggregate.routeSpecification.departureLatestTime,
             arrivalLatestTime: bookingOfferAggregate.routeSpecification.arrivalLatestTime
         ],
-        bookingOfferCommodities: [
-            commodityTypeToCommodityMap: bookingOfferAggregate.bookingOfferCommodities.commodityTypeToCommodityMap,
-            totalCommodityWeight: bookingOfferAggregate.bookingOfferCommodities.totalCommodityWeight,
-            totalContainerTeuCount: bookingOfferAggregate.bookingOfferCommodities.totalContainerTeuCount
+        bookingOfferCargos: [
+            commodityTypeToCargoMap: bookingOfferAggregate.bookingOfferCargos.commodityTypeToCargoMap,
+            totalCommodityWeight: bookingOfferAggregate.bookingOfferCargos.totalCommodityWeight,
+            totalContainerTeuCount: bookingOfferAggregate.bookingOfferCargos.totalContainerTeuCount
         ]
     )
 

@@ -29,5 +29,5 @@ class CreateBookingOfferCommandResponse {
   Map<String, ?> customer
   Map<String, ?> bookingOfferId
   Map<String, ?> routeSpecification
-  Map<String, ?> bookingOfferCommodities
+  Map<String, ?> bookingOfferCargos
 }

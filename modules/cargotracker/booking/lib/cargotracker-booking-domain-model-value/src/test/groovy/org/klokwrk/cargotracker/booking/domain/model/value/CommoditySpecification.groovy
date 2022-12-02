@@ -17,260 +17,313 @@
  */
 package org.klokwrk.cargotracker.booking.domain.model.value
 
+import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
+import org.objenesis.ObjenesisHelper
 import spock.lang.Specification
+import tech.units.indriya.quantity.QuantityRange
 
+import javax.measure.Quantity
+import javax.measure.quantity.Mass
+import java.lang.reflect.Field
+
+import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.CHILLED
+import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.AIR_COOLED
 import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.DRY
-import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_12G1
-import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_22G1
-import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_22R1_STANDARD_REEFER
-import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_42G1
+import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.FROZEN
 import static tech.units.indriya.quantity.Quantities.getQuantity
+import static tech.units.indriya.unit.Units.CELSIUS
 import static tech.units.indriya.unit.Units.GRAM
 import static tech.units.indriya.unit.Units.KILOGRAM
 
 class CommoditySpecification extends Specification {
+  static Quantity<Mass> oneKilogram = getQuantity(1, KILOGRAM)
 
-  void "map constructor should work for correct parameters"() {
+  void "map constructor should work for correct requestedStorageTemperature param"() {
     when:
-    Commodity commodity = new Commodity(
-        containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 2_000),
-        maxAllowedWeightPerContainer: getQuantity(2_200, KILOGRAM),
-        maxRecommendedWeightPerContainer: getQuantity(2_000, KILOGRAM),
-        containerCount: 1,
-        containerTeuCount: 1
-    )
+    Commodity commodity = new Commodity(commodityType: commodityTypeParam, weight: oneKilogram, requestedStorageTemperature: requestedStorageTemperatureParam)
 
     then:
     commodity
-  }
-
-  void "map constructor should fail for invalid combination of containerType and commodityInfo"() {
-    when:
-    new Commodity(
-        containerType: TYPE_ISO_22R1_STANDARD_REEFER, // It should be TYPE_ISO_22G1, for example.
-        commodityInfo: CommodityInfo.make(DRY, 2_000),
-        maxAllowedWeightPerContainer: getQuantity(2_200, KILOGRAM),
-        maxRecommendedWeightPerContainer: getQuantity(2_000, KILOGRAM),
-        containerCount: 1,
-        containerTeuCount: 1
-    )
-
-    then:
-    AssertionError assertionError = thrown()
-    assertionError.message.endsWith("boolean condition is false - [condition: (containerType.featuresType == commodityInfo.commodityType.containerFeaturesType)]")
-  }
-
-  void "map constructor should fail for invalid combination of containerType and maxAllowedWeightPerContainer"() {
-    when:
-    new Commodity(
-        containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 20_000),
-        maxAllowedWeightPerContainer: getQuantity(30_000, KILOGRAM), // It should be <= containerType.maxCommodityWeight.
-        maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
-        containerCount: 1,
-        containerTeuCount: 1
-    )
-
-    then:
-    AssertionError assertionError = thrown()
-    assertionError.message.endsWith("boolean condition is false - [condition: (ComparableQuantity) containerType.maxCommodityWeight.isGreaterThanOrEqualTo(maxAllowedWeightPerContainer)]")
-  }
-
-  void "map constructor should fail for invalid combination of commodityInfo and maxRecommendedWeightPerContainer"() {
-    when:
-    new Commodity(
-        containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 20_000),
-        maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
-        maxRecommendedWeightPerContainer: getQuantity(19_000, KILOGRAM), // It should be >= commodityInfo.totalWeight.
-        containerCount: 1,
-        containerTeuCount: 1
-    )
-
-    then:
-    AssertionError assertionError = thrown()
-    assertionError.message.endsWith("[condition: ((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= commodityInfo.weight.value.toBigDecimal())]")
-  }
-
-  void "map constructor should fail for invalid combination of commodityInfo and containerCount"() {
-    when:
-    new Commodity(
-        containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 50_000),
-        maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
-        maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
-        containerCount: 2, // It should be 3 or more.
-        containerTeuCount: 2
-    )
-
-    then:
-    AssertionError assertionError = thrown()
-    assertionError.message.endsWith("[condition: ((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= commodityInfo.weight.value.toBigDecimal())]")
-  }
-
-  void "map constructor should fail for invalid units of maxAllowedWeightPerContainer"() {
-    when:
-    new Commodity(
-        containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 20_000),
-        maxAllowedWeightPerContainer: getQuantity(21_000_000, GRAM),
-        maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
-        containerCount: 1,
-        containerTeuCount: 1
-    )
-
-    then:
-    AssertionError assertionError = thrown()
-    assertionError.message.endsWith("boolean condition is false - [condition: (maxAllowedWeightPerContainer.unit == Units.KILOGRAM)]")
-  }
-
-  void "map constructor should fail for invalid values of maxAllowedWeightPerContainer"() {
-    when:
-    new Commodity(
-        containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 20_000),
-        maxAllowedWeightPerContainer: getQuantity(21_000.1, KILOGRAM),
-        maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
-        containerCount: 1,
-        containerTeuCount: 1
-    )
-
-    then:
-    AssertionError assertionError = thrown()
-    assertionError.message.endsWith("boolean condition is false - [condition: (maxAllowedWeightPerContainer.value.toBigDecimal().scale() == 0)]")
-  }
-
-  void "map constructor should fail for invalid units of maxRecommendedWeightPerContainer"() {
-    when:
-    new Commodity(
-        containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 20_000),
-        maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
-        maxRecommendedWeightPerContainer: getQuantity(20_000_000, GRAM),
-        containerCount: 1,
-        containerTeuCount: 1
-    )
-
-    then:
-    AssertionError assertionError = thrown()
-    assertionError.message.endsWith("boolean condition is false - [condition: (maxRecommendedWeightPerContainer.unit == Units.KILOGRAM)]")
-  }
-
-  void "map constructor should fail for invalid values of maxRecommendedWeightPerContainer"() {
-    when:
-    new Commodity(
-        containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 20_000),
-        maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
-        maxRecommendedWeightPerContainer: getQuantity(20_000.1, KILOGRAM),
-        containerCount: 1,
-        containerTeuCount: 1
-    )
-
-    then:
-    AssertionError assertionError = thrown()
-    assertionError.message.endsWith("boolean condition is false - [condition: (maxRecommendedWeightPerContainer.value.toBigDecimal().scale() == 0)]")
-  }
-
-  void "map constructor should fail for invalid value of containerTeuCount"() {
-    when:
-    new Commodity(
-        containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, 20_000),
-        maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
-        maxRecommendedWeightPerContainer: getQuantity(20_000, KILOGRAM),
-        containerCount: 1,
-        containerTeuCount: containerTeuCountParam
-    )
-
-    then:
-    AssertionError assertionError = thrown()
-    assertionError.message.endsWith("boolean condition is false - $messageEndParam")
+    commodity.requestedStorageTemperature == requestedStorageTemperatureParam
 
     where:
-    containerTeuCountParam | messageEndParam
-    1.001                  | "[condition: (containerTeuCount.scale() <= 2)]"
-    new BigDecimal(1G, -3) | "[condition: (containerTeuCount.scale() >= 0)]"
-    1.5                    | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))]"
-    1.01                   | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))]"
-    0.5                    | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))]"
-    0.91                   | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))]"
-    0.99                   | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))]"
+    commodityTypeParam | requestedStorageTemperatureParam
+    DRY                | null
+
+    AIR_COOLED         | getQuantity(2, CELSIUS)
+    AIR_COOLED         | getQuantity(8, CELSIUS)
+    AIR_COOLED         | getQuantity(12, CELSIUS)
+
+    CHILLED            | getQuantity(-2, CELSIUS)
+    CHILLED            | getQuantity(3, CELSIUS)
+    CHILLED            | getQuantity(6, CELSIUS)
+
+    FROZEN             | getQuantity(-20, CELSIUS)
+    FROZEN             | getQuantity(-15, CELSIUS)
+    FROZEN             | getQuantity(-8, CELSIUS)
   }
 
-  void "make() method should work as expected for standard 10ft container"() {
+  void "map constructor should work for correct weight param"() {
+    when:
+    Commodity commodity = new Commodity(commodityType: DRY, weight: weightParam, requestedStorageTemperature: null)
+
+    then:
+    commodity
+    commodity.weight.value.toBigDecimal() == weightValueParam
+
+    where:
+    weightParam                        | weightValueParam
+    getQuantity(1, KILOGRAM)           | 1G
+    getQuantity(1000, KILOGRAM)        | 1000G
+    getQuantity(1000.0, KILOGRAM)      | 1000G
+    getQuantity(1000.000000, KILOGRAM) | 1000G
+  }
+
+  void "map constructor should fail for null input params"() {
+    when:
+    new Commodity(commodityType: commodityTypeParam, weight: weightParam, requestedStorageTemperature: requestedStorageTemperatureParam)
+
+    then:
+    AssertionError assertionError = thrown()
+    assertionError.message.contains("notNullValue")
+
+    where:
+    commodityTypeParam | weightParam              | requestedStorageTemperatureParam
+    null               | getQuantity(1, KILOGRAM) | getQuantity(1, CELSIUS)
+    DRY                | null                     | getQuantity(1, CELSIUS)
+  }
+
+  void "map constructor should fail when weight is less than one kilogram"() {
+    when:
+    new Commodity(commodityType: DRY, weight: getQuantity(weightValueParam, KILOGRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
+
+    then:
+    AssertionError assertionError = thrown()
+    assertionError.message.contains("boolean condition is false - [condition: Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(weight)]")
+
+    where:
+    weightValueParam | _
+    0                | _
+    0.1              | _
+    -1               | _
+  }
+
+  void "map constructor should fail when weight is not in kilograms"() {
+    when:
+    new Commodity(commodityType: DRY, weight: getQuantity(1500, GRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
+
+    then:
+    AssertionError assertionError = thrown()
+    assertionError.message == "Require violation detected - boolean condition is false - [condition: (weight.unit == Units.KILOGRAM)]"
+  }
+
+  void "map constructor should fail when weight value is not a whole number"() {
+    when:
+    new Commodity(commodityType: DRY, weight: getQuantity(10.5, KILOGRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
+
+    then:
+    AssertionError assertionError = thrown()
+    assertionError.message == "Require violation detected - boolean condition is false - [condition: (weight.value.toBigDecimal().scale() == 0)]"
+  }
+
+  void "map constructor should fail for non-null requestedStorageTemperature for commodity types that do not support storage temperature"() {
+    when:
+    new Commodity(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
+
+    then:
+    DomainException domainException = thrown()
+    domainException.message == "Bad Request"
+    domainException.violationInfo.violationCode.code == "400"
+    domainException.violationInfo.violationCode.resolvableMessageKey == "commodity.requestedStorageTemperatureNotAllowedForCommodityType"
+    domainException.violationInfo.violationCode.resolvableMessageParameters == resolvableMessageParametersParam
+
+    where:
+    commodityTypeParam | requestedStorageTemperatureParam | resolvableMessageParametersParam
+    DRY                | getQuantity(1, CELSIUS)          | ["DRY"]
+  }
+
+  void "map constructor should fail for null requestedStorageTemperature when requestedStorageTemperature is required"() {
+    when:
+    new Commodity(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
+
+    then:
+    AssertionError assertionError = thrown()
+    assertionError.message.contains("boolean condition is false - [condition: this.isRequestedStorageTemperatureAvailableWhenNeeded(requestedStorageTemperature, commodityType)]")
+
+    where:
+    commodityTypeParam | requestedStorageTemperatureParam
+    AIR_COOLED         | null
+    CHILLED            | null
+    FROZEN             | null
+  }
+
+  void "map constructor should fail for requestedStorageTemperature not in required range"() {
+    when:
+    new Commodity(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
+
+    then:
+    DomainException domainException = thrown()
+    domainException.violationInfo.violationCode.code == "400"
+    domainException.violationInfo.violationCode.resolvableMessageKey == resolvableMessageKeyParam
+
+    where:
+    commodityTypeParam | requestedStorageTemperatureParam | resolvableMessageKeyParam
+    AIR_COOLED         | getQuantity(1, CELSIUS)          | "commodity.requestedStorageTemperatureNotInAllowedRangeForAirCooledCommodityType"
+    AIR_COOLED         | getQuantity(13, CELSIUS)         | "commodity.requestedStorageTemperatureNotInAllowedRangeForAirCooledCommodityType"
+
+    CHILLED            | getQuantity(-3, CELSIUS)         | "commodity.requestedStorageTemperatureNotInAllowedRangeForChilledCommodityType"
+    CHILLED            | getQuantity(7, CELSIUS)          | "commodity.requestedStorageTemperatureNotInAllowedRangeForChilledCommodityType"
+
+    FROZEN             | getQuantity(-21, CELSIUS)        | "commodity.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
+    FROZEN             | getQuantity(-7, CELSIUS)         | "commodity.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
+  }
+
+  // Here we have an example of adding non existing value to the enum for testing "impossible" switch default cases.
+  // Adapted from https://stackoverflow.com/questions/5323505/mocking-java-enum-to-add-a-value-to-test-fail-case/57825724#57825724
+  void "map constructor requestedStorageTemperature check should fail for non existing commodityType"() {
     given:
-    Commodity expectedCommodity = new Commodity(
-        containerType: TYPE_ISO_12G1,
-        commodityInfo: CommodityInfo.make(DRY, commodityWeightInKilogramsParam),
-        maxAllowedWeightPerContainer: getQuantity(9_500, KILOGRAM),
-        maxRecommendedWeightPerContainer: getQuantity(maxRecommendedWeightPerContainerParam, KILOGRAM),
-        containerCount: containerCountParam,
-        containerTeuCount: containerTeuCountParam
-    )
+    Closure<Field> makeAccessibleField = { Class clazz, String fieldName ->
+      Field result = clazz.getDeclaredField(fieldName)
+      result.accessible = true
+      return result
+    }
+
+    CommodityType nonExistentEnumValue = ObjenesisHelper.newInstance(CommodityType)
+    makeAccessibleField.curry(Enum).with {
+      it("name").set(nonExistentEnumValue, "NON_EXISTENT_ENUM_VALUE")
+    }
+
+    makeAccessibleField.curry(CommodityType).with {
+      it("containerFeaturesType").set(nonExistentEnumValue, ContainerFeaturesType.FEATURES_ISO_R1_STANDARD_REEFER)
+      it("recommendedStorageTemperature").set(nonExistentEnumValue, getQuantity(6, CELSIUS))
+      it("storageTemperatureRange").set(nonExistentEnumValue, QuantityRange.of(getQuantity(2, CELSIUS), getQuantity(12, CELSIUS)))
+    }
 
     when:
-    Commodity actualCommodity = Commodity.make(TYPE_ISO_12G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(9_500, KILOGRAM))
+    new Commodity(commodityType: nonExistentEnumValue, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: getQuantity(50, CELSIUS))
 
     then:
-    expectedCommodity == actualCommodity
-
-    where:
-    commodityWeightInKilogramsParam | maxRecommendedWeightPerContainerParam | containerCountParam | containerTeuCountParam
-    2_000                           | 2_000                                 | 1                   | 0.5
-    10_000                          | 5_000                                 | 2                   | 1
-    50_000                          | 8_334                                 | 6                   | 3
-    500_000                         | 9_434                                 | 53                  | 26.50
+    AssertionError assertionError = thrown()
+    assertionError.message == "Unexpected CommodityType value: [value: NON_EXISTENT_ENUM_VALUE]"
   }
 
-  void "make() method should work as expected for standard 20ft container"() {
-    given:
-    Commodity expectedCommodity = new Commodity(
-        containerType: TYPE_ISO_22G1,
-        commodityInfo: CommodityInfo.make(DRY, commodityWeightInKilogramsParam),
-        maxAllowedWeightPerContainer: getQuantity(21_000, KILOGRAM),
-        maxRecommendedWeightPerContainer: getQuantity(maxRecommendedWeightPerContainerParam, KILOGRAM),
-        containerCount: containerCountParam,
-        containerTeuCount: containerTeuCountParam
-    )
-
+  void "make(CommodityType, Quantity, Quantity) factory method should work for correct input params"() {
     when:
-    Commodity actualCommodity = Commodity.make(TYPE_ISO_22G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(21_000, KILOGRAM))
+    Commodity commodity = Commodity.make(commodityTypeParam, oneKilogram, requestedStorageTemperatureParam)
 
     then:
-    expectedCommodity == actualCommodity
+    commodity
+    commodity.requestedStorageTemperature == requestedStorageTemperatureParam
 
     where:
-    commodityWeightInKilogramsParam | maxRecommendedWeightPerContainerParam | containerCountParam | containerTeuCountParam
-    2_000                           | 2_000                                 | 1                   | 1
-    10_000                          | 10_000                                | 1                   | 1
-    50_000                          | 16_667                                | 3                   | 3
-    500_000                         | 20_834                                | 24                  | 24
+    commodityTypeParam | requestedStorageTemperatureParam
+    DRY                | null
+
+    AIR_COOLED         | getQuantity(2, CELSIUS)
+    AIR_COOLED         | getQuantity(7, CELSIUS)
+    AIR_COOLED         | getQuantity(12, CELSIUS)
+
+    CHILLED            | getQuantity(-2, CELSIUS)
+    CHILLED            | getQuantity(0, CELSIUS)
+    CHILLED            | getQuantity(6, CELSIUS)
+
+    FROZEN             | getQuantity(-20, CELSIUS)
+    FROZEN             | getQuantity(-15, CELSIUS)
+    FROZEN             | getQuantity(-8, CELSIUS)
   }
 
-  void "make() method should work as expected for standard 40ft container"() {
-    given:
-    Commodity expectedCommodity = new Commodity(
-        containerType: TYPE_ISO_42G1,
-        commodityInfo: CommodityInfo.make(DRY, commodityWeightInKilogramsParam),
-        maxAllowedWeightPerContainer: getQuantity(26_000, KILOGRAM),
-        maxRecommendedWeightPerContainer: getQuantity(maxRecommendedWeightPerContainerParam, KILOGRAM),
-        containerCount: containerCountParam,
-        containerTeuCount: containerTeuCountParam
-    )
-
+  void "make(CommodityType, Quantity, Quantity) factory method should acquire recommendedStorageTemperature when requestedStorageTemperature is not given"() {
     when:
-    Commodity actualCommodity = Commodity.make(TYPE_ISO_42G1, CommodityInfo.make(DRY, commodityWeightInKilogramsParam), getQuantity(26_000, KILOGRAM))
+    Commodity commodity = Commodity.make(commodityTypeParam, oneKilogram, null)
 
     then:
-    expectedCommodity == actualCommodity
+    commodity.requestedStorageTemperature == commodityTypeParam.recommendedStorageTemperature
 
     where:
-    commodityWeightInKilogramsParam | maxRecommendedWeightPerContainerParam | containerCountParam | containerTeuCountParam
-    2_000                           | 2_000                                 | 1                   | 2
-    10_000                          | 10_000                                | 1                   | 2
-    50_000                          | 25_000                                | 2                   | 4
-    500_000                         | 25_000                                | 20                  | 40
+    commodityTypeParam | _
+    DRY                | _
+    AIR_COOLED         | _
+    CHILLED            | _
+    FROZEN             | _
+  }
+
+  void "make(CommodityType, Quantity, Quantity) factory method should skip requiring recommendedStorageTemperature for the combination of invalid input params"() {
+    when:
+    Commodity.make(null, oneKilogram, null)
+
+    then:
+    thrown(AssertionError)
+  }
+
+  void "make(CommodityType, Quantity, Quantity) factory method should convert weight in kilograms and round it up to the whole number"() {
+    when:
+    Commodity commodity = Commodity.make(DRY, weightParam, null)
+
+    then:
+    commodity
+    commodity.weight.value == weightValueParam
+
+    where:
+    weightParam                  | weightValueParam
+    getQuantity(1500, GRAM)      | 2
+    getQuantity(1.5, KILOGRAM)   | 2
+    getQuantity(1.001, KILOGRAM) | 2
+  }
+
+  void "make(CommodityType, Quantity) factory method should work for correct input params"() {
+    when:
+    Commodity commodity = Commodity.make(commodityTypeParam, oneKilogram)
+
+    then:
+    commodity
+    commodity.requestedStorageTemperature == recommendedStorageTemperatureParam
+
+    where:
+    commodityTypeParam | recommendedStorageTemperatureParam
+    DRY                | null
+    AIR_COOLED         | getQuantity(6, CELSIUS)
+    CHILLED            | getQuantity(0, CELSIUS)
+    FROZEN             | getQuantity(-12, CELSIUS)
+  }
+
+  void "make(CommodityType, Integer, Integer) factory method should work for correct input params"() {
+    when:
+    Commodity commodity = Commodity.make(commodityTypeParam, 1, requestedStorageTemperatureParam)
+
+    then:
+    commodity
+    commodity.requestedStorageTemperature == requestedStorageTemperatureExpectedParam
+
+    where:
+    commodityTypeParam | requestedStorageTemperatureParam | requestedStorageTemperatureExpectedParam
+    DRY                | null                             | requestedStorageTemperatureParam
+
+    AIR_COOLED         | 2                                | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+    AIR_COOLED         | 8                                | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+    AIR_COOLED         | 12                               | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+
+    CHILLED            | -2                               | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+    CHILLED            | 3                                | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+    CHILLED            | 6                                | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+
+    FROZEN             | -20                              | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+    FROZEN             | -15                              | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+    FROZEN             | -8                               | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+  }
+
+  void "make(CommodityType, Integer) factory method should work for correct input params"() {
+    when:
+    Commodity commodity = Commodity.make(commodityTypeParam, 1)
+
+    then:
+    commodity
+    commodity.requestedStorageTemperature == recommendedStorageTemperatureParam
+
+    where:
+    commodityTypeParam | recommendedStorageTemperatureParam
+    DRY                | null
+    AIR_COOLED         | getQuantity(6, CELSIUS)
+    CHILLED            | getQuantity(0, CELSIUS)
+    FROZEN             | getQuantity(-12, CELSIUS)
   }
 }

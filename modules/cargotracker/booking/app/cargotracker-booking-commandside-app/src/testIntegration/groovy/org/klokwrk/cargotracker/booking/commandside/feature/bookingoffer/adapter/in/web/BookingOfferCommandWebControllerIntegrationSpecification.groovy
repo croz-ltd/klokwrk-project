@@ -75,11 +75,11 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
                 departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
                 arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [
+            cargo: [
                 commodityType: "dry",
-                weightKg: 1000
-            ],
-            containerDimensionType: "DIMENSION_ISO_22"
+                commodityWeightKg: 1000,
+                containerDimensionType: "DIMENSION_ISO_22"
+            ]
         ]
     )
 
@@ -116,7 +116,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
       customer
       bookingOfferId.identifier == myBookingOfferIdentifier
       routeSpecification
-      bookingOfferCommodities
+      bookingOfferCargos
     }
 
     verifyAll(responseContentMap.payload.customer as Map) {
@@ -174,13 +174,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
       portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
     }
 
-    verifyAll(responseContentMap.payload.bookingOfferCommodities as Map) {
+    verifyAll(responseContentMap.payload.bookingOfferCargos as Map) {
       size() == 3
 
-      commodityTypeToCommodityMap == [
+      commodityTypeToCargoMap == [
           DRY: [
               containerType: "TYPE_ISO_22G1",
-              commodityInfo: [
+              commodity: [
                   commodityType: "DRY",
                   weight: [
                       value: 1000,
@@ -226,7 +226,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     "en"                | "en"
   }
 
-  void "should work for correct request with requested storage temperature - [acceptLanguage: #acceptLanguageParam]"() {
+  void "should work for correct request with commodity requested storage temperature - [acceptLanguage: #acceptLanguageParam]"() {
     given:
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
@@ -243,12 +243,12 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
                 departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
                 arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [
+            cargo: [
                 commodityType: "${ commodityTypeParam.name().toLowerCase() }",
-                weightKg: 1000,
-                "requestedStorageTemperatureDegC": requestedStorageTemperatureDegCParam
-            ],
-            containerDimensionType: "DIMENSION_ISO_22"
+                commodityWeightKg: 1000,
+                commodityRequestedStorageTemperatureDegC: commodityRequestedStorageTemperatureDegCParam,
+                containerDimensionType: "DIMENSION_ISO_22"
+            ]
         ]
     )
 
@@ -285,7 +285,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
       customer
       bookingOfferId.identifier == myBookingOfferIdentifier
       routeSpecification
-      bookingOfferCommodities
+      bookingOfferCargos
     }
 
     verifyAll(responseContentMap.payload.customer as Map) {
@@ -343,13 +343,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
       portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
     }
 
-    verifyAll(responseContentMap.payload.bookingOfferCommodities as Map) {
+    verifyAll(responseContentMap.payload.bookingOfferCargos as Map) {
       size() == 3
 
-      commodityTypeToCommodityMap == [
+      commodityTypeToCargoMap == [
           ("${ commodityTypeParam.name() }".toString()): [
               containerType: "TYPE_ISO_22R1_STANDARD_REEFER",
-              commodityInfo: [
+              commodity: [
                   commodityType: "${ commodityTypeParam.name() }",
                   weight: [
                       value: 1000,
@@ -359,7 +359,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
                       ]
                   ],
                   requestedStorageTemperature: [
-                      value: requestedStorageTemperatureDegCParam,
+                      value: commodityRequestedStorageTemperatureDegCParam,
                       unit: [
                           name: "Celsius",
                           symbol: "°C"
@@ -397,7 +397,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     }
 
     where:
-    acceptLanguageParam | localeStringParam | commodityTypeParam       | requestedStorageTemperatureDegCParam
+    acceptLanguageParam | localeStringParam | commodityTypeParam       | commodityRequestedStorageTemperatureDegCParam
     "hr-HR"             | "hr_HR"           | CommodityType.AIR_COOLED | 6
     "en"                | "en"              | CommodityType.AIR_COOLED | 6
 
@@ -416,8 +416,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             userIdentifier: "standard-customer@cargotracker.com",
             bookingOfferIdentifier: bookingOfferIdentifier,
             routeSpecification: [originLocation: null, destinationLocation: null, departureEarliestTime: null, departureLatestTime: null, arrivalLatestTime: null],
-            commodityInfo: [commodityType: "dry", weightKg: 1000],
-            containerDimensionType: "DIMENSION_ISO_22"
+            cargo: [commodityType: "dry", commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22"]
         ]
     )
 
@@ -495,11 +494,11 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
                 departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
                 arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [
+            cargo: [
                 commodityType: "dry",
-                weightKg: 1000
-            ],
-            containerDimensionType: "DIMENSION_ISO_22"
+                commodityWeightKg: 1000,
+                containerDimensionType: "DIMENSION_ISO_22"
+            ]
         ]
     )
 
@@ -563,8 +562,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "HRRJK", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [commodityType: "dry", weightKg: 1000],
-            containerDimensionType: "DIMENSION_ISO_22"
+            cargo: [commodityType: "dry", commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22"]
         ]
     )
 
@@ -628,8 +626,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRZAG", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [commodityType: "dry", weightKg: 1000],
-            containerDimensionType: "DIMENSION_ISO_22"
+            cargo: [commodityType: "dry", commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22"]
         ]
     )
 
@@ -693,8 +690,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [commodityType: "dry", weightKg: 125_000_000],
-            containerDimensionType: "dimension_ISO_22"
+            cargo: [commodityType: "dry", commodityWeightKg: 125_000_000, containerDimensionType: "dimension_ISO_22"]
         ]
     )
 
@@ -728,11 +724,11 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
-    "hr-HR"             | "hr_HR"           | "Nije moguće prihvatiti robu jer bi premašili najveći dozvoljeni broj TEU jedinica (5000 TEU) po ponudi za rezervaciju."
-    "en"                | "en"              | "Cannot accept commodity because it would exceed the maximum allowed count of TEU units (5000 TEU) per a booking offer."
+    "hr-HR"             | "hr_HR"           | "Nije moguće prihvatiti teret jer bi premašili najveći dozvoljeni broj TEU jedinica (5000 TEU) po ponudi za rezervaciju."
+    "en"                | "en"              | "Cannot accept cargo because it would exceed the maximum allowed count of TEU units (5000 TEU) per a booking offer."
   }
 
-  void "should fail when requested storage temperature is supplied but not supported for commodity type - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
+  void "should fail when commodity requested storage temperature is supplied but not supported for commodity type - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
     given:
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
@@ -747,8 +743,12 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [commodityType: "$commodityTypeStringParam", weightKg: 1000, requestedStorageTemperatureDegC: requestedStorageTemperatureDegCParam],
-            containerDimensionType: "dimension_ISO_22"
+            cargo: [
+                commodityType: "$commodityTypeStringParam",
+                commodityWeightKg: 1000,
+                commodityRequestedStorageTemperatureDegC: commodityRequestedStorageTemperatureDegCParam,
+                containerDimensionType: "dimension_ISO_22"
+            ]
         ]
     )
 
@@ -781,9 +781,9 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     }
 
     where:
-    acceptLanguageParam | localeStringParam | commodityTypeStringParam | requestedStorageTemperatureDegCParam | violationMessageParam
-    "hr-HR"             | "hr_HR"           | "dry"                    | 1                                    | "Zahtijevana temperatura skladištenja nije dozvoljena za DRY tip robe."
-    "en"                | "en"              | "dry"                    | 1                                    | "Requested storage temperature is not supported for DRY commodity type."
+    acceptLanguageParam | localeStringParam | commodityTypeStringParam | commodityRequestedStorageTemperatureDegCParam | violationMessageParam
+    "hr-HR"             | "hr_HR"           | "dry"                    | 1                                             | "Zahtijevana temperatura skladištenja nije dozvoljena za DRY tip robe."
+    "en"                | "en"              | "dry"                    | 1                                             | "Requested storage temperature is not supported for DRY commodity type."
   }
 
   void "should fail when requested storage temperature is out of range - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
@@ -801,8 +801,12 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            commodityInfo: [commodityType: "$commodityTypeStringParam", weightKg: 1000, requestedStorageTemperatureDegC: requestedStorageTemperatureDegCParam],
-            containerDimensionType: "dimension_ISO_22"
+            cargo: [
+                commodityType: "$commodityTypeStringParam",
+                commodityWeightKg: 1000,
+                commodityRequestedStorageTemperatureDegC: commodityRequestedStorageTemperatureDegCParam,
+                containerDimensionType: "dimension_ISO_22"
+            ]
         ]
     )
 
@@ -835,7 +839,6 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     }
 
     where:
-    //@formatter:off
     acceptLanguageParam | localeStringParam
     "hr-HR"             | "hr_HR"
     "en"                | "en"
@@ -846,16 +849,15 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     "hr-HR"             | "hr_HR"
     "en"                | "en"
     ___
-    commodityTypeStringParam | requestedStorageTemperatureDegCParam | violationMessageParam
-    "air_cooled"             | 13                                   | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za zrakom hlađenu robu: [2, 12] Celzija."
-    "air_cooled"             | 1                                    | "Requested storage temperature is not in supported range for air cooled commodities: [2, 12] Celsius."
+    commodityTypeStringParam | commodityRequestedStorageTemperatureDegCParam | violationMessageParam
+    "air_cooled"             | 13                                            | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za zrakom hlađenu robu: [2, 12] Celzija."
+    "air_cooled"             | 1                                             | "Requested storage temperature is not in supported range for air cooled commodities: [2, 12] Celsius."
 
-    "chilled"                | 7                                    | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za rashlađenu robu: [-2, 6] Celzija."
-    "chilled"                | -3                                   | "Requested storage temperature is not in supported range for chilled commodities: [-2, 6] Celsius."
+    "chilled"                | 7                                             | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za rashlađenu robu: [-2, 6] Celzija."
+    "chilled"                | -3                                            | "Requested storage temperature is not in supported range for chilled commodities: [-2, 6] Celsius."
 
-    "frozen"                 | -7                                   | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za smrznutu robu: [-20, -8] Celzija."
-    "frozen"                 | -21                                  | "Requested storage temperature is not in supported range for frozen commodities: [-20, -8] Celsius."
-    //@formatter:on
+    "frozen"                 | -7                                            | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za smrznutu robu: [-20, -8] Celzija."
+    "frozen"                 | -21                                           | "Requested storage temperature is not in supported range for frozen commodities: [-20, -8] Celsius."
   }
 
   void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguageParam]"() {

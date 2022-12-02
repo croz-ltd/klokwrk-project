@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.domain.model.aggregate
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
-import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
+import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.Units
@@ -28,20 +28,20 @@ import javax.measure.Quantity
 import javax.measure.quantity.Mass
 
 /**
- * Handles commodities at the {@link BookingOfferAggregate} level.
+ * Handles cargos at the {@link BookingOfferAggregate} level.
  * <p/>
- * Encapsulates invariant checks and access to the internal {@link CommodityType} to {@link Commodity} map. Therefore, at the {@code BookingOfferAggregate} level, we can have only a single
- * {@link Commodity} for each {@link CommodityType}.
+ * Encapsulates invariant checks and access to the internal {@link CommodityType} to {@link Cargo} map. Therefore, at the {@code BookingOfferAggregate} level, we can have only a single
+ * {@link Cargo} for each {@link CommodityType}.
  */
 @CompileStatic
-class BookingOfferCommodities {
-  private final Map<CommodityType, Commodity> commodityTypeToCommodityMap = [:]
+class BookingOfferCargos {
+  private final Map<CommodityType, Cargo> commodityTypeToCargoMap = [:]
 
   private Quantity<Mass> totalCommodityWeight = Quantities.getQuantity(0, Units.KILOGRAM)
   private BigDecimal totalContainerTeuCount = 0 // should be constrained to the max of, say 5000
 
-  Map<CommodityType, Commodity> getCommodityTypeToCommodityMap() {
-    return Collections.unmodifiableMap(commodityTypeToCommodityMap)
+  Map<CommodityType, Cargo> getCommodityTypeToCargoMap() {
+    return Collections.unmodifiableMap(commodityTypeToCargoMap)
   }
 
   Quantity<Mass> getTotalCommodityWeight() {
@@ -53,71 +53,70 @@ class BookingOfferCommodities {
   }
 
   /**
-   * Checks if we can accept the {@link Commodity} at the {@link BookingOfferAggregate} level.
+   * Checks if we can accept the {@link Cargo} at the {@link BookingOfferAggregate} level.
    * <p/>
-   * We should use this method from the aggregate's command handler to check if it is valid to add the {@code Commodity} instance to the aggregate state. Actual state change happens later in the
+   * We should use this method from the aggregate's command handler to check if it is valid to add the {@code Cargo} instance to the aggregate state. Actual state change happens later in the
    * event sourcing handler. Note that we cannot make this check in the event sourcing handler because it must make changes unconditionally to support rehydration from past events.
    */
-  boolean canAcceptCommodity(Commodity commodity, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
-    BigDecimal newTotalContainerTeuCount = totalContainerTeuCount + commodity.containerTeuCount
+  boolean canAcceptCargo(Cargo cargo, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
+    BigDecimal newTotalContainerTeuCount = totalContainerTeuCount + cargo.containerTeuCount
     return maxAllowedTeuCountPolicy.isTeuCountAllowed(newTotalContainerTeuCount)
   }
 
   /**
-   * Without changing state of {@code BookingOfferCommodities} instance, calculates totals in the same way as they will be calculated once the commodity is stored via
-   * {@link #storeCommodity(Commodity)}.
+   * Without changing state of {@code BookingOfferCargos} instance, calculates totals in the same way as they will be calculated once the cargo is stored via {@link #storeCargo(Cargo)}.
    * <p/>
    * This pre-calculation is used from the aggregate's command handler to calculate the totals required to create an event. The alternative would be to publish two events where the second one is
    * created based on state changes caused by the first event. However, we need pre-calculation as we want to publish a single event.
    * <p/>
-   * This method is very similar to the {@link #calculateNewTotals(Commodity)}, but this one also checks if we can accept the commodity.
+   * This method is very similar to the {@link #calculateNewTotals(Cargo)}, but this one also checks if we can accept the cargo.
    * <p/>
    * The method returns a tuple of 2 where value v1 is the new {@code totalCommodityWeight} and value v2 is the new {@code totalContainerTeuCount}.
    */
-  Tuple2<Quantity<Mass>, BigDecimal> preCalculateTotals(Commodity commodity, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
-    if (!canAcceptCommodity(commodity, maxAllowedTeuCountPolicy)) {
-      throw new AssertionError("Cannot proceed with calculating totals since commodity is not acceptable." as Object)
+  Tuple2<Quantity<Mass>, BigDecimal> preCalculateTotals(Cargo cargo, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
+    if (!canAcceptCargo(cargo, maxAllowedTeuCountPolicy)) {
+      throw new AssertionError("Cannot proceed with calculating totals since cargo is not acceptable." as Object)
     }
 
-    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateNewTotals(commodity)
+    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateNewTotals(cargo)
     return totalsTuple
   }
 
   // use this one in eventSourcingHandler to store past events unconditionally, regardless of potential change in previous business logic
   /**
-   * Stores the commodity in the internal map by replacing any commodity previously stored under the same {@link CommodityType} key.
+   * Stores the cargo in the internal map by replacing any cargo previously stored under the same {@link CommodityType} key.
    * <p/>
    * We should use this method only from the event sourcing handler as it changes the aggregate state and does it unconditionally without checking any invariants. This is necessary to support correct
    * rehydration of the aggregate from previous events. We should do all invariant checking in the aggregate's command handler.
    */
-  void storeCommodity(Commodity commodity) {
-    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateNewTotals(commodity)
+  void storeCargo(Cargo cargo) {
+    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateNewTotals(cargo)
 
     totalCommodityWeight = totalsTuple.v1
     totalContainerTeuCount = totalsTuple.v2
 
-    commodityTypeToCommodityMap.put(commodity.commodityInfo.commodityType, commodity)
+    commodityTypeToCargoMap.put(cargo.commodity.commodityType, cargo)
   }
 
   /**
-   * Without changing the aggregate state, calculates new totals based on provided {@link Commodity} and the current aggregate state.
+   * Without changing the aggregate state, calculates new totals based on provided {@link Cargo} and the current aggregate state.
    * <p/>
-   * This method is very similar to the {@link #preCalculateTotals(Commodity, MaxAllowedTeuCountPolicy)}, but this one does not check if the commodity can be accepted or not.
+   * This method is very similar to the {@link #preCalculateTotals(Cargo, MaxAllowedTeuCountPolicy)}, but this one does not check if the cargo can be accepted or not.
    * <p/>
    * The method returns a tuple of 2 where value v1 is the new {@code totalCommodityWeight} and value v2 is the new {@code totalContainerTeuCount}.
    */
-  Tuple2<Quantity<Mass>, BigDecimal> calculateNewTotals(Commodity commodity) {
+  Tuple2<Quantity<Mass>, BigDecimal> calculateNewTotals(Cargo cargo) {
     Quantity<Mass> newTotalCommodityWeight
     BigDecimal newTotalContainerTeuCount
 
-    Commodity commodityContainerInfoOld = commodityTypeToCommodityMap.get(commodity.commodityInfo.commodityType)
-    if (commodityContainerInfoOld == null) {
-      newTotalCommodityWeight = totalCommodityWeight.add(commodity.commodityInfo.weight)
-      newTotalContainerTeuCount = totalContainerTeuCount + commodity.containerTeuCount
+    Cargo cargoOld = commodityTypeToCargoMap.get(cargo.commodity.commodityType)
+    if (cargoOld == null) {
+      newTotalCommodityWeight = totalCommodityWeight.add(cargo.commodity.weight)
+      newTotalContainerTeuCount = totalContainerTeuCount + cargo.containerTeuCount
     }
     else {
-      newTotalCommodityWeight = totalCommodityWeight.subtract(commodityContainerInfoOld.commodityInfo.weight).add(commodity.commodityInfo.weight)
-      newTotalContainerTeuCount = totalContainerTeuCount - commodityContainerInfoOld.containerTeuCount + commodity.containerTeuCount
+      newTotalCommodityWeight = totalCommodityWeight.subtract(cargoOld.commodity.weight).add(cargo.commodity.weight)
+      newTotalContainerTeuCount = totalContainerTeuCount - cargoOld.containerTeuCount + cargo.containerTeuCount
     }
 
     return new Tuple2<Quantity<Mass>, BigDecimal>(newTotalCommodityWeight, newTotalContainerTeuCount)

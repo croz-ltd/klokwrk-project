@@ -17,8 +17,8 @@
  */
 package org.klokwrk.cargotracker.booking.domain.model.service
 
+import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityInfo
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
@@ -26,10 +26,10 @@ import spock.lang.Specification
 import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.Units
 
-class DefaultCommodityCreatorServiceSpecification extends Specification {
+class DefaultCargoCreatorServiceSpecification extends Specification {
   void "constructor should fail for null parameter"() {
     when:
-    new DefaultCommodityCreatorService(null)
+    new DefaultCargoCreatorService(null)
 
     then:
     AssertionError assertionError = thrown()
@@ -39,17 +39,16 @@ class DefaultCommodityCreatorServiceSpecification extends Specification {
   void "from() method should work as expected"() {
     given:
     MaxAllowedWeightPerContainerPolicy maxAllowedWeightPerContainerPolicy = new PercentBasedMaxAllowedWeightPerContainerPolicy(90)
-    DefaultCommodityCreatorService defaultCommodityCreatorService = new DefaultCommodityCreatorService(maxAllowedWeightPerContainerPolicy)
-
-    CommodityInfo commodityInfo = CommodityInfo.make(CommodityType.DRY, 50_000)
+    DefaultCargoCreatorService defaultCargoCreatorService = new DefaultCargoCreatorService(maxAllowedWeightPerContainerPolicy)
+    Commodity commodity = Commodity.make(CommodityType.DRY, 50_000)
 
     when:
-    Commodity commodity = defaultCommodityCreatorService.from(ContainerDimensionType.DIMENSION_ISO_22, commodityInfo)
+    Cargo cargo = defaultCargoCreatorService.from(ContainerDimensionType.DIMENSION_ISO_22, commodity)
 
     then:
-    verifyAll(commodity, {
+    verifyAll(cargo, {
       containerType == ContainerType.TYPE_ISO_22G1
-      it.commodityInfo == commodityInfo
+      it.commodity == commodity
       maxAllowedWeightPerContainer == Quantities.getQuantity(19_530, Units.KILOGRAM)
       maxRecommendedWeightPerContainer == Quantities.getQuantity(16_667, Units.KILOGRAM)
       containerCount == 3
