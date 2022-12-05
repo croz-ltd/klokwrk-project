@@ -18,30 +18,76 @@
 package org.klokwrk.cargotracker.booking.domain.model.aggregate
 
 import groovy.transform.CompileStatic
+import org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter
 import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
+import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
+import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
+import org.klokwrk.lang.groovy.transform.KwrkImmutable
 import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
+import javax.measure.quantity.Temperature
 
 /**
  * Handles cargos at the {@link BookingOfferAggregate} level.
  * <p/>
- * Encapsulates invariant checks and access to the internal {@link CommodityType} to {@link Cargo} map. Therefore, at the {@code BookingOfferAggregate} level, we can have only a single
- * {@link Cargo} for each {@link CommodityType}.
+ * Encapsulates invariant checks and access to the internal {@code bookingOfferCargoMap} map. The {@code bookingOfferCargoMap} key is a string representation of {@code BookingOfferCargoMapKey}, which
+ * encapsulates distinguishing properties of cargo at the level of booking offer. In other words, {@code BookingOfferCargoMapKey} properties determine which cargos are considered equal in the context
+ * of a booking offer.
+ * <p/>
+ * When multiple equivalent booking offer cargos are added, {@code BookingOfferCargos} instance maintains only a single cargo instance representing all of them. Consequently, some cargo attributes
+ * must be consolidated when cargos are added or removed from a booking offer.
+ * <p/>
+ * For example, if we add multiple cargos with the same commodity type, container type, and requested storage temperature, {@code BookingOfferCargos} will summarize all their weights inside a single
+ * cargo instance with the same commodity type, container type, and requested storage temperature.
+ * <p/>
+ * In the context of a booking offer, we are not interested in multiple submissions of the equivalent cargos that are different only in their weight. Rather, we are consolidating all such submissions
+ * with a single record of equivalent cargo with correctly summed up container weight.
  */
 @CompileStatic
 class BookingOfferCargos {
-  private final Map<CommodityType, Cargo> commodityTypeToCargoMap = [:]
+  /**
+   * Encapsulates distinguishing properties of a cargo at the level of booking offer.
+   */
+  @KwrkImmutable(knownImmutableClasses = [Quantity])
+  static class BookingOfferCargoMapKey {
+    CommodityType commodityType
+    ContainerType containerType
+    Quantity<Temperature> commodityRequestedStorageTemperature
+
+    static BookingOfferCargoMapKey fromCargo(Cargo cargo) {
+      BookingOfferCargoMapKey bookingOfferCargoMapKey = new BookingOfferCargoMapKey(
+          commodityType: cargo.commodity.commodityType,
+          containerType: cargo.containerType,
+          commodityRequestedStorageTemperature: cargo.commodity.requestedStorageTemperature
+      )
+
+      return bookingOfferCargoMapKey
+    }
+
+    static String fromCargoAsString(Cargo cargo) {
+      BookingOfferCargoMapKey bookingOfferCargoMapKey = fromCargo(cargo)
+      String bookingOfferCargoMapKeyAsString = bookingOfferCargoMapKey.toStringKey()
+      return bookingOfferCargoMapKeyAsString
+    }
+
+    String toStringKey() {
+      String commodityRequestedStorageTemperatureString = commodityRequestedStorageTemperature == null ? null : QuantityFormatter.instance.format(commodityRequestedStorageTemperature)
+      return "${ commodityType.name() }:::${ containerType.name() }:::${ commodityRequestedStorageTemperatureString }".toString()
+    }
+  }
+
+  private final Map<String, Cargo> bookingOfferCargoMap = [:]
 
   private Quantity<Mass> totalCommodityWeight = Quantities.getQuantity(0, Units.KILOGRAM)
   private BigDecimal totalContainerTeuCount = 0 // should be constrained to the max of, say 5000
 
-  Map<CommodityType, Cargo> getCommodityTypeToCargoMap() {
-    return Collections.unmodifiableMap(commodityTypeToCargoMap)
+  Map<String, Cargo> getBookingOfferCargoMap() {
+    return Collections.unmodifiableMap(bookingOfferCargoMap)
   }
 
   Quantity<Mass> getTotalCommodityWeight() {
@@ -53,70 +99,84 @@ class BookingOfferCargos {
   }
 
   /**
-   * Checks if we can accept the {@link Cargo} at the {@link BookingOfferAggregate} level.
+   * Checks if we can accept addition of a {@link Cargo} at the {@link BookingOfferAggregate} level.
    * <p/>
    * We should use this method from the aggregate's command handler to check if it is valid to add the {@code Cargo} instance to the aggregate state. Actual state change happens later in the
    * event sourcing handler. Note that we cannot make this check in the event sourcing handler because it must make changes unconditionally to support rehydration from past events.
    */
-  boolean canAcceptCargo(Cargo cargo, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
+  boolean canAcceptCargoAddition(Cargo cargo, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
     BigDecimal newTotalContainerTeuCount = totalContainerTeuCount + cargo.containerTeuCount
     return maxAllowedTeuCountPolicy.isTeuCountAllowed(newTotalContainerTeuCount)
   }
 
   /**
-   * Without changing state of {@code BookingOfferCargos} instance, calculates totals in the same way as they will be calculated once the cargo is stored via {@link #storeCargo(Cargo)}.
+   * Without changing state of {@code BookingOfferCargos} instance, calculates totals in the same way as they will be calculated once the cargo is stored via {@link #storeCargoAddition(Cargo)}.
    * <p/>
    * This pre-calculation is used from the aggregate's command handler to calculate the totals required to create an event. The alternative would be to publish two events where the second one is
    * created based on state changes caused by the first event. However, we need pre-calculation as we want to publish a single event.
    * <p/>
-   * This method is very similar to the {@link #calculateNewTotals(Cargo)}, but this one also checks if we can accept the cargo.
+   * This method is very similar to the {@link #calculateTotalsForCargoAddition(Cargo)}, but this one also checks if we can accept the cargo addition.
    * <p/>
    * The method returns a tuple of 2 where value v1 is the new {@code totalCommodityWeight} and value v2 is the new {@code totalContainerTeuCount}.
    */
-  Tuple2<Quantity<Mass>, BigDecimal> preCalculateTotals(Cargo cargo, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
-    if (!canAcceptCargo(cargo, maxAllowedTeuCountPolicy)) {
+  Tuple2<Quantity<Mass>, BigDecimal> preCalculateTotalsForCargoAddition(Cargo cargo, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
+    if (!canAcceptCargoAddition(cargo, maxAllowedTeuCountPolicy)) {
       throw new AssertionError("Cannot proceed with calculating totals since cargo is not acceptable." as Object)
     }
 
-    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateNewTotals(cargo)
+    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateTotalsForCargoAddition(cargo)
     return totalsTuple
   }
 
   // use this one in eventSourcingHandler to store past events unconditionally, regardless of potential change in previous business logic
   /**
-   * Stores the cargo in the internal map by replacing any cargo previously stored under the same {@link CommodityType} key.
+   * Stores the cargo addition in the internal map by replacing any previously stored equivalent cargo.
    * <p/>
    * We should use this method only from the event sourcing handler as it changes the aggregate state and does it unconditionally without checking any invariants. This is necessary to support correct
    * rehydration of the aggregate from previous events. We should do all invariant checking in the aggregate's command handler.
    */
-  void storeCargo(Cargo cargo) {
-    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateNewTotals(cargo)
-
+  void storeCargoAddition(Cargo cargo) {
+    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateTotalsForCargoAddition(cargo)
     totalCommodityWeight = totalsTuple.v1
     totalContainerTeuCount = totalsTuple.v2
 
-    commodityTypeToCargoMap.put(cargo.commodity.commodityType, cargo)
+    Cargo existingCargo = bookingOfferCargoMap.get(BookingOfferCargoMapKey.fromCargoAsString(cargo))
+    if (existingCargo == null) {
+      bookingOfferCargoMap.put(BookingOfferCargoMapKey.fromCargoAsString(cargo), cargo)
+    }
+    else {
+      Commodity existingCommodity = existingCargo.commodity
+      Commodity newCommodityWithAddedWeight = Commodity.make(existingCommodity.commodityType, existingCommodity.weight.add(cargo.commodity.weight), existingCommodity.requestedStorageTemperature)
+      Cargo newCargoWithAddedCommodityWeight = Cargo.make(existingCargo.containerType, newCommodityWithAddedWeight, existingCargo.maxAllowedWeightPerContainer)
+      bookingOfferCargoMap.put(BookingOfferCargoMapKey.fromCargoAsString(existingCargo), newCargoWithAddedCommodityWeight)
+    }
   }
 
   /**
-   * Without changing the aggregate state, calculates new totals based on provided {@link Cargo} and the current aggregate state.
+   * Without changing the aggregate state, calculates new totals for cargo addition based on provided {@link Cargo} and the current aggregate state.
    * <p/>
-   * This method is very similar to the {@link #preCalculateTotals(Cargo, MaxAllowedTeuCountPolicy)}, but this one does not check if the cargo can be accepted or not.
+   * This method is very similar to the {@link #preCalculateTotalsForCargoAddition(Cargo, MaxAllowedTeuCountPolicy)}, but this one does not check if the cargo can be accepted or not.
    * <p/>
    * The method returns a tuple of 2 where value v1 is the new {@code totalCommodityWeight} and value v2 is the new {@code totalContainerTeuCount}.
    */
-  Tuple2<Quantity<Mass>, BigDecimal> calculateNewTotals(Cargo cargo) {
+  Tuple2<Quantity<Mass>, BigDecimal> calculateTotalsForCargoAddition(Cargo cargo) {
     Quantity<Mass> newTotalCommodityWeight
     BigDecimal newTotalContainerTeuCount
 
-    Cargo cargoOld = commodityTypeToCargoMap.get(cargo.commodity.commodityType)
-    if (cargoOld == null) {
+    Cargo existingCargo = bookingOfferCargoMap.get(BookingOfferCargoMapKey.fromCargoAsString(cargo))
+    if (existingCargo == null) {
       newTotalCommodityWeight = totalCommodityWeight.add(cargo.commodity.weight)
       newTotalContainerTeuCount = totalContainerTeuCount + cargo.containerTeuCount
     }
     else {
-      newTotalCommodityWeight = totalCommodityWeight.subtract(cargoOld.commodity.weight).add(cargo.commodity.weight)
-      newTotalContainerTeuCount = totalContainerTeuCount - cargoOld.containerTeuCount + cargo.containerTeuCount
+      Commodity existingCommodity = existingCargo.commodity
+
+      // throwaway instances, used only for new teuCount calculation
+      Commodity newCommodityWithAddedWeight = Commodity.make(existingCommodity.commodityType, existingCommodity.weight.add(cargo.commodity.weight), existingCommodity.requestedStorageTemperature)
+      Cargo newCargoWithAddedCommodityWeight = Cargo.make(existingCargo.containerType, newCommodityWithAddedWeight, existingCargo.maxAllowedWeightPerContainer)
+
+      newTotalCommodityWeight = totalCommodityWeight.subtract(existingCargo.commodity.weight).add(newCargoWithAddedCommodityWeight.commodity.weight)
+      newTotalContainerTeuCount = totalContainerTeuCount - existingCargo.containerTeuCount + newCargoWithAddedCommodityWeight.containerTeuCount
     }
 
     return new Tuple2<Quantity<Mass>, BigDecimal>(newTotalCommodityWeight, newTotalContainerTeuCount)

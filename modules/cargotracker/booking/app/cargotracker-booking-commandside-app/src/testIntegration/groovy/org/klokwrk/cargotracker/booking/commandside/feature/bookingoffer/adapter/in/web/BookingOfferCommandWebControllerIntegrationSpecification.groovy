@@ -177,8 +177,8 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     verifyAll(responseContentMap.payload.bookingOfferCargos as Map) {
       size() == 3
 
-      commodityTypeToCargoMap == [
-          DRY: [
+      bookingOfferCargoMap == [
+          "DRY:::TYPE_ISO_22G1:::null": [
               containerType: "TYPE_ISO_22G1",
               commodity: [
                   commodityType: "DRY",
@@ -345,9 +345,10 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
     verifyAll(responseContentMap.payload.bookingOfferCargos as Map) {
       size() == 3
+      String bookingOfferCargoMapKey = "${ commodityTypeParam.name() }:::TYPE_ISO_22R1_STANDARD_REEFER:::${ commodityRequestedStorageTemperatureDegCParam } °C"
 
-      commodityTypeToCargoMap == [
-          ("${ commodityTypeParam.name() }".toString()): [
+      bookingOfferCargoMap == [
+          (bookingOfferCargoMapKey): [
               containerType: "TYPE_ISO_22R1_STANDARD_REEFER",
               commodity: [
                   commodityType: "${ commodityTypeParam.name() }",

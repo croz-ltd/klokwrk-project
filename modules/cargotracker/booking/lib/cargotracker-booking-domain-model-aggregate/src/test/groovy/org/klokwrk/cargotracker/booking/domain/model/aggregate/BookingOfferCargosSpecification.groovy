@@ -36,13 +36,13 @@ class BookingOfferCargosSpecification extends Specification {
     BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
 
     then:
-    bookingOfferCargos.commodityTypeToCargoMap.isEmpty()
+    bookingOfferCargos.bookingOfferCargoMap.isEmpty()
 
     bookingOfferCargos.totalCommodityWeight == Quantities.getQuantity(0, Units.KILOGRAM)
     bookingOfferCargos.totalContainerTeuCount == 0
   }
 
-  void "canAcceptCargo() method should work as expected for 10ft container"() {
+  void "canAcceptCargoAddition() method should work as expected for 10ft container"() {
     given:
     Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_12G1.maxCommodityWeight.value.toInteger()
     Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_12G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
@@ -50,7 +50,7 @@ class BookingOfferCargosSpecification extends Specification {
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
 
     when:
-    boolean canAcceptCargoResult = bookingOfferCommodities.canAcceptCargo(cargo, maxAllowedTeuCountPolicy)
+    boolean canAcceptCargoResult = bookingOfferCommodities.canAcceptCargoAddition(cargo, maxAllowedTeuCountPolicy)
 
     then:
     canAcceptCargoResult == canAcceptCargoResultParam
@@ -63,7 +63,7 @@ class BookingOfferCargosSpecification extends Specification {
     9_999               | true
   }
 
-  void "canAcceptCargo() method should work as expected for 20ft container"() {
+  void "canAcceptCargoAddition() method should work as expected for 20ft container"() {
     given:
     Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_22G1.maxCommodityWeight.value.toInteger()
     Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
@@ -71,7 +71,7 @@ class BookingOfferCargosSpecification extends Specification {
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
 
     when:
-    boolean canAcceptCargoResult = bookingOfferCommodities.canAcceptCargo(cargo, maxAllowedTeuCountPolicy)
+    boolean canAcceptCargoResult = bookingOfferCommodities.canAcceptCargoAddition(cargo, maxAllowedTeuCountPolicy)
 
     then:
     canAcceptCargoResult == canAcceptCargoResultParam
@@ -84,7 +84,7 @@ class BookingOfferCargosSpecification extends Specification {
     4999                | true
   }
 
-  void "canAcceptCargo() method should work as expected for 40ft container"() {
+  void "canAcceptCargoAddition() method should work as expected for 40ft container"() {
     given:
     Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_42G1.maxCommodityWeight.value.toInteger()
     Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_42G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
@@ -92,7 +92,7 @@ class BookingOfferCargosSpecification extends Specification {
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
 
     when:
-    boolean canAcceptCargoResult = bookingOfferCommodities.canAcceptCargo(cargo, maxAllowedTeuCountPolicy)
+    boolean canAcceptCargoResult = bookingOfferCommodities.canAcceptCargoAddition(cargo, maxAllowedTeuCountPolicy)
 
     then:
     canAcceptCargoResult == canAcceptCargoResultParam
@@ -105,49 +105,61 @@ class BookingOfferCargosSpecification extends Specification {
     2_499               | true
   }
 
-  void "calculateNewTotals() method should work as expected for empty BookingOfferCommodities"() {
+  void "calculateTotalsForCargoAddition() method should work as expected for empty BookingOfferCommodities"() {
     given:
     Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 110_000), Quantities.getQuantity(21_000, Units.KILOGRAM))
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
 
     when:
-    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCommodities.calculateNewTotals(cargo)
+    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCommodities.calculateTotalsForCargoAddition(cargo)
 
     then:
     newTotals.v1 == Quantities.getQuantity(110_000, Units.KILOGRAM)
     newTotals.v2 == 6
+    bookingOfferCommodities.bookingOfferCargoMap.size() == 0
   }
 
-  void "calculateNewTotals() method should work as expected for non-empty BookingOfferCommodities when calculating cargo of already stored commodity type"() {
+  void "calculateTotalsForCargoAddition() method should work as expected for non-empty BookingOfferCommodities when calculating cargo of already stored commodity type"() {
     given:
     Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 110_000), Quantities.getQuantity(21_000, Units.KILOGRAM))
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
-    bookingOfferCommodities.storeCargo(cargo)
+    bookingOfferCommodities.storeCargoAddition(cargo)
+    assert bookingOfferCommodities.totalCommodityWeight == Quantities.getQuantity(110_000, Units.KILOGRAM)
+    assert bookingOfferCommodities.totalContainerTeuCount == 6
 
     when:
-    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCommodities.calculateNewTotals(cargo)
+    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCommodities.calculateTotalsForCargoAddition(cargo)
+    Quantity<Mass> newTotalCommodityWeight = newTotals.v1
+    BigDecimal newTotalContainerTeuCount = newTotals.v2
 
     then:
-    newTotals.v1 == Quantities.getQuantity(110_000, Units.KILOGRAM)
-    newTotals.v2 == 6
+    newTotalCommodityWeight == Quantities.getQuantity(220_000, Units.KILOGRAM)
+    newTotalContainerTeuCount == 11
+    bookingOfferCommodities.bookingOfferCargoMap.size() == 1
   }
 
-  void "calculateNewTotals() method should work as expected for non-empty BookingOfferCommodities when calculating cargo of not-already-stored commodity type"() {
+  void "calculateTotalsForCargoAddition() method should work as expected for non-empty BookingOfferCommodities when calculating cargo of not-already-stored commodity type"() {
     given:
     Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 110_000), Quantities.getQuantity(21_000, Units.KILOGRAM))
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
-    bookingOfferCommodities.storeCargo(cargo)
+    bookingOfferCommodities.storeCargoAddition(cargo)
+    assert bookingOfferCommodities.totalCommodityWeight == Quantities.getQuantity(110_000, Units.KILOGRAM)
+    assert bookingOfferCommodities.totalContainerTeuCount == 6
+
     Cargo nonStoredCargo = Cargo.make(ContainerType.TYPE_ISO_42R1_STANDARD_REEFER, Commodity.make(CommodityType.AIR_COOLED, 110_000), Quantities.getQuantity(24_500, Units.KILOGRAM))
 
     when:
-    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCommodities.calculateNewTotals(nonStoredCargo)
+    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCommodities.calculateTotalsForCargoAddition(nonStoredCargo)
+    Quantity<Mass> newTotalCommodityWeight = newTotals.v1
+    BigDecimal newTotalContainerTeuCount = newTotals.v2
 
     then:
-    newTotals.v1 == Quantities.getQuantity(220_000, Units.KILOGRAM)
-    newTotals.v2 == 16
+    newTotalCommodityWeight == Quantities.getQuantity(220_000, Units.KILOGRAM)
+    newTotalContainerTeuCount == 16
+    bookingOfferCommodities.bookingOfferCargoMap.size() == 1
   }
 
-  void "preCalculateTotals() method should throw when cargo cannot be accepted"() {
+  void "preCalculateTotalsForCargoAddition() method should throw when cargo cannot be accepted"() {
     given:
     Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_22G1.maxCommodityWeight.value.toInteger()
     Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
@@ -155,7 +167,7 @@ class BookingOfferCargosSpecification extends Specification {
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
 
     when:
-    bookingOfferCommodities.preCalculateTotals(cargo, maxAllowedTeuCountPolicy)
+    bookingOfferCommodities.preCalculateTotalsForCargoAddition(cargo, maxAllowedTeuCountPolicy)
 
     then:
     AssertionError assertionError = thrown()
@@ -167,7 +179,7 @@ class BookingOfferCargosSpecification extends Specification {
     5001                | _
   }
 
-  void "preCalculateTotals() method should work as expected for acceptable cargo"() {
+  void "preCalculateTotalsForCargoAddition”() method should work as expected for acceptable cargo"() {
     given:
     Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_22G1.maxCommodityWeight.value.toInteger()
     Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
@@ -175,11 +187,12 @@ class BookingOfferCargosSpecification extends Specification {
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
 
     when:
-    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCommodities.preCalculateTotals(cargo, maxAllowedTeuCountPolicy)
+    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCommodities.preCalculateTotalsForCargoAddition(cargo, maxAllowedTeuCountPolicy)
 
     then:
     newTotals.v1 == Quantities.getQuantity(containerCountParam * 21_700, Units.KILOGRAM)
     newTotals.v2 == containerCountParam
+    bookingOfferCommodities.bookingOfferCargoMap.size() == 0
 
     where:
     containerCountParam | _
@@ -187,31 +200,139 @@ class BookingOfferCargosSpecification extends Specification {
     5000                | _
   }
 
-  void "storeCargo() method should store cargo unconditionally"() {
+  void "storeCargoAddition() should work for single cargo"() {
     given:
     Cargo cargo1 = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
-    Cargo cargo2 = Cargo.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, Commodity.make(CommodityType.AIR_COOLED, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
+    String bookingOfferCargoMapKey1 = BookingOfferCargos.BookingOfferCargoMapKey.fromCargoAsString(cargo1)
     BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
 
     when:
-    bookingOfferCommodities.storeCargo(cargo1)
+    bookingOfferCommodities.storeCargoAddition(cargo1)
 
     then:
     noExceptionThrown()
     verifyAll(bookingOfferCommodities, {
       totalContainerTeuCount == 10_000
       totalCommodityWeight == Quantities.getQuantity(10_000 * 21_500, Units.KILOGRAM)
+      bookingOfferCommodities.bookingOfferCargoMap.size() == 1
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey1].commodity.weight == cargo1.commodity.weight
     })
+  }
 
-    and:
+  void "storeCargoAddition() should work for multiple differentiated cargos"() {
+    given:
+    Cargo cargo1 = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
+    String bookingOfferCargoMapKey1 = BookingOfferCargos.BookingOfferCargoMapKey.fromCargoAsString(cargo1)
+    Cargo cargo2 = Cargo.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, Commodity.make(CommodityType.AIR_COOLED, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
+    String bookingOfferCargoMapKey2 = BookingOfferCargos.BookingOfferCargoMapKey.fromCargoAsString(cargo2)
+    BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
+
     when:
-    bookingOfferCommodities.storeCargo(cargo2)
+    bookingOfferCommodities.storeCargoAddition(cargo1)
+    bookingOfferCommodities.storeCargoAddition(cargo2)
 
     then:
     noExceptionThrown()
     verifyAll(bookingOfferCommodities, {
       totalContainerTeuCount == 20_000
       totalCommodityWeight == Quantities.getQuantity(20_000 * 21_500, Units.KILOGRAM)
+      bookingOfferCommodities.bookingOfferCargoMap.size() == 2
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey1].commodity.weight == cargo1.commodity.weight
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey1].containerTeuCount == cargo1.containerTeuCount
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey2].commodity.weight == cargo2.commodity.weight
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey2].containerTeuCount == cargo2.containerTeuCount
+    })
+  }
+
+  void "storeCargoAddition() should work for multiple equivalent cargos"() {
+    given:
+    Cargo cargo1 = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
+    String bookingOfferCargoMapKey1 = BookingOfferCargos.BookingOfferCargoMapKey.fromCargoAsString(cargo1)
+    BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
+
+    when:
+    bookingOfferCommodities.storeCargoAddition(cargo1)
+    bookingOfferCommodities.storeCargoAddition(cargo1)
+
+    then:
+    noExceptionThrown()
+    verifyAll(bookingOfferCommodities, {
+      totalContainerTeuCount == 20_000
+      totalCommodityWeight == Quantities.getQuantity(20_000 * 21_500, Units.KILOGRAM)
+      bookingOfferCommodities.bookingOfferCargoMap.size() == 1
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey1].commodity.weight == cargo1.commodity.weight * 2
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey1].containerTeuCount == cargo1.containerTeuCount * 2
+    })
+  }
+
+  @SuppressWarnings("CodeNarc.AbcMetric")
+  void "storeCargoAddition() method should store multiple cargos correctly"() {
+    given:
+    Cargo cargo1 = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
+    String bookingOfferCargoMapKey1 = BookingOfferCargos.BookingOfferCargoMapKey.fromCargoAsString(cargo1)
+    Cargo cargo2 = Cargo.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, Commodity.make(CommodityType.AIR_COOLED, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
+    String bookingOfferCargoMapKey2 = BookingOfferCargos.BookingOfferCargoMapKey.fromCargoAsString(cargo2)
+    BookingOfferCargos bookingOfferCommodities = new BookingOfferCargos()
+
+    when:
+    bookingOfferCommodities.storeCargoAddition(cargo1)
+
+    then:
+    noExceptionThrown()
+    verifyAll(bookingOfferCommodities, {
+      totalContainerTeuCount == 10_000
+      totalCommodityWeight == Quantities.getQuantity(10_000 * 21_500, Units.KILOGRAM)
+      bookingOfferCommodities.bookingOfferCargoMap.size() == 1
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey1].commodity.weight == cargo1.commodity.weight
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey1].containerTeuCount == cargo1.containerTeuCount
+    })
+
+    and:
+    when:
+    bookingOfferCommodities.storeCargoAddition(cargo2)
+
+    then:
+    noExceptionThrown()
+    verifyAll(bookingOfferCommodities, {
+      totalContainerTeuCount == 20_000
+      totalCommodityWeight == Quantities.getQuantity(20_000 * 21_500, Units.KILOGRAM)
+      bookingOfferCommodities.bookingOfferCargoMap.size() == 2
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey1].commodity.weight == cargo1.commodity.weight
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey1].containerTeuCount == cargo1.containerTeuCount
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey2].commodity.weight == cargo2.commodity.weight
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey2].containerTeuCount == cargo2.containerTeuCount
+    })
+
+    and:
+    when:
+    bookingOfferCommodities.storeCargoAddition(cargo1)
+
+    then:
+    noExceptionThrown()
+    verifyAll(bookingOfferCommodities, {
+      totalContainerTeuCount == 30_000
+      totalCommodityWeight == Quantities.getQuantity(30_000 * 21_500, Units.KILOGRAM)
+      bookingOfferCommodities.bookingOfferCargoMap.size() == 2
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey1].commodity.weight == cargo1.commodity.weight * 2
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey1].containerTeuCount == cargo1.containerTeuCount * 2
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey2].commodity.weight == cargo2.commodity.weight
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey2].containerTeuCount == cargo2.containerTeuCount
+    })
+
+    and:
+    when:
+    bookingOfferCommodities.storeCargoAddition(cargo2)
+
+    then:
+    noExceptionThrown()
+    verifyAll(bookingOfferCommodities, {
+      totalContainerTeuCount == 40_000
+      totalCommodityWeight == Quantities.getQuantity(40_000 * 21_500, Units.KILOGRAM)
+      bookingOfferCommodities.bookingOfferCargoMap.size() == 2
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey1].commodity.weight == cargo1.commodity.weight * 2
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey1].containerTeuCount == cargo1.containerTeuCount * 2
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey2].commodity.weight == cargo2.commodity.weight * 2
+      bookingOfferCommodities.bookingOfferCargoMap[bookingOfferCargoMapKey2].containerTeuCount == cargo2.containerTeuCount * 2
     })
   }
 }

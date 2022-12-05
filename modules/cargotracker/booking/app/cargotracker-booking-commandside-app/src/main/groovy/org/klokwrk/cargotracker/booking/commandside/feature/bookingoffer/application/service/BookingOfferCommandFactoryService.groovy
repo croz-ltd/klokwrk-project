@@ -129,7 +129,7 @@ class BookingOfferCommandFactoryService {
             arrivalLatestTime: bookingOfferAggregate.routeSpecification.arrivalLatestTime
         ],
         bookingOfferCargos: [
-            commodityTypeToCargoMap: bookingOfferAggregate.bookingOfferCargos.commodityTypeToCargoMap,
+            bookingOfferCargoMap: bookingOfferAggregate.bookingOfferCargos.bookingOfferCargoMap,
             totalCommodityWeight: bookingOfferAggregate.bookingOfferCargos.totalCommodityWeight,
             totalContainerTeuCount: bookingOfferAggregate.bookingOfferCargos.totalContainerTeuCount
         ]

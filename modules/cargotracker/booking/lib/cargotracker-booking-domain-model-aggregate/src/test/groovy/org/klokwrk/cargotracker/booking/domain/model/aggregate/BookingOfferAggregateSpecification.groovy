@@ -86,6 +86,7 @@ class BookingOfferAggregateSpecification extends Specification {
 
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
     Cargo expectedCargo = Cargo.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommandWithAcceptableCargo.cargo.commodity, Quantities.getQuantity(20_615, Units.KILOGRAM))
+    String expectedBookingOfferCargoMapKey = BookingOfferCargos.BookingOfferCargoMapKey.fromCargoAsString(expectedCargo)
 
     BookingOfferCreatedEvent expectedBookingOfferCreatedEvent = new BookingOfferCreatedEvent(
         customer: CustomerEventData.fromCustomer(createBookingOfferCommandWithAcceptableCargo.customer),
@@ -107,8 +108,8 @@ class BookingOfferAggregateSpecification extends Specification {
       routeSpecification == createBookingOfferCommandWithAcceptableCargo.routeSpecification
       bookingOfferCargos.totalCommodityWeight == Quantities.getQuantity(10_000, Units.KILOGRAM)
       bookingOfferCargos.totalContainerTeuCount == 1
-      bookingOfferCargos.commodityTypeToCargoMap.size() == 1
-      bookingOfferCargos.commodityTypeToCargoMap[CommodityType.DRY] == expectedCargo
+      bookingOfferCargos.bookingOfferCargoMap.size() == 1
+      bookingOfferCargos.bookingOfferCargoMap.get(expectedBookingOfferCargoMapKey) == expectedCargo
     })
   }
 
