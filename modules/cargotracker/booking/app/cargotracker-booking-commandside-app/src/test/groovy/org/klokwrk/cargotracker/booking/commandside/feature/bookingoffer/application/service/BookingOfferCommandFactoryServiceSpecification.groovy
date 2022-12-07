@@ -262,7 +262,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
     Location myDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("NLRTM")
 
     BookingOfferCargos expectedBookingOfferCargos = new BookingOfferCargos()
-    expectedBookingOfferCargos.storeCargoAddition(Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 1000)))
+    expectedBookingOfferCargos.storeCargoCollectionAddition([Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 1000))])
 
     BookingOfferAggregate bookingOfferAggregate = new BookingOfferAggregate(
         customer: Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),
@@ -281,16 +281,16 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
 
     then:
     verifyAll(createBookingOfferCommandResponse) {
-      it.customer == [
+      customer == [
           customerId: "26d5f7d8-9ded-4ce3-b320-03a75f674f4e",
           customerType: "STANDARD"
       ]
 
-      it.bookingOfferId == [
+      bookingOfferId == [
           identifier: myBookingOfferIdentifier
       ]
 
-      it.routeSpecification == [
+      routeSpecification == [
           originLocation: [
               name: "Rijeka",
               countryName: "Croatia",
@@ -350,11 +350,13 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
           arrivalLatestTime: currentInstantRoundedAndThreeHours
       ]
 
-      it.bookingOfferCargos == [
-          bookingOfferCargoMap: expectedBookingOfferCargos.bookingOfferCargoMap,
-          totalCommodityWeight: Quantities.getQuantity(1000, Units.KILOGRAM),
-          totalContainerTeuCount: 1.00G
-      ]
+      verifyAll(bookingOfferCargos) {
+        bookingOfferCargoCollection.size() == expectedBookingOfferCargos.bookingOfferCargoCollection.size()
+        bookingOfferCargoCollection.containsAll(expectedBookingOfferCargos.bookingOfferCargoCollection)
+
+        totalCommodityWeight == Quantities.getQuantity(1000, Units.KILOGRAM)
+        totalContainerTeuCount == 1.00G
+      }
     }
   }
 }

@@ -35,17 +35,22 @@ dependencies {
   implementation project(":cargotracker-lib-domain-model-command")
   implementation project(":cargotracker-lib-domain-model-event")
   implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lang-groovy-contracts-match")
+  implementation project(":klokwrk-lang-groovy-contracts-simple")
 
   implementation "javax.measure:unit-api"
   implementation "org.apache.groovy:groovy"
+  implementation "org.apache.groovy:groovy-macro"
   implementation "org.axonframework:axon-eventsourcing"
   implementation "org.axonframework:axon-messaging"
   implementation "org.axonframework:axon-modelling"
   implementation "org.axonframework:axon-spring"
+  implementation "org.hamcrest:hamcrest"
   implementation "tech.units:indriya"
 
   testImplementation testFixtures(project(":cargotracker-booking-domain-model-command"))
   testImplementation testFixtures(project(":cargotracker-booking-domain-model-event"))
+  testImplementation testFixtures(project(":cargotracker-booking-domain-model-value"))
 
   testImplementation "org.axonframework:axon-test"
   testImplementation "org.spockframework:spock-core"

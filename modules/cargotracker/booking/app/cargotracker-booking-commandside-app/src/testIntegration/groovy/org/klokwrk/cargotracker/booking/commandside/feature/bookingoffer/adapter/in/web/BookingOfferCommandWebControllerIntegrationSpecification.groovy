@@ -58,7 +58,8 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mockMvc ?= webAppContextSetup(webApplicationContext).build()
   }
 
-  void "should work for correct request - [acceptLanguage: #acceptLanguageParam]"() {
+//  void "should work for correct request - [acceptLanguage: #acceptLanguageParam]"() {
+  void "should work for correct request"() {
     given:
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
@@ -177,8 +178,8 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     verifyAll(responseContentMap.payload.bookingOfferCargos as Map) {
       size() == 3
 
-      bookingOfferCargoMap == [
-          "DRY:::TYPE_ISO_22G1:::null": [
+      bookingOfferCargoCollection == [
+          [
               containerType: "TYPE_ISO_22G1",
               commodity: [
                   commodityType: "DRY",
@@ -345,10 +346,9 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
     verifyAll(responseContentMap.payload.bookingOfferCargos as Map) {
       size() == 3
-      String bookingOfferCargoMapKey = "${ commodityTypeParam.name() }:::TYPE_ISO_22R1_STANDARD_REEFER:::${ commodityRequestedStorageTemperatureDegCParam } °C"
 
-      bookingOfferCargoMap == [
-          (bookingOfferCargoMapKey): [
+      bookingOfferCargoCollection == [
+          [
               containerType: "TYPE_ISO_22R1_STANDARD_REEFER",
               commodity: [
                   commodityType: "${ commodityTypeParam.name() }",
