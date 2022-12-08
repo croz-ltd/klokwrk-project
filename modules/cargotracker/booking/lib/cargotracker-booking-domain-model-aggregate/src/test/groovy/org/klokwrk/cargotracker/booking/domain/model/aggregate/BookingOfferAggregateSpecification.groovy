@@ -77,7 +77,7 @@ class BookingOfferAggregateSpecification extends Specification {
         .expectEvents(expectedBookingOfferCreatedEvent)
   }
 
-  void 'should work with acceptable cargo'() {
+  void "should work with acceptable cargo"() {
     given:
     CreateBookingOfferCommand createBookingOfferCommandWithAcceptableCargo = CreateBookingOfferCommandFixtureBuilder
         .createBookingOfferCommand_default()
@@ -85,13 +85,13 @@ class BookingOfferAggregateSpecification extends Specification {
         .build()
 
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
-    Cargo expectedCargo = Cargo.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommandWithAcceptableCargo.cargo.commodity, Quantities.getQuantity(20_615, Units.KILOGRAM))
+    Cargo expectedBookingOfferCargo = Cargo.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommandWithAcceptableCargo.cargo.commodity, Quantities.getQuantity(20_615, Units.KILOGRAM))
 
     BookingOfferCreatedEvent expectedBookingOfferCreatedEvent = new BookingOfferCreatedEvent(
         customer: CustomerEventData.fromCustomer(createBookingOfferCommandWithAcceptableCargo.customer),
         bookingOfferId: createBookingOfferCommandWithAcceptableCargo.bookingOfferId.identifier,
         routeSpecification: RouteSpecificationEventData.fromRouteSpecification(createBookingOfferCommandWithAcceptableCargo.routeSpecification),
-        cargos: [CargoEventData.fromCargo(expectedCargo)],
+        cargos: [CargoEventData.fromCargo(expectedBookingOfferCargo)],
         totalCommodityWeight: QuantityFormatter.instance.format(Quantities.getQuantity(10_000, Units.KILOGRAM)),
         totalContainerTeuCount: 1
     )
@@ -105,10 +105,12 @@ class BookingOfferAggregateSpecification extends Specification {
     verifyAll(resultValidator.state.get().wrappedAggregate.aggregateRoot as BookingOfferAggregate, {
       bookingOfferId == createBookingOfferCommandWithAcceptableCargo.bookingOfferId
       routeSpecification == createBookingOfferCommandWithAcceptableCargo.routeSpecification
+
+      bookingOfferCargos.checkCargoCollectionInvariants()
       bookingOfferCargos.totalCommodityWeight == Quantities.getQuantity(10_000, Units.KILOGRAM)
       bookingOfferCargos.totalContainerTeuCount == 1
-      bookingOfferCargos.commodityTypeToCargoMap.size() == 1
-      bookingOfferCargos.commodityTypeToCargoMap[CommodityType.DRY] == expectedCargo
+      bookingOfferCargos.findCargoByExample(expectedBookingOfferCargo) == expectedBookingOfferCargo
+      bookingOfferCargos.bookingOfferCargoCollection.size() == 1
     })
   }
 

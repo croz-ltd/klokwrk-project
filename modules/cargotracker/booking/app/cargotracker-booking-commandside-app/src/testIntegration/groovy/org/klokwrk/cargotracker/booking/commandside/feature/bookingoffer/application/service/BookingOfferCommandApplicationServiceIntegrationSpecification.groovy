@@ -73,7 +73,7 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
     Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
 
     BookingOfferCargos expectedBookingOfferCargos = new BookingOfferCargos()
-    expectedBookingOfferCargos.storeCargo(Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 1000)))
+    expectedBookingOfferCargos.storeCargoCollectionAddition([Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 1000))])
 
     when:
     OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommandOperationResponse =
@@ -98,7 +98,8 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
       bookingOfferCargos.with {
         size() == 3
 
-        commodityTypeToCargoMap == expectedBookingOfferCargos.commodityTypeToCargoMap
+        bookingOfferCargoCollection.size() == expectedBookingOfferCargos.bookingOfferCargoCollection.size()
+        bookingOfferCargoCollection.containsAll(expectedBookingOfferCargos.bookingOfferCargoCollection)
         totalCommodityWeight == Quantities.getQuantity(1000, Units.KILOGRAM)
         totalContainerTeuCount == 1
       }

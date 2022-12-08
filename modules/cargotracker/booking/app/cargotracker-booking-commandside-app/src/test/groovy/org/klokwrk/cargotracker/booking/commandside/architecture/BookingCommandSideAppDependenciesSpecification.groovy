@@ -82,7 +82,8 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         "javax.measure..",
         "tech.units.indriya..",
 
-        "org.axonframework.modelling.command.."
+        "org.axonframework.modelling.command..",
+        "org.hamcrest"
     ]
 
     String[] cargotrackerBookingDomainAggregateAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.aggregate.."]
@@ -93,6 +94,8 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
 
     String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracker.lib.boundary.api.."]
+
+    String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lang.groovy.."]
 
     // @formatter:off
     ArchRule rule = ArchRuleDefinition
@@ -106,6 +109,8 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
             cargotrackerBookingDomainValueAllPackages +
 
             cargotrackerLibBoundaryApiAllPackages +
+
+            klokwrkLangGroovyAllPackages +
 
             thirdPartyDependencyAllPackages as String[]
         )
