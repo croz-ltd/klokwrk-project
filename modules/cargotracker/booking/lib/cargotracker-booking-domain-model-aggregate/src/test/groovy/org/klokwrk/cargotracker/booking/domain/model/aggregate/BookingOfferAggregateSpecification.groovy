@@ -22,6 +22,7 @@ import org.axonframework.test.aggregate.ResultValidator
 import org.axonframework.test.aggregate.TestExecutor
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommandFixtureBuilder
+import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandDataFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEventFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventData
@@ -81,11 +82,11 @@ class BookingOfferAggregateSpecification extends Specification {
     given:
     CreateBookingOfferCommand createBookingOfferCommandWithAcceptableCargo = CreateBookingOfferCommandFixtureBuilder
         .createBookingOfferCommand_default()
-        .cargoCommodity(Commodity.make(CommodityType.DRY, 10_000))
+        .cargos([CargoCommandDataFixtureBuilder.createCargoCommandData_default().commodity(Commodity.make(CommodityType.DRY, 10_000)).build()])
         .build()
 
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
-    Cargo expectedBookingOfferCargo = Cargo.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommandWithAcceptableCargo.cargo.commodity, Quantities.getQuantity(20_615, Units.KILOGRAM))
+    Cargo expectedBookingOfferCargo = Cargo.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommandWithAcceptableCargo.cargos[0].commodity, Quantities.getQuantity(20_615, Units.KILOGRAM))
 
     BookingOfferCreatedEvent expectedBookingOfferCreatedEvent = new BookingOfferCreatedEvent(
         customer: CustomerEventData.fromCustomer(createBookingOfferCommandWithAcceptableCargo.customer),
@@ -118,7 +119,7 @@ class BookingOfferAggregateSpecification extends Specification {
     given:
     CreateBookingOfferCommand createBookingOfferCommandWithInvalidCargo = CreateBookingOfferCommandFixtureBuilder
         .createBookingOfferCommand_default()
-        .cargoCommodity(Commodity.make(CommodityType.DRY, 5001 * 25_000))
+        .cargos([CargoCommandDataFixtureBuilder.createCargoCommandData_default().commodity(Commodity.make(CommodityType.DRY, 5001 * 25_000)).build()])
         .build()
 
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()

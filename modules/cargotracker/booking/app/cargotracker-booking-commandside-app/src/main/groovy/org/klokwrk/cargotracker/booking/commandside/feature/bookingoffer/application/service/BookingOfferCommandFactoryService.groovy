@@ -71,6 +71,17 @@ class BookingOfferCommandFactoryService {
     Location resolvedOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(createBookingOfferCommandRequest.routeSpecification.originLocation)
     Location resolvedDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(createBookingOfferCommandRequest.routeSpecification.destinationLocation)
 
+    Collection<CargoCommandData> cargos = []
+    CargoCommandData cargoCommandData = new CargoCommandData(
+        commodity: Commodity.make(
+            CommodityType.valueOf(createBookingOfferCommandRequest.cargo.commodityType.toUpperCase()),
+            createBookingOfferCommandRequest.cargo.commodityWeightKg,
+            createBookingOfferCommandRequest.cargo.commodityRequestedStorageTemperatureDegC
+        ),
+        containerDimensionType: ContainerDimensionType.valueOf(createBookingOfferCommandRequest.cargo.containerDimensionType.toUpperCase())
+    )
+    cargos << cargoCommandData
+
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
         customer: customer,
         bookingOfferId: BookingOfferId.makeWithGeneratedIdentifierIfNeeded(createBookingOfferCommandRequest.bookingOfferIdentifier),
@@ -79,14 +90,7 @@ class BookingOfferCommandFactoryService {
             createBookingOfferCommandRequest.routeSpecification.departureEarliestTime, createBookingOfferCommandRequest.routeSpecification.departureLatestTime,
             createBookingOfferCommandRequest.routeSpecification.arrivalLatestTime, clock
         ),
-        cargo: new CargoCommandData(
-            commodity: Commodity.make(
-                CommodityType.valueOf(createBookingOfferCommandRequest.cargo.commodityType.toUpperCase()),
-                createBookingOfferCommandRequest.cargo.commodityWeightKg,
-                createBookingOfferCommandRequest.cargo.commodityRequestedStorageTemperatureDegC
-            ),
-            containerDimensionType: ContainerDimensionType.valueOf(createBookingOfferCommandRequest.cargo.containerDimensionType.toUpperCase())
-        )
+        cargos: cargos
     )
 
     return createBookingOfferCommand

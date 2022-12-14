@@ -30,6 +30,10 @@ import org.klokwrk.cargotracker.lib.domain.model.command.BaseCreateCommand
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
 
+import static org.hamcrest.Matchers.empty
+import static org.hamcrest.Matchers.everyItem
+import static org.hamcrest.Matchers.instanceOf
+import static org.hamcrest.Matchers.not
 import static org.hamcrest.Matchers.notNullValue
 
 @KwrkImmutable
@@ -38,7 +42,7 @@ class CreateBookingOfferCommand implements BaseCreateCommand, PostMapConstructor
   Customer customer
   BookingOfferId bookingOfferId
   RouteSpecification routeSpecification
-  CargoCommandData cargo
+  Collection<CargoCommandData> cargos
 
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
@@ -46,7 +50,9 @@ class CreateBookingOfferCommand implements BaseCreateCommand, PostMapConstructor
     requireMatch(customer, notNullValue())
     requireMatch(bookingOfferId, notNullValue())
     requireMatch(routeSpecification, notNullValue())
-    requireMatch(cargo, notNullValue())
+    requireMatch(cargos, notNullValue())
+    requireMatch(cargos, not(empty()))
+    requireMatch(cargos, everyItem(instanceOf(CargoCommandData)))
 
     // Since they are pretty closely related to particular use-cases, commands can check for use-case-specific constraints (in contrast with, for example, value objects that are not
     // use-case-specific).

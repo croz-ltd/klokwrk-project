@@ -21,10 +21,8 @@ import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
 import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandData
+import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandDataFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
-import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
-import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 import org.klokwrk.cargotracker.booking.domain.model.value.Customer
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
@@ -43,8 +41,7 @@ class CreateBookingOfferCommandFixtureBuilder {
         .customer(customer_standard().build())
         .bookingOfferId(BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix(currentTimeClock).toString()))
         .routeSpecification(routeSpecification_rijekaToRotterdam(currentTimeClock).build())
-        .cargoCommodity(Commodity.make(CommodityType.DRY, 1000))
-        .cargoContainerDimensionType(ContainerDimensionType.DIMENSION_ISO_22)
+        .cargos([CargoCommandDataFixtureBuilder.createCargoCommandData_default().build()])
 
     return builder
   }
@@ -52,15 +49,14 @@ class CreateBookingOfferCommandFixtureBuilder {
   Customer customer
   BookingOfferId bookingOfferId
   RouteSpecification routeSpecification
-  Commodity cargoCommodity
-  ContainerDimensionType cargoContainerDimensionType
+  Collection<CargoCommandData> cargos
 
   CreateBookingOfferCommand build() {
     CreateBookingOfferCommand command = new CreateBookingOfferCommand(
         customer: customer,
         bookingOfferId: bookingOfferId,
         routeSpecification: routeSpecification,
-        cargo: new CargoCommandData(commodity: cargoCommodity, containerDimensionType: cargoContainerDimensionType)
+        cargos: cargos
     )
 
     return command

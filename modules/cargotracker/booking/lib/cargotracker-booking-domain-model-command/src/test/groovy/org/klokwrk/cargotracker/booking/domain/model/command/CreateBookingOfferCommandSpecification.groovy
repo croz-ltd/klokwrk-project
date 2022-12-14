@@ -57,6 +57,7 @@ class CreateBookingOfferCommandSpecification extends Specification {
   static Commodity validCommodity = Commodity.make(CommodityType.DRY, 1000, null)
   static ContainerDimensionType validContainerDimensionType = ContainerDimensionType.DIMENSION_ISO_22
   static CargoCommandData validCargo = new CargoCommandData(commodity: validCommodity, containerDimensionType: validContainerDimensionType)
+  static Collection<CargoCommandData> validCargos = [validCargo]
 
   void "map constructor should work for correct input params"() {
     when:
@@ -65,7 +66,7 @@ class CreateBookingOfferCommandSpecification extends Specification {
         customer: Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),
         bookingOfferId: bookingOfferId,
         routeSpecification: validRouteSpecification,
-        cargo: validCargo
+        cargos: validCargos
     )
 
     then:
@@ -82,11 +83,12 @@ class CreateBookingOfferCommandSpecification extends Specification {
 
   void "map constructor should fail for null input params"() {
     when:
+    //noinspection GroovyAssignabilityCheck
     new CreateBookingOfferCommand(
         customer: customerParam,
         bookingOfferId: bookingOfferIdParam,
         routeSpecification: routeSpecificationParam,
-        cargo: new CargoCommandData(commodity: commodityParam, containerDimensionType: containerDimensionTypeParam)
+        cargos: cargosParam
     )
 
     then:
@@ -94,12 +96,13 @@ class CreateBookingOfferCommandSpecification extends Specification {
     assertionError.message.contains(messagePartParam)
 
     where:
-    customerParam         | bookingOfferIdParam                          | routeSpecificationParam | commodityParam | containerDimensionTypeParam | messagePartParam
-    null                  | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | validCommodity | validContainerDimensionType | "notNullValue"
-    validStandardCustomer | null                                         | validRouteSpecification | validCommodity | validContainerDimensionType | "notNullValue"
-    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | null                    | validCommodity | validContainerDimensionType | "notNullValue"
-    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | null           | validContainerDimensionType | "notNullValue"
-    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | validCommodity | null                        | "notNullValue"
+    customerParam         | bookingOfferIdParam                          | routeSpecificationParam | cargosParam | messagePartParam
+    null                  | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | validCargos | "notNullValue"
+    validStandardCustomer | null                                         | validRouteSpecification | validCargos | "notNullValue"
+    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | null                    | validCargos | "notNullValue"
+    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | null        | "notNullValue"
+    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | []          | "not(empty())"
+    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | ["123"]     | "everyItem(instanceOf(CargoCommandData))"
   }
 
   void "map constructor should fail when some of business rules of routeSpecification are not satisfied"() {

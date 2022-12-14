@@ -28,6 +28,7 @@ import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
+import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandData
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
@@ -71,8 +72,11 @@ class BookingOfferAggregate {
       CreateBookingOfferCommand createBookingOfferCommand, MetaData metaData,
       CargoCreatorService cargoCreatorService, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy)
   {
-    Cargo cargo = cargoCreatorService.from(createBookingOfferCommand.cargo.containerDimensionType, createBookingOfferCommand.cargo.commodity)
-    Collection<Cargo> inputCargoCollection = [cargo]
+    Collection<Cargo> inputCargoCollection = []
+    createBookingOfferCommand.cargos.forEach { CargoCommandData cargoCommandData ->
+      Cargo cargo = cargoCreatorService.from(cargoCommandData.containerDimensionType, cargoCommandData.commodity)
+      inputCargoCollection << cargo
+    }
 
     // Check if booking offer can accept cargos addition regarding the total container TEU count of a booking offer.
     // The largest ship in the world can carry 24000 TEU of containers. Based on that fact, we are limiting the total container TEU count per a single booking to the max of 5000 TEUs. Of course, the
