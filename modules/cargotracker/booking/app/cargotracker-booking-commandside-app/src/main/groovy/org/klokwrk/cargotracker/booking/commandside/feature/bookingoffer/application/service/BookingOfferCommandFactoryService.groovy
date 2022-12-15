@@ -18,6 +18,7 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.service
 
 import groovy.transform.CompileStatic
+import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CargoData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.out.LocationByUnLoCodeQueryPortOut
@@ -72,15 +73,18 @@ class BookingOfferCommandFactoryService {
     Location resolvedDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(createBookingOfferCommandRequest.routeSpecification.destinationLocation)
 
     Collection<CargoCommandData> cargos = []
-    CargoCommandData cargoCommandData = new CargoCommandData(
-        commodity: Commodity.make(
-            CommodityType.valueOf(createBookingOfferCommandRequest.cargo.commodityType.toUpperCase()),
-            createBookingOfferCommandRequest.cargo.commodityWeightKg,
-            createBookingOfferCommandRequest.cargo.commodityRequestedStorageTemperatureDegC
-        ),
-        containerDimensionType: ContainerDimensionType.valueOf(createBookingOfferCommandRequest.cargo.containerDimensionType.toUpperCase())
-    )
-    cargos << cargoCommandData
+    createBookingOfferCommandRequest.cargos.forEach({ CargoData cargoData ->
+      CargoCommandData cargoCommandData = new CargoCommandData(
+          commodity: Commodity.make(
+              CommodityType.valueOf(cargoData.commodityType.toUpperCase()),
+              cargoData.commodityWeightKg,
+              cargoData.commodityRequestedStorageTemperatureDegC
+          ),
+          containerDimensionType: ContainerDimensionType.valueOf(cargoData.containerDimensionType.toUpperCase())
+      )
+
+      cargos << cargoCommandData
+    })
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
         customer: customer,

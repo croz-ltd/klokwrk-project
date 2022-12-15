@@ -108,7 +108,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
             arrivalLatestTime: currentInstantRoundedAndThreeHours
         ),
-        cargo: validCargoData
+        cargos: [validCargoData]
     )
 
     when:
@@ -138,7 +138,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
             departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam,
             arrivalLatestTime: currentInstantRoundedAndThreeHours
         ),
-        cargo: validCargoData
+        cargos: [validCargoData]
     )
 
     when:
@@ -169,7 +169,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
             arrivalLatestTime: arrivalLatestTimeParam
         ),
-        cargo: validCargoData
+        cargos: [validCargoData]
     )
 
     when:
@@ -195,7 +195,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "standard-customer@cargotracker.com",
         routeSpecification: validRouteSpecificationData,
-        cargo: validCargoData
+        cargos: [validCargoData]
     )
 
     when:
@@ -221,7 +221,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
         userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: bookingOfferIdentifier,
         routeSpecification: validRouteSpecificationData,
-        cargo: validCargoData
+        cargos: [validCargoData]
     )
 
     when:
@@ -245,7 +245,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
         userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: "invalid",
         routeSpecification: validRouteSpecificationData,
-        cargo: validCargoData
+        cargos: [validCargoData]
     )
 
     when:

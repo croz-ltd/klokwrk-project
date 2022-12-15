@@ -22,6 +22,7 @@ import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 import org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint
+import org.klokwrk.lib.validation.constraint.NotNullElementsConstraint
 import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
 import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.validation.group.Level1
@@ -32,6 +33,7 @@ import org.klokwrk.lib.validation.group.Level4
 import javax.validation.GroupSequence
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
@@ -79,6 +81,7 @@ class CreateBookingOfferCommandRequest {
    * Must be not {@code null} and valid.
    */
   @Valid
-  @NotNull(groups = [Level1])
-  CargoData cargo
+  @NotNullElementsConstraint(groups = [Level2])
+  @NotEmpty(groups = [Level1])
+  Collection<CargoData> cargos
 }

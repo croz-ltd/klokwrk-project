@@ -85,7 +85,7 @@ abstract class AbstractCommandRetrySchedulerIntegrationSpecification extends Abs
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
             arrivalLatestTime: Instant.now() + Duration.ofHours(2)
         ),
-        cargo: new CargoData(commodityType: CommodityType.DRY.name(), commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22")
+        cargos: [new CargoData(commodityType: CommodityType.DRY.name(), commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22")]
     )
     Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
 
@@ -148,7 +148,7 @@ abstract class AbstractCommandRetrySchedulerIntegrationSpecification extends Abs
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
             arrivalLatestTime: Instant.now() + Duration.ofHours(2)
         ),
-        cargo: new CargoData(commodityType: CommodityType.DRY.name(), commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22")
+        cargos: [new CargoData(commodityType: CommodityType.DRY.name(), commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22")]
     )
     Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
 

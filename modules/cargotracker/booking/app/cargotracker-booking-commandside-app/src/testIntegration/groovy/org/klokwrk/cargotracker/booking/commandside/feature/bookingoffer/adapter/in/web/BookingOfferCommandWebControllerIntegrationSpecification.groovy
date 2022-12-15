@@ -58,7 +58,6 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mockMvc ?= webAppContextSetup(webApplicationContext).build()
   }
 
-//  void "should work for correct request - [acceptLanguage: #acceptLanguageParam]"() {
   void "should work for correct request"() {
     given:
     Instant currentTime = Instant.now()
@@ -76,10 +75,8 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
                 departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
                 arrivalLatestTime: arrivalLatestTime
             ],
-            cargo: [
-                commodityType: "dry",
-                commodityWeightKg: 1000,
-                containerDimensionType: "DIMENSION_ISO_22"
+            cargos: [
+                [commodityType: "dry", commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22"]
             ]
         ]
     )
@@ -227,7 +224,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     "en"                | "en"
   }
 
-  void "should work for correct request with commodity requested storage temperature - [acceptLanguage: #acceptLanguageParam]"() {
+  void "should work for correct request with commodity requested storage temperature"() {
     given:
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
@@ -244,11 +241,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
                 departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
                 arrivalLatestTime: arrivalLatestTime
             ],
-            cargo: [
-                commodityType: "${ commodityTypeParam.name().toLowerCase() }",
-                commodityWeightKg: 1000,
-                commodityRequestedStorageTemperatureDegC: commodityRequestedStorageTemperatureDegCParam,
-                containerDimensionType: "DIMENSION_ISO_22"
+            cargos: [
+                [
+                    commodityType: "${ commodityTypeParam.name().toLowerCase() }",
+                    commodityWeightKg: 1000,
+                    commodityRequestedStorageTemperatureDegC: commodityRequestedStorageTemperatureDegCParam,
+                    containerDimensionType: "DIMENSION_ISO_22"
+                ]
             ]
         ]
     )
@@ -409,7 +408,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     "en"                | "en"              | CommodityType.FROZEN     | -12
   }
 
-  void "should return expected response when request is not valid - validation failure - [acceptLanguage: #acceptLanguageParam]"() {
+  void "should return expected response when request is not valid - validation failure"() {
     given:
     String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
@@ -417,7 +416,9 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             userIdentifier: "standard-customer@cargotracker.com",
             bookingOfferIdentifier: bookingOfferIdentifier,
             routeSpecification: [originLocation: null, destinationLocation: null, departureEarliestTime: null, departureLatestTime: null, arrivalLatestTime: null],
-            cargo: [commodityType: "dry", commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22"]
+            cargos: [
+                [commodityType: "dry", commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22"]
+            ]
         ]
     )
 
@@ -478,7 +479,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     "en"                | "en"              | "Request is not valid."
   }
 
-  void "should fail when customer cannot be found - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
+  void "should fail when customer cannot be found - domain failure"() {
     given:
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
@@ -495,10 +496,8 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
                 departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
                 arrivalLatestTime: arrivalLatestTime
             ],
-            cargo: [
-                commodityType: "dry",
-                commodityWeightKg: 1000,
-                containerDimensionType: "DIMENSION_ISO_22"
+            cargos: [
+                [commodityType: "dry", commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22"]
             ]
         ]
     )
@@ -548,7 +547,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     "en"                | "en"              | "Can't find the customer with user id 'unknownUserIdentifier'."
   }
 
-  void "should fail when origin and destination locations are equal - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
+  void "should fail when origin and destination locations are equal - domain failure"() {
     given:
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
@@ -563,7 +562,9 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "HRRJK", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            cargo: [commodityType: "dry", commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22"]
+            cargos: [
+                [commodityType: "dry", commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22"]
+            ]
         ]
     )
 
@@ -612,7 +613,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     "en"                | "en"              | "Specified origin location is equal to specified destination location."
   }
 
-  void "should fail when cargo can not be sent to destination location - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
+  void "should fail when cargo can not be sent to destination location - domain failure"() {
     given:
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
@@ -627,7 +628,9 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRZAG", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            cargo: [commodityType: "dry", commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22"]
+            cargos: [
+                [commodityType: "dry", commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22"]
+            ]
         ]
     )
 
@@ -676,7 +679,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     "en"                | "en"              | "Cargo cannot be sent from the specified origin location to the destination location."
   }
 
-  void "should fail when commodity weight is too high - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
+  void "should fail when commodity weight is too high - domain failure"() {
     given:
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
@@ -691,7 +694,9 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            cargo: [commodityType: "dry", commodityWeightKg: 125_000_000, containerDimensionType: "dimension_ISO_22"]
+            cargos: [
+                [commodityType: "dry", commodityWeightKg: 125_000_000, containerDimensionType: "dimension_ISO_22"]
+            ]
         ]
     )
 
@@ -729,7 +734,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     "en"                | "en"              | "Cannot accept cargo because it would exceed the maximum allowed count of TEU units (5000 TEU) per a booking offer."
   }
 
-  void "should fail when commodity requested storage temperature is supplied but not supported for commodity type - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
+  void "should fail when commodity requested storage temperature is supplied but not supported for commodity type - domain failure"() {
     given:
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
@@ -744,11 +749,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            cargo: [
-                commodityType: "$commodityTypeStringParam",
-                commodityWeightKg: 1000,
-                commodityRequestedStorageTemperatureDegC: commodityRequestedStorageTemperatureDegCParam,
-                containerDimensionType: "dimension_ISO_22"
+            cargos: [
+                [
+                    commodityType: "dry",
+                    commodityWeightKg: 1000,
+                    commodityRequestedStorageTemperatureDegC: commodityRequestedStorageTemperatureDegCParam,
+                    containerDimensionType: "dimension_ISO_22"
+                ]
             ]
         ]
     )
@@ -782,12 +789,12 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     }
 
     where:
-    acceptLanguageParam | localeStringParam | commodityTypeStringParam | commodityRequestedStorageTemperatureDegCParam | violationMessageParam
-    "hr-HR"             | "hr_HR"           | "dry"                    | 1                                             | "Zahtijevana temperatura skladištenja nije dozvoljena za DRY tip robe."
-    "en"                | "en"              | "dry"                    | 1                                             | "Requested storage temperature is not supported for DRY commodity type."
+    acceptLanguageParam | localeStringParam | commodityRequestedStorageTemperatureDegCParam | violationMessageParam
+    "hr-HR"             | "hr_HR"           | 1                                             | "Zahtijevana temperatura skladištenja nije dozvoljena za DRY tip robe."
+    "en"                | "en"              | 1                                             | "Requested storage temperature is not supported for DRY commodity type."
   }
 
-  void "should fail when requested storage temperature is out of range - domain failure - [acceptLanguage: #acceptLanguageParam]"() {
+  void "should fail when requested storage temperature is out of range - domain failure"() {
     given:
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
@@ -802,11 +809,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             routeSpecification: [
                 originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
-            cargo: [
-                commodityType: "$commodityTypeStringParam",
-                commodityWeightKg: 1000,
-                commodityRequestedStorageTemperatureDegC: commodityRequestedStorageTemperatureDegCParam,
-                containerDimensionType: "dimension_ISO_22"
+            cargos: [
+                [
+                    commodityType: "$commodityTypeStringParam",
+                    commodityWeightKg: 1000,
+                    commodityRequestedStorageTemperatureDegC: commodityRequestedStorageTemperatureDegCParam,
+                    containerDimensionType: "dimension_ISO_22"
+                ]
             ]
         ]
     )
@@ -861,7 +870,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     "frozen"                 | -21                                           | "Requested storage temperature is not in supported range for frozen commodities: [-20, -8] Celsius."
   }
 
-  void "should return expected response for a request with invalid HTTP method - [acceptLanguage: #acceptLanguageParam]"() {
+  void "should return expected response for a request with invalid HTTP method"() {
     given:
     String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: null, routeSpecification: null])
 
