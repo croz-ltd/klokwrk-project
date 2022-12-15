@@ -21,6 +21,7 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageRequirement
 import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortDirection
 import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortRequirement
+import org.klokwrk.lib.validation.constraint.NotNullElementsConstraint
 import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
@@ -62,6 +63,7 @@ class BookingOfferSummaryFindAllQueryRequest {
    * Must be not {@code null}, and must be valid.
    */
   @Valid
+  @NotNullElementsConstraint(groups = [Level2])
   @NotEmpty(groups = [Level1])
   List<SortRequirement> sortRequirementList = [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.DESC)]
 }

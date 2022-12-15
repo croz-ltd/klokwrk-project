@@ -49,6 +49,7 @@ import org.springframework.test.context.ActiveProfiles
 import spock.lang.Shared
 
 import javax.sql.DataSource
+import javax.validation.ConstraintViolationException
 
 @SuppressWarnings("GroovyAccessibility")
 @EnableSharedInjection
@@ -152,6 +153,33 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
     }
 
     operationResponse.payload.pageContent.size() as Long == 3
+  }
+
+  void "should fail for invalid sort requirements list"() {
+    given:
+    BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(
+        userIdentifier: "standard-customer@cargotracker.com",
+        pageRequirement: new PageRequirement(ordinal: 0, size: 3),
+        sortRequirementList: sortRequirementListParam
+    )
+
+    OperationRequest<BookingOfferSummaryFindAllQueryRequest> operationRequest = new OperationRequest(
+        payload: bookingOfferSummaryFindAllQueryRequest,
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
+    )
+
+    when:
+    bookingOfferSummaryFindAllQueryPortIn.bookingOfferSummaryFindAllQuery(operationRequest)
+
+    then:
+    ConstraintViolationException constraintViolationException = thrown()
+    constraintViolationException.message.startsWith("sortRequirementList: ")
+
+    where:
+    sortRequirementListParam | _
+    null                     | _
+    []                       | _
+    [null]                   | _
   }
 
   void "should fail for invalid property name in sort requirements"() {

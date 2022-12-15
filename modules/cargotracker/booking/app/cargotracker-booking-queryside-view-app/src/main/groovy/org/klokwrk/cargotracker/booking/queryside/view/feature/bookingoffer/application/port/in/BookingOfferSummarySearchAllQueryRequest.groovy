@@ -114,6 +114,7 @@ class BookingOfferSummarySearchAllQueryRequest {
   PageRequirement pageRequirement = PageRequirement.PAGE_REQUIREMENT_INSTANCE_DEFAULT
 
   @Valid
+  @NotNullElementsConstraint(groups = [Level2])
   @NotEmpty(groups = [Level1])
   List<SortRequirement> sortRequirementList = [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.DESC)]
 }
