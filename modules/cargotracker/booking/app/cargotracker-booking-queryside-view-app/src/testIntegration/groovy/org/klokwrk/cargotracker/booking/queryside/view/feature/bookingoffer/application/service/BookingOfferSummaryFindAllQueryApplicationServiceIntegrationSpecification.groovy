@@ -201,7 +201,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
     then:
     QueryException queryException = thrown()
 
-    queryException.message == "Internal Server Error"
+    queryException.message == "Bad Request"
     verifyAll(queryException.violationInfo, {
       severity == Severity.WARNING
       violationCode.code == ViolationCode.BAD_REQUEST.code

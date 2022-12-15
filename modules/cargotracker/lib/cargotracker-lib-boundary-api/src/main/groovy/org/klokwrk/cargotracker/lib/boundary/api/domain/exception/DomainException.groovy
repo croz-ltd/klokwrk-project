@@ -43,6 +43,16 @@ class DomainException extends RuntimeException {
    */
   ViolationInfo violationInfo
 
+  // Note: Need to have a custom message property here for correct handling Jackson deserialization of exception messages. For creating exceptions during deserialization, Jackson requires default
+  //       constructor, or constructor with single String argument, or explicit usage of JsonCreator annotation (for more details, take a look at Jackson's
+  //       ThrowableDeserializer.deserializeFromObject(JsonParser, DeserializationContext) method).
+  //
+  //       Since I don't want to use JsonCreator annotation, and single String argument constructor does not suits me, I ended up with custom message property. Do note that message property
+  //       overrides getMessage() method from Throwable class.
+  //
+  //       After deserialization, Throwable.detailsMessage will always contain ViolationCode.UNKNOWN.codeMessage since Jackson will use default constructor for deserializing DomainException.
+  String message
+
   DomainException() {
     this(ViolationInfo.UNKNOWN)
   }
@@ -61,6 +71,8 @@ class DomainException extends RuntimeException {
 
   DomainException(ViolationInfo violationInfo, String message, Throwable cause, Boolean writableStackTrace) {
     super(message?.trim() ?: violationInfo.violationCode.codeMessage, cause, false, writableStackTrace)
+
     this.violationInfo = violationInfo
+    this.message = message?.trim() ?: violationInfo.violationCode.codeMessage
   }
 }
