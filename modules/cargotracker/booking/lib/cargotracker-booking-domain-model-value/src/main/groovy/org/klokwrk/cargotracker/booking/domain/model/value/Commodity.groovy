@@ -93,12 +93,12 @@ class Commodity implements PostMapConstructorCheckable {
     return commodity
   }
 
-  static Commodity make(CommodityType commodityType, Integer weightInKilograms) {
+  static Commodity make(CommodityType commodityType, Long weightInKilograms) {
     Commodity commodity = make(commodityType, weightInKilograms, null)
     return commodity
   }
 
-  static Commodity make(CommodityType commodityType, Integer weightInKilograms, Integer requestedStorageTemperatureDegC) {
+  static Commodity make(CommodityType commodityType, Long weightInKilograms, Integer requestedStorageTemperatureDegC) {
     Commodity commodity = make(
         commodityType,
         Quantities.getQuantity(weightInKilograms, Units.KILOGRAM),

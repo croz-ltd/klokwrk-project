@@ -88,7 +88,7 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
 
         commodityTypes: [CommodityType.DRY].toSet(),
         totalCommodityWeight: "1000 kg",
-        totalCommodityWeightKg: 1000,
+        totalCommodityWeightKg: 1000L,
         totalContainerTeuCount: 2.00G,
 
         inboundChannelName: "inboundChannelName",

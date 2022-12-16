@@ -60,7 +60,7 @@ class CargoData {
    */
   @Min(value = 1L, groups = [Level2])
   @NotNull(groups = [Level1])
-  Integer commodityWeightKg
+  Long commodityWeightKg
 
   /**
    * The requested storage temperature in Celsius degree for a commodity.

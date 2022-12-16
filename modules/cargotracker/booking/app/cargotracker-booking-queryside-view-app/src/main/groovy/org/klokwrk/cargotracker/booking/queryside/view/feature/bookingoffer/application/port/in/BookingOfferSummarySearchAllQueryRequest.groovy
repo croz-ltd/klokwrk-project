@@ -81,13 +81,13 @@ class BookingOfferSummarySearchAllQueryRequest {
 
   @SuppressWarnings("unused")
   @Min(groups = [Level1], value = 1L)
-  Integer totalCommodityWeightKgFromIncluding
+  Long totalCommodityWeightKgFromIncluding
 
   // Here we should validate if ToIncluding is greater than or equal to FromIncluding.
   // However, as the only consequence is execution of a single query returning an empty result we didn't implement this check.
   @SuppressWarnings("unused")
   @Min(groups = [Level1], value = 1L)
-  Integer totalCommodityWeightKgToIncluding
+  Long totalCommodityWeightKgToIncluding
 
   @SuppressWarnings("unused")
   @Min(groups = [Level1], value = 0L)

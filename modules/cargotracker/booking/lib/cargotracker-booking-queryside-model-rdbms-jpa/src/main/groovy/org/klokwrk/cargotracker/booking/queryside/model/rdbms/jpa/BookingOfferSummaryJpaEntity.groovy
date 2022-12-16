@@ -100,9 +100,9 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Column(nullable = false) String totalCommodityWeight
 
   // totalCommodityWeightKg should be used only for easier and more flexible searching. Should not be used in returned results.
-  @Column(nullable = false) Integer totalCommodityWeightKg
+  @Column(nullable = false) Long totalCommodityWeightKg
 
-  @Column(nullable = false, precision = 8, scale = 2) BigDecimal totalContainerTeuCount
+  @Column(nullable = false, precision = 9, scale = 2) BigDecimal totalContainerTeuCount
 
   @Column(nullable = false) String inboundChannelName
   @Column(nullable = false) String inboundChannelType
@@ -136,7 +136,7 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
     requireMatch(commodityTypes, everyItem(not(emptyOrNullString())))
 
     requireMatch(totalCommodityWeightKg, notNullValue())
-    requireMatch(totalCommodityWeightKg, greaterThanOrEqualTo(1))
+    requireMatch(totalCommodityWeightKg, greaterThanOrEqualTo(1L))
 
     requireMatch(totalContainerTeuCount, notNullValue())
     requireMatch(totalContainerTeuCount, greaterThanOrEqualTo(1.0G))
