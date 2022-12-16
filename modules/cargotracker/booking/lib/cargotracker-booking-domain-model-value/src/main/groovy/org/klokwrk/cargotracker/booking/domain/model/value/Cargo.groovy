@@ -26,7 +26,6 @@ import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
-import java.math.MathContext
 import java.math.RoundingMode
 
 import static org.hamcrest.Matchers.notNullValue
@@ -118,22 +117,17 @@ class Cargo implements PostMapConstructorCheckable {
       maxAllowedWeightPerContainerKg = containerType.maxCommodityWeight.to(Units.KILOGRAM)
     }
 
-    MathContext mathContext = new MathContext(7, RoundingMode.HALF_UP)
-
     Integer containerCount = weightValueKg
-        .divide(maxAllowedWeightPerContainerKg.value.toBigDecimal(), mathContext)
-        .setScale(0, RoundingMode.UP)
+        .divide(maxAllowedWeightPerContainerKg.value.toBigDecimal(), 0, RoundingMode.UP)
         .toInteger()
 
     Integer maxRecommendedWeightPerContainerValueKg = weightValueKg
-        .divide(containerCount.toBigDecimal(), mathContext)
-        .setScale(0, RoundingMode.UP)
+        .divide(containerCount.toBigDecimal(), 0, RoundingMode.UP)
         .toInteger()
 
     Quantity<Mass> maxRecommendedWeightPerContainerKg = Quantities.getQuantity(maxRecommendedWeightPerContainerValueKg, Units.KILOGRAM)
 
-    MathContext anotherMathContext = new MathContext(7, RoundingMode.UP)
-    BigDecimal containerTeuCount = (containerCount * containerType.dimensionType.teu).round(anotherMathContext).setScale(2, RoundingMode.UP)
+    BigDecimal containerTeuCount = (containerCount * containerType.dimensionType.teu).setScale(2, RoundingMode.UP)
 
     Cargo cargo = new Cargo(
         containerType: containerType,
@@ -176,8 +170,7 @@ class Cargo implements PostMapConstructorCheckable {
     requireTrue(containerTeuCount.scale() <= 2)
     requireTrue(containerTeuCount.scale() >= 0)
 
-    MathContext mathContext = new MathContext(7, RoundingMode.UP)
-    requireTrue(containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))
+    requireTrue(containerTeuCount == (containerCount * containerType.dimensionType.teu).setScale(2, RoundingMode.UP))
 
     requireTrue((maxRecommendedWeightPerContainer.value.toBigDecimal() * containerCount) >= (commodity.weight.value.toBigDecimal()))
   }

@@ -192,11 +192,11 @@ class CargoSpecification extends Specification {
     containerTeuCountParam | messageEndParam
     1.001                  | "[condition: (containerTeuCount.scale() <= 2)]"
     new BigDecimal(1G, -3) | "[condition: (containerTeuCount.scale() >= 0)]"
-    1.5                    | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))]"
-    1.01                   | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))]"
-    0.5                    | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))]"
-    0.91                   | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))]"
-    0.99                   | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).round(mathContext).setScale(2, RoundingMode.UP))]"
+    1.5                    | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).setScale(2, RoundingMode.UP))]"
+    1.01                   | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).setScale(2, RoundingMode.UP))]"
+    0.5                    | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).setScale(2, RoundingMode.UP))]"
+    0.91                   | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).setScale(2, RoundingMode.UP))]"
+    0.99                   | "[condition: (containerTeuCount == (containerCount * containerType.dimensionType.teu).setScale(2, RoundingMode.UP))]"
   }
 
   void "make() method should work as expected for standard 10ft container"() {
@@ -222,6 +222,8 @@ class CargoSpecification extends Specification {
     10_000                          | 5_000                                 | 2                   | 1
     50_000                          | 8_334                                 | 6                   | 3
     500_000                         | 9_434                                 | 53                  | 26.50
+//    5_000_000                       | 9_488                                 | 527                 | 263.50
+    12_345_678                      | 9_497                                 | 1300                | 650
   }
 
   void "make() method should work as expected for standard 20ft container"() {
