@@ -269,9 +269,12 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
         "name": "someName",
         "weight": {
           "value": 1234,
-          "unit": "kg"
+          "unitSymbol": "kg"
         },
-        "length": "456 m"
+        "length": {
+          "value": 456,
+          "unitSymbol": "m"
+        }
       }
       """
 
@@ -386,6 +389,6 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     String serializedString = objectMapper.writeValueAsString(myBeanWithQuantity)
 
     then:
-    serializedString == /{"name":"someName","weight":{"value":1234,"unit":{"name":"Kilogram","symbol":"kg"}},"length":{"value":456,"unit":{"name":"Metre","symbol":"m"}}}/
+    serializedString == /{"name":"someName","weight":{"value":1234,"unitSymbol":"kg"},"length":{"value":456,"unitSymbol":"m"}}/
   }
 }
