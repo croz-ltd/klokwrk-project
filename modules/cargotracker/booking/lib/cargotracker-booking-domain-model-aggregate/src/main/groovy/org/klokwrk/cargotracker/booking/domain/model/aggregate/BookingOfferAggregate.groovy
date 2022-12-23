@@ -33,7 +33,6 @@ import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEv
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
-import org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter
 import org.klokwrk.cargotracker.booking.domain.model.service.CargoCreatorService
 import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
@@ -43,6 +42,7 @@ import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lib.uom.format.KwrkQuantityFormat
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
@@ -107,7 +107,7 @@ class BookingOfferAggregate {
         bookingOfferId: createBookingOfferCommand.bookingOfferId.identifier,
         routeSpecification: RouteSpecificationEventData.fromRouteSpecification(createBookingOfferCommand.routeSpecification),
         cargos: CargoEventData.fromCargoCollection(consolidatedCargoCollection),
-        totalCommodityWeight: QuantityFormatter.instance.format(bookingTotalCommodityWeight),
+        totalCommodityWeight: KwrkQuantityFormat.instance.format(bookingTotalCommodityWeight),
         totalContainerTeuCount: bookingTotalContainerTeuCount
     )
 

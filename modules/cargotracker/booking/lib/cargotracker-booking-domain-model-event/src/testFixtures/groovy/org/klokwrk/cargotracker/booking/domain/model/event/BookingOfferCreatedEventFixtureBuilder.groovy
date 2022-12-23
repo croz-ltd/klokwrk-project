@@ -26,8 +26,8 @@ import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventDat
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventDataFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder
-import org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter
 import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
+import org.klokwrk.lib.uom.format.KwrkQuantityFormat
 import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.Units
 
@@ -63,10 +63,10 @@ class BookingOfferCreatedEventFixtureBuilder {
     String totalCommodityWeight
     Quantity<Mass> totalCommodityWeightQuantity = Quantities.getQuantity(0, Units.KILOGRAM)
     cargos.each({ CargoEventData cargoEventData ->
-      Quantity<Mass> commodityWeightQuantity = QuantityFormatter.instance.parse(cargoEventData.commodityWeight) as Quantity<Mass>
+      Quantity<Mass> commodityWeightQuantity = KwrkQuantityFormat.instance.parse(cargoEventData.commodityWeight) as Quantity<Mass>
       totalCommodityWeightQuantity = totalCommodityWeightQuantity.add(commodityWeightQuantity)
     })
-    totalCommodityWeight = QuantityFormatter.instance.format(totalCommodityWeightQuantity.to(Units.KILOGRAM))
+    totalCommodityWeight = KwrkQuantityFormat.instance.format(totalCommodityWeightQuantity.to(Units.KILOGRAM))
 
     BigDecimal totalContainerTeuCount = 0
     cargos.each({ CargoEventData cargoEventData ->

@@ -28,8 +28,8 @@ import javax.measure.Quantity
 import javax.measure.quantity.Mass
 import javax.measure.quantity.Temperature
 
-import static org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter.instance as quantityParser
-import static org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter.instance as quantityFormatter
+import static org.klokwrk.lib.uom.format.KwrkQuantityFormat.instance as quantityParser
+import static org.klokwrk.lib.uom.format.KwrkQuantityFormat.instance as quantityFormatter
 
 @SuppressWarnings("CodeNarc.DuplicateImport")
 @KwrkImmutable

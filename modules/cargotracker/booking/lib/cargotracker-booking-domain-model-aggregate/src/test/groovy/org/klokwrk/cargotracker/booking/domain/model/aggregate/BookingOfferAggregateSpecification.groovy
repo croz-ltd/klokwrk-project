@@ -29,7 +29,6 @@ import org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventDataFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
-import org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter
 import org.klokwrk.cargotracker.booking.domain.model.service.CargoCreatorService
 import org.klokwrk.cargotracker.booking.domain.model.service.ConstantBasedMaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.service.DefaultCargoCreatorService
@@ -40,6 +39,7 @@ import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
+import org.klokwrk.lib.uom.format.KwrkQuantityFormat
 import spock.lang.Specification
 import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.Units
@@ -93,7 +93,7 @@ class BookingOfferAggregateSpecification extends Specification {
         bookingOfferId: createBookingOfferCommandWithAcceptableCargo.bookingOfferId.identifier,
         routeSpecification: RouteSpecificationEventData.fromRouteSpecification(createBookingOfferCommandWithAcceptableCargo.routeSpecification),
         cargos: [CargoEventData.fromCargo(expectedBookingOfferCargo)],
-        totalCommodityWeight: QuantityFormatter.instance.format(Quantities.getQuantity(10_000, Units.KILOGRAM)),
+        totalCommodityWeight: KwrkQuantityFormat.instance.format(Quantities.getQuantity(10_000, Units.KILOGRAM)),
         totalContainerTeuCount: 1
     )
 
