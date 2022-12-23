@@ -50,8 +50,8 @@ class BookingOfferSummaryJpaEntityFactory {
         arrivalLatestTime: bookingOfferCreatedEvent.routeSpecification.arrivalLatestTime,
 
         commodityTypes: bookingOfferCreatedEvent.cargos*.commodityType.toSet(),
-        totalCommodityWeight: bookingOfferCreatedEvent.totalCommodityWeight,
-        totalCommodityWeightKg: KwrkQuantityFormat.instance.parse(bookingOfferCreatedEvent.totalCommodityWeight).value,
+        totalCommodityWeight: KwrkQuantityFormat.instance.format(bookingOfferCreatedEvent.totalCommodityWeight),
+        totalCommodityWeightKg: bookingOfferCreatedEvent.totalCommodityWeight.value,
         totalContainerTeuCount: bookingOfferCreatedEvent.totalContainerTeuCount,
 
         inboundChannelName: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_NAME_KEY] ?: CommonConstants.NOT_AVAILABLE,
