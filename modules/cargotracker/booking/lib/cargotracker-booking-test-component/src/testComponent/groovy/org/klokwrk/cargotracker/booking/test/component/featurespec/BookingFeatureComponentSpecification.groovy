@@ -168,7 +168,10 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
       Instant.parse(arrivalLatestTime as String) >= currentTime + Duration.ofHours(3)
 
       commodityTypes == ["DRY"]
-      totalCommodityWeight == "1000 kg"
+      totalCommodityWeight == [
+          value: 1000,
+          unitSymbol: "kg"
+      ]
       totalContainerTeuCount == 1.00G
 
       firstEventRecordedAt == lastEventRecordedAt
@@ -318,7 +321,7 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
         it.every({ Map pageElement -> pageElement.customerType == "STANDARD" })
         it.every({ Map pageElement -> pageElement.originLocationName == "Rijeka" })
         it.every({ Map pageElement -> pageElement.destinationLocationCountryName == "The United States of America" })
-        it.every({ Map pageElement -> Integer.valueOf(pageElement.totalCommodityWeight as String - " kg") >= 15000 && Integer.valueOf(pageElement.totalCommodityWeight as String - " kg") <= 100000 })
+        it.every({ Map pageElement -> pageElement.totalCommodityWeight["value"] >= 15000 && pageElement.totalCommodityWeight["value"] <= 100000 })
         it.every({ Map pageElement -> pageElement.lastEventSequenceNumber == 0 })
       })
     })

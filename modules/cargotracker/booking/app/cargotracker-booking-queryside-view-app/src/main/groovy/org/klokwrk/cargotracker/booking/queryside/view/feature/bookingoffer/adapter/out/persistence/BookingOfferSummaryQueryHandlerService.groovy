@@ -32,6 +32,7 @@ import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.appl
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryResponse
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
+import org.klokwrk.lib.uom.format.KwrkQuantityFormat
 import org.springframework.dao.InvalidDataAccessApiUsageException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -53,6 +54,8 @@ import org.springframework.stereotype.Service
 @CompileStatic
 class BookingOfferSummaryQueryHandlerService {
   private static final String BOOKING_OFFER_IDENTIFIER = "bookingOfferIdentifier"
+  private static final String TOTAL_COMMODITY_WEIGHT = "totalCommodityWeight"
+
   private final BookingOfferSummaryViewJpaRepository bookingOfferSummaryViewJpaRepository
 
   @SuppressWarnings('SpringJavaInjectionPointsAutowiringInspection')
@@ -78,6 +81,7 @@ class BookingOfferSummaryQueryHandlerService {
   protected Map<String, Object> fetchBookingOfferSummaryJpaEntityProperties(BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity) {
     return bookingOfferSummaryJpaEntity.getProperties().tap({ // codenarc-disable-line UnnecessaryGetter
       it[this.BOOKING_OFFER_IDENTIFIER] = bookingOfferSummaryJpaEntity.bookingOfferIdentifier.toString()
+      it[this.TOTAL_COMMODITY_WEIGHT] = KwrkQuantityFormat.instance.parse(bookingOfferSummaryJpaEntity.totalCommodityWeight)
     })
   }
 

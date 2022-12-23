@@ -41,6 +41,8 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Shared
+import tech.units.indriya.quantity.Quantities
+import tech.units.indriya.unit.Units
 
 import javax.sql.DataSource
 import javax.validation.ConstraintViolationException
@@ -101,7 +103,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       customerType == CustomerType.STANDARD
       originLocationName == "Hamburg"
       destinationLocationName == "Rotterdam"
-      totalCommodityWeight == "45000 kg"
+      totalCommodityWeight == Quantities.getQuantity(45000, Units.KILOGRAM)
       totalContainerTeuCount == 3.00G
       lastEventSequenceNumber == 0
     }
@@ -137,7 +139,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       customerType == CustomerType.STANDARD
       originLocationName == "Hamburg"
       destinationLocationName == "Rotterdam"
-      totalCommodityWeight == "45000 kg"
+      totalCommodityWeight == Quantities.getQuantity(45000, Units.KILOGRAM)
       totalContainerTeuCount == 3.00G
       lastEventSequenceNumber == 0
     }
@@ -175,7 +177,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       customerType == CustomerType.STANDARD
       originLocationName == "Rijeka"
       destinationLocationName == "Los Angeles"
-      totalCommodityWeight == "15000 kg"
+      totalCommodityWeight == Quantities.getQuantity(15000, Units.KILOGRAM)
       totalContainerTeuCount == 1.00G
       lastEventSequenceNumber == 0
     }
@@ -211,7 +213,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       customerType == CustomerType.STANDARD
       originLocationName == "Rijeka"
       destinationLocationName == "New York"
-      totalCommodityWeight == "30000 kg"
+      totalCommodityWeight == Quantities.getQuantity(30000, Units.KILOGRAM)
       totalContainerTeuCount == 2.00G
       lastEventSequenceNumber == 0
     }

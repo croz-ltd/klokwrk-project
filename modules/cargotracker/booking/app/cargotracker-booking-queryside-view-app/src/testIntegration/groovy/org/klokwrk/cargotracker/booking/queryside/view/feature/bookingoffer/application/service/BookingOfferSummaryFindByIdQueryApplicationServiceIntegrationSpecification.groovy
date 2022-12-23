@@ -41,6 +41,8 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ActiveProfiles
+import tech.units.indriya.quantity.Quantities
+import tech.units.indriya.unit.Units
 
 import javax.sql.DataSource
 import java.time.Duration
@@ -104,7 +106,7 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
       arrivalLatestTime >= startedAt + Duration.ofHours(3)
 
       commodityTypes == [CommodityType.DRY].toSet()
-      totalCommodityWeight == "1000 kg"
+      totalCommodityWeight == Quantities.getQuantity(1000, Units.KILOGRAM)
       totalContainerTeuCount == 1.00G
 
       firstEventRecordedAt >= startedAt

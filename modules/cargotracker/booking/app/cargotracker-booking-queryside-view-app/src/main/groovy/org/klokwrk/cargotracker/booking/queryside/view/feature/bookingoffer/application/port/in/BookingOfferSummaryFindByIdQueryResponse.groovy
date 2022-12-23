@@ -24,6 +24,8 @@ import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
+import javax.measure.Quantity
+import javax.measure.quantity.Mass
 import java.time.Instant
 
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
@@ -47,7 +49,7 @@ class BookingOfferSummaryFindByIdQueryResponse {
   Instant arrivalLatestTime
 
   Set<CommodityType> commodityTypes
-  String totalCommodityWeight
+  Quantity<Mass> totalCommodityWeight
   BigDecimal totalContainerTeuCount
 
   Instant firstEventRecordedAt
