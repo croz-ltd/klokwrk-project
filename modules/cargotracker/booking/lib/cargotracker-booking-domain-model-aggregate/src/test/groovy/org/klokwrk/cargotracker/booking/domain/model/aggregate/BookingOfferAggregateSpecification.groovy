@@ -29,7 +29,6 @@ import org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventDataFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
-import org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter
 import org.klokwrk.cargotracker.booking.domain.model.service.CargoCreatorService
 import org.klokwrk.cargotracker.booking.domain.model.service.ConstantBasedMaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.service.DefaultCargoCreatorService
@@ -64,7 +63,7 @@ class BookingOfferAggregateSpecification extends Specification {
         .customer(CustomerEventData.fromCustomer(createBookingOfferCommand.customer))
         .bookingOfferId(createBookingOfferCommand.bookingOfferId.identifier)
         .routeSpecification(RouteSpecificationEventData.fromRouteSpecification(createBookingOfferCommand.routeSpecification))
-        .cargos([CargoEventDataFixtureBuilder.cargo_dry().maxAllowedWeightPerContainer("20615 kg").build()])
+        .cargos([CargoEventDataFixtureBuilder.cargo_dry().maxAllowedWeightPerContainer(Quantities.getQuantity(20615, Units.KILOGRAM)).build()])
         .build()
 
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
@@ -93,7 +92,7 @@ class BookingOfferAggregateSpecification extends Specification {
         bookingOfferId: createBookingOfferCommandWithAcceptableCargo.bookingOfferId.identifier,
         routeSpecification: RouteSpecificationEventData.fromRouteSpecification(createBookingOfferCommandWithAcceptableCargo.routeSpecification),
         cargos: [CargoEventData.fromCargo(expectedBookingOfferCargo)],
-        totalCommodityWeight: QuantityFormatter.instance.format(Quantities.getQuantity(10_000, Units.KILOGRAM)),
+        totalCommodityWeight: Quantities.getQuantity(10_000, Units.KILOGRAM),
         totalContainerTeuCount: 1
     )
 

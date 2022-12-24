@@ -56,6 +56,7 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
         "org.codehaus.groovy..",
         "groovy..",
 
+        "javax.measure..",
         "javax.validation..",
         "javax.persistence..",
 
@@ -82,6 +83,7 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
 
     String[] klokwrkLibDatasourceProxyAllPackages = ["org.klokwrk.lib.datasourceproxy.."]
     String[] klokwrkLibJacksonAllPackages = ["org.klokwrk.lib.jackson.."]
+    String[] klokwrkLibUomPackages = ["org.klokwrk.lib.uom.."]
     String[] klokwrkLibValidationPackages = ["org.klokwrk.lib.validation.."]
 
     String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lang.groovy.."]
@@ -110,6 +112,7 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
 
                 klokwrkLibDatasourceProxyAllPackages +
                 klokwrkLibJacksonAllPackages +
+                klokwrkLibUomPackages +
                 klokwrkLibValidationPackages +
 
                 klokwrkLangGroovyAllPackages +

@@ -47,6 +47,8 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Shared
+import tech.units.indriya.quantity.Quantities
+import tech.units.indriya.unit.Units
 
 import javax.sql.DataSource
 import javax.validation.ConstraintViolationException
@@ -117,7 +119,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
       customerType == CustomerType.STANDARD
       originLocationName == "Rijeka"
       destinationLocationName == "Rotterdam"
-      totalCommodityWeight == "1000 kg"
+      totalCommodityWeight == Quantities.getQuantity(1000, Units.KILOGRAM)
       totalContainerTeuCount == 1.00G
       lastEventSequenceNumber == 0
     }
@@ -221,7 +223,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
 
     BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(
         userIdentifier: "standard-customer@cargotracker.com",
-        pageRequirement: new PageRequirement(ordinal: 0, size: 25),
+        pageRequirement: new PageRequirement(ordinal: 0, size: 100),
         sortRequirementList: [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.ASC)]
     )
 

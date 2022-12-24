@@ -15,35 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.domain.model.event.support
+package org.klokwrk.lib.uom.format
 
 import groovy.transform.CompileStatic
-import tech.units.indriya.format.AbstractQuantityFormat
 import tech.units.indriya.format.NumberDelimiterQuantityFormat
-import tech.units.indriya.format.SimpleUnitFormat
-import tech.units.indriya.unit.Units
 
-import javax.measure.MetricPrefix
+import javax.measure.format.QuantityFormat
 import java.text.NumberFormat
 
 @CompileStatic
-class QuantityFormatter {
-  private static final String CELSIUS_SYMBOL = "°C"
-
+class KwrkQuantityFormat {
   @SuppressWarnings("CodeNarc.Indentation")
-  private static final AbstractQuantityFormat FORMATTER = new NumberDelimiterQuantityFormat.Builder()
+  private static final QuantityFormat QUANTITY_FORMAT = new NumberDelimiterQuantityFormat.Builder()
       .setNumberFormat(NumberFormat.getInstance(Locale.ROOT).tap({ groupingUsed = false }))
-      .setUnitFormat(SimpleUnitFormat.getNewInstance(SimpleUnitFormat.Flavor.Default).tap({ SimpleUnitFormat simpleUnitFormat ->
-          // Note: The following code is taken and adapted from "tech.units.indriya.format.SimpleUnitFormat"
-          simpleUnitFormat.label(Units.CELSIUS, CELSIUS_SYMBOL)
-          MetricPrefix.values().each { MetricPrefix metricPrefix ->
-              simpleUnitFormat.label(Units.CELSIUS.prefix(metricPrefix), metricPrefix.symbol + CELSIUS_SYMBOL)
-          }
-      }))
+      .setUnitFormat(KwrkSimpleUnitFormat.instance)
       .build()
 
   @SuppressWarnings("CodeNarc.GetterMethodCouldBeProperty")
-  static AbstractQuantityFormat getInstance() {
-    return FORMATTER
+  static QuantityFormat getInstance() {
+    return QUANTITY_FORMAT
   }
 }

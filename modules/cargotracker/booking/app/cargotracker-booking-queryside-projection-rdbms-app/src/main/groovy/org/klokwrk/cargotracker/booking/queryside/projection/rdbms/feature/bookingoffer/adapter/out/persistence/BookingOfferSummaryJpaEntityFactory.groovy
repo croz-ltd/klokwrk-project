@@ -20,10 +20,10 @@ package org.klokwrk.cargotracker.booking.queryside.projection.rdbms.feature.book
 import groovy.transform.CompileStatic
 import org.axonframework.eventhandling.DomainEventMessage
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
-import org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter
 import org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.BookingOfferSummaryJpaEntity
 import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDataConstant
 import org.klokwrk.lang.groovy.constant.CommonConstants
+import org.klokwrk.lib.uom.format.KwrkQuantityFormat
 
 @SuppressWarnings("CodeNarc.AbcMetric")
 @CompileStatic
@@ -50,8 +50,8 @@ class BookingOfferSummaryJpaEntityFactory {
         arrivalLatestTime: bookingOfferCreatedEvent.routeSpecification.arrivalLatestTime,
 
         commodityTypes: bookingOfferCreatedEvent.cargos*.commodityType.toSet(),
-        totalCommodityWeight: bookingOfferCreatedEvent.totalCommodityWeight,
-        totalCommodityWeightKg: QuantityFormatter.instance.parse(bookingOfferCreatedEvent.totalCommodityWeight).value,
+        totalCommodityWeight: KwrkQuantityFormat.instance.format(bookingOfferCreatedEvent.totalCommodityWeight),
+        totalCommodityWeightKg: bookingOfferCreatedEvent.totalCommodityWeight.value,
         totalContainerTeuCount: bookingOfferCreatedEvent.totalContainerTeuCount,
 
         inboundChannelName: domainEventMessage.metaData[MetaDataConstant.INBOUND_CHANNEL_NAME_KEY] ?: CommonConstants.NOT_AVAILABLE,

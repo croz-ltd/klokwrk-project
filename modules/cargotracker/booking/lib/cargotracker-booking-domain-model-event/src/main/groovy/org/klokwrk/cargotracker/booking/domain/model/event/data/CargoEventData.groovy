@@ -28,21 +28,18 @@ import javax.measure.Quantity
 import javax.measure.quantity.Mass
 import javax.measure.quantity.Temperature
 
-import static org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter.instance as quantityParser
-import static org.klokwrk.cargotracker.booking.domain.model.event.support.QuantityFormatter.instance as quantityFormatter
-
 @SuppressWarnings("CodeNarc.DuplicateImport")
-@KwrkImmutable
+@KwrkImmutable(knownImmutableClasses = [Quantity])
 @CompileStatic
 class CargoEventData {
   CommodityType commodityType
-  String commodityRequestedStorageTemperature
-  String commodityWeight
+  Quantity<Temperature> commodityRequestedStorageTemperature
+  Quantity<Mass> commodityWeight
   Integer containerCount
   BigDecimal containerTeuCount
   ContainerType containerType
-  String maxAllowedWeightPerContainer
-  String maxRecommendedWeightPerContainer
+  Quantity<Mass> maxAllowedWeightPerContainer
+  Quantity<Mass> maxRecommendedWeightPerContainer
 
   static Collection<CargoEventData> fromCargoCollection(Collection<Cargo> cargoCollection) {
     return cargoCollection.collect({ Cargo commodity -> fromCargo(commodity) })
@@ -51,13 +48,13 @@ class CargoEventData {
   static CargoEventData fromCargo(Cargo cargo) {
     return new CargoEventData(
         commodityType: cargo.commodity.commodityType,
-        commodityRequestedStorageTemperature: cargo.commodity.requestedStorageTemperature == null ? null : quantityFormatter.format(cargo.commodity.requestedStorageTemperature),
-        commodityWeight: quantityFormatter.format(cargo.commodity.weight),
+        commodityRequestedStorageTemperature: cargo.commodity.requestedStorageTemperature == null ? null : cargo.commodity.requestedStorageTemperature,
+        commodityWeight: cargo.commodity.weight,
         containerCount: cargo.containerCount,
         containerTeuCount: cargo.containerTeuCount,
         containerType: cargo.containerType,
-        maxAllowedWeightPerContainer: quantityFormatter.format(cargo.maxAllowedWeightPerContainer),
-        maxRecommendedWeightPerContainer: quantityFormatter.format(cargo.maxRecommendedWeightPerContainer)
+        maxAllowedWeightPerContainer: cargo.maxAllowedWeightPerContainer,
+        maxRecommendedWeightPerContainer: cargo.maxRecommendedWeightPerContainer
     )
   }
 
@@ -70,10 +67,10 @@ class CargoEventData {
         containerType,
         Commodity.make(
             commodityType,
-            quantityParser.parse(commodityWeight) as Quantity<Mass>,
-            commodityRequestedStorageTemperature == null ? null : quantityParser.parse(commodityRequestedStorageTemperature) as Quantity<Temperature>
+            commodityWeight,
+            commodityRequestedStorageTemperature == null ? null : commodityRequestedStorageTemperature
         ),
-        quantityParser.parse(maxAllowedWeightPerContainer) as Quantity<Mass>
+        maxAllowedWeightPerContainer
     )
 
     return cargo

@@ -141,7 +141,10 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
           customerType == CustomerType.STANDARD.name()
           originLocationName == "Rijeka"
           destinationLocationName == "Los Angeles"
-          totalCommodityWeight == "15000 kg"
+          totalCommodityWeight == [
+              value: 15000,
+              unitSymbol: "kg"
+          ]
           totalContainerTeuCount == 1.00G
           lastEventSequenceNumber == 0
         }

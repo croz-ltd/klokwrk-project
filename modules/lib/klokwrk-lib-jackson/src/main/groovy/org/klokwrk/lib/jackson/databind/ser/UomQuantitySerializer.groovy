@@ -21,13 +21,11 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import groovy.transform.CompileStatic
-import tech.units.indriya.format.LocalUnitFormat
-import tech.units.indriya.unit.UnitDimension
+import org.klokwrk.lib.uom.format.KwrkSimpleUnitFormat
 
-import javax.measure.Dimension
 import javax.measure.Quantity
 import javax.measure.Unit
-import javax.measure.UnitConverter
+import javax.measure.format.UnitFormat
 
 /**
  * Jackson serializer for Quantity from Units of Measurements (UOM) JSR385 API (https://github.com/unitsofmeasurement/unit-api).
@@ -45,36 +43,15 @@ import javax.measure.UnitConverter
  *   "name": "someName",
  *   "weight": {
  *     "value": 5,
- *     "unit": {
- *       "name":"Kilogram",
- *       "symbol":"kg"
- *     }
+ *     "unitSymbol": "kg"
  *   }
  * }
  * </pre>
- * Before serialization, and derived UOM units are normalized to the base unit values. The exception are the units of temperature, which are serialized as given, without normalization.
- * For example, a bean instance
- * <pre>
- * MyBean myBean = new MyBean(name: "someName", weight: Quantities.getQuantity(1_234_000, Units.GRAM))
- * </pre>
- * will be serialized as
- * <pre>
- * {
- *   "name":"someName",
- *   "weight":{
- *     "value":1234,
- *     "unit":{
- *       "name":"Kilogram",
- *       "symbol":"kg"
- *     }
- *   }
- * }
- * </pre>
- * On the other hand, a bean instance with temperature quantity
+ * Here is another example with temperature quantity:
  * <pre>
  * class MyBeanWithTemperatureQuantity {
  *   String name
- *   Quantity<Temperature> temperature
+ *   Quantity&lt;Temperature&gt; temperature
  * }
  *
  * MyBeanWithTemperatureQuantity myBeanWithTemperatureQuantity =
@@ -86,18 +63,17 @@ import javax.measure.UnitConverter
  *   "name":"someName",
  *   "temperature":{
  *     "value":10,
- *     "unit":{
- *       "name":"Celsius",
- *       "symbol":"&deg;C"
- *     }
+ *     "unitSymbol": "&deg;C"
  *   }
  * }
  * </pre>
- * A list od derived and base units is provided by the reference implementation of UOM JSR385 API (https://github.com/unitsofmeasurement/indriya).
  */
 @CompileStatic
 class UomQuantitySerializer extends StdSerializer<Quantity> {
-  static final List<Dimension> NOT_NORMALIZED_DIMENSIONS = [UnitDimension.TEMPERATURE]
+  // Some implementation notes:
+  // The initial idea was to have additional elements further describing a unit, like unitName (i.e., Kilogram, Gram, Celsius, etc.) and unitDimension (i.e., Mass, Temperature, Speed, etc.). However,
+  // it turned out that not every unit has a name, nor is it possible to map a unit to its dimension with current version of indriya API. However, we can implement all these things by maintaining
+  // those mappings in our KwrkSimpleUnitFormat. Currently, there is no real need, so we left tose features out.
 
   UomQuantitySerializer() {
     super(Quantity)
@@ -105,16 +81,10 @@ class UomQuantitySerializer extends StdSerializer<Quantity> {
 
   @Override
   void serialize(Quantity quantity, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-    LocalUnitFormat localUnitFormat = LocalUnitFormat.instance
+    UnitFormat unitFormatter = KwrkSimpleUnitFormat.instance
 
     Unit unitToSerialize = quantity.unit
     Number valueToSerialize = quantity.value
-
-    if (!NOT_NORMALIZED_DIMENSIONS.contains(quantity.unit.dimension)) {
-      unitToSerialize = quantity.unit.systemUnit
-      UnitConverter unitConverter = quantity.unit.getConverterTo(unitToSerialize)
-      valueToSerialize = unitConverter.convert(quantity.value)
-    }
 
     jsonGenerator.with {
       writeStartObject()
@@ -122,15 +92,7 @@ class UomQuantitySerializer extends StdSerializer<Quantity> {
       writeFieldName("value")
       writeNumber(valueToSerialize.toString())
 
-      writeFieldName("unit")
-      writeStartObject()
-      writeStringField("name", unitToSerialize.name)
-      writeStringField("symbol", localUnitFormat.format(unitToSerialize))
-      writeEndObject()
-    }
-
-    if (quantity.scale != Quantity.Scale.ABSOLUTE) {
-      jsonGenerator.writeStringField("scale", quantity.scale.name())
+      writeStringField("unitSymbol", unitFormatter.format(unitToSerialize))
     }
 
     jsonGenerator.writeEndObject()

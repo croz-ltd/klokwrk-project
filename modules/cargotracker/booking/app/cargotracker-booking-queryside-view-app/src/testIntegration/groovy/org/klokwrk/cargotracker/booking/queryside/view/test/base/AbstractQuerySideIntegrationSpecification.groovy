@@ -37,6 +37,8 @@ import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.containers.PostgreSQLContainer
 import spock.lang.Specification
+import tech.units.indriya.quantity.Quantities
+import tech.units.indriya.unit.Units
 
 import java.time.Duration
 
@@ -104,52 +106,52 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
     numOfRepetitions.times {
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
           .routeSpecification(routeSpecification_rijekaToRotterdam().build())
-          .cargos([cargo_dry().commodityWeight("30000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .cargos([cargo_dry().commodityWeight(Quantities.getQuantity(30000, Units.KILOGRAM)).maxAllowedWeightPerContainer(Quantities.getQuantity(20615, Units.KILOGRAM)).build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
           .routeSpecification(routeSpecification_rijekaToHamburg().build())
-          .cargos([cargo_airCooled().commodityWeight("30000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .cargos([cargo_airCooled().commodityWeight(Quantities.getQuantity(30000, Units.KILOGRAM)).maxAllowedWeightPerContainer(Quantities.getQuantity(20615, Units.KILOGRAM)).build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
           .routeSpecification(routeSpecification_rijekaToLosAngeles().build())
-          .cargos([cargo_chilled().commodityWeight("30000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .cargos([cargo_chilled().commodityWeight(Quantities.getQuantity(30000, Units.KILOGRAM)).maxAllowedWeightPerContainer(Quantities.getQuantity(20615, Units.KILOGRAM)).build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
           .routeSpecification(routeSpecification_rijekaToNewYork().build())
-          .cargos([cargo_frozen().commodityWeight("30000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .cargos([cargo_frozen().commodityWeight(Quantities.getQuantity(30000, Units.KILOGRAM)).maxAllowedWeightPerContainer(Quantities.getQuantity(20615, Units.KILOGRAM)).build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
           .routeSpecification(routeSpecification_hamburgToLosAngeles().build())
-          .cargos([cargo_airCooled().commodityWeight("70000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .cargos([cargo_airCooled().commodityWeight(Quantities.getQuantity(70000, Units.KILOGRAM)).maxAllowedWeightPerContainer(Quantities.getQuantity(20615, Units.KILOGRAM)).build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
           .routeSpecification(routeSpecification_rotterdamToNewYork().build())
-          .cargos([cargo_dry().commodityWeight("40000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .cargos([cargo_dry().commodityWeight(Quantities.getQuantity(40000, Units.KILOGRAM)).maxAllowedWeightPerContainer(Quantities.getQuantity(20615, Units.KILOGRAM)).build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
           .routeSpecification(routeSpecification_rijekaToHamburg().build())
-          .cargos([cargo_dry().commodityWeight("1000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .cargos([cargo_dry().commodityWeight(Quantities.getQuantity(1000, Units.KILOGRAM)).maxAllowedWeightPerContainer(Quantities.getQuantity(20615, Units.KILOGRAM)).build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
           .routeSpecification(routeSpecification_rijekaToLosAngeles().build())
-          .cargos([cargo_dry().commodityWeight("15000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .cargos([cargo_dry().commodityWeight(Quantities.getQuantity(15000, Units.KILOGRAM)).maxAllowedWeightPerContainer(Quantities.getQuantity(20615, Units.KILOGRAM)).build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
           .routeSpecification(routeSpecification_rijekaToNewYork().build())
-          .cargos([cargo_dry().commodityWeight("100000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .cargos([cargo_dry().commodityWeight(Quantities.getQuantity(100000, Units.KILOGRAM)).maxAllowedWeightPerContainer(Quantities.getQuantity(20615, Units.KILOGRAM)).build()])
           .build()
 
       bookingOfferCreatedEventList << BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default()
           .routeSpecification(routeSpecification_hamburgToRotterdam().build())
-          .cargos([cargo_dry().commodityWeight("45000 kg").maxAllowedWeightPerContainer("20615 kg").build()])
+          .cargos([cargo_dry().commodityWeight(Quantities.getQuantity(45000, Units.KILOGRAM)).maxAllowedWeightPerContainer(Quantities.getQuantity(20615, Units.KILOGRAM)).build()])
           .build()
     }
 

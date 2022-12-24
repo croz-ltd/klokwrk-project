@@ -26,7 +26,6 @@ import tech.units.indriya.unit.Units
 import javax.measure.MetricPrefix
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
-import javax.measure.quantity.Temperature
 
 class UomQuantitySerializerSpecification extends Specification {
   static class MyBeanTypedQuantity {
@@ -37,11 +36,6 @@ class UomQuantitySerializerSpecification extends Specification {
   static class MyBeanRawQuantity {
     String otherName
     Quantity length
-  }
-
-  static class MyBeanWithTemperatureQuantity {
-    String name
-    Quantity<Temperature> temperature
   }
 
   ObjectMapper objectMapper
@@ -56,7 +50,7 @@ class UomQuantitySerializerSpecification extends Specification {
     this.objectMapper = objectMapper
   }
 
-  void "should serialize typed quantity"() {
+  void "should serialize mass quantity given with base units of kilograms"() {
     given:
     MyBeanTypedQuantity myBeanTypedQuantity = new MyBeanTypedQuantity(name: "someName", weight: Quantities.getQuantity(quantityValueParam, Units.KILOGRAM))
 
@@ -64,7 +58,7 @@ class UomQuantitySerializerSpecification extends Specification {
     String serializedString = objectMapper.writeValueAsString(myBeanTypedQuantity)
 
     then:
-    serializedString.contains(/"weight":{"value":$quantityValueOutputParam,"unit":{"name":"Kilogram","symbol":"kg"}}/)
+    serializedString.contains(/"weight":{"value":$quantityValueOutputParam,"unitSymbol":"kg"}/)
 
     where:
     quantityValueParam | quantityValueOutputParam
@@ -81,32 +75,27 @@ class UomQuantitySerializerSpecification extends Specification {
     -1.01              | -1.01
   }
 
-  void "should serialize typed quantity with derived units"() {
+  void "should serialize quantity with derived units"() {
     given:
+    //noinspection GroovyAssignabilityCheck
     MyBeanTypedQuantity myBeanTypedQuantity = new MyBeanTypedQuantity(name: "someName", weight: Quantities.getQuantity(quantityValueParam, quantityUnitParam))
 
     when:
     String serializedString = objectMapper.writeValueAsString(myBeanTypedQuantity)
 
     then:
-    serializedString.contains(/"weight":{"value":1234,"unit":{"name":"Kilogram","symbol":"kg"}}/)
+    serializedString.contains(/"weight":{"value":$quantityValueParam,"unitSymbol":"$unitSymbolParam"}/)
 
     where:
-    quantityValueParam | quantityUnitParam
-    1_234_000          | Units.GRAM
-    1_234_000_000      | MetricPrefix.MILLI(Units.GRAM)
-    1.234              | MetricPrefix.KILO(Units.KILOGRAM)
-  }
-
-  void "should serialize typed quantity with scale"() {
-    given:
-    MyBeanTypedQuantity myBeanTypedQuantity = new MyBeanTypedQuantity(name: "someName", weight: Quantities.getQuantity(123, Units.KILOGRAM, Quantity.Scale.RELATIVE))
-
-    when:
-    String serializedString = objectMapper.writeValueAsString(myBeanTypedQuantity)
-
-    then:
-    serializedString.contains(/"weight":{"value":123,"unit":{"name":"Kilogram","symbol":"kg"},"scale":"RELATIVE"}/)
+    quantityValueParam | quantityUnitParam                 | unitSymbolParam
+    1234               | Units.GRAM                        | "g"
+    1234.01            | Units.GRAM                        | "g"
+    1234               | MetricPrefix.MILLI(Units.GRAM)    | "mg"
+    1234.01            | MetricPrefix.MILLI(Units.GRAM)    | "mg"
+    1234               | MetricPrefix.KILO(Units.KILOGRAM) | "kkg"
+    1234.01            | MetricPrefix.KILO(Units.KILOGRAM) | "kkg"
+    10                 | Units.CELSIUS                     | "°C"
+    10.5               | Units.CELSIUS                     | "°C"
   }
 
   void "should serialize raw quantity"() {
@@ -117,7 +106,7 @@ class UomQuantitySerializerSpecification extends Specification {
     String serializedString = objectMapper.writeValueAsString(myBeanRawQuantity)
 
     then:
-    serializedString.contains(/"length":{"value":$quantityValueOutputParam,"unit":{"name":"Metre","symbol":"m"}}/)
+    serializedString.contains(/"length":{"value":$quantityValueOutputParam,"unitSymbol":"m"}/)
 
     where:
     quantityValueParam | quantityValueOutputParam
@@ -132,17 +121,5 @@ class UomQuantitySerializerSpecification extends Specification {
     -1                 | -1
     -1.0               | -1
     -1.01              | -1.01
-  }
-
-  void "should serialize typed temperature quantity in Celsius as expected - Celsius is excluded from normalization to Kelvin"() {
-    given:
-    MyBeanWithTemperatureQuantity myBeanWithTemperatureQuantity = new MyBeanWithTemperatureQuantity(name: "someName", temperature: Quantities.getQuantity(10, Units.CELSIUS))
-
-    when:
-    String serializedString = objectMapper.writeValueAsString(myBeanWithTemperatureQuantity)
-
-    then:
-    // Here we are expecting two character sequence '\u00B0' + 'C' (as in °C) instead of just '\u2103' character (as in ℃)
-    serializedString.contains(/"temperature":{"value":10,"unit":{"name":"Celsius","symbol":"°C"}}/)
   }
 }

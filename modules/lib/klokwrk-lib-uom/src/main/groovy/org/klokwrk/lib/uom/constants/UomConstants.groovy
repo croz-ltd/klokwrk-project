@@ -15,22 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-  id "java-library"
-  id "klokwrk-gradle-plugin-convention-base"
-  id "klokwrk-gradle-plugin-convention-groovy"
-}
+package org.klokwrk.lib.uom.constants
 
-dependencies {
-  implementation platform(project(":klokwrk-platform-spring-boot"))
+import groovy.transform.CompileStatic
 
-  implementation project(":klokwrk-lib-uom")
-
-  implementation "com.fasterxml.jackson.core:jackson-core"
-  implementation "com.fasterxml.jackson.core:jackson-databind"
-  implementation "javax.measure:unit-api"
-  implementation "org.apache.groovy:groovy"
-  implementation "tech.units:indriya"
-
-  testImplementation "org.spockframework:spock-core"
+@CompileStatic
+class UomConstants {
+  static final String CELSIUS_SYMBOL = "°C"
 }

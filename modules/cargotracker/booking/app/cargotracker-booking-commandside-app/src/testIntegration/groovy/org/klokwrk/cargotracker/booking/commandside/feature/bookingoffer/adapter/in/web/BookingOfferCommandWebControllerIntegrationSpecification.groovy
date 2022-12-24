@@ -182,25 +182,16 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
                   commodityType: "DRY",
                   weight: [
                       value: 1000,
-                      unit: [
-                          name: "Kilogram",
-                          symbol: "kg"
-                      ]
+                      unitSymbol: "kg"
                   ]
               ],
               maxAllowedWeightPerContainer: [
                   value: 20615,
-                  unit: [
-                      name: "Kilogram",
-                      symbol: "kg"
-                  ]
+                  unitSymbol: "kg"
               ],
               maxRecommendedWeightPerContainer: [
                   value: 1000,
-                  unit: [
-                      name: "Kilogram",
-                      symbol: "kg"
-                  ]
+                  unitSymbol: "kg"
               ],
               containerCount: 1,
               containerTeuCount: 1
@@ -209,10 +200,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
       totalCommodityWeight == [
           value: 1000,
-          unit: [
-              name: "Kilogram",
-              symbol: "kg"
-          ]
+          unitSymbol: "kg"
       ]
 
       totalContainerTeuCount == 1
@@ -353,32 +341,20 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
                   commodityType: "${ commodityTypeParam.name() }",
                   weight: [
                       value: 1000,
-                      unit: [
-                          name: "Kilogram",
-                          symbol: "kg"
-                      ]
+                      unitSymbol: "kg"
                   ],
                   requestedStorageTemperature: [
                       value: commodityRequestedStorageTemperatureDegCParam,
-                      unit: [
-                          name: "Celsius",
-                          symbol: "°C"
-                      ]
+                      unitSymbol: "°C"
                   ]
               ],
               maxAllowedWeightPerContainer: [
                   value: 20520,
-                  unit: [
-                      name: "Kilogram",
-                      symbol: "kg"
-                  ]
+                  unitSymbol: "kg"
               ],
               maxRecommendedWeightPerContainer: [
                   value: 1000,
-                  unit: [
-                      name: "Kilogram",
-                      symbol: "kg"
-                  ]
+                  unitSymbol: "kg"
               ],
               containerCount: 1,
               containerTeuCount: 1
@@ -387,10 +363,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
       totalCommodityWeight == [
           value: 1000,
-          unit: [
-              name: "Kilogram",
-              symbol: "kg"
-          ]
+          unitSymbol: "kg"
       ]
 
       totalContainerTeuCount == 1
