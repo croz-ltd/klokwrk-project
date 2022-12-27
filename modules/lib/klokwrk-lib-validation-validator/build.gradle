@@ -25,12 +25,15 @@ dependencies {
   implementation platform(project(":klokwrk-platform-spring-boot"))
 
   implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lib-uom")
   implementation project(":klokwrk-lib-validation-constraint")
 
   implementation "jakarta.validation:jakarta.validation-api"
+  implementation "javax.measure:unit-api"
   implementation "org.apache.groovy:groovy"
   implementation "org.apache.tomcat.embed:tomcat-embed-el"
   implementation "org.hibernate.validator:hibernate-validator"
+  implementation "tech.units:indriya"
 
   testImplementation "org.spockframework:spock-core"
 }
