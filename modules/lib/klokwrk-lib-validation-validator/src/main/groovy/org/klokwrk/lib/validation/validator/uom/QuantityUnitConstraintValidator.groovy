@@ -30,50 +30,32 @@ import javax.validation.ConstraintValidatorContext
 @CompileStatic
 class QuantityUnitConstraintValidator implements ConstraintValidator<QuantityUnitConstraint, Quantity> {
   String message
+  String expectedUnitSymbol
+  boolean acceptOnlyExactUnitSymbol
+  List<String> compatibleUnitSymbolsForMessage
 
-  String exactUnitSymbol
-  Unit exactUnit
-
-  List<String> compatibleUnitSymbols
-  Unit firstCompatibleUnit
-
-  boolean isExactUnitSymbolSpecified
-  boolean areCompatibleUnitSymbolsSpecified
+  Unit expectedUnit
 
   @Override
   void initialize(QuantityUnitConstraint constraintAnnotation) {
     message = constraintAnnotation.message().trim()
 
-    exactUnitSymbol = constraintAnnotation.exactUnitSymbol().trim()
-    compatibleUnitSymbols = constraintAnnotation.compatibleUnitSymbols().collect({ it.trim() })
-
-    isExactUnitSymbolSpecified = !exactUnitSymbol.isEmpty()
-    areCompatibleUnitSymbolsSpecified = !(compatibleUnitSymbols.isEmpty() | compatibleUnitSymbols.any({ it.isEmpty() }))
-
-    if (!isExactUnitSymbolSpecified && !areCompatibleUnitSymbolsSpecified) {
-      throw new AssertionError("Either 'exactUnitSymbol' or 'compatibleUnitSymbols' have to be specified." as Object)
+    expectedUnitSymbol = constraintAnnotation.unitSymbol().trim()
+    if (expectedUnitSymbol.isEmpty()) {
+      throw new AssertionError("The 'unitSymbol' must be specified." as Object)
     }
 
-    if (isExactUnitSymbolSpecified && areCompatibleUnitSymbolsSpecified) {
-      throw new AssertionError("Only one of 'exactUnitSymbol' or 'compatibleUnitSymbols' can be specified." as Object)
+    try {
+      expectedUnit = KwrkSimpleUnitFormat.instance.parse(expectedUnitSymbol)
+    }
+    catch (RuntimeException e) { // codenarc-disable-line CatchRuntimeException
+      throw new AssertionError("Specified 'unitSymbol' of '${ expectedUnitSymbol }' is not recognized.", e)
     }
 
-    if (isExactUnitSymbolSpecified) {
-      try {
-        exactUnit = KwrkSimpleUnitFormat.instance.parse(exactUnitSymbol)
-      }
-      catch (RuntimeException e) { // codenarc-disable-line CatchRuntimeException
-        throw new AssertionError("Specified 'exactUnitSymbol' of '${ exactUnitSymbol }' is not recognized.", e)
-      }
-    }
-
-    if (areCompatibleUnitSymbolsSpecified) {
-      try {
-        firstCompatibleUnit = KwrkSimpleUnitFormat.instance.parse(compatibleUnitSymbols[0])
-      }
-      catch (RuntimeException e) { // codenarc-disable-line CatchRuntimeException
-        throw new AssertionError("The first specified unit symbol of '${ compatibleUnitSymbols[0] }' in 'compatibleUnitSymbols' is not recognized.", e)
-      }
+    acceptOnlyExactUnitSymbol = constraintAnnotation.acceptOnlyExactUnitSymbol()
+    compatibleUnitSymbolsForMessage = constraintAnnotation.compatibleUnitSymbolsForMessage().toList()
+    if (compatibleUnitSymbolsForMessage.isEmpty()) {
+      compatibleUnitSymbolsForMessage << expectedUnitSymbol
     }
   }
 
@@ -84,42 +66,38 @@ class QuantityUnitConstraintValidator implements ConstraintValidator<QuantityUni
       return true
     }
 
-    if (isExactUnitSymbolSpecified) {
-      if (quantity.unit == exactUnit) {
+    if (acceptOnlyExactUnitSymbol) {
+      if (quantity.unit == expectedUnit) {
+        return true
+      }
+    }
+    else {
+      if (quantity.unit.isCompatible(expectedUnit)) {
         return true
       }
     }
 
-    if (areCompatibleUnitSymbolsSpecified) {
-      if (quantity.unit.isCompatible(firstCompatibleUnit)) {
-        return true
-      }
-    }
-
-    prepareConstraintValidatorContextForMessageInterpolation(context)
+    prepareConstraintValidatorContextForMessageInterpolation(quantity, context)
     return false
   }
 
   @SuppressWarnings("CodeNarc.DuplicateStringLiteral")
-  protected void prepareConstraintValidatorContextForMessageInterpolation(ConstraintValidatorContext context) {
+  protected void prepareConstraintValidatorContextForMessageInterpolation(Quantity quantity, ConstraintValidatorContext context) {
     HibernateConstraintValidatorContext hibernateContext = context.unwrap(HibernateConstraintValidatorContext)
     if (message.isEmpty()) {
       // Prevent adding constraint violation with default message if it is empty
       context.disableDefaultConstraintViolation()
 
-      if (isExactUnitSymbolSpecified) {
-        hibernateContext.addExpressionVariable("specifiedExactUnitSymbol", exactUnitSymbol)
-        hibernateContext.buildConstraintViolationWithTemplate("{${ QuantityUnitConstraint.INVALID_EXACT_UNIT_SYMBOL_MESSAGE_KEY }}").enableExpressionLanguage().addConstraintViolation()
-      }
+      hibernateContext.addExpressionVariable("expectedUnitSymbol", expectedUnitSymbol)
+      hibernateContext.addExpressionVariable("providedUnitSymbol", quantity.unit.toString())
+      hibernateContext.addExpressionVariable("compatibleUnitSymbols", compatibleUnitSymbolsForMessage.join(", "))
 
-      if (areCompatibleUnitSymbolsSpecified) {
-        hibernateContext.addExpressionVariable("specifiedCompatibleUnitSymbols", compatibleUnitSymbols.join(", "))
-        hibernateContext.buildConstraintViolationWithTemplate("{${ QuantityUnitConstraint.INVALID_COMPATIBLE_UNIT_SYMBOL_MESSAGE_KEY }}").enableExpressionLanguage().addConstraintViolation()
-      }
+      hibernateContext.buildConstraintViolationWithTemplate("{${ QuantityUnitConstraint.INVALID_UNIT_SYMBOL_MESSAGE_KEY }}").enableExpressionLanguage().addConstraintViolation()
     }
     else {
-      hibernateContext.addExpressionVariable("specifiedExactUnitSymbol", exactUnitSymbol)
-      hibernateContext.addExpressionVariable("specifiedCompatibleUnitSymbols", compatibleUnitSymbols.join(", "))
+      hibernateContext.addExpressionVariable("expectedUnitSymbol", expectedUnitSymbol)
+      hibernateContext.addExpressionVariable("providedUnitSymbol", quantity.unit.toString())
+      hibernateContext.addExpressionVariable("compatibleUnitSymbols", compatibleUnitSymbolsForMessage.join(", "))
       hibernateContext.buildConstraintViolationWithTemplate(message).enableExpressionLanguage().addConstraintViolation()
     }
   }

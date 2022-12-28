@@ -42,7 +42,7 @@ class ValidationServiceDefaultSetupSpecification extends Specification {
     @NotNull
     String stringProperty
 
-    @QuantityUnitConstraint(compatibleUnitSymbols = ["kg"])
+    @QuantityUnitConstraint(unitSymbol = "kg")
     Quantity<Mass> quantityOfMass
   }
 

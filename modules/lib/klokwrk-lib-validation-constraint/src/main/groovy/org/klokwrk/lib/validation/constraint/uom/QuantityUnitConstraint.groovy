@@ -33,45 +33,49 @@ import static java.lang.annotation.ElementType.TYPE_USE
 import static java.lang.annotation.RetentionPolicy.RUNTIME
 
 /**
- * This constraint validates the unit of the annotated quantity (instance of {@code javax.measure.Quantity}).
+ * Validates the unit of the provided quantity (instance of {@code javax.measure.Quantity}).
  * <p/>
  * Example usage:
  * <pre>
  * class SomeClassWithQuantities {
- *   &#64;QuantityUnitConstraint(exactUnitSymbol = "kg")
- *   Quantity<Mass> someWeight
+ *   // The unit of validated quantity must be compatible with a unit with symbol kg.
+ *   &#64;QuantityUnitConstraint(unitSymbol = "kg")
+ *   Quantity<Mass> someWeightQuantity
  *
- *   &#64;QuantityUnitConstraint(exactUnitSymbol = "kg")
+ *   &#64;QuantityUnitConstraint(unitSymbol = "kg")
  *   Quantity someUntypedWeightQuantity
  *
- *   &#64;QuantityUnitConstraint(compatibleUnitSymbols = ["kg", "g"])
+ *   // The unit of validated quantity must be equal with a unit with symbol kg.
+ *   &#64;QuantityUnitConstraint(unitSymbol = "kg", acceptOnlyExactUnitSymbol = true)
  *   Quantity<Mass> someOtherWeight
  *
- *   &#64;QuantityUnitConstraint(compatibleUnitSymbols = ["kg", "g"])
+ *   // The unit of validated quantity must be compatible with a unit with symbol kg. If not,
+ *   // failed validation message will contain compatibleUnitSymbolsForMessage elements as a
+ *   // suggestion for a user.
+ *   &#64;QuantityUnitConstraint(unitSymbols = "kg", compatibleUnitSymbolsForMessage = ["kg", "g"])
  *   Quantity someOtherUntypedWeightQuantity
  * }
  * </pre>
- * Unit symbols corresponding to a particular unit are defined by units of measurement JSR-385 reference implementation and their extensions. Look at the {@code tech.units.indriya.unit.Units} class
- * for a base set of units and their symbols (<a href="https://github.com/unitsofmeasurement/indriya">https://github.com/unitsofmeasurement/indriya</a>).
+ * Unit symbols corresponding to a particular unit are defined by units of measurement JSR-385 reference implementation and their extensions. Look at the
+ * <a href="https://github.com/unitsofmeasurement/indriya/blob/master/src/main/java/tech/units/indriya/unit/Units.java">tech.units.indriya.unit.Units</a> class for a base set of units and their
+ * symbols (<a href="https://github.com/unitsofmeasurement/indriya">https://github.com/unitsofmeasurement/indriya</a>).
  * <p/>
- * Constraint parameter {@code compatibleUnitSymbols} is used when we want to check for compatible units of a quantity. For example, suppose we have a mass quantity. In that case, we can specify its
- * units in kilograms (unit symbol kg), grams (unit symbol g), or any other unit supported and used for mass quantities by our JSR-386 implementation.
+ * Parameter {@code unitSymbol} must be specified. By default, it defines a <b>compatible</b> unit of a validated quantity. If the value of {@code unitSymbol} not configured or it is not recognized
+ * by the underlying JSR-385 implementation, {@code AssertionError} is thrown during validator initialization.
  * <p/>
- * Only the first specified unit symbol is used for the compatibility check of units, while others are used just for constraint violation reporting. If the first specified unit symbol is not
- * recognized by JSR-385 implementation, {@code AssertionError} is thrown during validator initialization.
+ * For example, suppose we expect a mass quantity and a {@code unitSymbol} is set to {@code kg}. In that case, we will accept a validated quantity with units in kilograms (unit symbol {@code kg}),
+ * grams (unit symbol {@code g}), or any other unit supported and used for mass quantities by our JSR-386 implementation.
  * <p/>
- * Constraint parameter {@code exactUnitSymbol} is used when we want exact matching of quantity units. In this case, units are checked for equality, not for compatibility. If the specified
- * {@code exactUnitSymbol} is not recognized by JSR-385 implementation, {@code AssertionError} is thrown during validator initialization.
+ * By configuring {@code acceptOnlyExactUnitSymbol} to {@code true} (default is {@code false}), we accept only quantities with units <b>equal</b> to kilograms. Compatible units are not accepted in
+ * that case.
  * <p/>
- * Parameters {@code exactUnitSymbol} and {@code compatibleUnitSymbols} are mutually exclusive. Therefore, only one of them must be specified. If both or none are specified, the validator will throw
- * {@code AssertionError} during validator initialization.
+ * Parameter {@code compatibleUnitSymbolsForMessage} is optional and is used only for creating failed validation messages. When configured, the failed validation message will contain all listed unit
+ * symbols as a convenience for a user.
  * <p/>
- * In default validator implementation, default message interpolation keys (when {@code message} annotation param is empty) are
- * {@code org.klokwrk.lib.validation.constraint.uom.QuantityUnitConstraint.invalidExactUnitSymbolMessage} (when using {@code exactUnitSymbol} parameter) and
- * {@code org.klokwrk.lib.validation.constraint.uom.QuantityUnitConstraint.invalidCompatibleUnitSymbolMessage} (when using {@code compatibleUnitSymbols} parameter).
+ * In default validator implementation, default message interpolation key is {@code org.klokwrk.lib.validation.constraint.uom.QuantityUnitConstraint.invalidUnitSymbolMessage}.
  * <p/>
- * For custom message interpolation (when {@code message} annotation param is configured), default validator implementation exposes {@code specifiedExactUnitSymbol} and
- * {@code specifiedCompatibleUnitSymbols} expressions.
+ * For custom message interpolation (when {@code message} annotation param is defined), default validator implementation exposes {@code expectedUnitSymbol}, {@code providedUnitSymbol}, and
+ * {@code compatibleUnitSymbols} expressions.
  * <p/>
  * When custom annotation {@code message} parameter value is specified, it can be either a reference to the resource bundle key (must be enclosed in curly braces '<code>{}</code>'), or a hardcoded
  * message. In resource bundle properties files and in the hardcoded message, exposed interpolation expressions must be enclosed in curly braces starting with a dollar sign '<code>${}</code>'.
@@ -82,11 +86,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
 @Retention(RUNTIME)
 @Constraint(validatedBy = [])
 @interface QuantityUnitConstraint {
-  static final String INVALID_EXACT_UNIT_SYMBOL_MESSAGE_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityUnitConstraint.invalidExactUnitSymbolMessage"
-  static final String INVALID_COMPATIBLE_UNIT_SYMBOL_MESSAGE_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityUnitConstraint.invalidCompatibleUnitSymbolMessage"
+  static final String INVALID_UNIT_SYMBOL_MESSAGE_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityUnitConstraint.invalidUnitSymbolMessage"
 
-  String exactUnitSymbol() default ""
-  String[] compatibleUnitSymbols() default []
+  String unitSymbol() default ""
+  boolean acceptOnlyExactUnitSymbol() default false
+  String[] compatibleUnitSymbolsForMessage() default []
 
   String message() default ""
   Class<?>[] groups() default []

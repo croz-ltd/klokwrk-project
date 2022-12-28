@@ -43,64 +43,40 @@ class QuantityUnitConstraintValidatorSpecification extends Specification {
 
   static class QuantityInvalidTestObject_1 {
     @QuantityUnitConstraint
-    Quantity quantity1
-
-    @QuantityUnitConstraint(exactUnitSymbol = "")
-    Quantity quantity2
-
-    @QuantityUnitConstraint(exactUnitSymbol = "  ")
-    Quantity quantity3
-
-    @QuantityUnitConstraint(compatibleUnitSymbols = [])
-    Quantity quantity4
-
-    @QuantityUnitConstraint(compatibleUnitSymbols = ["", "   "])
-    Quantity quantity5
-
-    @QuantityUnitConstraint(compatibleUnitSymbols = ["kg", "   "])
-    Quantity quantity6
-
-  }
-
-  static class QuantityInvalidTestObject_2 {
-    @QuantityUnitConstraint(exactUnitSymbol = "kg", compatibleUnitSymbols = ["kg", "g"])
-    Quantity quantity1
-  }
-
-  static class QuantityInvalidTestObject_3 {
-    @QuantityUnitConstraint(exactUnitSymbol = "n/a")
     Quantity quantity
   }
 
-  static class QuantityInvalidTestObject_4 {
-    @QuantityUnitConstraint(compatibleUnitSymbols = ["n/a", "kg", "g"])
+  static class QuantityInvalidTestObject_2 {
+    @QuantityUnitConstraint(unitSymbol = "")
+    Quantity quantity
+  }
+
+  static class QuantityInvalidTestObject_3 {
+    @QuantityUnitConstraint(unitSymbol = "n/a")
     Quantity quantity
   }
 
   static class QuantityTestObject {
-    @QuantityUnitConstraint(exactUnitSymbol = "kg")
+    @QuantityUnitConstraint(unitSymbol = "kg")
+    Quantity untypedQuantity
+
+    @QuantityUnitConstraint(unitSymbol = "kg", message = 'Expected unit symbol is ${expectedUnitSymbol}.')
+    Quantity untypedQuantityWithCustomMessage
+
+    @QuantityUnitConstraint(unitSymbol = "kg", compatibleUnitSymbolsForMessage = ["kg", "g", "bla", "ble"])
+    Quantity untypedQuantityWithCompatibleUnitSymbolsSpecified
+
+    @QuantityUnitConstraint(unitSymbol = "kg", acceptOnlyExactUnitSymbol = true)
     Quantity untypedQuantityExpectingExactUnitSymbol
 
-    @QuantityUnitConstraint(
-        message = 'Expected unit symbol is ${specifiedExactUnitSymbol}.',
-        exactUnitSymbol = "kg"
-    )
+    @QuantityUnitConstraint(unitSymbol = "kg", acceptOnlyExactUnitSymbol = true, message = 'Unit symbol must be ${expectedUnitSymbol}.')
     Quantity untypedQuantityExpectingExactUnitSymbolWithCustomMessage
 
-    @QuantityUnitConstraint(compatibleUnitSymbols = ["kg", "g"])
-    Quantity untypedQuantityExpectingCompatibleUnitSymbol
+    @QuantityUnitConstraint(unitSymbol = "kg")
+    Quantity<Mass> massQuantity
 
-    @QuantityUnitConstraint(
-        message = 'Compatible unit symbols are: ${specifiedCompatibleUnitSymbols}.',
-        compatibleUnitSymbols = ["kg", "g"]
-    )
-    Quantity untypedQuantityExpectingCompatibleUnitSymbolWithCustomMessage
-
-    @QuantityUnitConstraint(exactUnitSymbol = "kg")
+    @QuantityUnitConstraint(unitSymbol = "kg", acceptOnlyExactUnitSymbol = true)
     Quantity<Mass> massQuantityExpectingExactUnitSymbol
-
-    @QuantityUnitConstraint(compatibleUnitSymbols = ["kg", "g"])
-    Quantity<Mass> massQuantityExpectingCompatibleUnitSymbol
   }
 
   void setupSpec() {
@@ -124,38 +100,31 @@ class QuantityUnitConstraintValidatorSpecification extends Specification {
     return validatorFactory.getValidator()
   }
 
-  void "should fail initialization when none of exactUnitSymbol and compatibleUnitSymbols are specified"() {
+  void "should fail initialization when unit symbol is not specified"() {
     given:
-    QuantityInvalidTestObject_1 invalidTestObject = new QuantityInvalidTestObject_1(
-        quantity1: Quantities.getQuantity(10, Units.KILOGRAM),
-        quantity2: Quantities.getQuantity(10, Units.KILOGRAM),
-        quantity3: Quantities.getQuantity(10, Units.KILOGRAM),
-        quantity4: Quantities.getQuantity(10, Units.KILOGRAM),
-        quantity5: Quantities.getQuantity(10, Units.KILOGRAM),
-        quantity6: Quantities.getQuantity(10, Units.KILOGRAM)
-    )
+    QuantityInvalidTestObject_1 invalidTestObject = new QuantityInvalidTestObject_1(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
 
     when:
     validator.validate(invalidTestObject)
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message == "Either 'exactUnitSymbol' or 'compatibleUnitSymbols' have to be specified."
+    assertionError.message == "The 'unitSymbol' must be specified."
   }
 
-  void "should fail initialization when both exactUnitSymbol and compatibleUnitSymbols are specified"() {
+  void "should fail initialization when specified unit symbol is empty"() {
     given:
-    QuantityInvalidTestObject_2 invalidTestObject = new QuantityInvalidTestObject_2(quantity1: Quantities.getQuantity(10, Units.KILOGRAM))
+    QuantityInvalidTestObject_2 invalidTestObject = new QuantityInvalidTestObject_2(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
 
     when:
     validator.validate(invalidTestObject)
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message == "Only one of 'exactUnitSymbol' or 'compatibleUnitSymbols' can be specified."
+    assertionError.message == "The 'unitSymbol' must be specified."
   }
 
-  void "should fail initialization when specified exactUnitySymbol is not recognized"() {
+  void "should fail initialization when specified unit symbol cannot be parsed"() {
     given:
     QuantityInvalidTestObject_3 invalidTestObject = new QuantityInvalidTestObject_3(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
 
@@ -164,24 +133,90 @@ class QuantityUnitConstraintValidatorSpecification extends Specification {
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message == "Specified 'exactUnitSymbol' of 'n/a' is not recognized."
+    assertionError.message == "Specified 'unitSymbol' of 'n/a' is not recognized."
     assertionError.cause instanceof MeasurementParseException
   }
 
-  void "should fail initialization when the first specified compatibleUnitSymbols is not recognized"() {
+  void "should validate quantity with correct compatible unit"() {
     given:
-    QuantityInvalidTestObject_4 invalidTestObject = new QuantityInvalidTestObject_4(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
+    QuantityTestObject testObject = new QuantityTestObject(untypedQuantity: untypedQuantityParam, massQuantity: massQuantityParam)
 
     when:
-    validator.validate(invalidTestObject)
+    Set<ConstraintViolation> constraintViolations = validator.validate(testObject)
 
     then:
-    AssertionError assertionError = thrown()
-    assertionError.message == "The first specified unit symbol of 'n/a' in 'compatibleUnitSymbols' is not recognized."
-    assertionError.cause instanceof MeasurementParseException
+    constraintViolations.isEmpty()
+
+    where:
+    untypedQuantityParam                       | massQuantityParam
+    Quantities.getQuantity(10, Units.KILOGRAM) | null
+    Quantities.getQuantity(10, Units.GRAM)     | null
+    null                                       | Quantities.getQuantity(10, Units.KILOGRAM)
+    null                                       | Quantities.getQuantity(10, Units.GRAM)
+    Quantities.getQuantity(10, Units.KILOGRAM) | Quantities.getQuantity(10, Units.KILOGRAM)
+    Quantities.getQuantity(10, Units.KILOGRAM) | Quantities.getQuantity(10, Units.GRAM)
+    Quantities.getQuantity(10, Units.GRAM)     | Quantities.getQuantity(10, Units.KILOGRAM)
+    Quantities.getQuantity(10, Units.GRAM)     | Quantities.getQuantity(10, Units.GRAM)
   }
 
-  void "should validate quantity with correct exact unit symbol specified"() {
+  void "should fail validating quantity with invalid unit"() {
+    given:
+    Validator myValidator = configureValidator("klokwrkValidationConstraintMessages", localeParam)
+    QuantityTestObject testObject = new QuantityTestObject(untypedQuantity: Quantities.getQuantity(10, Units.METRE))
+
+    when:
+    Set<ConstraintViolation> constraintViolations = myValidator.validate(testObject)
+
+    then:
+    constraintViolations.size() == 1
+    verifyAll(constraintViolations[0]) {
+      messageTemplate == "{${ QuantityUnitConstraint.INVALID_UNIT_SYMBOL_MESSAGE_KEY }}"
+      message == messageParam
+    }
+
+    where:
+    localeParam      | messageParam
+    new Locale("en") | "Unit symbol 'm' is not valid. Supported symbols are: kg."
+    new Locale("hr") | "Oznaka mjerne jedinice 'm' nije ispravna. Podržane oznake su: kg."
+  }
+
+  void "should fail validating quantity with invalid unit and compatibleUnitSymbolsForMessage specified"() {
+    given:
+    Validator myValidator = configureValidator("klokwrkValidationConstraintMessages", localeParam)
+    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityWithCompatibleUnitSymbolsSpecified: Quantities.getQuantity(10, Units.METRE))
+
+    when:
+    Set<ConstraintViolation> constraintViolations = myValidator.validate(testObject)
+
+    then:
+    constraintViolations.size() == 1
+    verifyAll(constraintViolations[0]) {
+      messageTemplate == "{${ QuantityUnitConstraint.INVALID_UNIT_SYMBOL_MESSAGE_KEY }}"
+      message == messageParam
+    }
+
+    where:
+    localeParam      | messageParam
+    new Locale("en") | "Unit symbol 'm' is not valid. Supported symbols are: kg, g, bla, ble."
+    new Locale("hr") | "Oznaka mjerne jedinice 'm' nije ispravna. Podržane oznake su: kg, g, bla, ble."
+  }
+
+  void "should fail validating quantity with invalid unit and with a custom message"() {
+    given:
+    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityWithCustomMessage: Quantities.getQuantity(10, Units.METRE))
+
+    when:
+    Set<ConstraintViolation> constraintViolations = validator.validate(testObject)
+
+    then:
+    constraintViolations.size() == 1
+    verifyAll(constraintViolations[0]) {
+      messageTemplate == 'Expected unit symbol is ${expectedUnitSymbol}.' // codenarc-disable-line GStringExpressionWithinString
+      message == "Expected unit symbol is kg."
+    }
+  }
+
+  void "should validate quantity with correct exact unit"() {
     given:
     QuantityTestObject testObject = new QuantityTestObject(untypedQuantityExpectingExactUnitSymbol: untypedQuantityParam, massQuantityExpectingExactUnitSymbol: massQuantityParam)
 
@@ -198,10 +233,10 @@ class QuantityUnitConstraintValidatorSpecification extends Specification {
     Quantities.getQuantity(10, Units.KILOGRAM) | Quantities.getQuantity(10, Units.KILOGRAM)
   }
 
-  void "should fail validating quantity with invalid exact unit symbol specified"() {
+  void "should fail validating quantity with exact unit"() {
     given:
     Validator myValidator = configureValidator("klokwrkValidationConstraintMessages", localeParam)
-    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityExpectingExactUnitSymbol: Quantities.getQuantity(10, Units.METRE))
+    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityExpectingExactUnitSymbol: Quantities.getQuantity(10, Units.GRAM))
 
     when:
     Set<ConstraintViolation> constraintViolations = myValidator.validate(testObject)
@@ -209,19 +244,19 @@ class QuantityUnitConstraintValidatorSpecification extends Specification {
     then:
     constraintViolations.size() == 1
     verifyAll(constraintViolations[0]) {
-      messageTemplate == "{${ QuantityUnitConstraint.INVALID_EXACT_UNIT_SYMBOL_MESSAGE_KEY }}"
+      messageTemplate == "{${ QuantityUnitConstraint.INVALID_UNIT_SYMBOL_MESSAGE_KEY }}"
       message == messageParam
     }
 
     where:
     localeParam      | messageParam
-    new Locale("en") | "Unit symbol must be 'kg'."
-    new Locale("hr") | "Oznaka mjerne jedinice mora biti 'kg'."
+    new Locale("en") | "Unit symbol 'g' is not valid. Supported symbols are: kg."
+    new Locale("hr") | "Oznaka mjerne jedinice 'g' nije ispravna. Podržane oznake su: kg."
   }
 
-  void "should fail validating quantity with invalid exact unit symbol specified and with a custom message"() {
+  void "should fail validating quantity with exact unit and a custom message"() {
     given:
-    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityExpectingExactUnitSymbolWithCustomMessage: Quantities.getQuantity(10, Units.METRE))
+    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityExpectingExactUnitSymbolWithCustomMessage: Quantities.getQuantity(10, Units.GRAM))
 
     when:
     Set<ConstraintViolation> constraintViolations = validator.validate(testObject)
@@ -229,66 +264,8 @@ class QuantityUnitConstraintValidatorSpecification extends Specification {
     then:
     constraintViolations.size() == 1
     verifyAll(constraintViolations[0]) {
-      messageTemplate == 'Expected unit symbol is ${specifiedExactUnitSymbol}.' // codenarc-disable-line GStringExpressionWithinString
-      message == "Expected unit symbol is kg."
-    }
-  }
-
-  void "should validate quantity with correct compatible unit symbol specified"() {
-    given:
-    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityExpectingCompatibleUnitSymbol: untypedQuantityParam, massQuantityExpectingCompatibleUnitSymbol: massQuantityParam)
-
-    when:
-    Set<ConstraintViolation> constraintViolations = validator.validate(testObject)
-
-    then:
-    constraintViolations.isEmpty()
-
-    where:
-    untypedQuantityParam                       | massQuantityParam
-    Quantities.getQuantity(10, Units.KILOGRAM) | null
-    Quantities.getQuantity(10, Units.GRAM)     | null
-    null                                       | Quantities.getQuantity(10, Units.KILOGRAM)
-    null                                       | Quantities.getQuantity(10, Units.GRAM)
-    Quantities.getQuantity(10, Units.KILOGRAM) | Quantities.getQuantity(10, Units.KILOGRAM)
-    Quantities.getQuantity(10, Units.GRAM)     | Quantities.getQuantity(10, Units.KILOGRAM)
-    Quantities.getQuantity(10, Units.KILOGRAM) | Quantities.getQuantity(10, Units.GRAM)
-    Quantities.getQuantity(10, Units.GRAM)     | Quantities.getQuantity(10, Units.GRAM)
-  }
-
-  void "should fail validating quantity with invalid compatible unit symbol specified"() {
-    given:
-    Validator myValidator = configureValidator("klokwrkValidationConstraintMessages", localeParam)
-    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityExpectingCompatibleUnitSymbol: Quantities.getQuantity(10, Units.METRE))
-
-    when:
-    Set<ConstraintViolation> constraintViolations = myValidator.validate(testObject)
-
-    then:
-    constraintViolations.size() == 1
-    verifyAll(constraintViolations[0]) {
-      messageTemplate == "{${ QuantityUnitConstraint.INVALID_COMPATIBLE_UNIT_SYMBOL_MESSAGE_KEY }}"
-      message == messageParam
-    }
-
-    where:
-    localeParam      | messageParam
-    new Locale("en") | "Unit symbol must be compatible with the following symbols: kg, g."
-    new Locale("hr") | "Oznaka mjerne jedinice mora biti kompatibilna sa sljedećim jedinicama: kg, g."
-  }
-
-  void "should fail validating quantity with invalid compatible unit symbol specified and a custom message"() {
-    given:
-    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityExpectingCompatibleUnitSymbolWithCustomMessage: Quantities.getQuantity(10, Units.METRE))
-
-    when:
-    Set<ConstraintViolation> constraintViolations = validator.validate(testObject)
-
-    then:
-    constraintViolations.size() == 1
-    verifyAll(constraintViolations[0]) {
-      messageTemplate == 'Compatible unit symbols are: ${specifiedCompatibleUnitSymbols}.' // codenarc-disable-line GStringExpressionWithinString
-      message == "Compatible unit symbols are: kg, g."
+      messageTemplate == 'Unit symbol must be ${expectedUnitSymbol}.' // codenarc-disable-line GStringExpressionWithinString
+      message == "Unit symbol must be kg."
     }
   }
 }
