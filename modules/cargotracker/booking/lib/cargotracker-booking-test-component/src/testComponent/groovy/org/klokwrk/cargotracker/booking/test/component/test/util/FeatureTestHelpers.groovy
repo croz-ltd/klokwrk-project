@@ -67,7 +67,14 @@ class FeatureTestHelpers {
             "arrivalLatestTime": "${ arrivalLatestTime }"
           },
           "cargos": [
-            {"commodityType": "dry", "commodityWeightKg": 1000, "containerDimensionType": "DIMENSION_ISO_22"}
+            {
+              "commodityType": "dry",
+              "commodityWeight": {
+                "value": 1000,
+                "unitSymbol": "kg"
+              },
+              "containerDimensionType": "DIMENSION_ISO_22"
+            }
           ]
         }
         """
@@ -91,7 +98,18 @@ class FeatureTestHelpers {
             "arrivalLatestTime": "${ arrivalLatestTime }"
           },
           "cargos": [
-            {"commodityType": "chilled", "commodityWeightKg": 1000, "commodityRequestedStorageTemperatureDegC": 5, "containerDimensionType": "DIMENSION_ISO_22"}
+            {
+              "commodityType": "chilled",
+              "commodityWeight": {
+                "value": 1000,
+                "unitSymbol": "kg"
+              },
+              "commodityRequestedStorageTemperature": {
+                "value": 5,
+                "unitSymbol": "°C"
+              },
+              "containerDimensionType": "DIMENSION_ISO_22"
+            }
           ]
         }
         """
@@ -117,7 +135,18 @@ class FeatureTestHelpers {
             "arrivalLatestTime": "${ arrivalLatestTime }"
           },
           "cargos": [
-            {"commodityType": "chilled", "commodityWeightKg": 1000, "commodityRequestedStorageTemperatureDegC": 5, "containerDimensionType": "DIMENSION_ISO_22"}
+            {
+              "commodityType": "chilled",
+              "commodityWeight": {
+                "value": 1000,
+                "unitSymbol": "kg"
+              },
+              "commodityRequestedStorageTemperature": {
+                "value": 5,
+                "unitSymbol": "°C"
+              },
+              "containerDimensionType": "DIMENSION_ISO_22"
+            }
           ]
         }
         """
@@ -125,6 +154,7 @@ class FeatureTestHelpers {
     return commandRequestBody
   }
 
+  @SuppressWarnings("CodeNarc.MethodSize - test")
   static List<String> makeCommandRequestBodyList_createBookingOffer() {
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
@@ -147,7 +177,14 @@ class FeatureTestHelpers {
             ${ departureArrivalTimesFragment }
           },
           "cargos": [
-            {"commodityType": "dry", "commodityWeightKg": 30000, "containerDimensionType": "DIMENSION_ISO_22"}
+            {
+              "commodityType": "dry",
+              "commodityWeight": {
+                "value": 30000,
+                "unitSymbol": "kg"
+              },
+              "containerDimensionType": "DIMENSION_ISO_22"
+            }
           ]
         }
         """.toString()
@@ -161,7 +198,14 @@ class FeatureTestHelpers {
             ${ departureArrivalTimesFragment }
           },
           "cargos": [
-            {"commodityType": "air_cooled", "commodityWeightKg": 30000, "containerDimensionType": "DIMENSION_ISO_22"}
+            {
+              "commodityType": "air_cooled",
+              "commodityWeight": {
+                "value": 30000,
+                "unitSymbol": "kg"
+              },
+              "containerDimensionType": "DIMENSION_ISO_22"
+            }
           ]
         }
         """.toString()
@@ -175,7 +219,14 @@ class FeatureTestHelpers {
             ${ departureArrivalTimesFragment }
           },
           "cargos": [
-            {"commodityType": "chilled", "commodityWeightKg": 30000, "containerDimensionType": "DIMENSION_ISO_22"}
+            {
+              "commodityType": "chilled",
+              "commodityWeight": {
+                "value": 30000,
+                "unitSymbol": "kg"
+              },
+              "containerDimensionType": "DIMENSION_ISO_22"
+            }
           ]
         }
         """.toString()
@@ -189,7 +240,14 @@ class FeatureTestHelpers {
             ${ departureArrivalTimesFragment }
           },
           "cargos": [
-            {"commodityType": "frozen", "commodityWeightKg": 30000, "containerDimensionType": "DIMENSION_ISO_22"}
+            {
+              "commodityType": "frozen",
+              "commodityWeight": {
+                "value": 30000,
+                "unitSymbol": "kg"
+              },
+              "containerDimensionType": "DIMENSION_ISO_22"
+            }
           ]
         }
         """.toString()
@@ -203,7 +261,14 @@ class FeatureTestHelpers {
             ${ departureArrivalTimesFragment }
           },
           "cargos": [
-            {"commodityType": "air_cooled", "commodityWeightKg": 70000, "containerDimensionType": "DIMENSION_ISO_22"}
+            {
+              "commodityType": "air_cooled",
+              "commodityWeight": {
+                "value": 70000,
+                "unitSymbol": "kg"
+              },
+              "containerDimensionType": "DIMENSION_ISO_22"
+            }
           ]
         }
         """.toString()
@@ -217,7 +282,14 @@ class FeatureTestHelpers {
             ${ departureArrivalTimesFragment }
           },
           "cargos": [
-            {"commodityType": "dry", "commodityWeightKg": 40000, "containerDimensionType": "DIMENSION_ISO_22"}
+            {
+              "commodityType": "dry",
+              "commodityWeight": {
+                "value": 40000,
+                "unitSymbol": "kg"
+              },
+              "containerDimensionType": "DIMENSION_ISO_22"
+            }
           ]
         }
         """.toString()
@@ -231,7 +303,14 @@ class FeatureTestHelpers {
             ${ departureArrivalTimesFragment }
           },
           "cargos": [
-            {"commodityType": "dry", "commodityWeightKg": 1000, "containerDimensionType": "DIMENSION_ISO_22"}
+            {
+              "commodityType": "dry",
+              "commodityWeight": {
+                "value": 1000,
+                "unitSymbol": "kg"
+              },
+              "containerDimensionType": "DIMENSION_ISO_22"
+            }
           ]
         }
         """.toString()
@@ -245,7 +324,14 @@ class FeatureTestHelpers {
             ${ departureArrivalTimesFragment }
           },
           "cargos": [
-            {"commodityType": "dry", "commodityWeightKg": 15000, "containerDimensionType": "DIMENSION_ISO_22"}
+            {
+              "commodityType": "dry",
+              "commodityWeight": {
+                "value": 15000,
+                "unitSymbol": "kg"
+              },
+              "containerDimensionType": "DIMENSION_ISO_22"
+            }
           ]
         }
         """.toString()
@@ -259,7 +345,14 @@ class FeatureTestHelpers {
             ${ departureArrivalTimesFragment }
           },
           "cargos": [
-            {"commodityType": "dry", "commodityWeightKg": 100000, "containerDimensionType": "DIMENSION_ISO_22"}
+            {
+              "commodityType": "dry",
+              "commodityWeight": {
+                "value": 100000,
+                "unitSymbol": "kg"
+              },
+              "containerDimensionType": "DIMENSION_ISO_22"
+            }
           ]
         }
         """.toString()
@@ -273,7 +366,14 @@ class FeatureTestHelpers {
             ${ departureArrivalTimesFragment }
           },
           "cargos": [
-            {"commodityType": "dry", "commodityWeightKg": 45000, "containerDimensionType": "DIMENSION_ISO_22"}
+            {
+              "commodityType": "dry",
+              "commodityWeight": {
+                "value": 15000,
+                "unitSymbol": "kg"
+              },
+              "containerDimensionType": "DIMENSION_ISO_22"
+            }
           ]
         }
         """.toString()

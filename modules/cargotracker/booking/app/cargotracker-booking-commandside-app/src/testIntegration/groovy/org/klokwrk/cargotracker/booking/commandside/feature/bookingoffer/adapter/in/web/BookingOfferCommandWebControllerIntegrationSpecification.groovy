@@ -76,7 +76,14 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
                 arrivalLatestTime: arrivalLatestTime
             ],
             cargos: [
-                [commodityType: "dry", commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22"]
+                [
+                    commodityType: "dry",
+                    commodityWeight: [
+                      value: 1000,
+                      unitSymbol: "kg"
+                    ],
+                    containerDimensionType: "DIMENSION_ISO_22"
+                ]
             ]
         ]
     )
@@ -232,8 +239,14 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             cargos: [
                 [
                     commodityType: "${ commodityTypeParam.name().toLowerCase() }",
-                    commodityWeightKg: 1000,
-                    commodityRequestedStorageTemperatureDegC: commodityRequestedStorageTemperatureDegCParam,
+                    commodityWeight: [
+                      value: 1000,
+                      unitSymbol: "kg"
+                    ],
+                    commodityRequestedStorageTemperature: [
+                        value: commodityRequestedStorageTemperatureDegCParam,
+                        unitSymbol: "°C"
+                    ],
                     containerDimensionType: "DIMENSION_ISO_22"
                 ]
             ]
@@ -390,7 +403,14 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             bookingOfferIdentifier: bookingOfferIdentifier,
             routeSpecification: [originLocation: null, destinationLocation: null, departureEarliestTime: null, departureLatestTime: null, arrivalLatestTime: null],
             cargos: [
-                [commodityType: "dry", commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22"]
+                [
+                    commodityType: "dry",
+                    commodityWeight: [
+                        value: 1000,
+                        unitSymbol: "kg"
+                    ],
+                    containerDimensionType: "DIMENSION_ISO_22"
+                ]
             ]
         ]
     )
@@ -470,7 +490,14 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
                 arrivalLatestTime: arrivalLatestTime
             ],
             cargos: [
-                [commodityType: "dry", commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22"]
+                [
+                    commodityType: "dry",
+                    commodityWeight: [
+                        value: 1000,
+                        unitSymbol: "kg"
+                    ],
+                    containerDimensionType: "DIMENSION_ISO_22"
+                ]
             ]
         ]
     )
@@ -536,7 +563,14 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
                 originLocation: "HRRJK", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
             cargos: [
-                [commodityType: "dry", commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22"]
+                [
+                    commodityType: "dry",
+                    commodityWeight: [
+                        value: 1000,
+                        unitSymbol: "kg"
+                    ],
+                    containerDimensionType: "DIMENSION_ISO_22"
+                ]
             ]
         ]
     )
@@ -602,7 +636,14 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
                 originLocation: "NLRTM", destinationLocation: "HRZAG", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
             cargos: [
-                [commodityType: "dry", commodityWeightKg: 1000, containerDimensionType: "DIMENSION_ISO_22"]
+                [
+                    commodityType: "dry",
+                    commodityWeight: [
+                        value: 1000,
+                        unitSymbol: "kg"
+                    ],
+                    containerDimensionType: "DIMENSION_ISO_22"
+                ]
             ]
         ]
     )
@@ -668,7 +709,14 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
                 originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
             ],
             cargos: [
-                [commodityType: "dry", commodityWeightKg: 125_000_000, containerDimensionType: "dimension_ISO_22"]
+                [
+                    commodityType: "dry",
+                    commodityWeight: [
+                        value: 125_000_000,
+                        unitSymbol: "kg"
+                    ],
+                    containerDimensionType: "dimension_ISO_22"
+                ]
             ]
         ]
     )
@@ -725,8 +773,14 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             cargos: [
                 [
                     commodityType: "dry",
-                    commodityWeightKg: 1000,
-                    commodityRequestedStorageTemperatureDegC: commodityRequestedStorageTemperatureDegCParam,
+                    commodityWeight: [
+                        value: 1000,
+                        unitSymbol: "kg"
+                    ],
+                    commodityRequestedStorageTemperature: [
+                        value: commodityRequestedStorageTemperatureDegCParam,
+                        unitSymbol: "°C"
+                    ],
                     containerDimensionType: "dimension_ISO_22"
                 ]
             ]
@@ -785,8 +839,14 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             cargos: [
                 [
                     commodityType: "$commodityTypeStringParam",
-                    commodityWeightKg: 1000,
-                    commodityRequestedStorageTemperatureDegC: commodityRequestedStorageTemperatureDegCParam,
+                    commodityWeight: [
+                        value: 1000,
+                        unitSymbol: "kg"
+                    ],
+                    commodityRequestedStorageTemperature: [
+                        value: commodityRequestedStorageTemperatureDegCParam,
+                        unitSymbol: "°C"
+                    ],
                     containerDimensionType: "dimension_ISO_22"
                 ]
             ]
