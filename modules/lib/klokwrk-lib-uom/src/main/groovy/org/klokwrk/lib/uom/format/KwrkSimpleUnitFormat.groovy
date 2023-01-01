@@ -18,6 +18,8 @@
 package org.klokwrk.lib.uom.format
 
 import groovy.transform.CompileStatic
+import si.uom.NonSI
+import systems.uom.common.USCustomary
 import tech.units.indriya.format.SimpleUnitFormat
 import tech.units.indriya.unit.Units
 
@@ -36,6 +38,14 @@ import static org.klokwrk.lib.uom.constants.UomConstants.CELSIUS_SYMBOL
  */
 @CompileStatic
 class KwrkSimpleUnitFormat {
+  // Ensure loading of NonSI and USCustomary system of units before using KwrkSimpleUnitFormat. This is necessary to ensure proper updates to SimpleUnitFormat by those systems of units. Otherwise
+  // SimpleUnitFormat will not be aware of new units.
+  // This could be placed somewhere in application class' static initialization code, but I choose to put it here to avoid confusion as much as possible.
+  static {
+    NonSI.instance.name
+    USCustomary.instance.name
+  }
+
   private static final UnitFormat UNIT_FORMATTER = SimpleUnitFormat.instance.tap({ SimpleUnitFormat simpleUnitFormat ->
     // Note: The following code is taken and adapted from "tech.units.indriya.format.SimpleUnitFormat"
     simpleUnitFormat.label(Units.CELSIUS, CELSIUS_SYMBOL)

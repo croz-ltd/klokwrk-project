@@ -68,6 +68,8 @@ dependencies {
     api "org.objenesis:objenesis:$objenesisVersion"
     api "org.spockframework:spock-core:$spockVersion"
     api "org.spockframework:spock-spring:$spockVersion"
+    api "si.uom:si-units:$uomSiUnitsVersion" // uom SI units - https://github.com/unitsofmeasurement/si-units
+    api "systems.uom:systems-common:$uomCommonUnitsVersion" // uom common units - part of https://github.com/unitsofmeasurement/uom-systems
     api "tech.units:indriya:$uomReferenceImplementationVersion"
     api "uk.org.lidalia:slf4j-test:$slf4jTestVersion"
   }

@@ -26,6 +26,8 @@ dependencies {
 
   implementation "javax.measure:unit-api"
   implementation "org.apache.groovy:groovy"
+  implementation "si.uom:si-units"
+  implementation "systems.uom:systems-common"
   implementation "tech.units:indriya"
 
   testImplementation "org.spockframework:spock-core"
