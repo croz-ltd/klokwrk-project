@@ -86,6 +86,16 @@ class Commodity implements PostMapConstructorCheckable {
       requestedStorageTemperatureToUse = commodityType.recommendedStorageTemperature
     }
 
+    if (commodityType?.isStorageTemperatureLimited()) {
+      if (requestedStorageTemperature == null) {
+        requestedStorageTemperatureToUse = commodityType.recommendedStorageTemperature
+      }
+      else {
+        BigDecimal requestedStorageTemperatureValueToUse = requestedStorageTemperature.to(Units.CELSIUS).value.toBigDecimal().setScale(2, RoundingMode.HALF_UP)
+        requestedStorageTemperatureToUse = Quantities.getQuantity(requestedStorageTemperatureValueToUse, Units.CELSIUS)
+      }
+    }
+
     BigDecimal weightValueToUse = weight.to(Units.KILOGRAM).value.toBigDecimal().setScale(0, RoundingMode.UP)
     Quantity<Mass> weightToUse = Quantities.getQuantity(weightValueToUse, Units.KILOGRAM)
 
@@ -120,6 +130,7 @@ class Commodity implements PostMapConstructorCheckable {
     requireNullRequestedStorageTemperatureWhenNotAllowed(requestedStorageTemperature, commodityType)
 
     requireTrue(isRequestedStorageTemperatureAvailableWhenNeeded(requestedStorageTemperature, commodityType))
+    requireTrue(isRequestedStorageTemperatureExpressedInCelsius(requestedStorageTemperature))
     requireRequestedStorageTemperatureInAllowedRange(requestedStorageTemperature, commodityType)
   }
 
@@ -133,6 +144,15 @@ class Commodity implements PostMapConstructorCheckable {
 
   private Boolean isRequestedStorageTemperatureAvailableWhenNeeded(Quantity<Temperature> requestedStorageTemperature, CommodityType commodityType) {
     if (commodityType.containerFeaturesType.isContainerTemperatureControlled() && requestedStorageTemperature == null) {
+      return false
+    }
+
+    return true
+  }
+
+  private Boolean isRequestedStorageTemperatureExpressedInCelsius(Quantity<Temperature> requestedStorageTemperature) {
+    // Should be called after isRequestedStorageTemperatureAvailableWhenNeeded().
+    if (requestedStorageTemperature != null && requestedStorageTemperature.unit != Units.CELSIUS) {
       return false
     }
 

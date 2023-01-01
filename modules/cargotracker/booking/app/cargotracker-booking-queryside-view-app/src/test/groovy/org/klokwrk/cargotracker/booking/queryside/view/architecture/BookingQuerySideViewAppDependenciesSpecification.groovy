@@ -65,7 +65,9 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
         "org.axonframework.messaging..",
         "org.axonframework.spring..",
         "org.hamcrest",
-        "org.springframework.."
+        "org.springframework..",
+
+        "tech.units.indriya.unit.."
     ]
 
     String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]

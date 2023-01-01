@@ -63,7 +63,8 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
   )
   static String validContainerDimensionData = "DIMENSION_ISO_22"
   static CargoData validCargoData = new CargoData(
-      commodityType: CommodityType.DRY.name(), commodityWeightKg: 1000, commodityRequestedStorageTemperatureDegC: null, containerDimensionType: validContainerDimensionData
+      commodityType: CommodityType.DRY.name(),
+      commodityWeight: Quantities.getQuantity(1000, Units.KILOGRAM), commodityRequestedStorageTemperature: null, containerDimensionType: validContainerDimensionData
   )
 
   BookingOfferCommandFactoryService bookingOfferCommandFactoryService

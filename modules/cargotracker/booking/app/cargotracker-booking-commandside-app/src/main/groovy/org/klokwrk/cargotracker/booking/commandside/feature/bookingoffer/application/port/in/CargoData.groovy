@@ -25,13 +25,16 @@ import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionTyp
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint
+import org.klokwrk.lib.validation.constraint.uom.QuantityMinConstraint
+import org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint
 import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
 import org.klokwrk.lib.validation.group.Level3
 
+import javax.measure.Quantity
+import javax.measure.quantity.Mass
+import javax.measure.quantity.Temperature
 import javax.validation.GroupSequence
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
@@ -54,25 +57,24 @@ class CargoData {
   String commodityType
 
   /**
-   * Commodity weight in kilograms.
+   * Commodity weight.
    * <p/>
    * Not {@code null} and must be 1 or greater.
    */
-  @Min(value = 1L, groups = [Level2])
+  @QuantityMinConstraint(minQuantity = "1 kg", groups = [Level2])
   @NotNull(groups = [Level1])
-  Long commodityWeightKg
+  Quantity<Mass> commodityWeight
 
   /**
-   * The requested storage temperature in Celsius degree for a commodity.
+   * The requested storage temperature for a commodity.
    * <p/>
    * Definite storage temperature validation is done by business logic, and it depends on the supported temperature range of the selected commodity type.
    * <p/>
    * Here we are just validating a sensible storage temperature range of [-30, 30] Celsius inclusively to avoid accepting completely unbounded integers. The range chosen here is equal to the
    * supported range of reefer containers.
    */
-  @Max(value = 30L, groups = [Level2])
-  @Min(value = -30L, groups = [Level2])
-  Integer commodityRequestedStorageTemperatureDegC
+  @QuantityRangeConstraint(minQuantity = "-30 °C", maxQuantity = "30 °C")
+  Quantity<Temperature> commodityRequestedStorageTemperature
 
   /**
    * Container dimension type string corresponding to the names of constants from {@link ContainerDimensionType} enum.

@@ -18,10 +18,15 @@
 package org.klokwrk.lib.validation.springboot
 
 import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
+import org.klokwrk.lib.validation.constraint.uom.QuantityUnitConstraint
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
+import tech.units.indriya.quantity.Quantities
+import tech.units.indriya.unit.Units
 
+import javax.measure.Quantity
+import javax.measure.quantity.Mass
 import javax.validation.ConstraintViolationException
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
@@ -36,18 +41,21 @@ class ValidationServiceDefaultSetupSpecification extends Specification {
     @Size(min = 1, max = 15)
     @NotNull
     String stringProperty
+
+    @QuantityUnitConstraint(unitSymbol = "kg")
+    Quantity<Mass> quantityOfMass
   }
 
   void "default configuration should be applied"() {
     expect:
     validationService.enabled
     validationService.messageSourceBaseNames == ["klokwrkValidationConstraintMessages"] as String[]
-    validationService.validatorImplementationPackagesToScan == ["org.klokwrk.lib.validation.validator"] as String[]
+    validationService.validatorImplementationPackagesToScan == ["org.klokwrk.lib.validation.validator.."] as String[]
   }
 
   void "should not throw for valid object"() {
     given:
-    TestObject testObject = new TestObject(stringProperty: "bla")
+    TestObject testObject = new TestObject(stringProperty: "bla", quantityOfMass: Quantities.getQuantity(10, Units.KILOGRAM))
 
     when:
     validationService.validate(testObject)
@@ -58,7 +66,7 @@ class ValidationServiceDefaultSetupSpecification extends Specification {
 
   void "should throw for invalid object"() {
     given:
-    TestObject testObject = new TestObject(stringProperty: stringPropertyParam)
+    TestObject testObject = new TestObject(stringProperty: stringPropertyParam, quantityOfMass: quantityOfMassParam as Quantity<Mass>)
 
     when:
     validationService.validate(testObject)
@@ -67,9 +75,10 @@ class ValidationServiceDefaultSetupSpecification extends Specification {
     thrown(ConstraintViolationException)
 
     where:
-    stringPropertyParam | _
-    null                | _
-    ""                  | _
-    "bla "              | _
+    stringPropertyParam | quantityOfMassParam
+    null                | null
+    ""                  | null
+    "bla "              | null
+    "bla"               | Quantities.getQuantity(10, Units.METRE)
   }
 }

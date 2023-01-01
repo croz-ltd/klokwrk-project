@@ -77,8 +77,8 @@ class BookingOfferCommandFactoryService {
       CargoCommandData cargoCommandData = new CargoCommandData(
           commodity: Commodity.make(
               CommodityType.valueOf(cargoData.commodityType.toUpperCase()),
-              cargoData.commodityWeightKg,
-              cargoData.commodityRequestedStorageTemperatureDegC
+              cargoData.commodityWeight,
+              cargoData.commodityRequestedStorageTemperature
           ),
           containerDimensionType: ContainerDimensionType.valueOf(cargoData.containerDimensionType.toUpperCase())
       )

@@ -46,4 +46,6 @@ dependencies {
 
   testImplementation "org.objenesis:objenesis"
   testImplementation "org.spockframework:spock-core"
+  testImplementation "si.uom:si-units"
+  testImplementation "systems.uom:systems-common"
 }
