@@ -36,6 +36,11 @@ import org.klokwrk.cargotracker.lib.boundary.api.application.operation.Operation
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
 import org.klokwrk.lib.validation.springboot.ValidationService
 import org.springframework.stereotype.Service
+import tech.units.indriya.unit.Units
+
+import javax.measure.Quantity
+import javax.measure.quantity.Mass
+import java.math.RoundingMode
 
 import static org.hamcrest.Matchers.notNullValue
 
@@ -100,7 +105,27 @@ class BookingOfferQueryApplicationService implements BookingOfferSummaryFindById
     Customer customer = customerByUserIdentifierPortOut.findCustomerByUserIdentifier(bookingOfferSummarySearchAllQueryOperationRequest.payload.userIdentifier)
     bookingOfferSummarySearchAllQueryOperationRequest.payload.customerIdentifier = customer.customerId.identifier
 
-    BookingOfferSummarySearchAllQueryResponse queryResponse = queryGatewayAdapter.query(bookingOfferSummarySearchAllQueryOperationRequest, BookingOfferSummarySearchAllQueryResponse)
+    BookingOfferSummarySearchAllQueryResponse queryResponse = queryGatewayAdapter.query(
+        prepareBookingOfferSummarySearchAllQueryRequest(bookingOfferSummarySearchAllQueryOperationRequest), BookingOfferSummarySearchAllQueryResponse
+    )
     return operationResponseFromQueryResponse(queryResponse)
+  }
+
+  protected OperationRequest<BookingOfferSummarySearchAllQueryRequest> prepareBookingOfferSummarySearchAllQueryRequest(
+      OperationRequest<BookingOfferSummarySearchAllQueryRequest> bookingOfferSummarySearchAllQueryRequest)
+  {
+    Quantity<Mass> totalCommodityWeightFromIncluding = bookingOfferSummarySearchAllQueryRequest.payload.totalCommodityWeightFromIncluding
+    if (totalCommodityWeightFromIncluding) {
+      Long totalCommodityWeightKgFromIncluding = totalCommodityWeightFromIncluding.to(Units.KILOGRAM).value.toBigDecimal().setScale(0, RoundingMode.HALF_DOWN).toLong()
+      bookingOfferSummarySearchAllQueryRequest.payload.totalCommodityWeightKgFromIncluding = totalCommodityWeightKgFromIncluding
+    }
+
+    Quantity<Mass> totalCommodityWeightToIncluding = bookingOfferSummarySearchAllQueryRequest.payload.totalCommodityWeightToIncluding
+    if (totalCommodityWeightToIncluding) {
+      Long totalCommodityWeightKgToIncluding = totalCommodityWeightToIncluding.to(Units.KILOGRAM).value.toBigDecimal().setScale(0, RoundingMode.HALF_UP).toLong()
+      bookingOfferSummarySearchAllQueryRequest.payload.totalCommodityWeightKgToIncluding = totalCommodityWeightKgToIncluding
+    }
+
+    return bookingOfferSummarySearchAllQueryRequest
   }
 }

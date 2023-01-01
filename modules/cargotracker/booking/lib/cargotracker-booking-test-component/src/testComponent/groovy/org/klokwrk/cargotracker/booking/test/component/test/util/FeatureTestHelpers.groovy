@@ -412,8 +412,14 @@ class FeatureTestHelpers {
         ],
         "originLocationName": "Rijeka",
         "destinationLocationCountryName": "The United States",
-        "commodityTotalWeightKgFromIncluding": 15000,
-        "commodityTotalWeightKgToIncluding": 100000
+        "totalCommodityWeightFromIncluding": {
+          "value": 15000,
+          "unitSymbol": "kg"
+        },
+        "totalCommodityWeightToIncluding": {
+          "value": 100000,
+          "unitSymbol": "kg"
+        }
       }
       """
 

@@ -152,8 +152,8 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
             userIdentifier: "standard-customer@cargotracker.com",
             customerTypeSearchList: [CustomerType.STANDARD, CustomerType.GOLD],
             originLocationName: "Rijeka",
-            totalCommodityWeightKgFromIncluding: 5_000,
-            totalCommodityWeightKgToIncluding: 50_000
+            totalCommodityWeightFromIncluding: Quantities.getQuantity(5_000, Units.KILOGRAM),
+            totalCommodityWeightToIncluding: Quantities.getQuantity(50_000, Units.KILOGRAM)
         ),
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
     )

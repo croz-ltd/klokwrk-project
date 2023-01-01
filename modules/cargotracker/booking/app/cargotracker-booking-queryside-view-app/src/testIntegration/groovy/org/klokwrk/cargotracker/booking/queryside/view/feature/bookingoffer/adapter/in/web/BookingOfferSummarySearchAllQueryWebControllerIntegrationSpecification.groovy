@@ -89,8 +89,14 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
         userIdentifier: "standard-customer@cargotracker.com",
         customerTypeSearchList: [CustomerType.STANDARD, CustomerType.GOLD],
         originLocationName: "Rijeka",
-        totalCommodityWeightKgFromIncluding: 5_000,
-        totalCommodityWeightKgToIncluding: 50_000
+        totalCommodityWeightFromIncluding: [
+          value: 5_000,
+          unitSymbol: "kg"
+        ],
+        totalCommodityWeightToIncluding: [
+            value: 50_000,
+            unitSymbol: "kg"
+        ],
     ])
 
     when:

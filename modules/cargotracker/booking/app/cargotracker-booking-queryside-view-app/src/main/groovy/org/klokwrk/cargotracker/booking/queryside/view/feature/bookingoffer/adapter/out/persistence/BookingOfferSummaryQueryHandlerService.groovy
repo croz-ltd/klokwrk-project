@@ -145,7 +145,11 @@ class BookingOfferSummaryQueryHandlerService {
         .<BookingOfferSummaryJpaEntity, BookingOfferIdentifierDto, BookingOfferSummarySearchAllQueryRequest>builder()
         .resultClass(BookingOfferIdentifierDto)
         .anyMatch(false)
-        .searchPropertyConfiguration(SearchPropertyConfiguration.defaultSearchPropertyConfiguration().tap { searchIgnoredPropertyList = ["customerIdentifier"] })
+        .searchPropertyConfiguration(
+            SearchPropertyConfiguration
+                .defaultSearchPropertyConfiguration()
+                .tap({ searchIgnoredPropertyList = ["customerIdentifier", "totalCommodityWeightFromIncluding", "totalCommodityWeightToIncluding"] })
+        )
         .additionalRestrictionResolverList([new BookingOfferSummaryJpaEntityAdditionalRestrictionResolver()] as List<AdditionalRestrictionResolver>) // codenarc-disable-line UnnecessaryCast
         .build()
 

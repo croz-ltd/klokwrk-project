@@ -1555,7 +1555,60 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationName\": \"Rotterdam\",\n  \"destinationLocationCountryName\": \"The United States\",\n  \"totalCommodityWeightKgFromIncluding\": 50500,\n  \"totalCommodityWeightKgToIncluding\": 60500\n}",
+													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationName\": \"Rotterdam\",\n  \"destinationLocationCountryName\": \"The United States\",\n  \"totalCommodityWeightFromIncluding\": {\n    \"value\": 50500,\n    \"unitSymbol\": \"kg\"\n  },\n  \"totalCommodityWeightToIncluding\": {\n    \"value\": 60500,\n    \"unitSymbol\": \"kg\"\n  }\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-search-all",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-queryside}}",
+													"path": [
+														"cargotracker-booking-queryside-view",
+														"booking-offer",
+														"booking-offer-summary-search-all"
+													]
+												},
+												"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
+											},
+											"response": []
+										},
+										{
+											"name": "ok, en  - tonne and pound",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "en",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationName\": \"Rotterdam\",\n  \"destinationLocationCountryName\": \"The United States\",\n  \"totalCommodityWeightFromIncluding\": {\n    \"value\": 50.5,\n    \"unitSymbol\": \"t\"\n  },\n  \"totalCommodityWeightToIncluding\": {\n    \"value\": 133379,\n    \"unitSymbol\": \"lb\"\n  }\n}",
 													"options": {
 														"raw": {
 															"language": "json"

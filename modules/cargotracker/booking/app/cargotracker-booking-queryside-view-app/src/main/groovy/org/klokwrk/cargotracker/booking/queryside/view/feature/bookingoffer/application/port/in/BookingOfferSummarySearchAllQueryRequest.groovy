@@ -27,9 +27,12 @@ import org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint
 import org.klokwrk.lib.validation.constraint.NotEmptyWhenNullableConstraint
 import org.klokwrk.lib.validation.constraint.NotNullElementsConstraint
 import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
+import org.klokwrk.lib.validation.constraint.uom.QuantityMinConstraint
 import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
 
+import javax.measure.Quantity
+import javax.measure.quantity.Mass
 import javax.validation.GroupSequence
 import javax.validation.Valid
 import javax.validation.constraints.Min
@@ -79,15 +82,19 @@ class BookingOfferSummarySearchAllQueryRequest {
   @SuppressWarnings("unused")
   Set<CommodityType> commodityTypes
 
-  @SuppressWarnings("unused")
-  @Min(groups = [Level1], value = 1L)
+  @Null
   Long totalCommodityWeightKgFromIncluding
+
+  @QuantityMinConstraint(minQuantity = "1 kg", groups = [Level1])
+  Quantity<Mass> totalCommodityWeightFromIncluding
+
+  @Null
+  Long totalCommodityWeightKgToIncluding
 
   // Here we should validate if ToIncluding is greater than or equal to FromIncluding.
   // However, as the only consequence is execution of a single query returning an empty result we didn't implement this check.
-  @SuppressWarnings("unused")
-  @Min(groups = [Level1], value = 1L)
-  Long totalCommodityWeightKgToIncluding
+  @QuantityMinConstraint(minQuantity = "1 kg", groups = [Level1])
+  Quantity<Mass> totalCommodityWeightToIncluding
 
   @SuppressWarnings("unused")
   @Min(groups = [Level1], value = 0L)
