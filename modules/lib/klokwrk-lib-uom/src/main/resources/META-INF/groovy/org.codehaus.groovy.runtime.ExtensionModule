@@ -1,0 +1,4 @@
+moduleName=@extensionModuleName@
+moduleVersion=@extensionModuleVersion@
+extensionClasses=\
+  org.klokwrk.lib.uom.groovy.extension.QuantityExtension
