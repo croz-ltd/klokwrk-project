@@ -24,8 +24,6 @@ import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
@@ -38,7 +36,7 @@ class CargoEventDataFixtureBuilder {
     CargoEventDataFixtureBuilder cargoEventDataFixtureBuilder = new CargoEventDataFixtureBuilder()
         .commodityType(CommodityType.DRY)
         .commodityRequestedStorageTemperature(null)
-        .commodityWeight(Quantities.getQuantity(1000, Units.KILOGRAM))
+        .commodityWeight(1000.kg)
         .containerType(ContainerType.TYPE_ISO_22G1)
         .maxAllowedWeightPerContainer(ContainerType.TYPE_ISO_22G1.maxCommodityWeight)
 
@@ -49,7 +47,7 @@ class CargoEventDataFixtureBuilder {
     CargoEventDataFixtureBuilder cargoEventDataFixtureBuilder = new CargoEventDataFixtureBuilder()
         .commodityType(CommodityType.AIR_COOLED)
         .commodityRequestedStorageTemperature(CommodityType.AIR_COOLED.recommendedStorageTemperature)
-        .commodityWeight(Quantities.getQuantity(1000, Units.KILOGRAM))
+        .commodityWeight(1000.kg)
         .containerType(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER)
         .maxAllowedWeightPerContainer(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER.maxCommodityWeight)
 
@@ -60,7 +58,7 @@ class CargoEventDataFixtureBuilder {
     CargoEventDataFixtureBuilder cargoEventDataFixtureBuilder = new CargoEventDataFixtureBuilder()
         .commodityType(CommodityType.CHILLED)
         .commodityRequestedStorageTemperature(CommodityType.CHILLED.recommendedStorageTemperature)
-        .commodityWeight(Quantities.getQuantity(1000, Units.KILOGRAM))
+        .commodityWeight(1000.kg)
         .containerType(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER)
         .maxAllowedWeightPerContainer(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER.maxCommodityWeight)
 
@@ -71,7 +69,7 @@ class CargoEventDataFixtureBuilder {
     CargoEventDataFixtureBuilder cargoEventDataFixtureBuilder = new CargoEventDataFixtureBuilder()
         .commodityType(CommodityType.FROZEN)
         .commodityRequestedStorageTemperature(CommodityType.FROZEN.recommendedStorageTemperature)
-        .commodityWeight(Quantities.getQuantity(1000, Units.KILOGRAM))
+        .commodityWeight(1000.kg)
         .containerType(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER)
         .maxAllowedWeightPerContainer(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER.maxCommodityWeight)
 

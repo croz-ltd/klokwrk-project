@@ -18,8 +18,6 @@
 package org.klokwrk.cargotracker.booking.domain.model.value
 
 import spock.lang.Specification
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.AIR_COOLED
 import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.CHILLED
@@ -38,34 +36,34 @@ class CommodityTypeSpecification extends Specification {
     CommodityType commodityType = commodityTypeParam
 
     when:
-    Boolean isTemperatureAllowed = commodityType.isStorageTemperatureAllowed(Quantities.getQuantity(storageTemperatureNumberParam, Units.CELSIUS))
+    Boolean isTemperatureAllowed = commodityType.isStorageTemperatureAllowed(storageTemperatureParam)
 
     then:
     isTemperatureAllowed == isTemperatureAllowedParam
 
     where:
-    commodityTypeParam | storageTemperatureNumberParam | isTemperatureAllowedParam
-    DRY                | 0                             | true
-    DRY                | -100                          | true
-    DRY                | 100                           | true
+    commodityTypeParam | storageTemperatureParam | isTemperatureAllowedParam
+    DRY                | 0.degC                  | true
+    DRY                | -100.degC               | true
+    DRY                | 100.degC                | true
 
-    AIR_COOLED         | 1                             | false
-    AIR_COOLED         | 2                             | true
-    AIR_COOLED         | 10                            | true
-    AIR_COOLED         | 12                            | true
-    AIR_COOLED         | 13                            | false
+    AIR_COOLED         | 1.degC                  | false
+    AIR_COOLED         | 2.degC                  | true
+    AIR_COOLED         | 10.degC                 | true
+    AIR_COOLED         | 12.degC                 | true
+    AIR_COOLED         | 13.degC                 | false
 
-    CHILLED            | -3                            | false
-    CHILLED            | -2                            | true
-    CHILLED            | 5                             | true
-    CHILLED            | 6                             | true
-    CHILLED            | 7                             | false
+    CHILLED            | -3.degC                 | false
+    CHILLED            | -2.degC                 | true
+    CHILLED            | 5.degC                  | true
+    CHILLED            | 6.degC                  | true
+    CHILLED            | 7.degC                  | false
 
-    FROZEN             | -21                           | false
-    FROZEN             | -20                           | true
-    FROZEN             | -10                           | true
-    FROZEN             | -8                            | true
-    FROZEN             | -7                            | false
+    FROZEN             | -21.degC                | false
+    FROZEN             | -20.degC                | true
+    FROZEN             | -10.degC                | true
+    FROZEN             | -8.degC                 | true
+    FROZEN             | -7.degC                 | false
   }
 
   @SuppressWarnings('GroovyPointlessBoolean')

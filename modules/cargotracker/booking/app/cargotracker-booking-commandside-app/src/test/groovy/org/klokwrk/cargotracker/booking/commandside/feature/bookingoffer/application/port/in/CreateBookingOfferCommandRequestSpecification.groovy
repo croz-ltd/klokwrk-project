@@ -28,12 +28,8 @@ import org.klokwrk.lib.validation.constraint.uom.QuantityMinConstraint
 import org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint
 import org.klokwrk.lib.validation.springboot.ValidationConfigurationProperties
 import org.klokwrk.lib.validation.springboot.ValidationService
-import si.uom.NonSI
 import spock.lang.Shared
 import spock.lang.Specification
-import systems.uom.common.USCustomary
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import javax.validation.ConstraintViolationException
 import javax.validation.constraints.NotBlank
@@ -52,7 +48,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
   static String validContainerDimensionTypeData = "DIMENSION_ISO_22"
   static CargoData validCargoData = new CargoData(
       commodityType: CommodityType.DRY.name(),
-      commodityWeight: Quantities.getQuantity(1000, Units.KILOGRAM), commodityRequestedStorageTemperature: null, containerDimensionType: validContainerDimensionTypeData
+      commodityWeight: 1000.kg, commodityRequestedStorageTemperature: null, containerDimensionType: validContainerDimensionTypeData
   )
   static Collection<CargoData> validCargoDataCollection = [validCargoData]
 
@@ -101,12 +97,12 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     notThrown(ConstraintViolationException)
 
     where:
-    commodityWeightParam                              | _
-    Quantities.getQuantity(1, Units.KILOGRAM)         | _
-    Quantities.getQuantity(2, Units.KILOGRAM)         | _
-    Quantities.getQuantity(1_000_000, Units.KILOGRAM) | _
-    Quantities.getQuantity(1, NonSI.TONNE)            | _
-    Quantities.getQuantity(100, USCustomary.POUND)    | _
+    commodityWeightParam | _
+    1.kg                 | _
+    2.kg                 | _
+    1_000_000.kg         | _
+    1.t                  | _
+    100.lb               | _
   }
 
   void "should pass validation for valid commodityRequestedStorageTemperature data in CargoData"() {
@@ -117,7 +113,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
         routeSpecification: validRouteSpecificationData,
         cargos: [new CargoData(
             commodityType: CommodityType.CHILLED.name(),
-            commodityWeight: Quantities.getQuantity(1000, Units.KILOGRAM),
+            commodityWeight: 1000.kg,
             commodityRequestedStorageTemperature: commodityRequestedStorageTemperatureParam,
             containerDimensionType: validContainerDimensionTypeData
         )]
@@ -130,16 +126,16 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     notThrown(ConstraintViolationException)
 
     where:
-    commodityRequestedStorageTemperatureParam          | _
-    Quantities.getQuantity(-30, Units.CELSIUS)         | _
-    Quantities.getQuantity(-20.12, Units.CELSIUS)      | _
-    Quantities.getQuantity(-15, Units.CELSIUS)         | _
-    Quantities.getQuantity(5, USCustomary.FAHRENHEIT)  | _
-    Quantities.getQuantity(0, Units.CELSIUS)           | _
-    Quantities.getQuantity(10.51, Units.CELSIUS)       | _
-    Quantities.getQuantity(20, Units.CELSIUS)          | _
-    Quantities.getQuantity(68, USCustomary.FAHRENHEIT) | _
-    Quantities.getQuantity(30, Units.CELSIUS)          | _
+    commodityRequestedStorageTemperatureParam | _
+    -30.degC                                  | _
+    -20.12.degC                               | _
+    -15.degC                                  | _
+    5.degF                                    | _
+    0.degC                                    | _
+    10.51.degC                                | _
+    20.degC                                   | _
+    68.degF                                   | _
+    30.degC                                   | _
   }
 
   void "should not pass validation for invalid userIdentifier"() {
@@ -387,11 +383,11 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
-    commodityWeightParam                         | constraintTypeParam
-    null                                         | NotNull
-    Quantities.getQuantity(0, Units.KILOGRAM)    | QuantityMinConstraint
-    Quantities.getQuantity(0, NonSI.TONNE)       | QuantityMinConstraint
-    Quantities.getQuantity(0, USCustomary.POUND) | QuantityMinConstraint
+    commodityWeightParam | constraintTypeParam
+    null                 | NotNull
+    0.kg                 | QuantityMinConstraint
+    0.t                  | QuantityMinConstraint
+    0.lb                 | QuantityMinConstraint
   }
 
   void "should not pass validation for invalid commodityRequestedStorageTemperature data in CargoData"() {
@@ -403,7 +399,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
         cargos: [
             new CargoData(
                 commodityType: CommodityType.CHILLED.name(),
-                commodityWeight: Quantities.getQuantity(1000, Units.KILOGRAM),
+                commodityWeight: 1000.kg,
                 commodityRequestedStorageTemperature: commodityRequestedStorageTemperatureParam,
                 containerDimensionType: validContainerDimensionTypeData
             )
@@ -421,11 +417,11 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
-    commodityRequestedStorageTemperatureParam             | constraintTypeParam
-    Quantities.getQuantity(-31, Units.CELSIUS)            | QuantityRangeConstraint
-    Quantities.getQuantity(-23.8, USCustomary.FAHRENHEIT) | QuantityRangeConstraint
-    Quantities.getQuantity(31, Units.CELSIUS)             | QuantityRangeConstraint
-    Quantities.getQuantity(87.8, USCustomary.FAHRENHEIT)  | QuantityRangeConstraint
+    commodityRequestedStorageTemperatureParam | constraintTypeParam
+    -31.degC                                  | QuantityRangeConstraint
+    -23.8.degF                                | QuantityRangeConstraint
+    31.degC                                   | QuantityRangeConstraint
+    87.8.degF                                 | QuantityRangeConstraint
   }
 
   void "should not pass validation for invalid containerDimensionType data in CargoData"() {

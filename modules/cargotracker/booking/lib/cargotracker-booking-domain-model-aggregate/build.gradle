@@ -37,6 +37,7 @@ dependencies {
   implementation project(":klokwrk-lang-groovy")
   implementation project(":klokwrk-lang-groovy-contracts-match")
   implementation project(":klokwrk-lang-groovy-contracts-simple")
+  implementation project(":klokwrk-lib-uom")
 
   implementation "javax.measure:unit-api"
   implementation "org.apache.groovy:groovy"

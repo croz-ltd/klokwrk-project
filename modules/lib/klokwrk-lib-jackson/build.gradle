@@ -32,5 +32,7 @@ dependencies {
   implementation "org.apache.groovy:groovy"
   implementation "tech.units:indriya"
 
+  testImplementation project(":klokwrk-lib-uom")
+
   testImplementation "org.spockframework:spock-core"
 }

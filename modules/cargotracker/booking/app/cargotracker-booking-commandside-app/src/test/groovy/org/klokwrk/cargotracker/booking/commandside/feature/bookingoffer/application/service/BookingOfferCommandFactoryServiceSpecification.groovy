@@ -41,8 +41,6 @@ import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainExceptio
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
 import spock.lang.Specification
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import java.time.Clock
 import java.time.Duration
@@ -64,7 +62,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
   static String validContainerDimensionData = "DIMENSION_ISO_22"
   static CargoData validCargoData = new CargoData(
       commodityType: CommodityType.DRY.name(),
-      commodityWeight: Quantities.getQuantity(1000, Units.KILOGRAM), commodityRequestedStorageTemperature: null, containerDimensionType: validContainerDimensionData
+      commodityWeight: 1000.kg, commodityRequestedStorageTemperature: null, containerDimensionType: validContainerDimensionData
   )
 
   BookingOfferCommandFactoryService bookingOfferCommandFactoryService
@@ -355,7 +353,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
         bookingOfferCargoCollection.size() == expectedBookingOfferCargos.bookingOfferCargoCollection.size()
         bookingOfferCargoCollection.containsAll(expectedBookingOfferCargos.bookingOfferCargoCollection)
 
-        totalCommodityWeight == Quantities.getQuantity(1000, Units.KILOGRAM)
+        totalCommodityWeight == 1000.kg
         totalContainerTeuCount == 1.00G
       }
     }

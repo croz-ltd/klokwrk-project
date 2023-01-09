@@ -26,8 +26,6 @@ import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator
 import org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint
 import spock.lang.Shared
 import spock.lang.Specification
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.format.MeasurementParseException
@@ -123,7 +121,7 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
 
   void "should fail initialization when minQuantity is not specified"() {
     given:
-    QuantityInvalidTestObject_1 invalidTestObject = new QuantityInvalidTestObject_1(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
+    QuantityInvalidTestObject_1 invalidTestObject = new QuantityInvalidTestObject_1(quantity: 10.kg)
 
     when:
     validator.validate(invalidTestObject)
@@ -135,7 +133,7 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
 
   void "should fail initialization when maxQuantity is not specified"() {
     given:
-    QuantityInvalidTestObject_2 invalidTestObject = new QuantityInvalidTestObject_2(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
+    QuantityInvalidTestObject_2 invalidTestObject = new QuantityInvalidTestObject_2(quantity: 10.kg)
 
     when:
     validator.validate(invalidTestObject)
@@ -147,7 +145,7 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
 
   void "should fail initialization when the number in specified minQuantity parameter cannot be parsed"() {
     given:
-    QuantityInvalidTestObject_3 invalidTestObject = new QuantityInvalidTestObject_3(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
+    QuantityInvalidTestObject_3 invalidTestObject = new QuantityInvalidTestObject_3(quantity: 10.kg)
 
     when:
     validator.validate(invalidTestObject)
@@ -161,7 +159,7 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
 
   void "should fail initialization when the unit in specified minQuantity parameter cannot be parsed"() {
     given:
-    QuantityInvalidTestObject_4 invalidTestObject = new QuantityInvalidTestObject_4(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
+    QuantityInvalidTestObject_4 invalidTestObject = new QuantityInvalidTestObject_4(quantity: 10.kg)
 
     when:
     validator.validate(invalidTestObject)
@@ -175,7 +173,7 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
 
   void "should fail initialization when the number in specified maxQuantity parameter cannot be parsed"() {
     given:
-    QuantityInvalidTestObject_5 invalidTestObject = new QuantityInvalidTestObject_5(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
+    QuantityInvalidTestObject_5 invalidTestObject = new QuantityInvalidTestObject_5(quantity: 10.kg)
 
     when:
     validator.validate(invalidTestObject)
@@ -189,7 +187,7 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
 
   void "should fail initialization when the unit in specified maxQuantity parameter cannot be parsed"() {
     given:
-    QuantityInvalidTestObject_6 invalidTestObject = new QuantityInvalidTestObject_6(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
+    QuantityInvalidTestObject_6 invalidTestObject = new QuantityInvalidTestObject_6(quantity: 10.kg)
 
     when:
     validator.validate(invalidTestObject)
@@ -203,7 +201,7 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
 
   void "should fail initialization when acceptOnlyEqualUnitParameter is set to true, but units of min and max quantities are different"() {
     given:
-    QuantityInvalidTestObject_7 invalidTestObject = new QuantityInvalidTestObject_7(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
+    QuantityInvalidTestObject_7 invalidTestObject = new QuantityInvalidTestObject_7(quantity: 10.kg)
 
     when:
     validator.validate(invalidTestObject)
@@ -215,7 +213,7 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
 
   void "should fail initialization when units of minQuantity and maxQuantity are not mutually compatible"() {
     given:
-    QuantityInvalidTestObject_8 invalidTestObject = new QuantityInvalidTestObject_8(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
+    QuantityInvalidTestObject_8 invalidTestObject = new QuantityInvalidTestObject_8(quantity: 10.kg)
 
     when:
     validator.validate(invalidTestObject)
@@ -236,11 +234,11 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
     constraintViolations.isEmpty()
 
     where:
-    quantityMinAndMaxInclusiveParam             | _
-    Quantities.getQuantity(10, Units.KILOGRAM)  | _
-    Quantities.getQuantity(10_000, Units.GRAM)  | _
-    Quantities.getQuantity(100, Units.KILOGRAM) | _
-    Quantities.getQuantity(100_000, Units.GRAM) | _
+    quantityMinAndMaxInclusiveParam | _
+    10.kg                           | _
+    10_000.g                        | _
+    100.kg                          | _
+    100_000.g                       | _
   }
 
   void "should fail validating inclusive range"() {
@@ -259,16 +257,16 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
     }
 
     where:
-    quantityMinAndMaxInclusiveParam             | localeParam      | messageParam
-    Quantities.getQuantity(1, Units.KILOGRAM)   | new Locale("en") | "Quantity '1 kg' must be greater than or equal to '10 kg' and less than or equal to '100 kg'."
-    Quantities.getQuantity(101, Units.KILOGRAM) | new Locale("hr") | "Količina '101 kg' mora biti veća ili jednaka od '10 kg' i manja ili jednaka od '100 kg'."
-    Quantities.getQuantity(1_000, Units.GRAM)   | new Locale("en") | "Quantity '1000 g' must be greater than or equal to '10 kg' and less than or equal to '100 kg'."
-    Quantities.getQuantity(101_000, Units.GRAM) | new Locale("hr") | "Količina '101000 g' mora biti veća ili jednaka od '10 kg' i manja ili jednaka od '100 kg'."
+    quantityMinAndMaxInclusiveParam | localeParam      | messageParam
+    1.kg                            | new Locale("en") | "Quantity '1 kg' must be greater than or equal to '10 kg' and less than or equal to '100 kg'."
+    101.kg                          | new Locale("hr") | "Količina '101 kg' mora biti veća ili jednaka od '10 kg' i manja ili jednaka od '100 kg'."
+    1_000.g                         | new Locale("en") | "Quantity '1000 g' must be greater than or equal to '10 kg' and less than or equal to '100 kg'."
+    101_000.g                       | new Locale("hr") | "Količina '101000 g' mora biti veća ili jednaka od '10 kg' i manja ili jednaka od '100 kg'."
   }
 
   void "should fail validating inclusive range with a custom message"() {
     given:
-    QuantityTestObject testObject = new QuantityTestObject(quantityMinAndMaxInclusiveWithCustomMessage: Quantities.getQuantity(101, Units.KILOGRAM))
+    QuantityTestObject testObject = new QuantityTestObject(quantityMinAndMaxInclusiveWithCustomMessage: 101.kg)
 
     when:
     Set<ConstraintViolation> constraintViolations = validator.validate(testObject)
@@ -293,8 +291,8 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
 
     where:
     quantityMinAndMaxInclusiveWithEqualUnitParam | _
-    Quantities.getQuantity(10, Units.KILOGRAM)   | _
-    Quantities.getQuantity(100, Units.KILOGRAM)  | _
+    10.kg                                        | _
+    100.kg                                       | _
   }
 
   void "should fail validating inclusive range with unequal unit"() {
@@ -314,8 +312,8 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
 
     where:
     quantityMinAndMaxInclusiveWithEqualUnitParam | localeParam      | messageParam
-    Quantities.getQuantity(100_000, Units.GRAM)  | new Locale("en") | "Unit symbol 'g' is not valid. The only supported symbol is 'kg'."
-    Quantities.getQuantity(10_000, Units.GRAM)   | new Locale("hr") | "Oznaka mjerne jedinice 'g' nije ispravna. Jedina podržana oznaka je 'kg'."
+    100_000.g                                    | new Locale("en") | "Unit symbol 'g' is not valid. The only supported symbol is 'kg'."
+    10_000.g                                     | new Locale("hr") | "Oznaka mjerne jedinice 'g' nije ispravna. Jedina podržana oznaka je 'kg'."
   }
 
   void "should fail validating incompatible unit"() {
@@ -334,9 +332,9 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
     }
 
     where:
-    quantityMinAndMaxInclusiveParam         | localeParam      | messageParam
-    Quantities.getQuantity(50, Units.METRE) | new Locale("en") | "Unit symbol 'm' is not valid. It is not compatible with expected 'kg'."
-    Quantities.getQuantity(50, Units.METRE) | new Locale("hr") | "Oznaka mjerne jedinice 'm' nije ispravna. Oznaka mora biti kompatibilna sa 'kg'."
+    quantityMinAndMaxInclusiveParam | localeParam      | messageParam
+    50.m                            | new Locale("en") | "Unit symbol 'm' is not valid. It is not compatible with expected 'kg'."
+    50.m                            | new Locale("hr") | "Oznaka mjerne jedinice 'm' nije ispravna. Oznaka mora biti kompatibilna sa 'kg'."
   }
 
   void "should validate min inclusive and max exclusive range"() {
@@ -350,9 +348,9 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
     constraintViolations.isEmpty()
 
     where:
-    quantityMinInclusiveAndMaxExclusiveParam        | _
-    Quantities.getQuantity(10, Units.KILOGRAM)      | _
-    Quantities.getQuantity(99.9999, Units.KILOGRAM) | _
+    quantityMinInclusiveAndMaxExclusiveParam | _
+    10.kg                                    | _
+    99.9999.kg                               | _
   }
 
   void "should fail validating min inclusive and max exclusive range"() {
@@ -371,11 +369,11 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
     }
 
     where:
-    quantityMinInclusiveAndMaxExclusiveParam    | localeParam      | messageParam
-    Quantities.getQuantity(1, Units.KILOGRAM)   | new Locale("en") | "Quantity '1 kg' must be greater than or equal to '10 kg' and strictly less than '100 kg'."
-    Quantities.getQuantity(100, Units.KILOGRAM) | new Locale("hr") | "Količina '100 kg' mora biti veća ili jednaka od '10 kg' i strogo manja od '100 kg'."
-    Quantities.getQuantity(100_000, Units.GRAM) | new Locale("en") | "Quantity '100000 g' must be greater than or equal to '10 kg' and strictly less than '100 kg'."
-    Quantities.getQuantity(101, Units.KILOGRAM) | new Locale("hr") | "Količina '101 kg' mora biti veća ili jednaka od '10 kg' i strogo manja od '100 kg'."
+    quantityMinInclusiveAndMaxExclusiveParam | localeParam      | messageParam
+    1.kg                                     | new Locale("en") | "Quantity '1 kg' must be greater than or equal to '10 kg' and strictly less than '100 kg'."
+    100.kg                                   | new Locale("hr") | "Količina '100 kg' mora biti veća ili jednaka od '10 kg' i strogo manja od '100 kg'."
+    100_000.g                                | new Locale("en") | "Quantity '100000 g' must be greater than or equal to '10 kg' and strictly less than '100 kg'."
+    101.kg                                   | new Locale("hr") | "Količina '101 kg' mora biti veća ili jednaka od '10 kg' i strogo manja od '100 kg'."
   }
 
   void "should validate min exclusive and max inclusive range"() {
@@ -389,9 +387,9 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
     constraintViolations.isEmpty()
 
     where:
-    quantityMinExclusiveAndMaxInclusiveParam       | _
-    Quantities.getQuantity(10.001, Units.KILOGRAM) | _
-    Quantities.getQuantity(100, Units.KILOGRAM)    | _
+    quantityMinExclusiveAndMaxInclusiveParam | _
+    10.001.kg                                | _
+    100.kg                                   | _
   }
 
   void "should fail validating min exclusive and max inclusive range"() {
@@ -410,11 +408,11 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
     }
 
     where:
-    quantityMinExclusiveAndMaxInclusiveParam    | localeParam      | messageParam
-    Quantities.getQuantity(10, Units.KILOGRAM)  | new Locale("en") | "Quantity '10 kg' must be strictly greater than '10 kg' and less than or equal to '100 kg'."
-    Quantities.getQuantity(10_000, Units.GRAM)  | new Locale("hr") | "Količina '10000 g' mora biti strogo veća od '10 kg' i manja ili jednaka od '100 kg'."
-    Quantities.getQuantity(101_000, Units.GRAM) | new Locale("en") | "Quantity '101000 g' must be strictly greater than '10 kg' and less than or equal to '100 kg'."
-    Quantities.getQuantity(101, Units.KILOGRAM) | new Locale("hr") | "Količina '101 kg' mora biti strogo veća od '10 kg' i manja ili jednaka od '100 kg'."
+    quantityMinExclusiveAndMaxInclusiveParam | localeParam      | messageParam
+    10.kg                                    | new Locale("en") | "Quantity '10 kg' must be strictly greater than '10 kg' and less than or equal to '100 kg'."
+    10_000.g                                 | new Locale("hr") | "Količina '10000 g' mora biti strogo veća od '10 kg' i manja ili jednaka od '100 kg'."
+    101_000.g                                | new Locale("en") | "Quantity '101000 g' must be strictly greater than '10 kg' and less than or equal to '100 kg'."
+    101.kg                                   | new Locale("hr") | "Količina '101 kg' mora biti strogo veća od '10 kg' i manja ili jednaka od '100 kg'."
   }
 
   void "should validate min exclusive and max exclusive range"() {
@@ -428,9 +426,9 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
     constraintViolations.isEmpty()
 
     where:
-    quantityMinExclusiveAndMaxExclusiveParam       | _
-    Quantities.getQuantity(10.001, Units.KILOGRAM) | _
-    Quantities.getQuantity(99.999, Units.KILOGRAM) | _
+    quantityMinExclusiveAndMaxExclusiveParam | _
+    10.001.kg                                | _
+    99.999.kg                                | _
   }
 
   void "should fail validating min exclusive and max exclusive range"() {
@@ -449,10 +447,10 @@ class QuantityRangeConstraintValidatorSpecification extends Specification {
     }
 
     where:
-    quantityMinExclusiveAndMaxExclusiveParam    | localeParam      | messageParam
-    Quantities.getQuantity(10, Units.KILOGRAM)  | new Locale("en") | "Quantity '10 kg' must be strictly greater than '10 kg' and strictly less than '100 kg'."
-    Quantities.getQuantity(10_000, Units.GRAM)  | new Locale("hr") | "Količina '10000 g' mora biti strogo veća od '10 kg' i strogo manja od '100 kg'."
-    Quantities.getQuantity(100_000, Units.GRAM) | new Locale("en") | "Quantity '100000 g' must be strictly greater than '10 kg' and strictly less than '100 kg'."
-    Quantities.getQuantity(100, Units.KILOGRAM) | new Locale("hr") | "Količina '100 kg' mora biti strogo veća od '10 kg' i strogo manja od '100 kg'."
+    quantityMinExclusiveAndMaxExclusiveParam | localeParam      | messageParam
+    10.kg                                    | new Locale("en") | "Quantity '10 kg' must be strictly greater than '10 kg' and strictly less than '100 kg'."
+    10_000.g                                 | new Locale("hr") | "Količina '10000 g' mora biti strogo veća od '10 kg' i strogo manja od '100 kg'."
+    100_000.g                                | new Locale("en") | "Quantity '100000 g' must be strictly greater than '10 kg' and strictly less than '100 kg'."
+    100.kg                                   | new Locale("hr") | "Količina '100 kg' mora biti strogo veća od '10 kg' i strogo manja od '100 kg'."
   }
 }

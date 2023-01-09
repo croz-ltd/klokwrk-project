@@ -20,8 +20,6 @@ package org.klokwrk.cargotracker.booking.domain.model.value
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
@@ -68,7 +66,7 @@ class CargoFixtureBuilder {
   Cargo build() {
     Quantity<Mass> maxAllowedWeightPerContainerToUse = null
     if (maxAllowedWeightPerContainerKg != null) {
-      maxAllowedWeightPerContainerToUse = Quantities.getQuantity(maxAllowedWeightPerContainerKg, Units.KILOGRAM)
+      maxAllowedWeightPerContainerToUse = maxAllowedWeightPerContainerKg.kg
     }
 
     Cargo cargo = Cargo.make(containerType, commodity, maxAllowedWeightPerContainerToUse)

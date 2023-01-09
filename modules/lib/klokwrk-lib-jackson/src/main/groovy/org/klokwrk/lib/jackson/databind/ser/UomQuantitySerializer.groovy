@@ -55,7 +55,7 @@ import javax.measure.format.UnitFormat
  * }
  *
  * MyBeanWithTemperatureQuantity myBeanWithTemperatureQuantity =
- *     new MyBeanWithTemperatureQuantity(name: "someName", temperature: Quantities.getQuantity(10, Units.CELSIUS))
+ *     new MyBeanWithTemperatureQuantity(name: "someName", temperature: 10.degC)
  * </pre>
  * will be serialized as
  * <pre>

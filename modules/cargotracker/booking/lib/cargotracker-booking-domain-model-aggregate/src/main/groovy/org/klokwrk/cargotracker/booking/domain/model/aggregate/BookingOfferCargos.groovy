@@ -21,8 +21,6 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
@@ -71,8 +69,8 @@ class BookingOfferCargos {
         cargoCommodityWeightQuantities.addAll(consolidatedCargoListStartingPointMap.get(bookingOfferCargoEqualityToAdd)*.commodity.weight as Collection<Quantity<Mass>>)
       }
 
-      Quantity<Mass> totalCargoCommodityWeightQuantity = Quantities.getQuantity(0, Units.KILOGRAM)
-      cargoCommodityWeightQuantities.each { Quantity<Mass> cargoCommodityWeightQuantity -> totalCargoCommodityWeightQuantity = totalCargoCommodityWeightQuantity.add(cargoCommodityWeightQuantity) }
+      Quantity<Mass> totalCargoCommodityWeightQuantity = 0.kg
+      cargoCommodityWeightQuantities.each { Quantity<Mass> cargoCommodityWeightQuantity -> totalCargoCommodityWeightQuantity = totalCargoCommodityWeightQuantity + cargoCommodityWeightQuantity }
 
       // Note: selecting the cargoConsolidationBase element is significant because it determines maxAllowedWeightPerContainer to use with consolidated cargo.
       //       The maxAllowedWeightPerContainer of cargoConsolidationBase is determined by currently active MaxAllowedWeightPerContainerPolicy (during initial creation of a cargo value object in the
@@ -147,7 +145,7 @@ class BookingOfferCargos {
 
   private final Collection<Cargo> bookingOfferCargoCollection = [] as Collection<Cargo>
 
-  private Quantity<Mass> totalCommodityWeight = Quantities.getQuantity(0, Units.KILOGRAM)
+  private Quantity<Mass> totalCommodityWeight = 0.kg
   private BigDecimal totalContainerTeuCount = 0 // should be constrained to the max of, say 5000
 
   Collection<Cargo> getBookingOfferCargoCollection() {
@@ -260,11 +258,11 @@ class BookingOfferCargos {
     Collection<Cargo> existingConsolidatedCargoCollection = bookingOfferCargoCollection
     Collection<Cargo> cargoCollectionWithAdditions = consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargoCollection, myCargoCollectionToAdd)
 
-    Quantity<Mass> newTotalCommodityWeight = Quantities.getQuantity(0, Units.KILOGRAM)
+    Quantity<Mass> newTotalCommodityWeight = 0.kg
     BigDecimal newTotalContainerTeuCount = 0
 
     cargoCollectionWithAdditions.each({ Cargo consolidatedCargo ->
-      newTotalCommodityWeight = newTotalCommodityWeight.add(consolidatedCargo.commodity.weight)
+      newTotalCommodityWeight = newTotalCommodityWeight + consolidatedCargo.commodity.weight
       newTotalContainerTeuCount = newTotalContainerTeuCount + consolidatedCargo.containerTeuCount
     })
 

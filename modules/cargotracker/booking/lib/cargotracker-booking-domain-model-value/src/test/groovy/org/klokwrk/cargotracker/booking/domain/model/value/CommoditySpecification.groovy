@@ -22,28 +22,17 @@ import org.objenesis.ObjenesisHelper
 import spock.lang.Specification
 import tech.units.indriya.quantity.QuantityRange
 
-import javax.measure.Quantity
-import javax.measure.quantity.Mass
 import java.lang.reflect.Field
 
 import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.AIR_COOLED
 import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.CHILLED
 import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.DRY
 import static org.klokwrk.cargotracker.booking.domain.model.value.CommodityType.FROZEN
-import static si.uom.NonSI.TONNE
-import static systems.uom.common.USCustomary.FAHRENHEIT
-import static systems.uom.common.USCustomary.POUND
-import static tech.units.indriya.quantity.Quantities.getQuantity
-import static tech.units.indriya.unit.Units.CELSIUS
-import static tech.units.indriya.unit.Units.GRAM
-import static tech.units.indriya.unit.Units.KILOGRAM
 
 class CommoditySpecification extends Specification {
-  static Quantity<Mass> oneKilogram = getQuantity(1, KILOGRAM)
-
   void "map constructor should work for correct requestedStorageTemperature param"() {
     when:
-    Commodity commodity = new Commodity(commodityType: commodityTypeParam, weight: oneKilogram, requestedStorageTemperature: requestedStorageTemperatureParam)
+    Commodity commodity = new Commodity(commodityType: commodityTypeParam, weight: 1.kg, requestedStorageTemperature: requestedStorageTemperatureParam)
 
     then:
     commodity
@@ -53,17 +42,17 @@ class CommoditySpecification extends Specification {
     commodityTypeParam | requestedStorageTemperatureParam
     DRY                | null
 
-    AIR_COOLED         | getQuantity(2, CELSIUS)
-    AIR_COOLED         | getQuantity(8, CELSIUS)
-    AIR_COOLED         | getQuantity(12, CELSIUS)
+    AIR_COOLED         | 2.degC
+    AIR_COOLED         | 8.degC
+    AIR_COOLED         | 12.degC
 
-    CHILLED            | getQuantity(-2, CELSIUS)
-    CHILLED            | getQuantity(3, CELSIUS)
-    CHILLED            | getQuantity(6, CELSIUS)
+    CHILLED            | -2.degC
+    CHILLED            | 3.degC
+    CHILLED            | 6.degC
 
-    FROZEN             | getQuantity(-20, CELSIUS)
-    FROZEN             | getQuantity(-15, CELSIUS)
-    FROZEN             | getQuantity(-8, CELSIUS)
+    FROZEN             | -20.degC
+    FROZEN             | -15.degC
+    FROZEN             | -8.degC
   }
 
   void "map constructor should work for correct weight param"() {
@@ -75,11 +64,11 @@ class CommoditySpecification extends Specification {
     commodity.weight.value.toBigDecimal() == weightValueParam
 
     where:
-    weightParam                        | weightValueParam
-    getQuantity(1, KILOGRAM)           | 1G
-    getQuantity(1000, KILOGRAM)        | 1000G
-    getQuantity(1000.0, KILOGRAM)      | 1000G
-    getQuantity(1000.000000, KILOGRAM) | 1000G
+    weightParam    | weightValueParam
+    1.kg           | 1G
+    1000.kg        | 1000G
+    1000.0.kg      | 1000G
+    1000.000000.kg | 1000G
   }
 
   void "map constructor should fail for null input params"() {
@@ -91,29 +80,29 @@ class CommoditySpecification extends Specification {
     assertionError.message.contains("notNullValue")
 
     where:
-    commodityTypeParam | weightParam              | requestedStorageTemperatureParam
-    null               | getQuantity(1, KILOGRAM) | getQuantity(1, CELSIUS)
-    DRY                | null                     | getQuantity(1, CELSIUS)
+    commodityTypeParam | weightParam | requestedStorageTemperatureParam
+    null               | 1.kg        | 1.degC
+    DRY                | null        | 1.degC
   }
 
   void "map constructor should fail when weight is less than one kilogram"() {
     when:
-    new Commodity(commodityType: DRY, weight: getQuantity(weightValueParam, KILOGRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
+    new Commodity(commodityType: DRY, weight: weightParam, requestedStorageTemperature: 1.degC)
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message.contains("boolean condition is false - [condition: Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(weight)]")
+    assertionError.message.contains("boolean condition is false - [condition: 1.kg.isLessThanOrEqualTo(weight)]")
 
     where:
-    weightValueParam | _
-    0                | _
-    0.1              | _
-    -1               | _
+    weightParam | _
+    0.kg        | _
+    0.1.kg      | _
+    -1.kg       | _
   }
 
   void "map constructor should fail when weight is not in kilograms"() {
     when:
-    new Commodity(commodityType: DRY, weight: getQuantity(1500, GRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
+    new Commodity(commodityType: DRY, weight: 1500.g, requestedStorageTemperature: 1.degC)
 
     then:
     AssertionError assertionError = thrown()
@@ -122,7 +111,7 @@ class CommoditySpecification extends Specification {
 
   void "map constructor should fail when weight value is not a whole number"() {
     when:
-    new Commodity(commodityType: DRY, weight: getQuantity(10.5, KILOGRAM), requestedStorageTemperature: getQuantity(1, CELSIUS))
+    new Commodity(commodityType: DRY, weight: 10.5.kg, requestedStorageTemperature: 1.degC)
 
     then:
     AssertionError assertionError = thrown()
@@ -131,7 +120,7 @@ class CommoditySpecification extends Specification {
 
   void "map constructor should fail for non-null requestedStorageTemperature for commodity types that do not support storage temperature"() {
     when:
-    new Commodity(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
+    new Commodity(commodityType: commodityTypeParam, weight: 1.kg, requestedStorageTemperature: 1.degC)
 
     then:
     DomainException domainException = thrown()
@@ -141,28 +130,28 @@ class CommoditySpecification extends Specification {
     domainException.violationInfo.violationCode.resolvableMessageParameters == resolvableMessageParametersParam
 
     where:
-    commodityTypeParam | requestedStorageTemperatureParam | resolvableMessageParametersParam
-    DRY                | getQuantity(1, CELSIUS)          | ["DRY"]
+    commodityTypeParam | resolvableMessageParametersParam
+    DRY                | ["DRY"]
   }
 
   void "map constructor should fail for null requestedStorageTemperature when requestedStorageTemperature is required"() {
     when:
-    new Commodity(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
+    new Commodity(commodityType: commodityTypeParam, weight: 1.kg, requestedStorageTemperature: null)
 
     then:
     AssertionError assertionError = thrown()
     assertionError.message.contains("boolean condition is false - [condition: this.isRequestedStorageTemperatureAvailableWhenNeeded(requestedStorageTemperature, commodityType)]")
 
     where:
-    commodityTypeParam | requestedStorageTemperatureParam
-    AIR_COOLED         | null
-    CHILLED            | null
-    FROZEN             | null
+    commodityTypeParam | _
+    AIR_COOLED         | _
+    CHILLED            | _
+    FROZEN             | _
   }
 
   void "map constructor should fail when requestedStorageTemperature is not in Celsius"() {
     when:
-    new Commodity(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
+    new Commodity(commodityType: commodityTypeParam, weight: 1.kg, requestedStorageTemperature: requestedStorageTemperatureParam)
 
     then:
     AssertionError assertionError = thrown()
@@ -170,14 +159,14 @@ class CommoditySpecification extends Specification {
 
     where:
     commodityTypeParam | requestedStorageTemperatureParam
-    AIR_COOLED         | getQuantity(35.6, FAHRENHEIT)
-    CHILLED            | getQuantity(28.4, FAHRENHEIT)
-    FROZEN             | getQuantity(-4, FAHRENHEIT)
+    AIR_COOLED         | 35.6.degF
+    CHILLED            | 28.4.degF
+    FROZEN             | -4.degF
   }
 
   void "map constructor should fail for requestedStorageTemperature not in required range"() {
     when:
-    new Commodity(commodityType: commodityTypeParam, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: requestedStorageTemperatureParam)
+    new Commodity(commodityType: commodityTypeParam, weight: 1.kg, requestedStorageTemperature: requestedStorageTemperatureParam)
 
     then:
     DomainException domainException = thrown()
@@ -186,14 +175,14 @@ class CommoditySpecification extends Specification {
 
     where:
     commodityTypeParam | requestedStorageTemperatureParam | resolvableMessageKeyParam
-    AIR_COOLED         | getQuantity(1, CELSIUS)          | "commodity.requestedStorageTemperatureNotInAllowedRangeForAirCooledCommodityType"
-    AIR_COOLED         | getQuantity(13, CELSIUS)         | "commodity.requestedStorageTemperatureNotInAllowedRangeForAirCooledCommodityType"
+    AIR_COOLED         | 1.degC                           | "commodity.requestedStorageTemperatureNotInAllowedRangeForAirCooledCommodityType"
+    AIR_COOLED         | 13.degC                          | "commodity.requestedStorageTemperatureNotInAllowedRangeForAirCooledCommodityType"
 
-    CHILLED            | getQuantity(-3, CELSIUS)         | "commodity.requestedStorageTemperatureNotInAllowedRangeForChilledCommodityType"
-    CHILLED            | getQuantity(7, CELSIUS)          | "commodity.requestedStorageTemperatureNotInAllowedRangeForChilledCommodityType"
+    CHILLED            | -3.degC                          | "commodity.requestedStorageTemperatureNotInAllowedRangeForChilledCommodityType"
+    CHILLED            | 7.degC                           | "commodity.requestedStorageTemperatureNotInAllowedRangeForChilledCommodityType"
 
-    FROZEN             | getQuantity(-21, CELSIUS)        | "commodity.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
-    FROZEN             | getQuantity(-7, CELSIUS)         | "commodity.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
+    FROZEN             | -21.degC                         | "commodity.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
+    FROZEN             | -7.degC                          | "commodity.requestedStorageTemperatureNotInAllowedRangeForFrozenCommodityType"
   }
 
   // Here we have an example of adding non existing value to the enum for testing "impossible" switch default cases.
@@ -213,12 +202,12 @@ class CommoditySpecification extends Specification {
 
     makeAccessibleField.curry(CommodityType).with {
       it("containerFeaturesType").set(nonExistentEnumValue, ContainerFeaturesType.FEATURES_ISO_R1_STANDARD_REEFER)
-      it("recommendedStorageTemperature").set(nonExistentEnumValue, getQuantity(6, CELSIUS))
-      it("storageTemperatureRange").set(nonExistentEnumValue, QuantityRange.of(getQuantity(2, CELSIUS), getQuantity(12, CELSIUS)))
+      it("recommendedStorageTemperature").set(nonExistentEnumValue, 6.degC)
+      it("storageTemperatureRange").set(nonExistentEnumValue, QuantityRange.of(2.degC, 12.degC))
     }
 
     when:
-    new Commodity(commodityType: nonExistentEnumValue, weight: getQuantity(1, KILOGRAM), requestedStorageTemperature: getQuantity(50, CELSIUS))
+    new Commodity(commodityType: nonExistentEnumValue, weight: 1.kg, requestedStorageTemperature: 50.degC)
 
     then:
     AssertionError assertionError = thrown()
@@ -227,7 +216,7 @@ class CommoditySpecification extends Specification {
 
   void "make(CommodityType, Quantity, Quantity) factory method should work for correct input params"() {
     when:
-    Commodity commodity = Commodity.make(commodityTypeParam, oneKilogram, requestedStorageTemperatureParam)
+    Commodity commodity = Commodity.make(commodityTypeParam, 1.kg, requestedStorageTemperatureParam)
 
     then:
     commodity
@@ -237,43 +226,43 @@ class CommoditySpecification extends Specification {
     commodityTypeParam | requestedStorageTemperatureParam | expectedRequestedStorageTemperatureParam
     DRY                | null                             | null
 
-    AIR_COOLED         | getQuantity(2, CELSIUS)          | getQuantity(2, CELSIUS)
-    AIR_COOLED         | getQuantity(35.6, FAHRENHEIT)    | getQuantity(2, CELSIUS)
-    AIR_COOLED         | getQuantity(7, CELSIUS)          | getQuantity(7, CELSIUS)
-    AIR_COOLED         | getQuantity(44.6, FAHRENHEIT)    | getQuantity(7, CELSIUS)
-    AIR_COOLED         | getQuantity(12, CELSIUS)         | getQuantity(12, CELSIUS)
-    AIR_COOLED         | getQuantity(53.6, FAHRENHEIT)    | getQuantity(12, CELSIUS)
+    AIR_COOLED         | 2.degC                           | 2.degC
+    AIR_COOLED         | 35.6.degF                        | 2.degC
+    AIR_COOLED         | 7.degC                           | 7.degC
+    AIR_COOLED         | 44.6.degF                        | 7.degC
+    AIR_COOLED         | 12.degC                          | 12.degC
+    AIR_COOLED         | 53.6.degF                        | 12.degC
 
-    AIR_COOLED         | getQuantity(36, FAHRENHEIT)      | getQuantity(2.22, CELSIUS)
-    AIR_COOLED         | getQuantity(44, FAHRENHEIT)      | getQuantity(6.67, CELSIUS)
-    AIR_COOLED         | getQuantity(53, FAHRENHEIT)      | getQuantity(11.67, CELSIUS)
+    AIR_COOLED         | 36.degF                          | 2.22.degC
+    AIR_COOLED         | 44.degF                          | 6.67.degC
+    AIR_COOLED         | 53.degF                          | 11.67.degC
 
-    CHILLED            | getQuantity(-2, CELSIUS)         | getQuantity(-2, CELSIUS)
-    CHILLED            | getQuantity(28.4, FAHRENHEIT)    | getQuantity(-2, CELSIUS)
-    CHILLED            | getQuantity(0, CELSIUS)          | getQuantity(0, CELSIUS)
-    CHILLED            | getQuantity(32, FAHRENHEIT)      | getQuantity(0, CELSIUS)
-    CHILLED            | getQuantity(6, CELSIUS)          | getQuantity(6, CELSIUS)
-    CHILLED            | getQuantity(42.8, FAHRENHEIT)    | getQuantity(6, CELSIUS)
+    CHILLED            | -2.degC                          | -2.degC
+    CHILLED            | 28.4.degF                        | -2.degC
+    CHILLED            | 0.degC                           | 0.degC
+    CHILLED            | 32.degF                          | 0.degC
+    CHILLED            | 6.degC                           | 6.degC
+    CHILLED            | 42.8.degF                        | 6.degC
 
-    CHILLED            | getQuantity(29, FAHRENHEIT)      | getQuantity(-1.67, CELSIUS)
-    CHILLED            | getQuantity(31, FAHRENHEIT)      | getQuantity(-0.56, CELSIUS)
-    CHILLED            | getQuantity(42, FAHRENHEIT)      | getQuantity(5.56, CELSIUS)
+    CHILLED            | 29.degF                          | -1.67.degC
+    CHILLED            | 31.degF                          | -0.56.degC
+    CHILLED            | 42.degF                          | 5.56.degC
 
-    FROZEN             | getQuantity(-20, CELSIUS)        | getQuantity(-20, CELSIUS)
-    FROZEN             | getQuantity(-4, FAHRENHEIT)      | getQuantity(-20, CELSIUS)
-    FROZEN             | getQuantity(-15, CELSIUS)        | getQuantity(-15, CELSIUS)
-    FROZEN             | getQuantity(5, FAHRENHEIT)       | getQuantity(-15, CELSIUS)
-    FROZEN             | getQuantity(-8, CELSIUS)         | getQuantity(-8, CELSIUS)
-    FROZEN             | getQuantity(17.6, FAHRENHEIT)    | getQuantity(-8, CELSIUS)
+    FROZEN             | -20.degC                         | -20.degC
+    FROZEN             | -4.degF                          | -20.degC
+    FROZEN             | -15.degC                         | -15.degC
+    FROZEN             | 5.degF                           | -15.degC
+    FROZEN             | -8.degC                          | -8.degC
+    FROZEN             | 17.6.degF                        | -8.degC
 
-    FROZEN             | getQuantity(-3, FAHRENHEIT)      | getQuantity(-19.44, CELSIUS)
-    FROZEN             | getQuantity(0, FAHRENHEIT)       | getQuantity(-17.78, CELSIUS)
-    FROZEN             | getQuantity(17, FAHRENHEIT)      | getQuantity(-8.33, CELSIUS)
+    FROZEN             | -3.degF                          | -19.44.degC
+    FROZEN             | 0.degF                           | -17.78.degC
+    FROZEN             | 17.degF                          | -8.33.degC
   }
 
   void "make(CommodityType, Quantity, Quantity) factory method should acquire recommendedStorageTemperature when requestedStorageTemperature is not given"() {
     when:
-    Commodity commodity = Commodity.make(commodityTypeParam, oneKilogram, null)
+    Commodity commodity = Commodity.make(commodityTypeParam, 1.kg, null)
 
     then:
     commodity.requestedStorageTemperature == commodityTypeParam.recommendedStorageTemperature
@@ -288,7 +277,7 @@ class CommoditySpecification extends Specification {
 
   void "make(CommodityType, Quantity, Quantity) factory method should skip requiring recommendedStorageTemperature for the combination of invalid input params"() {
     when:
-    Commodity.make(null, oneKilogram, null)
+    Commodity.make(null, 1.kg, null)
 
     then:
     thrown(AssertionError)
@@ -303,23 +292,23 @@ class CommoditySpecification extends Specification {
     commodity.weight.value == weightValueParam
 
     where:
-    weightParam                  | weightValueParam
-    getQuantity(1500, GRAM)      | 2
-    getQuantity(1.5, KILOGRAM)   | 2
-    getQuantity(1.001, KILOGRAM) | 2
-    getQuantity(1, TONNE)        | 1000
-    getQuantity(1.1, TONNE)      | 1100
-    getQuantity(1.11, TONNE)     | 1110
-    getQuantity(1.111, TONNE)    | 1111
-    getQuantity(1.1111, TONNE)   | 1112
-    getQuantity(3, POUND)        | 2
-    getQuantity(10, POUND)       | 5
-    getQuantity(100, POUND)      | 46
+    weightParam | weightValueParam
+    1500.g      | 2
+    1.5.kg      | 2
+    1.001.kg    | 2
+    1.t         | 1000
+    1.1.t       | 1100
+    1.11.t      | 1110
+    1.111.t     | 1111
+    1.1111.t    | 1112
+    3.lb        | 2
+    10.lb       | 5
+    100.lb      | 46
   }
 
   void "make(CommodityType, Quantity) factory method should work for correct input params"() {
     when:
-    Commodity commodity = Commodity.make(commodityTypeParam, oneKilogram)
+    Commodity commodity = Commodity.make(commodityTypeParam, 1.kg)
 
     then:
     commodity
@@ -328,9 +317,9 @@ class CommoditySpecification extends Specification {
     where:
     commodityTypeParam | recommendedStorageTemperatureParam
     DRY                | null
-    AIR_COOLED         | getQuantity(6, CELSIUS)
-    CHILLED            | getQuantity(0, CELSIUS)
-    FROZEN             | getQuantity(-12, CELSIUS)
+    AIR_COOLED         | 6.degC
+    CHILLED            | 0.degC
+    FROZEN             | -12.degC
   }
 
   void "make(CommodityType, Integer, Integer) factory method should work for correct input params"() {
@@ -345,17 +334,17 @@ class CommoditySpecification extends Specification {
     commodityTypeParam | requestedStorageTemperatureParam | requestedStorageTemperatureExpectedParam
     DRY                | null                             | requestedStorageTemperatureParam
 
-    AIR_COOLED         | 2                                | getQuantity(requestedStorageTemperatureParam, CELSIUS)
-    AIR_COOLED         | 8                                | getQuantity(requestedStorageTemperatureParam, CELSIUS)
-    AIR_COOLED         | 12                               | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+    AIR_COOLED         | 2                                | requestedStorageTemperatureParam.degC
+    AIR_COOLED         | 8                                | requestedStorageTemperatureParam.degC
+    AIR_COOLED         | 12                               | requestedStorageTemperatureParam.degC
 
-    CHILLED            | -2                               | getQuantity(requestedStorageTemperatureParam, CELSIUS)
-    CHILLED            | 3                                | getQuantity(requestedStorageTemperatureParam, CELSIUS)
-    CHILLED            | 6                                | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+    CHILLED            | -2                               | requestedStorageTemperatureParam.degC
+    CHILLED            | 3                                | requestedStorageTemperatureParam.degC
+    CHILLED            | 6                                | requestedStorageTemperatureParam.degC
 
-    FROZEN             | -20                              | getQuantity(requestedStorageTemperatureParam, CELSIUS)
-    FROZEN             | -15                              | getQuantity(requestedStorageTemperatureParam, CELSIUS)
-    FROZEN             | -8                               | getQuantity(requestedStorageTemperatureParam, CELSIUS)
+    FROZEN             | -20                              | requestedStorageTemperatureParam.degC
+    FROZEN             | -15                              | requestedStorageTemperatureParam.degC
+    FROZEN             | -8                               | requestedStorageTemperatureParam.degC
   }
 
   void "make(CommodityType, Integer) factory method should work for correct input params"() {
@@ -369,8 +358,8 @@ class CommoditySpecification extends Specification {
     where:
     commodityTypeParam | recommendedStorageTemperatureParam
     DRY                | null
-    AIR_COOLED         | getQuantity(6, CELSIUS)
-    CHILLED            | getQuantity(0, CELSIUS)
-    FROZEN             | getQuantity(-12, CELSIUS)
+    AIR_COOLED         | 6.degC
+    CHILLED            | 0.degC
+    FROZEN             | -12.degC
   }
 }

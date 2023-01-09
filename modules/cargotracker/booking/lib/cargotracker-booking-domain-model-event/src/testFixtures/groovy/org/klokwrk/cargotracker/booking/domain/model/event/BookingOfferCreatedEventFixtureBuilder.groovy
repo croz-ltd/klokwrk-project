@@ -27,7 +27,6 @@ import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventDat
 import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder
 import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
-import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
@@ -59,10 +58,10 @@ class BookingOfferCreatedEventFixtureBuilder {
   Collection<CargoEventData> cargos = []
 
   BookingOfferCreatedEvent build() {
-    Quantity<Mass> totalCommodityWeightQuantity = Quantities.getQuantity(0, Units.KILOGRAM)
+    Quantity<Mass> totalCommodityWeightQuantity = 0.kg
     cargos.each({ CargoEventData cargoEventData ->
       Quantity<Mass> commodityWeightQuantity = cargoEventData.commodityWeight
-      totalCommodityWeightQuantity = totalCommodityWeightQuantity.add(commodityWeightQuantity)
+      totalCommodityWeightQuantity = totalCommodityWeightQuantity + commodityWeightQuantity
     })
     Quantity<Mass> totalCommodityWeight = totalCommodityWeightQuantity.to(Units.KILOGRAM)
 

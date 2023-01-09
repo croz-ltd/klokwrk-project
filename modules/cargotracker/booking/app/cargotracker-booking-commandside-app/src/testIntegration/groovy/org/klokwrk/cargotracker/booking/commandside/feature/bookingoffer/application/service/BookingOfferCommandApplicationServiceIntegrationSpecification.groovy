@@ -36,8 +36,6 @@ import org.klokwrk.lang.groovy.misc.InstantUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import java.time.Duration
 import java.time.Instant
@@ -68,7 +66,7 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
             departureEarliestTime: currentInstantAndOneHour, departureLatestTime: currentInstantAndTwoHours,
             arrivalLatestTime: currentInstantAndThreeHours
         ),
-        cargos: [new CargoData(commodityType: CommodityType.DRY.name(), commodityWeight: Quantities.getQuantity(1000, Units.KILOGRAM), containerDimensionType: "DIMENSION_ISO_22")]
+        cargos: [new CargoData(commodityType: CommodityType.DRY.name(), commodityWeight: 1000.kg, containerDimensionType: "DIMENSION_ISO_22")]
     )
     Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
 
@@ -100,7 +98,7 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
 
         bookingOfferCargoCollection.size() == expectedBookingOfferCargos.bookingOfferCargoCollection.size()
         bookingOfferCargoCollection.containsAll(expectedBookingOfferCargos.bookingOfferCargoCollection)
-        totalCommodityWeight == Quantities.getQuantity(1000, Units.KILOGRAM)
+        totalCommodityWeight == 1000.kg
         totalContainerTeuCount == 1
       }
     }

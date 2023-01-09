@@ -52,7 +52,7 @@ class UomQuantitySerializerSpecification extends Specification {
 
   void "should serialize mass quantity given with base units of kilograms"() {
     given:
-    MyBeanTypedQuantity myBeanTypedQuantity = new MyBeanTypedQuantity(name: "someName", weight: Quantities.getQuantity(quantityValueParam, Units.KILOGRAM))
+    MyBeanTypedQuantity myBeanTypedQuantity = new MyBeanTypedQuantity(name: "someName", weight: quantityParam)
 
     when:
     String serializedString = objectMapper.writeValueAsString(myBeanTypedQuantity)
@@ -61,18 +61,18 @@ class UomQuantitySerializerSpecification extends Specification {
     serializedString.contains(/"weight":{"value":$quantityValueOutputParam,"unitSymbol":"kg"}/)
 
     where:
-    quantityValueParam | quantityValueOutputParam
-    1234               | 1234
-    1234.0             | 1234
-    1234.4             | 1234.4
-    1234.40            | 1234.40
-    1234.40000         | 1234.40000
-    0                  | 0
-    0.0                | 0
-    0.01               | 0.01
-    -1                 | -1
-    -1.0               | -1
-    -1.01              | -1.01
+    quantityParam | quantityValueOutputParam
+    1234.kg       | 1234
+    1234.0.kg     | 1234
+    1234.4.kg     | 1234.4
+    1234.40.kg    | 1234.40
+    1234.40000.kg | 1234.40000
+    0.kg          | 0
+    0.0.kg        | 0
+    0.01.kg       | 0.01
+    -1.kg         | -1
+    -1.0.kg       | -1
+    -1.01.kg      | -1.01
   }
 
   void "should serialize quantity with derived units"() {
@@ -100,7 +100,7 @@ class UomQuantitySerializerSpecification extends Specification {
 
   void "should serialize raw quantity"() {
     given:
-    MyBeanRawQuantity myBeanRawQuantity = new MyBeanRawQuantity(otherName: "someName", length: Quantities.getQuantity(quantityValueParam, Units.METRE))
+    MyBeanRawQuantity myBeanRawQuantity = new MyBeanRawQuantity(otherName: "someName", length: quantityParam)
 
     when:
     String serializedString = objectMapper.writeValueAsString(myBeanRawQuantity)
@@ -109,17 +109,17 @@ class UomQuantitySerializerSpecification extends Specification {
     serializedString.contains(/"length":{"value":$quantityValueOutputParam,"unitSymbol":"m"}/)
 
     where:
-    quantityValueParam | quantityValueOutputParam
-    1234               | 1234
-    1234.0             | 1234
-    1234.4             | 1234.4
-    1234.40            | 1234.40
-    1234.40000         | 1234.40000
-    0                  | 0
-    0.0                | 0
-    0.01               | 0.01
-    -1                 | -1
-    -1.0               | -1
-    -1.01              | -1.01
+    quantityParam | quantityValueOutputParam
+    1234.m        | 1234
+    1234.0.m      | 1234
+    1234.4.m      | 1234.4
+    1234.40.m     | 1234.40
+    1234.40000.m  | 1234.40000
+    0.m           | 0
+    0.0.m         | 0
+    0.01.m        | 0.01
+    -1.m          | -1
+    -1.0.m        | -1
+    -1.01.m       | -1.01
   }
 }

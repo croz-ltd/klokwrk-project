@@ -26,8 +26,6 @@ import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator
 import org.klokwrk.lib.validation.constraint.uom.QuantityUnitConstraint
 import spock.lang.Shared
 import spock.lang.Specification
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.format.MeasurementParseException
@@ -102,7 +100,7 @@ class QuantityUnitConstraintValidatorSpecification extends Specification {
 
   void "should fail initialization when unit symbol is not specified"() {
     given:
-    QuantityInvalidTestObject_1 invalidTestObject = new QuantityInvalidTestObject_1(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
+    QuantityInvalidTestObject_1 invalidTestObject = new QuantityInvalidTestObject_1(quantity: 10.kg)
 
     when:
     validator.validate(invalidTestObject)
@@ -114,7 +112,7 @@ class QuantityUnitConstraintValidatorSpecification extends Specification {
 
   void "should fail initialization when specified unit symbol is empty"() {
     given:
-    QuantityInvalidTestObject_2 invalidTestObject = new QuantityInvalidTestObject_2(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
+    QuantityInvalidTestObject_2 invalidTestObject = new QuantityInvalidTestObject_2(quantity: 10.kg)
 
     when:
     validator.validate(invalidTestObject)
@@ -126,7 +124,7 @@ class QuantityUnitConstraintValidatorSpecification extends Specification {
 
   void "should fail initialization when specified unit symbol cannot be parsed"() {
     given:
-    QuantityInvalidTestObject_3 invalidTestObject = new QuantityInvalidTestObject_3(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
+    QuantityInvalidTestObject_3 invalidTestObject = new QuantityInvalidTestObject_3(quantity: 10.kg)
 
     when:
     validator.validate(invalidTestObject)
@@ -148,21 +146,21 @@ class QuantityUnitConstraintValidatorSpecification extends Specification {
     constraintViolations.isEmpty()
 
     where:
-    untypedQuantityParam                       | massQuantityParam
-    Quantities.getQuantity(10, Units.KILOGRAM) | null
-    Quantities.getQuantity(10, Units.GRAM)     | null
-    null                                       | Quantities.getQuantity(10, Units.KILOGRAM)
-    null                                       | Quantities.getQuantity(10, Units.GRAM)
-    Quantities.getQuantity(10, Units.KILOGRAM) | Quantities.getQuantity(10, Units.KILOGRAM)
-    Quantities.getQuantity(10, Units.KILOGRAM) | Quantities.getQuantity(10, Units.GRAM)
-    Quantities.getQuantity(10, Units.GRAM)     | Quantities.getQuantity(10, Units.KILOGRAM)
-    Quantities.getQuantity(10, Units.GRAM)     | Quantities.getQuantity(10, Units.GRAM)
+    untypedQuantityParam | massQuantityParam
+    10.kg                | null
+    10.g                 | null
+    null                 | 10.kg
+    null                 | 10.g
+    10.kg                | 10.kg
+    10.kg                | 10.g
+    10.g                 | 10.kg
+    10.g                 | 10.g
   }
 
   void "should fail validating quantity with invalid unit"() {
     given:
     Validator myValidator = configureValidator("klokwrkValidationConstraintMessages", localeParam)
-    QuantityTestObject testObject = new QuantityTestObject(untypedQuantity: Quantities.getQuantity(10, Units.METRE))
+    QuantityTestObject testObject = new QuantityTestObject(untypedQuantity: 10.m)
 
     when:
     Set<ConstraintViolation> constraintViolations = myValidator.validate(testObject)
@@ -183,7 +181,7 @@ class QuantityUnitConstraintValidatorSpecification extends Specification {
   void "should fail validating quantity with invalid unit and compatibleUnitSymbolsForMessage specified"() {
     given:
     Validator myValidator = configureValidator("klokwrkValidationConstraintMessages", localeParam)
-    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityWithCompatibleUnitSymbolsSpecified: Quantities.getQuantity(10, Units.METRE))
+    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityWithCompatibleUnitSymbolsSpecified: 10.m)
 
     when:
     Set<ConstraintViolation> constraintViolations = myValidator.validate(testObject)
@@ -203,7 +201,7 @@ class QuantityUnitConstraintValidatorSpecification extends Specification {
 
   void "should fail validating quantity with invalid unit and with a custom message"() {
     given:
-    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityWithCustomMessage: Quantities.getQuantity(10, Units.METRE))
+    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityWithCustomMessage: 10.m)
 
     when:
     Set<ConstraintViolation> constraintViolations = validator.validate(testObject)
@@ -227,16 +225,16 @@ class QuantityUnitConstraintValidatorSpecification extends Specification {
     constraintViolations.isEmpty()
 
     where:
-    untypedQuantityParam                       | massQuantityParam
-    Quantities.getQuantity(10, Units.KILOGRAM) | null
-    null                                       | Quantities.getQuantity(10, Units.KILOGRAM)
-    Quantities.getQuantity(10, Units.KILOGRAM) | Quantities.getQuantity(10, Units.KILOGRAM)
+    untypedQuantityParam | massQuantityParam
+    10.kg                | null
+    null                 | 10.kg
+    10.kg                | 10.kg
   }
 
   void "should fail validating quantity with exact unit"() {
     given:
     Validator myValidator = configureValidator("klokwrkValidationConstraintMessages", localeParam)
-    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityExpectingExactUnitSymbol: Quantities.getQuantity(10, Units.GRAM))
+    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityExpectingExactUnitSymbol: 10.g)
 
     when:
     Set<ConstraintViolation> constraintViolations = myValidator.validate(testObject)
@@ -256,7 +254,7 @@ class QuantityUnitConstraintValidatorSpecification extends Specification {
 
   void "should fail validating quantity with exact unit and a custom message"() {
     given:
-    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityExpectingExactUnitSymbolWithCustomMessage: Quantities.getQuantity(10, Units.GRAM))
+    QuantityTestObject testObject = new QuantityTestObject(untypedQuantityExpectingExactUnitSymbolWithCustomMessage: 10.g)
 
     when:
     Set<ConstraintViolation> constraintViolations = validator.validate(testObject)

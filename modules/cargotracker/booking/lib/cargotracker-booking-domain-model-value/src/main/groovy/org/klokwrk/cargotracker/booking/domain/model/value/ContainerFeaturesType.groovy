@@ -18,9 +18,7 @@
 package org.klokwrk.cargotracker.booking.domain.model.value
 
 import groovy.transform.CompileStatic
-import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.quantity.QuantityRange
-import tech.units.indriya.unit.Units
 
 import javax.measure.quantity.Temperature
 
@@ -67,7 +65,7 @@ enum ContainerFeaturesType {
 
   static class Constants {
     static final QuantityRange<Temperature> UNBOUNDED_TEMPERATURE_RANGE = QuantityRange.of(null, null)
-    static final QuantityRange<Temperature> STANDARD_REEFER_TEMPERATURE_RANGE = QuantityRange.of(Quantities.getQuantity(-30, Units.CELSIUS), Quantities.getQuantity(30, Units.CELSIUS))
+    static final QuantityRange<Temperature> STANDARD_REEFER_TEMPERATURE_RANGE = QuantityRange.of(-30.degC, 30.degC)
   }
 
   private final QuantityRange<Temperature> containerTemperatureRange

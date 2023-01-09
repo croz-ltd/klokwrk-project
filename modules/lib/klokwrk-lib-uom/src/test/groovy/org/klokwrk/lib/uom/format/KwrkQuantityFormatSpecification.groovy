@@ -18,7 +18,6 @@
 package org.klokwrk.lib.uom.format
 
 import spock.lang.Specification
-import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
@@ -30,15 +29,15 @@ class KwrkQuantityFormatSpecification extends Specification {
     QuantityFormat formatter = KwrkQuantityFormat.instance
 
     when:
-    String formattedString = formatter.format(Quantities.getQuantity(valueParam, unitParam))
+    String formattedString = formatter.format(quantityParam)
 
     then:
     formattedString == formattedStringParam
 
     where:
-    valueParam | unitParam      | formattedStringParam
-    1          | Units.KILOGRAM | "1 kg"
-    1          | Units.CELSIUS  | "1 °C"
+    quantityParam | formattedStringParam
+    1.kg          | "1 kg"
+    1.degC        | "1 °C"
   }
 
   void "should parse correctly"() {
@@ -51,10 +50,11 @@ class KwrkQuantityFormatSpecification extends Specification {
     then:
     quantity.value as String == inputStringParam.tokenize().first()
     quantity.unit == unitParam
+    quantity == quantityParam
 
     where:
-    inputStringParam | unitParam
-    "1 kg"           | Units.KILOGRAM
-    "1 °C"           | Units.CELSIUS
+    inputStringParam | unitParam      | quantityParam
+    "1 kg"           | Units.KILOGRAM | 1.kg
+    "1 °C"           | Units.CELSIUS  | 1.degC
   }
 }
