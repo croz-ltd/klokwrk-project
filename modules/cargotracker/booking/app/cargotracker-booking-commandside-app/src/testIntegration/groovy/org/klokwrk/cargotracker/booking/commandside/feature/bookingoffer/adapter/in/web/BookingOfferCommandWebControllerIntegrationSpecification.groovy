@@ -33,10 +33,6 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MvcResult
 import org.springframework.web.context.WebApplicationContext
-import si.uom.NonSI
-import systems.uom.common.USCustomary
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import java.nio.charset.Charset
 import java.time.Duration
@@ -219,14 +215,14 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
     where:
     acceptLanguageParam | localeStringParam | commodityWeightParam
-    "hr-HR"             | "hr_HR"           | Quantities.getQuantity(1000, Units.KILOGRAM)
-    "hr-HR"             | "hr_HR"           | Quantities.getQuantity(999.1, Units.KILOGRAM)
-    "hr-HR"             | "hr_HR"           | Quantities.getQuantity(1, NonSI.TONNE)
-    "hr-HR"             | "hr_HR"           | Quantities.getQuantity(2204, USCustomary.POUND)
-    "en"                | "en"              | Quantities.getQuantity(1000, Units.KILOGRAM)
-    "en"                | "en"              | Quantities.getQuantity(999.1, Units.KILOGRAM)
-    "en"                | "en"              | Quantities.getQuantity(1, NonSI.TONNE)
-    "en"                | "en"              | Quantities.getQuantity(2204, USCustomary.POUND)
+    "hr-HR"             | "hr_HR"           | 1000.kg
+    "hr-HR"             | "hr_HR"           | 999.1.kg
+    "hr-HR"             | "hr_HR"           | 1.t
+    "hr-HR"             | "hr_HR"           | 2204.lb
+    "en"                | "en"              | 1000.kg
+    "en"                | "en"              | 999.1.kg
+    "en"                | "en"              | 1.t
+    "en"                | "en"              | 2204.lb
   }
 
   void "should work for correct request with commodity requested storage temperature"() {
@@ -393,27 +389,27 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     }
 
     where:
-    acceptLanguageParam | localeStringParam | commodityTypeParam       | commodityRequestedStorageTemperatureParam          | expectedCommodityRequestedStorageTemperatureParam
-    "hr-HR"             | "hr_HR"           | CommodityType.AIR_COOLED | Quantities.getQuantity(6, Units.CELSIUS)           | commodityRequestedStorageTemperatureParam
-    "hr-HR"             | "hr_HR"           | CommodityType.AIR_COOLED | Quantities.getQuantity(6.15, Units.CELSIUS)        | commodityRequestedStorageTemperatureParam
-    "hr-HR"             | "hr_HR"           | CommodityType.AIR_COOLED | Quantities.getQuantity(42, USCustomary.FAHRENHEIT) | Quantities.getQuantity(5.56, Units.CELSIUS)
-    "en"                | "en"              | CommodityType.AIR_COOLED | Quantities.getQuantity(6, Units.CELSIUS)           | commodityRequestedStorageTemperatureParam
-    "en"                | "en"              | CommodityType.AIR_COOLED | Quantities.getQuantity(6.15, Units.CELSIUS)        | commodityRequestedStorageTemperatureParam
-    "en"                | "en"              | CommodityType.AIR_COOLED | Quantities.getQuantity(43, USCustomary.FAHRENHEIT) | Quantities.getQuantity(6.11, Units.CELSIUS)
+    acceptLanguageParam | localeStringParam | commodityTypeParam       | commodityRequestedStorageTemperatureParam | expectedCommodityRequestedStorageTemperatureParam
+    "hr-HR"             | "hr_HR"           | CommodityType.AIR_COOLED | 6.degC                                    | commodityRequestedStorageTemperatureParam
+    "hr-HR"             | "hr_HR"           | CommodityType.AIR_COOLED | 6.15.degC                                 | commodityRequestedStorageTemperatureParam
+    "hr-HR"             | "hr_HR"           | CommodityType.AIR_COOLED | 42.degF                                   | 5.56.degC
+    "en"                | "en"              | CommodityType.AIR_COOLED | 6.degC                                    | commodityRequestedStorageTemperatureParam
+    "en"                | "en"              | CommodityType.AIR_COOLED | 6.15.degC                                 | commodityRequestedStorageTemperatureParam
+    "en"                | "en"              | CommodityType.AIR_COOLED | 43.degF                                   | 6.11.degC
 
-    "hr-HR"             | "hr_HR"           | CommodityType.CHILLED    | Quantities.getQuantity(0, Units.CELSIUS)           | commodityRequestedStorageTemperatureParam
-    "hr-HR"             | "hr_HR"           | CommodityType.CHILLED    | Quantities.getQuantity(0.12, Units.CELSIUS)        | commodityRequestedStorageTemperatureParam
-    "hr-HR"             | "hr_HR"           | CommodityType.CHILLED    | Quantities.getQuantity(31, USCustomary.FAHRENHEIT) | Quantities.getQuantity(-0.56, Units.CELSIUS)
-    "en"                | "en"              | CommodityType.CHILLED    | Quantities.getQuantity(0, Units.CELSIUS)           | commodityRequestedStorageTemperatureParam
-    "en"                | "en"              | CommodityType.CHILLED    | Quantities.getQuantity(0.12, Units.CELSIUS)        | commodityRequestedStorageTemperatureParam
-    "en"                | "en"              | CommodityType.CHILLED    | Quantities.getQuantity(33, USCustomary.FAHRENHEIT) | Quantities.getQuantity(0.56, Units.CELSIUS)
+    "hr-HR"             | "hr_HR"           | CommodityType.CHILLED    | 0.degC                                    | commodityRequestedStorageTemperatureParam
+    "hr-HR"             | "hr_HR"           | CommodityType.CHILLED    | 0.12.degC                                 | commodityRequestedStorageTemperatureParam
+    "hr-HR"             | "hr_HR"           | CommodityType.CHILLED    | 31.degF                                   | -0.56.degC
+    "en"                | "en"              | CommodityType.CHILLED    | 0.degC                                    | commodityRequestedStorageTemperatureParam
+    "en"                | "en"              | CommodityType.CHILLED    | 0.12.degC                                 | commodityRequestedStorageTemperatureParam
+    "en"                | "en"              | CommodityType.CHILLED    | 33.degF                                   | 0.56.degC
 
-    "hr-HR"             | "hr_HR"           | CommodityType.FROZEN     | Quantities.getQuantity(-12, Units.CELSIUS)         | commodityRequestedStorageTemperatureParam
-    "hr-HR"             | "hr_HR"           | CommodityType.FROZEN     | Quantities.getQuantity(-12.55, Units.CELSIUS)      | commodityRequestedStorageTemperatureParam
-    "hr-HR"             | "hr_HR"           | CommodityType.FROZEN     | Quantities.getQuantity(10, USCustomary.FAHRENHEIT) | Quantities.getQuantity(-12.22, Units.CELSIUS)
-    "en"                | "en"              | CommodityType.FROZEN     | Quantities.getQuantity(-12, Units.CELSIUS)         | commodityRequestedStorageTemperatureParam
-    "en"                | "en"              | CommodityType.FROZEN     | Quantities.getQuantity(-12.55, Units.CELSIUS)      | commodityRequestedStorageTemperatureParam
-    "en"                | "en"              | CommodityType.FROZEN     | Quantities.getQuantity(11, USCustomary.FAHRENHEIT) | Quantities.getQuantity(-11.67, Units.CELSIUS)
+    "hr-HR"             | "hr_HR"           | CommodityType.FROZEN     | -12.degC                                  | commodityRequestedStorageTemperatureParam
+    "hr-HR"             | "hr_HR"           | CommodityType.FROZEN     | -12.55.degC                               | commodityRequestedStorageTemperatureParam
+    "hr-HR"             | "hr_HR"           | CommodityType.FROZEN     | 10.degF                                   | -12.22.degC
+    "en"                | "en"              | CommodityType.FROZEN     | -12.degC                                  | commodityRequestedStorageTemperatureParam
+    "en"                | "en"              | CommodityType.FROZEN     | -12.55.degC                               | commodityRequestedStorageTemperatureParam
+    "en"                | "en"              | CommodityType.FROZEN     | 11.degF                                   | -11.67.degC
   }
 
   void "should return expected response when request is not valid - validation failure"() {

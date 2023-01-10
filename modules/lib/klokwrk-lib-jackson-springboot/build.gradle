@@ -41,6 +41,8 @@ dependencies {
   implementation "org.springframework:spring-web"
   implementation "org.springframework.boot:spring-boot-autoconfigure"
 
+  testImplementation project(":klokwrk-lib-uom")
+
   testImplementation "org.spockframework:spock-core"
   testImplementation "org.spockframework:spock-spring"
   testImplementation "org.springframework:spring-test"

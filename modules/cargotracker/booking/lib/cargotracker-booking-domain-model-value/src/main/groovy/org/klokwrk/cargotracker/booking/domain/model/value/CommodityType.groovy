@@ -18,9 +18,7 @@
 package org.klokwrk.cargotracker.booking.domain.model.value
 
 import groovy.transform.CompileStatic
-import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.quantity.QuantityRange
-import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.quantity.Temperature
@@ -61,14 +59,14 @@ enum CommodityType {
   static class Constants {
     static final QuantityRange<Temperature> UNLIMITED_TEMPERATURE_RANGE = QuantityRange.of(null, null)
 
-    static final Quantity<Temperature> AIR_COOLED_RECOMMENDED_STORAGE_TEMPERATURE = Quantities.getQuantity(6, Units.CELSIUS)
-    static final QuantityRange<Temperature> AIR_COOLED_STORAGE_TEMPERATURE_RANGE = QuantityRange.of(Quantities.getQuantity(2, Units.CELSIUS), Quantities.getQuantity(12, Units.CELSIUS))
+    static final Quantity<Temperature> AIR_COOLED_RECOMMENDED_STORAGE_TEMPERATURE = 6.degC
+    static final QuantityRange<Temperature> AIR_COOLED_STORAGE_TEMPERATURE_RANGE = QuantityRange.of(2.degC, 12.degC)
 
-    static final Quantity<Temperature> CHILLED_RECOMMENDED_STORAGE_TEMPERATURE = Quantities.getQuantity(0, Units.CELSIUS)
-    static final QuantityRange<Temperature> CHILLED_STORAGE_TEMPERATURE_RANGE = QuantityRange.of(Quantities.getQuantity(-2, Units.CELSIUS), Quantities.getQuantity(6, Units.CELSIUS))
+    static final Quantity<Temperature> CHILLED_RECOMMENDED_STORAGE_TEMPERATURE = 0.degC
+    static final QuantityRange<Temperature> CHILLED_STORAGE_TEMPERATURE_RANGE = QuantityRange.of(-2.degC, 6.degC)
 
-    static final Quantity<Temperature> FROZEN_RECOMMENDED_STORAGE_TEMPERATURE = Quantities.getQuantity(-12, Units.CELSIUS)
-    static final QuantityRange<Temperature> FROZEN_STORAGE_TEMPERATURE_RANGE = QuantityRange.of(Quantities.getQuantity(-20, Units.CELSIUS), Quantities.getQuantity(-8, Units.CELSIUS))
+    static final Quantity<Temperature> FROZEN_RECOMMENDED_STORAGE_TEMPERATURE = -12.degC
+    static final QuantityRange<Temperature> FROZEN_STORAGE_TEMPERATURE_RANGE = QuantityRange.of(-20.degC, -8.degC)
   }
 
   private final ContainerFeaturesType containerFeaturesType

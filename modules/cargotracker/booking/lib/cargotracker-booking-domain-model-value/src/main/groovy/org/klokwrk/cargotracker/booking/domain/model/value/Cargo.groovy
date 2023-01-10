@@ -20,8 +20,6 @@ package org.klokwrk.cargotracker.booking.domain.model.value
 import groovy.transform.CompileStatic
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
-import tech.units.indriya.ComparableQuantity
-import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
@@ -125,7 +123,7 @@ class Cargo implements PostMapConstructorCheckable {
         .divide(containerCount.toBigDecimal(), 0, RoundingMode.UP)
         .toInteger()
 
-    Quantity<Mass> maxRecommendedWeightPerContainerKg = Quantities.getQuantity(maxRecommendedWeightPerContainerValueKg, Units.KILOGRAM)
+    Quantity<Mass> maxRecommendedWeightPerContainerKg = maxRecommendedWeightPerContainerValueKg.kg
 
     BigDecimal containerTeuCount = (containerCount * containerType.dimensionType.teu).setScale(2, RoundingMode.UP)
 
@@ -153,11 +151,11 @@ class Cargo implements PostMapConstructorCheckable {
 
     requireTrue(containerType.featuresType == commodity.commodityType.containerFeaturesType)
 
-    requireTrue(Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(maxAllowedWeightPerContainer))
-    requireTrue(((ComparableQuantity)containerType.maxCommodityWeight).isGreaterThanOrEqualTo(maxAllowedWeightPerContainer))
+    requireTrue(1.kg.isLessThanOrEqualTo(maxAllowedWeightPerContainer))
+    requireTrue(containerType.maxCommodityWeight.toComparable().isGreaterThanOrEqualTo(maxAllowedWeightPerContainer))
 
-    requireTrue(Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(maxRecommendedWeightPerContainer))
-    requireTrue(((ComparableQuantity)maxAllowedWeightPerContainer).isGreaterThanOrEqualTo(maxRecommendedWeightPerContainer))
+    requireTrue(1.kg.isLessThanOrEqualTo(maxRecommendedWeightPerContainer))
+    requireTrue(maxAllowedWeightPerContainer.toComparable().isGreaterThanOrEqualTo(maxRecommendedWeightPerContainer))
 
     // Note: all weights have to be in kilograms and rounded (without decimal part).
     requireTrue(maxAllowedWeightPerContainer.unit == Units.KILOGRAM)

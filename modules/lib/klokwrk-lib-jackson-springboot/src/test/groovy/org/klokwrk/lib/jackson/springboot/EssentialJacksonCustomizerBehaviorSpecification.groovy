@@ -23,8 +23,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.json.JsonTest
 import spock.lang.Specification
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
@@ -283,8 +281,8 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
 
     then:
     myBeanWithQuantity.name == "someName"
-    myBeanWithQuantity.weight == Quantities.getQuantity(1234, Units.KILOGRAM)
-    myBeanWithQuantity.length == Quantities.getQuantity(456, Units.METRE)
+    myBeanWithQuantity.weight == 1234.kg
+    myBeanWithQuantity.length == 456.m
   }
 
   @SuppressWarnings("GroovyPointlessBoolean")
@@ -383,7 +381,7 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
 
   void "serialization - should serialize uom Quantity"() {
     given:
-    MyBeanWithQuantity myBeanWithQuantity = new MyBeanWithQuantity(name: "someName", weight: Quantities.getQuantity(1234, Units.KILOGRAM), length: Quantities.getQuantity(456, Units.METRE))
+    MyBeanWithQuantity myBeanWithQuantity = new MyBeanWithQuantity(name: "someName", weight: 1234.kg, length: 456.m)
 
     when:
     String serializedString = objectMapper.writeValueAsString(myBeanWithQuantity)

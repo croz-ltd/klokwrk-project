@@ -35,5 +35,6 @@ dependencies {
   implementation "org.hamcrest:hamcrest"
   implementation "tech.units:indriya"
 
+  testImplementation project(":klokwrk-lib-uom")
   testImplementation "org.spockframework:spock-core"
 }

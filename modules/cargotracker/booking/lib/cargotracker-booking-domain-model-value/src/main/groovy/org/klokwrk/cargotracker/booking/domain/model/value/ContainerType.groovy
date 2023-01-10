@@ -18,8 +18,6 @@
 package org.klokwrk.cargotracker.booking.domain.model.value
 
 import groovy.transform.CompileStatic
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
@@ -54,38 +52,32 @@ enum ContainerType {
   /**
    * 10 feet x 8 feet 6 inches x 8 feet general purpose container.
    */
-  TYPE_ISO_12G1(ContainerDimensionType.DIMENSION_ISO_12, ContainerFeaturesType.FEATURES_ISO_G1, Quantities.getQuantity(1_200, Units.KILOGRAM), Quantities.getQuantity(9_900, Units.KILOGRAM)),
+  TYPE_ISO_12G1(ContainerDimensionType.DIMENSION_ISO_12, ContainerFeaturesType.FEATURES_ISO_G1, 1_200.kg, 9_900.kg),
 
   /**
    * 10 feet x 8 feet 6 inches x 8 feet reefer container.
    */
-  TYPE_ISO_12R1_STANDARD_REEFER(
-      ContainerDimensionType.DIMENSION_ISO_12, ContainerFeaturesType.FEATURES_ISO_R1_STANDARD_REEFER, Quantities.getQuantity(1_250, Units.KILOGRAM), Quantities.getQuantity(9_800, Units.KILOGRAM)
-  ),
+  TYPE_ISO_12R1_STANDARD_REEFER(ContainerDimensionType.DIMENSION_ISO_12, ContainerFeaturesType.FEATURES_ISO_R1_STANDARD_REEFER, 1_250.kg, 9_800.kg),
 
   /**
    * 20 feet x 8 feet 6 inches x 8 feet general purpose container.
    */
-  TYPE_ISO_22G1(ContainerDimensionType.DIMENSION_ISO_22, ContainerFeaturesType.FEATURES_ISO_G1, Quantities.getQuantity(2_300, Units.KILOGRAM), Quantities.getQuantity(21_700, Units.KILOGRAM)),
+  TYPE_ISO_22G1(ContainerDimensionType.DIMENSION_ISO_22, ContainerFeaturesType.FEATURES_ISO_G1, 2_300.kg, 21_700.kg),
 
   /**
    * 20 feet x 8 feet 6 inches x 8 feet reefer container.
    */
-  TYPE_ISO_22R1_STANDARD_REEFER(
-      ContainerDimensionType.DIMENSION_ISO_22, ContainerFeaturesType.FEATURES_ISO_R1_STANDARD_REEFER, Quantities.getQuantity(2_500, Units.KILOGRAM), Quantities.getQuantity(21_600, Units.KILOGRAM)
-  ),
+  TYPE_ISO_22R1_STANDARD_REEFER(ContainerDimensionType.DIMENSION_ISO_22, ContainerFeaturesType.FEATURES_ISO_R1_STANDARD_REEFER, 2_500.kg, 21_600.kg),
 
   /**
    * 40 feet x 8 feet 6 inches x 8 feet general purpose container.
    */
-  TYPE_ISO_42G1(ContainerDimensionType.DIMENSION_ISO_42, ContainerFeaturesType.FEATURES_ISO_G1, Quantities.getQuantity(3_700, Units.KILOGRAM), Quantities.getQuantity(26_500, Units.KILOGRAM)),
+  TYPE_ISO_42G1(ContainerDimensionType.DIMENSION_ISO_42, ContainerFeaturesType.FEATURES_ISO_G1, 3_700.kg, 26_500.kg),
 
   /**
    * 40 feet x 8 feet 6 inches x 8 feet reefer container.
    */
-  TYPE_ISO_42R1_STANDARD_REEFER(
-      ContainerDimensionType.DIMENSION_ISO_42, ContainerFeaturesType.FEATURES_ISO_R1_STANDARD_REEFER, Quantities.getQuantity(4_300, Units.KILOGRAM), Quantities.getQuantity(25_000, Units.KILOGRAM)
-  )
+  TYPE_ISO_42R1_STANDARD_REEFER(ContainerDimensionType.DIMENSION_ISO_42, ContainerFeaturesType.FEATURES_ISO_R1_STANDARD_REEFER, 4_300.kg, 25_000.kg)
 
   private final ContainerDimensionType dimensionType
   private final ContainerFeaturesType featuresType

@@ -22,7 +22,6 @@ import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainExceptio
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.transform.KwrkImmutable
-import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
@@ -92,12 +91,12 @@ class Commodity implements PostMapConstructorCheckable {
       }
       else {
         BigDecimal requestedStorageTemperatureValueToUse = requestedStorageTemperature.to(Units.CELSIUS).value.toBigDecimal().setScale(2, RoundingMode.HALF_UP)
-        requestedStorageTemperatureToUse = Quantities.getQuantity(requestedStorageTemperatureValueToUse, Units.CELSIUS)
+        requestedStorageTemperatureToUse = requestedStorageTemperatureValueToUse.degC
       }
     }
 
     BigDecimal weightValueToUse = weight.to(Units.KILOGRAM).value.toBigDecimal().setScale(0, RoundingMode.UP)
-    Quantity<Mass> weightToUse = Quantities.getQuantity(weightValueToUse, Units.KILOGRAM)
+    Quantity<Mass> weightToUse = weightValueToUse.kg
 
     Commodity commodity = new Commodity(commodityType: commodityType, weight: weightToUse, requestedStorageTemperature: requestedStorageTemperatureToUse)
     return commodity
@@ -111,8 +110,8 @@ class Commodity implements PostMapConstructorCheckable {
   static Commodity make(CommodityType commodityType, Long weightInKilograms, Integer requestedStorageTemperatureDegC) {
     Commodity commodity = make(
         commodityType,
-        Quantities.getQuantity(weightInKilograms, Units.KILOGRAM),
-        requestedStorageTemperatureDegC == null ? null : Quantities.getQuantity(requestedStorageTemperatureDegC, Units.CELSIUS)
+        weightInKilograms.kg,
+        requestedStorageTemperatureDegC == null ? null : requestedStorageTemperatureDegC.degC
     )
 
     return commodity
@@ -123,7 +122,7 @@ class Commodity implements PostMapConstructorCheckable {
     requireMatch(commodityType, notNullValue())
     requireMatch(weight, notNullValue())
 
-    requireTrue(Quantities.getQuantity(1, Units.KILOGRAM).isLessThanOrEqualTo(weight))
+    requireTrue(1.kg.isLessThanOrEqualTo(weight))
     requireTrue(weight.unit == Units.KILOGRAM)
     requireTrue(weight.value.toBigDecimal().scale() == 0)
 

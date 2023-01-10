@@ -42,6 +42,7 @@ dependencies {
   runtimeOnly project(":klokwrk-lib-validation-validator")
 
   testImplementation project(":klokwrk-lib-validation-constraint")
+  testImplementation project(":klokwrk-lib-uom")
 
   testImplementation "javax.measure:unit-api"
   testImplementation "org.spockframework:spock-core"

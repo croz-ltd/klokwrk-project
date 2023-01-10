@@ -65,6 +65,7 @@ dependencies {
   runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"
 
   testImplementation project(":klokwrk-lib-archunit")
+  testImplementation project(":klokwrk-lib-uom")
 
   testImplementation "com.tngtech.archunit:archunit-junit5"
   testImplementation "org.axonframework:axon-test"

@@ -40,8 +40,6 @@ import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
 import spock.lang.Specification
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 class BookingOfferAggregateSpecification extends Specification {
   AggregateTestFixture aggregateTestFixture
@@ -63,7 +61,7 @@ class BookingOfferAggregateSpecification extends Specification {
         .customer(CustomerEventData.fromCustomer(createBookingOfferCommand.customer))
         .bookingOfferId(createBookingOfferCommand.bookingOfferId.identifier)
         .routeSpecification(RouteSpecificationEventData.fromRouteSpecification(createBookingOfferCommand.routeSpecification))
-        .cargos([CargoEventDataFixtureBuilder.cargo_dry().maxAllowedWeightPerContainer(Quantities.getQuantity(20615, Units.KILOGRAM)).build()])
+        .cargos([CargoEventDataFixtureBuilder.cargo_dry().maxAllowedWeightPerContainer(20615.kg).build()])
         .build()
 
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
@@ -85,14 +83,14 @@ class BookingOfferAggregateSpecification extends Specification {
         .build()
 
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
-    Cargo expectedBookingOfferCargo = Cargo.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommandWithAcceptableCargo.cargos[0].commodity, Quantities.getQuantity(20_615, Units.KILOGRAM))
+    Cargo expectedBookingOfferCargo = Cargo.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommandWithAcceptableCargo.cargos[0].commodity, 20_615.kg)
 
     BookingOfferCreatedEvent expectedBookingOfferCreatedEvent = new BookingOfferCreatedEvent(
         customer: CustomerEventData.fromCustomer(createBookingOfferCommandWithAcceptableCargo.customer),
         bookingOfferId: createBookingOfferCommandWithAcceptableCargo.bookingOfferId.identifier,
         routeSpecification: RouteSpecificationEventData.fromRouteSpecification(createBookingOfferCommandWithAcceptableCargo.routeSpecification),
         cargos: [CargoEventData.fromCargo(expectedBookingOfferCargo)],
-        totalCommodityWeight: Quantities.getQuantity(10_000, Units.KILOGRAM),
+        totalCommodityWeight: 10_000.kg,
         totalContainerTeuCount: 1
     )
 
@@ -107,7 +105,7 @@ class BookingOfferAggregateSpecification extends Specification {
       routeSpecification == createBookingOfferCommandWithAcceptableCargo.routeSpecification
 
       bookingOfferCargos.checkCargoCollectionInvariants()
-      bookingOfferCargos.totalCommodityWeight == Quantities.getQuantity(10_000, Units.KILOGRAM)
+      bookingOfferCargos.totalCommodityWeight == 10_000.kg
       bookingOfferCargos.totalContainerTeuCount == 1
       bookingOfferCargos.findCargoByExample(expectedBookingOfferCargo) == expectedBookingOfferCargo
       bookingOfferCargos.bookingOfferCargoCollection.size() == 1

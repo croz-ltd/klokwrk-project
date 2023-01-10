@@ -23,8 +23,6 @@ import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 import spock.lang.Specification
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 class DefaultCargoCreatorServiceSpecification extends Specification {
   void "constructor should fail for null parameter"() {
@@ -49,8 +47,8 @@ class DefaultCargoCreatorServiceSpecification extends Specification {
     verifyAll(cargo, {
       containerType == ContainerType.TYPE_ISO_22G1
       it.commodity == commodity
-      maxAllowedWeightPerContainer == Quantities.getQuantity(19_530, Units.KILOGRAM)
-      maxRecommendedWeightPerContainer == Quantities.getQuantity(16_667, Units.KILOGRAM)
+      maxAllowedWeightPerContainer == 19_530.kg
+      maxRecommendedWeightPerContainer == 16_667.kg
       containerCount == 3
       containerTeuCount == 3
     })

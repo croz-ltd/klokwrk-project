@@ -21,8 +21,6 @@ import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import spock.lang.Specification
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.format.MeasurementParseException
@@ -73,7 +71,7 @@ class UomQuantityDeserializerSpecification extends Specification {
 
     then:
     deserializedMyBean.name == "someName"
-    deserializedMyBean.weight == Quantities.getQuantity(1234, Units.KILOGRAM)
+    deserializedMyBean.weight == 1234.kg
 
     where:
     valueParam | unitSymbolParam
@@ -99,7 +97,7 @@ class UomQuantityDeserializerSpecification extends Specification {
     MyBeanWithTemperatureQuantity temperatureQuantity = objectMapper.readValue(absoluteTemperatureStringToDeserialize, MyBeanWithTemperatureQuantity)
 
     then:
-    temperatureQuantity.temperature == Quantities.getQuantity(valueParam, Units.CELSIUS)
+    temperatureQuantity.temperature == valueParam.degC
 
     where:
     valueParam | unitSymbolParam
@@ -130,7 +128,7 @@ class UomQuantityDeserializerSpecification extends Specification {
 
     then:
     deserializedMyBean.otherName == "someName"
-    deserializedMyBean.length == Quantities.getQuantity(1234, Units.METRE)
+    deserializedMyBean.length == 1234.m
 
     where:
     quantityValueParam | quantityUnitParam

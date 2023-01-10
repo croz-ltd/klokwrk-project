@@ -74,7 +74,7 @@ class QuantityMinConstraintValidator implements ConstraintValidator<QuantityMinC
       }
     }
 
-    ComparableQuantity convertedValidatedQuantity = validatedQuantity.to(minQuantityParameter.unit) as ComparableQuantity
+    ComparableQuantity convertedValidatedQuantity = validatedQuantity.toComparable(minQuantityParameter.unit)
     if (inclusiveParameter) {
       if (convertedValidatedQuantity.isGreaterThanOrEqualTo(minQuantityParameter)) {
         return true

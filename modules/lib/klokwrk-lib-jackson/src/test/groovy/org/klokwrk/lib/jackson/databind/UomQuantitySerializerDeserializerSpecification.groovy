@@ -23,8 +23,6 @@ import groovy.transform.EqualsAndHashCode
 import org.klokwrk.lib.jackson.databind.deser.UomQuantityDeserializer
 import org.klokwrk.lib.jackson.databind.ser.UomQuantitySerializer
 import spock.lang.Specification
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
@@ -61,7 +59,7 @@ class UomQuantitySerializerDeserializerSpecification extends Specification {
 
   void "deserializer should work with serializer output for typed quantity"() {
     given:
-    MyBeanTypedQuantity serializedBean = new MyBeanTypedQuantity(weight: Quantities.getQuantity(1234, Units.KILOGRAM))
+    MyBeanTypedQuantity serializedBean = new MyBeanTypedQuantity(weight: 1234.kg)
     String serializedString = objectMapper.writeValueAsString(serializedBean)
 
     when:
@@ -73,7 +71,7 @@ class UomQuantitySerializerDeserializerSpecification extends Specification {
 
   void "deserializer should work with serializer output for raw quantity"() {
     given:
-    MyBeanRawQuantity serializedBean = new MyBeanRawQuantity(length: Quantities.getQuantity(1234, Units.METRE))
+    MyBeanRawQuantity serializedBean = new MyBeanRawQuantity(length: 1234.m)
     String serializedString = objectMapper.writeValueAsString(serializedBean)
 
     when:
@@ -85,7 +83,7 @@ class UomQuantitySerializerDeserializerSpecification extends Specification {
 
   void "deserializer should work with serializer output for temperature quantity"() {
     given:
-    MyBeanWithTemperatureQuantity serializedBean = new MyBeanWithTemperatureQuantity(temperature: Quantities.getQuantity(10, Units.CELSIUS))
+    MyBeanWithTemperatureQuantity serializedBean = new MyBeanWithTemperatureQuantity(temperature: 10.degC)
     String serializedString = objectMapper.writeValueAsString(serializedBean)
 
     when:
@@ -97,7 +95,7 @@ class UomQuantitySerializerDeserializerSpecification extends Specification {
 
   void "deserializer should work with serializer output of normalized quantity"() {
     given:
-    MyBeanTypedQuantity serializedBean = new MyBeanTypedQuantity(weight: Quantities.getQuantity(1_234_000, Units.GRAM))
+    MyBeanTypedQuantity serializedBean = new MyBeanTypedQuantity(weight: 1_234_000.g)
     String serializedString = objectMapper.writeValueAsString(serializedBean)
 
     when:
@@ -105,6 +103,6 @@ class UomQuantitySerializerDeserializerSpecification extends Specification {
 
     then:
     deserializedBean == serializedBean
-    deserializedBean == new MyBeanTypedQuantity(weight: Quantities.getQuantity(1_234, Units.KILOGRAM))
+    deserializedBean == new MyBeanTypedQuantity(weight: 1_234.kg)
   }
 }

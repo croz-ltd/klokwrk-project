@@ -74,7 +74,7 @@ class CargoSpecification extends Specification {
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message.endsWith("boolean condition is false - [condition: (ComparableQuantity) containerType.maxCommodityWeight.isGreaterThanOrEqualTo(maxAllowedWeightPerContainer)]")
+    assertionError.message.endsWith("boolean condition is false - [condition: containerType.maxCommodityWeight.toComparable().isGreaterThanOrEqualTo(maxAllowedWeightPerContainer)]")
   }
 
   void "map constructor should fail for invalid combination of commodity and maxRecommendedWeightPerContainer"() {

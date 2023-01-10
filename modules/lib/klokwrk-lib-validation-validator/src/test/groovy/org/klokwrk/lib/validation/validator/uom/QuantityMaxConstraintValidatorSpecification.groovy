@@ -26,8 +26,6 @@ import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator
 import org.klokwrk.lib.validation.constraint.uom.QuantityMaxConstraint
 import spock.lang.Shared
 import spock.lang.Specification
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.format.MeasurementParseException
@@ -102,7 +100,7 @@ class QuantityMaxConstraintValidatorSpecification extends Specification {
 
   void "should fail initialization when maxQuantity is not specified"() {
     given:
-    QuantityInvalidTestObject_1 invalidTestObject = new QuantityInvalidTestObject_1(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
+    QuantityInvalidTestObject_1 invalidTestObject = new QuantityInvalidTestObject_1(quantity: 10.kg)
 
     when:
     validator.validate(invalidTestObject)
@@ -114,7 +112,7 @@ class QuantityMaxConstraintValidatorSpecification extends Specification {
 
   void "should fail initialization when the number in specified maxQuantity parameter cannot be parsed"() {
     given:
-    QuantityInvalidTestObject_2 invalidTestObject = new QuantityInvalidTestObject_2(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
+    QuantityInvalidTestObject_2 invalidTestObject = new QuantityInvalidTestObject_2(quantity: 10.kg)
 
     when:
     validator.validate(invalidTestObject)
@@ -128,7 +126,7 @@ class QuantityMaxConstraintValidatorSpecification extends Specification {
 
   void "should fail initialization when the unit in specified maxQuantity parameter cannot be parsed"() {
     given:
-    QuantityInvalidTestObject_3 invalidTestObject = new QuantityInvalidTestObject_3(quantity: Quantities.getQuantity(10, Units.KILOGRAM))
+    QuantityInvalidTestObject_3 invalidTestObject = new QuantityInvalidTestObject_3(quantity: 10.kg)
 
     when:
     validator.validate(invalidTestObject)
@@ -151,27 +149,27 @@ class QuantityMaxConstraintValidatorSpecification extends Specification {
     constraintViolations.isEmpty()
 
     where:
-    untypedMassQuantityInclusiveParam                | massQuantityInclusiveParam
-    Quantities.getQuantity(200.5, Units.KILOGRAM)    | null
-    Quantities.getQuantity(200.5000, Units.KILOGRAM) | null
-    Quantities.getQuantity(200.4999, Units.KILOGRAM) | null
-    Quantities.getQuantity(199, Units.KILOGRAM)      | null
-    Quantities.getQuantity(200_500, Units.GRAM)      | null
-    Quantities.getQuantity(199_000, Units.GRAM)      | null
-    Quantities.getQuantity(-1, Units.KILOGRAM)       | null
-    Quantities.getQuantity(0, Units.KILOGRAM)        | null
-    Quantities.getQuantity(1, Units.KILOGRAM)        | null
+    untypedMassQuantityInclusiveParam | massQuantityInclusiveParam
+    200.5.kg                          | null
+    200.5000.kg                       | null
+    200.4999.kg                       | null
+    199.kg                            | null
+    200_500.g                         | null
+    199_000.g                         | null
+    -1.kg                             | null
+    0.kg                              | null
+    1.kg                              | null
 
-    null                                             | Quantities.getQuantity(-200.5, Units.KILOGRAM)
-    null                                             | Quantities.getQuantity(-201, Units.KILOGRAM)
-    null                                             | Quantities.getQuantity(-200_500, Units.GRAM)
-    null                                             | Quantities.getQuantity(-201_000, Units.GRAM)
-    null                                             | Quantities.getQuantity(-201, Units.KILOGRAM)
+    null                              | -200.5.kg
+    null                              | -201.kg
+    null                              | -200_500.g
+    null                              | -201_000.g
+    null                              | -201.kg
 
-    Quantities.getQuantity(200.5, Units.KILOGRAM)    | Quantities.getQuantity(-201, Units.KILOGRAM)
-    Quantities.getQuantity(199, Units.KILOGRAM)      | Quantities.getQuantity(-200_500, Units.GRAM)
-    Quantities.getQuantity(200_500, Units.GRAM)      | Quantities.getQuantity(-201.1, Units.KILOGRAM)
-    Quantities.getQuantity(199_000, Units.GRAM)      | Quantities.getQuantity(-201_500, Units.GRAM)
+    200.5.kg                          | -201.kg
+    199.kg                            | -200_500.g
+    200_500.g                         | -201.1.kg
+    199_000.g                         | -201_500.g
   }
 
   void "should fail validating inclusive maximum of a quantity"() {
@@ -190,18 +188,18 @@ class QuantityMaxConstraintValidatorSpecification extends Specification {
     }
 
     where:
-    untypedMassQuantityInclusiveParam                | localeParam      | messageParam
-    Quantities.getQuantity(200.6, Units.KILOGRAM)    | new Locale("en") | "Quantity '200.6 kg' must be less than or equal to '200.5 kg'."
-    Quantities.getQuantity(200.5001, Units.KILOGRAM) | new Locale("hr") | "Količina '200.5001 kg' mora biti manja ili jednaka od '200.5 kg'."
-    Quantities.getQuantity(200.6000, Units.KILOGRAM) | new Locale("en") | "Quantity '200.6 kg' must be less than or equal to '200.5 kg'."
-    Quantities.getQuantity(201, Units.KILOGRAM)      | new Locale("hr") | "Količina '201 kg' mora biti manja ili jednaka od '200.5 kg'."
-    Quantities.getQuantity(201_000, Units.GRAM)      | new Locale("en") | "Quantity '201000 g' must be less than or equal to '200.5 kg'."
-    Quantities.getQuantity(200_600, Units.GRAM)      | new Locale("hr") | "Količina '200600 g' mora biti manja ili jednaka od '200.5 kg'."
+    untypedMassQuantityInclusiveParam | localeParam      | messageParam
+    200.6.kg                          | new Locale("en") | "Quantity '200.6 kg' must be less than or equal to '200.5 kg'."
+    200.5001.kg                       | new Locale("hr") | "Količina '200.5001 kg' mora biti manja ili jednaka od '200.5 kg'."
+    200.6000.kg                       | new Locale("en") | "Quantity '200.6 kg' must be less than or equal to '200.5 kg'."
+    201.kg                            | new Locale("hr") | "Količina '201 kg' mora biti manja ili jednaka od '200.5 kg'."
+    201_000.g                         | new Locale("en") | "Quantity '201000 g' must be less than or equal to '200.5 kg'."
+    200_600.g                         | new Locale("hr") | "Količina '200600 g' mora biti manja ili jednaka od '200.5 kg'."
   }
 
   void "should fail validating inclusive maximum of a quantity with a custom message"() {
     given:
-    QuantityTestObject testObject = new QuantityTestObject(untypedMassQuantityInclusiveWithCustomMessage: Quantities.getQuantity(201, Units.KILOGRAM))
+    QuantityTestObject testObject = new QuantityTestObject(untypedMassQuantityInclusiveWithCustomMessage: 201.kg)
 
     when:
     Set<ConstraintViolation> constraintViolations = validator.validate(testObject)
@@ -225,13 +223,13 @@ class QuantityMaxConstraintValidatorSpecification extends Specification {
     constraintViolations.isEmpty()
 
     where:
-    untypedMassQuantityInclusiveWithEqualUnitParam   | _
-    Quantities.getQuantity(100, Units.KILOGRAM)      | _
-    Quantities.getQuantity(200, Units.KILOGRAM)      | _
-    Quantities.getQuantity(200.5, Units.KILOGRAM)    | _
-    Quantities.getQuantity(200.5000, Units.KILOGRAM) | _
-    Quantities.getQuantity(200.5000, Units.KILOGRAM) | _
-    Quantities.getQuantity(200.4999, Units.KILOGRAM) | _
+    untypedMassQuantityInclusiveWithEqualUnitParam | _
+    100.kg                                         | _
+    200.kg                                         | _
+    200.5.kg                                       | _
+    200.5000.kg                                    | _
+    200.5000.kg                                    | _
+    200.4999.kg                                    | _
   }
 
   void "should fail validating inclusive maximum of a quantity with unequal unit"() {
@@ -251,8 +249,8 @@ class QuantityMaxConstraintValidatorSpecification extends Specification {
 
     where:
     untypedMassQuantityInclusiveWithEqualUnitParam | localeParam      | messageParam
-    Quantities.getQuantity(200_500, Units.GRAM)    | new Locale("en") | "Unit symbol 'g' is not valid. The only supported symbol is 'kg'."
-    Quantities.getQuantity(200_500, Units.GRAM)    | new Locale("hr") | "Oznaka mjerne jedinice 'g' nije ispravna. Jedina podržana oznaka je 'kg'."
+    200_500.g                                      | new Locale("en") | "Unit symbol 'g' is not valid. The only supported symbol is 'kg'."
+    200_500.g                                      | new Locale("hr") | "Oznaka mjerne jedinice 'g' nije ispravna. Jedina podržana oznaka je 'kg'."
   }
 
   void "should fail validating inclusive maximum of a quantity with incompatible unit"() {
@@ -271,9 +269,9 @@ class QuantityMaxConstraintValidatorSpecification extends Specification {
     }
 
     where:
-    untypedMassQuantityInclusiveParam        | localeParam      | messageParam
-    Quantities.getQuantity(100, Units.METRE) | new Locale("en") | "Unit symbol 'm' is not valid. It is not compatible with expected 'kg'."
-    Quantities.getQuantity(100, Units.METRE) | new Locale("hr") | "Oznaka mjerne jedinice 'm' nije ispravna. Oznaka mora biti kompatibilna sa 'kg'."
+    untypedMassQuantityInclusiveParam | localeParam      | messageParam
+    100.m                             | new Locale("en") | "Unit symbol 'm' is not valid. It is not compatible with expected 'kg'."
+    100.m                             | new Locale("hr") | "Oznaka mjerne jedinice 'm' nije ispravna. Oznaka mora biti kompatibilna sa 'kg'."
   }
 
   void "should validate exclusive maximum of a quantity"() {
@@ -287,25 +285,25 @@ class QuantityMaxConstraintValidatorSpecification extends Specification {
     constraintViolations.isEmpty()
 
     where:
-    untypedMassQuantityExclusiveParam                | massQuantityExclusiveParam
-    Quantities.getQuantity(200.49, Units.KILOGRAM)   | null
-    Quantities.getQuantity(200.4999, Units.KILOGRAM) | null
-    Quantities.getQuantity(200, Units.KILOGRAM)      | null
-    Quantities.getQuantity(200_499, Units.GRAM)      | null
-    Quantities.getQuantity(200_000, Units.GRAM)      | null
-    Quantities.getQuantity(-1, Units.GRAM)           | null
-    Quantities.getQuantity(0, Units.GRAM)            | null
-    Quantities.getQuantity(1, Units.GRAM)            | null
+    untypedMassQuantityExclusiveParam | massQuantityExclusiveParam
+    200.49.kg                         | null
+    200.4999.kg                       | null
+    200.kg                            | null
+    200_499.g                         | null
+    200_000.g                         | null
+    -1.g                              | null
+    0.g                               | null
+    1.g                               | null
 
-    null                                             | Quantities.getQuantity(-200.51, Units.KILOGRAM)
-    null                                             | Quantities.getQuantity(-201, Units.KILOGRAM)
-    null                                             | Quantities.getQuantity(-200_510, Units.GRAM)
-    null                                             | Quantities.getQuantity(-201_000, Units.GRAM)
+    null                              | -200.51.kg
+    null                              | -201.kg
+    null                              | -200_510.g
+    null                              | -201_000.g
 
-    Quantities.getQuantity(200.49, Units.KILOGRAM)   | Quantities.getQuantity(-201, Units.KILOGRAM)
-    Quantities.getQuantity(200, Units.KILOGRAM)      | Quantities.getQuantity(-200_510, Units.GRAM)
-    Quantities.getQuantity(200_499, Units.GRAM)      | Quantities.getQuantity(-201, Units.KILOGRAM)
-    Quantities.getQuantity(200_000, Units.GRAM)      | Quantities.getQuantity(-200_501, Units.GRAM)
+    200.49.kg                         | -201.kg
+    200.kg                            | -200_510.g
+    200_499.g                         | -201.kg
+    200_000.g                         | -200_501.g
   }
 
   void "should fail validating exclusive maximum of a quantity"() {
@@ -324,13 +322,13 @@ class QuantityMaxConstraintValidatorSpecification extends Specification {
     }
 
     where:
-    untypedMassQuantityExclusiveParam             | localeParam      | messageParam
-    Quantities.getQuantity(200.5, Units.KILOGRAM) | new Locale("en") | "Quantity '200.5 kg' must be strictly less than '200.5 kg'."
-    Quantities.getQuantity(200.5, Units.KILOGRAM) | new Locale("hr") | "Količina '200.5 kg' mora biti strogo manja od '200.5 kg'."
-    Quantities.getQuantity(200_500, Units.GRAM)   | new Locale("en") | "Quantity '200500 g' must be strictly less than '200.5 kg'."
-    Quantities.getQuantity(200_500, Units.GRAM)   | new Locale("hr") | "Količina '200500 g' mora biti strogo manja od '200.5 kg'."
-    Quantities.getQuantity(201, Units.KILOGRAM)   | new Locale("en") | "Quantity '201 kg' must be strictly less than '200.5 kg'."
-    Quantities.getQuantity(201, Units.KILOGRAM)   | new Locale("hr") | "Količina '201 kg' mora biti strogo manja od '200.5 kg'."
+    untypedMassQuantityExclusiveParam | localeParam      | messageParam
+    200.5.kg                          | new Locale("en") | "Quantity '200.5 kg' must be strictly less than '200.5 kg'."
+    200.5.kg                          | new Locale("hr") | "Količina '200.5 kg' mora biti strogo manja od '200.5 kg'."
+    200_500.g                         | new Locale("en") | "Quantity '200500 g' must be strictly less than '200.5 kg'."
+    200_500.g                         | new Locale("hr") | "Količina '200500 g' mora biti strogo manja od '200.5 kg'."
+    201.kg                            | new Locale("en") | "Quantity '201 kg' must be strictly less than '200.5 kg'."
+    201.kg                            | new Locale("hr") | "Količina '201 kg' mora biti strogo manja od '200.5 kg'."
   }
 
   void "should validate exclusive maximum of a quantity with equal unit"() {
@@ -344,10 +342,10 @@ class QuantityMaxConstraintValidatorSpecification extends Specification {
     constraintViolations.isEmpty()
 
     where:
-    untypedMassQuantityExclusiveWithEqualUnitParam   | _
-    Quantities.getQuantity(200.49, Units.KILOGRAM)   | _
-    Quantities.getQuantity(200.4999, Units.KILOGRAM) | _
-    Quantities.getQuantity(200, Units.KILOGRAM)      | _
+    untypedMassQuantityExclusiveWithEqualUnitParam | _
+    200.49.kg                                      | _
+    200.4999.kg                                    | _
+    200.kg                                         | _
   }
 
   void 'should fail validating exclusive maximum of a quantity with unequal unit'() {
@@ -367,9 +365,9 @@ class QuantityMaxConstraintValidatorSpecification extends Specification {
 
     where:
     untypedMassQuantityExclusiveWithEqualUnitParam | localeParam      | messageParam
-    Quantities.getQuantity(200.5, Units.KILOGRAM)  | new Locale("en") | "Quantity '200.5 kg' must be strictly less than '200.5 kg'."
-    Quantities.getQuantity(200.5, Units.KILOGRAM)  | new Locale("hr") | "Količina '200.5 kg' mora biti strogo manja od '200.5 kg'."
-    Quantities.getQuantity(201, Units.KILOGRAM)    | new Locale("en") | "Quantity '201 kg' must be strictly less than '200.5 kg'."
-    Quantities.getQuantity(201, Units.KILOGRAM)    | new Locale("hr") | "Količina '201 kg' mora biti strogo manja od '200.5 kg'."
+    200.5.kg                                       | new Locale("en") | "Quantity '200.5 kg' must be strictly less than '200.5 kg'."
+    200.5.kg                                       | new Locale("hr") | "Količina '200.5 kg' mora biti strogo manja od '200.5 kg'."
+    201.kg                                         | new Locale("en") | "Quantity '201 kg' must be strictly less than '200.5 kg'."
+    201.kg                                         | new Locale("hr") | "Količina '201 kg' mora biti strogo manja od '200.5 kg'."
   }
 }

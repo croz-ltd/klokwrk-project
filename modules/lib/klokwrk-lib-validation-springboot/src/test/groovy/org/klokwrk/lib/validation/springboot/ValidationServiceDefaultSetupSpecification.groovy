@@ -22,8 +22,6 @@ import org.klokwrk.lib.validation.constraint.uom.QuantityUnitConstraint
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
@@ -55,7 +53,7 @@ class ValidationServiceDefaultSetupSpecification extends Specification {
 
   void "should not throw for valid object"() {
     given:
-    TestObject testObject = new TestObject(stringProperty: "bla", quantityOfMass: Quantities.getQuantity(10, Units.KILOGRAM))
+    TestObject testObject = new TestObject(stringProperty: "bla", quantityOfMass: 10.kg)
 
     when:
     validationService.validate(testObject)
@@ -79,6 +77,6 @@ class ValidationServiceDefaultSetupSpecification extends Specification {
     null                | null
     ""                  | null
     "bla "              | null
-    "bla"               | Quantities.getQuantity(10, Units.METRE)
+    "bla"               | 10.m
   }
 }

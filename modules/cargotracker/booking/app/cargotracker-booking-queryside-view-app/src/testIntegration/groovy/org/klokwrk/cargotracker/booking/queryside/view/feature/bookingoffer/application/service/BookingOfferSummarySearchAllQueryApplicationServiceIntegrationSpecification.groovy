@@ -41,8 +41,6 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Shared
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import javax.sql.DataSource
 import javax.validation.ConstraintViolationException
@@ -103,7 +101,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       customerType == CustomerType.STANDARD
       originLocationName == "Hamburg"
       destinationLocationName == "Rotterdam"
-      totalCommodityWeight == Quantities.getQuantity(45000, Units.KILOGRAM)
+      totalCommodityWeight == 45000.kg
       totalContainerTeuCount == 3.00G
       lastEventSequenceNumber == 0
     }
@@ -139,7 +137,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       customerType == CustomerType.STANDARD
       originLocationName == "Hamburg"
       destinationLocationName == "Rotterdam"
-      totalCommodityWeight == Quantities.getQuantity(45000, Units.KILOGRAM)
+      totalCommodityWeight == 45000.kg
       totalContainerTeuCount == 3.00G
       lastEventSequenceNumber == 0
     }
@@ -152,8 +150,8 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
             userIdentifier: "standard-customer@cargotracker.com",
             customerTypeSearchList: [CustomerType.STANDARD, CustomerType.GOLD],
             originLocationName: "Rijeka",
-            totalCommodityWeightFromIncluding: Quantities.getQuantity(5_000, Units.KILOGRAM),
-            totalCommodityWeightToIncluding: Quantities.getQuantity(50_000, Units.KILOGRAM)
+            totalCommodityWeightFromIncluding: 5_000.kg,
+            totalCommodityWeightToIncluding: 50_000.kg
         ),
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
     )
@@ -177,7 +175,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       customerType == CustomerType.STANDARD
       originLocationName == "Rijeka"
       destinationLocationName == "Los Angeles"
-      totalCommodityWeight == Quantities.getQuantity(15000, Units.KILOGRAM)
+      totalCommodityWeight == 15000.kg
       totalContainerTeuCount == 1.00G
       lastEventSequenceNumber == 0
     }
@@ -213,7 +211,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       customerType == CustomerType.STANDARD
       originLocationName == "Rijeka"
       destinationLocationName == "New York"
-      totalCommodityWeight == Quantities.getQuantity(30000, Units.KILOGRAM)
+      totalCommodityWeight == 30000.kg
       totalContainerTeuCount == 2.00G
       lastEventSequenceNumber == 0
     }

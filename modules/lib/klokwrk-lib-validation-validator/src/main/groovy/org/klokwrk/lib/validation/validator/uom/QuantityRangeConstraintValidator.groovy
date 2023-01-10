@@ -109,8 +109,8 @@ class QuantityRangeConstraintValidator implements ConstraintValidator<QuantityRa
       }
     }
 
-    ComparableQuantity convertedMinValidatedQuantity = validatedQuantity.to(minQuantityParameter.unit) as ComparableQuantity
-    ComparableQuantity convertedMaxValidatedQuantity = validatedQuantity.to(maxQuantityParameter.unit) as ComparableQuantity
+    ComparableQuantity convertedMinValidatedQuantity = validatedQuantity.toComparable(minQuantityParameter.unit)
+    ComparableQuantity convertedMaxValidatedQuantity = validatedQuantity.toComparable(maxQuantityParameter.unit)
 
     boolean isMinBoundSatisfied = minInclusiveParameter ? convertedMinValidatedQuantity.isGreaterThanOrEqualTo(minQuantityParameter) : convertedMinValidatedQuantity.isGreaterThan(minQuantityParameter)
     boolean isMaxBoundSatisfied = maxInclusiveParameter ? convertedMaxValidatedQuantity.isLessThanOrEqualTo(maxQuantityParameter) : convertedMaxValidatedQuantity.isLessThan(maxQuantityParameter)

@@ -41,8 +41,6 @@ import org.klokwrk.cargotracker.lib.boundary.api.application.operation.Operation
 import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import java.time.Duration
 import java.time.Instant
@@ -87,7 +85,7 @@ abstract class AbstractCommandRetrySchedulerIntegrationSpecification extends Abs
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
             arrivalLatestTime: Instant.now() + Duration.ofHours(2)
         ),
-        cargos: [new CargoData(commodityType: CommodityType.DRY.name(), commodityWeight: Quantities.getQuantity(1000, Units.KILOGRAM), containerDimensionType: "DIMENSION_ISO_22") ]
+        cargos: [new CargoData(commodityType: CommodityType.DRY.name(), commodityWeight: 1000.kg, containerDimensionType: "DIMENSION_ISO_22") ]
     )
     Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
 
@@ -150,7 +148,7 @@ abstract class AbstractCommandRetrySchedulerIntegrationSpecification extends Abs
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
             arrivalLatestTime: Instant.now() + Duration.ofHours(2)
         ),
-        cargos: [new CargoData(commodityType: CommodityType.DRY.name(), commodityWeight: Quantities.getQuantity(1000, Units.KILOGRAM), containerDimensionType: "DIMENSION_ISO_22")]
+        cargos: [new CargoData(commodityType: CommodityType.DRY.name(), commodityWeight: 1000.kg, containerDimensionType: "DIMENSION_ISO_22")]
     )
     Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
 

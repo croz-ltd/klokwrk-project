@@ -26,8 +26,6 @@ import org.klokwrk.cargotracker.booking.domain.model.value.CommodityFixtureBuild
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 import spock.lang.Specification
-import tech.units.indriya.quantity.Quantities
-import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
@@ -40,7 +38,7 @@ class BookingOfferCargosSpecification extends Specification {
     then:
     bookingOfferCargos.bookingOfferCargoCollection.isEmpty()
 
-    bookingOfferCargos.totalCommodityWeight == Quantities.getQuantity(0, Units.KILOGRAM)
+    bookingOfferCargos.totalCommodityWeight == 0.kg
     bookingOfferCargos.totalContainerTeuCount == 0
   }
 
@@ -118,7 +116,7 @@ class BookingOfferCargosSpecification extends Specification {
     verifyAll(consolidatedCargoFound2, {
       commodity.commodityType == cargoDry.commodity.commodityType
       commodity.requestedStorageTemperature == cargoDry.commodity.requestedStorageTemperature
-      commodity.weight == (cargoDry.commodity.weight).add(cargoToAdd2.commodity.weight)
+      commodity.weight == cargoDry.commodity.weight + cargoToAdd2.commodity.weight
 
       containerType == cargoDry.containerType
       maxAllowedWeightPerContainer == cargoDry.maxAllowedWeightPerContainer
@@ -369,24 +367,24 @@ class BookingOfferCargosSpecification extends Specification {
 
   void "calculateTotalsForCargoCollectionAddition() method should work for empty BookingOfferCargos"() {
     given:
-    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 110_000), Quantities.getQuantity(21_000, Units.KILOGRAM))
+    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 110_000), 21_000.kg)
     BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
 
     when:
     Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCargos.calculateTotalsForCargoCollectionAddition([cargo])
 
     then:
-    newTotals.v1 == Quantities.getQuantity(110_000, Units.KILOGRAM)
+    newTotals.v1 == 110_000.kg
     newTotals.v2 == 6
     bookingOfferCargos.bookingOfferCargoCollection.size() == 0
   }
 
   void "calculateTotalsForCargoCollectionAddition() method should work for non-empty BookingOfferCargos when calculating cargo of already stored commodity type"() {
     given:
-    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 110_000), Quantities.getQuantity(21_000, Units.KILOGRAM))
+    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 110_000), 21_000.kg)
     BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
     bookingOfferCargos.storeCargoCollectionAddition([cargo])
-    assert bookingOfferCargos.totalCommodityWeight == Quantities.getQuantity(110_000, Units.KILOGRAM)
+    assert bookingOfferCargos.totalCommodityWeight == 110_000.kg
     assert bookingOfferCargos.totalContainerTeuCount == 6
 
     when:
@@ -395,20 +393,20 @@ class BookingOfferCargosSpecification extends Specification {
     BigDecimal newTotalContainerTeuCount = newTotals.v2
 
     then:
-    newTotalCommodityWeight == Quantities.getQuantity(220_000, Units.KILOGRAM)
+    newTotalCommodityWeight == 220_000.kg
     newTotalContainerTeuCount == 11
     bookingOfferCargos.bookingOfferCargoCollection.size() == 1
   }
 
   void "calculateTotalsForCargoCollectionAddition() method should work for non-empty BookingOfferCargos when calculating cargo of not-already-stored commodity type"() {
     given:
-    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 110_000), Quantities.getQuantity(21_000, Units.KILOGRAM))
+    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 110_000), 21_000.kg)
     BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
     bookingOfferCargos.storeCargoCollectionAddition([cargo])
-    assert bookingOfferCargos.totalCommodityWeight == Quantities.getQuantity(110_000, Units.KILOGRAM)
+    assert bookingOfferCargos.totalCommodityWeight == 110_000.kg
     assert bookingOfferCargos.totalContainerTeuCount == 6
 
-    Cargo nonStoredCargo = Cargo.make(ContainerType.TYPE_ISO_42R1_STANDARD_REEFER, Commodity.make(CommodityType.AIR_COOLED, 110_000), Quantities.getQuantity(24_500, Units.KILOGRAM))
+    Cargo nonStoredCargo = Cargo.make(ContainerType.TYPE_ISO_42R1_STANDARD_REEFER, Commodity.make(CommodityType.AIR_COOLED, 110_000), 24_500.kg)
 
     when:
     Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCargos.calculateTotalsForCargoCollectionAddition([nonStoredCargo])
@@ -416,7 +414,7 @@ class BookingOfferCargosSpecification extends Specification {
     BigDecimal newTotalContainerTeuCount = newTotals.v2
 
     then:
-    newTotalCommodityWeight == Quantities.getQuantity(220_000, Units.KILOGRAM)
+    newTotalCommodityWeight == 220_000.kg
     newTotalContainerTeuCount == 16
     bookingOfferCargos.bookingOfferCargoCollection.size() == 1
   }
@@ -452,7 +450,7 @@ class BookingOfferCargosSpecification extends Specification {
     Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCargos.preCalculateTotalsForCargoCollectionAddition([cargo], maxAllowedTeuCountPolicy)
 
     then:
-    newTotals.v1 == Quantities.getQuantity(containerCountParam * 21_700, Units.KILOGRAM)
+    newTotals.v1 == (containerCountParam * 21_700).kg
     newTotals.v2 == containerCountParam
     bookingOfferCargos.bookingOfferCargoCollection.size() == 0
 
@@ -464,7 +462,7 @@ class BookingOfferCargosSpecification extends Specification {
 
   void "storeCargoCollectionAddition() should work for single cargo"() {
     given:
-    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
+    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 10_000 * 21_500), 21_500.kg)
     BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
 
     when:
@@ -475,7 +473,7 @@ class BookingOfferCargosSpecification extends Specification {
     bookingOfferCargos.checkCargoCollectionInvariants()
     verifyAll(bookingOfferCargos, {
       totalContainerTeuCount == 10_000
-      totalCommodityWeight == Quantities.getQuantity(10_000 * 21_500, Units.KILOGRAM)
+      totalCommodityWeight == (10_000 * 21_500).kg
       bookingOfferCargoCollection.size() == 1
       findCargoByExample(cargo).commodity.weight == cargo.commodity.weight
     })
@@ -483,8 +481,8 @@ class BookingOfferCargosSpecification extends Specification {
 
   void "storeCargoCollectionAddition() should work for multiple differentiated cargos"() {
     given:
-    Cargo cargo1 = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
-    Cargo cargo2 = Cargo.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, Commodity.make(CommodityType.AIR_COOLED, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
+    Cargo cargo1 = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 10_000 * 21_500), 21_500.kg)
+    Cargo cargo2 = Cargo.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, Commodity.make(CommodityType.AIR_COOLED, 10_000 * 21_500), 21_500.kg)
     BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
 
     when:
@@ -495,7 +493,7 @@ class BookingOfferCargosSpecification extends Specification {
     bookingOfferCargos.checkCargoCollectionInvariants()
     verifyAll(bookingOfferCargos, {
       totalContainerTeuCount == 20_000
-      totalCommodityWeight == Quantities.getQuantity(20_000 * 21_500, Units.KILOGRAM)
+      totalCommodityWeight == (20_000 * 21_500).kg
       bookingOfferCargoCollection.size() == 2
       findCargoByExample(cargo1).commodity.weight == cargo1.commodity.weight
       findCargoByExample(cargo1).containerTeuCount == cargo1.containerTeuCount
@@ -506,7 +504,7 @@ class BookingOfferCargosSpecification extends Specification {
 
   void "storeCargoCollectionAddition() should work for multiple equivalent cargos"() {
     given:
-    Cargo cargo1 = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
+    Cargo cargo1 = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 10_000 * 21_500), 21_500.kg)
     BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
 
     when:
@@ -517,7 +515,7 @@ class BookingOfferCargosSpecification extends Specification {
     bookingOfferCargos.checkCargoCollectionInvariants()
     verifyAll(bookingOfferCargos, {
       totalContainerTeuCount == 20_000
-      totalCommodityWeight == Quantities.getQuantity(20_000 * 21_500, Units.KILOGRAM)
+      totalCommodityWeight == (20_000 * 21_500).kg
       bookingOfferCargoCollection.size() == 1
       findCargoByExample(cargo1).commodity.weight == cargo1.commodity.weight * 2
       findCargoByExample(cargo1).containerTeuCount == cargo1.containerTeuCount * 2
@@ -527,8 +525,8 @@ class BookingOfferCargosSpecification extends Specification {
   @SuppressWarnings("CodeNarc.AbcMetric")
   void "storeCargoCollectionAddition() method should store multiple cargos correctly"() {
     given:
-    Cargo cargo1 = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
-    Cargo cargo2 = Cargo.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, Commodity.make(CommodityType.AIR_COOLED, 10_000 * 21_500), Quantities.getQuantity(21_500, Units.KILOGRAM))
+    Cargo cargo1 = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 10_000 * 21_500), 21_500.kg)
+    Cargo cargo2 = Cargo.make(ContainerType.TYPE_ISO_22R1_STANDARD_REEFER, Commodity.make(CommodityType.AIR_COOLED, 10_000 * 21_500), 21_500.kg)
     BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
 
     when:
@@ -539,7 +537,7 @@ class BookingOfferCargosSpecification extends Specification {
     verifyAll(bookingOfferCargos, {
       checkCargoCollectionInvariants()
       totalContainerTeuCount == 10_000
-      totalCommodityWeight == Quantities.getQuantity(10_000 * 21_500, Units.KILOGRAM)
+      totalCommodityWeight == (10_000 * 21_500).kg
       bookingOfferCargoCollection.size() == 1
       findCargoByExample(cargo1).commodity.weight == cargo1.commodity.weight
       findCargoByExample(cargo1).containerTeuCount == cargo1.containerTeuCount
@@ -554,7 +552,7 @@ class BookingOfferCargosSpecification extends Specification {
     verifyAll(bookingOfferCargos, {
       checkCargoCollectionInvariants()
       totalContainerTeuCount == 20_000
-      totalCommodityWeight == Quantities.getQuantity(20_000 * 21_500, Units.KILOGRAM)
+      totalCommodityWeight == (20_000 * 21_500).kg
       bookingOfferCargoCollection.size() == 2
       findCargoByExample(cargo1).commodity.weight == cargo1.commodity.weight
       findCargoByExample(cargo1).containerTeuCount == cargo1.containerTeuCount
@@ -571,7 +569,7 @@ class BookingOfferCargosSpecification extends Specification {
     verifyAll(bookingOfferCargos, {
       checkCargoCollectionInvariants()
       totalContainerTeuCount == 30_000
-      totalCommodityWeight == Quantities.getQuantity(30_000 * 21_500, Units.KILOGRAM)
+      totalCommodityWeight == (30_000 * 21_500).kg
       bookingOfferCargoCollection.size() == 2
       findCargoByExample(cargo1).commodity.weight == cargo1.commodity.weight * 2
       findCargoByExample(cargo1).containerTeuCount == cargo1.containerTeuCount * 2
@@ -588,7 +586,7 @@ class BookingOfferCargosSpecification extends Specification {
     verifyAll(bookingOfferCargos, {
       checkCargoCollectionInvariants()
       totalContainerTeuCount == 40_000
-      totalCommodityWeight == Quantities.getQuantity(40_000 * 21_500, Units.KILOGRAM)
+      totalCommodityWeight == (40_000 * 21_500).kg
       bookingOfferCargoCollection.size() == 2
       findCargoByExample(cargo1).commodity.weight == cargo1.commodity.weight * 2
       findCargoByExample(cargo1).containerTeuCount == cargo1.containerTeuCount * 2
