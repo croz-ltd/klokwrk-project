@@ -85,7 +85,7 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
   }
 
   void setup() {
-    mockMvc ?= webAppContextSetup(webApplicationContext).build()
+    mockMvc ?= webAppContextSetup(webApplicationContext).defaultResponseCharacterEncoding(Charset.forName("UTF-8")).build()
   }
 
   @SuppressWarnings("CodeNarc.AbcMetric")
@@ -103,10 +103,11 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
             .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
     ).andReturn()
 
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
+    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
 
     then:
     mvcResult.response.status == HttpStatus.OK.value()
+    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
     verifyAll(responseContentMap as Map) {
       verifyAll(it.metaData as Map) {
@@ -187,10 +188,11 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
             .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
     ).andReturn()
 
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.getContentAsString(Charset.forName("UTF-8")), Map)
+    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
 
     then:
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
+    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
     verifyAll(responseContentMap as Map) {
       verifyAll(it.metaData as Map) {
