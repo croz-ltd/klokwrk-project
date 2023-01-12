@@ -458,7 +458,17 @@ ruleset {
     applyToFilesMatching = TEST_FILES
     maxLines = 200
   }
-  NestedBlockDepth
+  NestedBlockDepth {
+    name = "NestedBlockDepth - main"
+    description = "For 'main' source set, verifies that the max depth of nested blocks is 5."
+    doNotApplyToFilesMatching = TEST_FILES
+  }
+  NestedBlockDepth {
+    name = "NestedBlockDepth - test"
+    description = "For all 'test*' source sets, verifies that the max depth of nested blocks is 8."
+    applyToFilesMatching = TEST_FILES
+    maxNestedBlockDepth = 8
+  }
   ParameterCount
 
   // rulesets/unnecessary.xml
