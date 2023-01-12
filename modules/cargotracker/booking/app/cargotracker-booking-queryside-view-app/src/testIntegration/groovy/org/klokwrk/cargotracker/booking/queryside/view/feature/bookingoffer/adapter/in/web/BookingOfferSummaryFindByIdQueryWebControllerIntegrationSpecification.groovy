@@ -97,50 +97,56 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     mvcResult.response.status == HttpStatus.OK.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    verifyAll(responseContentMap.metaData.general as Map) {
-      size() == 3
-
-      locale == localeString
-      severity == Severity.INFO.name().toLowerCase()
-      timestamp
-    }
-
-    verifyAll(responseContentMap.metaData.http as Map) {
+    verifyAll(responseContentMap) {
       size() == 2
 
-      message == HttpStatus.OK.reasonPhrase
-      status == HttpStatus.OK.value().toString()
-    }
+      verifyAll(it.metaData as Map) {
+        size() == 2
 
-    verifyAll(responseContentMap.payload as Map) {
-      size() == 17
+        verifyAll(it.general as Map) {
+          size() == 3
+          locale == localeString
+          severity == Severity.INFO.name().toLowerCase()
+          timestamp
+        }
 
-      bookingOfferIdentifier == myBookingOfferIdentifier
+        verifyAll(it.http as Map) {
+          size() == 2
+          message == HttpStatus.OK.reasonPhrase
+          status == HttpStatus.OK.value().toString()
+        }
+      }
 
-      customerType == "STANDARD"
+      verifyAll(it.payload as Map) {
+        size() == 17
 
-      originLocationUnLoCode == "HRRJK"
-      originLocationName == "Rijeka"
-      originLocationCountryName == "Croatia"
+        bookingOfferIdentifier == myBookingOfferIdentifier
 
-      destinationLocationUnLoCode == "NLRTM"
-      destinationLocationName == "Rotterdam"
-      destinationLocationCountryName == "Netherlands"
+        customerType == "STANDARD"
 
-      Instant.parse(departureEarliestTime as String) >= startedAt + java.time.Duration.ofHours(1)
-      Instant.parse(departureLatestTime as String) >= startedAt + java.time.Duration.ofHours(2)
-      Instant.parse(arrivalLatestTime as String) >= startedAt + java.time.Duration.ofHours(3)
+        originLocationUnLoCode == "HRRJK"
+        originLocationName == "Rijeka"
+        originLocationCountryName == "Croatia"
 
-      commodityTypes == ["DRY"]
-      totalCommodityWeight == [
-          value: 1000,
-          unitSymbol: "kg"
-      ]
-      totalContainerTeuCount == 1.00G
+        destinationLocationUnLoCode == "NLRTM"
+        destinationLocationName == "Rotterdam"
+        destinationLocationCountryName == "Netherlands"
 
-      Instant.parse(firstEventRecordedAt as String) >= startedAt
-      Instant.parse(lastEventRecordedAt as String) >= startedAt
-      lastEventSequenceNumber == 0
+        Instant.parse(departureEarliestTime as String) >= startedAt + java.time.Duration.ofHours(1)
+        Instant.parse(departureLatestTime as String) >= startedAt + java.time.Duration.ofHours(2)
+        Instant.parse(arrivalLatestTime as String) >= startedAt + java.time.Duration.ofHours(3)
+
+        commodityTypes == ["DRY"]
+        totalCommodityWeight == [
+            value: 1000,
+            unitSymbol: "kg"
+        ]
+        totalContainerTeuCount == 1.00G
+
+        Instant.parse(firstEventRecordedAt as String) >= startedAt
+        Instant.parse(lastEventRecordedAt as String) >= startedAt
+        lastEventSequenceNumber == 0
+      }
     }
 
     where:
@@ -169,41 +175,48 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    verifyAll(responseContentMap.metaData.general as Map) {
-      size() == 3
-
-      locale == localeString
-      severity == Severity.WARNING.name().toLowerCase()
-      timestamp
-    }
-
-    verifyAll(responseContentMap.metaData.http as Map) {
+    verifyAll(responseContentMap) {
       size() == 2
 
-      message == HttpStatus.BAD_REQUEST.reasonPhrase
-      status == HttpStatus.BAD_REQUEST.value().toString()
-    }
+      verifyAll(it.metaData as Map) {
+        size() == 3
 
-    verifyAll(responseContentMap.metaData.violation as Map) {
-      size() == 4
+        verifyAll(it.general as Map) {
+          size() == 3
+          locale == localeString
+          severity == Severity.WARNING.name().toLowerCase()
+          timestamp
+        }
 
-      code == HttpStatus.BAD_REQUEST.value().toString()
-      message == myViolationMessage
-      type == ViolationType.VALIDATION.name().toLowerCase()
-      validationReport != null
-    }
+        verifyAll(it.http as Map) {
+          size() == 2
+          message == HttpStatus.BAD_REQUEST.reasonPhrase
+          status == HttpStatus.BAD_REQUEST.value().toString()
+        }
 
-    verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
-      size() == 2
+        verifyAll(it.violation as Map) {
+          size() == 4
+          code == HttpStatus.BAD_REQUEST.value().toString()
+          message == myViolationMessage
+          type == ViolationType.VALIDATION.name().toLowerCase()
+          validationReport != null
 
-      root.type == "bookingOfferSummaryFindByIdQueryRequest"
-      constraintViolations.size() == 2
-      constraintViolations.find({ it.path == "bookingOfferIdentifier" }).type == "notBlank"
-      constraintViolations.find({ it.path == "userIdentifier" }).type == "notBlank"
-    }
+          verifyAll(it.validationReport as Map) {
+            size() == 2
+            root.type == "bookingOfferSummaryFindByIdQueryRequest"
 
-    verifyAll(responseContentMap.payload as Map) {
-      size() == 0
+            verifyAll(it.constraintViolations as List<Map>) {
+              size() == 2
+              it.find({ it.path == "bookingOfferIdentifier" }).type == "notBlank"
+              it.find({ it.path == "userIdentifier" }).type == "notBlank"
+            }
+          }
+        }
+      }
+
+      verifyAll(it.payload as Map) {
+        size() == 0
+      }
     }
 
     where:
@@ -233,31 +246,36 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    verifyAll(responseContentMap.metaData.general as Map) {
-      size() == 3
-
-      locale == localeString
-      severity == Severity.WARNING.name().toLowerCase()
-      timestamp
-    }
-
-    verifyAll(responseContentMap.metaData.http as Map) {
+    verifyAll(responseContentMap) {
       size() == 2
 
-      message == HttpStatus.BAD_REQUEST.reasonPhrase
-      status == HttpStatus.BAD_REQUEST.value().toString()
-    }
+      verifyAll(it.metaData as Map) {
+        size() == 3
 
-    verifyAll(responseContentMap.metaData.violation as Map) {
-      size() == 3
+        verifyAll(it.general as Map) {
+          size() == 3
+          locale == localeString
+          severity == Severity.WARNING.name().toLowerCase()
+          timestamp
+        }
 
-      code == HttpStatus.BAD_REQUEST.value().toString()
-      message == myViolationMessage
-      type == ViolationType.DOMAIN.name().toLowerCase()
-    }
+        verifyAll(it.http as Map) {
+          size() == 2
+          message == HttpStatus.BAD_REQUEST.reasonPhrase
+          status == HttpStatus.BAD_REQUEST.value().toString()
+        }
 
-    verifyAll(responseContentMap.payload as Map) {
-      size() == 0
+        verifyAll(it.violation as Map) {
+          size() == 3
+          code == HttpStatus.BAD_REQUEST.value().toString()
+          message == myViolationMessage
+          type == ViolationType.DOMAIN.name().toLowerCase()
+        }
+      }
+
+      verifyAll(it.payload as Map) {
+        size() == 0
+      }
     }
 
     where:
@@ -287,31 +305,36 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     mvcResult.response.status == HttpStatus.NOT_FOUND.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    verifyAll(responseContentMap.metaData.general as Map) {
-      size() == 3
-
-      locale == localeString
-      severity == Severity.WARNING.name().toLowerCase()
-      timestamp
-    }
-
-    verifyAll(responseContentMap.metaData.http as Map) {
+    verifyAll(responseContentMap) {
       size() == 2
 
-      message == HttpStatus.NOT_FOUND.reasonPhrase
-      status == HttpStatus.NOT_FOUND.value().toString()
-    }
+      verifyAll(it.metaData as Map) {
+        size() == 3
 
-    verifyAll(responseContentMap.metaData.violation as Map) {
-      size() == 3
+        verifyAll(it.general as Map) {
+          size() == 3
+          locale == localeString
+          severity == Severity.WARNING.name().toLowerCase()
+          timestamp
+        }
 
-      code == HttpStatus.NOT_FOUND.value().toString()
-      message == myViolationMessage
-      type == ViolationType.DOMAIN.name().toLowerCase()
-    }
+        verifyAll(it.http as Map) {
+          size() == 2
+          message == HttpStatus.NOT_FOUND.reasonPhrase
+          status == HttpStatus.NOT_FOUND.value().toString()
+        }
 
-    verifyAll(responseContentMap.payload as Map) {
-      size() == 0
+        verifyAll(it.violation as Map) {
+          size() == 3
+          code == HttpStatus.NOT_FOUND.value().toString()
+          message == myViolationMessage
+          type == ViolationType.DOMAIN.name().toLowerCase()
+        }
+      }
+
+      verifyAll(it.payload as Map) {
+        size() == 0
+      }
     }
 
     where:
@@ -341,32 +364,37 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     mvcResult.response.status == HttpStatus.METHOD_NOT_ALLOWED.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    verifyAll(responseContentMap.metaData.general as Map) {
-      size() == 3
-
-      locale == localeString
-      severity == Severity.WARNING.name().toLowerCase()
-      timestamp
-    }
-
-    verifyAll(responseContentMap.metaData.http as Map) {
+    verifyAll(responseContentMap) {
       size() == 2
 
-      message == HttpStatus.METHOD_NOT_ALLOWED.reasonPhrase
-      status == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
-    }
+      verifyAll(it.metaData as Map) {
+        size() == 3
 
-    verifyAll(responseContentMap.metaData.violation as Map) {
-      size() == 4
+        verifyAll(it.general as Map) {
+          size() == 3
+          locale == localeString
+          severity == Severity.WARNING.name().toLowerCase()
+          timestamp
+        }
 
-      code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
-      message == myViolationMessage
-      type == ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase()
-      logUuid
-    }
+        verifyAll(it.http as Map) {
+          size() == 2
+          message == HttpStatus.METHOD_NOT_ALLOWED.reasonPhrase
+          status == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
+        }
 
-    verifyAll(responseContentMap.payload as Map) {
-      size() == 0
+        verifyAll(it.violation as Map) {
+          size() == 4
+          code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
+          message == myViolationMessage
+          type == ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase()
+          logUuid
+        }
+      }
+
+      verifyAll(responseContentMap.payload as Map) {
+        size() == 0
+      }
     }
 
     where:

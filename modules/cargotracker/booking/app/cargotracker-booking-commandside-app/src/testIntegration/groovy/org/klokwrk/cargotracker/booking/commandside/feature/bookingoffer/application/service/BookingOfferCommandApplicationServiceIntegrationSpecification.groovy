@@ -71,7 +71,7 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
     Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
 
     BookingOfferCargos expectedBookingOfferCargos = new BookingOfferCargos()
-    expectedBookingOfferCargos.storeCargoCollectionAddition([Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 1000))])
+    expectedBookingOfferCargos.storeCargoCollectionAddition([Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 1000), 20615.kg)])
 
     when:
     OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommandOperationResponse =
@@ -85,7 +85,7 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
     verifyAll(createBookingOfferCommandResponsePayload) {
       bookingOfferId.identifier == myBookingOfferIdentifier
 
-      routeSpecification.with {
+      verifyAll(it.routeSpecification) {
         originLocation.name == "Rotterdam"
         destinationLocation.name == "Rijeka"
         departureEarliestTime == currentInstantRoundedAndOneHour
@@ -93,9 +93,8 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
         arrivalLatestTime == currentInstantRoundedAndThreeHours
       }
 
-      bookingOfferCargos.with {
+      verifyAll(it.bookingOfferCargos) {
         size() == 3
-
         bookingOfferCargoCollection.size() == expectedBookingOfferCargos.bookingOfferCargoCollection.size()
         bookingOfferCargoCollection.containsAll(expectedBookingOfferCargos.bookingOfferCargoCollection)
         totalCommodityWeight == 1000.kg
