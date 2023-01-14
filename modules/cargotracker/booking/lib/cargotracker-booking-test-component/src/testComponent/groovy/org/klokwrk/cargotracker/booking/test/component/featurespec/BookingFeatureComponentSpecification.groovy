@@ -22,6 +22,7 @@ import org.apache.http.HttpResponse
 import org.apache.http.client.fluent.Request
 import org.awaitility.Awaitility
 import org.klokwrk.cargotracker.booking.test.component.test.base.AbstractComponentSpecification
+import org.klokwrk.lang.groovy.misc.InstantUtils
 
 import java.time.Duration
 import java.time.Instant
@@ -119,9 +120,9 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
   void "query - bookingOfferSummary_findById - should find created booking offer: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
     given:
     Instant currentTime = Instant.now()
-    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
-    Instant departureLatestTime = currentTime + Duration.ofHours(2)
-    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
+    Instant expectedDepartureEarliestTime = InstantUtils.roundUpInstantToTheHour(currentTime + Duration.ofHours(1))
+    Instant expectedDepartureLatestTime = InstantUtils.roundUpInstantToTheHour(currentTime + Duration.ofHours(2))
+    Instant expectedArrivalLatestTime = InstantUtils.roundUpInstantToTheHour(currentTime + Duration.ofHours(3))
 
     Request commandRequest = makeRequest(makeCommandRequestUrl_createBookingOffer(commandSideApp), makeCommandRequestBody_createBookingOffer_dryCommodity(currentTime), "en")
     HttpResponse commandResponse = commandRequest.execute().returnResponse()
@@ -163,9 +164,9 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
       destinationLocationName == "Rotterdam"
       destinationLocationCountryName == "Netherlands"
 
-      Instant.parse(departureEarliestTime as String) >= currentTime + Duration.ofHours(1)
-      Instant.parse(departureLatestTime as String) >= currentTime + Duration.ofHours(2)
-      Instant.parse(arrivalLatestTime as String) >= currentTime + Duration.ofHours(3)
+      Instant.parse(departureEarliestTime as String) == expectedDepartureEarliestTime
+      Instant.parse(departureLatestTime as String) == expectedDepartureLatestTime
+      Instant.parse(arrivalLatestTime as String) == expectedArrivalLatestTime
 
       commodityTypes == ["DRY"]
       totalCommodityWeight == [

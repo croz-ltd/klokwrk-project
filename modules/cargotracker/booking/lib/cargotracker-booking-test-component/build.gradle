@@ -29,6 +29,7 @@ dependencies {
   implementation "org.apache.groovy:groovy"
 
   testComponentImplementation project(":cargotracker-booking-test-support-testcontainers")
+  testComponentImplementation project(":klokwrk-lang-groovy")
 
   testComponentImplementation "org.apache.httpcomponents:fluent-hc"
   testComponentImplementation "org.apache.httpcomponents:httpclient"
