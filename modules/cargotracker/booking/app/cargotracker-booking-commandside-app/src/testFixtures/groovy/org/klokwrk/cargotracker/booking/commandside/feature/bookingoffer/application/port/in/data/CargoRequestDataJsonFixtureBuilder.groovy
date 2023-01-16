@@ -27,6 +27,8 @@ import javax.measure.Quantity
 import javax.measure.quantity.Mass
 import javax.measure.quantity.Temperature
 
+import static org.klokwrk.lang.groovy.misc.JsonUtils.stringToJsonString
+
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic
 class CargoRequestDataJsonFixtureBuilder {
@@ -43,6 +45,27 @@ class CargoRequestDataJsonFixtureBuilder {
         .containerDimensionType(ContainerDimensionType.DIMENSION_ISO_22.name())
   }
 
+  static CargoRequestDataJsonFixtureBuilder cargoRequestData_chilled() {
+    return new CargoRequestDataJsonFixtureBuilder()
+        .commodityType(CommodityType.CHILLED.name())
+        .commodityWeight(1000.kg)
+        .containerDimensionType(ContainerDimensionType.DIMENSION_ISO_22.name())
+  }
+
+  static CargoRequestDataJsonFixtureBuilder cargoRequestData_airCooled() {
+    return new CargoRequestDataJsonFixtureBuilder()
+        .commodityType(CommodityType.AIR_COOLED.name())
+        .commodityWeight(1000.kg)
+        .containerDimensionType(ContainerDimensionType.DIMENSION_ISO_22.name())
+  }
+
+  static CargoRequestDataJsonFixtureBuilder cargoRequestData_frozen() {
+    return new CargoRequestDataJsonFixtureBuilder()
+        .commodityType(CommodityType.FROZEN.name())
+        .commodityWeight(1000.kg)
+        .containerDimensionType(ContainerDimensionType.DIMENSION_ISO_22.name())
+  }
+
   String commodityType
   Quantity<Mass> commodityWeight
   Quantity<Temperature> commodityRequestedStorageTemperature
@@ -51,16 +74,29 @@ class CargoRequestDataJsonFixtureBuilder {
   Map<String, ?> buildAsMap() {
     Map<String, ?> mapToReturn = [
         commodityType: commodityType,
-        commodityWeight: quantityToMap(commodityWeight),
-        commodityRequestedStorageTemperature: quantityToMap(commodityRequestedStorageTemperature),
+        commodityWeight: quantityToJsonMap(commodityWeight),
+        commodityRequestedStorageTemperature: quantityToJsonMap(commodityRequestedStorageTemperature),
         containerDimensionType: containerDimensionType
     ]
 
     return mapToReturn
   }
 
+  String buildAsJsonString() {
+    String stringToReturn = """
+        {
+            "commodityType": ${ stringToJsonString(commodityType) },
+            "commodityWeight": ${ quantityToJsonString(commodityWeight) },
+            "commodityRequestedStorageTemperature": ${ quantityToJsonString(commodityRequestedStorageTemperature) },
+            "containerDimensionType": ${ stringToJsonString(containerDimensionType) }
+        }
+        """
+
+    return stringToReturn
+  }
+
   @SuppressWarnings("CodeNarc.ReturnsNullInsteadOfEmptyCollection")
-  protected Map<String, ?> quantityToMap(Quantity quantity) {
+  protected Map<String, ?> quantityToJsonMap(Quantity quantity) {
     if (quantity == null) {
       return null
     }
@@ -69,5 +105,18 @@ class CargoRequestDataJsonFixtureBuilder {
         value: quantity.value,
         unitSymbol: quantity.unit.toString()
     ]
+  }
+
+  protected String quantityToJsonString(Quantity quantity) {
+    if (quantity == null) {
+      return null
+    }
+
+    return """
+        {
+            "value": $quantity.value,
+            "unitSymbol": "$quantity.unit"
+        }
+    """
   }
 }

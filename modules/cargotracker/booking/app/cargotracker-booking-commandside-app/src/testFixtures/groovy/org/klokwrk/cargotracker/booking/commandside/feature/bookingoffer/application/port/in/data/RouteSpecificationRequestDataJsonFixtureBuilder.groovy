@@ -24,9 +24,22 @@ import groovy.transform.builder.SimpleStrategy
 import java.time.Duration
 import java.time.Instant
 
+import static org.klokwrk.lang.groovy.misc.JsonUtils.stringToJsonString
+
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic
 class RouteSpecificationRequestDataJsonFixtureBuilder {
+  static RouteSpecificationRequestDataJsonFixtureBuilder routeSpecificationRequestData_base(Instant currentTime = Instant.now()) {
+    assert currentTime != null
+
+    RouteSpecificationRequestDataJsonFixtureBuilder jsonFixtureBuilder = new RouteSpecificationRequestDataJsonFixtureBuilder()
+        .departureEarliestTime(currentTime + Duration.ofHours(1))
+        .departureLatestTime(currentTime + Duration.ofHours(2))
+        .arrivalLatestTime(currentTime + Duration.ofHours(3))
+
+    return jsonFixtureBuilder
+  }
+
   static RouteSpecificationRequestDataJsonFixtureBuilder routeSpecificationRequestData_rijekaToRotterdam(Instant currentTime = Instant.now()) {
     assert currentTime != null
 
@@ -63,6 +76,36 @@ class RouteSpecificationRequestDataJsonFixtureBuilder {
   Instant currentTime
 
   Map<String, ?> buildAsMap() {
+    Map timesToUse = timesToUse(currentTime)
+
+    Map<String, ?> mapToReturn = [
+        originLocation: originLocation,
+        destinationLocation: destinationLocation,
+        departureEarliestTime: timesToUse.departureEarliestTimeToUse,
+        departureLatestTime: timesToUse.departureLatestTimeToUse,
+        arrivalLatestTime: timesToUse.arrivalEarliestTimeToUse
+    ]
+
+    return mapToReturn
+  }
+
+  String buildAsJsonString() {
+    Map timesToUse = timesToUse(currentTime)
+
+    String stringToReturn = """
+        {
+            "originLocation": ${ stringToJsonString(originLocation) },
+            "destinationLocation": ${ stringToJsonString(destinationLocation) },
+            "departureEarliestTime": "$timesToUse.departureEarliestTimeToUse",
+            "departureLatestTime": "$timesToUse.departureLatestTimeToUse",
+            "arrivalLatestTime": "$timesToUse.arrivalEarliestTimeToUse"
+        }
+        """
+
+    return stringToReturn
+  }
+
+  Map<String, Instant> timesToUse(Instant currentTime) {
     Instant departureEarliestTimeToUse = departureEarliestTime
     Instant departureLatestTimeToUse = departureLatestTime
     Instant arrivalEarliestTimeToUse = arrivalLatestTime
@@ -73,14 +116,12 @@ class RouteSpecificationRequestDataJsonFixtureBuilder {
       arrivalEarliestTimeToUse ?= currentTime + Duration.ofHours(3)
     }
 
-    Map<String, ?> mapToReturn = [
-        originLocation: originLocation,
-        destinationLocation: destinationLocation,
-        departureEarliestTime: departureEarliestTimeToUse,
-        departureLatestTime: departureLatestTimeToUse,
-        arrivalLatestTime: arrivalEarliestTimeToUse
+    Map<String, Instant> timesToUseMap = [
+        departureEarliestTimeToUse: departureEarliestTimeToUse,
+        departureLatestTimeToUse: departureLatestTimeToUse,
+        arrivalEarliestTimeToUse: arrivalEarliestTimeToUse
     ]
 
-    return mapToReturn
+    return timesToUseMap
   }
 }
