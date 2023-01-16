@@ -22,8 +22,15 @@ import org.apache.http.client.fluent.Request
 import org.apache.http.entity.ContentType
 import org.testcontainers.containers.GenericContainer
 
-import java.time.Duration
 import java.time.Instant
+
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_base
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestDataJsonFixtureBuilder.cargoRequestData_airCooled
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestDataJsonFixtureBuilder.cargoRequestData_chilled
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestDataJsonFixtureBuilder.cargoRequestData_dry
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestDataJsonFixtureBuilder.cargoRequestData_frozen
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_base
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rijekaToRotterdam
 
 @CompileStatic
 class FeatureTestHelpers {
@@ -51,332 +58,54 @@ class FeatureTestHelpers {
     return bookingOfferSummaryQueryUrl
   }
 
-  static String makeCommandRequestBody_createBookingOffer_dryCommodity(Instant baseTime = Instant.now()) {
-    Instant departureEarliestTime = baseTime + Duration.ofHours(1)
-    Instant departureLatestTime = baseTime + Duration.ofHours(2)
-    Instant arrivalLatestTime = baseTime + Duration.ofHours(3)
-
-    String commandRequestBody = """
-        {
-          "userIdentifier": "standard-customer@cargotracker.com",
-          "routeSpecification": {
-            "originLocation": "HRRJK",
-            "destinationLocation": "NLRTM",
-            "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }",
-            "arrivalLatestTime": "${ arrivalLatestTime }"
-          },
-          "cargos": [
-            {
-              "commodityType": "dry",
-              "commodityWeight": {
-                "value": 1000,
-                "unitSymbol": "kg"
-              },
-              "containerDimensionType": "DIMENSION_ISO_22"
-            }
-          ]
-        }
-        """
-
-    return commandRequestBody
-  }
-
-  static String makeCommandRequestBody_createBookingOffer_chilledCommodity(Instant baseTime = Instant.now()) {
-    Instant departureEarliestTime = baseTime + Duration.ofHours(1)
-    Instant departureLatestTime = baseTime + Duration.ofHours(2)
-    Instant arrivalLatestTime = baseTime + Duration.ofHours(3)
-
-    String commandRequestBody = """
-        {
-          "userIdentifier": "standard-customer@cargotracker.com",
-          "routeSpecification": {
-            "originLocation": "HRRJK",
-            "destinationLocation": "NLRTM",
-            "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }",
-            "arrivalLatestTime": "${ arrivalLatestTime }"
-          },
-          "cargos": [
-            {
-              "commodityType": "chilled",
-              "commodityWeight": {
-                "value": 1000,
-                "unitSymbol": "kg"
-              },
-              "commodityRequestedStorageTemperature": {
-                "value": 5,
-                "unitSymbol": "°C"
-              },
-              "containerDimensionType": "DIMENSION_ISO_22"
-            }
-          ]
-        }
-        """
-
-    return commandRequestBody
-  }
-
-  static String makeCommandRequestBody_createBookingOffer_invalid() {
-    Instant currentTime = Instant.now()
-    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
-    Instant departureLatestTime = currentTime + Duration.ofHours(2)
-    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
-
-    //noinspection HttpUrlsUsage
-    String commandRequestBody = """
-        {
-          "userIdentifier": "standard-customer@cargotracker.com",
-          "routeSpecification": {
-            "originLocation": "NLRTM",
-            "destinationLocation": "HRZAG",
-            "departureEarliestTime": "${ departureEarliestTime }",
-            "departureLatestTime": "${ departureLatestTime }",
-            "arrivalLatestTime": "${ arrivalLatestTime }"
-          },
-          "cargos": [
-            {
-              "commodityType": "chilled",
-              "commodityWeight": {
-                "value": 1000,
-                "unitSymbol": "kg"
-              },
-              "commodityRequestedStorageTemperature": {
-                "value": 5,
-                "unitSymbol": "°C"
-              },
-              "containerDimensionType": "DIMENSION_ISO_22"
-            }
-          ]
-        }
-        """
-
-    return commandRequestBody
-  }
-
-  @SuppressWarnings("CodeNarc.MethodSize - test")
+  @SuppressWarnings("CodeNarc.AbcMetric")
   static List<String> makeCommandRequestBodyList_createBookingOffer() {
     Instant currentTime = Instant.now()
-    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
-    Instant departureLatestTime = currentTime + Duration.ofHours(2)
-    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
-    String departureArrivalTimesFragment = """
-        "departureEarliestTime": "${ departureEarliestTime }",
-        "departureLatestTime": "${ departureLatestTime }",
-        "arrivalLatestTime": "${ arrivalLatestTime }"
-    """
-
-    List<String> commandRequestBodyList = []
-    commandRequestBodyList << """
-        {
-          "userIdentifier": "standard-customer@cargotracker.com",
-          "routeSpecification": {
-            "originLocation": "HRRJK",
-            "destinationLocation": "NLRTM",
-            ${ departureArrivalTimesFragment }
-          },
-          "cargos": [
-            {
-              "commodityType": "dry",
-              "commodityWeight": {
-                "value": 30000,
-                "unitSymbol": "kg"
-              },
-              "containerDimensionType": "DIMENSION_ISO_22"
-            }
-          ]
-        }
-        """.toString()
-
-    commandRequestBodyList << """
-        {
-          "userIdentifier": "standard-customer@cargotracker.com",
-          "routeSpecification": {
-            "originLocation": "HRRJK",
-            "destinationLocation": "DEHAM",
-            ${ departureArrivalTimesFragment }
-          },
-          "cargos": [
-            {
-              "commodityType": "air_cooled",
-              "commodityWeight": {
-                "value": 30000,
-                "unitSymbol": "kg"
-              },
-              "containerDimensionType": "DIMENSION_ISO_22"
-            }
-          ]
-        }
-        """.toString()
-
-    commandRequestBodyList << """
-        {
-          "userIdentifier": "standard-customer@cargotracker.com",
-          "routeSpecification": {
-            "originLocation": "HRRJK",
-            "destinationLocation": "USLAX",
-            ${ departureArrivalTimesFragment }
-          },
-          "cargos": [
-            {
-              "commodityType": "chilled",
-              "commodityWeight": {
-                "value": 30000,
-                "unitSymbol": "kg"
-              },
-              "containerDimensionType": "DIMENSION_ISO_22"
-            }
-          ]
-        }
-        """.toString()
-
-    commandRequestBodyList << """
-        {
-          "userIdentifier": "standard-customer@cargotracker.com",
-          "routeSpecification": {
-            "originLocation": "HRRJK",
-            "destinationLocation": "USNYC",
-            ${ departureArrivalTimesFragment }
-          },
-          "cargos": [
-            {
-              "commodityType": "frozen",
-              "commodityWeight": {
-                "value": 30000,
-                "unitSymbol": "kg"
-              },
-              "containerDimensionType": "DIMENSION_ISO_22"
-            }
-          ]
-        }
-        """.toString()
-
-    commandRequestBodyList << """
-        {
-          "userIdentifier": "gold-customer@cargotracker.com",
-          "routeSpecification": {
-            "originLocation": "DEHAM",
-            "destinationLocation": "USLAX",
-            ${ departureArrivalTimesFragment }
-          },
-          "cargos": [
-            {
-              "commodityType": "air_cooled",
-              "commodityWeight": {
-                "value": 70000,
-                "unitSymbol": "kg"
-              },
-              "containerDimensionType": "DIMENSION_ISO_22"
-            }
-          ]
-        }
-        """.toString()
-
-    commandRequestBodyList << """
-        {
-          "userIdentifier": "platinum-customer@cargotracker.com",
-          "routeSpecification": {
-            "originLocation": "NLRTM",
-            "destinationLocation": "USNYC",
-            ${ departureArrivalTimesFragment }
-          },
-          "cargos": [
-            {
-              "commodityType": "dry",
-              "commodityWeight": {
-                "value": 40000,
-                "unitSymbol": "kg"
-              },
-              "containerDimensionType": "DIMENSION_ISO_22"
-            }
-          ]
-        }
-        """.toString()
-
-    commandRequestBodyList << """
-        {
-          "userIdentifier": "standard-customer@cargotracker.com",
-          "routeSpecification": {
-            "originLocation": "HRRJK",
-            "destinationLocation": "DEHAM",
-            ${ departureArrivalTimesFragment }
-          },
-          "cargos": [
-            {
-              "commodityType": "dry",
-              "commodityWeight": {
-                "value": 1000,
-                "unitSymbol": "kg"
-              },
-              "containerDimensionType": "DIMENSION_ISO_22"
-            }
-          ]
-        }
-        """.toString()
-
-    commandRequestBodyList << """
-        {
-          "userIdentifier": "standard-customer@cargotracker.com",
-          "routeSpecification": {
-            "originLocation": "HRRJK",
-            "destinationLocation": "USLAX",
-            ${ departureArrivalTimesFragment }
-          },
-          "cargos": [
-            {
-              "commodityType": "dry",
-              "commodityWeight": {
-                "value": 15000,
-                "unitSymbol": "kg"
-              },
-              "containerDimensionType": "DIMENSION_ISO_22"
-            }
-          ]
-        }
-        """.toString()
-
-    commandRequestBodyList << """
-        {
-          "userIdentifier": "standard-customer@cargotracker.com",
-          "routeSpecification": {
-            "originLocation": "HRRJK",
-            "destinationLocation": "USNYC",
-            ${ departureArrivalTimesFragment }
-          },
-          "cargos": [
-            {
-              "commodityType": "dry",
-              "commodityWeight": {
-                "value": 100000,
-                "unitSymbol": "kg"
-              },
-              "containerDimensionType": "DIMENSION_ISO_22"
-            }
-          ]
-        }
-        """.toString()
-
-    commandRequestBodyList << """
-        {
-          "userIdentifier": "standard-customer@cargotracker.com",
-          "routeSpecification": {
-            "originLocation": "DEHAM",
-            "destinationLocation": "NLRTM",
-            ${ departureArrivalTimesFragment }
-          },
-          "cargos": [
-            {
-              "commodityType": "dry",
-              "commodityWeight": {
-                "value": 15000,
-                "unitSymbol": "kg"
-              },
-              "containerDimensionType": "DIMENSION_ISO_22"
-            }
-          ]
-        }
-        """.toString()
+    List<String> commandRequestBodyList = [
+        createBookingOfferCommandRequest_base()
+            .routeSpecification(routeSpecificationRequestData_rijekaToRotterdam(currentTime))
+            .cargos([cargoRequestData_dry().commodityWeight(30_000.kg)])
+            .buildAsJsonString(),
+        createBookingOfferCommandRequest_base()
+            .routeSpecification(routeSpecificationRequestData_base(currentTime).originLocation("HRRJK").destinationLocation("DEHAM"))
+            .cargos([cargoRequestData_airCooled().commodityWeight(30_000.kg)])
+            .buildAsJsonString(),
+        createBookingOfferCommandRequest_base()
+            .routeSpecification(routeSpecificationRequestData_base(currentTime).originLocation("HRRJK").destinationLocation("USLAX"))
+            .cargos([cargoRequestData_chilled().commodityWeight(30_000.kg)])
+            .buildAsJsonString(),
+        createBookingOfferCommandRequest_base()
+            .routeSpecification(routeSpecificationRequestData_base(currentTime).originLocation("HRRJK").destinationLocation("USNYC"))
+            .cargos([cargoRequestData_frozen().commodityWeight(30_000.kg)])
+            .buildAsJsonString(),
+        createBookingOfferCommandRequest_base()
+            .userIdentifier("gold-customer@cargotracker.com")
+            .routeSpecification(routeSpecificationRequestData_base(currentTime).originLocation("DEHAM").destinationLocation("USLAX"))
+            .cargos([cargoRequestData_airCooled().commodityWeight(70_000.kg)])
+            .buildAsJsonString(),
+        createBookingOfferCommandRequest_base()
+            .userIdentifier("platinum-customer@cargotracker.com")
+            .routeSpecification(routeSpecificationRequestData_base(currentTime).originLocation("NLRTM").destinationLocation("USNYC"))
+            .cargos([cargoRequestData_dry().commodityWeight(40_000.kg)])
+            .buildAsJsonString(),
+        createBookingOfferCommandRequest_base()
+            .routeSpecification(routeSpecificationRequestData_base(currentTime).originLocation("HRRJK").destinationLocation("DEHAM"))
+            .cargos([cargoRequestData_dry()])
+            .buildAsJsonString(),
+        createBookingOfferCommandRequest_base()
+            .routeSpecification(routeSpecificationRequestData_base(currentTime).originLocation("HRRJK").destinationLocation("USLAX"))
+            .cargos([cargoRequestData_dry().commodityWeight(15_000.kg)])
+            .buildAsJsonString(),
+        createBookingOfferCommandRequest_base()
+            .routeSpecification(routeSpecificationRequestData_base(currentTime).originLocation("HRRJK").destinationLocation("USNYC"))
+            .cargos([cargoRequestData_dry().commodityWeight(100_000.kg)])
+            .buildAsJsonString(),
+        createBookingOfferCommandRequest_base()
+            .routeSpecification(routeSpecificationRequestData_base(currentTime).originLocation("DEHAM").destinationLocation("NLRTM"))
+            .cargos([cargoRequestData_dry().commodityWeight(15_000.kg)])
+            .buildAsJsonString()
+    ]
 
     return commandRequestBodyList
   }

@@ -30,7 +30,11 @@ dependencies {
 
   testComponentImplementation project(":cargotracker-booking-test-support-testcontainers")
   testComponentImplementation project(":klokwrk-lang-groovy")
+  testComponentImplementation project(":klokwrk-lib-uom")
 
+  testComponentImplementation testFixtures(project(":cargotracker-booking-commandside-app"))
+
+  testComponentImplementation "javax.measure:unit-api"
   testComponentImplementation "org.apache.httpcomponents:fluent-hc"
   testComponentImplementation "org.apache.httpcomponents:httpclient"
   testComponentImplementation "org.awaitility:awaitility"
@@ -40,6 +44,7 @@ dependencies {
   testComponentImplementation "org.spockframework:spock-core"
   testComponentImplementation "org.testcontainers:postgresql"
   testComponentImplementation "org.testcontainers:testcontainers"
+  testComponentImplementation "tech.units:indriya"
 
   testComponentRuntimeOnly "ch.qos.logback:logback-classic"
   testComponentRuntimeOnly "org.postgresql:postgresql"

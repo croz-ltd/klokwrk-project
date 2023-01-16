@@ -27,10 +27,11 @@ import org.klokwrk.lang.groovy.misc.InstantUtils
 import java.time.Duration
 import java.time.Instant
 
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_cargoChilled
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam_cargoChilled
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rotterdamToRijeka
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeCommandRequestBodyList_createBookingOffer
-import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeCommandRequestBody_createBookingOffer_chilledCommodity
-import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeCommandRequestBody_createBookingOffer_dryCommodity
-import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeCommandRequestBody_createBookingOffer_invalid
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeCommandRequestUrl_createBookingOffer
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeQueryRequestBody_bookingOfferSummary_findAll_standardCustomer
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeQueryRequestBody_bookingOfferSummary_findById
@@ -73,7 +74,7 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
     })
   }
 
-  void "command - createBookingOffer - should create booking offer: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
+  void "command - createBookingOffer - should create booking offer"() {
     given:
     Request commandRequest = makeRequest(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBodyParam as String, acceptLanguageHeaderParam as String)
 
@@ -90,15 +91,21 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
 
     where:
     acceptLanguageHeaderParam | commandBodyParam
-    "hr-HR"                   | makeCommandRequestBody_createBookingOffer_dryCommodity()
-    "hr-HR"                   | makeCommandRequestBody_createBookingOffer_chilledCommodity()
-    "en"                      | makeCommandRequestBody_createBookingOffer_dryCommodity()
-    "en"                      | makeCommandRequestBody_createBookingOffer_chilledCommodity()
+    "hr-HR"                   | createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry().buildAsJsonString()
+    "hr-HR"                   | createBookingOfferCommandRequest_rijekaToRotterdam_cargoChilled().buildAsJsonString()
+    "en"                      | createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry().buildAsJsonString()
+    "en"                      | createBookingOfferCommandRequest_rijekaToRotterdam_cargoChilled().buildAsJsonString()
   }
 
-  void "command - createBookingOffer - should not create booking offer for invalid command: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
+  void "command - createBookingOffer - should not create booking offer for invalid command - invalid destination location"() {
     given:
-    Request commandRequest = makeRequest(makeCommandRequestUrl_createBookingOffer(commandSideApp), makeCommandRequestBody_createBookingOffer_invalid(), acceptLanguageHeaderParam as String)
+    Request commandRequest = makeRequest(
+        makeCommandRequestUrl_createBookingOffer(commandSideApp),
+        createBookingOfferCommandRequest_cargoChilled()
+            .routeSpecification(routeSpecificationRequestData_rotterdamToRijeka().destinationLocation("HRZAG"))
+            .buildAsJsonString(),
+        acceptLanguageHeaderParam as String
+    )
 
     when:
     HttpResponse commandResponse = commandRequest.execute().returnResponse()
@@ -117,14 +124,14 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
     "en"                      | "Cargo cannot be sent from the specified origin location to the destination location."
   }
 
-  void "query - bookingOfferSummary_findById - should find created booking offer: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
+  void "query - bookingOfferSummary_findById - should find created booking offer"() {
     given:
     Instant currentTime = Instant.now()
     Instant expectedDepartureEarliestTime = InstantUtils.roundUpInstantToTheHour(currentTime + Duration.ofHours(1))
     Instant expectedDepartureLatestTime = InstantUtils.roundUpInstantToTheHour(currentTime + Duration.ofHours(2))
     Instant expectedArrivalLatestTime = InstantUtils.roundUpInstantToTheHour(currentTime + Duration.ofHours(3))
 
-    Request commandRequest = makeRequest(makeCommandRequestUrl_createBookingOffer(commandSideApp), makeCommandRequestBody_createBookingOffer_dryCommodity(currentTime), "en")
+    Request commandRequest = makeRequest(makeCommandRequestUrl_createBookingOffer(commandSideApp), createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry(currentTime).buildAsJsonString(), "en")
     HttpResponse commandResponse = commandRequest.execute().returnResponse()
     Integer commandResponseStatusCode = commandResponse.statusLine.statusCode
     assert commandResponseStatusCode == 200
@@ -187,7 +194,7 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
     "en"                      | _
   }
 
-  void "query - bookingOfferSummary_findById - should not find non-existing booking offer: [acceptLanguageHeader: #acceptLanguageHeaderParam]"() {
+  void "query - bookingOfferSummary_findById - should not find non-existing booking offer"() {
     given:
     Request queryRequest = makeRequest(
         makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), makeQueryRequestBody_bookingOfferSummary_findById(UUID.randomUUID().toString()), acceptLanguageHeaderParam as String
