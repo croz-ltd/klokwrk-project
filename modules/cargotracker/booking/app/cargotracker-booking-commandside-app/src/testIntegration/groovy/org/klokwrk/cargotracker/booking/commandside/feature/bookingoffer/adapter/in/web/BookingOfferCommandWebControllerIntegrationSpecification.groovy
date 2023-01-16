@@ -18,6 +18,8 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.adapter.in.web
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder
+import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestDataJsonFixtureBuilder
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
@@ -38,11 +40,19 @@ import java.nio.charset.Charset
 import java.time.Duration
 import java.time.Instant
 
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_cargoDry
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rotterdamToRijeka
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestDataJsonFixtureBuilder.cargoRequestData_base
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestDataJsonFixtureBuilder.cargoRequestData_dry
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rijekaToRotterdam
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rotterdamToRijeka
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
-@SuppressWarnings(["CodeNarc.AbcMetric", "CodeNarc.ClassSize"])
+@SuppressWarnings("CodeNarc.AbcMetric")
 @SpringBootTest(properties = ['axon.axonserver.servers = ${axonServerFirstInstanceUrl}'])
 @ActiveProfiles("testIntegration")
 class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
@@ -67,25 +77,10 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
     String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
-        [
-            userIdentifier: "standard-customer@cargotracker.com",
-            bookingOfferIdentifier: myBookingOfferIdentifier,
-            routeSpecification: [
-                originLocation: "NLRTM", destinationLocation: "HRRJK",
-                departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
-                arrivalLatestTime: arrivalLatestTime
-            ],
-            cargos: [
-                [
-                    commodityType: "dry",
-                    commodityWeight: [
-                        value: commodityWeightParam.value,
-                        unitSymbol: "${ commodityWeightParam.unit }"
-                    ],
-                    containerDimensionType: "DIMENSION_ISO_22"
-                ]
-            ]
-        ]
+        createBookingOfferCommandRequest_rijekaToRotterdam(currentTime)
+            .bookingOfferIdentifier(myBookingOfferIdentifier)
+            .cargos([cargoRequestData_dry().commodityWeight(commodityWeightParam)])
+            .buildAsMap()
     )
 
     when:
@@ -147,26 +142,6 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
           verifyAll(it.originLocation as Map) {
             size() == 4
-            name == "Rotterdam"
-            countryName == "Netherlands"
-
-            unLoCode
-
-            unLoCode.code
-            unLoCode.code.encoded == "NLRTM"
-
-            unLoCode.function
-            unLoCode.function.encoded == "12345---"
-
-            unLoCode.coordinates
-            unLoCode.coordinates.encoded == "5155N 00430E"
-
-            portCapabilities
-            portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
-          }
-
-          verifyAll(it.destinationLocation as Map) {
-            size() == 4
             name == "Rijeka"
             countryName == "Croatia"
 
@@ -180,6 +155,26 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
             unLoCode.function
             unLoCode.function.encoded == "1234----"
+
+            portCapabilities
+            portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
+          }
+
+          verifyAll(it.destinationLocation as Map) {
+            size() == 4
+            name == "Rotterdam"
+            countryName == "Netherlands"
+
+            unLoCode
+
+            unLoCode.code
+            unLoCode.code.encoded == "NLRTM"
+
+            unLoCode.function
+            unLoCode.function.encoded == "12345---"
+
+            unLoCode.coordinates
+            unLoCode.coordinates.encoded == "5155N 00430E"
 
             portCapabilities
             portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
@@ -242,29 +237,14 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
     String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
-        [
-            userIdentifier: "standard-customer@cargotracker.com",
-            bookingOfferIdentifier: myBookingOfferIdentifier,
-            routeSpecification: [
-                originLocation: "NLRTM", destinationLocation: "HRRJK",
-                departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
-                arrivalLatestTime: arrivalLatestTime
-            ],
-            cargos: [
-                [
-                    commodityType: "${ commodityTypeParam.name().toLowerCase() }",
-                    commodityWeight: [
-                        value: 1000,
-                        unitSymbol: "kg"
-                    ],
-                    commodityRequestedStorageTemperature: [
-                        value: commodityRequestedStorageTemperatureParam.value,
-                        unitSymbol: "${ commodityRequestedStorageTemperatureParam.unit }"
-                    ],
-                    containerDimensionType: "DIMENSION_ISO_22"
-                ]
-            ]
-        ]
+        createBookingOfferCommandRequest_rotterdamToRijeka(currentTime)
+            .bookingOfferIdentifier(myBookingOfferIdentifier)
+            .cargos([
+                cargoRequestData_base()
+                    .commodityType("${ commodityTypeParam.name().toLowerCase() }")
+                    .commodityRequestedStorageTemperature(commodityRequestedStorageTemperatureParam)
+            ])
+            .buildAsMap()
     )
 
     when:
@@ -431,23 +411,17 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
   void "should return expected response when request is not valid - validation failure"() {
     given:
-    String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
-        [
-            userIdentifier: "standard-customer@cargotracker.com",
-            bookingOfferIdentifier: bookingOfferIdentifier,
-            routeSpecification: [originLocation: null, destinationLocation: null, departureEarliestTime: null, departureLatestTime: null, arrivalLatestTime: null],
-            cargos: [
-                [
-                    commodityType: "dry",
-                    commodityWeight: [
-                        value: 1000,
-                        unitSymbol: "kg"
-                    ],
-                    containerDimensionType: "DIMENSION_ISO_22"
-                ]
-            ]
-        ]
+        createBookingOfferCommandRequest_cargoDry()
+            .routeSpecification(
+                new RouteSpecificationRequestDataJsonFixtureBuilder()
+                    .originLocation(null)
+                    .destinationLocation(null)
+                    .departureLatestTime(null)
+                    .departureLatestTime(null)
+                    .arrivalLatestTime(null)
+            )
+            .buildAsMap()
     )
 
     when:
@@ -518,32 +492,10 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
   void "should fail when customer cannot be found - domain failure"() {
     given:
-    Instant currentTime = Instant.now()
-    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
-    Instant departureLatestTime = currentTime + Duration.ofHours(2)
-    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
-
-    String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
-        [
-            userIdentifier: "unknownUserIdentifier",
-            bookingOfferIdentifier: myBookingOfferIdentifier,
-            routeSpecification: [
-                originLocation: "NLRTM", destinationLocation: "HRRJK",
-                departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
-                arrivalLatestTime: arrivalLatestTime
-            ],
-            cargos: [
-                [
-                    commodityType: "dry",
-                    commodityWeight: [
-                        value: 1000,
-                        unitSymbol: "kg"
-                    ],
-                    containerDimensionType: "DIMENSION_ISO_22"
-                ]
-            ]
-        ]
+        createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry()
+            .userIdentifier("unknownUserIdentifier")
+            .buildAsMap()
     )
 
     when:
@@ -602,30 +554,10 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
   void "should fail when origin and destination locations are equal - domain failure"() {
     given:
-    Instant currentTime = Instant.now()
-    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
-    Instant departureLatestTime = currentTime + Duration.ofHours(2)
-    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
-
-    String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
-        [
-            userIdentifier: "standard-customer@cargotracker.com",
-            bookingOfferIdentifier: bookingOfferIdentifier,
-            routeSpecification: [
-                originLocation: "HRRJK", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
-            ],
-            cargos: [
-                [
-                    commodityType: "dry",
-                    commodityWeight: [
-                        value: 1000,
-                        unitSymbol: "kg"
-                    ],
-                    containerDimensionType: "DIMENSION_ISO_22"
-                ]
-            ]
-        ]
+        createBookingOfferCommandRequest_cargoDry()
+            .routeSpecification(routeSpecificationRequestData_rijekaToRotterdam().destinationLocation("HRRJK"))
+            .buildAsMap()
     )
 
     when:
@@ -684,30 +616,10 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
   void "should fail when cargo can not be sent to destination location - domain failure"() {
     given:
-    Instant currentTime = Instant.now()
-    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
-    Instant departureLatestTime = currentTime + Duration.ofHours(2)
-    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
-
-    String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
-        [
-            userIdentifier: "standard-customer@cargotracker.com",
-            bookingOfferIdentifier: bookingOfferIdentifier,
-            routeSpecification: [
-                originLocation: "NLRTM", destinationLocation: "HRZAG", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
-            ],
-            cargos: [
-                [
-                    commodityType: "dry",
-                    commodityWeight: [
-                        value: 1000,
-                        unitSymbol: "kg"
-                    ],
-                    containerDimensionType: "DIMENSION_ISO_22"
-                ]
-            ]
-        ]
+        createBookingOfferCommandRequest_cargoDry()
+            .routeSpecification(routeSpecificationRequestData_rotterdamToRijeka().destinationLocation("HRZAG"))
+            .buildAsMap()
     )
 
     when:
@@ -766,30 +678,10 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
   void "should fail when commodity weight is too high - domain failure"() {
     given:
-    Instant currentTime = Instant.now()
-    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
-    Instant departureLatestTime = currentTime + Duration.ofHours(2)
-    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
-
-    String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
-        [
-            userIdentifier: "standard-customer@cargotracker.com",
-            bookingOfferIdentifier: bookingOfferIdentifier,
-            routeSpecification: [
-                originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
-            ],
-            cargos: [
-                [
-                    commodityType: "dry",
-                    commodityWeight: [
-                        value: 125_000_000,
-                        unitSymbol: "kg"
-                    ],
-                    containerDimensionType: "dimension_ISO_22"
-                ]
-            ]
-        ]
+        createBookingOfferCommandRequest_rijekaToRotterdam()
+            .cargos([cargoRequestData_dry().commodityWeight(125_000_000.kg)])
+            .buildAsMap()
     )
 
     when:
@@ -848,34 +740,10 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
   void "should fail when commodity requested storage temperature is supplied but not supported for commodity type - domain failure"() {
     given:
-    Instant currentTime = Instant.now()
-    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
-    Instant departureLatestTime = currentTime + Duration.ofHours(2)
-    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
-
-    String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
-        [
-            userIdentifier: "standard-customer@cargotracker.com",
-            bookingOfferIdentifier: bookingOfferIdentifier,
-            routeSpecification: [
-                originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
-            ],
-            cargos: [
-                [
-                    commodityType: "dry",
-                    commodityWeight: [
-                        value: 1000,
-                        unitSymbol: "kg"
-                    ],
-                    commodityRequestedStorageTemperature: [
-                        value: commodityRequestedStorageTemperatureDegCParam,
-                        unitSymbol: "°C"
-                    ],
-                    containerDimensionType: "dimension_ISO_22"
-                ]
-            ]
-        ]
+        createBookingOfferCommandRequest_rotterdamToRijeka()
+            .cargos([cargoRequestData_dry().commodityRequestedStorageTemperature(1.degC)])
+            .buildAsMap()
     )
 
     when:
@@ -927,41 +795,21 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     }
 
     where:
-    acceptLanguageParam | localeStringParam | commodityRequestedStorageTemperatureDegCParam | violationMessageParam
-    "hr-HR"             | "hr_HR"           | 1                                             | "Zahtijevana temperatura skladištenja nije dozvoljena za DRY tip robe."
-    "en"                | "en"              | 1                                             | "Requested storage temperature is not supported for DRY commodity type."
+    acceptLanguageParam | localeStringParam | violationMessageParam
+    "hr-HR"             | "hr_HR"           | "Zahtijevana temperatura skladištenja nije dozvoljena za DRY tip robe."
+    "en"                | "en"              | "Requested storage temperature is not supported for DRY commodity type."
   }
 
   void "should fail when requested storage temperature is out of range - domain failure"() {
     given:
-    Instant currentTime = Instant.now()
-    Instant departureEarliestTime = currentTime + Duration.ofHours(1)
-    Instant departureLatestTime = currentTime + Duration.ofHours(2)
-    Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
-
-    String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     String webRequestBody = objectMapper.writeValueAsString(
-        [
-            userIdentifier: "standard-customer@cargotracker.com",
-            bookingOfferIdentifier: bookingOfferIdentifier,
-            routeSpecification: [
-                originLocation: "NLRTM", destinationLocation: "HRRJK", departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime, arrivalLatestTime: arrivalLatestTime
-            ],
-            cargos: [
-                [
-                    commodityType: "$commodityTypeStringParam",
-                    commodityWeight: [
-                        value: 1000,
-                        unitSymbol: "kg"
-                    ],
-                    commodityRequestedStorageTemperature: [
-                        value: commodityRequestedStorageTemperatureDegCParam,
-                        unitSymbol: "°C"
-                    ],
-                    containerDimensionType: "dimension_ISO_22"
-                ]
-            ]
-        ]
+        createBookingOfferCommandRequest_rotterdamToRijeka()
+            .cargos([
+                cargoRequestData_base()
+                    .commodityType(commodityTypeParam)
+                    .commodityRequestedStorageTemperature(commodityRequestedStorageTemperatureParam)
+            ])
+            .buildAsMap()
     )
 
     when:
@@ -1023,20 +871,20 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     "hr-HR"             | "hr_HR"
     "en"                | "en"
     ___
-    commodityTypeStringParam | commodityRequestedStorageTemperatureDegCParam | violationMessageParam
-    "air_cooled"             | 13                                            | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za zrakom hlađenu robu: [2, 12] Celzija."
-    "air_cooled"             | 1                                             | "Requested storage temperature is not in supported range for air cooled commodities: [2, 12] Celsius."
+    commodityTypeParam | commodityRequestedStorageTemperatureParam | violationMessageParam
+    "air_cooled"       | 13.degC                                   | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za zrakom hlađenu robu: [2, 12] Celzija."
+    "air_cooled"       | 1.degC                                    | "Requested storage temperature is not in supported range for air cooled commodities: [2, 12] Celsius."
 
-    "chilled"                | 7                                             | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za rashlađenu robu: [-2, 6] Celzija."
-    "chilled"                | -3                                            | "Requested storage temperature is not in supported range for chilled commodities: [-2, 6] Celsius."
+    "chilled"          | 7.degC                                    | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za rashlađenu robu: [-2, 6] Celzija."
+    "chilled"          | -3.degC                                   | "Requested storage temperature is not in supported range for chilled commodities: [-2, 6] Celsius."
 
-    "frozen"                 | -7                                            | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za smrznutu robu: [-20, -8] Celzija."
-    "frozen"                 | -21                                           | "Requested storage temperature is not in supported range for frozen commodities: [-20, -8] Celsius."
+    "frozen"           | -7.degC                                   | "Zahtijevana temperatura skladištenja nije u dozvoljenom intervalu za smrznutu robu: [-20, -8] Celzija."
+    "frozen"           | -21.degC                                  | "Requested storage temperature is not in supported range for frozen commodities: [-20, -8] Celsius."
   }
 
   void "should return expected response for a request with invalid HTTP method"() {
     given:
-    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: null, routeSpecification: null])
+    String webRequestBody = objectMapper.writeValueAsString(new CreateBookingOfferCommandRequestJsonFixtureBuilder().buildAsMap())
 
     when:
     MvcResult mvcResult = mockMvc.perform(
