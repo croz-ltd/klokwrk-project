@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in
+package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data
 
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
