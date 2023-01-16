@@ -39,13 +39,13 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 /**
- * DTO encapsulating cargo data pieces gathered from external ports/adapters.
+ * DTO encapsulating cargo data pieces gathered from inbound ports/adapters.
  */
-@GroupSequence([CargoData, Level1, Level2, Level3])
+@GroupSequence([CargoRequestData, Level1, Level2, Level3])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
-class CargoData {
+class CargoRequestData {
   /**
    * Commodity type string corresponding to the names of constants from {@link CommodityType} enum.
    * <p/>

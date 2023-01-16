@@ -73,7 +73,7 @@ class CreateBookingOfferCommandRequest {
    */
   @Valid
   @NotNull(groups = [Level1])
-  RouteSpecificationData routeSpecification
+  RouteSpecificationRequestData routeSpecification
 
   /**
    * Cargo data.
@@ -83,5 +83,5 @@ class CreateBookingOfferCommandRequest {
   @Valid
   @NotNullElementsConstraint(groups = [Level2])
   @NotEmpty(groups = [Level1])
-  Collection<CargoData> cargos
+  Collection<CargoRequestData> cargos
 }

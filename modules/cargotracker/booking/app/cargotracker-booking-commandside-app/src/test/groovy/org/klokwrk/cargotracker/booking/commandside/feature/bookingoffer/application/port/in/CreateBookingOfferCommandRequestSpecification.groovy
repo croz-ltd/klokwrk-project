@@ -40,17 +40,17 @@ import java.time.Instant
 
 class CreateBookingOfferCommandRequestSpecification extends Specification {
   static String validBookingOfferIdentifier = "00000000-0000-4000-8000-000000000000"
-  static RouteSpecificationData validRouteSpecificationData = new RouteSpecificationData(
+  static RouteSpecificationRequestData validRouteSpecificationRequestData = new RouteSpecificationRequestData(
       originLocation: "AAAAA", destinationLocation: "AAAAA",
       departureEarliestTime: Instant.now(), departureLatestTime: Instant.now(),
       arrivalLatestTime: Instant.now()
   )
-  static String validContainerDimensionTypeData = "DIMENSION_ISO_22"
-  static CargoData validCargoData = new CargoData(
+  static String validContainerDimensionTypeRequestData = "DIMENSION_ISO_22"
+  static CargoRequestData validCargoRequestData = new CargoRequestData(
       commodityType: CommodityType.DRY.name(),
-      commodityWeight: 1000.kg, commodityRequestedStorageTemperature: null, containerDimensionType: validContainerDimensionTypeData
+      commodityWeight: 1000.kg, commodityRequestedStorageTemperature: null, containerDimensionType: validContainerDimensionTypeRequestData
   )
-  static Collection<CargoData> validCargoDataCollection = [validCargoData]
+  static Collection<CargoRequestData> validCargoRequestDataCollection = [validCargoRequestData]
 
   @Shared
   ValidationService validationService
@@ -65,8 +65,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "userIdentifier",
         bookingOfferIdentifier: bookingOfferIdentifierParam,
-        routeSpecification: validRouteSpecificationData,
-        cargos: validCargoDataCollection
+        routeSpecification: validRouteSpecificationRequestData,
+        cargos: validCargoRequestDataCollection
     )
 
     when:
@@ -86,8 +86,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "userIdentifier",
         bookingOfferIdentifier: validBookingOfferIdentifier,
-        routeSpecification: validRouteSpecificationData,
-        cargos: [new CargoData(validCargoData.properties).tap({ commodityWeight = commodityWeightParam })]
+        routeSpecification: validRouteSpecificationRequestData,
+        cargos: [new CargoRequestData(validCargoRequestData.properties).tap({ commodityWeight = commodityWeightParam })]
     )
 
     when:
@@ -110,12 +110,12 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "userIdentifier",
         bookingOfferIdentifier: validBookingOfferIdentifier,
-        routeSpecification: validRouteSpecificationData,
-        cargos: [new CargoData(
+        routeSpecification: validRouteSpecificationRequestData,
+        cargos: [new CargoRequestData(
             commodityType: CommodityType.CHILLED.name(),
             commodityWeight: 1000.kg,
             commodityRequestedStorageTemperature: commodityRequestedStorageTemperatureParam,
-            containerDimensionType: validContainerDimensionTypeData
+            containerDimensionType: validContainerDimensionTypeRequestData
         )]
     )
 
@@ -143,8 +143,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: userIdentifierParam,
         bookingOfferIdentifier: validBookingOfferIdentifier,
-        routeSpecification: validRouteSpecificationData,
-        cargos: validCargoDataCollection
+        routeSpecification: validRouteSpecificationRequestData,
+        cargos: validCargoRequestDataCollection
     )
 
     when:
@@ -172,8 +172,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "userIdentifier",
         bookingOfferIdentifier: bookingOfferIdentifierParam,
-        routeSpecification: validRouteSpecificationData,
-        cargos: validCargoDataCollection
+        routeSpecification: validRouteSpecificationRequestData,
+        cargos: validCargoRequestDataCollection
     )
 
     when:
@@ -200,7 +200,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
         userIdentifier: "userIdentifier",
         bookingOfferIdentifier: validBookingOfferIdentifier,
         routeSpecification: null,
-        cargos: validCargoDataCollection
+        cargos: validCargoRequestDataCollection
     )
 
     when:
@@ -219,12 +219,12 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "userIdentifier",
         bookingOfferIdentifier: validBookingOfferIdentifier,
-        routeSpecification: new RouteSpecificationData(
+        routeSpecification: new RouteSpecificationRequestData(
             originLocation: originLocationParam, destinationLocation: destinationLocationParam,
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now(),
             arrivalLatestTime: Instant.now()
         ),
-        cargos: validCargoDataCollection
+        cargos: validCargoRequestDataCollection
     )
 
     when:
@@ -257,12 +257,12 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "userIdentifier",
         bookingOfferIdentifier: validBookingOfferIdentifier,
-        routeSpecification: new RouteSpecificationData(
+        routeSpecification: new RouteSpecificationRequestData(
             originLocation: "AAAAA", destinationLocation: "AAAAA",
             departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam,
             arrivalLatestTime: Instant.now()
         ),
-        cargos: validCargoDataCollection
+        cargos: validCargoRequestDataCollection
     )
 
     when:
@@ -286,12 +286,12 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "userIdentifier",
         bookingOfferIdentifier: validBookingOfferIdentifier,
-        routeSpecification: new RouteSpecificationData(
+        routeSpecification: new RouteSpecificationRequestData(
             originLocation: "AAAAA", destinationLocation: "AAAAA",
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now(),
             arrivalLatestTime: null
         ),
-        cargos: validCargoDataCollection
+        cargos: validCargoRequestDataCollection
     )
 
     when:
@@ -310,7 +310,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "userIdentifier",
         bookingOfferIdentifier: validBookingOfferIdentifier,
-        routeSpecification: validRouteSpecificationData,
+        routeSpecification: validRouteSpecificationRequestData,
         cargos: cargosParam
     )
 
@@ -336,8 +336,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "userIdentifier",
         bookingOfferIdentifier: validBookingOfferIdentifier,
-        routeSpecification: validRouteSpecificationData,
-        cargos: [new CargoData(validCargoData.properties).tap({ commodityType = commodityTypeParam })]
+        routeSpecification: validRouteSpecificationRequestData,
+        cargos: [new CargoRequestData(validCargoRequestData.properties).tap({ commodityType = commodityTypeParam })]
     )
 
     when:
@@ -368,8 +368,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "userIdentifier",
         bookingOfferIdentifier: validBookingOfferIdentifier,
-        routeSpecification: validRouteSpecificationData,
-        cargos: [new CargoData(validCargoData.properties).tap({ commodityWeight = commodityWeightParam })]
+        routeSpecification: validRouteSpecificationRequestData,
+        cargos: [new CargoRequestData(validCargoRequestData.properties).tap({ commodityWeight = commodityWeightParam })]
     )
 
     when:
@@ -395,13 +395,13 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "userIdentifier",
         bookingOfferIdentifier: validBookingOfferIdentifier,
-        routeSpecification: validRouteSpecificationData,
+        routeSpecification: validRouteSpecificationRequestData,
         cargos: [
-            new CargoData(
+            new CargoRequestData(
                 commodityType: CommodityType.CHILLED.name(),
                 commodityWeight: 1000.kg,
                 commodityRequestedStorageTemperature: commodityRequestedStorageTemperatureParam,
-                containerDimensionType: validContainerDimensionTypeData
+                containerDimensionType: validContainerDimensionTypeRequestData
             )
         ]
     )
@@ -429,8 +429,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "userIdentifier",
         bookingOfferIdentifier: validBookingOfferIdentifier,
-        routeSpecification: validRouteSpecificationData,
-        cargos: [new CargoData(validCargoData.properties).tap({ containerDimensionType = containerDimensionTypeParam })]
+        routeSpecification: validRouteSpecificationRequestData,
+        cargos: [new CargoRequestData(validCargoRequestData.properties).tap({ containerDimensionType = containerDimensionTypeParam })]
     )
 
     when:
