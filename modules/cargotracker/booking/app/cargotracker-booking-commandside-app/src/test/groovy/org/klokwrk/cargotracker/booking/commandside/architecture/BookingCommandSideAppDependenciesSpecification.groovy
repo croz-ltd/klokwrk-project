@@ -155,7 +155,10 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
 
     // @formatter:off
     ArchRule rule = ArchRuleDefinition
-        .classes().that().resideInAnyPackage(cargotrackerBookingCommandsideAppFeaturePackages)
+        .classes().that()
+            .resideInAnyPackage(cargotrackerBookingCommandsideAppFeaturePackages)
+            .and()
+            .haveNameNotMatching(/.*JsonFixtureBuilder$/)
         .should().onlyAccessClassesThat().resideInAnyPackage(
             cargotrackerBookingCommandsideAppFeaturePackages +
 
