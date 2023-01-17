@@ -18,11 +18,11 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.service
 
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFixtureBuilder
-import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CargoData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandPortIn
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponse
-import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.RouteSpecificationData
+import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestData
+import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestData
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferCargos
 import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
@@ -49,24 +49,24 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
   void "should work for correct request"() {
     given:
     Instant currentInstant = Instant.now()
-    Instant currentInstantAndOneHour = currentInstant + Duration.ofHours(1)
-    Instant currentInstantAndTwoHours = currentInstant + Duration.ofHours(2)
-    Instant currentInstantAndThreeHours = currentInstant + Duration.ofHours(3)
+    Instant departureEarliestTime = currentInstant + Duration.ofHours(1)
+    Instant departureLatestTime = currentInstant + Duration.ofHours(2)
+    Instant arrivalLatestTime = currentInstant + Duration.ofHours(3)
 
-    Instant currentInstantRoundedAndOneHour = InstantUtils.roundUpInstantToTheHour(currentInstantAndOneHour)
-    Instant currentInstantRoundedAndTwoHours = InstantUtils.roundUpInstantToTheHour(currentInstantAndTwoHours)
-    Instant currentInstantRoundedAndThreeHours = InstantUtils.roundUpInstantToTheHour(currentInstantAndThreeHours)
+    Instant expectedDepartureEarliestTime = InstantUtils.roundUpInstantToTheHour(departureEarliestTime)
+    Instant expectedDepartureLatestTime = InstantUtils.roundUpInstantToTheHour(departureLatestTime)
+    Instant expectedArrivalLatestTime = InstantUtils.roundUpInstantToTheHour(arrivalLatestTime)
 
     String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: myBookingOfferIdentifier,
-        routeSpecification: new RouteSpecificationData(
+        routeSpecification: new RouteSpecificationRequestData(
             originLocation: "NLRTM", destinationLocation: "HRRJK",
-            departureEarliestTime: currentInstantAndOneHour, departureLatestTime: currentInstantAndTwoHours,
-            arrivalLatestTime: currentInstantAndThreeHours
+            departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
+            arrivalLatestTime: arrivalLatestTime
         ),
-        cargos: [new CargoData(commodityType: CommodityType.DRY.name(), commodityWeight: 1000.kg, containerDimensionType: "DIMENSION_ISO_22")]
+        cargos: [new CargoRequestData(commodityType: CommodityType.DRY.name(), commodityWeight: 1000.kg, containerDimensionType: "DIMENSION_ISO_22")]
     )
     Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
 
@@ -88,9 +88,9 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
       verifyAll(it.routeSpecification) {
         originLocation.name == "Rotterdam"
         destinationLocation.name == "Rijeka"
-        departureEarliestTime == currentInstantRoundedAndOneHour
-        departureLatestTime == currentInstantRoundedAndTwoHours
-        arrivalLatestTime == currentInstantRoundedAndThreeHours
+        it.departureEarliestTime == expectedDepartureEarliestTime
+        it.departureLatestTime == expectedDepartureLatestTime
+        it.arrivalLatestTime == expectedArrivalLatestTime
       }
 
       verifyAll(it.bookingOfferCargos) {

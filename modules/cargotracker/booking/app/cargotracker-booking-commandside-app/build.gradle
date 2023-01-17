@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 plugins {
+  id "java-test-fixtures"
   id "klokwrk-gradle-plugin-convention-base"
   id "klokwrk-gradle-plugin-convention-groovy"
   id "klokwrk-gradle-plugin-convention-springboot-app"
@@ -63,6 +64,17 @@ dependencies {
 
   runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
   runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"
+
+  testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
+
+  testFixturesImplementation project(":cargotracker-booking-domain-model-value")
+  testFixturesImplementation project(":klokwrk-lang-groovy")
+  testFixturesImplementation project(":klokwrk-lib-uom")
+
+  testFixturesImplementation "javax.measure:unit-api"
+  testFixturesImplementation "org.apache.groovy:groovy"
+  testFixturesImplementation "org.apache.groovy:groovy-json"
+  testFixturesImplementation "tech.units:indriya"
 
   testImplementation project(":klokwrk-lib-archunit")
   testImplementation project(":klokwrk-lib-uom")

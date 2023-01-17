@@ -18,9 +18,9 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.service
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CargoData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponse
+import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.out.LocationByUnLoCodeQueryPortOut
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
@@ -73,14 +73,14 @@ class BookingOfferCommandFactoryService {
     Location resolvedDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(createBookingOfferCommandRequest.routeSpecification.destinationLocation)
 
     Collection<CargoCommandData> cargos = []
-    createBookingOfferCommandRequest.cargos.forEach({ CargoData cargoData ->
+    createBookingOfferCommandRequest.cargos.forEach({ CargoRequestData cargoRequestData ->
       CargoCommandData cargoCommandData = new CargoCommandData(
           commodity: Commodity.make(
-              CommodityType.valueOf(cargoData.commodityType.toUpperCase()),
-              cargoData.commodityWeight,
-              cargoData.commodityRequestedStorageTemperature
+              CommodityType.valueOf(cargoRequestData.commodityType.toUpperCase()),
+              cargoRequestData.commodityWeight,
+              cargoRequestData.commodityRequestedStorageTemperature
           ),
-          containerDimensionType: ContainerDimensionType.valueOf(cargoData.containerDimensionType.toUpperCase())
+          containerDimensionType: ContainerDimensionType.valueOf(cargoRequestData.containerDimensionType.toUpperCase())
       )
 
       cargos << cargoCommandData

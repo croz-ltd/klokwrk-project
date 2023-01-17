@@ -18,10 +18,10 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.service
 
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.adapter.out.remoting.InMemoryLocationRegistryService
-import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CargoData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponse
-import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.RouteSpecificationData
+import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestData
+import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.out.LocationByUnLoCodeQueryPortOut
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferCargos
@@ -54,15 +54,15 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
   static Instant currentInstantRoundedAndOneHour = currentInstantRounded + Duration.ofHours(1)
   static Instant currentInstantRoundedAndTwoHours = currentInstantRounded + Duration.ofHours(2)
   static Instant currentInstantRoundedAndThreeHours = currentInstantRounded + Duration.ofHours(3)
-  static RouteSpecificationData validRouteSpecificationData = new RouteSpecificationData(
+  static RouteSpecificationRequestData validRouteSpecificationRequestData = new RouteSpecificationRequestData(
       originLocation: "HRRJK", destinationLocation: "NLRTM",
       departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
       arrivalLatestTime: currentInstantRoundedAndThreeHours
   )
-  static String validContainerDimensionData = "DIMENSION_ISO_22"
-  static CargoData validCargoData = new CargoData(
+  static String validContainerDimensionRequestData = "DIMENSION_ISO_22"
+  static CargoRequestData validCargoRequestData = new CargoRequestData(
       commodityType: CommodityType.DRY.name(),
-      commodityWeight: 1000.kg, commodityRequestedStorageTemperature: null, containerDimensionType: validContainerDimensionData
+      commodityWeight: 1000.kg, commodityRequestedStorageTemperature: null, containerDimensionType: validContainerDimensionRequestData
   )
 
   BookingOfferCommandFactoryService bookingOfferCommandFactoryService
@@ -102,12 +102,12 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "standard-customer@cargotracker.com",
-        routeSpecification: new RouteSpecificationData(
+        routeSpecification: new RouteSpecificationRequestData(
             originLocation: originLocationParam, destinationLocation: destinationLocationParam,
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
             arrivalLatestTime: currentInstantRoundedAndThreeHours
         ),
-        cargos: [validCargoData]
+        cargos: [validCargoRequestData]
     )
 
     when:
@@ -132,12 +132,12 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "standard-customer@cargotracker.com",
-        routeSpecification: new RouteSpecificationData(
+        routeSpecification: new RouteSpecificationRequestData(
             originLocation: "HRRJK", destinationLocation: "NLRTM",
             departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam,
             arrivalLatestTime: currentInstantRoundedAndThreeHours
         ),
-        cargos: [validCargoData]
+        cargos: [validCargoRequestData]
     )
 
     when:
@@ -163,12 +163,12 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "standard-customer@cargotracker.com",
-        routeSpecification: new RouteSpecificationData(
+        routeSpecification: new RouteSpecificationRequestData(
             originLocation: "HRRJK", destinationLocation: "NLRTM",
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
             arrivalLatestTime: arrivalLatestTimeParam
         ),
-        cargos: [validCargoData]
+        cargos: [validCargoRequestData]
     )
 
     when:
@@ -193,8 +193,8 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "standard-customer@cargotracker.com",
-        routeSpecification: validRouteSpecificationData,
-        cargos: [validCargoData]
+        routeSpecification: validRouteSpecificationRequestData,
+        cargos: [validCargoRequestData]
     )
 
     when:
@@ -219,8 +219,8 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: bookingOfferIdentifier,
-        routeSpecification: validRouteSpecificationData,
-        cargos: [validCargoData]
+        routeSpecification: validRouteSpecificationRequestData,
+        cargos: [validCargoRequestData]
     )
 
     when:
@@ -243,8 +243,8 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userIdentifier: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: "invalid",
-        routeSpecification: validRouteSpecificationData,
-        cargos: [validCargoData]
+        routeSpecification: validRouteSpecificationRequestData,
+        cargos: [validCargoRequestData]
     )
 
     when:

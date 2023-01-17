@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in
+package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data
 
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
@@ -35,13 +35,13 @@ import javax.validation.constraints.Size
 import java.time.Instant
 
 /**
- * DTO encapsulating route specification data pieces gathered from external ports/adapters.
+ * DTO encapsulating route specification data pieces gathered from inbound ports/adapters.
  */
-@GroupSequence([RouteSpecificationData, Level1, Level2, Level3, Level4])
+@GroupSequence([RouteSpecificationRequestData, Level1, Level2, Level3, Level4])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
-class RouteSpecificationData {
+class RouteSpecificationRequestData {
   /**
    * Origin (start) location of a cargo.
    * <p/>

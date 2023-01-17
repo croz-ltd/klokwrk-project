@@ -52,8 +52,8 @@ class BookingOfferSummarySearchAllQueryRequest {
   @Null(groups = [Level1])
   String customerIdentifier
 
-  // Note: Groovy 3 does not output in bytecode the annotation of generic type (@NotNull in List<@NotNull CustomerType>). This feature is introduced in Groovy 4.
-  // TODO dmurat: revisit this once we upgrade to Groovy 4
+  // Note: Groovy 3 did not output in bytecode the annotation of generic type (@NotNull in List<@NotNull CustomerType>). This feature is introduced in Groovy 4.
+  //       Although we have upgraded to Groovy 4, we will stay on our own @NotNullElementsConstraint annotation for time being.
   @SuppressWarnings("unused")
   @NotNullElementsConstraint(groups = [Level2])
   @NotEmptyWhenNullableConstraint(groups = [Level1])

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in
+package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data
 
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
@@ -39,13 +39,13 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 /**
- * DTO encapsulating cargo data pieces gathered from external ports/adapters.
+ * DTO encapsulating cargo data pieces gathered from inbound ports/adapters.
  */
-@GroupSequence([CargoData, Level1, Level2, Level3])
+@GroupSequence([CargoRequestData, Level1, Level2, Level3])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
-class CargoData {
+class CargoRequestData {
   /**
    * Commodity type string corresponding to the names of constants from {@link CommodityType} enum.
    * <p/>
