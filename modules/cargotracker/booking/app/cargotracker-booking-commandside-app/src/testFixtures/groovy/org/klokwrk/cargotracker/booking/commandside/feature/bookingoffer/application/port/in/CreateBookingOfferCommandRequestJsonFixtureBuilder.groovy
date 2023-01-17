@@ -107,7 +107,18 @@ class CreateBookingOfferCommandRequestJsonFixtureBuilder {
   String userIdentifier
   String bookingOfferIdentifier
   RouteSpecificationRequestDataJsonFixtureBuilder routeSpecification
-  Collection<CargoRequestDataJsonFixtureBuilder> cargos
+  Collection<CargoRequestDataJsonFixtureBuilder> cargos = []
+
+  /**
+   * Adds a cargo into {@code cargos} collection.
+   * <p/>
+   * In some cases, this can be slightly more convenient then setting up whole collection at once.
+   */
+  CreateBookingOfferCommandRequestJsonFixtureBuilder cargos_add(CargoRequestDataJsonFixtureBuilder cargoRequestDataJsonFixtureBuilder) {
+    assert cargos != null
+    cargos.add(cargoRequestDataJsonFixtureBuilder)
+    return this
+  }
 
   /**
    * Builds a map suitable for converting into JSON (i.e., with Jackson).

@@ -79,7 +79,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     String webRequestBody = objectMapper.writeValueAsString(
         createBookingOfferCommandRequest_rijekaToRotterdam(currentTime)
             .bookingOfferIdentifier(myBookingOfferIdentifier)
-            .cargos([cargoRequestData_dry().commodityWeight(commodityWeightParam)])
+            .cargos_add(cargoRequestData_dry().commodityWeight(commodityWeightParam))
             .buildAsMap()
     )
 
@@ -239,11 +239,11 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     String webRequestBody = objectMapper.writeValueAsString(
         createBookingOfferCommandRequest_rotterdamToRijeka(currentTime)
             .bookingOfferIdentifier(myBookingOfferIdentifier)
-            .cargos([
+            .cargos_add(
                 cargoRequestData_base()
                     .commodityType("${ commodityTypeParam.name().toLowerCase() }")
                     .commodityRequestedStorageTemperature(commodityRequestedStorageTemperatureParam)
-            ])
+            )
             .buildAsMap()
     )
 
@@ -804,11 +804,11 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     given:
     String webRequestBody = objectMapper.writeValueAsString(
         createBookingOfferCommandRequest_rotterdamToRijeka()
-            .cargos([
+            .cargos_add(
                 cargoRequestData_base()
                     .commodityType(commodityTypeParam)
                     .commodityRequestedStorageTemperature(commodityRequestedStorageTemperatureParam)
-            ])
+            )
             .buildAsMap()
     )
 
