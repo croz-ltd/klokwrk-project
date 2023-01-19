@@ -21,8 +21,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracker.booking.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
-import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
-import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -39,6 +37,7 @@ import javax.sql.DataSource
 import java.nio.charset.Charset
 import java.time.Instant
 
+import static org.klokwrk.cargotracker.lib.test.support.web.WebResponseContentMetaDataAssertion.assertWebResponseContentHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
@@ -88,7 +87,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
     ).andReturn()
 
     Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
@@ -97,25 +96,13 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     mvcResult.response.status == HttpStatus.OK.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
+    assertWebResponseContentHasMetaDataThat(responseContentMap)
+        .isSuccessful()
+        .has_general_locale(localeStringParam)
+
     verifyAll(responseContentMap) {
       size() == 2
-
-      verifyAll(it.metaData as Map) {
-        size() == 2
-
-        verifyAll(it.general as Map) {
-          size() == 3
-          locale == localeString
-          severity == Severity.INFO.name().toLowerCase()
-          timestamp
-        }
-
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.OK.reasonPhrase
-          status == HttpStatus.OK.value().toString()
-        }
-      }
+      metaData
 
       verifyAll(it.payload as Map) {
         size() == 17
@@ -150,9 +137,9 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     }
 
     where:
-    acceptLanguage | localeString
-    "hr-HR"        | "hr_HR"
-    "en"           | "en"
+    acceptLanguageParam | localeStringParam
+    "hr-HR"             | "hr_HR"
+    "en"                | "en"
   }
 
   @SuppressWarnings("CodeNarc.AbcMetric")
@@ -166,7 +153,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
     ).andReturn()
 
     Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
@@ -175,44 +162,24 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
+    assertWebResponseContentHasMetaDataThat(responseContentMap)
+        .isViolationOfValidation()
+        .has_general_locale(localeStringParam)
+        .has_violation_message(myViolationMessageParam)
+
+    verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
+      root.type == "bookingOfferSummaryFindByIdQueryRequest"
+
+      verifyAll(constraintViolations as List<Map>) {
+        size() == 2
+        it.find({ it.path == "bookingOfferIdentifier" }).type == "notBlank"
+        it.find({ it.path == "userIdentifier" }).type == "notBlank"
+      }
+    }
+
     verifyAll(responseContentMap) {
       size() == 2
-
-      verifyAll(it.metaData as Map) {
-        size() == 3
-
-        verifyAll(it.general as Map) {
-          size() == 3
-          locale == localeString
-          severity == Severity.WARNING.name().toLowerCase()
-          timestamp
-        }
-
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.BAD_REQUEST.reasonPhrase
-          status == HttpStatus.BAD_REQUEST.value().toString()
-        }
-
-        verifyAll(it.violation as Map) {
-          size() == 4
-          code == HttpStatus.BAD_REQUEST.value().toString()
-          message == myViolationMessage
-          type == ViolationType.VALIDATION.name().toLowerCase()
-          validationReport != null
-
-          verifyAll(it.validationReport as Map) {
-            size() == 2
-            root.type == "bookingOfferSummaryFindByIdQueryRequest"
-
-            verifyAll(it.constraintViolations as List<Map>) {
-              size() == 2
-              it.find({ it.path == "bookingOfferIdentifier" }).type == "notBlank"
-              it.find({ it.path == "userIdentifier" }).type == "notBlank"
-            }
-          }
-        }
-      }
+      metaData
 
       verifyAll(it.payload as Map) {
         size() == 0
@@ -220,9 +187,9 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     }
 
     where:
-    acceptLanguage | localeString | myViolationMessage
-    "hr-HR"        | "hr_HR"      | "Zahtjev nije ispravan."
-    "en"           | "en"         | "Request is not valid."
+    acceptLanguageParam | localeStringParam | myViolationMessageParam
+    "hr-HR"             | "hr_HR"           | "Zahtjev nije ispravan."
+    "en"                | "en"              | "Request is not valid."
   }
 
   void "should return expected response when specified user can not be found - stateful validation failure"() {
@@ -237,7 +204,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
     ).andReturn()
 
     Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
@@ -246,32 +213,14 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
+    assertWebResponseContentHasMetaDataThat(responseContentMap)
+        .isViolationOfDomain_badRequest()
+        .has_general_locale(localeStringParam)
+        .has_violation_message(myViolationMessageParam)
+
     verifyAll(responseContentMap) {
       size() == 2
-
-      verifyAll(it.metaData as Map) {
-        size() == 3
-
-        verifyAll(it.general as Map) {
-          size() == 3
-          locale == localeString
-          severity == Severity.WARNING.name().toLowerCase()
-          timestamp
-        }
-
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.BAD_REQUEST.reasonPhrase
-          status == HttpStatus.BAD_REQUEST.value().toString()
-        }
-
-        verifyAll(it.violation as Map) {
-          size() == 3
-          code == HttpStatus.BAD_REQUEST.value().toString()
-          message == myViolationMessage
-          type == ViolationType.DOMAIN.name().toLowerCase()
-        }
-      }
+      metaData
 
       verifyAll(it.payload as Map) {
         size() == 0
@@ -279,9 +228,9 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     }
 
     where:
-    acceptLanguage | localeString | myViolationMessage
-    "hr-HR"        | "hr_HR"      | "Nije pronađen potrošač s korisničkim imenom 'someUserIdentifier'."
-    "en"           | "en"         | "Can't find the customer with user id 'someUserIdentifier'."
+    acceptLanguageParam | localeStringParam | myViolationMessageParam
+    "hr-HR"             | "hr_HR"           | "Nije pronađen potrošač s korisničkim imenom 'someUserIdentifier'."
+    "en"                | "en"              | "Can't find the customer with user id 'someUserIdentifier'."
   }
 
   void "should return expected response when BookingOfferSummary cannot be found - domain failure"() {
@@ -296,7 +245,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
     ).andReturn()
 
     Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
@@ -305,32 +254,14 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     mvcResult.response.status == HttpStatus.NOT_FOUND.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
+    assertWebResponseContentHasMetaDataThat(responseContentMap)
+        .isViolationOfDomain_notFound()
+        .has_general_locale(localeStringParam)
+        .has_violation_message(myViolationMessageParam)
+
     verifyAll(responseContentMap) {
       size() == 2
-
-      verifyAll(it.metaData as Map) {
-        size() == 3
-
-        verifyAll(it.general as Map) {
-          size() == 3
-          locale == localeString
-          severity == Severity.WARNING.name().toLowerCase()
-          timestamp
-        }
-
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.NOT_FOUND.reasonPhrase
-          status == HttpStatus.NOT_FOUND.value().toString()
-        }
-
-        verifyAll(it.violation as Map) {
-          size() == 3
-          code == HttpStatus.NOT_FOUND.value().toString()
-          message == myViolationMessage
-          type == ViolationType.DOMAIN.name().toLowerCase()
-        }
-      }
+      metaData
 
       verifyAll(it.payload as Map) {
         size() == 0
@@ -338,9 +269,9 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     }
 
     where:
-    acceptLanguage | localeString | myViolationMessage
-    "hr-HR"        | "hr_HR"      | "Sumarni izvještaj za željenu ponudu za rezervaciju nije pronađen."
-    "en"           | "en"         | "Summary report for specified booking offer is not found."
+    acceptLanguageParam | localeStringParam | myViolationMessageParam
+    "hr-HR"             | "hr_HR"           | "Sumarni izvještaj za željenu ponudu za rezervaciju nije pronađen."
+    "en"                | "en"              | "Summary report for specified booking offer is not found."
   }
 
   void "should return expected response for a request with invalid HTTP method"() {
@@ -355,7 +286,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
     ).andReturn()
 
     Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
@@ -364,33 +295,14 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     mvcResult.response.status == HttpStatus.METHOD_NOT_ALLOWED.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
+    assertWebResponseContentHasMetaDataThat(responseContentMap)
+        .isViolationOfInfrastructureWeb_methodNotAllowed()
+        .has_general_locale(localeStringParam)
+        .has_violation_message(myViolationMessageParam)
+
     verifyAll(responseContentMap) {
       size() == 2
-
-      verifyAll(it.metaData as Map) {
-        size() == 3
-
-        verifyAll(it.general as Map) {
-          size() == 3
-          locale == localeString
-          severity == Severity.WARNING.name().toLowerCase()
-          timestamp
-        }
-
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.METHOD_NOT_ALLOWED.reasonPhrase
-          status == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
-        }
-
-        verifyAll(it.violation as Map) {
-          size() == 4
-          code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
-          message == myViolationMessage
-          type == ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase()
-          logUuid
-        }
-      }
+      metaData
 
       verifyAll(responseContentMap.payload as Map) {
         size() == 0
@@ -398,8 +310,8 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     }
 
     where:
-    acceptLanguage | localeString | myViolationMessage
-    "hr-HR"        | "hr_HR"      | "Zahtjev nije ispravan."
-    "en"           | "en"         | "Request is not valid."
+    acceptLanguageParam | localeStringParam | myViolationMessageParam
+    "hr-HR"             | "hr_HR"           | "Zahtjev nije ispravan."
+    "en"                | "en"              | "Request is not valid."
   }
 }

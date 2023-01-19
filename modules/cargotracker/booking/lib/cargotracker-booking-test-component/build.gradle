@@ -29,6 +29,7 @@ dependencies {
   implementation "org.apache.groovy:groovy"
 
   testComponentImplementation project(":cargotracker-booking-test-support-testcontainers")
+  testComponentImplementation project(":cargotracker-lib-test-support-web")
   testComponentImplementation project(":klokwrk-lang-groovy")
   testComponentImplementation project(":klokwrk-lib-uom")
 

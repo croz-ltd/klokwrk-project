@@ -23,7 +23,6 @@ import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder
 import org.klokwrk.cargotracker.booking.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
-import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageRequirement
 import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortDirection
 import org.spockframework.spring.EnableSharedInjection
@@ -43,6 +42,7 @@ import spock.lang.Shared
 import javax.sql.DataSource
 import java.nio.charset.Charset
 
+import static org.klokwrk.cargotracker.lib.test.support.web.WebResponseContentMetaDataAssertion.assertWebResponseContentHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
@@ -100,7 +100,7 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
     ).andReturn()
 
     Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
@@ -109,23 +109,13 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
     mvcResult.response.status == HttpStatus.OK.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
+    assertWebResponseContentHasMetaDataThat(responseContentMap)
+        .isSuccessful()
+        .has_general_locale(localeStringParam)
+
     verifyAll(responseContentMap as Map) {
-      verifyAll(it.metaData as Map) {
-        size() == 2
-
-        verifyAll(it.general as Map) {
-          size() == 3
-          locale == localeString
-          severity == Severity.INFO.name().toLowerCase()
-          timestamp
-        }
-
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.OK.reasonPhrase
-          status == HttpStatus.OK.value().toString()
-        }
-      }
+      size() == 2
+      metaData
 
       verifyAll(it.payload as Map) {
         size() == 2
@@ -164,9 +154,9 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
     }
 
     where:
-    acceptLanguage | localeString
-    "hr-HR"        | "hr_HR"
-    "en"           | "en"
+    acceptLanguageParam | localeStringParam
+    "hr-HR"             | "hr_HR"
+    "en"                | "en"
   }
 
   void "should fail for invalid property name in sort requirements"() {
@@ -185,7 +175,7 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
     ).andReturn()
 
     Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
@@ -194,37 +184,23 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    verifyAll(responseContentMap as Map) {
-      verifyAll(it.metaData as Map) {
-        size() == 3
+    assertWebResponseContentHasMetaDataThat(responseContentMap)
+        .isViolationOfDomain_badRequest()
+        .has_general_locale(localeStringParam)
+        .has_violation_message(messageParam)
 
-        verifyAll(it.general as Map) {
-          size() == 3
-          locale == localeString
-          severity == Severity.WARNING.name().toLowerCase()
-          timestamp
-        }
+    verifyAll(responseContentMap) {
+      size() == 2
+      metaData
 
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.BAD_REQUEST.reasonPhrase
-          status == "${ HttpStatus.BAD_REQUEST.value() }"
-        }
-
-        verifyAll(it.violation as Map) {
-          size() == 3
-          code == "${ HttpStatus.BAD_REQUEST.value() }"
-          type == "domain"
-          message == messageParam
-        }
+      verifyAll(it.payload as Map) {
+        size() == 0
       }
-
-      (payload as Map).size() == 0
     }
 
     where:
-    acceptLanguage | localeString | messageParam
-    "hr-HR"        | "hr_HR"      | "Nije moguće sortirati po podatku s nazivom 'nonExistingProperty'. Naziv ne postoji."
-    "en"           | "en"         | "Can't sort by property with name 'nonExistingProperty'. Property name does not exist."
+    acceptLanguageParam | localeStringParam | messageParam
+    "hr-HR"             | "hr_HR"           | "Nije moguće sortirati po podatku s nazivom 'nonExistingProperty'. Naziv ne postoji."
+    "en"                | "en"              | "Can't sort by property with name 'nonExistingProperty'. Property name does not exist."
   }
 }

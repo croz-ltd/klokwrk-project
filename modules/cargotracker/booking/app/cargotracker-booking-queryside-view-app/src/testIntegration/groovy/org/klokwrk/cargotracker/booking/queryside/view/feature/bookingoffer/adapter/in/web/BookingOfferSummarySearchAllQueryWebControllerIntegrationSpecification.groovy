@@ -40,6 +40,7 @@ import spock.lang.Shared
 import javax.sql.DataSource
 import java.nio.charset.Charset
 
+import static org.klokwrk.cargotracker.lib.test.support.web.WebResponseContentMetaDataAssertion.assertWebResponseContentHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
@@ -90,8 +91,8 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
         customerTypeSearchList: [CustomerType.STANDARD, CustomerType.GOLD],
         originLocationName: "Rijeka",
         totalCommodityWeightFromIncluding: [
-          value: 5_000,
-          unitSymbol: "kg"
+            value: 5_000,
+            unitSymbol: "kg"
         ],
         totalCommodityWeightToIncluding: [
             value: 50_000,
@@ -106,7 +107,7 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
     ).andReturn()
 
     Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
@@ -115,16 +116,13 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
     mvcResult.response.status == HttpStatus.OK.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    SortDirection.DESC.name()
+    assertWebResponseContentHasMetaDataThat(responseContentMap)
+        .isSuccessful()
+        .has_general_locale(localeStringParam)
+
     verifyAll(responseContentMap as Map) {
-      verifyAll(it.metaData as Map) {
-        verifyAll(it.general as Map) {
-          size() == 3
-        }
-        verifyAll(it.http as Map) {
-          size() == 2
-        }
-      }
+      size() == 2
+      metaData
 
       verifyAll(it.payload as Map) {
         verifyAll(it.pageInfo as Map) {
@@ -159,9 +157,9 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
     }
 
     where:
-    acceptLanguage | localeString
-    "hr-HR"        | "hr_HR"
-    "en"           | "en"
+    acceptLanguageParam | localeStringParam
+    "hr-HR"             | "hr_HR"
+    "en"                | "en"
   }
 
   void "should fail for invalid property name in sort requirements"() {
@@ -181,7 +179,7 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
     ).andReturn()
 
     Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
@@ -190,37 +188,23 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    verifyAll(responseContentMap as Map) {
-      verifyAll(it.metaData as Map) {
-        size() == 3
+    assertWebResponseContentHasMetaDataThat(responseContentMap)
+        .isViolationOfDomain_badRequest()
+        .has_general_locale(localeStringParam)
+        .has_violation_message(messageParam)
 
-        verifyAll(it.general as Map) {
-          size() == 3
-          locale == localeString
-          severity == org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity.WARNING.name().toLowerCase()
-          timestamp
-        }
+    verifyAll(responseContentMap) {
+      size() == 2
+      metaData
 
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.BAD_REQUEST.reasonPhrase
-          status == "${ HttpStatus.BAD_REQUEST.value() }"
-        }
-
-        verifyAll(it.violation as Map) {
-          size() == 3
-          code == "${ HttpStatus.BAD_REQUEST.value() }"
-          type == "domain"
-          message == messageParam
-        }
+      verifyAll(it.payload as Map) {
+        size() == 0
       }
-
-      (payload as Map).size() == 0
     }
 
     where:
-    acceptLanguage | localeString | messageParam
-    "hr-HR"        | "hr_HR"      | "Nije moguće sortirati po podatku s nazivom 'nonExistingProperty'. Naziv ne postoji."
-    "en"           | "en"         | "Can't sort by property with name 'nonExistingProperty'. Property name does not exist."
+    acceptLanguageParam | localeStringParam | messageParam
+    "hr-HR"             | "hr_HR"           | "Nije moguće sortirati po podatku s nazivom 'nonExistingProperty'. Naziv ne postoji."
+    "en"                | "en"              | "Can't sort by property with name 'nonExistingProperty'. Property name does not exist."
   }
 }

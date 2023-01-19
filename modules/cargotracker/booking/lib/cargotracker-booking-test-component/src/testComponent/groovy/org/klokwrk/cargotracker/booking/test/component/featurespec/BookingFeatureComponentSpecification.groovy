@@ -40,6 +40,7 @@ import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureT
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeQueryRequestUrl_bookingOfferSummary_findById
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeQueryRequestUrl_bookingOfferSummary_searchAll
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeRequest
+import static org.klokwrk.cargotracker.lib.test.support.web.WebResponseContentMetaDataAssertion.assertWebResponseContentHasMetaDataThat
 
 class BookingFeatureComponentSpecification extends AbstractComponentSpecification {
   @SuppressWarnings("CodeNarc.PropertyName")
@@ -76,25 +77,43 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
 
   void "command - createBookingOffer - should create booking offer"() {
     given:
-    Request commandRequest = makeRequest(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBodyParam as String, acceptLanguageHeaderParam as String)
+    Request commandRequest = makeRequest(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBodyParam as String, acceptLanguageParam as String)
 
     when:
     HttpResponse commandResponse = commandRequest.execute().returnResponse()
-    Integer commandResponseStatusCode = commandResponse.statusLine.statusCode
-
-    Object commandResponseJson = new JsonSlurper().parseText(commandResponse.entity.content.text)
-    String commandResponseBookingOfferIdentifier = commandResponseJson.payload.bookingOfferId.identifier
+    Map commandResponseContentMap = new JsonSlurper().parseText(commandResponse.entity.content.text) as Map
 
     then:
-    commandResponseStatusCode == 200
-    commandResponseBookingOfferIdentifier
+    commandResponse.statusLine.statusCode == 200
+
+    assertWebResponseContentHasMetaDataThat(commandResponseContentMap)
+        .isSuccessful()
+        .has_general_locale(localeStringParam)
+
+    verifyAll(commandResponseContentMap) {
+      size() == 2
+      metaData
+
+      verifyAll(it.payload as Map) {
+        size() == 4
+        bookingOfferId
+        customer
+        routeSpecification
+        bookingOfferCargos
+
+        verifyAll(it.bookingOfferId as Map) {
+          size() == 1
+          identifier
+        }
+      }
+    }
 
     where:
-    acceptLanguageHeaderParam | commandBodyParam
-    "hr-HR"                   | createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry().buildAsJsonString()
-    "hr-HR"                   | createBookingOfferCommandRequest_rijekaToRotterdam_cargoChilled().buildAsJsonString()
-    "en"                      | createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry().buildAsJsonString()
-    "en"                      | createBookingOfferCommandRequest_rijekaToRotterdam_cargoChilled().buildAsJsonString()
+    acceptLanguageParam | localeStringParam | commandBodyParam
+    "hr-HR"             | "hr_HR"           | createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry().buildAsJsonString()
+    "hr-HR"             | "hr_HR"           | createBookingOfferCommandRequest_rijekaToRotterdam_cargoChilled().buildAsJsonString()
+    "en"                | "en"              | createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry().buildAsJsonString()
+    "en"                | "en"              | createBookingOfferCommandRequest_rijekaToRotterdam_cargoChilled().buildAsJsonString()
   }
 
   void "command - createBookingOffer - should not create booking offer for invalid command - invalid destination location"() {
@@ -104,24 +123,34 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
         createBookingOfferCommandRequest_cargoChilled()
             .routeSpecification(routeSpecificationRequestData_rotterdamToRijeka().destinationLocation("HRZAG"))
             .buildAsJsonString(),
-        acceptLanguageHeaderParam as String
+        acceptLanguageParam as String
     )
 
     when:
     HttpResponse commandResponse = commandRequest.execute().returnResponse()
-    Integer commandResponseStatusCode = commandResponse.statusLine.statusCode
-
-    Object commandResponseJson = new JsonSlurper().parseText(commandResponse.entity.content.text)
+    Map commandResponseContentMap = new JsonSlurper().parseText(commandResponse.entity.content.text) as Map
 
     then:
-    commandResponseStatusCode == 400
-    commandResponseJson.metaData.violation.message == violationMessageParam
-    commandResponseJson.payload.isEmpty()
+    commandResponse.statusLine.statusCode == 400
+
+    assertWebResponseContentHasMetaDataThat(commandResponseContentMap)
+        .isViolationOfDomain_badRequest()
+        .has_general_locale(localeStringParam)
+        .has_violation_message(violationMessageParam)
+
+    verifyAll(commandResponseContentMap) {
+      size() == 2
+      metaData
+
+      verifyAll(it.payload as Map) {
+        size() == 0
+      }
+    }
 
     where:
-    acceptLanguageHeaderParam | violationMessageParam
-    "hr-HR"                   | "Teret nije moguće poslati sa navedene početne lokacije na navedenu ciljnu lokaciju."
-    "en"                      | "Cargo cannot be sent from the specified origin location to the destination location."
+    acceptLanguageParam | localeStringParam | violationMessageParam
+    "hr-HR"             | "hr_HR"           | "Teret nije moguće poslati sa navedene početne lokacije na navedenu ciljnu lokaciju."
+    "en"                | "en"              | "Cargo cannot be sent from the specified origin location to the destination location."
   }
 
   void "query - bookingOfferSummary_findById - should find created booking offer"() {
@@ -133,8 +162,7 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
 
     Request commandRequest = makeRequest(makeCommandRequestUrl_createBookingOffer(commandSideApp), createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry(currentTime).buildAsJsonString(), "en")
     HttpResponse commandResponse = commandRequest.execute().returnResponse()
-    Integer commandResponseStatusCode = commandResponse.statusLine.statusCode
-    assert commandResponseStatusCode == 200
+    assert commandResponse.statusLine.statusCode == 200
 
     Object commandResponseJson = new JsonSlurper().parseText(commandResponse.entity.content.text)
     String commandResponseBookingOfferIdentifier = commandResponseJson.payload.bookingOfferId.identifier
@@ -143,7 +171,7 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
     when:
     Request queryRequest = makeRequest(
         makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), makeQueryRequestBody_bookingOfferSummary_findById(commandResponseBookingOfferIdentifier),
-        acceptLanguageHeaderParam as String
+        acceptLanguageParam as String
     )
 
     HttpResponse queryResponse = null
@@ -153,10 +181,14 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
       queryResponseStatusCode == 200
     })
 
-    Object queryResponseJson = new JsonSlurper().parseText(queryResponse.entity.content.text)
+    Map queryResponseContentMap = new JsonSlurper().parseText(queryResponse.entity.content.text) as Map
 
     then:
-    verifyAll(queryResponseJson.payload as Map, {
+    assertWebResponseContentHasMetaDataThat(queryResponseContentMap)
+        .isSuccessful()
+        .has_general_locale(localeStringParam)
+
+    verifyAll(queryResponseContentMap.payload as Map) {
       size() == 17
 
       bookingOfferIdentifier == commandResponseBookingOfferIdentifier
@@ -186,34 +218,45 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
       Instant.parse(firstEventRecordedAt as String) > currentTime
       Instant.parse(lastEventRecordedAt as String) > currentTime
       lastEventSequenceNumber == 0
-    })
+    }
 
     where:
-    acceptLanguageHeaderParam | _
-    "hr-HR"                   | _
-    "en"                      | _
+    acceptLanguageParam | localeStringParam
+    "hr-HR"             | "hr_HR"
+    "en"                | "en"
   }
 
   void "query - bookingOfferSummary_findById - should not find non-existing booking offer"() {
     given:
     Request queryRequest = makeRequest(
-        makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), makeQueryRequestBody_bookingOfferSummary_findById(UUID.randomUUID().toString()), acceptLanguageHeaderParam as String
+        makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), makeQueryRequestBody_bookingOfferSummary_findById(UUID.randomUUID().toString()), acceptLanguageParam as String
     )
 
     when:
     HttpResponse queryResponse = queryRequest.execute().returnResponse()
-    Integer queryResponseStatusCode = queryResponse.statusLine.statusCode
-    Object queryResponseJson = new JsonSlurper().parseText(queryResponse.entity.content.text)
+    Map queryResponseContentMap = new JsonSlurper().parseText(queryResponse.entity.content.text) as Map
 
     then:
-    queryResponseStatusCode == 404
-    queryResponseJson.payload.isEmpty()
-    queryResponseJson.metaData.violation.message == violationMessageParam
+    queryResponse.statusLine.statusCode == 404
+
+    assertWebResponseContentHasMetaDataThat(queryResponseContentMap)
+        .isViolationOfDomain_notFound()
+        .has_general_locale(localeStringParam)
+        .has_violation_message(violationMessageParam)
+
+    verifyAll(queryResponseContentMap) {
+      size() == 2
+      metaData
+
+      verifyAll(it.payload as Map) {
+        size() == 0
+      }
+    }
 
     where:
-    acceptLanguageHeaderParam | violationMessageParam
-    "hr-HR"                   | "Sumarni izvještaj za željenu ponudu za rezervaciju nije pronađen."
-    "en"                      | "Summary report for specified booking offer is not found."
+    acceptLanguageParam | localeStringParam | violationMessageParam
+    "hr-HR"             | "hr_HR"           | "Sumarni izvještaj za željenu ponudu za rezervaciju nije pronađen."
+    "en"                | "en"              | "Summary report for specified booking offer is not found."
   }
 
   void "query - bookingOfferSummary_findAll - should find existing booking offers with default paging and sorting"() {
@@ -222,30 +265,16 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
 
     when:
     HttpResponse queryResponse = queryRequest.execute().returnResponse()
-    Integer queryResponseStatusCode = queryResponse.statusLine.statusCode
-    assert queryResponseStatusCode == 200
-
-    Map queryResponseJson = new JsonSlurper().parseText(queryResponse.entity.content.text) as Map
+    Map queryResponseContentMap = new JsonSlurper().parseText(queryResponse.entity.content.text) as Map
 
     then:
-    verifyAll(queryResponseJson.metaData as Map) {
-      size() == 2
+    queryResponse.statusLine.statusCode == 200
 
-      verifyAll(general as Map) {
-        size() == 3
-        locale == "en"
-        severity == "info"
-        timestamp
-      }
+    assertWebResponseContentHasMetaDataThat(queryResponseContentMap)
+        .isSuccessful()
+        .has_general_locale("en")
 
-      verifyAll(http as Map) {
-        size() == 2
-        message == "OK"
-        status == "200"
-      }
-    }
-
-    verifyAll(queryResponseJson.payload as Map, {
+    verifyAll(queryResponseContentMap.payload as Map) {
       size() == 2
 
       verifyAll(pageInfo as Map, {
@@ -272,7 +301,7 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
         it.every({ Map pageElement -> pageElement.customerType == "STANDARD" })
         it.every({ Map pageElement -> pageElement.lastEventSequenceNumber == 0 })
       })
-    })
+    }
   }
 
   void "query - bookingOfferSummary_searchAll - should find existing booking offers with default paging and sorting"() {
@@ -281,30 +310,16 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
 
     when:
     HttpResponse queryResponse = queryRequest.execute().returnResponse()
-    Integer queryResponseStatusCode = queryResponse.statusLine.statusCode
-    assert queryResponseStatusCode == 200
-
-    Map queryResponseJson = new JsonSlurper().parseText(queryResponse.entity.content.text) as Map
+    Map queryResponseContentMap = new JsonSlurper().parseText(queryResponse.entity.content.text) as Map
 
     then:
-    verifyAll(queryResponseJson.metaData as Map) {
-      size() == 2
+    queryResponse.statusLine.statusCode == 200
 
-      verifyAll(general as Map) {
-        size() == 3
-        locale == "en"
-        severity == "info"
-        timestamp
-      }
+    assertWebResponseContentHasMetaDataThat(queryResponseContentMap)
+        .isSuccessful()
+        .has_general_locale("en")
 
-      verifyAll(http as Map) {
-        size() == 2
-        message == "OK"
-        status == "200"
-      }
-    }
-
-    verifyAll(queryResponseJson.payload as Map, {
+    verifyAll(queryResponseContentMap.payload as Map) {
       size() == 2
 
       verifyAll(pageInfo as Map, {
@@ -332,6 +347,6 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
         it.every({ Map pageElement -> pageElement.totalCommodityWeight["value"] >= 15000 && pageElement.totalCommodityWeight["value"] <= 100000 })
         it.every({ Map pageElement -> pageElement.lastEventSequenceNumber == 0 })
       })
-    })
+    }
   }
 }

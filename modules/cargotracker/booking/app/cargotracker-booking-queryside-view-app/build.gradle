@@ -71,6 +71,7 @@ dependencies {
   testIntegrationImplementation project(":cargotracker-booking-test-support-queryside")
   testIntegrationImplementation project(":cargotracker-booking-test-support-testcontainers")
   testIntegrationImplementation project(":cargotracker-lib-domain-model-event")
+  testIntegrationImplementation project(":cargotracker-lib-test-support-web")
   testIntegrationImplementation project(":klokwrk-lib-uom")
 
   testIntegrationImplementation testFixtures(project(":cargotracker-booking-boundary-web"))
