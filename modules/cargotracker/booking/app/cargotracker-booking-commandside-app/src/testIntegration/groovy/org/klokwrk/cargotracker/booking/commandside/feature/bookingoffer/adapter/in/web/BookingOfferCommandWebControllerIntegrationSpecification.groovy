@@ -42,6 +42,7 @@ import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rotterdamToRijeka
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponseWebContentPayloadAssertion.assertWebResponseContentHasPayloadThat
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestDataJsonFixtureBuilder.cargoRequestData_base
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestDataJsonFixtureBuilder.cargoRequestData_dry
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rijekaToRotterdam
@@ -469,14 +470,8 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
       }
     }
 
-    verifyAll(responseContentMap) {
-      size() == 2
-      metaData
-
-      verifyAll(responseContentMap.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
@@ -513,14 +508,8 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
 
-    verifyAll(responseContentMap) {
-      size() == 2
-      metaData
-
-      verifyAll(responseContentMap.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
@@ -557,14 +546,8 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
 
-    verifyAll(responseContentMap) {
-      size() == 2
-      metaData
-
-      verifyAll(responseContentMap.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
@@ -601,14 +584,8 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
 
-    verifyAll(responseContentMap) {
-      size() == 2
-      metaData
-
-      verifyAll(responseContentMap.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
@@ -645,14 +622,8 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
 
-    verifyAll(responseContentMap) {
-      size() == 2
-      metaData
-
-      verifyAll(responseContentMap.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
@@ -689,14 +660,8 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
 
-    verifyAll(responseContentMap) {
-      size() == 2
-      metaData
-
-      verifyAll(responseContentMap.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
@@ -737,14 +702,8 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
 
-    verifyAll(responseContentMap) {
-      size() == 2
-      metaData
-
-      verifyAll(responseContentMap.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam
@@ -793,14 +752,8 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
 
-    verifyAll(responseContentMap) {
-      size() == 2
-      metaData
-
-      verifyAll(responseContentMap.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam

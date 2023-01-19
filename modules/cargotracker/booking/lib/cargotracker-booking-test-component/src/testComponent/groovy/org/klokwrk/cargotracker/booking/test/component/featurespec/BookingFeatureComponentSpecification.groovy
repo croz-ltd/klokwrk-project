@@ -30,6 +30,7 @@ import java.time.Instant
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_cargoChilled
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam_cargoChilled
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponseWebContentPayloadAssertion.assertWebResponseContentHasPayloadThat
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rotterdamToRijeka
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeCommandRequestBodyList_createBookingOffer
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeCommandRequestUrl_createBookingOffer
@@ -138,14 +139,8 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
 
-    verifyAll(commandResponseContentMap) {
-      size() == 2
-      metaData
-
-      verifyAll(it.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(commandResponseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
@@ -244,14 +239,10 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
 
-    verifyAll(queryResponseContentMap) {
-      size() == 2
-      metaData
-
-      verifyAll(it.payload as Map) {
-        size() == 0
-      }
-    }
+    // NOTE: For the isEmpty() assertion, we are using the *Assertion class of command here. Although we should use the *Assertion class of a query, it does not really matter.
+    //       This way, we are simplifying static imports slightly.
+    assertWebResponseContentHasPayloadThat(queryResponseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam

@@ -37,6 +37,7 @@ import javax.sql.DataSource
 import java.nio.charset.Charset
 import java.time.Instant
 
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.response.BookingOfferSummaryFindByIdQueryResponseWebContentPayloadAssertion.assertWebResponseContentHasPayloadThat
 import static org.klokwrk.cargotracker.lib.test.support.web.WebResponseContentMetaDataAssertion.assertWebResponseContentHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
@@ -167,6 +168,8 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
         .has_general_locale(localeStringParam)
         .has_violation_message(myViolationMessageParam)
 
+    // NOTE: In *Assertion classes, we don't need to have a method for validating every single part of the response. We can always turn to native Spock means of verification.
+    //       However, if that specific assertion often repeats, this can be a reason for introducing a specialized method in the *Assertion class.
     verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
       root.type == "bookingOfferSummaryFindByIdQueryRequest"
 
@@ -177,14 +180,8 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
       }
     }
 
-    verifyAll(responseContentMap) {
-      size() == 2
-      metaData
-
-      verifyAll(it.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | myViolationMessageParam
@@ -218,14 +215,8 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
         .has_general_locale(localeStringParam)
         .has_violation_message(myViolationMessageParam)
 
-    verifyAll(responseContentMap) {
-      size() == 2
-      metaData
-
-      verifyAll(it.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | myViolationMessageParam
@@ -259,14 +250,8 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
         .has_general_locale(localeStringParam)
         .has_violation_message(myViolationMessageParam)
 
-    verifyAll(responseContentMap) {
-      size() == 2
-      metaData
-
-      verifyAll(it.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | myViolationMessageParam
@@ -300,14 +285,8 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
         .has_general_locale(localeStringParam)
         .has_violation_message(myViolationMessageParam)
 
-    verifyAll(responseContentMap) {
-      size() == 2
-      metaData
-
-      verifyAll(responseContentMap.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | myViolationMessageParam

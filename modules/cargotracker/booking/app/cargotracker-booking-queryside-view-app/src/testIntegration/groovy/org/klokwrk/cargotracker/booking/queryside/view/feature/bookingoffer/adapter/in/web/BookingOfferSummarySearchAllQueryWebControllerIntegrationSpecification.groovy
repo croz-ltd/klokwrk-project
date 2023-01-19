@@ -40,6 +40,7 @@ import spock.lang.Shared
 import javax.sql.DataSource
 import java.nio.charset.Charset
 
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.response.BookingOfferSummarySearchAllQueryResponseWebContentPayloadAssertion.assertWebResponseContentHasPayloadThat
 import static org.klokwrk.cargotracker.lib.test.support.web.WebResponseContentMetaDataAssertion.assertWebResponseContentHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
@@ -193,14 +194,8 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
         .has_general_locale(localeStringParam)
         .has_violation_message(messageParam)
 
-    verifyAll(responseContentMap) {
-      size() == 2
-      metaData
-
-      verifyAll(it.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | messageParam
