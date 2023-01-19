@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 plugins {
+  id "java-test-fixtures"
   id "klokwrk-gradle-plugin-convention-base"
   id "klokwrk-gradle-plugin-convention-groovy"
   id "klokwrk-gradle-plugin-convention-springboot-app"
@@ -61,6 +62,10 @@ dependencies {
   runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"
   runtimeOnly "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
   runtimeOnly "org.postgresql:postgresql"
+
+  testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
+
+  testFixturesImplementation "org.apache.groovy:groovy"
 
   testImplementation project(":klokwrk-lib-archunit")
 
