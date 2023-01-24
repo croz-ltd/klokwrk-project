@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.response
+package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPageablePayloadAssertion
