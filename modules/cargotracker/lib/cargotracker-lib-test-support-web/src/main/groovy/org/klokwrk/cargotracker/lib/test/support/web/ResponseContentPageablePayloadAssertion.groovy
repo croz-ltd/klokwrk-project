@@ -30,7 +30,7 @@ import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
  * <pre>
  * [
  *   metadata:[
- *     // metadata's keys and values. Not relevant in the context of this class. They are asserted by WebResponseContentMetaDataAssertion.
+ *     // metadata's keys and values. Not relevant in the context of this class. They are asserted by ResponseContentMetaDataAssertion.
  *   ],
  *   payload:[
  *     pageInfo:[

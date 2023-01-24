@@ -20,8 +20,8 @@ package org.klokwrk.cargotracker.lib.test.support.web
 import groovy.transform.CompileStatic
 
 @CompileStatic
-class WebResponseContentMetaDataAssertion {
-  static WebResponseContentMetaDataAssertion assertWebResponseContentHasMetaDataThat(Map webResponseContentMap) {
+class ResponseContentMetaDataAssertion {
+  static ResponseContentMetaDataAssertion assertWebResponseContentHasMetaDataThat(Map webResponseContentMap) {
     webResponseContentMap.with {
       assert size() == 2
       assert metaData
@@ -30,16 +30,16 @@ class WebResponseContentMetaDataAssertion {
       assert payload instanceof Map
     }
 
-    return new WebResponseContentMetaDataAssertion(webResponseContentMap.metaData as Map)
+    return new ResponseContentMetaDataAssertion(webResponseContentMap.metaData as Map)
   }
 
   private final Map metaDataMap
 
-  WebResponseContentMetaDataAssertion(Map metaDataMap) {
+  ResponseContentMetaDataAssertion(Map metaDataMap) {
     this.metaDataMap = metaDataMap
   }
 
-  WebResponseContentMetaDataAssertion isSuccessful() {
+  ResponseContentMetaDataAssertion isSuccessful() {
     metaDataMap.with {
       assert size() == 2
 
@@ -62,7 +62,7 @@ class WebResponseContentMetaDataAssertion {
     return this
   }
 
-  WebResponseContentMetaDataAssertion isViolationOfValidation() {
+  ResponseContentMetaDataAssertion isViolationOfValidation() {
     metaDataMap.with {
       assert size() == 3
 
@@ -97,7 +97,7 @@ class WebResponseContentMetaDataAssertion {
     return this
   }
 
-  WebResponseContentMetaDataAssertion isViolationOfDomain_badRequest() {
+  ResponseContentMetaDataAssertion isViolationOfDomain_badRequest() {
     metaDataMap.with {
       assert size() == 3
 
@@ -125,7 +125,7 @@ class WebResponseContentMetaDataAssertion {
     return this
   }
 
-  WebResponseContentMetaDataAssertion isViolationOfDomain_notFound() {
+  ResponseContentMetaDataAssertion isViolationOfDomain_notFound() {
     metaDataMap.with {
       assert size() == 3
 
@@ -153,7 +153,7 @@ class WebResponseContentMetaDataAssertion {
     return this
   }
 
-  WebResponseContentMetaDataAssertion isViolationOfInfrastructureWeb_methodNotAllowed() {
+  ResponseContentMetaDataAssertion isViolationOfInfrastructureWeb_methodNotAllowed() {
     metaDataMap.with {
       assert size() == 3
 
@@ -182,7 +182,7 @@ class WebResponseContentMetaDataAssertion {
     return this
   }
 
-  WebResponseContentMetaDataAssertion has_general_locale(String expectedLocale) {
+  ResponseContentMetaDataAssertion has_general_locale(String expectedLocale) {
     (metaDataMap.general as Map).with {
       assert locale == expectedLocale
     }
@@ -190,7 +190,7 @@ class WebResponseContentMetaDataAssertion {
     return this
   }
 
-  WebResponseContentMetaDataAssertion has_violation_message(String expectedMessage) {
+  ResponseContentMetaDataAssertion has_violation_message(String expectedMessage) {
     (metaDataMap.violation as Map).with {
       assert message == expectedMessage
     }
