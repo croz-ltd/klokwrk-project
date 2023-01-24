@@ -22,7 +22,6 @@ import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
-import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortDirection
 import org.spockframework.spring.EnableSharedInjection
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -40,7 +39,7 @@ import spock.lang.Shared
 import javax.sql.DataSource
 import java.nio.charset.Charset
 
-import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.response.BookingOfferSummarySearchAllQueryResponseWebContentPayloadAssertion.assertWebResponseContentHasPayloadThat
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.response.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseContentHasPageablePayloadThat
 import static org.klokwrk.cargotracker.lib.test.support.web.WebResponseContentMetaDataAssertion.assertWebResponseContentHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
@@ -84,8 +83,7 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
     mockMvc ?= webAppContextSetup(webApplicationContext).defaultResponseCharacterEncoding(Charset.forName("UTF-8")).build()
   }
 
-  @SuppressWarnings("CodeNarc.AbcMetric")
-  void "should work for customized search request with default paging and sorting"() {
+  void "should work for search request with default paging and sorting"() {
     given:
     String webRequestBody = objectMapper.writeValueAsString([
         userIdentifier: "standard-customer@cargotracker.com",
@@ -121,41 +119,53 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
-    verifyAll(responseContentMap as Map) {
-      size() == 2
-      metaData
+    assertResponseContentHasPageablePayloadThat(responseContentMap)
+        .isSuccessful()
+        .hasPageInfoOfFirstPageWithDefaults()
+        .hasPageInfoThat({
+          hasPageElementsCountGreaterThenOrEqual(5)
+        })
+        .hasPageContentWithFirstElementThat({
+          hasCustomerTypeOfStandard()
+          hasOriginLocationOfRijeka()
+          hasDestinationLocationName("Los Angeles")
+          hasTotalCommodityWeight(15000.kg)
+          hasTotalContainerTeuCount(1.00G)
+          hasLastEventSequenceNumber(0)
+        })
 
-      verifyAll(it.payload as Map) {
-        verifyAll(it.pageInfo as Map) {
-          size() == 8
-          pageOrdinal == 0
-          pageElementsCount >= 5
-          first
+    where:
+    acceptLanguageParam | localeStringParam
+    "hr-HR"             | "hr_HR"
+    "en"                | "en"
+  }
 
-          verifyAll(it.requestedPageRequirement as Map) {
-            size() == 2
-          }
+  void "should work for search request with default paging and sorting but with empty page content"() {
+    given:
+    String webRequestBody = objectMapper.writeValueAsString([userIdentifier: "platinum-customer@cargotracker.com"])
 
-          verifyAll((it.requestedSortRequirementList as List)[0] as Map) {
-            size() == 2
-            propertyName == "lastEventRecordedAt"
-            direction == SortDirection.DESC.name()
-          }
-        }
+    when:
+    MvcResult mvcResult = mockMvc.perform(
+        post("/booking-offer/booking-offer-summary-search-all")
+            .content(webRequestBody)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
+    ).andReturn()
 
-        verifyAll((it.pageContent as List).first() as Map) {
-          customerType == CustomerType.STANDARD.name()
-          originLocationName == "Rijeka"
-          destinationLocationName == "Los Angeles"
-          totalCommodityWeight == [
-              value: 15000,
-              unitSymbol: "kg"
-          ]
-          totalContainerTeuCount == 1.00G
-          lastEventSequenceNumber == 0
-        }
-      }
-    }
+    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
+
+    then:
+    mvcResult.response.status == HttpStatus.OK.value()
+    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
+
+    assertWebResponseContentHasMetaDataThat(responseContentMap)
+        .isSuccessful()
+        .has_general_locale(localeStringParam)
+
+    assertResponseContentHasPageablePayloadThat(responseContentMap)
+        .isSuccessfulAndEmpty()
 
     where:
     acceptLanguageParam | localeStringParam
@@ -194,7 +204,7 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
         .has_general_locale(localeStringParam)
         .has_violation_message(messageParam)
 
-    assertWebResponseContentHasPayloadThat(responseContentMap)
+    assertResponseContentHasPageablePayloadThat(responseContentMap)
         .isEmpty()
 
     where:

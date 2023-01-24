@@ -35,9 +35,10 @@ import org.springframework.web.context.WebApplicationContext
 
 import javax.sql.DataSource
 import java.nio.charset.Charset
+import java.time.Duration
 import java.time.Instant
 
-import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.response.BookingOfferSummaryFindByIdQueryResponseWebContentPayloadAssertion.assertWebResponseContentHasPayloadThat
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.response.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion.assertResponseContentHasPayloadThat
 import static org.klokwrk.cargotracker.lib.test.support.web.WebResponseContentMetaDataAssertion.assertWebResponseContentHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
@@ -101,41 +102,17 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
-    verifyAll(responseContentMap) {
-      size() == 2
-      metaData
-
-      verifyAll(it.payload as Map) {
-        size() == 17
-
-        bookingOfferIdentifier == myBookingOfferIdentifier
-
-        customerType == "STANDARD"
-
-        originLocationUnLoCode == "HRRJK"
-        originLocationName == "Rijeka"
-        originLocationCountryName == "Croatia"
-
-        destinationLocationUnLoCode == "NLRTM"
-        destinationLocationName == "Rotterdam"
-        destinationLocationCountryName == "Netherlands"
-
-        Instant.parse(departureEarliestTime as String) >= startedAt + java.time.Duration.ofHours(1)
-        Instant.parse(departureLatestTime as String) >= startedAt + java.time.Duration.ofHours(2)
-        Instant.parse(arrivalLatestTime as String) >= startedAt + java.time.Duration.ofHours(3)
-
-        commodityTypes == ["DRY"]
-        totalCommodityWeight == [
-            value: 1000,
-            unitSymbol: "kg"
-        ]
-        totalContainerTeuCount == 1.00G
-
-        Instant.parse(firstEventRecordedAt as String) >= startedAt
-        Instant.parse(lastEventRecordedAt as String) >= startedAt
-        lastEventSequenceNumber == 0
-      }
-    }
+    assertResponseContentHasPayloadThat(responseContentMap)
+        .isSuccessful()
+        .hasBookingOfferIdentifier(myBookingOfferIdentifier)
+        .hasCustomerTypeOfStandard()
+        .hasCommodityOfDryTypeWithDefaultWeight()
+        .hasOriginLocationOfRijeka()
+        .hasDestinationLocationOfRotterdam()
+        .hasDepartureEarliestTimeGreaterThan(startedAt + Duration.ofHours(1))
+        .hasDepartureLatestTimeGreaterThan(startedAt + Duration.ofHours(2))
+        .hasArrivalLatestTimeGreaterThan(startedAt + Duration.ofHours(3))
+        .hasEventMetadataOfTheFirstEventWithCorrectTiming(startedAt)
 
     where:
     acceptLanguageParam | localeStringParam
@@ -180,7 +157,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
       }
     }
 
-    assertWebResponseContentHasPayloadThat(responseContentMap)
+    assertResponseContentHasPayloadThat(responseContentMap)
         .isEmpty()
 
     where:
@@ -215,7 +192,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
         .has_general_locale(localeStringParam)
         .has_violation_message(myViolationMessageParam)
 
-    assertWebResponseContentHasPayloadThat(responseContentMap)
+    assertResponseContentHasPayloadThat(responseContentMap)
         .isEmpty()
 
     where:
@@ -250,7 +227,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
         .has_general_locale(localeStringParam)
         .has_violation_message(myViolationMessageParam)
 
-    assertWebResponseContentHasPayloadThat(responseContentMap)
+    assertResponseContentHasPayloadThat(responseContentMap)
         .isEmpty()
 
     where:
@@ -285,7 +262,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
         .has_general_locale(localeStringParam)
         .has_violation_message(myViolationMessageParam)
 
-    assertWebResponseContentHasPayloadThat(responseContentMap)
+    assertResponseContentHasPayloadThat(responseContentMap)
         .isEmpty()
 
     where:

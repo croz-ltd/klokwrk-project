@@ -24,7 +24,6 @@ import org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilde
 import org.klokwrk.cargotracker.booking.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageRequirement
-import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortDirection
 import org.spockframework.spring.EnableSharedInjection
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -42,7 +41,7 @@ import spock.lang.Shared
 import javax.sql.DataSource
 import java.nio.charset.Charset
 
-import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.response.BookingOfferSummaryFindAllQueryResponseWebContentPayloadAssertion.assertWebResponseContentHasPayloadThat
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.response.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseContentHasPageablePayloadThat
 import static org.klokwrk.cargotracker.lib.test.support.web.WebResponseContentMetaDataAssertion.assertWebResponseContentHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
@@ -89,7 +88,6 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
     mockMvc ?= webAppContextSetup(webApplicationContext).defaultResponseCharacterEncoding(Charset.forName("UTF-8")).build()
   }
 
-  @SuppressWarnings("CodeNarc.AbcMetric")
   void "should work for correct request with default paging and sorting"() {
     given:
     String webRequestBody = objectMapper.writeValueAsString([userIdentifier: "standard-customer@cargotracker.com"])
@@ -114,45 +112,49 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
-    verifyAll(responseContentMap as Map) {
-      size() == 2
-      metaData
+    assertResponseContentHasPageablePayloadThat(responseContentMap)
+        .isSuccessful()
+        .hasPageInfoOfFirstPageWithDefaults()
+        .hasPageInfoThat({
+          hasPageElementsCount(Math.min(this.initialBookingOfferSummaryRecordsCount + 5, PageRequirement.PAGE_REQUIREMENT_SIZE_DEFAULT))
+          hasTotalElementsCount(this.initialBookingOfferSummaryRecordsCount + 5)
+        })
+        .hasPageContentWithAllElementsThat({
+          hasCustomerTypeOfStandard()
+        })
 
-      verifyAll(it.payload as Map) {
-        size() == 2
+    where:
+    acceptLanguageParam | localeStringParam
+    "hr-HR"             | "hr_HR"
+    "en"                | "en"
+  }
 
-        verifyAll(it.pageInfo as Map) {
-          size() == 8
-          pageOrdinal == 0
-          pageElementsCount == Math.min(this.initialBookingOfferSummaryRecordsCount + 5, PageRequirement.PAGE_REQUIREMENT_SIZE_DEFAULT)
-          first
-          totalElementsCount == this.initialBookingOfferSummaryRecordsCount + 5
+  void "should work for correct request with default paging and sorting but with empty page content"() {
+    given:
+    String webRequestBody = objectMapper.writeValueAsString([userIdentifier: "platinum-customer@cargotracker.com"])
 
-          verifyAll(it.requestedPageRequirement as Map) {
-            size() == 2
-            ordinal == 0
-            size == PageRequirement.PAGE_REQUIREMENT_SIZE_DEFAULT
-          }
+    when:
+    MvcResult mvcResult = mockMvc.perform(
+        post("/booking-offer/booking-offer-summary-find-all")
+            .content(webRequestBody)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
+            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
+    ).andReturn()
 
-          verifyAll((it.requestedSortRequirementList as List)[0] as Map) {
-            size() == 2
-            propertyName == "lastEventRecordedAt"
-            direction == SortDirection.DESC.name()
-          }
-        }
+    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
 
-        verifyAll(it.pageContent as List) {
-          size() == Math.min(this.initialBookingOfferSummaryRecordsCount + 5, PageRequirement.PAGE_REQUIREMENT_SIZE_DEFAULT)
+    then:
+    mvcResult.response.status == HttpStatus.OK.value()
+    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-          verifyAll(it[0] as Map) {
-            size() == 17
-            bookingOfferIdentifier
-            customerType == "STANDARD"
-            totalCommodityWeight
-          }
-        }
-      }
-    }
+    assertWebResponseContentHasMetaDataThat(responseContentMap)
+        .isSuccessful()
+        .has_general_locale(localeStringParam)
+
+    assertResponseContentHasPageablePayloadThat(responseContentMap)
+        .isSuccessfulAndEmpty()
 
     where:
     acceptLanguageParam | localeStringParam
@@ -190,7 +192,7 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
         .has_general_locale(localeStringParam)
         .has_violation_message(messageParam)
 
-    assertWebResponseContentHasPayloadThat(responseContentMap)
+    assertResponseContentHasPageablePayloadThat(responseContentMap)
         .isEmpty()
 
     where:

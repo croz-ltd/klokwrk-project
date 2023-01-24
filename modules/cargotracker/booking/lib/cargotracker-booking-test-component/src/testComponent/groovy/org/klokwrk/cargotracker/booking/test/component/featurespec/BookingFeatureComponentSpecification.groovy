@@ -21,6 +21,9 @@ import groovy.json.JsonSlurper
 import org.apache.http.HttpResponse
 import org.apache.http.client.fluent.Request
 import org.awaitility.Awaitility
+import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponseWebContentPayloadAssertion
+import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.response.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion
+import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.response.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion
 import org.klokwrk.cargotracker.booking.test.component.test.base.AbstractComponentSpecification
 import org.klokwrk.lang.groovy.misc.InstantUtils
 
@@ -30,7 +33,6 @@ import java.time.Instant
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_cargoChilled
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam_cargoChilled
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry
-import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponseWebContentPayloadAssertion.assertWebResponseContentHasPayloadThat
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rotterdamToRijeka
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeCommandRequestBodyList_createBookingOffer
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeCommandRequestUrl_createBookingOffer
@@ -46,6 +48,18 @@ import static org.klokwrk.cargotracker.lib.test.support.web.WebResponseContentMe
 class BookingFeatureComponentSpecification extends AbstractComponentSpecification {
   @SuppressWarnings("CodeNarc.PropertyName")
   static Integer countOf_createdBookingOffers_forStandardCustomer = 0
+
+  static BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion assertBookingOfferSummaryFindByIdQueryResponseHasPayloadThat(Map queryResponseContentMap) {
+    return BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion.assertResponseContentHasPayloadThat(queryResponseContentMap)
+  }
+
+  static BookingOfferSummaryPageableQueryResponseContentPayloadAssertion assertBookingOfferSummaryFindAllQueryResponseContentHasPayloadThat(Map queryResponseContentMap) {
+    return BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseContentHasPageablePayloadThat(queryResponseContentMap)
+  }
+
+  static BookingOfferSummaryPageableQueryResponseContentPayloadAssertion assertBookingOfferSummarySearchAllQueryResponseContentHasPayloadThat(Map queryResponseContentMap) {
+    return BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseContentHasPageablePayloadThat(queryResponseContentMap)
+  }
 
   void setupSpec() {
     // Execute a list of commands with predefined data used for findAll and searchAll queries
@@ -139,7 +153,7 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
 
-    assertWebResponseContentHasPayloadThat(commandResponseContentMap)
+    CreateBookingOfferCommandResponseWebContentPayloadAssertion.assertWebResponseContentHasPayloadThat(commandResponseContentMap)
         .isEmpty()
 
     where:
@@ -183,37 +197,17 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
-    verifyAll(queryResponseContentMap.payload as Map) {
-      size() == 17
-
-      bookingOfferIdentifier == commandResponseBookingOfferIdentifier
-
-      customerType == "STANDARD"
-
-      originLocationUnLoCode == "HRRJK"
-      originLocationName == "Rijeka"
-      originLocationCountryName == "Croatia"
-
-      destinationLocationUnLoCode == "NLRTM"
-      destinationLocationName == "Rotterdam"
-      destinationLocationCountryName == "Netherlands"
-
-      Instant.parse(departureEarliestTime as String) == expectedDepartureEarliestTime
-      Instant.parse(departureLatestTime as String) == expectedDepartureLatestTime
-      Instant.parse(arrivalLatestTime as String) == expectedArrivalLatestTime
-
-      commodityTypes == ["DRY"]
-      totalCommodityWeight == [
-          value: 1000,
-          unitSymbol: "kg"
-      ]
-      totalContainerTeuCount == 1.00G
-
-      firstEventRecordedAt == lastEventRecordedAt
-      Instant.parse(firstEventRecordedAt as String) > currentTime
-      Instant.parse(lastEventRecordedAt as String) > currentTime
-      lastEventSequenceNumber == 0
-    }
+    assertBookingOfferSummaryFindByIdQueryResponseHasPayloadThat(queryResponseContentMap)
+        .isSuccessful()
+        .hasCustomerTypeOfStandard()
+        .hasOriginLocationOfRijeka()
+        .hasDestinationLocationOfRotterdam()
+        .hasDepartureEarliestTime(expectedDepartureEarliestTime)
+        .hasDepartureLatestTime(expectedDepartureLatestTime)
+        .hasArrivalLatestTime(expectedArrivalLatestTime)
+        .hasCommodityOfDryTypeWithDefaultWeight()
+        .hasTotalContainerTeuCount(1.00G)
+        .hasEventMetadataOfTheFirstEventWithCorrectTiming(currentTime)
 
     where:
     acceptLanguageParam | localeStringParam
@@ -239,9 +233,7 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
 
-    // NOTE: For the isEmpty() assertion, we are using the *Assertion class of command here. Although we should use the *Assertion class of a query, it does not really matter.
-    //       This way, we are simplifying static imports slightly.
-    assertWebResponseContentHasPayloadThat(queryResponseContentMap)
+    assertBookingOfferSummaryFindByIdQueryResponseHasPayloadThat(queryResponseContentMap)
         .isEmpty()
 
     where:
@@ -250,6 +242,7 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
     "en"                | "en"              | "Summary report for specified booking offer is not found."
   }
 
+  @SuppressWarnings("UnnecessaryQualifiedReference")
   void "query - bookingOfferSummary_findAll - should find existing booking offers with default paging and sorting"() {
     given:
     Request queryRequest = makeRequest(makeQueryRequestUrl_bookingOfferSummary_findAll(querySideViewApp), makeQueryRequestBody_bookingOfferSummary_findAll_standardCustomer(), "en")
@@ -265,34 +258,17 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
         .isSuccessful()
         .has_general_locale("en")
 
-    verifyAll(queryResponseContentMap.payload as Map) {
-      size() == 2
-
-      verifyAll(pageInfo as Map, {
-        pageOrdinal == 0
-        pageElementsCount >= this.countOf_createdBookingOffers_forStandardCustomer
-        first == true
-        totalElementsCount >= pageElementsCount
-
-        verifyAll(requestedPageRequirement as Map) {
-          size() == 2
-          ordinal == 0
-          size == 25
-        }
-
-        verifyAll((it.requestedSortRequirementList as List)[0] as Map) {
-          size() == 2
-          propertyName == "lastEventRecordedAt"
-          direction == "DESC"
-        }
-      })
-
-      verifyAll(pageContent as List<Map>, {
-        size() >= this.countOf_createdBookingOffers_forStandardCustomer
-        it.every({ Map pageElement -> pageElement.customerType == "STANDARD" })
-        it.every({ Map pageElement -> pageElement.lastEventSequenceNumber == 0 })
-      })
-    }
+    assertBookingOfferSummaryFindAllQueryResponseContentHasPayloadThat(queryResponseContentMap)
+        .isSuccessful()
+        .hasPageInfoOfFirstPageWithDefaults()
+        .hasPageInfoThat({
+          hasPageElementsCountGreaterThenOrEqual(this.countOf_createdBookingOffers_forStandardCustomer)
+        })
+        .hasPageContentSizeGreaterThanOrEqual(this.countOf_createdBookingOffers_forStandardCustomer)
+        .hasPageContentWithAllElementsThat({
+          hasCustomerTypeOfStandard()
+          hasEventMetadataOfTheFirstEvent()
+        })
   }
 
   void "query - bookingOfferSummary_searchAll - should find existing booking offers with default paging and sorting"() {
@@ -310,34 +286,16 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
         .isSuccessful()
         .has_general_locale("en")
 
-    verifyAll(queryResponseContentMap.payload as Map) {
-      size() == 2
-
-      verifyAll(pageInfo as Map, {
-        pageOrdinal == 0
-        first == true
-
-        verifyAll(requestedPageRequirement as Map) {
-          size() == 2
-          ordinal == 0
-          size == 25
-        }
-
-        verifyAll((it.requestedSortRequirementList as List)[0] as Map) {
-          size() == 2
-          propertyName == "lastEventRecordedAt"
-          direction == "DESC"
-        }
-      })
-
-      verifyAll(pageContent as List<Map>, {
-        size() >= 4
-        it.every({ Map pageElement -> pageElement.customerType == "STANDARD" })
-        it.every({ Map pageElement -> pageElement.originLocationName == "Rijeka" })
-        it.every({ Map pageElement -> pageElement.destinationLocationCountryName == "The United States of America" })
-        it.every({ Map pageElement -> pageElement.totalCommodityWeight["value"] >= 15000 && pageElement.totalCommodityWeight["value"] <= 100000 })
-        it.every({ Map pageElement -> pageElement.lastEventSequenceNumber == 0 })
-      })
-    }
+    assertBookingOfferSummarySearchAllQueryResponseContentHasPayloadThat(queryResponseContentMap)
+        .isSuccessful()
+        .hasPageInfoOfFirstPageWithDefaults()
+        .hasPageContentSizeGreaterThanOrEqual(4)
+        .hasPageContentWithAllElementsThat({
+          hasCustomerTypeOfStandard()
+          hasOriginLocationOfRijeka()
+          hasDestinationLocationCountryName("The United States of America")
+          hasTotalCommodityWeightInInclusiveRange(15_000.kg, 100_000.kg)
+          hasEventMetadataOfTheFirstEvent()
+        })
   }
 }
