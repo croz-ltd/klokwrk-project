@@ -1,0 +1,240 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2020-2023 CROZ d.o.o, the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.klokwrk.cargotracker.lib.test.support.web
+
+import groovy.transform.CompileStatic
+import groovy.transform.stc.ClosureParams
+import groovy.transform.stc.FromString
+import groovy.transform.stc.SimpleType
+import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
+
+/**
+ * Parent class for each assertion class that wants to check a map representing pageable payload returned from some operation.
+ * <p/>
+ * The general structure of the response map corresponds to
+ * <pre>
+ * [
+ *   metadata:[
+ *     // metadata's keys and values. Not relevant in the context of this class. They are asserted by WebResponseContentMetaDataAssertion.
+ *   ],
+ *   payload:[
+ *     pageInfo:[
+ *       // pageInfo's keys and values assertable by ResponseContentPayloadPageInfoAssertion
+ *     ],
+ *     pageContent: [ // pageContent is a list of maps
+ *       [
+ *         // first pageContent element's key and values
+ *         // second pageContent element's key and values
+ *         // ...
+ *       ]
+ *     ]
+ *   ]
+ * ]
+ * </pre>
+ *
+ * This class is defines general structures and rules (implemented as methods) for asserting {@code payload.pageInfo} and {@code payload.pageContent}. While {@code payload.pageInfo} asserting is
+ * delegated to {@link ResponseContentPayloadPageInfoAssertion} instances, individual instances of {@code payload.pageContent} are asserted by {@code PAGE_CONTENT_ASSERTION} type.
+ * <p/>
+ * Therefore, any concrete class extending this one, has to provide {@code PAGE_CONTENT_ASSERTION} type via generic declaration, where {@code PAGE_CONTENT_ASSERTION} instances are then responsible
+ * for asserting the details of each element in {@code payload.pageContent}.
+ * <p/>
+ * In addition, {@code PAGE_CONTENT_ASSERTION} types have to implement {@link PayloadPageContentAssertionable} to make it possible for instances of this class to invoke their methods when appropriate.
+ *
+ * @param <SELF> The type of "{@code this}" instance representing the instance of a subclass in the context of this abstract superclass.
+ * @param <PAGE_CONTENT_ASSERTION> The type of class capable to assert individual elements of {@code pageContent} list.
+ */
+@CompileStatic
+abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseContentPageablePayloadAssertion<SELF, PAGE_CONTENT_ASSERTION>, PAGE_CONTENT_ASSERTION extends PayloadPageContentAssertionable> {
+  static void assertResponseContent(Map responseContentMap) {
+    responseContentMap.with {
+      assert size() == 2
+      assert metaData
+      assert metaData instanceof Map
+      assert payload != null
+      assert payload instanceof Map
+    }
+  }
+
+  abstract PAGE_CONTENT_ASSERTION getPageContentAssertionInstance(Map pageContentElementPayloadMap)
+
+  @SuppressWarnings("GrFinalVariableAccess")
+  protected final Map payloadMap
+
+  protected ResponseContentPageablePayloadAssertion(Map responseContentMap) {
+    assert responseContentMap.payload instanceof Map
+    this.payloadMap = responseContentMap.payload as Map
+  }
+
+  SELF isSuccessful() {
+    payloadMap.with {
+      assert size() == 2
+      assert pageInfo instanceof Map
+      assert pageContent instanceof List
+      assert !(pageContent as List).isEmpty()
+
+      new ResponseContentPayloadPageInfoAssertion(pageInfo as Map).with {
+        isSuccessful()
+      }
+
+      (pageContent as List<Map>).with {
+        it.each {
+          getPageContentAssertionInstance(it).isSuccessful()
+        }
+      }
+    }
+
+    return this as SELF
+  }
+
+  SELF isSuccessfulAndEmpty() {
+    payloadMap.with {
+      assert size() == 2
+      assert pageInfo instanceof Map
+      assert pageContent instanceof List
+      assert (pageContent as List).isEmpty()
+    }
+
+    new ResponseContentPayloadPageInfoAssertion(payloadMap.pageInfo as Map).with {
+      isSuccessfulForEmptyPageContent()
+    }
+
+    return this as SELF
+  }
+
+  SELF isEmpty() {
+    assert payloadMap.size() == 0
+    return this as SELF
+  }
+
+  SELF hasPageInfoThat(
+      // @DelegatesTo os present here just to help the IDEA. Otherwise it is not necessary. Groovy works correctly without it, but it does not hurt, beside some redundancy.
+      @DelegatesTo(value = ResponseContentPayloadPageInfoAssertion, strategy = Closure.DELEGATE_ONLY)
+      @ClosureParams(
+          value = SimpleType,
+          options = "org.klokwrk.cargotracker.lib.test.support.web.ResponseContentPayloadPageInfoAssertion"
+      ) Closure aClosure)
+  {
+    ResponseContentPayloadPageInfoAssertion pageInfoAssertion = new ResponseContentPayloadPageInfoAssertion(payloadMap.pageInfo as Map)
+    aClosure.resolveStrategy = Closure.DELEGATE_ONLY
+    aClosure.delegate = pageInfoAssertion
+    aClosure.call(pageInfoAssertion)
+
+    return this as SELF
+  }
+
+  SELF hasPageInfoOfFirstPageWithDefaults() {
+    ResponseContentPayloadPageInfoAssertion pageInfoAssertion = new ResponseContentPayloadPageInfoAssertion(payloadMap.pageInfo as Map)
+    assert pageInfoAssertion.isFirstPageWithDefaults()
+    return this as SELF
+  }
+
+  SELF hasPageContentSizeGreaterThanOrEqual(Long comparablePageContentSize) {
+    assert (payloadMap.pageContent as List<Map>).size() >= comparablePageContentSize
+    return this as SELF
+  }
+
+  @SuppressWarnings("unused")
+  SELF hasPageContentWithAnyElementThat(
+      // @DelegatesTo os present here just to help the IDEA. Otherwise it is not necessary. Groovy works correctly without it, but it does not hurt, beside some redundancy.
+      @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_ONLY)
+      @ClosureParams(
+          value = FromString,
+          options = "PAGE_CONTENT_ASSERTION"
+      ) Closure aClosure)
+  {
+    List<Map> pageContentList = payloadMap.pageContent as List<Map>
+    aClosure.resolveStrategy = Closure.DELEGATE_ONLY
+
+    boolean isAnyElementFound = pageContentList.any({ Map pgeContentElementMap ->
+      PAGE_CONTENT_ASSERTION aListElementPayloadAssertion = getPageContentAssertionInstance(pgeContentElementMap)
+
+      aClosure.delegate = aListElementPayloadAssertion
+      try {
+        aClosure.call(aListElementPayloadAssertion)
+        return true
+      }
+      catch (PowerAssertionError ignore) {
+      }
+
+      return false
+    })
+
+    if (!isAnyElementFound) {
+      throw new AssertionError("Assertion failed - none of the list elements satisfies provided conditions." as Object)
+    }
+
+    return this as SELF
+  }
+
+  SELF hasPageContentWithAllElementsThat(
+      // @DelegatesTo os present here just to help the IDEA. Otherwise it is not necessary. Groovy works correctly without it, but it does not hurt, beside some redundancy.
+      @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_ONLY)
+      @ClosureParams(
+          value = FromString,
+          options = "PAGE_CONTENT_ASSERTION"
+      ) Closure aClosure)
+  {
+    List<Map> pageContentList = payloadMap.pageContent as List<Map>
+    pageContentList.eachWithIndex({ Map pageContentElementMap, int anIndex ->
+      PAGE_CONTENT_ASSERTION aListElementPayloadAssertion = getPageContentAssertionInstance(pageContentElementMap)
+
+      aClosure.delegate = aListElementPayloadAssertion
+      //noinspection UnnecessaryQualifiedReference
+      aClosure.resolveStrategy = Closure.DELEGATE_ONLY
+
+      try {
+        aClosure.call(aListElementPayloadAssertion)
+      }
+      catch (PowerAssertionError aPowerAssertionError) {
+        throw new AssertionError("Assertion failed at the element with the index of [${ anIndex }].", aPowerAssertionError)
+      }
+    })
+
+    return this as SELF
+  }
+
+  SELF hasPageContentWithFirstElementThat(
+      @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_ONLY)
+      @ClosureParams(
+          value = FromString,
+          options = "PAGE_CONTENT_ASSERTION"
+      ) Closure aClosure)
+  {
+    hasPageContentWithElementAtIndexThat(0, aClosure)
+    return this as SELF
+  }
+
+  SELF hasPageContentWithElementAtIndexThat(
+      Integer anIndex,
+      @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_ONLY)
+      @ClosureParams(
+          value = FromString,
+          options = "PAGE_CONTENT_ASSERTION"
+      ) Closure aClosure)
+  {
+    Map pageContentElementMap = (payloadMap.pageContent as List<Map>)[anIndex]
+    assert pageContentElementMap
+
+    PAGE_CONTENT_ASSERTION pageContentElementAssertion = getPageContentAssertionInstance(pageContentElementMap)
+    aClosure.resolveStrategy = Closure.DELEGATE_ONLY
+    aClosure.delegate = pageContentElementAssertion
+    aClosure.call(pageContentElementAssertion)
+
+    return this as SELF
+  }
+}

@@ -65,7 +65,13 @@ dependencies {
 
   testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
 
+  testFixturesImplementation project(":cargotracker-lib-test-support-web")
+  testFixturesImplementation project(":klokwrk-lib-uom")
+
+  testFixturesImplementation "javax.measure:unit-api"
   testFixturesImplementation "org.apache.groovy:groovy"
+  testFixturesImplementation "org.apache.groovy:groovy"
+  testFixturesImplementation "tech.units:indriya"
 
   testImplementation project(":klokwrk-lib-archunit")
 
