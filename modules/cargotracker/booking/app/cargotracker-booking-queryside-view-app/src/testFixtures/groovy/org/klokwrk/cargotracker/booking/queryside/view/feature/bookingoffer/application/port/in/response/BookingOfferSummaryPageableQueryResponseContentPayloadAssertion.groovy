@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.response
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.test.support.web.ResponseContentPageablePayloadAssertion
+import org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPageablePayloadAssertion
 
 /**
  * Assertion class for a responses of BookingOfferSummaryFindAll and BookingOfferSummarySearchAll queries.

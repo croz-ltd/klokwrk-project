@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.test.support.web
+package org.klokwrk.cargotracker.lib.test.support.assertion
 
 import groovy.transform.CompileStatic
 

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.test.support.web
+package org.klokwrk.cargotracker.lib.test.support.assertion
 
 import groovy.transform.CompileStatic
 import groovy.transform.stc.ClosureParams
@@ -169,7 +169,7 @@ class ResponseContentPayloadPageInfoAssertion {
       @DelegatesTo(value = RequestedPageRequirementAssertion, strategy = Closure.DELEGATE_ONLY)
       @ClosureParams(
           value = SimpleType,
-          options = 'org.klokwrk.cargotracker.lib.test.support.web.ResponseContentPayloadPageInfoAssertion$RequestedPageRequirementAssertion'
+          options = 'org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPayloadPageInfoAssertion$RequestedPageRequirementAssertion'
       ) Closure aClosure)
   {
     RequestedPageRequirementAssertion requestedPageRequirementAssertion = new RequestedPageRequirementAssertion(pageInfoMap.requestedPageRequirement as Map)
@@ -185,7 +185,7 @@ class ResponseContentPayloadPageInfoAssertion {
       @DelegatesTo(value = RequestedSortRequirementAssertion, strategy = Closure.DELEGATE_ONLY)
       @ClosureParams(
           value = SimpleType,
-          options = 'org.klokwrk.cargotracker.lib.test.support.web.ResponseContentPayloadPageInfoAssertion$RequestedSortRequirementAssertion'
+          options = 'org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPayloadPageInfoAssertion$RequestedSortRequirementAssertion'
       ) Closure aClosure)
   {
     hasRequestedSortRequirementListWithElementAtIndexThat(0, aClosure)
@@ -197,7 +197,7 @@ class ResponseContentPayloadPageInfoAssertion {
       @DelegatesTo(value = RequestedSortRequirementAssertion, strategy = Closure.DELEGATE_ONLY)
       @ClosureParams(
           value = SimpleType,
-          options = 'org.klokwrk.cargotracker.lib.test.support.web.ResponseContentPayloadPageInfoAssertion$RequestedSortRequirementAssertion'
+          options = 'org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPayloadPageInfoAssertion$RequestedSortRequirementAssertion'
       ) Closure aClosure)
   {
     Map requestedSortRequirementMap = (pageInfoMap.requestedSortRequirementList as List<Map>)[anIndex]

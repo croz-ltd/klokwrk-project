@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.response
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.test.support.web.PayloadPageContentAssertionable
+import org.klokwrk.cargotracker.lib.test.support.assertion.PayloadPageContentAssertionable
 import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.quantity.QuantityRange
 

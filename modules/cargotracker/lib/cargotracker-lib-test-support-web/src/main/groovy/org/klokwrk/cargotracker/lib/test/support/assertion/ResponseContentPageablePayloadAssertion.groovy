@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.test.support.web
+package org.klokwrk.cargotracker.lib.test.support.assertion
 
 import groovy.transform.CompileStatic
 import groovy.transform.stc.ClosureParams
@@ -126,7 +126,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
       @DelegatesTo(value = ResponseContentPayloadPageInfoAssertion, strategy = Closure.DELEGATE_ONLY)
       @ClosureParams(
           value = SimpleType,
-          options = "org.klokwrk.cargotracker.lib.test.support.web.ResponseContentPayloadPageInfoAssertion"
+          options = "org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPayloadPageInfoAssertion"
       ) Closure aClosure)
   {
     ResponseContentPayloadPageInfoAssertion pageInfoAssertion = new ResponseContentPayloadPageInfoAssertion(payloadMap.pageInfo as Map)
