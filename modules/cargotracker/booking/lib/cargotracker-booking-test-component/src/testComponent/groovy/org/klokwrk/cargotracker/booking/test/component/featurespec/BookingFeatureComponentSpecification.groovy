@@ -43,7 +43,7 @@ import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureT
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeQueryRequestUrl_bookingOfferSummary_findById
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeQueryRequestUrl_bookingOfferSummary_searchAll
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeRequest
-import static org.klokwrk.cargotracker.lib.test.support.web.ResponseContentMetaDataAssertion.assertWebResponseContentHasMetaDataThat
+import static org.klokwrk.cargotracker.lib.test.support.web.ResponseContentMetaDataAssertion.assertResponseContentHasMetaDataThat
 
 class BookingFeatureComponentSpecification extends AbstractComponentSpecification {
   @SuppressWarnings("CodeNarc.PropertyName")
@@ -101,7 +101,7 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
     then:
     commandResponse.statusLine.statusCode == 200
 
-    assertWebResponseContentHasMetaDataThat(commandResponseContentMap)
+    assertResponseContentHasMetaDataThat(commandResponseContentMap)
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
@@ -148,7 +148,7 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
     then:
     commandResponse.statusLine.statusCode == 400
 
-    assertWebResponseContentHasMetaDataThat(commandResponseContentMap)
+    assertResponseContentHasMetaDataThat(commandResponseContentMap)
         .isViolationOfDomain_badRequest()
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
@@ -193,7 +193,7 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
     Map queryResponseContentMap = new JsonSlurper().parseText(queryResponse.entity.content.text) as Map
 
     then:
-    assertWebResponseContentHasMetaDataThat(queryResponseContentMap)
+    assertResponseContentHasMetaDataThat(queryResponseContentMap)
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
@@ -228,7 +228,7 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
     then:
     queryResponse.statusLine.statusCode == 404
 
-    assertWebResponseContentHasMetaDataThat(queryResponseContentMap)
+    assertResponseContentHasMetaDataThat(queryResponseContentMap)
         .isViolationOfDomain_notFound()
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
@@ -254,7 +254,7 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
     then:
     queryResponse.statusLine.statusCode == 200
 
-    assertWebResponseContentHasMetaDataThat(queryResponseContentMap)
+    assertResponseContentHasMetaDataThat(queryResponseContentMap)
         .isSuccessful()
         .has_general_locale("en")
 
@@ -282,7 +282,7 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
     then:
     queryResponse.statusLine.statusCode == 200
 
-    assertWebResponseContentHasMetaDataThat(queryResponseContentMap)
+    assertResponseContentHasMetaDataThat(queryResponseContentMap)
         .isSuccessful()
         .has_general_locale("en")
 

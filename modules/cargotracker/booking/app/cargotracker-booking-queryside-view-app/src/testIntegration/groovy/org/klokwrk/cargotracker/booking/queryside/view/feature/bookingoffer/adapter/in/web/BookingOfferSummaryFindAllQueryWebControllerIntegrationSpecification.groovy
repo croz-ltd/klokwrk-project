@@ -42,7 +42,7 @@ import javax.sql.DataSource
 import java.nio.charset.Charset
 
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.response.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseContentHasPageablePayloadThat
-import static org.klokwrk.cargotracker.lib.test.support.web.ResponseContentMetaDataAssertion.assertWebResponseContentHasMetaDataThat
+import static org.klokwrk.cargotracker.lib.test.support.web.ResponseContentMetaDataAssertion.assertResponseContentHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
@@ -108,7 +108,7 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
     mvcResult.response.status == HttpStatus.OK.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertWebResponseContentHasMetaDataThat(responseContentMap)
+    assertResponseContentHasMetaDataThat(responseContentMap)
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
@@ -149,7 +149,7 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
     mvcResult.response.status == HttpStatus.OK.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertWebResponseContentHasMetaDataThat(responseContentMap)
+    assertResponseContentHasMetaDataThat(responseContentMap)
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
@@ -187,7 +187,7 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertWebResponseContentHasMetaDataThat(responseContentMap)
+    assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfDomain_badRequest()
         .has_general_locale(localeStringParam)
         .has_violation_message(messageParam)

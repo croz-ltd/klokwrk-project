@@ -21,8 +21,8 @@ import groovy.transform.CompileStatic
 
 @CompileStatic
 class ResponseContentMetaDataAssertion {
-  static ResponseContentMetaDataAssertion assertWebResponseContentHasMetaDataThat(Map webResponseContentMap) {
-    webResponseContentMap.with {
+  static ResponseContentMetaDataAssertion assertResponseContentHasMetaDataThat(Map responseContentMap) {
+    responseContentMap.with {
       assert size() == 2
       assert metaData
       assert metaData instanceof Map
@@ -30,7 +30,7 @@ class ResponseContentMetaDataAssertion {
       assert payload instanceof Map
     }
 
-    return new ResponseContentMetaDataAssertion(webResponseContentMap.metaData as Map)
+    return new ResponseContentMetaDataAssertion(responseContentMap.metaData as Map)
   }
 
   private final Map metaDataMap

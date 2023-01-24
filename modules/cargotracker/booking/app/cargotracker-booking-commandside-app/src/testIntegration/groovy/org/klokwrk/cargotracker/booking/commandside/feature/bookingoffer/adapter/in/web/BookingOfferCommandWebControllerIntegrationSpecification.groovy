@@ -47,7 +47,7 @@ import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestDataJsonFixtureBuilder.cargoRequestData_dry
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rijekaToRotterdam
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rotterdamToRijeka
-import static org.klokwrk.cargotracker.lib.test.support.web.ResponseContentMetaDataAssertion.assertWebResponseContentHasMetaDataThat
+import static org.klokwrk.cargotracker.lib.test.support.web.ResponseContentMetaDataAssertion.assertResponseContentHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
@@ -99,7 +99,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.OK.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertWebResponseContentHasMetaDataThat(responseContentMap)
+    assertResponseContentHasMetaDataThat(responseContentMap)
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
@@ -295,7 +295,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.OK.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertWebResponseContentHasMetaDataThat(responseContentMap)
+    assertResponseContentHasMetaDataThat(responseContentMap)
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
@@ -452,7 +452,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertWebResponseContentHasMetaDataThat(responseContentMap)
+    assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfValidation()
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
@@ -503,7 +503,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertWebResponseContentHasMetaDataThat(responseContentMap)
+    assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfDomain_badRequest()
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
@@ -541,7 +541,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertWebResponseContentHasMetaDataThat(responseContentMap)
+    assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfDomain_badRequest()
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
@@ -579,7 +579,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertWebResponseContentHasMetaDataThat(responseContentMap)
+    assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfDomain_badRequest()
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
@@ -617,7 +617,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertWebResponseContentHasMetaDataThat(responseContentMap)
+    assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfDomain_badRequest()
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
@@ -655,7 +655,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertWebResponseContentHasMetaDataThat(responseContentMap)
+    assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfDomain_badRequest()
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
@@ -697,7 +697,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertWebResponseContentHasMetaDataThat(responseContentMap)
+    assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfDomain_badRequest()
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
@@ -747,7 +747,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.METHOD_NOT_ALLOWED.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertWebResponseContentHasMetaDataThat(responseContentMap)
+    assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfInfrastructureWeb_methodNotAllowed()
         .has_general_locale(localeStringParam)
         .has_violation_message(violationMessageParam)
