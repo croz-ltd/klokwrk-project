@@ -115,24 +115,27 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
     mvcResult.response.status == HttpStatus.OK.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertResponseContentHasMetaDataThat(responseContentMap)
-        .isSuccessful()
-        .has_general_locale(localeStringParam)
+    // Here we are using closure-style top-level API.
+    assertResponseContentHasMetaDataThat(responseContentMap, {
+      isSuccessful()
+      has_general_locale(localeStringParam)
+    })
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap)
-        .isSuccessful()
-        .hasPageInfoOfFirstPageWithDefaults()
-        .hasPageInfoThat({
-          hasPageElementsCountGreaterThenOrEqual(5)
-        })
-        .hasPageContentWithFirstElementThat({
-          hasCustomerTypeOfStandard()
-          hasOriginLocationOfRijeka()
-          hasDestinationLocationName("Los Angeles")
-          hasTotalCommodityWeight(15000.kg)
-          hasTotalContainerTeuCount(1.00G)
-          hasLastEventSequenceNumber(0)
-        })
+    assertResponseContentHasPageablePayloadThat(responseContentMap, {
+      isSuccessful()
+      hasPageInfoOfFirstPageWithDefaults()
+      hasPageInfoThat({
+        hasPageElementsCountGreaterThenOrEqual(5)
+      })
+      hasPageContentWithFirstElementThat({
+        hasCustomerTypeOfStandard()
+        hasOriginLocationOfRijeka()
+        hasDestinationLocationName("Los Angeles")
+        hasTotalCommodityWeight(15000.kg)
+        hasTotalContainerTeuCount(1.00G)
+        hasLastEventSequenceNumber(0)
+      })
+    })
 
     where:
     acceptLanguageParam | localeStringParam
@@ -160,12 +163,12 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
     mvcResult.response.status == HttpStatus.OK.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
+    // Here we are using fluent-style top-level API.
     assertResponseContentHasMetaDataThat(responseContentMap)
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap)
-        .isSuccessfulAndEmpty()
+    assertResponseContentHasPageablePayloadThat(responseContentMap).isSuccessfulAndEmpty()
 
     where:
     acceptLanguageParam | localeStringParam
@@ -199,13 +202,13 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertResponseContentHasMetaDataThat(responseContentMap)
-        .isViolationOfDomain_badRequest()
-        .has_general_locale(localeStringParam)
-        .has_violation_message(messageParam)
+    assertResponseContentHasMetaDataThat(responseContentMap, {
+      isViolationOfDomain_badRequest()
+      has_general_locale(localeStringParam)
+      has_violation_message(messageParam)
+    })
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap)
-        .isEmpty()
+    assertResponseContentHasPageablePayloadThat(responseContentMap).isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | messageParam

@@ -18,6 +18,8 @@
 package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion
 
 import groovy.transform.CompileStatic
+import groovy.transform.stc.ClosureParams
+import groovy.transform.stc.SimpleType
 import org.klokwrk.cargotracker.lib.test.support.assertion.PayloadPageContentAssertionable
 import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.quantity.QuantityRange
@@ -30,6 +32,9 @@ import java.time.Instant
  */
 @CompileStatic
 class BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion implements PayloadPageContentAssertionable {
+  /**
+   * Entry point static assertion method for fluent-style top-level API.
+   */
   static BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion assertResponseContentHasPayloadThat(Map responseContentMap) {
     responseContentMap.with {
       assert size() == 2
@@ -40,6 +45,25 @@ class BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion implements
     }
 
     return new BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion(responseContentMap.payload as Map)
+  }
+
+  /**
+   * Entry point static assertion method for closure-style top-level API.
+   */
+  static BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion assertResponseContentHasPayloadThat(
+      Map responseContentMap,
+      @DelegatesTo(value = BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion, strategy = Closure.DELEGATE_FIRST)
+      @ClosureParams(
+          value = SimpleType,
+          options = "org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion"
+      ) Closure aClosure)
+  {
+    BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion payloadAssertion = assertResponseContentHasPayloadThat(responseContentMap)
+    aClosure.resolveStrategy = Closure.DELEGATE_FIRST
+    aClosure.delegate = payloadAssertion
+    aClosure.call(payloadAssertion)
+
+    return payloadAssertion
   }
 
   private final Map payloadMap

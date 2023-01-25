@@ -18,9 +18,14 @@
 package org.klokwrk.cargotracker.lib.test.support.assertion
 
 import groovy.transform.CompileStatic
+import groovy.transform.stc.ClosureParams
+import groovy.transform.stc.SimpleType
 
 @CompileStatic
 class ResponseContentMetaDataAssertion {
+  /**
+   * Entry point static assertion method for fluent-style top-level API.
+   */
   static ResponseContentMetaDataAssertion assertResponseContentHasMetaDataThat(Map responseContentMap) {
     responseContentMap.with {
       assert size() == 2
@@ -31,6 +36,25 @@ class ResponseContentMetaDataAssertion {
     }
 
     return new ResponseContentMetaDataAssertion(responseContentMap.metaData as Map)
+  }
+
+  /**
+   * Entry point static assertion method for closure-style top-level API.
+   */
+  static ResponseContentMetaDataAssertion assertResponseContentHasMetaDataThat(
+      Map responseContentMap,
+      @DelegatesTo(value = ResponseContentMetaDataAssertion, strategy = Closure.DELEGATE_FIRST)
+      @ClosureParams(
+          value = SimpleType,
+          options = "org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentMetaDataAssertion"
+      ) Closure aClosure)
+  {
+    ResponseContentMetaDataAssertion metaDataAssertion = assertResponseContentHasMetaDataThat(responseContentMap)
+    aClosure.resolveStrategy = Closure.DELEGATE_FIRST
+    aClosure.delegate = metaDataAssertion
+    aClosure.call(metaDataAssertion)
+
+    return metaDataAssertion
   }
 
   private final Map metaDataMap

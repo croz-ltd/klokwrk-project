@@ -112,16 +112,17 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap)
-        .isSuccessful()
-        .hasPageInfoOfFirstPageWithDefaults()
-        .hasPageInfoThat({
-          hasPageElementsCount(Math.min(this.initialBookingOfferSummaryRecordsCount + 5, PageRequirement.PAGE_REQUIREMENT_SIZE_DEFAULT))
-          hasTotalElementsCount(this.initialBookingOfferSummaryRecordsCount + 5)
-        })
-        .hasPageContentWithAllElementsThat({
-          hasCustomerTypeOfStandard()
-        })
+    assertResponseContentHasPageablePayloadThat(responseContentMap) {
+      isSuccessful()
+      hasPageInfoOfFirstPageWithDefaults()
+      hasPageInfoThat({
+        hasPageElementsCount(Math.min(this.initialBookingOfferSummaryRecordsCount + 5, PageRequirement.PAGE_REQUIREMENT_SIZE_DEFAULT))
+        hasTotalElementsCount(this.initialBookingOfferSummaryRecordsCount + 5)
+      })
+      hasPageContentWithAllElementsThat({
+        hasCustomerTypeOfStandard()
+      })
+    }
 
     where:
     acceptLanguageParam | localeStringParam
@@ -153,8 +154,7 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap)
-        .isSuccessfulAndEmpty()
+    assertResponseContentHasPageablePayloadThat(responseContentMap).isSuccessfulAndEmpty()
 
     where:
     acceptLanguageParam | localeStringParam
@@ -187,13 +187,13 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertResponseContentHasMetaDataThat(responseContentMap)
-        .isViolationOfDomain_badRequest()
-        .has_general_locale(localeStringParam)
-        .has_violation_message(messageParam)
+    assertResponseContentHasMetaDataThat(responseContentMap) {
+      isViolationOfDomain_badRequest()
+      has_general_locale(localeStringParam)
+      has_violation_message(messageParam)
+    }
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap)
-        .isEmpty()
+    assertResponseContentHasPageablePayloadThat(responseContentMap).isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | messageParam

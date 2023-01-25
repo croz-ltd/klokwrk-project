@@ -98,21 +98,23 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     mvcResult.response.status == HttpStatus.OK.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertResponseContentHasMetaDataThat(responseContentMap)
-        .isSuccessful()
-        .has_general_locale(localeStringParam)
+    assertResponseContentHasMetaDataThat(responseContentMap, {
+      isSuccessful()
+      has_general_locale(localeStringParam)
+    })
 
-    assertResponseContentHasPayloadThat(responseContentMap)
-        .isSuccessful()
-        .hasBookingOfferIdentifier(myBookingOfferIdentifier)
-        .hasCustomerTypeOfStandard()
-        .hasCommodityOfDryTypeWithDefaultWeight()
-        .hasOriginLocationOfRijeka()
-        .hasDestinationLocationOfRotterdam()
-        .hasDepartureEarliestTimeGreaterThan(startedAt + Duration.ofHours(1))
-        .hasDepartureLatestTimeGreaterThan(startedAt + Duration.ofHours(2))
-        .hasArrivalLatestTimeGreaterThan(startedAt + Duration.ofHours(3))
-        .hasEventMetadataOfTheFirstEventWithCorrectTiming(startedAt)
+    assertResponseContentHasPayloadThat(responseContentMap, {
+      isSuccessful()
+      hasBookingOfferIdentifier(myBookingOfferIdentifier)
+      hasCustomerTypeOfStandard()
+      hasCommodityOfDryTypeWithDefaultWeight()
+      hasOriginLocationOfRijeka()
+      hasDestinationLocationOfRotterdam()
+      hasDepartureEarliestTimeGreaterThan(startedAt + Duration.ofHours(1))
+      hasDepartureLatestTimeGreaterThan(startedAt + Duration.ofHours(2))
+      hasArrivalLatestTimeGreaterThan(startedAt + Duration.ofHours(3))
+      hasEventMetadataOfTheFirstEventWithCorrectTiming(startedAt)
+    })
 
     where:
     acceptLanguageParam | localeStringParam
@@ -140,10 +142,11 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertResponseContentHasMetaDataThat(responseContentMap)
-        .isViolationOfValidation()
-        .has_general_locale(localeStringParam)
-        .has_violation_message(myViolationMessageParam)
+    assertResponseContentHasMetaDataThat(responseContentMap, {
+      isViolationOfValidation()
+      has_general_locale(localeStringParam)
+      has_violation_message(myViolationMessageParam)
+    })
 
     // NOTE: In *Assertion classes, we don't need to have a method for validating every single part of the response. We can always turn to native Spock means of verification.
     //       However, if that specific assertion often repeats, this can be a reason for introducing a specialized method in the *Assertion class.
@@ -157,8 +160,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
       }
     }
 
-    assertResponseContentHasPayloadThat(responseContentMap)
-        .isEmpty()
+    assertResponseContentHasPayloadThat(responseContentMap).isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | myViolationMessageParam
