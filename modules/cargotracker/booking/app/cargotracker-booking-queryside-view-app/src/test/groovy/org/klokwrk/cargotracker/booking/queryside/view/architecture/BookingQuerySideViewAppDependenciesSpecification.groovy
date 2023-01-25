@@ -29,6 +29,9 @@ import org.klokwrk.lib.archunit.ArchUnitUtils
 import spock.lang.Shared
 import spock.lang.Specification
 
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.belongToAnyOf
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAnyPackage
+
 class BookingQuerySideViewAppDependenciesSpecification extends Specification {
   @Shared
   JavaClasses allKlokwrkClasses
@@ -93,12 +96,15 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
     // @formatter:off
     //noinspection ChangeToOperator
     ArchRule rule = ArchRuleDefinition
-        .classes().that(
-            JavaClass.Predicates.resideInAnyPackage(cargotrackerBookingQuerySideViewAppAllPackages)
-                                .or(JavaClass.Predicates.belongToAnyOf(BookingQuerySideViewApplication) as DescribedPredicate<JavaClass>)
-        )
-        .should().onlyAccessClassesThat(JavaClass.Predicates
-            .resideInAnyPackage(
+        .classes()
+            .that(
+                resideInAnyPackage(cargotrackerBookingQuerySideViewAppAllPackages)
+                .or(belongToAnyOf(BookingQuerySideViewApplication) as DescribedPredicate<JavaClass>)
+            )
+            .and()
+            .haveNameNotMatching(/(.*Assertion$|.*Assertion\$.*)/)
+        .should().onlyAccessClassesThat(
+            resideInAnyPackage(
                 cargotrackerBookingDomainValueAllPackages +
 
                 cargotrackerBookingQuerySideViewAppAllPackages +
@@ -121,7 +127,7 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
 
                 thirdPartyDependencyAllPackages as String[]
             )
-            .or(JavaClass.Predicates.belongToAnyOf(BookingQuerySideViewApplication) as DescribedPredicate<JavaClass>)
+            .or(belongToAnyOf(BookingQuerySideViewApplication) as DescribedPredicate<JavaClass>)
        )
     // @formatter:on
 

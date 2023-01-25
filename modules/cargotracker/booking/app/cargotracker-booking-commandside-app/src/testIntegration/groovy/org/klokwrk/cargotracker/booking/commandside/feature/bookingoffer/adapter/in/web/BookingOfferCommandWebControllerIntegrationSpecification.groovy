@@ -18,12 +18,10 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.adapter.in.web
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder
-import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestDataJsonFixtureBuilder
+import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder
+import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
-import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
-import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
 import org.klokwrk.lang.groovy.misc.InstantUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -40,14 +38,16 @@ import java.nio.charset.Charset
 import java.time.Duration
 import java.time.Instant
 
-import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_cargoDry
-import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam
-import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry
-import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rotterdamToRijeka
-import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestDataJsonFixtureBuilder.cargoRequestData_base
-import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestDataJsonFixtureBuilder.cargoRequestData_dry
-import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rijekaToRotterdam
-import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rotterdamToRijeka
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.assertion.CreateBookingOfferCommandResponseWebContentPayloadAssertion.assertWebResponseContentHasPayloadThat
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_cargoDry
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rotterdamToRijeka
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.CargoRequestDataJsonFixtureBuilder.cargoRequestData_base
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.CargoRequestDataJsonFixtureBuilder.cargoRequestData_dry
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rijekaToRotterdam
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rotterdamToRijeka
+import static org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentMetaDataAssertion.assertResponseContentHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
@@ -99,32 +99,24 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.OK.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
+    assertResponseContentHasMetaDataThat(responseContentMap)
+        .isSuccessful()
+        .has_general_locale(localeStringParam)
+
     verifyAll(responseContentMap) {
       size() == 2
-
-      verifyAll(it.metaData as Map) {
-        size() == 2
-
-        verifyAll(it.general as Map) {
-          size() == 3
-          locale == localeStringParam
-          severity == Severity.INFO.name().toLowerCase()
-          timestamp
-        }
-
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.OK.reasonPhrase
-          status == HttpStatus.OK.value().toString()
-        }
-      }
 
       verifyAll(it.payload as Map) {
         size() == 4
         customer
-        bookingOfferId.identifier == myBookingOfferIdentifier
+        bookingOfferId
         routeSpecification
         bookingOfferCargos
+
+        verifyAll(it.bookingOfferId as Map) {
+          size() == 1
+          identifier == myBookingOfferIdentifier
+        }
 
         verifyAll(it.customer as Map) {
           size() == 2
@@ -144,40 +136,80 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             size() == 4
             name == "Rijeka"
             countryName == "Croatia"
-
+            portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
             unLoCode
 
-            unLoCode.code
-            unLoCode.code.encoded == "HRRJK"
+            verifyAll(it.unLoCode as Map) {
+              size() == 3
+              code
+              coordinates
+              function
 
-            unLoCode.coordinates
-            unLoCode.coordinates.encoded == "4520N 01424E"
+              verifyAll(it.code as Map) {
+                size() == 3
+                encoded == "HRRJK"
+                countryCode == "HR"
+                locationCode == "RJK"
+              }
 
-            unLoCode.function
-            unLoCode.function.encoded == "1234----"
+              verifyAll(it.coordinates as Map) {
+                size() == 3
+                encoded == "4520N 01424E"
+                latitudeInDegrees == 45.33
+                longitudeInDegrees == 14.4
+              }
 
-            portCapabilities
-            portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
+              verifyAll(it.function as Map) {
+                size() == 7
+                encoded == "1234----"
+                isPort == true
+                isRailTerminal == true
+                isRoadTerminal == true
+                isAirport == true
+                isPostalExchangeOffice == false
+                isBorderCrossing == false
+              }
+            }
           }
 
           verifyAll(it.destinationLocation as Map) {
             size() == 4
             name == "Rotterdam"
             countryName == "Netherlands"
-
+            portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
             unLoCode
 
-            unLoCode.code
-            unLoCode.code.encoded == "NLRTM"
+            verifyAll(it.unLoCode as Map) {
+              size() == 3
+              code
+              coordinates
+              function
 
-            unLoCode.function
-            unLoCode.function.encoded == "12345---"
+              verifyAll(it.code as Map) {
+                size() == 3
+                encoded == "NLRTM"
+                countryCode == "NL"
+                locationCode == "RTM"
+              }
 
-            unLoCode.coordinates
-            unLoCode.coordinates.encoded == "5155N 00430E"
+              verifyAll(it.coordinates as Map) {
+                size() == 3
+                encoded == "5155N 00430E"
+                latitudeInDegrees == 51.92
+                longitudeInDegrees == 4.5
+              }
 
-            portCapabilities
-            portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
+              verifyAll(it.function as Map) {
+                size() == 7
+                encoded == "12345---"
+                isPort == true
+                isRailTerminal == true
+                isRoadTerminal == true
+                isAirport == true
+                isPostalExchangeOffice == true
+                isBorderCrossing == false
+              }
+            }
           }
         }
 
@@ -263,32 +295,24 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.OK.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
+    assertResponseContentHasMetaDataThat(responseContentMap)
+        .isSuccessful()
+        .has_general_locale(localeStringParam)
+
     verifyAll(responseContentMap) {
       size() == 2
 
-      verifyAll(it.metaData as Map) {
-        size() == 2
-
-        verifyAll(it.general as Map) {
-          size() == 3
-          locale == localeStringParam
-          severity == Severity.INFO.name().toLowerCase()
-          timestamp
-        }
-
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.OK.reasonPhrase
-          status == HttpStatus.OK.value().toString()
-        }
-      }
-
       verifyAll(it.payload as Map) {
         size() == 4
+        bookingOfferId
         customer
-        bookingOfferId.identifier == myBookingOfferIdentifier
         routeSpecification
         bookingOfferCargos
+
+        verifyAll(it.bookingOfferId as Map) {
+          size() == 1
+          identifier == myBookingOfferIdentifier
+        }
 
         verifyAll(it.customer as Map) {
           size() == 2
@@ -308,40 +332,28 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
             size() == 4
             name == "Rotterdam"
             countryName == "Netherlands"
-
+            portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
             unLoCode
 
-            unLoCode.code
-            unLoCode.code.encoded == "NLRTM"
-
-            unLoCode.function
-            unLoCode.function.encoded == "12345---"
-
-            unLoCode.coordinates
-            unLoCode.coordinates.encoded == "5155N 00430E"
-
-            portCapabilities
-            portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
+            verifyAll(it.unLoCode as Map) {
+              code.encoded == "NLRTM"
+              function.encoded == "12345---"
+              coordinates.encoded == "5155N 00430E"
+            }
           }
 
           verifyAll(it.destinationLocation as Map) {
             size() == 4
             name == "Rijeka"
             countryName == "Croatia"
-
+            portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
             unLoCode
 
-            unLoCode.code
-            unLoCode.code.encoded == "HRRJK"
-
-            unLoCode.coordinates
-            unLoCode.coordinates.encoded == "4520N 01424E"
-
-            unLoCode.function
-            unLoCode.function.encoded == "1234----"
-
-            portCapabilities
-            portCapabilities == ["CONTAINER_PORT", "SEA_PORT"]
+            verifyAll(it.unLoCode as Map) {
+              code.encoded == "HRRJK"
+              coordinates.encoded == "4520N 01424E"
+              function.encoded == "1234----"
+            }
           }
         }
 
@@ -440,49 +452,26 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    verifyAll(responseContentMap) {
-      size() == 2
+    assertResponseContentHasMetaDataThat(responseContentMap)
+        .isViolationOfValidation()
+        .has_general_locale(localeStringParam)
+        .has_violation_message(violationMessageParam)
 
-      verifyAll(it.metaData as Map) {
-        size() == 3
+    verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
+      root.type == "createBookingOfferCommandRequest"
 
-        verifyAll(it.general as Map) {
-          size() == 3
-          locale == localeStringParam
-          severity == Severity.WARNING.name().toLowerCase()
-          timestamp
-        }
-
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.BAD_REQUEST.reasonPhrase
-          status == HttpStatus.BAD_REQUEST.value().toString()
-        }
-
-        verifyAll(it.violation as Map) {
-          size() == 4
-          code == HttpStatus.BAD_REQUEST.value().toString()
-          message == violationMessageParam
-          type == ViolationType.VALIDATION.name().toLowerCase()
-          validationReport != null
-
-          verifyAll(it.validationReport as Map) {
-            size() == 2
-            root.type == "createBookingOfferCommandRequest"
-            constraintViolations.size() == 5
-            constraintViolations.find({ it.path == "routeSpecification.originLocation" }).type == "notBlank"
-            constraintViolations.find({ it.path == "routeSpecification.destinationLocation" }).type == "notBlank"
-            constraintViolations.find({ it.path == "routeSpecification.departureEarliestTime" }).type == "notNull"
-            constraintViolations.find({ it.path == "routeSpecification.departureLatestTime" }).type == "notNull"
-            constraintViolations.find({ it.path == "routeSpecification.arrivalLatestTime" }).type == "notNull"
-          }
-        }
-      }
-
-      verifyAll(it.payload as Map) {
-        size() == 0
+      verifyAll(constraintViolations as List<Map>) {
+        size() == 5
+        it.find({ it.path == "routeSpecification.originLocation" }).type == "notBlank"
+        it.find({ it.path == "routeSpecification.destinationLocation" }).type == "notBlank"
+        it.find({ it.path == "routeSpecification.departureEarliestTime" }).type == "notNull"
+        it.find({ it.path == "routeSpecification.departureLatestTime" }).type == "notNull"
+        it.find({ it.path == "routeSpecification.arrivalLatestTime" }).type == "notNull"
       }
     }
+
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
@@ -514,37 +503,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    verifyAll(responseContentMap) {
-      size() == 2
+    assertResponseContentHasMetaDataThat(responseContentMap)
+        .isViolationOfDomain_badRequest()
+        .has_general_locale(localeStringParam)
+        .has_violation_message(violationMessageParam)
 
-      verifyAll(it.metaData as Map) {
-        size() == 3
-
-        verifyAll(it.general as Map) {
-          size() == 3
-          locale == localeStringParam
-          severity == Severity.WARNING.name().toLowerCase()
-          timestamp
-        }
-
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.BAD_REQUEST.reasonPhrase
-          status == HttpStatus.BAD_REQUEST.value().toString()
-        }
-
-        verifyAll(it.violation as Map) {
-          size() == 3
-          code == HttpStatus.BAD_REQUEST.value().toString()
-          message == violationMessageParam
-          type == ViolationType.DOMAIN.name().toLowerCase()
-        }
-      }
-
-      verifyAll(it.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
@@ -576,37 +541,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    verifyAll(responseContentMap) {
-      size() == 2
+    assertResponseContentHasMetaDataThat(responseContentMap)
+        .isViolationOfDomain_badRequest()
+        .has_general_locale(localeStringParam)
+        .has_violation_message(violationMessageParam)
 
-      verifyAll(it.metaData as Map) {
-        size() == 3
-
-        verifyAll(it.general as Map) {
-          size() == 3
-          locale == localeStringParam
-          severity == Severity.WARNING.name().toLowerCase()
-          timestamp
-        }
-
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.BAD_REQUEST.reasonPhrase
-          status == HttpStatus.BAD_REQUEST.value().toString()
-        }
-
-        verifyAll(it.violation as Map) {
-          size() == 3
-          code == HttpStatus.BAD_REQUEST.value().toString()
-          message == violationMessageParam
-          type == ViolationType.DOMAIN.name().toLowerCase()
-        }
-      }
-
-      verifyAll(it.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
@@ -638,37 +579,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    verifyAll(responseContentMap) {
-      size() == 2
+    assertResponseContentHasMetaDataThat(responseContentMap)
+        .isViolationOfDomain_badRequest()
+        .has_general_locale(localeStringParam)
+        .has_violation_message(violationMessageParam)
 
-      verifyAll(it.metaData as Map) {
-        size() == 3
-
-        verifyAll(it.general as Map) {
-          size() == 3
-          locale == localeStringParam
-          severity == Severity.WARNING.name().toLowerCase()
-          timestamp
-        }
-
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.BAD_REQUEST.reasonPhrase
-          status == HttpStatus.BAD_REQUEST.value().toString()
-        }
-
-        verifyAll(it.violation as Map) {
-          size() == 3
-          code == HttpStatus.BAD_REQUEST.value().toString()
-          message == violationMessageParam
-          type == ViolationType.DOMAIN.name().toLowerCase()
-        }
-      }
-
-      verifyAll(it.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
@@ -700,37 +617,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    verifyAll(responseContentMap) {
-      size() == 2
+    assertResponseContentHasMetaDataThat(responseContentMap)
+        .isViolationOfDomain_badRequest()
+        .has_general_locale(localeStringParam)
+        .has_violation_message(violationMessageParam)
 
-      verifyAll(it.metaData as Map) {
-        size() == 3
-
-        verifyAll(it.general as Map) {
-          size() == 3
-          severity == Severity.WARNING.name().toLowerCase()
-          locale == localeStringParam
-          timestamp
-        }
-
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.BAD_REQUEST.reasonPhrase
-          status == HttpStatus.BAD_REQUEST.value().toString()
-        }
-
-        verifyAll(it.violation as Map) {
-          size() == 3
-          code == HttpStatus.BAD_REQUEST.value().toString()
-          message == violationMessageParam
-          type == ViolationType.DOMAIN.name().toLowerCase()
-        }
-      }
-
-      verifyAll(it.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
@@ -762,37 +655,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    verifyAll(responseContentMap) {
-      size() == 2
+    assertResponseContentHasMetaDataThat(responseContentMap)
+        .isViolationOfDomain_badRequest()
+        .has_general_locale(localeStringParam)
+        .has_violation_message(violationMessageParam)
 
-      verifyAll(it.metaData as Map) {
-        size() == 3
-
-        verifyAll(it.general as Map) {
-          size() == 3
-          severity == Severity.WARNING.name().toLowerCase()
-          locale == localeStringParam
-          timestamp
-        }
-
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.BAD_REQUEST.reasonPhrase
-          status == HttpStatus.BAD_REQUEST.value().toString()
-        }
-
-        verifyAll(it.violation as Map) {
-          size() == 3
-          code == HttpStatus.BAD_REQUEST.value().toString()
-          message == violationMessageParam
-          type == ViolationType.DOMAIN.name().toLowerCase()
-        }
-      }
-
-      verifyAll(it.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
@@ -828,37 +697,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    verifyAll(responseContentMap) {
-      size() == 2
+    assertResponseContentHasMetaDataThat(responseContentMap)
+        .isViolationOfDomain_badRequest()
+        .has_general_locale(localeStringParam)
+        .has_violation_message(violationMessageParam)
 
-      verifyAll(it.metaData as Map) {
-        size() == 3
-
-        verifyAll(it.general as Map) {
-          size() == 3
-          severity == Severity.WARNING.name().toLowerCase()
-          locale == localeStringParam
-          timestamp
-        }
-
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.BAD_REQUEST.reasonPhrase
-          status == HttpStatus.BAD_REQUEST.value().toString()
-        }
-
-        verifyAll(it.violation as Map) {
-          size() == 3
-          code == HttpStatus.BAD_REQUEST.value().toString()
-          message == violationMessageParam
-          type == ViolationType.DOMAIN.name().toLowerCase()
-        }
-      }
-
-      verifyAll(it.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam
@@ -902,38 +747,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.METHOD_NOT_ALLOWED.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    verifyAll(responseContentMap) {
-      size() == 2
+    assertResponseContentHasMetaDataThat(responseContentMap)
+        .isViolationOfInfrastructureWeb_methodNotAllowed()
+        .has_general_locale(localeStringParam)
+        .has_violation_message(violationMessageParam)
 
-      verifyAll(it.metaData as Map) {
-        size() == 3
-
-        verifyAll(it.general as Map) {
-          size() == 3
-          locale == localeStringParam
-          severity == Severity.WARNING.name().toLowerCase()
-          timestamp
-        }
-
-        verifyAll(it.http as Map) {
-          size() == 2
-          message == HttpStatus.METHOD_NOT_ALLOWED.reasonPhrase
-          status == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
-        }
-
-        verifyAll(it.violation as Map) {
-          size() == 4
-          code == HttpStatus.METHOD_NOT_ALLOWED.value().toString()
-          message == violationMessageParam
-          type == ViolationType.INFRASTRUCTURE_WEB.name().toLowerCase()
-          logUuid
-        }
-      }
-
-      verifyAll(it.payload as Map) {
-        size() == 0
-      }
-    }
+    assertWebResponseContentHasPayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam

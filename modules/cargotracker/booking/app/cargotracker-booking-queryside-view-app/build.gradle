@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 plugins {
+  id "java-test-fixtures"
   id "klokwrk-gradle-plugin-convention-base"
   id "klokwrk-gradle-plugin-convention-groovy"
   id "klokwrk-gradle-plugin-convention-springboot-app"
@@ -62,6 +63,16 @@ dependencies {
   runtimeOnly "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
   runtimeOnly "org.postgresql:postgresql"
 
+  testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
+
+  testFixturesImplementation project(":cargotracker-lib-test-support")
+  testFixturesImplementation project(":klokwrk-lib-uom")
+
+  testFixturesImplementation "javax.measure:unit-api"
+  testFixturesImplementation "org.apache.groovy:groovy"
+  testFixturesImplementation "org.apache.groovy:groovy"
+  testFixturesImplementation "tech.units:indriya"
+
   testImplementation project(":klokwrk-lib-archunit")
 
   testImplementation "com.tngtech.archunit:archunit-junit5"
@@ -71,6 +82,7 @@ dependencies {
   testIntegrationImplementation project(":cargotracker-booking-test-support-queryside")
   testIntegrationImplementation project(":cargotracker-booking-test-support-testcontainers")
   testIntegrationImplementation project(":cargotracker-lib-domain-model-event")
+  testIntegrationImplementation project(":cargotracker-lib-test-support")
   testIntegrationImplementation project(":klokwrk-lib-uom")
 
   testIntegrationImplementation testFixtures(project(":cargotracker-booking-boundary-web"))
