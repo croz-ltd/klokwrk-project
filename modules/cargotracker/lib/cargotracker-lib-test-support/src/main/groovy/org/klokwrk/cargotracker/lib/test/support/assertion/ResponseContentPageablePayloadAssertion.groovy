@@ -122,14 +122,14 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
   }
 
   SELF hasPageInfoThat(
-      @DelegatesTo(value = ResponseContentPayloadPageInfoAssertion, strategy = Closure.DELEGATE_ONLY)
+      @DelegatesTo(value = ResponseContentPayloadPageInfoAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
           options = "org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPayloadPageInfoAssertion"
       ) Closure aClosure)
   {
     ResponseContentPayloadPageInfoAssertion pageInfoAssertion = new ResponseContentPayloadPageInfoAssertion(payloadMap.pageInfo as Map)
-    aClosure.resolveStrategy = Closure.DELEGATE_ONLY
+    aClosure.resolveStrategy = Closure.DELEGATE_FIRST
     aClosure.delegate = pageInfoAssertion
     aClosure.call(pageInfoAssertion)
 
@@ -149,14 +149,14 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
 
   @SuppressWarnings("unused")
   SELF hasPageContentWithAnyElementThat(
-      @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_ONLY)
+      @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = FromString,
           options = "PAGE_CONTENT_ASSERTION"
       ) Closure aClosure)
   {
     List<Map> pageContentList = payloadMap.pageContent as List<Map>
-    aClosure.resolveStrategy = Closure.DELEGATE_ONLY
+    aClosure.resolveStrategy = Closure.DELEGATE_FIRST
 
     boolean isAnyElementFound = pageContentList.any({ Map pgeContentElementMap ->
       PAGE_CONTENT_ASSERTION aListElementPayloadAssertion = getPageContentAssertionInstance(pgeContentElementMap)
@@ -180,7 +180,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
   }
 
   SELF hasPageContentWithAllElementsThat(
-      @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_ONLY)
+      @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = FromString,
           options = "PAGE_CONTENT_ASSERTION"
@@ -192,7 +192,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
 
       aClosure.delegate = aListElementPayloadAssertion
       //noinspection UnnecessaryQualifiedReference
-      aClosure.resolveStrategy = Closure.DELEGATE_ONLY
+      aClosure.resolveStrategy = Closure.DELEGATE_FIRST
 
       try {
         aClosure.call(aListElementPayloadAssertion)
@@ -206,7 +206,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
   }
 
   SELF hasPageContentWithFirstElementThat(
-      @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_ONLY)
+      @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = FromString,
           options = "PAGE_CONTENT_ASSERTION"
@@ -218,7 +218,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
 
   SELF hasPageContentWithElementAtIndexThat(
       Integer anIndex,
-      @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_ONLY)
+      @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = FromString,
           options = "PAGE_CONTENT_ASSERTION"
@@ -228,7 +228,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
     assert pageContentElementMap
 
     PAGE_CONTENT_ASSERTION pageContentElementAssertion = getPageContentAssertionInstance(pageContentElementMap)
-    aClosure.resolveStrategy = Closure.DELEGATE_ONLY
+    aClosure.resolveStrategy = Closure.DELEGATE_FIRST
     aClosure.delegate = pageContentElementAssertion
     aClosure.call(pageContentElementAssertion)
 

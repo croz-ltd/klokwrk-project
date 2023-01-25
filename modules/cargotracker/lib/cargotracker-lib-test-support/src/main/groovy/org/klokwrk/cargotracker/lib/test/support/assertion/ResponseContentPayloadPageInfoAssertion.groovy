@@ -166,14 +166,14 @@ class ResponseContentPayloadPageInfoAssertion {
 
   @SuppressWarnings("unused")
   ResponseContentPayloadPageInfoAssertion hasRequestedPageRequirementThat(
-      @DelegatesTo(value = RequestedPageRequirementAssertion, strategy = Closure.DELEGATE_ONLY)
+      @DelegatesTo(value = RequestedPageRequirementAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
           options = 'org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPayloadPageInfoAssertion$RequestedPageRequirementAssertion'
       ) Closure aClosure)
   {
     RequestedPageRequirementAssertion requestedPageRequirementAssertion = new RequestedPageRequirementAssertion(pageInfoMap.requestedPageRequirement as Map)
-    aClosure.resolveStrategy = Closure.DELEGATE_ONLY
+    aClosure.resolveStrategy = Closure.DELEGATE_FIRST
     aClosure.delegate = requestedPageRequirementAssertion
     aClosure.call(requestedPageRequirementAssertion)
 
@@ -182,7 +182,7 @@ class ResponseContentPayloadPageInfoAssertion {
 
   @SuppressWarnings("unused")
   ResponseContentPayloadPageInfoAssertion hasRequestedSortRequirementListWithFirstElementThat(
-      @DelegatesTo(value = RequestedSortRequirementAssertion, strategy = Closure.DELEGATE_ONLY)
+      @DelegatesTo(value = RequestedSortRequirementAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
           options = 'org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPayloadPageInfoAssertion$RequestedSortRequirementAssertion'
@@ -194,7 +194,7 @@ class ResponseContentPayloadPageInfoAssertion {
 
   ResponseContentPayloadPageInfoAssertion hasRequestedSortRequirementListWithElementAtIndexThat(
       Integer anIndex,
-      @DelegatesTo(value = RequestedSortRequirementAssertion, strategy = Closure.DELEGATE_ONLY)
+      @DelegatesTo(value = RequestedSortRequirementAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
           options = 'org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPayloadPageInfoAssertion$RequestedSortRequirementAssertion'
@@ -204,7 +204,7 @@ class ResponseContentPayloadPageInfoAssertion {
     assert requestedSortRequirementMap
 
     RequestedSortRequirementAssertion requestedSortRequirementAssertion = new RequestedSortRequirementAssertion(requestedSortRequirementMap)
-    aClosure.resolveStrategy = Closure.DELEGATE_ONLY
+    aClosure.resolveStrategy = Closure.DELEGATE_FIRST
     aClosure.delegate = requestedSortRequirementAssertion
     aClosure.call(requestedSortRequirementAssertion)
 
