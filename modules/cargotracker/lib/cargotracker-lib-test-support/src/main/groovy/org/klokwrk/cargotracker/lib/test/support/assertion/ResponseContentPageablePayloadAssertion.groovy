@@ -122,7 +122,6 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
   }
 
   SELF hasPageInfoThat(
-      // @DelegatesTo os present here just to help the IDEA. Otherwise it is not necessary. Groovy works correctly without it, but it does not hurt, beside some redundancy.
       @DelegatesTo(value = ResponseContentPayloadPageInfoAssertion, strategy = Closure.DELEGATE_ONLY)
       @ClosureParams(
           value = SimpleType,
@@ -150,7 +149,6 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
 
   @SuppressWarnings("unused")
   SELF hasPageContentWithAnyElementThat(
-      // @DelegatesTo os present here just to help the IDEA. Otherwise it is not necessary. Groovy works correctly without it, but it does not hurt, beside some redundancy.
       @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_ONLY)
       @ClosureParams(
           value = FromString,
@@ -182,7 +180,6 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
   }
 
   SELF hasPageContentWithAllElementsThat(
-      // @DelegatesTo os present here just to help the IDEA. Otherwise it is not necessary. Groovy works correctly without it, but it does not hurt, beside some redundancy.
       @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_ONLY)
       @ClosureParams(
           value = FromString,
