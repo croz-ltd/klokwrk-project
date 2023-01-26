@@ -27,7 +27,7 @@ import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
 
 import java.time.Instant
 
-import static org.klokwrk.lang.groovy.misc.JsonUtils.stringToJsonString
+import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.stringToJsonString
 
 @SuppressWarnings("CodeNarc.FactoryMethodName")
 @Builder(builderStrategy = SimpleStrategy, prefix = "")

@@ -24,7 +24,7 @@ import groovy.transform.builder.SimpleStrategy
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.data.PageRequirementJsonFixtureBuilder
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.data.SortRequirementJsonFixtureBuilder
 
-import static org.klokwrk.lang.groovy.misc.JsonUtils.stringToJsonString
+import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.stringToJsonString
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic

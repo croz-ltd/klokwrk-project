@@ -22,7 +22,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
 
-import static org.klokwrk.lang.groovy.misc.JsonUtils.stringToJsonString
+import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.stringToJsonString
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic

@@ -27,7 +27,7 @@ import javax.measure.Quantity
 import javax.measure.quantity.Mass
 import javax.measure.quantity.Temperature
 
-import static org.klokwrk.lang.groovy.misc.JsonUtils.stringToJsonString
+import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.stringToJsonString
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic
