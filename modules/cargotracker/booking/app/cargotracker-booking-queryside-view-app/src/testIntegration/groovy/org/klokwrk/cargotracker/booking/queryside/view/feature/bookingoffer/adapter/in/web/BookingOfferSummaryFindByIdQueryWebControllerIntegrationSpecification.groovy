@@ -39,6 +39,7 @@ import java.time.Duration
 import java.time.Instant
 
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion.assertResponseContentHasPayloadThat
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder.bookingOfferSummaryFindByIdQueryRequest_standardCustomer
 import static org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentMetaDataAssertion.assertResponseContentHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
@@ -79,8 +80,12 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     Instant startedAt = Instant.now()
     String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
 
-    // Note: "standard-customer@cargotracker.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
-    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier, userIdentifier: "standard-customer@cargotracker.com"])
+    // Note: "standard-customer@cargotracker.com" used by base builder, corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
+    String webRequestBody = objectMapper.writeValueAsString(
+        bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
+            .bookingOfferIdentifier(myBookingOfferIdentifier)
+            .buildAsMap()
+    )
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -124,7 +129,12 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
 
   @SuppressWarnings("CodeNarc.AbcMetric")
   void "should return expected response when request is not valid - validation failure"() {
-    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: null, userIdentifier: null])
+    String webRequestBody = objectMapper.writeValueAsString(
+        bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
+            .bookingOfferIdentifier(null)
+            .userIdentifier(null)
+            .buildAsMap()
+    )
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -171,7 +181,12 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
   void "should return expected response when specified user can not be found - stateful validation failure"() {
     given:
     String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
-    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier, userIdentifier: "someUserIdentifier"])
+    String webRequestBody = objectMapper.writeValueAsString(
+        bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
+            .bookingOfferIdentifier(myBookingOfferIdentifier)
+            .userIdentifier("someUserIdentifier")
+            .buildAsMap()
+    )
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -206,7 +221,11 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
   void "should return expected response when BookingOfferSummary cannot be found - domain failure"() {
     given:
     String myBookingOfferIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier, userIdentifier: "standard-customer@cargotracker.com"])
+    String webRequestBody = objectMapper.writeValueAsString(
+        bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
+            .bookingOfferIdentifier(myBookingOfferIdentifier)
+            .buildAsMap()
+    )
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -241,7 +260,11 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
   void "should return expected response for a request with invalid HTTP method"() {
     given:
     String myBookingOfferIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString([bookingOfferIdentifier: myBookingOfferIdentifier])
+    String webRequestBody = objectMapper.writeValueAsString(
+        bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
+            .bookingOfferIdentifier(myBookingOfferIdentifier)
+            .buildAsMap()
+    )
 
     when:
     MvcResult mvcResult = mockMvc.perform(

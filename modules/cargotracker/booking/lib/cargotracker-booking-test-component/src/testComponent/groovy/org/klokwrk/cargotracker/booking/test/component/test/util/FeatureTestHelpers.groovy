@@ -31,6 +31,7 @@ import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.CargoRequestDataJsonFixtureBuilder.cargoRequestData_frozen
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_base
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rijekaToRotterdam
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder.bookingOfferSummaryFindByIdQueryRequest_standardCustomer
 
 @CompileStatic
 class FeatureTestHelpers {
@@ -111,12 +112,9 @@ class FeatureTestHelpers {
   }
 
   static String makeQueryRequestBody_bookingOfferSummary_findById(String bookingOfferIdentifier) {
-    String queryRequestBody = """
-      {
-        "userIdentifier": "standard-customer@cargotracker.com",
-        "bookingOfferIdentifier": "${ bookingOfferIdentifier }"
-      }
-      """
+    String queryRequestBody = bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
+        .bookingOfferIdentifier(bookingOfferIdentifier)
+        .buildAsJsonString()
 
     return queryRequestBody
   }
