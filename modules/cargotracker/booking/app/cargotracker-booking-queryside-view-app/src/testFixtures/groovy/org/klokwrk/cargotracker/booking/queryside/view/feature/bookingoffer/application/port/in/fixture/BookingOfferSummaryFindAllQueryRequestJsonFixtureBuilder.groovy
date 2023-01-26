@@ -25,6 +25,8 @@ import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.appl
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.data.SortRequirementJsonFixtureBuilder
 import org.klokwrk.cargotracker.lib.test.support.fixture.base.JsonFixtureBuilder
 
+import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.jsonFixtureBuilderListToJsonListString
+import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.jsonFixtureBuilderListToJsonList
 import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.stringToJsonString
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
@@ -52,12 +54,7 @@ class BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder implements JsonFi
     }
 
     if (sortRequirementList != null) {
-      List sortRequirementListToUse = []
-      sortRequirementList.each {
-        sortRequirementListToUse << it.buildAsMap()
-      }
-
-      mapToReturn.sortRequirementList = sortRequirementListToUse
+      mapToReturn.sortRequirementList = jsonFixtureBuilderListToJsonList(sortRequirementList)
     }
 
     return mapToReturn
@@ -72,16 +69,7 @@ class BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder implements JsonFi
     }
 
     if (sortRequirementList != null) {
-      String sortRequirementListStringContent = ""
-
-      sortRequirementList.eachWithIndex { SortRequirementJsonFixtureBuilder sortRequirementJsonFixtureBuilder, Integer anIndex ->
-        sortRequirementListStringContent += "${ sortRequirementJsonFixtureBuilder.buildAsJsonString() }"
-        if (anIndex < sortRequirementList.size() - 1) {
-          sortRequirementListStringContent += ","
-        }
-      }
-
-      jsonStringContent += /, "sortRequirementList": [${ sortRequirementListStringContent }]/
+      jsonStringContent += /, "sortRequirementList": ${ jsonFixtureBuilderListToJsonListString(sortRequirementList) }/
     }
 
     String stringToReturn = """
