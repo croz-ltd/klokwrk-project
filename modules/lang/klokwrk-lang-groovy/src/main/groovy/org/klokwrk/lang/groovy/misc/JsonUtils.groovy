@@ -22,7 +22,7 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class JsonUtils {
   static String stringToJsonString(String stringToRender) {
-    String stringToReturn = stringToRender == null ? null : /"$stringToRender"/
+    String stringToReturn = stringToRender == null ? "null" : /"$stringToRender"/
     return stringToReturn
   }
 }
