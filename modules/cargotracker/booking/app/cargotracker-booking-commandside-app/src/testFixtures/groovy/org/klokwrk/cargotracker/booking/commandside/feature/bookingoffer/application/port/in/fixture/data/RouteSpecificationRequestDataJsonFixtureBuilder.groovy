@@ -20,6 +20,7 @@ package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applic
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
+import org.klokwrk.cargotracker.lib.test.support.fixture.base.JsonFixtureBuilder
 
 import java.time.Duration
 import java.time.Instant
@@ -28,7 +29,7 @@ import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixture
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic
-class RouteSpecificationRequestDataJsonFixtureBuilder {
+class RouteSpecificationRequestDataJsonFixtureBuilder implements JsonFixtureBuilder {
   static RouteSpecificationRequestDataJsonFixtureBuilder routeSpecificationRequestData_base(Instant currentTime = Instant.now()) {
     assert currentTime != null
 
@@ -75,6 +76,7 @@ class RouteSpecificationRequestDataJsonFixtureBuilder {
 
   Instant currentTime
 
+  @Override
   Map<String, ?> buildAsMap() {
     Map timesToUse = timesToUse(currentTime)
 
@@ -89,6 +91,7 @@ class RouteSpecificationRequestDataJsonFixtureBuilder {
     return mapToReturn
   }
 
+  @Override
   String buildAsJsonString() {
     Map timesToUse = timesToUse(currentTime)
 

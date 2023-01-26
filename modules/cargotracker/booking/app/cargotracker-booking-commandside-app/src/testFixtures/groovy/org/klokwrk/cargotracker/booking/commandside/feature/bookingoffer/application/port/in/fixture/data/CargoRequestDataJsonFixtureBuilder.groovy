@@ -22,6 +22,7 @@ import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
+import org.klokwrk.cargotracker.lib.test.support.fixture.base.JsonFixtureBuilder
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
@@ -33,7 +34,7 @@ import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixture
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic
-class CargoRequestDataJsonFixtureBuilder {
+class CargoRequestDataJsonFixtureBuilder implements JsonFixtureBuilder {
   static CargoRequestDataJsonFixtureBuilder cargoRequestData_base() {
     return new CargoRequestDataJsonFixtureBuilder()
         .commodityWeight(1000.kg)
@@ -73,6 +74,7 @@ class CargoRequestDataJsonFixtureBuilder {
   Quantity<Temperature> commodityRequestedStorageTemperature
   String containerDimensionType
 
+  @Override
   Map<String, ?> buildAsMap() {
     Map<String, ?> mapToReturn = [
         commodityType: commodityType,
@@ -84,6 +86,7 @@ class CargoRequestDataJsonFixtureBuilder {
     return mapToReturn
   }
 
+  @Override
   String buildAsJsonString() {
     String stringToReturn = """
         {

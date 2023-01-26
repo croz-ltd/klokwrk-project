@@ -21,12 +21,13 @@ import groovy.json.JsonOutput
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
+import org.klokwrk.cargotracker.lib.test.support.fixture.base.JsonFixtureBuilder
 
 import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.stringToJsonString
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic
-class SortRequirementJsonFixtureBuilder {
+class SortRequirementJsonFixtureBuilder implements JsonFixtureBuilder {
   static SortRequirementJsonFixtureBuilder sortRequirement_default() {
     SortRequirementJsonFixtureBuilder jsonFixtureBuilder = new SortRequirementJsonFixtureBuilder()
         .propertyName("lastEventRecordedAt")
@@ -38,6 +39,7 @@ class SortRequirementJsonFixtureBuilder {
   String propertyName
   String direction
 
+  @Override
   Map<String, ?> buildAsMap() {
     Map<String, ?> mapToReturn = [
         propertyName: propertyName,
@@ -47,6 +49,7 @@ class SortRequirementJsonFixtureBuilder {
     return mapToReturn
   }
 
+  @Override
   String buildAsJsonString() {
     String stringToReturn = """
         {

@@ -21,12 +21,13 @@ import groovy.json.JsonOutput
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
+import org.klokwrk.cargotracker.lib.test.support.fixture.base.JsonFixtureBuilder
 
 import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.stringToJsonString
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic
-class BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder {
+class BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder implements JsonFixtureBuilder {
 
   static BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder bookingOfferSummaryFindByIdQueryRequest_standardCustomer() {
     BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder jsonFixtureBuilder = new BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder()
@@ -38,6 +39,7 @@ class BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder {
   String userIdentifier
   String bookingOfferIdentifier
 
+  @Override
   Map<String, ?> buildAsMap() {
     Map<String, ?> mapToReturn = [
         userIdentifier: userIdentifier,
@@ -47,6 +49,7 @@ class BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder {
     return mapToReturn
   }
 
+  @Override
   String buildAsJsonString() {
     String stringToReturn = """
         {
