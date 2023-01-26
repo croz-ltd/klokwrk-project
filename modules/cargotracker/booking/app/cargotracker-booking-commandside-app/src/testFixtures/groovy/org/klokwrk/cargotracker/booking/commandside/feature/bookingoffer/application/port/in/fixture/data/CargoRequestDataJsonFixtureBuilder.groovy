@@ -27,6 +27,8 @@ import javax.measure.Quantity
 import javax.measure.quantity.Mass
 import javax.measure.quantity.Temperature
 
+import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.quantityToJsonMap
+import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.quantityToJsonString
 import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.stringToJsonString
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
@@ -93,30 +95,5 @@ class CargoRequestDataJsonFixtureBuilder {
         """
 
     return stringToReturn
-  }
-
-  @SuppressWarnings("CodeNarc.ReturnsNullInsteadOfEmptyCollection")
-  protected Map<String, ?> quantityToJsonMap(Quantity quantity) {
-    if (quantity == null) {
-      return null
-    }
-
-    return [
-        value: quantity.value,
-        unitSymbol: quantity.unit.toString()
-    ]
-  }
-
-  protected String quantityToJsonString(Quantity quantity) {
-    if (quantity == null) {
-      return null
-    }
-
-    return """
-        {
-            "value": $quantity.value,
-            "unitSymbol": "$quantity.unit"
-        }
-    """
   }
 }
