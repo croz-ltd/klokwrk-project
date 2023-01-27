@@ -23,16 +23,17 @@ import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.CargoRequestDataJsonFixtureBuilder
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder
+import org.klokwrk.cargotracker.lib.test.support.fixture.base.JsonFixtureBuilder
 import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
 
 import java.time.Instant
 
-import static org.klokwrk.lang.groovy.misc.JsonUtils.stringToJsonString
+import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.stringToJsonString
 
 @SuppressWarnings("CodeNarc.FactoryMethodName")
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic
-class CreateBookingOfferCommandRequestJsonFixtureBuilder {
+class CreateBookingOfferCommandRequestJsonFixtureBuilder implements JsonFixtureBuilder {
   static CreateBookingOfferCommandRequestJsonFixtureBuilder createBookingOfferCommandRequest_base() {
     CreateBookingOfferCommandRequestJsonFixtureBuilder jsonFixtureBuilder = new CreateBookingOfferCommandRequestJsonFixtureBuilder()
         .userIdentifier("standard-customer@cargotracker.com")
@@ -126,6 +127,7 @@ class CreateBookingOfferCommandRequestJsonFixtureBuilder {
    * Intended to be used from integration tests where appropriately configured Jackson ObjectMapper instance already exists. Therefore, besides integration tests themself, this way we can also
    * indirectly test Jackson's ObjectMapper configuration.
    */
+  @Override
   Map<String, ?> buildAsMap() {
     Map<String, ?> mapToReturn = [
         userIdentifier: userIdentifier,
@@ -144,6 +146,7 @@ class CreateBookingOfferCommandRequestJsonFixtureBuilder {
    * <p/>
    * Intended to be used from tests where JSON mapper is not available, i.e., from component tests with external HTTP client.
    */
+  @Override
   String buildAsJsonString() {
     String stringToReturn = """
         {

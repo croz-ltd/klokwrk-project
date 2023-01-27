@@ -20,7 +20,6 @@ package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.ada
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
-import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
 import org.spockframework.spring.EnableSharedInjection
 import org.springframework.beans.factory.annotation.Autowired
@@ -40,6 +39,9 @@ import javax.sql.DataSource
 import java.nio.charset.Charset
 
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseContentHasPageablePayloadThat
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder.bookingOfferSummarySearchAllQueryRequest_originOfRijeka
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder.bookingOfferSummarySearchAllQueryRequest_standardCustomer
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.data.SortRequirementJsonFixtureBuilder.sortRequirement_default
 import static org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentMetaDataAssertion.assertResponseContentHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
@@ -85,19 +87,12 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
 
   void "should work for search request with default paging and sorting"() {
     given:
-    String webRequestBody = objectMapper.writeValueAsString([
-        userIdentifier: "standard-customer@cargotracker.com",
-        customerTypeSearchList: [CustomerType.STANDARD, CustomerType.GOLD],
-        originLocationName: "Rijeka",
-        totalCommodityWeightFromIncluding: [
-            value: 5_000,
-            unitSymbol: "kg"
-        ],
-        totalCommodityWeightToIncluding: [
-            value: 50_000,
-            unitSymbol: "kg"
-        ],
-    ])
+    String webRequestBody = objectMapper.writeValueAsString(
+        bookingOfferSummarySearchAllQueryRequest_originOfRijeka()
+            .totalCommodityWeightFromIncluding(5_000.kg)
+            .totalCommodityWeightToIncluding(50_000.kg)
+            .buildAsMap()
+    )
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -145,7 +140,11 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
 
   void "should work for search request with default paging and sorting but with empty page content"() {
     given:
-    String webRequestBody = objectMapper.writeValueAsString([userIdentifier: "platinum-customer@cargotracker.com"])
+    String webRequestBody = objectMapper.writeValueAsString(
+        bookingOfferSummarySearchAllQueryRequest_standardCustomer()
+            .userIdentifier("platinum-customer@cargotracker.com")
+            .buildAsMap()
+    )
 
     when:
     MvcResult mvcResult = mockMvc.perform(
@@ -177,14 +176,11 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
   }
 
   void "should fail for invalid property name in sort requirements"() {
-    String webRequestBody = objectMapper.writeValueAsString([
-        userIdentifier: "standard-customer@cargotracker.com",
-        customerTypeSearchList: [CustomerType.STANDARD, CustomerType.GOLD],
-        pageRequirement: [ordinal: 0, size: 25],
-        sortRequirementList: [
-            [propertyName: "nonExistingProperty", direction: "ASC"]
-        ]
-    ])
+    String webRequestBody = objectMapper.writeValueAsString(
+        bookingOfferSummarySearchAllQueryRequest_standardCustomer()
+            .sortRequirementList([sortRequirement_default().propertyName("nonExistingProperty")])
+            .buildAsMap()
+    )
 
     when:
     MvcResult mvcResult = mockMvc.perform(

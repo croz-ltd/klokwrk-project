@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c8592ab0-abc4-421b-8bd0-d6275732da42",
+		"_postman_id": "f5b8a04e-9d27-4755-babe-891cedd90124",
 		"name": "cargotracker-booking",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "1601377"
@@ -1724,7 +1724,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationName\": \"Rotterdam\",\n  \"destinationLocationCountryName\": \"The United States\",\n  \"totalCommodityWeightKgFromIncluding\": 1000,\n  \"totalCommodityWeightKgToIncluding\": 60500,\n  \"commodityTypes\": [\"chilled\", \"frozen\"]\n}",
+													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationName\": \"Rotterdam\",\n  \"destinationLocationCountryName\": \"The United States\",\n    \"totalCommodityWeightFromIncluding\": {\n    \"value\": 1000,\n    \"unitSymbol\": \"kg\"\n  },\n  \"totalCommodityWeightToIncluding\": {\n    \"value\": 60500,\n    \"unitSymbol\": \"kg\"\n  },\n  \"commodityTypes\": [\"chilled\", \"frozen\"]\n}",
 													"options": {
 														"raw": {
 															"language": "json"

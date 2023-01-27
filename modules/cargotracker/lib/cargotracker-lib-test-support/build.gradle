@@ -25,4 +25,7 @@ dependencies {
   implementation platform(project(":klokwrk-platform-spring-boot"))
 
   implementation "org.apache.groovy:groovy"
+
+  compileOnly "javax.measure:unit-api"
+  compileOnly "tech.units:indriya"
 }

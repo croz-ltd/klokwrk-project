@@ -110,58 +110,13 @@ class FeatureTestHelpers {
     return commandRequestBodyList
   }
 
-  static String makeQueryRequestBody_bookingOfferSummary_findById(String bookingOfferIdentifier) {
-    String queryRequestBody = """
-      {
-        "userIdentifier": "standard-customer@cargotracker.com",
-        "bookingOfferIdentifier": "${ bookingOfferIdentifier }"
-      }
-      """
-
-    return queryRequestBody
-  }
-
-  static String makeQueryRequestBody_bookingOfferSummary_findAll_standardCustomer() {
-    String queryRequestBody = """
-      {
-        "userIdentifier": "standard-customer@cargotracker.com"
-      }
-      """
-
-    return queryRequestBody
-  }
-
-  static String makeQueryRequestBody_bookingOfferSummary_searchAll() {
-    String queryRequestBody = """
-      {
-        "userIdentifier": "standard-customer@cargotracker.com",
-        "customerTypeSearchList": [
-          "STANDARD",
-          "GOLD"
-        ],
-        "originLocationName": "Rijeka",
-        "destinationLocationCountryName": "The United States",
-        "totalCommodityWeightFromIncluding": {
-          "value": 15000,
-          "unitSymbol": "kg"
-        },
-        "totalCommodityWeightToIncluding": {
-          "value": 100000,
-          "unitSymbol": "kg"
-        }
-      }
-      """
-
-    return queryRequestBody
-  }
-
   static Request makeRequest(String url, String body, String acceptLanguageHeaderValue) {
     Request request = Request.Post(url)
-                             .addHeader("Content-Type", "application/json")
-                             .addHeader("Accept", "application/json")
-                             .addHeader("Accept-Charset", "utf-8")
-                             .addHeader("Accept-Language", acceptLanguageHeaderValue)
-                             .bodyString(body, ContentType.APPLICATION_JSON)
+        .addHeader("Content-Type", "application/json")
+        .addHeader("Accept", "application/json")
+        .addHeader("Accept-Charset", "utf-8")
+        .addHeader("Accept-Language", acceptLanguageHeaderValue)
+        .bodyString(body, ContentType.APPLICATION_JSON)
 
     return request
   }

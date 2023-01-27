@@ -101,8 +101,11 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
                 resideInAnyPackage(cargotrackerBookingQuerySideViewAppAllPackages)
                 .or(belongToAnyOf(BookingQuerySideViewApplication) as DescribedPredicate<JavaClass>)
             )
+            // ignore testFixtures sourceSet
             .and()
-            .haveNameNotMatching(/(.*Assertion$|.*Assertion\$.*)/)
+            .haveNameNotMatching(/org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.*$/)
+            .and()
+            .haveNameNotMatching(/org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.*$/)
         .should().onlyAccessClassesThat(
             resideInAnyPackage(
                 cargotrackerBookingDomainValueAllPackages +

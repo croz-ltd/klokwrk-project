@@ -15,14 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lang.groovy.misc
+package org.klokwrk.cargotracker.lib.test.support.fixture.base
 
 import groovy.transform.CompileStatic
 
 @CompileStatic
-class JsonUtils {
-  static String stringToJsonString(String stringToRender) {
-    String stringToReturn = stringToRender == null ? null : /"$stringToRender"/
-    return stringToReturn
-  }
+interface JsonFixtureBuilder {
+  Map<String, ?> buildAsMap()
+  String buildAsJsonString()
 }
