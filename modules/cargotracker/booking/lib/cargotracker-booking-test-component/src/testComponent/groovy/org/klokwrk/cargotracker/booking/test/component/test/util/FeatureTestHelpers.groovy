@@ -33,6 +33,7 @@ import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rijekaToRotterdam
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder.bookingOfferSummaryFindAllQueryRequest_standardCustomer
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder.bookingOfferSummaryFindByIdQueryRequest_standardCustomer
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder.bookingOfferSummarySearchAllQueryRequest_originOfRijeka
 
 @CompileStatic
 class FeatureTestHelpers {
@@ -126,36 +127,22 @@ class FeatureTestHelpers {
   }
 
   static String makeQueryRequestBody_bookingOfferSummary_searchAll() {
-    String queryRequestBody = """
-      {
-        "userIdentifier": "standard-customer@cargotracker.com",
-        "customerTypeSearchList": [
-          "STANDARD",
-          "GOLD"
-        ],
-        "originLocationName": "Rijeka",
-        "destinationLocationCountryName": "The United States",
-        "totalCommodityWeightFromIncluding": {
-          "value": 15000,
-          "unitSymbol": "kg"
-        },
-        "totalCommodityWeightToIncluding": {
-          "value": 100000,
-          "unitSymbol": "kg"
-        }
-      }
-      """
+    String queryRequestBody = bookingOfferSummarySearchAllQueryRequest_originOfRijeka()
+        .destinationLocationCountryName("The United States")
+        .totalCommodityWeightFromIncluding(15_000.kg)
+        .totalCommodityWeightToIncluding(100_000.kg)
+        .buildAsJsonString()
 
     return queryRequestBody
   }
 
   static Request makeRequest(String url, String body, String acceptLanguageHeaderValue) {
     Request request = Request.Post(url)
-                             .addHeader("Content-Type", "application/json")
-                             .addHeader("Accept", "application/json")
-                             .addHeader("Accept-Charset", "utf-8")
-                             .addHeader("Accept-Language", acceptLanguageHeaderValue)
-                             .bodyString(body, ContentType.APPLICATION_JSON)
+        .addHeader("Content-Type", "application/json")
+        .addHeader("Accept", "application/json")
+        .addHeader("Accept-Charset", "utf-8")
+        .addHeader("Accept-Language", acceptLanguageHeaderValue)
+        .bodyString(body, ContentType.APPLICATION_JSON)
 
     return request
   }
