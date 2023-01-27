@@ -34,11 +34,11 @@ import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam_cargoChilled
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rotterdamToRijeka
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder.bookingOfferSummaryFindAllQueryRequest_standardCustomer
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder.bookingOfferSummaryFindByIdQueryRequest_standardCustomer
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder.bookingOfferSummarySearchAllQueryRequest_originOfRijeka
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeCommandRequestBodyList_createBookingOffer
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeCommandRequestUrl_createBookingOffer
-import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeQueryRequestBody_bookingOfferSummary_findAll_standardCustomer
-import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeQueryRequestBody_bookingOfferSummary_findById
-import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeQueryRequestBody_bookingOfferSummary_searchAll
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeQueryRequestUrl_bookingOfferSummary_findAll
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeQueryRequestUrl_bookingOfferSummary_findById
 import static org.klokwrk.cargotracker.booking.test.component.test.util.FeatureTestHelpers.makeQueryRequestUrl_bookingOfferSummary_searchAll
@@ -81,7 +81,11 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
 
     // Wait for projection of a event corresponding to the last command
     Request queryRequest = makeRequest(
-        makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), makeQueryRequestBody_bookingOfferSummary_findById(createdBookingOfferIdentifierList.last()), "en"
+        makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp),
+        bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
+            .bookingOfferIdentifier(createdBookingOfferIdentifierList.last())
+            .buildAsJsonString(),
+        "en"
     )
     Awaitility.await().atMost(Duration.ofSeconds(5)).until({
       HttpResponse queryResponse = queryRequest.execute().returnResponse()
@@ -179,7 +183,10 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
 
     when:
     Request queryRequest = makeRequest(
-        makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), makeQueryRequestBody_bookingOfferSummary_findById(commandResponseBookingOfferIdentifier),
+        makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp),
+        bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
+            .bookingOfferIdentifier(commandResponseBookingOfferIdentifier)
+            .buildAsJsonString(),
         acceptLanguageParam as String
     )
 
@@ -218,7 +225,11 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
   void "query - bookingOfferSummary_findById - should not find non-existing booking offer"() {
     given:
     Request queryRequest = makeRequest(
-        makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), makeQueryRequestBody_bookingOfferSummary_findById(UUID.randomUUID().toString()), acceptLanguageParam as String
+        makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp),
+        bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
+            .bookingOfferIdentifier(UUID.randomUUID().toString())
+            .buildAsJsonString(),
+        acceptLanguageParam as String
     )
 
     when:
@@ -245,7 +256,11 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
   @SuppressWarnings("UnnecessaryQualifiedReference")
   void "query - bookingOfferSummary_findAll - should find existing booking offers with default paging and sorting"() {
     given:
-    Request queryRequest = makeRequest(makeQueryRequestUrl_bookingOfferSummary_findAll(querySideViewApp), makeQueryRequestBody_bookingOfferSummary_findAll_standardCustomer(), "en")
+    Request queryRequest = makeRequest(
+        makeQueryRequestUrl_bookingOfferSummary_findAll(querySideViewApp),
+        bookingOfferSummaryFindAllQueryRequest_standardCustomer().buildAsJsonString(),
+        "en"
+    )
 
     when:
     HttpResponse queryResponse = queryRequest.execute().returnResponse()
@@ -273,7 +288,15 @@ class BookingFeatureComponentSpecification extends AbstractComponentSpecificatio
 
   void "query - bookingOfferSummary_searchAll - should find existing booking offers with default paging and sorting"() {
     given:
-    Request queryRequest = makeRequest(makeQueryRequestUrl_bookingOfferSummary_searchAll(querySideViewApp), makeQueryRequestBody_bookingOfferSummary_searchAll(), "en")
+    Request queryRequest = makeRequest(
+        makeQueryRequestUrl_bookingOfferSummary_searchAll(querySideViewApp),
+        bookingOfferSummarySearchAllQueryRequest_originOfRijeka()
+            .destinationLocationCountryName("The United States")
+            .totalCommodityWeightFromIncluding(15_000.kg)
+            .totalCommodityWeightToIncluding(100_000.kg)
+            .buildAsJsonString(),
+        "en"
+    )
 
     when:
     HttpResponse queryResponse = queryRequest.execute().returnResponse()

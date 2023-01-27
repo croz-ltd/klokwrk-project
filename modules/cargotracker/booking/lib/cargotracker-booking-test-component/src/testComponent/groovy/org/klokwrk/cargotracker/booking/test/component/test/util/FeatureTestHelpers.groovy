@@ -31,9 +31,6 @@ import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.CargoRequestDataJsonFixtureBuilder.cargoRequestData_frozen
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_base
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rijekaToRotterdam
-import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder.bookingOfferSummaryFindAllQueryRequest_standardCustomer
-import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder.bookingOfferSummaryFindByIdQueryRequest_standardCustomer
-import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder.bookingOfferSummarySearchAllQueryRequest_originOfRijeka
 
 @CompileStatic
 class FeatureTestHelpers {
@@ -111,29 +108,6 @@ class FeatureTestHelpers {
     ]
 
     return commandRequestBodyList
-  }
-
-  static String makeQueryRequestBody_bookingOfferSummary_findById(String bookingOfferIdentifier) {
-    String queryRequestBody = bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
-        .bookingOfferIdentifier(bookingOfferIdentifier)
-        .buildAsJsonString()
-
-    return queryRequestBody
-  }
-
-  static String makeQueryRequestBody_bookingOfferSummary_findAll_standardCustomer() {
-    String queryRequestBody = bookingOfferSummaryFindAllQueryRequest_standardCustomer().buildAsJsonString()
-    return queryRequestBody
-  }
-
-  static String makeQueryRequestBody_bookingOfferSummary_searchAll() {
-    String queryRequestBody = bookingOfferSummarySearchAllQueryRequest_originOfRijeka()
-        .destinationLocationCountryName("The United States")
-        .totalCommodityWeightFromIncluding(15_000.kg)
-        .totalCommodityWeightToIncluding(100_000.kg)
-        .buildAsJsonString()
-
-    return queryRequestBody
   }
 
   static Request makeRequest(String url, String body, String acceptLanguageHeaderValue) {
