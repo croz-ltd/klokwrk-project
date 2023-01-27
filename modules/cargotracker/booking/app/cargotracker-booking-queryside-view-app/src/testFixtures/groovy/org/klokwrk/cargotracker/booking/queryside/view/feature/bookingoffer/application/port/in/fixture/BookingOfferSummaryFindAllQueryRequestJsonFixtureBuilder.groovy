@@ -49,35 +49,21 @@ class BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder implements JsonFi
         userIdentifier: userIdentifier
     ]
 
-    if (pageRequirement) {
-      mapToReturn.pageRequirement = pageRequirement.buildAsMap()
-    }
-
-    if (sortRequirementList != null) {
-      mapToReturn.sortRequirementList = jsonFixtureBuilderListToJsonList(sortRequirementList)
-    }
+    pageRequirement ? mapToReturn.pageRequirement = pageRequirement.buildAsMap() : mapToReturn
+    sortRequirementList ? mapToReturn.sortRequirementList = jsonFixtureBuilderListToJsonList(sortRequirementList) : mapToReturn
 
     return mapToReturn
   }
 
+  @SuppressWarnings("DuplicatedCode")
   @Override
   String buildAsJsonString() {
     String jsonStringContent = /"userIdentifier": ${ stringToJsonString(userIdentifier) }/
 
-    if (pageRequirement) {
-      jsonStringContent += /, "pageRequirement": ${ pageRequirement.buildAsJsonString() }/
-    }
+    pageRequirement ? jsonStringContent += /, "pageRequirement": ${ pageRequirement.buildAsJsonString() }/ : jsonStringContent
+    sortRequirementList ? jsonStringContent += /, "sortRequirementList": ${ jsonFixtureBuilderListToJsonListString(sortRequirementList) }/ : jsonStringContent
 
-    if (sortRequirementList != null) {
-      jsonStringContent += /, "sortRequirementList": ${ jsonFixtureBuilderListToJsonListString(sortRequirementList) }/
-    }
-
-    String stringToReturn = """
-        {
-            $jsonStringContent
-        }
-        """
-
+    String stringToReturn = /{$jsonStringContent}/
     return JsonOutput.prettyPrint(stringToReturn)
   }
 }
