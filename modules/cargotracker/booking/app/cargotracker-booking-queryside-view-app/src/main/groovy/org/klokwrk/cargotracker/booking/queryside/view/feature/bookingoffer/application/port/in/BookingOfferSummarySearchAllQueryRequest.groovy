@@ -80,6 +80,8 @@ class BookingOfferSummarySearchAllQueryRequest {
   String destinationLocationCountryName
 
   @SuppressWarnings("unused")
+  @NotNullElementsConstraint(groups = [Level2])
+  @NotEmptyWhenNullableConstraint(groups = [Level1])
   Set<CommodityType> commodityTypes
 
   @Null
