@@ -37,7 +37,7 @@ import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rijekaToRotterdam
 
 @CompileStatic
-class FeatureTestHelpers {
+class BookingFeatureTestHelpers {
   static String makeCommandRequestUrl_createBookingOffer(GenericContainer commandSideApp) {
     //noinspection HttpUrlsUsage
     String createBookingOfferCommandUrl = "http://${ commandSideApp.host }:${ commandSideApp.getMappedPort(8080) }/cargotracker-booking-commandside/booking-offer/create-booking-offer"
