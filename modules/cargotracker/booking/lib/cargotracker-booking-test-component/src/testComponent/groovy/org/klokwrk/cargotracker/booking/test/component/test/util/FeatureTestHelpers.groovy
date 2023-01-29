@@ -17,11 +17,15 @@
  */
 package org.klokwrk.cargotracker.booking.test.component.test.util
 
+import groovy.json.JsonSlurper
 import groovy.transform.CompileStatic
+import org.apache.http.HttpResponse
 import org.apache.http.client.fluent.Request
 import org.apache.http.entity.ContentType
+import org.awaitility.Awaitility
 import org.testcontainers.containers.GenericContainer
 
+import java.time.Duration
 import java.time.Instant
 
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_base
@@ -108,6 +112,76 @@ class FeatureTestHelpers {
     ]
 
     return commandRequestBodyList
+  }
+
+  @SuppressWarnings("CodeNarc.FactoryMethodName")
+  static Map createBookingOffer_succeeded(GenericContainer commandSideApp, String commandBody, String acceptLanguage) {
+    Request commandRequest = makeRequest(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBody, acceptLanguage)
+
+    HttpResponse commandResponse = commandRequest.execute().returnResponse()
+    assert commandResponse.statusLine.statusCode == 200
+
+    Map commandResponseContentMap = new JsonSlurper().parseText(commandResponse.entity.content.text) as Map
+    return commandResponseContentMap
+  }
+
+  @SuppressWarnings("CodeNarc.FactoryMethodName")
+  static Map createBookingOffer_failed(GenericContainer commandSideApp, String commandBody, String acceptLanguage) {
+    Request commandRequest = makeRequest(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBody, acceptLanguage)
+
+    HttpResponse commandResponse = commandRequest.execute().returnResponse()
+    assert commandResponse.statusLine.statusCode == 400
+
+    Map commandResponseContentMap = new JsonSlurper().parseText(commandResponse.entity.content.text) as Map
+    return commandResponseContentMap
+  }
+
+  static Map bookingOfferSummaryFindById_succeeded(GenericContainer querySideViewApp, String queryBody, String acceptLanguage) {
+    Request queryRequest = makeRequest(makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), queryBody, acceptLanguage)
+
+    HttpResponse queryResponse = null
+    Awaitility.await().atMost(Duration.ofSeconds(5)).until({
+      queryResponse = queryRequest.execute().returnResponse()
+      Integer queryResponseStatusCode = queryResponse.statusLine.statusCode
+      queryResponseStatusCode == 200
+    })
+
+    Map queryResponseContentMap = new JsonSlurper().parseText(queryResponse.entity.content.text) as Map
+    return queryResponseContentMap
+  }
+
+  static Map bookingOfferSummaryFindById_notFound(GenericContainer querySideViewApp, String queryBody, String acceptLanguage) {
+    Request queryRequest = makeRequest(makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), queryBody, acceptLanguage)
+
+    HttpResponse queryResponse = null
+    Awaitility.await().atMost(Duration.ofSeconds(5)).until({
+      queryResponse = queryRequest.execute().returnResponse()
+      Integer queryResponseStatusCode = queryResponse.statusLine.statusCode
+      queryResponseStatusCode == 404
+    })
+
+    Map queryResponseContentMap = new JsonSlurper().parseText(queryResponse.entity.content.text) as Map
+    return queryResponseContentMap
+  }
+
+  static Map bookingOfferSummaryFindAll_succeeded(GenericContainer querySideViewApp, String queryBody, String acceptLanguage) {
+    Request queryRequest = makeRequest(makeQueryRequestUrl_bookingOfferSummary_findAll(querySideViewApp), queryBody, acceptLanguage)
+
+    HttpResponse queryResponse = queryRequest.execute().returnResponse()
+    queryResponse.statusLine.statusCode == 200
+
+    Map queryResponseContentMap = new JsonSlurper().parseText(queryResponse.entity.content.text) as Map
+    return queryResponseContentMap
+  }
+
+  static Map bookingOfferSummarySearchAll_succeeded(GenericContainer querySideViewApp, String queryBody, String acceptLanguage) {
+    Request queryRequest = makeRequest(makeQueryRequestUrl_bookingOfferSummary_searchAll(querySideViewApp), queryBody, acceptLanguage)
+
+    HttpResponse queryResponse = queryRequest.execute().returnResponse()
+    queryResponse.statusLine.statusCode == 200
+
+    Map queryResponseContentMap = new JsonSlurper().parseText(queryResponse.entity.content.text) as Map
+    return queryResponseContentMap
   }
 
   static Request makeRequest(String url, String body, String acceptLanguageHeaderValue) {
