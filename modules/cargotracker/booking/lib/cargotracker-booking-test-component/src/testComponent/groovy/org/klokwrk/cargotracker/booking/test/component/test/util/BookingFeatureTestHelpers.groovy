@@ -38,6 +38,32 @@ import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.
 
 @CompileStatic
 class BookingFeatureTestHelpers {
+  @SuppressWarnings("CodeNarc.FactoryMethodName")
+  static Map createBookingOffer_succeeded(GenericContainer commandSideApp, String commandBody, String acceptLanguage) {
+    return makeRequestAndReturnResponseContentMap_sync(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBody, acceptLanguage, 200)
+  }
+
+  @SuppressWarnings("CodeNarc.FactoryMethodName")
+  static Map createBookingOffer_failed(GenericContainer commandSideApp, String commandBody, String acceptLanguage) {
+    return makeRequestAndReturnResponseContentMap_sync(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBody, acceptLanguage, 400)
+  }
+
+  static Map bookingOfferSummaryFindById_succeeded(GenericContainer querySideViewApp, String queryBody, String acceptLanguage) {
+    return makeRequestAndReturnResponseContentMap_async(makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), queryBody, acceptLanguage, 200)
+  }
+
+  static Map bookingOfferSummaryFindById_notFound(GenericContainer querySideViewApp, String queryBody, String acceptLanguage) {
+    return makeRequestAndReturnResponseContentMap_async(makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), queryBody, acceptLanguage, 404)
+  }
+
+  static Map bookingOfferSummaryFindAll_succeeded(GenericContainer querySideViewApp, String queryBody, String acceptLanguage) {
+    return makeRequestAndReturnResponseContentMap_sync(makeQueryRequestUrl_bookingOfferSummary_findAll(querySideViewApp), queryBody, acceptLanguage, 200)
+  }
+
+  static Map bookingOfferSummarySearchAll_succeeded(GenericContainer querySideViewApp, String queryBody, String acceptLanguage) {
+    return makeRequestAndReturnResponseContentMap_sync(makeQueryRequestUrl_bookingOfferSummary_searchAll(querySideViewApp), queryBody, acceptLanguage, 200)
+  }
+
   static String makeCommandRequestUrl_createBookingOffer(GenericContainer commandSideApp) {
     //noinspection HttpUrlsUsage
     String createBookingOfferCommandUrl = "http://${ commandSideApp.host }:${ commandSideApp.getMappedPort(8080) }/cargotracker-booking-commandside/booking-offer/create-booking-offer"
@@ -60,6 +86,41 @@ class BookingFeatureTestHelpers {
     //noinspection HttpUrlsUsage
     String bookingOfferSummaryQueryUrl = "http://${ querySideViewApp.host }:${ querySideViewApp.getMappedPort(8084) }/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-search-all"
     return bookingOfferSummaryQueryUrl
+  }
+
+  private static Map makeRequestAndReturnResponseContentMap_sync(String url, String requestBody, String acceptLanguage, Integer expectedResponseStatus) {
+    Request request = makeRequest(url, requestBody, acceptLanguage)
+
+    HttpResponse response = request.execute().returnResponse()
+    assert response.statusLine.statusCode == expectedResponseStatus
+
+    Map responseContentMap = new JsonSlurper().parseText(response.entity.content.text) as Map
+    return responseContentMap
+  }
+
+  private static Map makeRequestAndReturnResponseContentMap_async(String url, String requestBody, String acceptLanguage, Integer expectedResponseStatus) {
+    Request request = makeRequest(url, requestBody, acceptLanguage)
+
+    HttpResponse response = null
+    Awaitility.await().atMost(Duration.ofSeconds(5)).until({
+      response = request.execute().returnResponse()
+      Integer queryResponseStatusCode = response.statusLine.statusCode
+      queryResponseStatusCode == expectedResponseStatus
+    })
+
+    Map responseContentMap = new JsonSlurper().parseText(response.entity.content.text) as Map
+    return responseContentMap
+  }
+
+  private static Request makeRequest(String url, String body, String acceptLanguageHeaderValue) {
+    Request request = Request.Post(url)
+        .addHeader("Content-Type", "application/json")
+        .addHeader("Accept", "application/json")
+        .addHeader("Accept-Charset", "utf-8")
+        .addHeader("Accept-Language", acceptLanguageHeaderValue)
+        .bodyString(body, ContentType.APPLICATION_JSON)
+
+    return request
   }
 
   @SuppressWarnings("CodeNarc.AbcMetric")
@@ -112,86 +173,5 @@ class BookingFeatureTestHelpers {
     ]
 
     return commandRequestBodyList
-  }
-
-  @SuppressWarnings("CodeNarc.FactoryMethodName")
-  static Map createBookingOffer_succeeded(GenericContainer commandSideApp, String commandBody, String acceptLanguage) {
-    Request commandRequest = makeRequest(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBody, acceptLanguage)
-
-    HttpResponse commandResponse = commandRequest.execute().returnResponse()
-    assert commandResponse.statusLine.statusCode == 200
-
-    Map commandResponseContentMap = new JsonSlurper().parseText(commandResponse.entity.content.text) as Map
-    return commandResponseContentMap
-  }
-
-  @SuppressWarnings("CodeNarc.FactoryMethodName")
-  static Map createBookingOffer_failed(GenericContainer commandSideApp, String commandBody, String acceptLanguage) {
-    Request commandRequest = makeRequest(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBody, acceptLanguage)
-
-    HttpResponse commandResponse = commandRequest.execute().returnResponse()
-    assert commandResponse.statusLine.statusCode == 400
-
-    Map commandResponseContentMap = new JsonSlurper().parseText(commandResponse.entity.content.text) as Map
-    return commandResponseContentMap
-  }
-
-  static Map bookingOfferSummaryFindById_succeeded(GenericContainer querySideViewApp, String queryBody, String acceptLanguage) {
-    Request queryRequest = makeRequest(makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), queryBody, acceptLanguage)
-
-    HttpResponse queryResponse = null
-    Awaitility.await().atMost(Duration.ofSeconds(5)).until({
-      queryResponse = queryRequest.execute().returnResponse()
-      Integer queryResponseStatusCode = queryResponse.statusLine.statusCode
-      queryResponseStatusCode == 200
-    })
-
-    Map queryResponseContentMap = new JsonSlurper().parseText(queryResponse.entity.content.text) as Map
-    return queryResponseContentMap
-  }
-
-  static Map bookingOfferSummaryFindById_notFound(GenericContainer querySideViewApp, String queryBody, String acceptLanguage) {
-    Request queryRequest = makeRequest(makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), queryBody, acceptLanguage)
-
-    HttpResponse queryResponse = null
-    Awaitility.await().atMost(Duration.ofSeconds(5)).until({
-      queryResponse = queryRequest.execute().returnResponse()
-      Integer queryResponseStatusCode = queryResponse.statusLine.statusCode
-      queryResponseStatusCode == 404
-    })
-
-    Map queryResponseContentMap = new JsonSlurper().parseText(queryResponse.entity.content.text) as Map
-    return queryResponseContentMap
-  }
-
-  static Map bookingOfferSummaryFindAll_succeeded(GenericContainer querySideViewApp, String queryBody, String acceptLanguage) {
-    Request queryRequest = makeRequest(makeQueryRequestUrl_bookingOfferSummary_findAll(querySideViewApp), queryBody, acceptLanguage)
-
-    HttpResponse queryResponse = queryRequest.execute().returnResponse()
-    queryResponse.statusLine.statusCode == 200
-
-    Map queryResponseContentMap = new JsonSlurper().parseText(queryResponse.entity.content.text) as Map
-    return queryResponseContentMap
-  }
-
-  static Map bookingOfferSummarySearchAll_succeeded(GenericContainer querySideViewApp, String queryBody, String acceptLanguage) {
-    Request queryRequest = makeRequest(makeQueryRequestUrl_bookingOfferSummary_searchAll(querySideViewApp), queryBody, acceptLanguage)
-
-    HttpResponse queryResponse = queryRequest.execute().returnResponse()
-    queryResponse.statusLine.statusCode == 200
-
-    Map queryResponseContentMap = new JsonSlurper().parseText(queryResponse.entity.content.text) as Map
-    return queryResponseContentMap
-  }
-
-  static Request makeRequest(String url, String body, String acceptLanguageHeaderValue) {
-    Request request = Request.Post(url)
-        .addHeader("Content-Type", "application/json")
-        .addHeader("Accept", "application/json")
-        .addHeader("Accept-Charset", "utf-8")
-        .addHeader("Accept-Language", acceptLanguageHeaderValue)
-        .bodyString(body, ContentType.APPLICATION_JSON)
-
-    return request
   }
 }
