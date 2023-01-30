@@ -18,7 +18,6 @@
 package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.adapter.in.web
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
@@ -47,8 +46,9 @@ import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.CargoRequestDataJsonFixtureBuilder.cargoRequestData_dry
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rijekaToRotterdam
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rotterdamToRijeka
+import static org.klokwrk.cargotracker.booking.commandside.test.util.BookingOfferCommandTestHelpers.createBookingOffer_failed
+import static org.klokwrk.cargotracker.booking.commandside.test.util.BookingOfferCommandTestHelpers.createBookingOffer_succeeded
 import static org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentMetaDataAssertion.assertResponseContentHasMetaDataThat
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
@@ -76,29 +76,18 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
     String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
-    String webRequestBody = objectMapper.writeValueAsString(
+
+    when:
+    Map responseContentMap = createBookingOffer_succeeded(
         createBookingOfferCommandRequest_rijekaToRotterdam(currentTime)
             .bookingOfferIdentifier(myBookingOfferIdentifier)
             .cargos_add(cargoRequestData_dry().commodityWeight(commodityWeightParam))
-            .buildAsMap()
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
     )
 
-    when:
-    MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/create-booking-offer")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     then:
-    mvcResult.response.status == HttpStatus.OK.value()
-    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-
     assertResponseContentHasMetaDataThat(responseContentMap)
         .isSuccessful()
         .has_general_locale(localeStringParam)
@@ -268,7 +257,9 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
     String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
-    String webRequestBody = objectMapper.writeValueAsString(
+
+    when:
+    Map responseContentMap = createBookingOffer_succeeded(
         createBookingOfferCommandRequest_rotterdamToRijeka(currentTime)
             .bookingOfferIdentifier(myBookingOfferIdentifier)
             .cargos_add(
@@ -276,25 +267,12 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
                     .commodityType("${ commodityTypeParam.name().toLowerCase() }")
                     .commodityRequestedStorageTemperature(commodityRequestedStorageTemperatureParam)
             )
-            .buildAsMap()
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
     )
 
-    when:
-    MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/create-booking-offer")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     then:
-    mvcResult.response.status == HttpStatus.OK.value()
-    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-
     assertResponseContentHasMetaDataThat(responseContentMap)
         .isSuccessful()
         .has_general_locale(localeStringParam)
@@ -422,36 +400,25 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
   }
 
   void "should return expected response when request is not valid - validation failure"() {
-    given:
-    String webRequestBody = objectMapper.writeValueAsString(
-        createBookingOfferCommandRequest_cargoDry()
-            .routeSpecification(
-                new RouteSpecificationRequestDataJsonFixtureBuilder()
-                    .originLocation(null)
-                    .destinationLocation(null)
-                    .departureLatestTime(null)
-                    .departureLatestTime(null)
-                    .arrivalLatestTime(null)
-            )
-            .buildAsMap()
+    when:
+    Map responseContentMap = createBookingOffer_failed(
+        objectMapper.writeValueAsString(
+            createBookingOfferCommandRequest_cargoDry()
+                .routeSpecification(
+                    new RouteSpecificationRequestDataJsonFixtureBuilder()
+                        .originLocation(null)
+                        .destinationLocation(null)
+                        .departureLatestTime(null)
+                        .departureLatestTime(null)
+                        .arrivalLatestTime(null)
+                )
+                .buildAsMap()
+        ),
+        acceptLanguageParam,
+        mockMvc
     )
 
-    when:
-    MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/create-booking-offer")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     then:
-    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
-    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-
     assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfValidation()
         .has_general_locale(localeStringParam)
@@ -480,29 +447,16 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
   }
 
   void "should fail when customer cannot be found - domain failure"() {
-    given:
-    String webRequestBody = objectMapper.writeValueAsString(
+    when:
+    Map responseContentMap = createBookingOffer_failed(
         createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry()
             .userIdentifier("unknownUserIdentifier")
-            .buildAsMap()
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
     )
 
-    when:
-    MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/create-booking-offer")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     then:
-    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
-    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-
     assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfDomain_badRequest()
         .has_general_locale(localeStringParam)
@@ -518,29 +472,16 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
   }
 
   void "should fail when origin and destination locations are equal - domain failure"() {
-    given:
-    String webRequestBody = objectMapper.writeValueAsString(
+    when:
+    Map responseContentMap = createBookingOffer_failed(
         createBookingOfferCommandRequest_cargoDry()
             .routeSpecification(routeSpecificationRequestData_rijekaToRotterdam().destinationLocation("HRRJK"))
-            .buildAsMap()
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
     )
 
-    when:
-    MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/create-booking-offer")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     then:
-    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
-    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-
     assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfDomain_badRequest()
         .has_general_locale(localeStringParam)
@@ -556,29 +497,16 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
   }
 
   void "should fail when cargo can not be sent to destination location - domain failure"() {
-    given:
-    String webRequestBody = objectMapper.writeValueAsString(
+    when:
+    Map responseContentMap = createBookingOffer_failed(
         createBookingOfferCommandRequest_cargoDry()
             .routeSpecification(routeSpecificationRequestData_rotterdamToRijeka().destinationLocation("HRZAG"))
-            .buildAsMap()
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
     )
 
-    when:
-    MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/create-booking-offer")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     then:
-    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
-    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-
     assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfDomain_badRequest()
         .has_general_locale(localeStringParam)
@@ -594,29 +522,16 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
   }
 
   void "should fail when commodity weight is too high - domain failure"() {
-    given:
-    String webRequestBody = objectMapper.writeValueAsString(
+    when:
+    Map responseContentMap = createBookingOffer_failed(
         createBookingOfferCommandRequest_rijekaToRotterdam()
             .cargos([cargoRequestData_dry().commodityWeight(125_000_000.kg)])
-            .buildAsMap()
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
     )
 
-    when:
-    MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/create-booking-offer")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     then:
-    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
-    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-
     assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfDomain_badRequest()
         .has_general_locale(localeStringParam)
@@ -632,29 +547,16 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
   }
 
   void "should fail when commodity requested storage temperature is supplied but not supported for commodity type - domain failure"() {
-    given:
-    String webRequestBody = objectMapper.writeValueAsString(
+    when:
+    Map responseContentMap = createBookingOffer_failed(
         createBookingOfferCommandRequest_rotterdamToRijeka()
             .cargos([cargoRequestData_dry().commodityRequestedStorageTemperature(1.degC)])
-            .buildAsMap()
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
     )
 
-    when:
-    MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/create-booking-offer")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     then:
-    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
-    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-
     assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfDomain_badRequest()
         .has_general_locale(localeStringParam)
@@ -670,33 +572,20 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
   }
 
   void "should fail when requested storage temperature is out of range - domain failure"() {
-    given:
-    String webRequestBody = objectMapper.writeValueAsString(
+    when:
+    Map responseContentMap = createBookingOffer_failed(
         createBookingOfferCommandRequest_rotterdamToRijeka()
             .cargos_add(
                 cargoRequestData_base()
                     .commodityType(commodityTypeParam)
                     .commodityRequestedStorageTemperature(commodityRequestedStorageTemperatureParam)
             )
-            .buildAsMap()
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
     )
 
-    when:
-    MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/create-booking-offer")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     then:
-    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
-    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-
     assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfDomain_badRequest()
         .has_general_locale(localeStringParam)
@@ -728,19 +617,8 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
   }
 
   void "should return expected response for a request with invalid HTTP method"() {
-    given:
-    String webRequestBody = objectMapper.writeValueAsString(new CreateBookingOfferCommandRequestJsonFixtureBuilder().buildAsMap())
-
     when:
-    MvcResult mvcResult = mockMvc.perform(
-        put("/booking-offer/create-booking-offer")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
+    MvcResult mvcResult = mockMvc.perform(put("/booking-offer/create-booking-offer").header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)).andReturn()
     Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
 
     then:
