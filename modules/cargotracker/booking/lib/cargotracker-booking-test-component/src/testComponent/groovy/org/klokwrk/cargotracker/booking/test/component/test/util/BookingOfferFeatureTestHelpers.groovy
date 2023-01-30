@@ -37,7 +37,7 @@ import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rijekaToRotterdam
 
 @CompileStatic
-class BookingFeatureTestHelpers {
+class BookingOfferFeatureTestHelpers {
   @SuppressWarnings("CodeNarc.FactoryMethodName")
   static Map createBookingOffer_succeeded(GenericContainer commandSideApp, String commandBody, String acceptLanguage) {
     return makeRequestAndReturnResponseContentMap_sync(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBody, acceptLanguage, 200)
