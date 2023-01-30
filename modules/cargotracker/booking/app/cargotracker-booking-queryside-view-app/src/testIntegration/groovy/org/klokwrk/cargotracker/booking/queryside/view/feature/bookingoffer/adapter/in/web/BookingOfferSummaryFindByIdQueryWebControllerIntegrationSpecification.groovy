@@ -40,8 +40,11 @@ import java.time.Instant
 
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion.assertResponseContentHasPayloadThat
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder.bookingOfferSummaryFindByIdQueryRequest_standardCustomer
+import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.BOOKING_OFFER_SUMMARY_FIND_BY_ID_URL_PATH
+import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindById_failed
+import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindById_failedNotFound
+import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindById_succeeded
 import static org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentMetaDataAssertion.assertResponseContentHasMetaDataThat
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
@@ -80,29 +83,16 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     Instant startedAt = Instant.now()
     String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
 
-    // Note: "standard-customer@cargotracker.com" used by base builder, corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
-    String webRequestBody = objectMapper.writeValueAsString(
+    when:
+    Map responseContentMap = bookingOfferSummaryFindById_succeeded(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
             .bookingOfferIdentifier(myBookingOfferIdentifier)
-            .buildAsMap()
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
     )
 
-    when:
-    MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/booking-offer-summary-find-by-id")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     then:
-    mvcResult.response.status == HttpStatus.OK.value()
-    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-
     assertResponseContentHasMetaDataThat(responseContentMap, {
       isSuccessful()
       has_general_locale(localeStringParam)
@@ -129,29 +119,17 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
 
   @SuppressWarnings("CodeNarc.AbcMetric")
   void "should return expected response when request is not valid - validation failure"() {
-    String webRequestBody = objectMapper.writeValueAsString(
+    when:
+    Map responseContentMap = bookingOfferSummaryFindById_failed(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
             .bookingOfferIdentifier(null)
             .userIdentifier(null)
-            .buildAsMap()
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
     )
 
-    when:
-    MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/booking-offer-summary-find-by-id")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     then:
-    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
-    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-
     assertResponseContentHasMetaDataThat(responseContentMap, {
       isViolationOfValidation()
       has_general_locale(localeStringParam)
@@ -181,29 +159,18 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
   void "should return expected response when specified user can not be found - stateful validation failure"() {
     given:
     String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
-    String webRequestBody = objectMapper.writeValueAsString(
+
+    when:
+    Map responseContentMap = bookingOfferSummaryFindById_failed(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
             .bookingOfferIdentifier(myBookingOfferIdentifier)
             .userIdentifier("someUserIdentifier")
-            .buildAsMap()
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
     )
 
-    when:
-    MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/booking-offer-summary-find-by-id")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     then:
-    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
-    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-
     assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfDomain_badRequest()
         .has_general_locale(localeStringParam)
@@ -219,30 +186,16 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
   }
 
   void "should return expected response when BookingOfferSummary cannot be found - domain failure"() {
-    given:
-    String myBookingOfferIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString(
+    when:
+    Map responseContentMap = bookingOfferSummaryFindById_failedNotFound(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
-            .bookingOfferIdentifier(myBookingOfferIdentifier)
-            .buildAsMap()
+            .bookingOfferIdentifier(UUID.randomUUID().toString())
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
     )
 
-    when:
-    MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/booking-offer-summary-find-by-id")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     then:
-    mvcResult.response.status == HttpStatus.NOT_FOUND.value()
-    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-
     assertResponseContentHasMetaDataThat(responseContentMap)
         .isViolationOfDomain_notFound()
         .has_general_locale(localeStringParam)
@@ -258,24 +211,8 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
   }
 
   void "should return expected response for a request with invalid HTTP method"() {
-    given:
-    String myBookingOfferIdentifier = UUID.randomUUID()
-    String webRequestBody = objectMapper.writeValueAsString(
-        bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
-            .bookingOfferIdentifier(myBookingOfferIdentifier)
-            .buildAsMap()
-    )
-
     when:
-    MvcResult mvcResult = mockMvc.perform(
-        put("/booking-offer/booking-offer-summary-find-by-id")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
+    MvcResult mvcResult = mockMvc.perform(put(BOOKING_OFFER_SUMMARY_FIND_BY_ID_URL_PATH).header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)).andReturn()
     Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
 
     then:

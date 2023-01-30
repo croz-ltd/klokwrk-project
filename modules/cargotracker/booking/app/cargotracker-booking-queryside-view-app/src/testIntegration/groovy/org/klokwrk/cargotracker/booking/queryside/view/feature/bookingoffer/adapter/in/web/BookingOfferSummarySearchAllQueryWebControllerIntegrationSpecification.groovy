@@ -26,12 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.MvcResult
 import org.springframework.web.context.WebApplicationContext
 import spock.lang.Shared
 
@@ -42,8 +38,9 @@ import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoff
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder.bookingOfferSummarySearchAllQueryRequest_originOfRijeka
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder.bookingOfferSummarySearchAllQueryRequest_standardCustomer
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.data.SortRequirementJsonFixtureBuilder.sortRequirement_default
+import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummarySearchAll_failed
+import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummarySearchAll_succeeded
 import static org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentMetaDataAssertion.assertResponseContentHasMetaDataThat
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
 @SuppressWarnings("GroovyAccessibility")
@@ -86,30 +83,17 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
   }
 
   void "should work for search request with default paging and sorting"() {
-    given:
-    String webRequestBody = objectMapper.writeValueAsString(
+    when:
+    Map responseContentMap = bookingOfferSummarySearchAll_succeeded(
         bookingOfferSummarySearchAllQueryRequest_originOfRijeka()
             .totalCommodityWeightFromIncluding(5_000.kg)
             .totalCommodityWeightToIncluding(50_000.kg)
-            .buildAsMap()
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
     )
 
-    when:
-    MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/booking-offer-summary-search-all")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     then:
-    mvcResult.response.status == HttpStatus.OK.value()
-    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-
     // Here we are using closure-style top-level API.
     assertResponseContentHasMetaDataThat(responseContentMap, {
       isSuccessful()
@@ -139,29 +123,16 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
   }
 
   void "should work for search request with default paging and sorting but with empty page content"() {
-    given:
-    String webRequestBody = objectMapper.writeValueAsString(
+    when:
+    Map responseContentMap = bookingOfferSummarySearchAll_succeeded(
         bookingOfferSummarySearchAllQueryRequest_standardCustomer()
             .userIdentifier("platinum-customer@cargotracker.com")
-            .buildAsMap()
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
     )
 
-    when:
-    MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/booking-offer-summary-search-all")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     then:
-    mvcResult.response.status == HttpStatus.OK.value()
-    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-
     // Here we are using fluent-style top-level API.
     assertResponseContentHasMetaDataThat(responseContentMap)
         .isSuccessful()
@@ -176,28 +147,36 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
   }
 
   void "should fail for invalid property name in sort requirements"() {
-    String webRequestBody = objectMapper.writeValueAsString(
+//    String webRequestBody = objectMapper.writeValueAsString(
+//        bookingOfferSummarySearchAllQueryRequest_standardCustomer()
+//            .sortRequirementList([sortRequirement_default().propertyName("nonExistingProperty")])
+//            .buildAsMap()
+//    )
+//
+    when:
+//    MvcResult mvcResult = mockMvc.perform(
+//        post("/booking-offer/booking-offer-summary-search-all")
+//            .content(webRequestBody)
+//            .contentType(MediaType.APPLICATION_JSON)
+//            .accept(MediaType.APPLICATION_JSON)
+//            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
+//            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
+//    ).andReturn()
+//
+//    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
+
+    Map responseContentMap = bookingOfferSummarySearchAll_failed(
         bookingOfferSummarySearchAllQueryRequest_standardCustomer()
             .sortRequirementList([sortRequirement_default().propertyName("nonExistingProperty")])
-            .buildAsMap()
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
     )
 
-    when:
-    MvcResult mvcResult = mockMvc.perform(
-        post("/booking-offer/booking-offer-summary-search-all")
-            .content(webRequestBody)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-    ).andReturn()
-
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     then:
-    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
-    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-
+//    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
+//    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
+//
     assertResponseContentHasMetaDataThat(responseContentMap, {
       isViolationOfDomain_badRequest()
       has_general_locale(localeStringParam)
