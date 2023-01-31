@@ -17,6 +17,8 @@
  */
 package org.klokwrk.cargotracker.booking.test.component.featurespec
 
+import groovy.transform.stc.ClosureParams
+import groovy.transform.stc.SimpleType
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion
 import org.klokwrk.cargotracker.booking.test.component.test.base.AbstractComponentSpecification
@@ -50,12 +52,37 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
     return BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion.assertResponseContentHasPayloadThat(queryResponseContentMap)
   }
 
-  static BookingOfferSummaryPageableQueryResponseContentPayloadAssertion assertBookingOfferSummaryFindAllQueryResponseContentHasPayloadThat(Map queryResponseContentMap) {
-    return BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseContentHasPageablePayloadThat(queryResponseContentMap)
+  static BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion assertBookingOfferSummaryFindByIdQueryResponseHasPayloadThat(
+      Map queryResponseContentMap,
+      @DelegatesTo(value = BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion, strategy = Closure.DELEGATE_FIRST)
+      @ClosureParams(
+          value = SimpleType,
+          options = "org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion"
+      ) Closure aClosure)
+  {
+    return BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion.assertResponseContentHasPayloadThat(queryResponseContentMap, aClosure)
   }
 
-  static BookingOfferSummaryPageableQueryResponseContentPayloadAssertion assertBookingOfferSummarySearchAllQueryResponseContentHasPayloadThat(Map queryResponseContentMap) {
-    return BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseContentHasPageablePayloadThat(queryResponseContentMap)
+  static BookingOfferSummaryPageableQueryResponseContentPayloadAssertion assertBookingOfferSummaryFindAllQueryResponseContentHasPayloadThat(
+      Map queryResponseContentMap,
+      @DelegatesTo(value = BookingOfferSummaryPageableQueryResponseContentPayloadAssertion, strategy = Closure.DELEGATE_FIRST)
+      @ClosureParams(
+          value = SimpleType,
+          options = "org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion"
+      ) Closure aClosure)
+  {
+    return BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseContentHasPageablePayloadThat(queryResponseContentMap, aClosure)
+  }
+
+  static BookingOfferSummaryPageableQueryResponseContentPayloadAssertion assertBookingOfferSummarySearchAllQueryResponseContentHasPayloadThat(
+      Map queryResponseContentMap,
+      @DelegatesTo(value = BookingOfferSummaryPageableQueryResponseContentPayloadAssertion, strategy = Closure.DELEGATE_FIRST)
+      @ClosureParams(
+          value = SimpleType,
+          options = "org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion"
+      ) Closure aClosure)
+  {
+    return BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseContentHasPageablePayloadThat(queryResponseContentMap, aClosure)
   }
 
   void setupSpec() {
@@ -88,9 +115,10 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
     Map commandResponseContentMap = createBookingOffer_succeeded(commandSideApp, commandBodyParam, acceptLanguageParam)
 
     then:
-    assertResponseContentHasMetaDataThat(commandResponseContentMap)
-        .isSuccessful()
-        .has_general_locale(localeStringParam)
+    assertResponseContentHasMetaDataThat(commandResponseContentMap) {
+      isSuccessful()
+      has_general_locale(localeStringParam)
+    }
 
     verifyAll(commandResponseContentMap) {
       size() == 2
@@ -129,10 +157,11 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
     )
 
     then:
-    assertResponseContentHasMetaDataThat(commandResponseContentMap)
-        .isViolationOfDomain_badRequest()
-        .has_general_locale(localeStringParam)
-        .has_violation_message(violationMessageParam)
+    assertResponseContentHasMetaDataThat(commandResponseContentMap) {
+      isViolationOfDomain_badRequest()
+      has_general_locale(localeStringParam)
+      has_violation_message(violationMessageParam)
+    }
 
     assertResponseContentHasPayloadThat(commandResponseContentMap)
         .isEmpty()
@@ -169,21 +198,23 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
     )
 
     then:
-    assertResponseContentHasMetaDataThat(queryResponseContentMap)
-        .isSuccessful()
-        .has_general_locale(localeStringParam)
+    assertResponseContentHasMetaDataThat(queryResponseContentMap) {
+      isSuccessful()
+      has_general_locale(localeStringParam)
+    }
 
-    assertBookingOfferSummaryFindByIdQueryResponseHasPayloadThat(queryResponseContentMap)
-        .isSuccessful()
-        .hasCustomerTypeOfStandard()
-        .hasOriginLocationOfRijeka()
-        .hasDestinationLocationOfRotterdam()
-        .hasDepartureEarliestTime(expectedDepartureEarliestTime)
-        .hasDepartureLatestTime(expectedDepartureLatestTime)
-        .hasArrivalLatestTime(expectedArrivalLatestTime)
-        .hasCommodityOfDryTypeWithDefaultWeight()
-        .hasTotalContainerTeuCount(1.00G)
-        .hasEventMetadataOfTheFirstEventWithCorrectTiming(currentTime)
+    assertBookingOfferSummaryFindByIdQueryResponseHasPayloadThat(queryResponseContentMap) {
+      isSuccessful()
+      hasCustomerTypeOfStandard()
+      hasOriginLocationOfRijeka()
+      hasDestinationLocationOfRotterdam()
+      hasDepartureEarliestTime(expectedDepartureEarliestTime)
+      hasDepartureLatestTime(expectedDepartureLatestTime)
+      hasArrivalLatestTime(expectedArrivalLatestTime)
+      hasCommodityOfDryTypeWithDefaultWeight()
+      hasTotalContainerTeuCount(1.00G)
+      hasEventMetadataOfTheFirstEventWithCorrectTiming(currentTime)
+    }
 
     where:
     acceptLanguageParam | localeStringParam
@@ -202,10 +233,11 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
     )
 
     then:
-    assertResponseContentHasMetaDataThat(queryResponseContentMap)
-        .isViolationOfDomain_notFound()
-        .has_general_locale(localeStringParam)
-        .has_violation_message(violationMessageParam)
+    assertResponseContentHasMetaDataThat(queryResponseContentMap) {
+      isViolationOfDomain_notFound()
+      has_general_locale(localeStringParam)
+      has_violation_message(violationMessageParam)
+    }
 
     assertBookingOfferSummaryFindByIdQueryResponseHasPayloadThat(queryResponseContentMap)
         .isEmpty()
@@ -226,21 +258,23 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
     )
 
     then:
-    assertResponseContentHasMetaDataThat(queryResponseContentMap)
-        .isSuccessful()
-        .has_general_locale("en")
+    assertResponseContentHasMetaDataThat(queryResponseContentMap) {
+      isSuccessful()
+      has_general_locale("en")
+    }
 
-    assertBookingOfferSummaryFindAllQueryResponseContentHasPayloadThat(queryResponseContentMap)
-        .isSuccessful()
-        .hasPageInfoOfFirstPageWithDefaults()
-        .hasPageInfoThat({
-          hasPageElementsCountGreaterThenOrEqual(this.countOf_createdBookingOffers_forStandardCustomer)
-        })
-        .hasPageContentSizeGreaterThanOrEqual(this.countOf_createdBookingOffers_forStandardCustomer)
-        .hasPageContentWithAllElementsThat({
-          hasCustomerTypeOfStandard()
-          hasEventMetadataOfTheFirstEvent()
-        })
+    assertBookingOfferSummaryFindAllQueryResponseContentHasPayloadThat(queryResponseContentMap) {
+      isSuccessful()
+      hasPageInfoOfFirstPageWithDefaults()
+      hasPageInfoThat {
+        hasPageElementsCountGreaterThenOrEqual(this.countOf_createdBookingOffers_forStandardCustomer)
+      }
+      hasPageContentSizeGreaterThanOrEqual(this.countOf_createdBookingOffers_forStandardCustomer)
+      hasPageContentWithAllElementsThat {
+        hasCustomerTypeOfStandard()
+        hasEventMetadataOfTheFirstEvent()
+      }
+    }
   }
 
   void "query - bookingOfferSummarySearchAll - should find existing booking offers with default paging and sorting"() {
@@ -256,20 +290,22 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
     )
 
     then:
-    assertResponseContentHasMetaDataThat(queryResponseContentMap)
-        .isSuccessful()
-        .has_general_locale("en")
+    assertResponseContentHasMetaDataThat(queryResponseContentMap) {
+      isSuccessful()
+      has_general_locale("en")
+    }
 
-    assertBookingOfferSummarySearchAllQueryResponseContentHasPayloadThat(queryResponseContentMap)
-        .isSuccessful()
-        .hasPageInfoOfFirstPageWithDefaults()
-        .hasPageContentSizeGreaterThanOrEqual(4)
-        .hasPageContentWithAllElementsThat({
-          hasCustomerTypeOfStandard()
-          hasOriginLocationOfRijeka()
-          hasDestinationLocationCountryName("The United States of America")
-          hasTotalCommodityWeightInInclusiveRange(15_000.kg, 100_000.kg)
-          hasEventMetadataOfTheFirstEvent()
-        })
+    assertBookingOfferSummarySearchAllQueryResponseContentHasPayloadThat(queryResponseContentMap) {
+      isSuccessful()
+      hasPageInfoOfFirstPageWithDefaults()
+      hasPageContentSizeGreaterThanOrEqual(4)
+      hasPageContentWithAllElementsThat {
+        hasCustomerTypeOfStandard()
+        hasOriginLocationOfRijeka()
+        hasDestinationLocationCountryName("The United States of America")
+        hasTotalCommodityWeightInInclusiveRange(15_000.kg, 100_000.kg)
+        hasEventMetadataOfTheFirstEvent()
+      }
+    }
   }
 }

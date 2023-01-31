@@ -88,9 +88,10 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap)
-        .isSuccessful()
-        .has_general_locale(localeStringParam)
+    assertResponseContentHasMetaDataThat(responseContentMap) {
+      isSuccessful()
+      has_general_locale(localeStringParam)
+    }
 
     verifyAll(responseContentMap) {
       size() == 2
@@ -273,9 +274,10 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap)
-        .isSuccessful()
-        .has_general_locale(localeStringParam)
+    assertResponseContentHasMetaDataThat(responseContentMap) {
+      isSuccessful()
+      has_general_locale(localeStringParam)
+    }
 
     verifyAll(responseContentMap) {
       size() == 2
@@ -419,10 +421,11 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap)
-        .isViolationOfValidation()
-        .has_general_locale(localeStringParam)
-        .has_violation_message(violationMessageParam)
+    assertResponseContentHasMetaDataThat(responseContentMap) {
+      isViolationOfValidation()
+      has_general_locale(localeStringParam)
+      has_violation_message(violationMessageParam)
+    }
 
     verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
       root.type == "createBookingOfferCommandRequest"
@@ -457,10 +460,11 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap)
-        .isViolationOfDomain_badRequest()
-        .has_general_locale(localeStringParam)
-        .has_violation_message(violationMessageParam)
+    assertResponseContentHasMetaDataThat(responseContentMap) {
+      isViolationOfDomain_badRequest()
+      has_general_locale(localeStringParam)
+      has_violation_message(violationMessageParam)
+    }
 
     assertResponseContentHasPayloadThat(responseContentMap)
         .isEmpty()
@@ -482,10 +486,11 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap)
-        .isViolationOfDomain_badRequest()
-        .has_general_locale(localeStringParam)
-        .has_violation_message(violationMessageParam)
+    assertResponseContentHasMetaDataThat(responseContentMap) {
+      isViolationOfDomain_badRequest()
+      has_general_locale(localeStringParam)
+      has_violation_message(violationMessageParam)
+    }
 
     assertResponseContentHasPayloadThat(responseContentMap)
         .isEmpty()
@@ -507,10 +512,11 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap)
-        .isViolationOfDomain_badRequest()
-        .has_general_locale(localeStringParam)
-        .has_violation_message(violationMessageParam)
+    assertResponseContentHasMetaDataThat(responseContentMap) {
+      isViolationOfDomain_badRequest()
+      has_general_locale(localeStringParam)
+      has_violation_message(violationMessageParam)
+    }
 
     assertResponseContentHasPayloadThat(responseContentMap)
         .isEmpty()
@@ -532,10 +538,11 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap)
-        .isViolationOfDomain_badRequest()
-        .has_general_locale(localeStringParam)
-        .has_violation_message(violationMessageParam)
+    assertResponseContentHasMetaDataThat(responseContentMap) {
+      isViolationOfDomain_badRequest()
+      has_general_locale(localeStringParam)
+      has_violation_message(violationMessageParam)
+    }
 
     assertResponseContentHasPayloadThat(responseContentMap)
         .isEmpty()
@@ -557,10 +564,11 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap)
-        .isViolationOfDomain_badRequest()
-        .has_general_locale(localeStringParam)
-        .has_violation_message(violationMessageParam)
+    assertResponseContentHasMetaDataThat(responseContentMap) {
+      isViolationOfDomain_badRequest()
+      has_general_locale(localeStringParam)
+      has_violation_message(violationMessageParam)
+    }
 
     assertResponseContentHasPayloadThat(responseContentMap)
         .isEmpty()
@@ -586,10 +594,11 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap)
-        .isViolationOfDomain_badRequest()
-        .has_general_locale(localeStringParam)
-        .has_violation_message(violationMessageParam)
+    assertResponseContentHasMetaDataThat(responseContentMap) {
+      isViolationOfDomain_badRequest()
+      has_general_locale(localeStringParam)
+      has_violation_message(violationMessageParam)
+    }
 
     assertResponseContentHasPayloadThat(responseContentMap)
         .isEmpty()
@@ -625,10 +634,11 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mvcResult.response.status == HttpStatus.METHOD_NOT_ALLOWED.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertResponseContentHasMetaDataThat(responseContentMap)
-        .isViolationOfInfrastructureWeb_methodNotAllowed()
-        .has_general_locale(localeStringParam)
-        .has_violation_message(violationMessageParam)
+    assertResponseContentHasMetaDataThat(responseContentMap) {
+      isViolationOfInfrastructureWeb_methodNotAllowed()
+      has_general_locale(localeStringParam)
+      has_violation_message(violationMessageParam)
+    }
 
     assertResponseContentHasPayloadThat(responseContentMap)
         .isEmpty()

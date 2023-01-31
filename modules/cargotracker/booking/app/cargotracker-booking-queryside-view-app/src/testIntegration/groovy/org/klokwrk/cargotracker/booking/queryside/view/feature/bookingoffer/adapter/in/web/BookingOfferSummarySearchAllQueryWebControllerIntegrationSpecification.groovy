@@ -95,26 +95,26 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
 
     then:
     // Here we are using closure-style top-level API.
-    assertResponseContentHasMetaDataThat(responseContentMap, {
+    assertResponseContentHasMetaDataThat(responseContentMap) {
       isSuccessful()
       has_general_locale(localeStringParam)
-    })
+    }
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap, {
+    assertResponseContentHasPageablePayloadThat(responseContentMap) {
       isSuccessful()
       hasPageInfoOfFirstPageWithDefaults()
-      hasPageInfoThat({
+      hasPageInfoThat {
         hasPageElementsCountGreaterThenOrEqual(5)
-      })
-      hasPageContentWithFirstElementThat({
+      }
+      hasPageContentWithFirstElementThat {
         hasCustomerTypeOfStandard()
         hasOriginLocationOfRijeka()
         hasDestinationLocationName("Los Angeles")
         hasTotalCommodityWeight(15000.kg)
         hasTotalContainerTeuCount(1.00G)
         hasLastEventSequenceNumber(0)
-      })
-    })
+      }
+    }
 
     where:
     acceptLanguageParam | localeStringParam
@@ -138,7 +138,8 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap).isSuccessfulAndEmpty()
+    assertResponseContentHasPageablePayloadThat(responseContentMap)
+        .isSuccessfulAndEmpty()
 
     where:
     acceptLanguageParam | localeStringParam
@@ -147,24 +148,7 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
   }
 
   void "should fail for invalid property name in sort requirements"() {
-//    String webRequestBody = objectMapper.writeValueAsString(
-//        bookingOfferSummarySearchAllQueryRequest_standardCustomer()
-//            .sortRequirementList([sortRequirement_default().propertyName("nonExistingProperty")])
-//            .buildAsMap()
-//    )
-//
     when:
-//    MvcResult mvcResult = mockMvc.perform(
-//        post("/booking-offer/booking-offer-summary-search-all")
-//            .content(webRequestBody)
-//            .contentType(MediaType.APPLICATION_JSON)
-//            .accept(MediaType.APPLICATION_JSON)
-//            .header(HttpHeaders.ACCEPT_CHARSET, "utf-8")
-//            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)
-//    ).andReturn()
-//
-//    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
-
     Map responseContentMap = bookingOfferSummarySearchAll_failed(
         bookingOfferSummarySearchAllQueryRequest_standardCustomer()
             .sortRequirementList([sortRequirement_default().propertyName("nonExistingProperty")])
@@ -174,16 +158,14 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
     )
 
     then:
-//    mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
-//    mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
-//
-    assertResponseContentHasMetaDataThat(responseContentMap, {
+    assertResponseContentHasMetaDataThat(responseContentMap) {
       isViolationOfDomain_badRequest()
       has_general_locale(localeStringParam)
       has_violation_message(messageParam)
-    })
+    }
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap).isEmpty()
+    assertResponseContentHasPageablePayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | messageParam

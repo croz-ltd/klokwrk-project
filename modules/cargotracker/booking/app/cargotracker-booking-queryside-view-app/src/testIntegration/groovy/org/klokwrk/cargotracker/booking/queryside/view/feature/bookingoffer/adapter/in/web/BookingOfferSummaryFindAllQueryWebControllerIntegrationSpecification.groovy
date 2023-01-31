@@ -134,7 +134,8 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap).isSuccessfulAndEmpty()
+    assertResponseContentHasPageablePayloadThat(responseContentMap)
+        .isSuccessfulAndEmpty()
 
     where:
     acceptLanguageParam | localeStringParam
@@ -160,7 +161,8 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
       has_violation_message(messageParam)
     }
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap).isEmpty()
+    assertResponseContentHasPageablePayloadThat(responseContentMap)
+        .isEmpty()
 
     where:
     acceptLanguageParam | localeStringParam | messageParam
