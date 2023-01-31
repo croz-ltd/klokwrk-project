@@ -90,7 +90,7 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
     List<String> commandRequestBodyList = makeCommandRequestBodyList_createBookingOffer()
     List<String> createdBookingOfferIdentifierList = []
     commandRequestBodyList.each { String commandRequestBody ->
-      Map commandResponseContentMap = createBookingOffer_succeeded(commandSideApp, commandRequestBody, "en")
+      Map commandResponseContentMap = createBookingOffer_succeeded(commandRequestBody, "en", commandSideApp)
 
       if (commandRequestBody.contains("standard-customer@cargotracker.com")) {
         countOf_createdBookingOffers_forStandardCustomer++
@@ -102,17 +102,17 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
 
     // Wait for projection of a event corresponding to the last command
     bookingOfferSummaryFindById_succeeded(
-        querySideViewApp,
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
             .bookingOfferIdentifier(createdBookingOfferIdentifierList.last())
             .buildAsJsonString(),
-        "en"
+        "en",
+        querySideViewApp
     )
   }
 
   void "command - createBookingOffer - should create booking offer"() {
     when:
-    Map commandResponseContentMap = createBookingOffer_succeeded(commandSideApp, commandBodyParam, acceptLanguageParam)
+    Map commandResponseContentMap = createBookingOffer_succeeded(commandBodyParam, acceptLanguageParam, commandSideApp)
 
     then:
     assertResponseContentHasMetaDataThat(commandResponseContentMap) {
@@ -149,11 +149,11 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
   void "command - createBookingOffer - should not create booking offer for invalid command - invalid destination location"() {
     when:
     Map commandResponseContentMap = createBookingOffer_failed(
-        commandSideApp,
         createBookingOfferCommandRequest_cargoChilled()
             .routeSpecification(routeSpecificationRequestData_rotterdamToRijeka().destinationLocation("HRZAG"))
             .buildAsJsonString(),
-        acceptLanguageParam
+        acceptLanguageParam,
+        commandSideApp
     )
 
     then:
@@ -180,9 +180,9 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
     Instant expectedArrivalLatestTime = InstantUtils.roundUpInstantToTheHour(currentTime + Duration.ofHours(3))
 
     Map commandResponseContentMap = createBookingOffer_succeeded(
-        commandSideApp,
         createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry(currentTime).buildAsJsonString(),
-        "en"
+        "en",
+        commandSideApp
     )
 
     String bookingOfferIdentifier = commandResponseContentMap.payload.bookingOfferId.identifier
@@ -190,11 +190,11 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
 
     when:
     Map queryResponseContentMap = bookingOfferSummaryFindById_succeeded(
-        querySideViewApp,
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
             .bookingOfferIdentifier(bookingOfferIdentifier)
             .buildAsJsonString(),
-        acceptLanguageParam
+        acceptLanguageParam,
+        querySideViewApp
     )
 
     then:
@@ -225,11 +225,11 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
   void "query - bookingOfferSummaryFindById - should not find non-existing booking offer"() {
     when:
     Map queryResponseContentMap = bookingOfferSummaryFindById_notFound(
-        querySideViewApp,
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
             .bookingOfferIdentifier(UUID.randomUUID().toString())
             .buildAsJsonString(),
-        acceptLanguageParam
+        acceptLanguageParam,
+        querySideViewApp
     )
 
     then:
@@ -252,9 +252,9 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
   void "query - bookingOfferSummaryFindAll - should find existing booking offers with default paging and sorting"() {
     when:
     Map queryResponseContentMap = bookingOfferSummaryFindAll_succeeded(
-        querySideViewApp,
         bookingOfferSummaryFindAllQueryRequest_standardCustomer().buildAsJsonString(),
-        "en"
+        "en",
+        querySideViewApp
     )
 
     then:
@@ -280,13 +280,13 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
   void "query - bookingOfferSummarySearchAll - should find existing booking offers with default paging and sorting"() {
     when:
     Map queryResponseContentMap = bookingOfferSummarySearchAll_succeeded(
-        querySideViewApp,
         bookingOfferSummarySearchAllQueryRequest_originOfRijeka()
             .destinationLocationCountryName("The United States")
             .totalCommodityWeightFromIncluding(15_000.kg)
             .totalCommodityWeightToIncluding(100_000.kg)
             .buildAsJsonString(),
-        "en"
+        "en",
+        querySideViewApp
     )
 
     then:

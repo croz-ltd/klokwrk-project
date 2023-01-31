@@ -39,28 +39,28 @@ import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.
 @CompileStatic
 class BookingOfferFeatureTestHelpers {
   @SuppressWarnings("CodeNarc.FactoryMethodName")
-  static Map createBookingOffer_succeeded(GenericContainer commandSideApp, String commandBody, String acceptLanguage) {
+  static Map createBookingOffer_succeeded(String commandBody, String acceptLanguage, GenericContainer commandSideApp) {
     return makeRequestAndReturnResponseContentMap_sync(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBody, acceptLanguage, 200)
   }
 
   @SuppressWarnings("CodeNarc.FactoryMethodName")
-  static Map createBookingOffer_failed(GenericContainer commandSideApp, String commandBody, String acceptLanguage) {
+  static Map createBookingOffer_failed(String commandBody, String acceptLanguage, GenericContainer commandSideApp) {
     return makeRequestAndReturnResponseContentMap_sync(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBody, acceptLanguage, 400)
   }
 
-  static Map bookingOfferSummaryFindById_succeeded(GenericContainer querySideViewApp, String queryBody, String acceptLanguage) {
+  static Map bookingOfferSummaryFindById_succeeded(String queryBody, String acceptLanguage, GenericContainer querySideViewApp) {
     return makeRequestAndReturnResponseContentMap_async(makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), queryBody, acceptLanguage, 200)
   }
 
-  static Map bookingOfferSummaryFindById_notFound(GenericContainer querySideViewApp, String queryBody, String acceptLanguage) {
+  static Map bookingOfferSummaryFindById_notFound(String queryBody, String acceptLanguage, GenericContainer querySideViewApp) {
     return makeRequestAndReturnResponseContentMap_async(makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), queryBody, acceptLanguage, 404)
   }
 
-  static Map bookingOfferSummaryFindAll_succeeded(GenericContainer querySideViewApp, String queryBody, String acceptLanguage) {
+  static Map bookingOfferSummaryFindAll_succeeded(String queryBody, String acceptLanguage, GenericContainer querySideViewApp) {
     return makeRequestAndReturnResponseContentMap_sync(makeQueryRequestUrl_bookingOfferSummary_findAll(querySideViewApp), queryBody, acceptLanguage, 200)
   }
 
-  static Map bookingOfferSummarySearchAll_succeeded(GenericContainer querySideViewApp, String queryBody, String acceptLanguage) {
+  static Map bookingOfferSummarySearchAll_succeeded(String queryBody, String acceptLanguage, GenericContainer querySideViewApp) {
     return makeRequestAndReturnResponseContentMap_sync(makeQueryRequestUrl_bookingOfferSummary_searchAll(querySideViewApp), queryBody, acceptLanguage, 200)
   }
 
