@@ -91,6 +91,7 @@ dependencies {
   testIntegrationImplementation testFixtures(project(":cargotracker-booking-domain-model-value"))
 
   testIntegrationImplementation "javax.measure:unit-api"
+  testIntegrationImplementation "org.apache.groovy:groovy-json"
   testIntegrationImplementation "org.apache.groovy:groovy-sql"
   testIntegrationImplementation "org.awaitility:awaitility"
   testIntegrationImplementation "org.spockframework:spock-spring"

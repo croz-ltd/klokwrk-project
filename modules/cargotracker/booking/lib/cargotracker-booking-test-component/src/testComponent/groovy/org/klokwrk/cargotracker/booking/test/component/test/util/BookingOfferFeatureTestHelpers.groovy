@@ -17,11 +17,15 @@
  */
 package org.klokwrk.cargotracker.booking.test.component.test.util
 
+import groovy.json.JsonSlurper
 import groovy.transform.CompileStatic
+import org.apache.http.HttpResponse
 import org.apache.http.client.fluent.Request
 import org.apache.http.entity.ContentType
+import org.awaitility.Awaitility
 import org.testcontainers.containers.GenericContainer
 
+import java.time.Duration
 import java.time.Instant
 
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_base
@@ -33,7 +37,33 @@ import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rijekaToRotterdam
 
 @CompileStatic
-class FeatureTestHelpers {
+class BookingOfferFeatureTestHelpers {
+  @SuppressWarnings("CodeNarc.FactoryMethodName")
+  static Map createBookingOffer_succeeded(String commandBody, String acceptLanguage, GenericContainer commandSideApp) {
+    return makeRequestAndReturnResponseContentMap_sync(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBody, acceptLanguage, 200)
+  }
+
+  @SuppressWarnings("CodeNarc.FactoryMethodName")
+  static Map createBookingOffer_failed(String commandBody, String acceptLanguage, GenericContainer commandSideApp) {
+    return makeRequestAndReturnResponseContentMap_sync(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBody, acceptLanguage, 400)
+  }
+
+  static Map bookingOfferSummaryFindById_succeeded(String queryBody, String acceptLanguage, GenericContainer querySideViewApp) {
+    return makeRequestAndReturnResponseContentMap_async(makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), queryBody, acceptLanguage, 200)
+  }
+
+  static Map bookingOfferSummaryFindById_notFound(String queryBody, String acceptLanguage, GenericContainer querySideViewApp) {
+    return makeRequestAndReturnResponseContentMap_async(makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), queryBody, acceptLanguage, 404)
+  }
+
+  static Map bookingOfferSummaryFindAll_succeeded(String queryBody, String acceptLanguage, GenericContainer querySideViewApp) {
+    return makeRequestAndReturnResponseContentMap_sync(makeQueryRequestUrl_bookingOfferSummary_findAll(querySideViewApp), queryBody, acceptLanguage, 200)
+  }
+
+  static Map bookingOfferSummarySearchAll_succeeded(String queryBody, String acceptLanguage, GenericContainer querySideViewApp) {
+    return makeRequestAndReturnResponseContentMap_sync(makeQueryRequestUrl_bookingOfferSummary_searchAll(querySideViewApp), queryBody, acceptLanguage, 200)
+  }
+
   static String makeCommandRequestUrl_createBookingOffer(GenericContainer commandSideApp) {
     //noinspection HttpUrlsUsage
     String createBookingOfferCommandUrl = "http://${ commandSideApp.host }:${ commandSideApp.getMappedPort(8080) }/cargotracker-booking-commandside/booking-offer/create-booking-offer"
@@ -56,6 +86,41 @@ class FeatureTestHelpers {
     //noinspection HttpUrlsUsage
     String bookingOfferSummaryQueryUrl = "http://${ querySideViewApp.host }:${ querySideViewApp.getMappedPort(8084) }/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-search-all"
     return bookingOfferSummaryQueryUrl
+  }
+
+  private static Map makeRequestAndReturnResponseContentMap_sync(String url, String requestBody, String acceptLanguage, Integer expectedResponseStatus) {
+    Request request = makeRequest(url, requestBody, acceptLanguage)
+
+    HttpResponse response = request.execute().returnResponse()
+    assert response.statusLine.statusCode == expectedResponseStatus
+
+    Map responseContentMap = new JsonSlurper().parseText(response.entity.content.text) as Map
+    return responseContentMap
+  }
+
+  private static Map makeRequestAndReturnResponseContentMap_async(String url, String requestBody, String acceptLanguage, Integer expectedResponseStatus) {
+    Request request = makeRequest(url, requestBody, acceptLanguage)
+
+    HttpResponse response = null
+    Awaitility.await().atMost(Duration.ofSeconds(5)).until({
+      response = request.execute().returnResponse()
+      Integer queryResponseStatusCode = response.statusLine.statusCode
+      queryResponseStatusCode == expectedResponseStatus
+    })
+
+    Map responseContentMap = new JsonSlurper().parseText(response.entity.content.text) as Map
+    return responseContentMap
+  }
+
+  private static Request makeRequest(String url, String body, String acceptLanguageHeaderValue) {
+    Request request = Request.Post(url)
+        .addHeader("Content-Type", "application/json")
+        .addHeader("Accept", "application/json")
+        .addHeader("Accept-Charset", "utf-8")
+        .addHeader("Accept-Language", acceptLanguageHeaderValue)
+        .bodyString(body, ContentType.APPLICATION_JSON)
+
+    return request
   }
 
   @SuppressWarnings("CodeNarc.AbcMetric")
@@ -108,16 +173,5 @@ class FeatureTestHelpers {
     ]
 
     return commandRequestBodyList
-  }
-
-  static Request makeRequest(String url, String body, String acceptLanguageHeaderValue) {
-    Request request = Request.Post(url)
-        .addHeader("Content-Type", "application/json")
-        .addHeader("Accept", "application/json")
-        .addHeader("Accept-Charset", "utf-8")
-        .addHeader("Accept-Language", acceptLanguageHeaderValue)
-        .bodyString(body, ContentType.APPLICATION_JSON)
-
-    return request
   }
 }

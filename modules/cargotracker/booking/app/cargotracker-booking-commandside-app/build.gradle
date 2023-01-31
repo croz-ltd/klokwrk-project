@@ -91,6 +91,7 @@ dependencies {
 
   testIntegrationImplementation testFixtures(project(":cargotracker-booking-boundary-web"))
 
+  testIntegrationImplementation "org.apache.groovy:groovy-json"
   testIntegrationImplementation "org.springframework:spring-test"
   testIntegrationImplementation "org.springframework.boot:spring-boot-test"
   testIntegrationImplementation "org.testcontainers:testcontainers"
