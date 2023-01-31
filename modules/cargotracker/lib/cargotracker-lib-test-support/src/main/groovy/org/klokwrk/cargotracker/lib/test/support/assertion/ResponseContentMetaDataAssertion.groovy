@@ -114,6 +114,19 @@ class ResponseContentMetaDataAssertion {
           assert size() == 2
           assert root
           assert constraintViolations
+
+          (root as Map).with {
+            assert type
+          }
+
+          (constraintViolations as List<Map>).each { Map constraintViolation ->
+            constraintViolation.with {
+              assert type
+              assert scope
+              assert path
+              assert message
+            }
+          }
         }
       }
     }
