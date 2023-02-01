@@ -45,7 +45,7 @@ class KwrkImmutableSpecification extends Specification {
 
     then:
     CompilationFailedException compilationFailedException = thrown()
-    compilationFailedException.message.contains("Cannot find matching method org.klokwrk.lang.groovy.transform.stub.Person#<init>()")
+    compilationFailedException.message.contains("Cannot find matching constructor org.klokwrk.lang.groovy.transform.stub.Person()")
   }
 
   void "should have private no-arg constructor"() {
