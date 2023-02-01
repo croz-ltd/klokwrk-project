@@ -20,6 +20,7 @@ package org.klokwrk.cargotracker.lib.test.support.assertion
 import groovy.transform.CompileStatic
 import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.SimpleType
+import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 
 @CompileStatic
 class ResponseContentMetaDataAssertion {
@@ -233,5 +234,72 @@ class ResponseContentMetaDataAssertion {
     }
 
     return this
+  }
+
+  ResponseContentMetaDataAssertion has_violation_validationReport_constraintViolationsOfSize(Integer expectedSize) {
+    List<Map> constraintViolations = ((metaDataMap?.violation as Map)?.validationReport as Map)?.constraintViolations as List<Map>
+    assert constraintViolations != null
+    assert constraintViolations.size() == expectedSize
+    return this
+  }
+
+  ResponseContentMetaDataAssertion has_violation_validationReport_constraintViolationsWithAnyElementThat(
+      @DelegatesTo(value = ConstraintViolationAssertion, strategy = Closure.DELEGATE_FIRST)
+      @ClosureParams(
+          value = SimpleType,
+          options = 'org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentMetaDataAssertion$ConstraintViolationAssertion'
+      ) Closure aClosure)
+  {
+    List<Map> constraintViolations = ((metaDataMap?.violation as Map)?.validationReport as Map)?.constraintViolations as List<Map>
+    assert constraintViolations != null
+
+    aClosure.resolveStrategy = Closure.DELEGATE_FIRST
+
+    boolean isAnyElementFound = constraintViolations.any({ Map constraintViolationMap ->
+      ConstraintViolationAssertion constraintViolationAssertion = new ConstraintViolationAssertion(constraintViolationMap)
+      aClosure.delegate = constraintViolationAssertion
+      try {
+        aClosure.call(constraintViolationAssertion)
+        return true
+      }
+      catch (PowerAssertionError ignore) {
+      }
+
+      return false
+    })
+
+    if (!isAnyElementFound) {
+      throw new AssertionError("Assertion failed - none of the list elements satisfies provided conditions." as Object)
+    }
+
+    return this
+  }
+
+  static class ConstraintViolationAssertion {
+    private final Map constraintViolationMap
+
+    ConstraintViolationAssertion(Map constraintViolationMap) {
+      this.constraintViolationMap = constraintViolationMap
+    }
+
+    ConstraintViolationAssertion hasType(String expectedType) {
+      assert constraintViolationMap.type == expectedType
+      return this
+    }
+
+    ConstraintViolationAssertion hasScope(String expectedScope) {
+      assert constraintViolationMap.scope == expectedScope
+      return this
+    }
+
+    ConstraintViolationAssertion hasPath(String expectedPath) {
+      assert constraintViolationMap.path == expectedPath
+      return this
+    }
+
+    ConstraintViolationAssertion hasMessage(String expectedMessage) {
+      assert constraintViolationMap.message == expectedMessage
+      return this
+    }
   }
 }

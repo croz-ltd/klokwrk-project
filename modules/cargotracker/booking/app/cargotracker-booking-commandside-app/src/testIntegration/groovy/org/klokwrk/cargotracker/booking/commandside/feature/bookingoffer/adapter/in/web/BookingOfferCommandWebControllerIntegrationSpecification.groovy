@@ -427,16 +427,52 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
       has_violation_message(violationMessageParam)
     }
 
+    // NOTE: The following two verification blocks are roughly equivalent. They are demonstrating that the usage of custom assertion API (the first block) isn't always the most concise way for doing
+    //       verifications. Therefore, it is important to realize that native Spock power is always at your disposal and can be used instead or combined with the custom assertion API as the need
+    //       arises.
+
+    assertResponseContentHasMetaDataThat(responseContentMap) {
+      has_violation_validationReport_constraintViolationsOfSize(5)
+      has_violation_validationReport_constraintViolationsWithAnyElementThat {
+        hasPath("routeSpecification.originLocation")
+        hasType("notBlank")
+      }
+      has_violation_validationReport_constraintViolationsWithAnyElementThat {
+        hasPath("routeSpecification.destinationLocation")
+        hasType("notBlank")
+      }
+      has_violation_validationReport_constraintViolationsWithAnyElementThat {
+        hasPath("routeSpecification.departureEarliestTime")
+        hasType("notNull")
+      }
+      has_violation_validationReport_constraintViolationsWithAnyElementThat {
+        hasPath("routeSpecification.departureLatestTime")
+        hasType("notNull")
+      }
+      has_violation_validationReport_constraintViolationsWithAnyElementThat {
+        hasPath("routeSpecification.arrivalLatestTime")
+        hasType("notNull")
+        hasScope("property")
+        hasMessage(nonNullMessageParam)
+      }
+    }
+
     verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
       root.type == "createBookingOfferCommandRequest"
 
       verifyAll(constraintViolations as List<Map>) {
         size() == 5
+
         it.find({ it.path == "routeSpecification.originLocation" }).type == "notBlank"
         it.find({ it.path == "routeSpecification.destinationLocation" }).type == "notBlank"
         it.find({ it.path == "routeSpecification.departureEarliestTime" }).type == "notNull"
         it.find({ it.path == "routeSpecification.departureLatestTime" }).type == "notNull"
-        it.find({ it.path == "routeSpecification.arrivalLatestTime" }).type == "notNull"
+
+        verifyAll(it.find({ it.path == "routeSpecification.arrivalLatestTime" }) as Map) {
+          type == "notNull"
+          scope == "property"
+          message == nonNullMessageParam
+        }
       }
     }
 
@@ -444,9 +480,9 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
         .isEmpty()
 
     where:
-    acceptLanguageParam | localeStringParam | violationMessageParam
-    "hr-HR"             | "hr_HR"           | "Zahtjev nije ispravan."
-    "en"                | "en"              | "Request is not valid."
+    acceptLanguageParam | localeStringParam | violationMessageParam    | nonNullMessageParam
+    "hr-HR"             | "hr_HR"           | "Zahtjev nije ispravan." | "Ne smije biti null."
+    "en"                | "en"              | "Request is not valid."  | "must not be null"
   }
 
   void "should fail when customer cannot be found - domain failure"() {
