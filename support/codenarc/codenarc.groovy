@@ -446,7 +446,9 @@ ruleset {
     enabled = false
   }
   CyclomaticComplexity   // Requires the GMetrics jar
-  MethodCount
+  MethodCount {
+    doNotApplyToFilesMatching = TEST_FILES
+  }
   MethodSize {
     name = "MethodSize - main"
     description = "For 'main' source set, verifies that the size of each method does not exceeds 100 lines."
