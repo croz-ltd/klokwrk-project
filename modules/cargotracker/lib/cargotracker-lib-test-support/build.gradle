@@ -28,4 +28,8 @@ dependencies {
 
   compileOnly "javax.measure:unit-api"
   compileOnly "tech.units:indriya"
+
+  testImplementation project(":klokwrk-lang-groovy")
+
+  testImplementation "org.spockframework:spock-core"
 }
