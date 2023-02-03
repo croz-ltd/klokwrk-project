@@ -79,7 +79,7 @@ class BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion implements
 
   BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion isSuccessful() {
     payloadMap.with {
-      size() == 17
+      assert size() == 17
 
       assert bookingOfferIdentifier
       assert customerType
