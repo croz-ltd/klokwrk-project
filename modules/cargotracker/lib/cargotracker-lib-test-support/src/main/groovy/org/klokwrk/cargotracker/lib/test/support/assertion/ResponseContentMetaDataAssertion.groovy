@@ -65,9 +65,11 @@ class ResponseContentMetaDataAssertion {
   }
 
   ResponseContentMetaDataAssertion isSuccessful() {
+    assert metaDataMap instanceof Map
     metaDataMap.with {
       assert size() == 2
 
+      assert general instanceof Map
       (general as Map).with {
         assert size() == 3
 
@@ -76,6 +78,7 @@ class ResponseContentMetaDataAssertion {
         assert severity == "info"
       }
 
+      assert http instanceof Map
       (http as Map).with {
         assert size() == 2
 
@@ -88,9 +91,11 @@ class ResponseContentMetaDataAssertion {
   }
 
   ResponseContentMetaDataAssertion isViolationOfValidation() {
+    assert metaDataMap instanceof Map
     metaDataMap.with {
       assert size() == 3
 
+      assert general instanceof Map
       (general as Map).with {
         assert size() == 3
         assert locale
@@ -98,30 +103,36 @@ class ResponseContentMetaDataAssertion {
         assert severity == "warning"
       }
 
+      assert http instanceof Map
       (http as Map).with {
         assert size() == 2
         assert message == "Bad Request"
         assert status == "400"
       }
 
+      assert violation instanceof Map
       (violation as Map).with {
         assert size() == 4
         assert message
         assert code == "400"
         assert type == "validation"
-        assert validationReport
 
+        assert validationReport instanceof Map
         (validationReport as Map).with {
           assert size() == 2
-          assert root
-          assert constraintViolations
 
+          assert root instanceof Map
           (root as Map).with {
+            assert size() == 1
             assert type
           }
 
-          (constraintViolations as List<Map>).each { Map constraintViolation ->
-            constraintViolation.with {
+          assert constraintViolations instanceof List
+          assert !(constraintViolations as List).isEmpty()
+          (constraintViolations as List).each { def constraintViolation ->
+            assert constraintViolation instanceof Map
+            (constraintViolation as Map).with {
+              assert size() == 4
               assert type
               assert scope
               assert path
@@ -136,9 +147,11 @@ class ResponseContentMetaDataAssertion {
   }
 
   ResponseContentMetaDataAssertion isViolationOfDomain_badRequest() {
+    assert metaDataMap instanceof Map
     metaDataMap.with {
       assert size() == 3
 
+      assert general instanceof Map
       (general as Map).with {
         assert size() == 3
         assert locale
@@ -146,12 +159,14 @@ class ResponseContentMetaDataAssertion {
         assert severity == "warning"
       }
 
+      assert http instanceof Map
       (http as Map).with {
         assert size() == 2
         assert message == "Bad Request"
         assert status == "400"
       }
 
+      assert violation instanceof Map
       (violation as Map).with {
         assert size() == 3
         assert message
@@ -164,9 +179,11 @@ class ResponseContentMetaDataAssertion {
   }
 
   ResponseContentMetaDataAssertion isViolationOfDomain_notFound() {
+    assert metaDataMap instanceof Map
     metaDataMap.with {
       assert size() == 3
 
+      assert general instanceof Map
       (general as Map).with {
         assert size() == 3
         assert locale
@@ -174,12 +191,14 @@ class ResponseContentMetaDataAssertion {
         assert severity == "warning"
       }
 
+      assert http instanceof Map
       (http as Map).with {
         assert size() == 2
         assert message == "Not Found"
         assert status == "404"
       }
 
+      assert violation instanceof Map
       (violation as Map).with {
         assert size() == 3
         assert message
@@ -192,9 +211,11 @@ class ResponseContentMetaDataAssertion {
   }
 
   ResponseContentMetaDataAssertion isViolationOfInfrastructureWeb_methodNotAllowed() {
+    assert metaDataMap instanceof Map
     metaDataMap.with {
       assert size() == 3
 
+      assert general instanceof Map
       (general as Map).with {
         assert size() == 3
         assert locale
@@ -202,12 +223,14 @@ class ResponseContentMetaDataAssertion {
         assert severity == "warning"
       }
 
+      assert http instanceof Map
       (http as Map).with {
         assert size() == 2
         assert message == "Method Not Allowed"
         assert status == "405"
       }
 
+      assert violation instanceof Map
       (violation as Map).with {
         assert size() == 4
         assert message
@@ -252,6 +275,9 @@ class ResponseContentMetaDataAssertion {
   {
     List<Map> constraintViolations = ((metaDataMap?.violation as Map)?.validationReport as Map)?.constraintViolations as List<Map>
     assert constraintViolations != null
+    constraintViolations.each { constraintViolation ->
+      assert constraintViolation instanceof Map
+    }
 
     aClosure.resolveStrategy = Closure.DELEGATE_FIRST
 

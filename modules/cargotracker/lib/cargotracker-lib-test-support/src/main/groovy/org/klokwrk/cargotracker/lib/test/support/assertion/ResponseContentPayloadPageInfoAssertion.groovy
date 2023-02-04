@@ -37,25 +37,43 @@ class ResponseContentPayloadPageInfoAssertion {
   }
 
   ResponseContentPayloadPageInfoAssertion isSuccessful() {
+    assert pageInfoMap instanceof Map
     pageInfoMap.with {
       assert size() == 8
+
+      assert pageOrdinal instanceof Integer
       assert (pageOrdinal as Integer) >= 0
+
+      assert pageElementsCount instanceof Integer
       assert (pageElementsCount as Integer) >= 1
-      assert first != null
-      assert last != null
+
+      assert first instanceof Boolean
+      assert last instanceof Boolean
+
+      assert totalPagesCount instanceof Integer
       assert (totalPagesCount as Integer) >= 1
+
+      assert totalElementsCount instanceof Integer
       assert (totalElementsCount as Integer) >= 1
+
       assert (totalElementsCount as Integer) >= (pageElementsCount as Integer)
 
+      assert requestedPageRequirement instanceof Map
       (requestedPageRequirement as Map).with {
         assert size() == 2
+
+        assert ordinal instanceof Integer
         assert (ordinal as Integer) >= 0
+
+        assert size instanceof Integer
         assert (size as Integer) >= 1
       }
 
+      assert requestedSortRequirementList instanceof List
       (requestedSortRequirementList as List<Map>).with {
         assert size() >= 1
         each {
+          assert it instanceof Map
           // "each" closure has owner_first as delegate strategy. Therefore, to not repeat "it" for every map property, I'm using "with" here.
           it.with {
             assert size() == 2
@@ -70,6 +88,7 @@ class ResponseContentPayloadPageInfoAssertion {
   }
 
   ResponseContentPayloadPageInfoAssertion isSuccessfulForEmptyPageContent() {
+    assert pageInfoMap instanceof Map
     pageInfoMap.with {
       assert size() == 8
       assert pageOrdinal == 0
@@ -79,16 +98,22 @@ class ResponseContentPayloadPageInfoAssertion {
       assert totalPagesCount == 0
       assert totalElementsCount == 0
 
+      assert requestedPageRequirement instanceof Map
       (requestedPageRequirement as Map).with {
         assert size() == 2
+
+        assert ordinal instanceof Integer
         assert (ordinal as Integer) >= 0
+
+        assert size instanceof Integer
         assert (size as Integer) >= 1
       }
 
+      assert requestedSortRequirementList instanceof List
       (requestedSortRequirementList as List<Map>).with {
         assert size() >= 1
         each {
-          // "each" closure has owner_first as delegate strategy. Therefore, to not repeat "it" for every map property, I'm using "with" here.
+          assert it instanceof Map
           it.with {
             assert size() == 2
             assert propertyName
@@ -102,25 +127,37 @@ class ResponseContentPayloadPageInfoAssertion {
   }
 
   ResponseContentPayloadPageInfoAssertion isFirstPageWithDefaults() {
+    assert pageInfoMap instanceof Map
     pageInfoMap.with {
       assert size() == 8
       assert pageOrdinal == 0
+
+      assert pageElementsCount instanceof Integer
       assert (pageElementsCount as Integer) >= 1
+
       assert first == true
-      assert last != null
+      assert last instanceof Boolean
+
+      assert totalPagesCount instanceof Integer
       assert (totalPagesCount as Integer) >= 1
+
+      assert totalElementsCount instanceof Integer
       assert (totalElementsCount as Integer) >= 1
+
       assert (totalElementsCount as Integer) >= (pageElementsCount as Integer)
 
+      assert requestedPageRequirement instanceof Map
       (requestedPageRequirement as Map).with {
         assert size() == 2
         assert ordinal == 0
         assert size == 25
       }
 
+      assert requestedSortRequirementList instanceof List
       (requestedSortRequirementList as List<Map>).with {
         assert size() == 1
         it[0].with {
+          assert it instanceof Map
           assert size() == 2
           assert propertyName == "lastEventRecordedAt"
           assert direction == "DESC"
@@ -131,7 +168,6 @@ class ResponseContentPayloadPageInfoAssertion {
     return this
   }
 
-  @SuppressWarnings("unused")
   ResponseContentPayloadPageInfoAssertion hasPageOrdinal(Long expectedPageOrdinal) {
     assert pageInfoMap.pageOrdinal == expectedPageOrdinal
     return this
@@ -152,19 +188,16 @@ class ResponseContentPayloadPageInfoAssertion {
     return this
   }
 
-  @SuppressWarnings("unused")
   ResponseContentPayloadPageInfoAssertion hasTotalElementsCountGreaterThanOrEqual(Long comparableTotalElementsCount) {
     assert (pageInfoMap.totalElementsCount as Long) >= comparableTotalElementsCount
     return this
   }
 
-  @SuppressWarnings("unused")
   ResponseContentPayloadPageInfoAssertion hasFirstFlagOf(Boolean expectedFirstFlag) {
     assert pageInfoMap.first == expectedFirstFlag
     return this
   }
 
-  @SuppressWarnings("unused")
   ResponseContentPayloadPageInfoAssertion hasRequestedPageRequirementThat(
       @DelegatesTo(value = RequestedPageRequirementAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
@@ -172,7 +205,10 @@ class ResponseContentPayloadPageInfoAssertion {
           options = 'org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPayloadPageInfoAssertion$RequestedPageRequirementAssertion'
       ) Closure aClosure)
   {
-    RequestedPageRequirementAssertion requestedPageRequirementAssertion = new RequestedPageRequirementAssertion(pageInfoMap.requestedPageRequirement as Map)
+    Object requestedPageRequirementMap = pageInfoMap?.requestedPageRequirement
+    assert requestedPageRequirementMap instanceof Map
+
+    RequestedPageRequirementAssertion requestedPageRequirementAssertion = new RequestedPageRequirementAssertion(requestedPageRequirementMap as Map)
     aClosure.resolveStrategy = Closure.DELEGATE_FIRST
     aClosure.delegate = requestedPageRequirementAssertion
     aClosure.call(requestedPageRequirementAssertion)
@@ -180,7 +216,6 @@ class ResponseContentPayloadPageInfoAssertion {
     return this
   }
 
-  @SuppressWarnings("unused")
   ResponseContentPayloadPageInfoAssertion hasRequestedSortRequirementListWithFirstElementThat(
       @DelegatesTo(value = RequestedSortRequirementAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
@@ -200,8 +235,11 @@ class ResponseContentPayloadPageInfoAssertion {
           options = 'org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPayloadPageInfoAssertion$RequestedSortRequirementAssertion'
       ) Closure aClosure)
   {
+    Object requestedSortRequirementMapAsObject = pageInfoMap?.requestedSortRequirementList
+    assert requestedSortRequirementMapAsObject instanceof List
+
     Map requestedSortRequirementMap = (pageInfoMap.requestedSortRequirementList as List<Map>)[anIndex]
-    assert requestedSortRequirementMap
+    assert requestedSortRequirementMap instanceof Map
 
     RequestedSortRequirementAssertion requestedSortRequirementAssertion = new RequestedSortRequirementAssertion(requestedSortRequirementMap)
     aClosure.resolveStrategy = Closure.DELEGATE_FIRST
@@ -218,13 +256,11 @@ class ResponseContentPayloadPageInfoAssertion {
       this.requestedPageRequirementMap = requestedPageRequirementMap
     }
 
-    @SuppressWarnings("unused")
     RequestedPageRequirementAssertion hasOrdinal(Long expectedOrdinal) {
       assert requestedPageRequirementMap.ordinal == expectedOrdinal
       return this
     }
 
-    @SuppressWarnings("unused")
     RequestedPageRequirementAssertion hasSize(Long expectedSize) {
       assert requestedPageRequirementMap.size == expectedSize
       return this
@@ -238,13 +274,11 @@ class ResponseContentPayloadPageInfoAssertion {
       this.requestedSortRequirementMap = requestedSortRequirementMap
     }
 
-    @SuppressWarnings("unused")
     RequestedSortRequirementAssertion hasPropertyName(String expectedPropertyName) {
       assert requestedSortRequirementMap.propertyName == expectedPropertyName
       return this
     }
 
-    @SuppressWarnings("unused")
     RequestedSortRequirementAssertion hasDirection(String expectedDirection) {
       assert requestedSortRequirementMap.direction == expectedDirection
       return this

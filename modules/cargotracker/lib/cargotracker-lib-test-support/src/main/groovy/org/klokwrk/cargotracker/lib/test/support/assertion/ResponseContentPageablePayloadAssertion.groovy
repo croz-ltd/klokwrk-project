@@ -61,11 +61,10 @@ import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 @CompileStatic
 abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseContentPageablePayloadAssertion<SELF, PAGE_CONTENT_ASSERTION>, PAGE_CONTENT_ASSERTION extends PayloadPageContentAssertionable> {
   static void assertResponseContent(Map responseContentMap) {
+    assert responseContentMap instanceof Map
     responseContentMap.with {
       assert size() == 2
-      assert metaData
       assert metaData instanceof Map
-      assert payload != null
       assert payload instanceof Map
     }
   }
@@ -76,6 +75,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
   protected final Map payloadMap
 
   protected ResponseContentPageablePayloadAssertion(Map responseContentMap) {
+    assert responseContentMap instanceof Map
     assert responseContentMap.payload instanceof Map
     this.payloadMap = responseContentMap.payload as Map
   }
@@ -128,7 +128,10 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
           options = "org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPayloadPageInfoAssertion"
       ) Closure aClosure)
   {
-    ResponseContentPayloadPageInfoAssertion pageInfoAssertion = new ResponseContentPayloadPageInfoAssertion(payloadMap.pageInfo as Map)
+    Object pageInfoMap = payloadMap.pageInfo
+    assert pageInfoMap instanceof Map
+
+    ResponseContentPayloadPageInfoAssertion pageInfoAssertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap as Map)
     aClosure.resolveStrategy = Closure.DELEGATE_FIRST
     aClosure.delegate = pageInfoAssertion
     aClosure.call(pageInfoAssertion)
@@ -138,7 +141,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
 
   SELF hasPageInfoOfFirstPageWithDefaults() {
     ResponseContentPayloadPageInfoAssertion pageInfoAssertion = new ResponseContentPayloadPageInfoAssertion(payloadMap.pageInfo as Map)
-    assert pageInfoAssertion.isFirstPageWithDefaults()
+    pageInfoAssertion.isFirstPageWithDefaults()
     return this as SELF
   }
 
@@ -147,7 +150,6 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
     return this as SELF
   }
 
-  @SuppressWarnings("unused")
   SELF hasPageContentWithAnyElementThat(
       @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
@@ -155,15 +157,22 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
           options = "PAGE_CONTENT_ASSERTION"
       ) Closure aClosure)
   {
-    List<Map> pageContentList = payloadMap.pageContent as List<Map>
+    Object pageContentListAsObject = payloadMap.pageContent
+    assert pageContentListAsObject instanceof List
+
+    List<Map> pageContentList = pageContentListAsObject as List<Map>
+    pageContentList.each { pageContentElementMap ->
+      assert pageContentElementMap instanceof Map
+    }
+
     aClosure.resolveStrategy = Closure.DELEGATE_FIRST
 
-    boolean isAnyElementFound = pageContentList.any({ Map pgeContentElementMap ->
-      PAGE_CONTENT_ASSERTION aListElementPayloadAssertion = getPageContentAssertionInstance(pgeContentElementMap)
+    boolean isAnyElementFound = pageContentList.any({ Map pageContentElementMap ->
+      PAGE_CONTENT_ASSERTION pageContentElementAssertion = getPageContentAssertionInstance(pageContentElementMap)
 
-      aClosure.delegate = aListElementPayloadAssertion
+      aClosure.delegate = pageContentElementAssertion
       try {
-        aClosure.call(aListElementPayloadAssertion)
+        aClosure.call(pageContentElementAssertion)
         return true
       }
       catch (PowerAssertionError ignore) {
@@ -186,7 +195,15 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
           options = "PAGE_CONTENT_ASSERTION"
       ) Closure aClosure)
   {
-    List<Map> pageContentList = payloadMap.pageContent as List<Map>
+    Object pageContentListAsObject = payloadMap.pageContent
+    assert pageContentListAsObject instanceof List
+
+    List<Map> pageContentList = pageContentListAsObject as List<Map>
+    assert !pageContentList.isEmpty()
+    pageContentList.each { pageContentElementMap ->
+      assert pageContentElementMap instanceof Map
+    }
+
     pageContentList.eachWithIndex({ Map pageContentElementMap, int anIndex ->
       PAGE_CONTENT_ASSERTION aListElementPayloadAssertion = getPageContentAssertionInstance(pageContentElementMap)
 
@@ -224,10 +241,14 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
           options = "PAGE_CONTENT_ASSERTION"
       ) Closure aClosure)
   {
-    Map pageContentElementMap = (payloadMap.pageContent as List<Map>)[anIndex]
-    assert pageContentElementMap
+    Object pageContentListAsObject = payloadMap.pageContent
+    assert pageContentListAsObject instanceof List
 
-    PAGE_CONTENT_ASSERTION pageContentElementAssertion = getPageContentAssertionInstance(pageContentElementMap)
+    List<Map> pageContentList = pageContentListAsObject as List<Map>
+    assert !pageContentList.isEmpty()
+    assert pageContentList[anIndex] instanceof Map
+
+    PAGE_CONTENT_ASSERTION pageContentElementAssertion = getPageContentAssertionInstance(pageContentList[anIndex])
     aClosure.resolveStrategy = Closure.DELEGATE_FIRST
     aClosure.delegate = pageContentElementAssertion
     aClosure.call(pageContentElementAssertion)

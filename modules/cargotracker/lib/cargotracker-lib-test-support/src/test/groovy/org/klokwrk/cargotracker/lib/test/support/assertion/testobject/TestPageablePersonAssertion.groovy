@@ -15,21 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-  id "java-library"
-  id "klokwrk-gradle-plugin-convention-base"
-  id "klokwrk-gradle-plugin-convention-groovy"
-}
+package org.klokwrk.cargotracker.lib.test.support.assertion.testobject
 
-dependencies {
-  implementation platform(project(":klokwrk-platform-spring-boot"))
+import groovy.transform.CompileStatic
+import org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPageablePayloadAssertion
 
-  implementation "org.apache.groovy:groovy"
+@CompileStatic
+class TestPageablePersonAssertion extends ResponseContentPageablePayloadAssertion<TestPageablePersonAssertion, TestPersonAssertion> {
+  TestPageablePersonAssertion(Map responseContentMap) {
+    super(responseContentMap)
+  }
 
-  compileOnly "javax.measure:unit-api"
-  compileOnly "tech.units:indriya"
-
-  testImplementation project(":klokwrk-lang-groovy")
-
-  testImplementation "org.spockframework:spock-core"
+  @Override
+  TestPersonAssertion getPageContentAssertionInstance(Map pageElementMap) {
+    return new TestPersonAssertion(pageElementMap)
+  }
 }
