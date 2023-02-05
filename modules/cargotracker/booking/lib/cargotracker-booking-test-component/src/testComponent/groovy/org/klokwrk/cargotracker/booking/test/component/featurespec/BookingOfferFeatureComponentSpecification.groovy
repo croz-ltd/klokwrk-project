@@ -270,7 +270,7 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
         hasPageElementsCountGreaterThenOrEqual(this.countOf_createdBookingOffers_forStandardCustomer)
       }
       hasPageContentSizeGreaterThanOrEqual(this.countOf_createdBookingOffers_forStandardCustomer)
-      hasPageContentWithAllElementsThat {
+      hasPageContentWithAllItemsThat {
         hasCustomerTypeOfStandard()
         hasEventMetadataOfTheFirstEvent()
       }
@@ -299,7 +299,7 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
       isSuccessful()
       hasPageInfoOfFirstPageWithDefaults()
       hasPageContentSizeGreaterThanOrEqual(4)
-      hasPageContentWithAllElementsThat {
+      hasPageContentWithAllItemsThat {
         hasCustomerTypeOfStandard()
         hasOriginLocationOfRijeka()
         hasDestinationLocationCountryName("The United States of America")

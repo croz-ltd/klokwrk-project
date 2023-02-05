@@ -150,7 +150,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
     return this as SELF
   }
 
-  SELF hasPageContentWithAnyElementThat(
+  SELF hasPageContentWithAnyItemThat(
       @DelegatesTo(type = "PAGE_ITEM_ASSERTION", strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = FromString,
@@ -188,7 +188,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
     return this as SELF
   }
 
-  SELF hasPageContentWithAllElementsThat(
+  SELF hasPageContentWithAllItemsThat(
       @DelegatesTo(type = "PAGE_ITEM_ASSERTION", strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = FromString,
@@ -222,18 +222,18 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
     return this as SELF
   }
 
-  SELF hasPageContentWithFirstElementThat(
+  SELF hasPageContentWithFirstItemThat(
       @DelegatesTo(type = "PAGE_ITEM_ASSERTION", strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = FromString,
           options = "PAGE_ITEM_ASSERTION"
       ) Closure aClosure)
   {
-    hasPageContentWithElementAtIndexThat(0, aClosure)
+    hasPageContentWithItemAtIndexThat(0, aClosure)
     return this as SELF
   }
 
-  SELF hasPageContentWithElementAtIndexThat(
+  SELF hasPageContentWithItemAtIndexThat(
       Integer anIndex,
       @DelegatesTo(type = "PAGE_ITEM_ASSERTION", strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(

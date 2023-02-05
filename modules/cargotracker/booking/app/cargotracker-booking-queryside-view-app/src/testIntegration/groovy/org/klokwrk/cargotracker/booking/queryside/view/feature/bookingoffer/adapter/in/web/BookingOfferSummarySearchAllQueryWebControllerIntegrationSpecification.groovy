@@ -106,7 +106,7 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
       hasPageInfoThat {
         hasPageElementsCountGreaterThenOrEqual(5)
       }
-      hasPageContentWithFirstElementThat {
+      hasPageContentWithFirstItemThat {
         hasCustomerTypeOfStandard()
         hasOriginLocationOfRijeka()
         hasDestinationLocationName("Los Angeles")

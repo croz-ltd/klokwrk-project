@@ -108,7 +108,7 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
         hasPageElementsCount(Math.min(this.initialBookingOfferSummaryRecordsCount + 5, PageRequirement.PAGE_REQUIREMENT_SIZE_DEFAULT))
         hasTotalElementsCount(this.initialBookingOfferSummaryRecordsCount + 5)
       })
-      hasPageContentWithAllElementsThat({
+      hasPageContentWithAllItemsThat({
         hasCustomerTypeOfStandard()
       })
     }

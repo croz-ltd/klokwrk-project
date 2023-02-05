@@ -328,7 +328,7 @@ class ResponseContentPageablePayloadAssertionSpecification extends Specification
     TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_threePageElements)
 
     when:
-    assertion = assertion.hasPageContentWithAnyElementThat {
+    assertion = assertion.hasPageContentWithAnyItemThat {
       hasAge(2)
     }
 
@@ -341,7 +341,7 @@ class ResponseContentPageablePayloadAssertionSpecification extends Specification
     TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_threePageElements)
 
     when:
-    assertion.hasPageContentWithAnyElementThat {
+    assertion.hasPageContentWithAnyItemThat {
       hasAge(10)
     }
 
@@ -354,7 +354,7 @@ class ResponseContentPageablePayloadAssertionSpecification extends Specification
     TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMapParam)
 
     when:
-    assertion.hasPageContentWithAnyElementThat {
+    assertion.hasPageContentWithAnyItemThat {
     }
 
     then:
@@ -372,7 +372,7 @@ class ResponseContentPageablePayloadAssertionSpecification extends Specification
     TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_singlePageElement)
 
     when:
-    assertion = assertion.hasPageContentWithAllElementsThat {
+    assertion = assertion.hasPageContentWithAllItemsThat {
       hasAge(0)
     }
 
@@ -385,7 +385,7 @@ class ResponseContentPageablePayloadAssertionSpecification extends Specification
     TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_singlePageElement)
 
     when:
-    assertion.hasPageContentWithAllElementsThat {
+    assertion.hasPageContentWithAllItemsThat {
       hasAge(10)
     }
 
@@ -398,7 +398,7 @@ class ResponseContentPageablePayloadAssertionSpecification extends Specification
     TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMapParam)
 
     when:
-    assertion.hasPageContentWithAllElementsThat {
+    assertion.hasPageContentWithAllItemsThat {
     }
 
     then:
@@ -417,7 +417,7 @@ class ResponseContentPageablePayloadAssertionSpecification extends Specification
     TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_singlePageElement)
 
     when:
-    assertion = assertion.hasPageContentWithElementAtIndexThat(0) {
+    assertion = assertion.hasPageContentWithItemAtIndexThat(0) {
       hasAge(0)
     }
 
@@ -430,7 +430,7 @@ class ResponseContentPageablePayloadAssertionSpecification extends Specification
     TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_singlePageElement)
 
     when:
-    assertion.hasPageContentWithElementAtIndexThat(0) {
+    assertion.hasPageContentWithItemAtIndexThat(0) {
       hasAge(10)
     }
 
@@ -443,7 +443,7 @@ class ResponseContentPageablePayloadAssertionSpecification extends Specification
     TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMapParam)
 
     when:
-    assertion.hasPageContentWithElementAtIndexThat(0) {
+    assertion.hasPageContentWithItemAtIndexThat(0) {
     }
 
     then:
@@ -463,7 +463,7 @@ class ResponseContentPageablePayloadAssertionSpecification extends Specification
     TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_singlePageElement)
 
     when:
-    assertion = assertion.hasPageContentWithFirstElementThat {
+    assertion = assertion.hasPageContentWithFirstItemThat {
       hasAge(0)
     }
 
