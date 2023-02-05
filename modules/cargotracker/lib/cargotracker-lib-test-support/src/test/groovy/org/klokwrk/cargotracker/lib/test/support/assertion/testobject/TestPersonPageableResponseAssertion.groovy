@@ -21,8 +21,8 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.lib.test.support.assertion.PageablePayloadAssertion
 
 @CompileStatic
-class TestPageablePersonAssertion extends PageablePayloadAssertion<TestPageablePersonAssertion, TestPersonAssertion> {
-  TestPageablePersonAssertion(Map responseContentMap) {
+class TestPersonPageableResponseAssertion extends PageablePayloadAssertion<TestPersonPageableResponseAssertion, TestPersonAssertion> {
+  TestPersonPageableResponseAssertion(Map responseContentMap) {
     super(responseContentMap)
   }
 

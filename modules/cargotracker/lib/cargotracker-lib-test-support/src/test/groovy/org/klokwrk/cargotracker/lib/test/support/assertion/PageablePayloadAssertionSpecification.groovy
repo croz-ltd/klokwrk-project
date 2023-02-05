@@ -17,7 +17,7 @@
  */
 package org.klokwrk.cargotracker.lib.test.support.assertion
 
-import org.klokwrk.cargotracker.lib.test.support.assertion.testobject.TestPageablePersonAssertion
+import org.klokwrk.cargotracker.lib.test.support.assertion.testobject.TestPersonPageableResponseAssertion
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -97,7 +97,7 @@ class PageablePayloadAssertionSpecification extends Specification {
     ]
 
     when:
-    TestPageablePersonAssertion.assertResponseContent(responseContentMap)
+    TestPersonPageableResponseAssertion.assertResponseContent(responseContentMap)
 
     then:
     true
@@ -105,7 +105,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "assertResponseContent - should fail as expected"() {
     when:
-    TestPageablePersonAssertion.assertResponseContent(responseContentMapParam)
+    TestPersonPageableResponseAssertion.assertResponseContent(responseContentMapParam)
 
     then:
     thrown(AssertionError)
@@ -124,7 +124,7 @@ class PageablePayloadAssertionSpecification extends Specification {
     Map responseContentMap = [payload: [:]]
 
     when:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap)
 
     then:
     assertion
@@ -132,7 +132,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "constructor - should fail as expected"() {
     when:
-    new TestPageablePersonAssertion(responseContentMapParam)
+    new TestPersonPageableResponseAssertion(responseContentMapParam)
 
     then:
     thrown(AssertionError)
@@ -147,7 +147,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "isSuccessful - should work as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_singlePageElement)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap_populated_singlePageElement)
 
     when:
     assertion = assertion.isSuccessful()
@@ -158,7 +158,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "isSuccessful - should fail as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMapParam)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMapParam)
 
     when:
     assertion.isSuccessful()
@@ -177,7 +177,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "isSuccessfulAndEmpty - should work as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_empty)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap_empty)
 
     when:
     assertion = assertion.isSuccessfulAndEmpty()
@@ -188,7 +188,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "isSuccessfulAndEmpty - should fail as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMapParam)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMapParam)
 
     when:
     assertion.isSuccessfulAndEmpty()
@@ -208,7 +208,7 @@ class PageablePayloadAssertionSpecification extends Specification {
   void "isEmpty - should work as expected"() {
     given:
     Map responseContentMap = [payload: [:]]
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap)
 
     when:
     assertion = assertion.isEmpty()
@@ -220,7 +220,7 @@ class PageablePayloadAssertionSpecification extends Specification {
   void "isEmpty - should fail as expected"() {
     given:
     Map responseContentMap = [payload: [a: 1]]
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap)
 
     when:
     assertion.isEmpty()
@@ -231,7 +231,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageInfoThat - should work as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_singlePageElement)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap_populated_singlePageElement)
 
     when:
     assertion = assertion.hasPageInfoThat {
@@ -244,7 +244,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageInfoThat - should fail as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_singlePageElement)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap_populated_singlePageElement)
 
     when:
     assertion.hasPageInfoThat {
@@ -257,7 +257,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageInfoThat - should fail as expected at the time of closure dispatch"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMapParam)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMapParam)
 
     when:
     assertion.hasPageInfoThat {
@@ -275,7 +275,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageInfoOfFirstPageWithDefaults - should work as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_singlePageElement)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap_populated_singlePageElement)
 
     when:
     assertion = assertion.hasPageInfoOfFirstPageWithDefaults()
@@ -286,7 +286,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageInfoOfFirstPageWithDefaults - should fail as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_empty)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap_empty)
 
     when:
     assertion.hasPageInfoOfFirstPageWithDefaults()
@@ -297,7 +297,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageContentSizeGreaterThanOrEqual - should work as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_threePageElements)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap_populated_threePageElements)
 
     when:
     assertion = assertion.hasPageContentSizeGreaterThanOrEqual(pageContentSizeParam)
@@ -314,7 +314,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageContentSizeGreaterThanOrEqual - should fail as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_threePageElements)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap_populated_threePageElements)
 
     when:
     assertion.hasPageContentSizeGreaterThanOrEqual(4)
@@ -325,7 +325,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageContentWithAnyItemThat - should work as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_threePageElements)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap_populated_threePageElements)
 
     when:
     assertion = assertion.hasPageContentWithAnyItemThat {
@@ -338,7 +338,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageContentWithAnyItemThat - should fail as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_threePageElements)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap_populated_threePageElements)
 
     when:
     assertion.hasPageContentWithAnyItemThat {
@@ -351,7 +351,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageContentWithAnyItemThat - should fail as expected at the time of closure dispatch"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMapParam)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMapParam)
 
     when:
     assertion.hasPageContentWithAnyItemThat {
@@ -369,7 +369,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageContentWithAllItemsThat - should work as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_singlePageElement)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap_populated_singlePageElement)
 
     when:
     assertion = assertion.hasPageContentWithAllItemsThat {
@@ -382,7 +382,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageContentWithAllItemsThat - should fail as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_singlePageElement)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap_populated_singlePageElement)
 
     when:
     assertion.hasPageContentWithAllItemsThat {
@@ -395,7 +395,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageContentWithAllItemsThat - should fail as expected at the time of closure dispatch"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMapParam)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMapParam)
 
     when:
     assertion.hasPageContentWithAllItemsThat {
@@ -414,7 +414,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageContentWithItemAtIndexThat - should work as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_singlePageElement)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap_populated_singlePageElement)
 
     when:
     assertion = assertion.hasPageContentWithItemAtIndexThat(0) {
@@ -427,7 +427,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageContentWithItemAtIndexThat - should fail as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_singlePageElement)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap_populated_singlePageElement)
 
     when:
     assertion.hasPageContentWithItemAtIndexThat(0) {
@@ -440,7 +440,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageContentWithItemAtIndexThat - should fail as expected at the time of closure dispatch"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMapParam)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMapParam)
 
     when:
     assertion.hasPageContentWithItemAtIndexThat(0) {
@@ -460,7 +460,7 @@ class PageablePayloadAssertionSpecification extends Specification {
 
   void "hasPageContentWithFirstItemThat - should work as expected"() {
     given:
-    TestPageablePersonAssertion assertion = new TestPageablePersonAssertion(responseContentMap_populated_singlePageElement)
+    TestPersonPageableResponseAssertion assertion = new TestPersonPageableResponseAssertion(responseContentMap_populated_singlePageElement)
 
     when:
     assertion = assertion.hasPageContentWithFirstItemThat {
