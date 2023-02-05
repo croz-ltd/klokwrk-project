@@ -42,7 +42,7 @@ import static org.klokwrk.cargotracker.booking.test.component.test.util.BookingO
 import static org.klokwrk.cargotracker.booking.test.component.test.util.BookingOfferFeatureTestHelpers.createBookingOffer_failed
 import static org.klokwrk.cargotracker.booking.test.component.test.util.BookingOfferFeatureTestHelpers.createBookingOffer_succeeded
 import static org.klokwrk.cargotracker.booking.test.component.test.util.BookingOfferFeatureTestHelpers.makeCommandRequestBodyList_createBookingOffer
-import static org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentMetaDataAssertion.assertResponseContentHasMetaDataThat
+import static org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion.assertResponseContentHasMetaDataThat
 
 class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecification {
   @SuppressWarnings("CodeNarc.PropertyName")

@@ -44,7 +44,7 @@ import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingO
 import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindById_failed
 import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindById_failedNotFound
 import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindById_succeeded
-import static org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentMetaDataAssertion.assertResponseContentHasMetaDataThat
+import static org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion.assertResponseContentHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 

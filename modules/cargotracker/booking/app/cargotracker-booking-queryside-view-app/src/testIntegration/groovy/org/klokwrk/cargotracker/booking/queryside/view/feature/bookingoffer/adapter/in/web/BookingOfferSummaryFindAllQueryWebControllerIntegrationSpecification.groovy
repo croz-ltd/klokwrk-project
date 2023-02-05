@@ -43,7 +43,7 @@ import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoff
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.data.SortRequirementJsonFixtureBuilder.sortRequirement_default
 import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindAll_failed
 import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindAll_succeeded
-import static org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentMetaDataAssertion.assertResponseContentHasMetaDataThat
+import static org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion.assertResponseContentHasMetaDataThat
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
 @SuppressWarnings("GroovyAccessibility")
