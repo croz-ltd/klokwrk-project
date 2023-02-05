@@ -19,9 +19,9 @@ package org.klokwrk.cargotracker.lib.test.support.assertion
 
 import spock.lang.Specification
 
-import static org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentMetaDataAssertion.assertResponseContentHasMetaDataThat
+import static MetaDataAssertion.assertResponseHasMetaDataThat
 
-class ResponseContentMetaDataAssertionSpecification extends Specification {
+class MetaDataAssertionSpecification extends Specification {
   @SuppressWarnings("CodeNarc.PropertyName")
   static Map generalMap_info = [locale: "en", timestamp: "123", severity: "info"]
 
@@ -43,43 +43,43 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
     return mergedMap
   }
 
-  void "static assertResponseContentHasMetaDataThat - should work as expected"() {
+  void "static assertResponseHasMetaDataThat - should work as expected"() {
     given:
-    Map responseContentMap = [
+    Map responseMap = [
         metaData: [a: 1],
         payload: [a: 1]
     ]
 
     when:
-    ResponseContentMetaDataAssertion assertionInstance = assertResponseContentHasMetaDataThat(responseContentMap)
+    MetaDataAssertion assertionInstance = assertResponseHasMetaDataThat(responseMap)
 
     then:
     assertionInstance
 
     and:
     when:
-    assertionInstance = assertResponseContentHasMetaDataThat(responseContentMap, {})
+    assertionInstance = assertResponseHasMetaDataThat(responseMap, {})
 
     then:
     assertionInstance
   }
 
-  void "static assertResponseContentHasMetaDataThat - should fail as expected"() {
+  void "static assertResponseHasMetaDataThat - should fail as expected"() {
     when:
-    assertResponseContentHasMetaDataThat(responseContentMapParam)
+    assertResponseHasMetaDataThat(responseMapParam)
 
     then:
     thrown(AssertionError)
 
     and:
     when:
-    assertResponseContentHasMetaDataThat(responseContentMapParam, {})
+    assertResponseHasMetaDataThat(responseMapParam, {})
 
     then:
     thrown(AssertionError)
 
     where:
-    responseContentMapParam        | _
+    responseMapParam               | _
     [:]                            | _
     [a: 1, b: 1]                   | _
     [metaData: 1, b: 1]            | _
@@ -89,7 +89,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
 
   void "isSuccessful - should work as expected"() {
     given:
-    Map responseContentMap = [
+    Map responseMap = [
         metaData: [
             general: [
                 locale: "en",
@@ -104,7 +104,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
         payload: [a: 1]
     ]
 
-    ResponseContentMetaDataAssertion assertion = assertResponseContentHasMetaDataThat(responseContentMap)
+    MetaDataAssertion assertion = assertResponseHasMetaDataThat(responseMap)
 
     when:
     assertion = assertion.isSuccessful()
@@ -115,7 +115,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
 
   void "isSuccessful - should fail as expected"() {
     given:
-    ResponseContentMetaDataAssertion assertion = new ResponseContentMetaDataAssertion(responseContentMapParam)
+    MetaDataAssertion assertion = new MetaDataAssertion(responseMapParam)
 
     when:
     assertion.isSuccessful()
@@ -124,7 +124,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
     thrown(AssertionError)
 
     where:
-    responseContentMapParam                                            | _
+    responseMapParam                                                   | _
     null                                                               | _
     [:]                                                                | _
     [a: 1]                                                             | _
@@ -153,7 +153,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
 
   void "isViolationOfValidation - should work as expected"() {
     given:
-    Map responseContentMap = [
+    Map responseMap = [
         metaData: [
             general: [
                 locale: "en",
@@ -187,7 +187,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
         payload: [a: 1]
     ]
 
-    ResponseContentMetaDataAssertion assertion = assertResponseContentHasMetaDataThat(responseContentMap)
+    MetaDataAssertion assertion = assertResponseHasMetaDataThat(responseMap)
 
     when:
     assertion = assertion.isViolationOfValidation()
@@ -198,7 +198,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
 
   void "isViolationOfValidation - should fail as expected"() {
     given:
-    ResponseContentMetaDataAssertion assertion = new ResponseContentMetaDataAssertion(responseContentMapParam)
+    MetaDataAssertion assertion = new MetaDataAssertion(responseMapParam)
 
     when:
     assertion.isViolationOfValidation()
@@ -207,7 +207,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
     thrown(AssertionError)
 
     where:
-    responseContentMapParam                                                                                                                      | _
+    responseMapParam                                                                                                                             | _
     null                                                                                                                                         | _
     [:]                                                                                                                                          | _
     [a: 1]                                                                                                                                       | _
@@ -267,7 +267,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
 
   void "isViolationOfDomain_badRequest - should work as expected"() {
     given:
-    Map responseContentMap = [
+    Map responseMap = [
         metaData: [
             general: [
                 locale: "en",
@@ -287,7 +287,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
         payload: [a: 1]
     ]
 
-    ResponseContentMetaDataAssertion assertion = assertResponseContentHasMetaDataThat(responseContentMap)
+    MetaDataAssertion assertion = assertResponseHasMetaDataThat(responseMap)
 
     when:
     assertion = assertion.isViolationOfDomain_badRequest()
@@ -298,7 +298,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
 
   void "isViolationOfDomain_badRequest - should fail as expected"() {
     given:
-    ResponseContentMetaDataAssertion assertion = new ResponseContentMetaDataAssertion(responseContentMapParam)
+    MetaDataAssertion assertion = new MetaDataAssertion(responseMapParam)
 
     when:
     assertion.isViolationOfDomain_badRequest()
@@ -307,7 +307,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
     thrown(AssertionError)
 
     where:
-    responseContentMapParam                                                                                           | _
+    responseMapParam                                                                                                  | _
     null                                                                                                              | _
     [:]                                                                                                               | _
     [a: 1]                                                                                                            | _
@@ -347,7 +347,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
 
   void "isViolationOfDomain_notFound - should work as expected"() {
     given:
-    Map responseContentMap = [
+    Map responseMap = [
         metaData: [
             general: [
                 locale: "en",
@@ -367,7 +367,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
         payload: [a: 1]
     ]
 
-    ResponseContentMetaDataAssertion assertion = assertResponseContentHasMetaDataThat(responseContentMap)
+    MetaDataAssertion assertion = assertResponseHasMetaDataThat(responseMap)
 
     when:
     assertion = assertion.isViolationOfDomain_notFound()
@@ -378,7 +378,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
 
   void "isViolationOfDomain_notFound - should fail as expected"() {
     given:
-    ResponseContentMetaDataAssertion assertion = new ResponseContentMetaDataAssertion(responseContentMapParam)
+    MetaDataAssertion assertion = new MetaDataAssertion(responseMapParam)
 
     when:
     assertion.isViolationOfDomain_notFound()
@@ -387,7 +387,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
     thrown(AssertionError)
 
     where:
-    responseContentMapParam                                                                                           | _
+    responseMapParam                                                                                                  | _
     null                                                                                                              | _
     [:]                                                                                                               | _
     [a: 1]                                                                                                            | _
@@ -427,7 +427,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
 
   void "isViolationOfInfrastructureWeb_methodNotAllowed - should work as expected"() {
     given:
-    Map responseContentMap = [
+    Map responseMap = [
         metaData: [
             general: [
                 locale: "en",
@@ -448,7 +448,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
         payload: [a: 1]
     ]
 
-    ResponseContentMetaDataAssertion assertion = assertResponseContentHasMetaDataThat(responseContentMap)
+    MetaDataAssertion assertion = assertResponseHasMetaDataThat(responseMap)
 
     when:
     assertion = assertion.isViolationOfInfrastructureWeb_methodNotAllowed()
@@ -459,7 +459,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
 
   void "isViolationOfInfrastructureWeb_methodNotAllowed - should fail as expected"() {
     given:
-    ResponseContentMetaDataAssertion assertion = new ResponseContentMetaDataAssertion(responseContentMapParam)
+    MetaDataAssertion assertion = new MetaDataAssertion(responseMapParam)
 
     when:
     assertion.isViolationOfInfrastructureWeb_methodNotAllowed()
@@ -468,7 +468,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
     thrown(AssertionError)
 
     where:
-    responseContentMapParam                                                                                                                     | _
+    responseMapParam                                                                                                                            | _
     null                                                                                                                                        | _
     [:]                                                                                                                                         | _
     [a: 1]                                                                                                                                      | _
@@ -516,7 +516,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
         ]
     ]
 
-    ResponseContentMetaDataAssertion assertion = new ResponseContentMetaDataAssertion(metaDataMap)
+    MetaDataAssertion assertion = new MetaDataAssertion(metaDataMap)
 
     when:
     assertion = assertion.has_general_locale("en")
@@ -533,7 +533,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
         ]
     ]
 
-    ResponseContentMetaDataAssertion assertion = new ResponseContentMetaDataAssertion(metaDataMap)
+    MetaDataAssertion assertion = new MetaDataAssertion(metaDataMap)
 
     when:
     assertion.has_general_locale("hr")
@@ -550,7 +550,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
         ]
     ]
 
-    ResponseContentMetaDataAssertion assertion = new ResponseContentMetaDataAssertion(metaDataMap)
+    MetaDataAssertion assertion = new MetaDataAssertion(metaDataMap)
 
     when:
     assertion = assertion.has_violation_message("a message")
@@ -567,7 +567,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
         ]
     ]
 
-    ResponseContentMetaDataAssertion assertion = new ResponseContentMetaDataAssertion(metaDataMap)
+    MetaDataAssertion assertion = new MetaDataAssertion(metaDataMap)
 
     when:
     assertion.has_violation_message("invalid expected message")
@@ -586,7 +586,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
         ]
     ]
 
-    ResponseContentMetaDataAssertion assertion = new ResponseContentMetaDataAssertion(metaDataMap)
+    MetaDataAssertion assertion = new MetaDataAssertion(metaDataMap)
 
     when:
     assertion = assertion.has_violation_validationReport_constraintViolationsOfSize(3)
@@ -597,7 +597,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
 
   void "has_violation_validationReport_constraintViolationsOfSize - should fail as expected"() {
     given:
-    ResponseContentMetaDataAssertion assertion = new ResponseContentMetaDataAssertion(metaDataMapParam)
+    MetaDataAssertion assertion = new MetaDataAssertion(metaDataMapParam)
 
     when:
     assertion.has_violation_validationReport_constraintViolationsOfSize(2)
@@ -632,7 +632,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
         ]
     ]
 
-    ResponseContentMetaDataAssertion assertion = new ResponseContentMetaDataAssertion(metaDataMap)
+    MetaDataAssertion assertion = new MetaDataAssertion(metaDataMap)
 
     when:
     assertion = assertion.has_violation_validationReport_constraintViolationsWithAnyElementThat {
@@ -671,7 +671,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
         ]
     ]
 
-    ResponseContentMetaDataAssertion assertion = new ResponseContentMetaDataAssertion(metaDataMap)
+    MetaDataAssertion assertion = new MetaDataAssertion(metaDataMap)
 
     when:
     assertion.has_violation_validationReport_constraintViolationsWithAnyElementThat {
@@ -715,7 +715,7 @@ class ResponseContentMetaDataAssertionSpecification extends Specification {
 
   void "has_violation_validationReport_constraintViolationsWithAnyElementThat - should fail as expected at the time of closure dispatch"() {
     given:
-    ResponseContentMetaDataAssertion assertion = new ResponseContentMetaDataAssertion(metaDataMapParam)
+    MetaDataAssertion assertion = new MetaDataAssertion(metaDataMapParam)
 
     when:
     assertion.has_violation_validationReport_constraintViolationsWithAnyElementThat {

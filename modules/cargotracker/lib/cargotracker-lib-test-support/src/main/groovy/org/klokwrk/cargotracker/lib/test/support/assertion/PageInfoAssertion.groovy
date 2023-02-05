@@ -24,19 +24,19 @@ import groovy.transform.stc.SimpleType
 /**
  * The class whose instances are responsible for asserting {@code payload.pageInfo} part in the response map.
  * <p/>
- * For more details, take a look at {@link ResponseContentPageablePayloadAssertion}.
+ * For more details, take a look at {@link PageablePayloadAssertion}.
  *
- * @see ResponseContentPageablePayloadAssertion
+ * @see PageablePayloadAssertion
  */
 @CompileStatic
-class ResponseContentPayloadPageInfoAssertion {
+class PageInfoAssertion {
   private final Map pageInfoMap
 
-  ResponseContentPayloadPageInfoAssertion(Map pageInfoMap) {
+  PageInfoAssertion(Map pageInfoMap) {
     this.pageInfoMap = pageInfoMap
   }
 
-  ResponseContentPayloadPageInfoAssertion isSuccessful() {
+  PageInfoAssertion isSuccessful() {
     assert pageInfoMap instanceof Map
     pageInfoMap.with {
       assert size() == 8
@@ -87,7 +87,7 @@ class ResponseContentPayloadPageInfoAssertion {
     return this
   }
 
-  ResponseContentPayloadPageInfoAssertion isSuccessfulForEmptyPageContent() {
+  PageInfoAssertion isSuccessfulForEmptyPageContent() {
     assert pageInfoMap instanceof Map
     pageInfoMap.with {
       assert size() == 8
@@ -126,7 +126,7 @@ class ResponseContentPayloadPageInfoAssertion {
     return this
   }
 
-  ResponseContentPayloadPageInfoAssertion isFirstPageWithDefaults() {
+  PageInfoAssertion isFirstPageWithDefaults() {
     assert pageInfoMap instanceof Map
     pageInfoMap.with {
       assert size() == 8
@@ -168,41 +168,41 @@ class ResponseContentPayloadPageInfoAssertion {
     return this
   }
 
-  ResponseContentPayloadPageInfoAssertion hasPageOrdinal(Long expectedPageOrdinal) {
+  PageInfoAssertion hasPageOrdinal(Long expectedPageOrdinal) {
     assert pageInfoMap.pageOrdinal == expectedPageOrdinal
     return this
   }
 
-  ResponseContentPayloadPageInfoAssertion hasPageElementsCount(Long expectedPageElementsCount) {
+  PageInfoAssertion hasPageElementsCount(Long expectedPageElementsCount) {
     assert pageInfoMap.pageElementsCount == expectedPageElementsCount
     return this
   }
 
-  ResponseContentPayloadPageInfoAssertion hasPageElementsCountGreaterThenOrEqual(Long comparablePageElementsCount) {
+  PageInfoAssertion hasPageElementsCountGreaterThenOrEqual(Long comparablePageElementsCount) {
     assert (pageInfoMap.pageElementsCount as Long) >= comparablePageElementsCount
     return this
   }
 
-  ResponseContentPayloadPageInfoAssertion hasTotalElementsCount(Long expectedTotalElementsCount) {
+  PageInfoAssertion hasTotalElementsCount(Long expectedTotalElementsCount) {
     assert pageInfoMap.totalElementsCount == expectedTotalElementsCount
     return this
   }
 
-  ResponseContentPayloadPageInfoAssertion hasTotalElementsCountGreaterThanOrEqual(Long comparableTotalElementsCount) {
+  PageInfoAssertion hasTotalElementsCountGreaterThanOrEqual(Long comparableTotalElementsCount) {
     assert (pageInfoMap.totalElementsCount as Long) >= comparableTotalElementsCount
     return this
   }
 
-  ResponseContentPayloadPageInfoAssertion hasFirstFlagOf(Boolean expectedFirstFlag) {
+  PageInfoAssertion hasFirstFlagOf(Boolean expectedFirstFlag) {
     assert pageInfoMap.first == expectedFirstFlag
     return this
   }
 
-  ResponseContentPayloadPageInfoAssertion hasRequestedPageRequirementThat(
+  PageInfoAssertion hasRequestedPageRequirementThat(
       @DelegatesTo(value = RequestedPageRequirementAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
-          options = 'org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPayloadPageInfoAssertion$RequestedPageRequirementAssertion'
+          options = 'org.klokwrk.cargotracker.lib.test.support.assertion.PageInfoAssertion$RequestedPageRequirementAssertion'
       ) Closure aClosure)
   {
     Object requestedPageRequirementMap = pageInfoMap?.requestedPageRequirement
@@ -216,23 +216,23 @@ class ResponseContentPayloadPageInfoAssertion {
     return this
   }
 
-  ResponseContentPayloadPageInfoAssertion hasRequestedSortRequirementListWithFirstElementThat(
+  PageInfoAssertion hasRequestedSortRequirementListWithFirstElementThat(
       @DelegatesTo(value = RequestedSortRequirementAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
-          options = 'org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPayloadPageInfoAssertion$RequestedSortRequirementAssertion'
+          options = 'org.klokwrk.cargotracker.lib.test.support.assertion.PageInfoAssertion$RequestedSortRequirementAssertion'
       ) Closure aClosure)
   {
     hasRequestedSortRequirementListWithElementAtIndexThat(0, aClosure)
     return this
   }
 
-  ResponseContentPayloadPageInfoAssertion hasRequestedSortRequirementListWithElementAtIndexThat(
+  PageInfoAssertion hasRequestedSortRequirementListWithElementAtIndexThat(
       Integer anIndex,
       @DelegatesTo(value = RequestedSortRequirementAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
-          options = 'org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPayloadPageInfoAssertion$RequestedSortRequirementAssertion'
+          options = 'org.klokwrk.cargotracker.lib.test.support.assertion.PageInfoAssertion$RequestedSortRequirementAssertion'
       ) Closure aClosure)
   {
     Object requestedSortRequirementMapAsObject = pageInfoMap?.requestedSortRequirementList

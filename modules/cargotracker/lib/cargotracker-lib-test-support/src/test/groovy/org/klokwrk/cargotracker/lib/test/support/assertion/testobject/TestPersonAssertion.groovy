@@ -18,10 +18,10 @@
 package org.klokwrk.cargotracker.lib.test.support.assertion.testobject
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.test.support.assertion.PayloadPageContentAssertionable
+import org.klokwrk.cargotracker.lib.test.support.assertion.PageItemAssertionable
 
 @CompileStatic
-class TestPersonAssertion implements PayloadPageContentAssertionable {
+class TestPersonAssertion implements PageItemAssertionable {
   private final Map pageElementMap
 
   TestPersonAssertion(Map pageElementMap) {

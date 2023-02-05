@@ -23,12 +23,12 @@ import groovy.transform.stc.SimpleType
 import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 
 @CompileStatic
-class ResponseContentMetaDataAssertion {
+class MetaDataAssertion {
   /**
    * Entry point static assertion method for fluent-style top-level API.
    */
-  static ResponseContentMetaDataAssertion assertResponseContentHasMetaDataThat(Map responseContentMap) {
-    responseContentMap.with {
+  static MetaDataAssertion assertResponseHasMetaDataThat(Map responseMap) {
+    responseMap.with {
       assert size() == 2
       assert metaData
       assert metaData instanceof Map
@@ -36,21 +36,21 @@ class ResponseContentMetaDataAssertion {
       assert payload instanceof Map
     }
 
-    return new ResponseContentMetaDataAssertion(responseContentMap.metaData as Map)
+    return new MetaDataAssertion(responseMap.metaData as Map)
   }
 
   /**
    * Entry point static assertion method for closure-style top-level API.
    */
-  static ResponseContentMetaDataAssertion assertResponseContentHasMetaDataThat(
-      Map responseContentMap,
-      @DelegatesTo(value = ResponseContentMetaDataAssertion, strategy = Closure.DELEGATE_FIRST)
+  static MetaDataAssertion assertResponseHasMetaDataThat(
+      Map responseMap,
+      @DelegatesTo(value = MetaDataAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
-          options = "org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentMetaDataAssertion"
+          options = "org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion"
       ) Closure aClosure)
   {
-    ResponseContentMetaDataAssertion metaDataAssertion = assertResponseContentHasMetaDataThat(responseContentMap)
+    MetaDataAssertion metaDataAssertion = assertResponseHasMetaDataThat(responseMap)
     aClosure.resolveStrategy = Closure.DELEGATE_FIRST
     aClosure.delegate = metaDataAssertion
     aClosure.call(metaDataAssertion)
@@ -60,11 +60,11 @@ class ResponseContentMetaDataAssertion {
 
   private final Map metaDataMap
 
-  ResponseContentMetaDataAssertion(Map metaDataMap) {
+  MetaDataAssertion(Map metaDataMap) {
     this.metaDataMap = metaDataMap
   }
 
-  ResponseContentMetaDataAssertion isSuccessful() {
+  MetaDataAssertion isSuccessful() {
     assert metaDataMap instanceof Map
     metaDataMap.with {
       assert size() == 2
@@ -90,7 +90,7 @@ class ResponseContentMetaDataAssertion {
     return this
   }
 
-  ResponseContentMetaDataAssertion isViolationOfValidation() {
+  MetaDataAssertion isViolationOfValidation() {
     assert metaDataMap instanceof Map
     metaDataMap.with {
       assert size() == 3
@@ -146,7 +146,7 @@ class ResponseContentMetaDataAssertion {
     return this
   }
 
-  ResponseContentMetaDataAssertion isViolationOfDomain_badRequest() {
+  MetaDataAssertion isViolationOfDomain_badRequest() {
     assert metaDataMap instanceof Map
     metaDataMap.with {
       assert size() == 3
@@ -178,7 +178,7 @@ class ResponseContentMetaDataAssertion {
     return this
   }
 
-  ResponseContentMetaDataAssertion isViolationOfDomain_notFound() {
+  MetaDataAssertion isViolationOfDomain_notFound() {
     assert metaDataMap instanceof Map
     metaDataMap.with {
       assert size() == 3
@@ -210,7 +210,7 @@ class ResponseContentMetaDataAssertion {
     return this
   }
 
-  ResponseContentMetaDataAssertion isViolationOfInfrastructureWeb_methodNotAllowed() {
+  MetaDataAssertion isViolationOfInfrastructureWeb_methodNotAllowed() {
     assert metaDataMap instanceof Map
     metaDataMap.with {
       assert size() == 3
@@ -243,7 +243,7 @@ class ResponseContentMetaDataAssertion {
     return this
   }
 
-  ResponseContentMetaDataAssertion has_general_locale(String expectedLocale) {
+  MetaDataAssertion has_general_locale(String expectedLocale) {
     (metaDataMap.general as Map).with {
       assert locale == expectedLocale
     }
@@ -251,7 +251,7 @@ class ResponseContentMetaDataAssertion {
     return this
   }
 
-  ResponseContentMetaDataAssertion has_violation_message(String expectedMessage) {
+  MetaDataAssertion has_violation_message(String expectedMessage) {
     (metaDataMap.violation as Map).with {
       assert message == expectedMessage
     }
@@ -259,18 +259,18 @@ class ResponseContentMetaDataAssertion {
     return this
   }
 
-  ResponseContentMetaDataAssertion has_violation_validationReport_constraintViolationsOfSize(Integer expectedSize) {
+  MetaDataAssertion has_violation_validationReport_constraintViolationsOfSize(Integer expectedSize) {
     List<Map> constraintViolations = ((metaDataMap?.violation as Map)?.validationReport as Map)?.constraintViolations as List<Map>
     assert constraintViolations != null
     assert constraintViolations.size() == expectedSize
     return this
   }
 
-  ResponseContentMetaDataAssertion has_violation_validationReport_constraintViolationsWithAnyElementThat(
+  MetaDataAssertion has_violation_validationReport_constraintViolationsWithAnyElementThat(
       @DelegatesTo(value = ConstraintViolationAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
-          options = 'org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentMetaDataAssertion$ConstraintViolationAssertion'
+          options = 'org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion$ConstraintViolationAssertion'
       ) Closure aClosure)
   {
     List<Map> constraintViolations = ((metaDataMap?.violation as Map)?.validationReport as Map)?.constraintViolations as List<Map>

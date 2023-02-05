@@ -18,16 +18,16 @@
 package org.klokwrk.cargotracker.lib.test.support.assertion.testobject
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPageablePayloadAssertion
+import org.klokwrk.cargotracker.lib.test.support.assertion.PageablePayloadAssertion
 
 @CompileStatic
-class TestPageablePersonAssertion extends ResponseContentPageablePayloadAssertion<TestPageablePersonAssertion, TestPersonAssertion> {
-  TestPageablePersonAssertion(Map responseContentMap) {
+class TestPersonPageableResponseAssertion extends PageablePayloadAssertion<TestPersonPageableResponseAssertion, TestPersonAssertion> {
+  TestPersonPageableResponseAssertion(Map responseContentMap) {
     super(responseContentMap)
   }
 
   @Override
-  TestPersonAssertion getPageContentAssertionInstance(Map pageElementMap) {
-    return new TestPersonAssertion(pageElementMap)
+  TestPersonAssertion getPageItemAssertionInstance(Map pageItemMap) {
+    return new TestPersonAssertion(pageItemMap)
   }
 }

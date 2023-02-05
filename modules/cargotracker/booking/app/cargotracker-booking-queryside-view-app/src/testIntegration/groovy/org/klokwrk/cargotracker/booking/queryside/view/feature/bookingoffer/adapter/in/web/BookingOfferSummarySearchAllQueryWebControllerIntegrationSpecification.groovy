@@ -34,13 +34,13 @@ import spock.lang.Shared
 import javax.sql.DataSource
 import java.nio.charset.Charset
 
-import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseContentHasPageablePayloadThat
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseHasPageablePayloadThat
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder.bookingOfferSummarySearchAllQueryRequest_originOfRijeka
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder.bookingOfferSummarySearchAllQueryRequest_standardCustomer
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.data.SortRequirementJsonFixtureBuilder.sortRequirement_default
 import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummarySearchAll_failed
 import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummarySearchAll_succeeded
-import static org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentMetaDataAssertion.assertResponseContentHasMetaDataThat
+import static org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion.assertResponseHasMetaDataThat
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
 @SuppressWarnings("GroovyAccessibility")
@@ -84,7 +84,7 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
 
   void "should work for search request with default paging and sorting"() {
     when:
-    Map responseContentMap = bookingOfferSummarySearchAll_succeeded(
+    Map responseMap = bookingOfferSummarySearchAll_succeeded(
         bookingOfferSummarySearchAllQueryRequest_originOfRijeka()
             .totalCommodityWeightFromIncluding(5_000.kg)
             .totalCommodityWeightToIncluding(50_000.kg)
@@ -95,18 +95,18 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
 
     then:
     // Here we are using closure-style top-level API.
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isSuccessful()
       has_general_locale(localeStringParam)
     }
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap) {
+    assertResponseHasPageablePayloadThat(responseMap) {
       isSuccessful()
       hasPageInfoOfFirstPageWithDefaults()
       hasPageInfoThat {
         hasPageElementsCountGreaterThenOrEqual(5)
       }
-      hasPageContentWithFirstElementThat {
+      hasPageContentWithFirstItemThat {
         hasCustomerTypeOfStandard()
         hasOriginLocationOfRijeka()
         hasDestinationLocationName("Los Angeles")
@@ -124,7 +124,7 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
 
   void "should work for search request with default paging and sorting but with empty page content"() {
     when:
-    Map responseContentMap = bookingOfferSummarySearchAll_succeeded(
+    Map responseMap = bookingOfferSummarySearchAll_succeeded(
         bookingOfferSummarySearchAllQueryRequest_standardCustomer()
             .userIdentifier("platinum-customer@cargotracker.com")
             .buildAsJsonString(),
@@ -134,11 +134,11 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
 
     then:
     // Here we are using fluent-style top-level API.
-    assertResponseContentHasMetaDataThat(responseContentMap)
+    assertResponseHasMetaDataThat(responseMap)
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap)
+    assertResponseHasPageablePayloadThat(responseMap)
         .isSuccessfulAndEmpty()
 
     where:
@@ -149,7 +149,7 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
 
   void "should fail for invalid property name in sort requirements"() {
     when:
-    Map responseContentMap = bookingOfferSummarySearchAll_failed(
+    Map responseMap = bookingOfferSummarySearchAll_failed(
         bookingOfferSummarySearchAllQueryRequest_standardCustomer()
             .sortRequirementList([sortRequirement_default().propertyName("nonExistingProperty")])
             .buildAsJsonString(),
@@ -158,13 +158,13 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isViolationOfDomain_badRequest()
       has_general_locale(localeStringParam)
       has_violation_message(messageParam)
     }
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap)
+    assertResponseHasPageablePayloadThat(responseMap)
         .isEmpty()
 
     where:
