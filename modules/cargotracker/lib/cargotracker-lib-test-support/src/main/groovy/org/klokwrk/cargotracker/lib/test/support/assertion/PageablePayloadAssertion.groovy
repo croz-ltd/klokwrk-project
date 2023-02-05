@@ -34,7 +34,7 @@ import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
  *   ],
  *   payload:[
  *     pageInfo:[
- *       // pageInfo's keys and values assertable by ResponseContentPayloadPageInfoAssertion
+ *       // pageInfo's keys and values assertable by PageInfoAssertion
  *     ],
  *     pageContent: [ // pageContent is a list of maps
  *       [
@@ -48,7 +48,7 @@ import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
  * </pre>
  *
  * This class is defines general structures and rules (implemented as methods) for asserting {@code payload.pageInfo} and {@code payload.pageContent}. While {@code payload.pageInfo} asserting is
- * delegated to {@link ResponseContentPayloadPageInfoAssertion} instances, individual instances of {@code payload.pageContent} are asserted by {@code PAGE_ITEM_ASSERTION} type.
+ * delegated to {@link PageInfoAssertion} instances, individual instances of {@code payload.pageContent} are asserted by {@code PAGE_ITEM_ASSERTION} type.
  * <p/>
  * Therefore, any concrete class extending this one, has to provide {@code PAGE_ITEM_ASSERTION} type via generic declaration, where {@code PAGE_ITEM_ASSERTION} instances are then responsible
  * for asserting the details of each item in {@code payload.pageContent}.
@@ -87,7 +87,7 @@ abstract class PageablePayloadAssertion<SELF extends PageablePayloadAssertion<SE
       assert pageContent instanceof List
       assert !(pageContent as List).isEmpty()
 
-      new ResponseContentPayloadPageInfoAssertion(pageInfo as Map).with {
+      new PageInfoAssertion(pageInfo as Map).with {
         isSuccessful()
       }
 
@@ -109,7 +109,7 @@ abstract class PageablePayloadAssertion<SELF extends PageablePayloadAssertion<SE
       assert (pageContent as List).isEmpty()
     }
 
-    new ResponseContentPayloadPageInfoAssertion(payloadMap.pageInfo as Map).with {
+    new PageInfoAssertion(payloadMap.pageInfo as Map).with {
       isSuccessfulForEmptyPageContent()
     }
 
@@ -122,16 +122,16 @@ abstract class PageablePayloadAssertion<SELF extends PageablePayloadAssertion<SE
   }
 
   SELF hasPageInfoThat(
-      @DelegatesTo(value = ResponseContentPayloadPageInfoAssertion, strategy = Closure.DELEGATE_FIRST)
+      @DelegatesTo(value = PageInfoAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
-          options = "org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPayloadPageInfoAssertion"
+          options = "org.klokwrk.cargotracker.lib.test.support.assertion.PageInfoAssertion"
       ) Closure aClosure)
   {
     Object pageInfoMap = payloadMap.pageInfo
     assert pageInfoMap instanceof Map
 
-    ResponseContentPayloadPageInfoAssertion pageInfoAssertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap as Map)
+    PageInfoAssertion pageInfoAssertion = new PageInfoAssertion(pageInfoMap as Map)
     aClosure.resolveStrategy = Closure.DELEGATE_FIRST
     aClosure.delegate = pageInfoAssertion
     aClosure.call(pageInfoAssertion)
@@ -140,7 +140,7 @@ abstract class PageablePayloadAssertion<SELF extends PageablePayloadAssertion<SE
   }
 
   SELF hasPageInfoOfFirstPageWithDefaults() {
-    ResponseContentPayloadPageInfoAssertion pageInfoAssertion = new ResponseContentPayloadPageInfoAssertion(payloadMap.pageInfo as Map)
+    PageInfoAssertion pageInfoAssertion = new PageInfoAssertion(payloadMap.pageInfo as Map)
     pageInfoAssertion.isFirstPageWithDefaults()
     return this as SELF
   }

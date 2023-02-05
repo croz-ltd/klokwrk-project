@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.lib.test.support.assertion
 
 import spock.lang.Specification
 
-class ResponseContentPayloadPageInfoAssertionSpecification extends Specification {
+class PageInfoAssertionSpecification extends Specification {
   static Map mergeRequestedPageRequirementMap(Object requestedPageRequirementMap) {
     Map mergedMap = [
         pageOrdinal: 0, pageElementsCount: 1, first: true, last: true, totalPagesCount: 1, totalElementsCount: 1,
@@ -95,7 +95,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
         ]
     ]
 
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion = assertion.isSuccessful()
@@ -111,7 +111,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
 
   void "isSuccessful - should fail as expected"() {
     given:
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMapParam)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMapParam)
 
     when:
     assertion.isSuccessful()
@@ -185,7 +185,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
         ]
     ]
 
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion = assertion.isSuccessfulForEmptyPageContent()
@@ -201,7 +201,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
 
   void "isSuccessfulForEmptyPageContent - should fail as expected"() {
     given:
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMapParam)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMapParam)
 
     when:
     assertion.isSuccessfulForEmptyPageContent()
@@ -274,7 +274,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
         ]
     ]
 
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion = assertion.isFirstPageWithDefaults()
@@ -285,7 +285,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
 
   void "isFirstPageWithDefaults - should fail as expected"() {
     given:
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMapParam)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMapParam)
 
     when:
     assertion.isFirstPageWithDefaults()
@@ -348,7 +348,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
   void "hasPageOrdinal - should work as expected"() {
     given:
     Map pageInfoMap = [pageOrdinal: 1]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion = assertion.hasPageOrdinal(1)
@@ -360,7 +360,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
   void "hasPageOrdinal - should fail as expected"() {
     given:
     Map pageInfoMap = [pageOrdinal: 1]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion.hasPageOrdinal(10)
@@ -372,7 +372,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
   void "hasPageElementsCount - should work as expected"() {
     given:
     Map pageInfoMap = [pageElementsCount: 1]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion = assertion.hasPageElementsCount(1)
@@ -384,7 +384,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
   void "hasPageElementsCount - should fail as expected"() {
     given:
     Map pageInfoMap = [pageElementsCount: 1]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion.hasPageElementsCount(10)
@@ -396,7 +396,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
   void "hasPageElementsCountGreaterThenOrEqual - should work as expected"() {
     given:
     Map pageInfoMap = [pageElementsCount: 1]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion = assertion.hasPageElementsCountGreaterThenOrEqual(pageElementsCountParam)
@@ -413,7 +413,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
   void "hasPageElementsCountGreaterThenOrEqual - should fail as expected"() {
     given:
     Map pageInfoMap = [pageElementsCount: 1]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion.hasPageElementsCountGreaterThenOrEqual(2)
@@ -425,7 +425,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
   void "hasTotalElementsCount - should work as expected"() {
     given:
     Map pageInfoMap = [totalElementsCount: 1]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion = assertion.hasTotalElementsCount(1)
@@ -437,7 +437,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
   void "hasTotalElementsCount - should fail as expected"() {
     given:
     Map pageInfoMap = [totalElementsCount: 1]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion.hasTotalElementsCount(10)
@@ -449,7 +449,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
   void "hasTotalElementsCountGreaterThanOrEqual - should work as expected"() {
     given:
     Map pageInfoMap = [totalElementsCount: 1]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion = assertion.hasTotalElementsCountGreaterThanOrEqual(pageElementsCountParam)
@@ -466,7 +466,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
   void "hasTotalElementsCountGreaterThanOrEqual - should fail as expected"() {
     given:
     Map pageInfoMap = [totalElementsCount: 1]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion.hasTotalElementsCountGreaterThanOrEqual(2)
@@ -478,7 +478,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
   void "hasFirstFlagOf - should work as expected"() {
     given:
     Map pageInfoMap = [first: firstParam]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion = assertion.hasFirstFlagOf(firstParam)
@@ -495,7 +495,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
   void "hasFirstFlagOf - should fail as expected"() {
     given:
     Map pageInfoMap = [first: firstParam]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion.hasFirstFlagOf(!firstParam)
@@ -517,7 +517,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
             size: 1
         ]
     ]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion = assertion.hasRequestedPageRequirementThat {
@@ -537,7 +537,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
             size: 1
         ]
     ]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion.hasRequestedPageRequirementThat {
@@ -559,7 +559,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
 
   void "hasRequestedPageRequirementThat - should fail as expected at the time of closure dispatch"() {
     given:
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMapParam)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMapParam)
 
     when:
     assertion.hasRequestedPageRequirementThat {
@@ -586,7 +586,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
             ]
         ]
     ]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion = assertion.hasRequestedSortRequirementListWithElementAtIndexThat(0) {
@@ -608,7 +608,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
             ]
         ]
     ]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion.hasRequestedSortRequirementListWithElementAtIndexThat(0) {
@@ -630,7 +630,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
 
   void "hasRequestedSortRequirementListWithElementAtIndexThat - should fail as expected at the time of closure dispatch"() {
     given:
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMapParam)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMapParam)
 
     when:
     assertion.hasRequestedSortRequirementListWithElementAtIndexThat(0) {
@@ -659,7 +659,7 @@ class ResponseContentPayloadPageInfoAssertionSpecification extends Specification
             ]
         ]
     ]
-    ResponseContentPayloadPageInfoAssertion assertion = new ResponseContentPayloadPageInfoAssertion(pageInfoMap)
+    PageInfoAssertion assertion = new PageInfoAssertion(pageInfoMap)
 
     when:
     assertion = assertion.hasRequestedSortRequirementListWithFirstElementThat {
