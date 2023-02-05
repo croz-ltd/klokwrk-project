@@ -69,7 +69,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
     }
   }
 
-  abstract PAGE_ITEM_ASSERTION getPageContentAssertionInstance(Map pageContentElementPayloadMap)
+  abstract PAGE_ITEM_ASSERTION getPageItemAssertionInstance(Map pageItemMap)
 
   @SuppressWarnings("GrFinalVariableAccess")
   protected final Map payloadMap
@@ -93,7 +93,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
 
       (pageContent as List<Map>).with {
         it.each {
-          getPageContentAssertionInstance(it).isSuccessful()
+          getPageItemAssertionInstance(it).isSuccessful()
         }
       }
     }
@@ -168,7 +168,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
     aClosure.resolveStrategy = Closure.DELEGATE_FIRST
 
     boolean isAnyItemFound = pageContentList.any({ Map pageItemMap ->
-      PAGE_ITEM_ASSERTION pageItemAssertion = getPageContentAssertionInstance(pageItemMap)
+      PAGE_ITEM_ASSERTION pageItemAssertion = getPageItemAssertionInstance(pageItemMap)
 
       aClosure.delegate = pageItemAssertion
       try {
@@ -205,7 +205,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
     }
 
     pageContentList.eachWithIndex({ Map pageItemMap, int anIndex ->
-      PAGE_ITEM_ASSERTION pageItemAssertion = getPageContentAssertionInstance(pageItemMap)
+      PAGE_ITEM_ASSERTION pageItemAssertion = getPageItemAssertionInstance(pageItemMap)
 
       aClosure.delegate = pageItemAssertion
       //noinspection UnnecessaryQualifiedReference
@@ -248,7 +248,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
     assert !pageContentList.isEmpty()
     assert pageContentList[anIndex] instanceof Map
 
-    PAGE_ITEM_ASSERTION pageItemAssertion = getPageContentAssertionInstance(pageContentList[anIndex])
+    PAGE_ITEM_ASSERTION pageItemAssertion = getPageItemAssertionInstance(pageContentList[anIndex])
     aClosure.resolveStrategy = Closure.DELEGATE_FIRST
     aClosure.delegate = pageItemAssertion
     aClosure.call(pageItemAssertion)

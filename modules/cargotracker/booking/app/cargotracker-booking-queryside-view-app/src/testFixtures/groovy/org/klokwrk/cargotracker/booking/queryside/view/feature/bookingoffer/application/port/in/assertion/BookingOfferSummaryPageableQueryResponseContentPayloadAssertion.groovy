@@ -70,7 +70,7 @@ class BookingOfferSummaryPageableQueryResponseContentPayloadAssertion
   }
 
   @Override
-  BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion getPageContentAssertionInstance(Map pageContentElementPayloadMap) {
-    return new BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion(pageContentElementPayloadMap)
+  BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion getPageItemAssertionInstance(Map pageItemMap) {
+    return new BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion(pageItemMap)
   }
 }

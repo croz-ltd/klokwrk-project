@@ -27,7 +27,7 @@ class TestPageablePersonAssertion extends ResponseContentPageablePayloadAssertio
   }
 
   @Override
-  TestPersonAssertion getPageContentAssertionInstance(Map pageElementMap) {
-    return new TestPersonAssertion(pageElementMap)
+  TestPersonAssertion getPageItemAssertionInstance(Map pageItemMap) {
+    return new TestPersonAssertion(pageItemMap)
   }
 }
