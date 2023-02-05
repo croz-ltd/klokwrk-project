@@ -38,13 +38,13 @@ import java.nio.charset.Charset
 import java.time.Duration
 import java.time.Instant
 
-import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion.assertResponseContentHasPayloadThat
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion.assertResponseHasPayloadThat
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder.bookingOfferSummaryFindByIdQueryRequest_standardCustomer
 import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.BOOKING_OFFER_SUMMARY_FIND_BY_ID_URL_PATH
 import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindById_failed
 import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindById_failedNotFound
 import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindById_succeeded
-import static org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion.assertResponseContentHasMetaDataThat
+import static org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion.assertResponseHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
@@ -84,7 +84,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
 
     when:
-    Map responseContentMap = bookingOfferSummaryFindById_succeeded(
+    Map responseMap = bookingOfferSummaryFindById_succeeded(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
             .bookingOfferIdentifier(myBookingOfferIdentifier)
             .buildAsJsonString(),
@@ -93,12 +93,12 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isSuccessful()
       has_general_locale(localeStringParam)
     }
 
-    assertResponseContentHasPayloadThat(responseContentMap) {
+    assertResponseHasPayloadThat(responseMap) {
       isSuccessful()
       hasBookingOfferIdentifier(myBookingOfferIdentifier)
       hasCustomerTypeOfStandard()
@@ -120,7 +120,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
   @SuppressWarnings("CodeNarc.AbcMetric")
   void "should return expected response when request is not valid - validation failure"() {
     when:
-    Map responseContentMap = bookingOfferSummaryFindById_failed(
+    Map responseMap = bookingOfferSummaryFindById_failed(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
             .bookingOfferIdentifier(null)
             .userIdentifier(null)
@@ -130,7 +130,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isViolationOfValidation()
       has_general_locale(localeStringParam)
       has_violation_message(myViolationMessageParam)
@@ -138,7 +138,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
 
     // NOTE: In *Assertion classes, we don't need to have a method for validating every single part of the response. We can always turn to native Spock means of verification.
     //       However, if that specific assertion often repeats, this can be a reason for introducing a specialized method in the *Assertion class.
-    verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
+    verifyAll(responseMap.metaData.violation.validationReport as Map) {
       root.type == "bookingOfferSummaryFindByIdQueryRequest"
 
       verifyAll(constraintViolations as List<Map>) {
@@ -148,7 +148,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
       }
     }
 
-    assertResponseContentHasPayloadThat(responseContentMap)
+    assertResponseHasPayloadThat(responseMap)
         .isEmpty()
 
     where:
@@ -162,7 +162,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
 
     when:
-    Map responseContentMap = bookingOfferSummaryFindById_failed(
+    Map responseMap = bookingOfferSummaryFindById_failed(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
             .bookingOfferIdentifier(myBookingOfferIdentifier)
             .userIdentifier("someUserIdentifier")
@@ -172,13 +172,13 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isViolationOfDomain_badRequest()
       has_general_locale(localeStringParam)
       has_violation_message(myViolationMessageParam)
     }
 
-    assertResponseContentHasPayloadThat(responseContentMap)
+    assertResponseHasPayloadThat(responseMap)
         .isEmpty()
 
     where:
@@ -189,7 +189,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
 
   void "should return expected response when BookingOfferSummary cannot be found - domain failure"() {
     when:
-    Map responseContentMap = bookingOfferSummaryFindById_failedNotFound(
+    Map responseMap = bookingOfferSummaryFindById_failedNotFound(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
             .bookingOfferIdentifier(UUID.randomUUID().toString())
             .buildAsJsonString(),
@@ -198,13 +198,13 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isViolationOfDomain_notFound()
       has_general_locale(localeStringParam)
       has_violation_message(myViolationMessageParam)
     }
 
-    assertResponseContentHasPayloadThat(responseContentMap)
+    assertResponseHasPayloadThat(responseMap)
         .isEmpty()
 
     where:
@@ -216,19 +216,19 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
   void "should return expected response for a request with invalid HTTP method"() {
     when:
     MvcResult mvcResult = mockMvc.perform(put(BOOKING_OFFER_SUMMARY_FIND_BY_ID_URL_PATH).header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)).andReturn()
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
+    Map responseMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
 
     then:
     mvcResult.response.status == HttpStatus.METHOD_NOT_ALLOWED.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isViolationOfInfrastructureWeb_methodNotAllowed()
       has_general_locale(localeStringParam)
       has_violation_message(myViolationMessageParam)
     }
 
-    assertResponseContentHasPayloadThat(responseContentMap)
+    assertResponseHasPayloadThat(responseMap)
         .isEmpty()
 
     where:

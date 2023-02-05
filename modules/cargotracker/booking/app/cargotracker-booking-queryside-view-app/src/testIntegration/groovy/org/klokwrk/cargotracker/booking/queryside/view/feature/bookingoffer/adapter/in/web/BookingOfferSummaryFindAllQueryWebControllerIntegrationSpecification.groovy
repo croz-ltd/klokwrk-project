@@ -37,13 +37,13 @@ import spock.lang.Shared
 import javax.sql.DataSource
 import java.nio.charset.Charset
 
-import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseContentHasPageablePayloadThat
+import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseHasPageablePayloadThat
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder.bookingOfferSummaryFindAllQueryRequest_standardCustomer
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.data.PageRequirementJsonFixtureBuilder.pageRequirement_default
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.data.SortRequirementJsonFixtureBuilder.sortRequirement_default
 import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindAll_failed
 import static org.klokwrk.cargotracker.booking.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindAll_succeeded
-import static org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion.assertResponseContentHasMetaDataThat
+import static org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion.assertResponseHasMetaDataThat
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
 @SuppressWarnings("GroovyAccessibility")
@@ -90,18 +90,18 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
 
   void "should work for correct request with default paging and sorting"() {
     when:
-    Map responseContentMap = bookingOfferSummaryFindAll_succeeded(
+    Map responseMap = bookingOfferSummaryFindAll_succeeded(
         bookingOfferSummaryFindAllQueryRequest_standardCustomer().buildAsJsonString(),
         acceptLanguageParam,
         mockMvc
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap)
+    assertResponseHasMetaDataThat(responseMap)
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap) {
+    assertResponseHasPageablePayloadThat(responseMap) {
       isSuccessful()
       hasPageInfoOfFirstPageWithDefaults()
       hasPageInfoThat({
@@ -121,7 +121,7 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
 
   void "should work for correct request with default paging and sorting but with empty page content"() {
     when:
-    Map responseContentMap = bookingOfferSummaryFindAll_succeeded(
+    Map responseMap = bookingOfferSummaryFindAll_succeeded(
         bookingOfferSummaryFindAllQueryRequest_standardCustomer()
             .userIdentifier("platinum-customer@cargotracker.com")
             .buildAsJsonString(),
@@ -130,11 +130,11 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap)
+    assertResponseHasMetaDataThat(responseMap)
         .isSuccessful()
         .has_general_locale(localeStringParam)
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap)
+    assertResponseHasPageablePayloadThat(responseMap)
         .isSuccessfulAndEmpty()
 
     where:
@@ -145,7 +145,7 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
 
   void "should fail for invalid property name in sort requirements"() {
     when:
-    Map responseContentMap = bookingOfferSummaryFindAll_failed(
+    Map responseMap = bookingOfferSummaryFindAll_failed(
         bookingOfferSummaryFindAllQueryRequest_standardCustomer()
             .pageRequirement(pageRequirement_default().size(3)) // Not needed, but added for demonstration purposes
             .sortRequirementList([sortRequirement_default().propertyName("nonExistingProperty")])
@@ -155,13 +155,13 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isViolationOfDomain_badRequest()
       has_general_locale(localeStringParam)
       has_violation_message(messageParam)
     }
 
-    assertResponseContentHasPageablePayloadThat(responseContentMap)
+    assertResponseHasPageablePayloadThat(responseMap)
         .isEmpty()
 
     where:

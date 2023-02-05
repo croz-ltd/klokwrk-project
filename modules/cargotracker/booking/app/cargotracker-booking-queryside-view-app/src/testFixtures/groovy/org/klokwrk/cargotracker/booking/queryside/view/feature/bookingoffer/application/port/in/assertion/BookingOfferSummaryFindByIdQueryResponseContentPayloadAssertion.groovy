@@ -35,8 +35,8 @@ class BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion implements
   /**
    * Entry point static assertion method for fluent-style top-level API.
    */
-  static BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion assertResponseContentHasPayloadThat(Map responseContentMap) {
-    responseContentMap.with {
+  static BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion assertResponseHasPayloadThat(Map responseMap) {
+    responseMap.with {
       assert size() == 2
       assert metaData
       assert metaData instanceof Map
@@ -44,21 +44,21 @@ class BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion implements
       assert payload instanceof Map
     }
 
-    return new BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion(responseContentMap.payload as Map)
+    return new BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion(responseMap.payload as Map)
   }
 
   /**
    * Entry point static assertion method for closure-style top-level API.
    */
-  static BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion assertResponseContentHasPayloadThat(
-      Map responseContentMap,
+  static BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion assertResponseHasPayloadThat(
+      Map responseMap,
       @DelegatesTo(value = BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
           options = "org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion"
       ) Closure aClosure)
   {
-    BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion payloadAssertion = assertResponseContentHasPayloadThat(responseContentMap)
+    BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion payloadAssertion = assertResponseHasPayloadThat(responseMap)
     aClosure.resolveStrategy = Closure.DELEGATE_FIRST
     aClosure.delegate = payloadAssertion
     aClosure.call(payloadAssertion)

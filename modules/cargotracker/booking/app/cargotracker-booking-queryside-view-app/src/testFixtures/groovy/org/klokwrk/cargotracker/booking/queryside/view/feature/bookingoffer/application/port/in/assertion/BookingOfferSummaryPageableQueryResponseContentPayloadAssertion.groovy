@@ -41,23 +41,23 @@ class BookingOfferSummaryPageableQueryResponseContentPayloadAssertion
   /**
    * Entry point static assertion method for fluent-style top-level API.
    */
-  static BookingOfferSummaryPageableQueryResponseContentPayloadAssertion assertResponseContentHasPageablePayloadThat(Map responseContentMap) {
-    assertResponseContent(responseContentMap)
-    return new BookingOfferSummaryPageableQueryResponseContentPayloadAssertion(responseContentMap)
+  static BookingOfferSummaryPageableQueryResponseContentPayloadAssertion assertResponseHasPageablePayloadThat(Map responseMap) {
+    assertResponse(responseMap)
+    return new BookingOfferSummaryPageableQueryResponseContentPayloadAssertion(responseMap)
   }
 
   /**
    * Overloaded entry point static assertion method for closure-style top-level API.
    */
-  static BookingOfferSummaryPageableQueryResponseContentPayloadAssertion assertResponseContentHasPageablePayloadThat(
-      Map responseContentMap,
+  static BookingOfferSummaryPageableQueryResponseContentPayloadAssertion assertResponseHasPageablePayloadThat(
+      Map responseMap,
       @DelegatesTo(value = BookingOfferSummaryPageableQueryResponseContentPayloadAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
           options = "org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion"
       ) Closure aClosure)
   {
-    BookingOfferSummaryPageableQueryResponseContentPayloadAssertion pageablePayloadAssertion = assertResponseContentHasPageablePayloadThat(responseContentMap)
+    BookingOfferSummaryPageableQueryResponseContentPayloadAssertion pageablePayloadAssertion = assertResponseHasPageablePayloadThat(responseMap)
     aClosure.resolveStrategy = Closure.DELEGATE_FIRST
     aClosure.delegate = pageablePayloadAssertion
     aClosure.call(pageablePayloadAssertion)
@@ -65,8 +65,8 @@ class BookingOfferSummaryPageableQueryResponseContentPayloadAssertion
     return pageablePayloadAssertion
   }
 
-  BookingOfferSummaryPageableQueryResponseContentPayloadAssertion(Map responseContentMap) {
-    super(responseContentMap)
+  BookingOfferSummaryPageableQueryResponseContentPayloadAssertion(Map responseMap) {
+    super(responseMap)
   }
 
   @Override

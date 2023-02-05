@@ -21,8 +21,8 @@ import groovy.transform.CompileStatic
 
 @CompileStatic
 class CreateBookingOfferCommandResponseWebContentPayloadAssertion {
-  static CreateBookingOfferCommandResponseWebContentPayloadAssertion assertResponseContentHasPayloadThat(Map responseContentMap) {
-    responseContentMap.with {
+  static CreateBookingOfferCommandResponseWebContentPayloadAssertion assertResponseHasPayloadThat(Map responseMap) {
+    responseMap.with {
       assert size() == 2
       assert metaData
       assert metaData instanceof Map
@@ -30,7 +30,7 @@ class CreateBookingOfferCommandResponseWebContentPayloadAssertion {
       assert payload instanceof Map
     }
 
-    return new CreateBookingOfferCommandResponseWebContentPayloadAssertion(responseContentMap.payload as Map)
+    return new CreateBookingOfferCommandResponseWebContentPayloadAssertion(responseMap.payload as Map)
   }
 
   private final Map payloadMap

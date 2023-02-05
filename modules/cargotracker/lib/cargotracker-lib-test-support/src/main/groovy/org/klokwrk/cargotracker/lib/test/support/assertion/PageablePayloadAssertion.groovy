@@ -56,13 +56,13 @@ import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
  * In addition, {@code PAGE_ITEM_ASSERTION} types have to implement {@link PageItemAssertionable} to make it possible for instances of this class to invoke their methods when appropriate.
  *
  * @param <SELF> The type of "{@code this}" instance representing the instance of a subclass in the context of this abstract superclass.
- * @param <PAGE_ITEM_ASSERTION> The type of class capable to assert individual element of {@code pageContent} list.
+ * @param <PAGE_ITEM_ASSERTION> The type of class capable to assert individual item of {@code pageContent} list.
  */
 @CompileStatic
 abstract class PageablePayloadAssertion<SELF extends PageablePayloadAssertion<SELF, PAGE_ITEM_ASSERTION>, PAGE_ITEM_ASSERTION extends PageItemAssertionable> {
-  static void assertResponseContent(Map responseContentMap) {
-    assert responseContentMap instanceof Map
-    responseContentMap.with {
+  static void assertResponse(Map responseMap) {
+    assert responseMap instanceof Map
+    responseMap.with {
       assert size() == 2
       assert metaData instanceof Map
       assert payload instanceof Map
@@ -74,10 +74,10 @@ abstract class PageablePayloadAssertion<SELF extends PageablePayloadAssertion<SE
   @SuppressWarnings("GrFinalVariableAccess")
   protected final Map payloadMap
 
-  protected PageablePayloadAssertion(Map responseContentMap) {
-    assert responseContentMap instanceof Map
-    assert responseContentMap.payload instanceof Map
-    this.payloadMap = responseContentMap.payload as Map
+  protected PageablePayloadAssertion(Map responseMap) {
+    assert responseMap instanceof Map
+    assert responseMap.payload instanceof Map
+    this.payloadMap = responseMap.payload as Map
   }
 
   SELF isSuccessful() {

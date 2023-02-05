@@ -27,8 +27,8 @@ class MetaDataAssertion {
   /**
    * Entry point static assertion method for fluent-style top-level API.
    */
-  static MetaDataAssertion assertResponseContentHasMetaDataThat(Map responseContentMap) {
-    responseContentMap.with {
+  static MetaDataAssertion assertResponseHasMetaDataThat(Map responseMap) {
+    responseMap.with {
       assert size() == 2
       assert metaData
       assert metaData instanceof Map
@@ -36,21 +36,21 @@ class MetaDataAssertion {
       assert payload instanceof Map
     }
 
-    return new MetaDataAssertion(responseContentMap.metaData as Map)
+    return new MetaDataAssertion(responseMap.metaData as Map)
   }
 
   /**
    * Entry point static assertion method for closure-style top-level API.
    */
-  static MetaDataAssertion assertResponseContentHasMetaDataThat(
-      Map responseContentMap,
+  static MetaDataAssertion assertResponseHasMetaDataThat(
+      Map responseMap,
       @DelegatesTo(value = MetaDataAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
           options = "org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion"
       ) Closure aClosure)
   {
-    MetaDataAssertion metaDataAssertion = assertResponseContentHasMetaDataThat(responseContentMap)
+    MetaDataAssertion metaDataAssertion = assertResponseHasMetaDataThat(responseMap)
     aClosure.resolveStrategy = Closure.DELEGATE_FIRST
     aClosure.delegate = metaDataAssertion
     aClosure.call(metaDataAssertion)

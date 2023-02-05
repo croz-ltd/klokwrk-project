@@ -37,7 +37,7 @@ import java.nio.charset.Charset
 import java.time.Duration
 import java.time.Instant
 
-import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.assertion.CreateBookingOfferCommandResponseWebContentPayloadAssertion.assertResponseContentHasPayloadThat
+import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.assertion.CreateBookingOfferCommandResponseWebContentPayloadAssertion.assertResponseHasPayloadThat
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_cargoDry
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry
@@ -48,7 +48,7 @@ import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rotterdamToRijeka
 import static org.klokwrk.cargotracker.booking.commandside.test.util.BookingOfferCommandTestHelpers.createBookingOffer_failed
 import static org.klokwrk.cargotracker.booking.commandside.test.util.BookingOfferCommandTestHelpers.createBookingOffer_succeeded
-import static org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion.assertResponseContentHasMetaDataThat
+import static org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion.assertResponseHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
@@ -78,7 +78,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
 
     when:
-    Map responseContentMap = createBookingOffer_succeeded(
+    Map responseMap = createBookingOffer_succeeded(
         createBookingOfferCommandRequest_rijekaToRotterdam(currentTime)
             .bookingOfferIdentifier(myBookingOfferIdentifier)
             .cargos_add(cargoRequestData_dry().commodityWeight(commodityWeightParam))
@@ -88,12 +88,12 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isSuccessful()
       has_general_locale(localeStringParam)
     }
 
-    verifyAll(responseContentMap) {
+    verifyAll(responseMap) {
       size() == 2
 
       verifyAll(it.payload as Map) {
@@ -260,7 +260,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
 
     when:
-    Map responseContentMap = createBookingOffer_succeeded(
+    Map responseMap = createBookingOffer_succeeded(
         createBookingOfferCommandRequest_rotterdamToRijeka(currentTime)
             .bookingOfferIdentifier(myBookingOfferIdentifier)
             .cargos_add(
@@ -274,12 +274,12 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isSuccessful()
       has_general_locale(localeStringParam)
     }
 
-    verifyAll(responseContentMap) {
+    verifyAll(responseMap) {
       size() == 2
 
       verifyAll(it.payload as Map) {
@@ -403,7 +403,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
   void "should return expected response when request is not valid - validation failure"() {
     when:
-    Map responseContentMap = createBookingOffer_failed(
+    Map responseMap = createBookingOffer_failed(
         objectMapper.writeValueAsString(
             createBookingOfferCommandRequest_cargoDry()
                 .routeSpecification(
@@ -421,7 +421,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isViolationOfValidation()
       has_general_locale(localeStringParam)
       has_violation_message(violationMessageParam)
@@ -431,7 +431,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     //       verifications. Therefore, it is important to realize that native Spock power is always at your disposal and can be used instead or combined with the custom assertion API as the need
     //       arises.
 
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       has_violation_validationReport_constraintViolationsOfSize(5)
       has_violation_validationReport_constraintViolationsWithAnyElementThat {
         hasPath("routeSpecification.originLocation")
@@ -457,7 +457,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
       }
     }
 
-    verifyAll(responseContentMap.metaData.violation.validationReport as Map) {
+    verifyAll(responseMap.metaData.violation.validationReport as Map) {
       root.type == "createBookingOfferCommandRequest"
 
       verifyAll(constraintViolations as List<Map>) {
@@ -476,7 +476,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
       }
     }
 
-    assertResponseContentHasPayloadThat(responseContentMap)
+    assertResponseHasPayloadThat(responseMap)
         .isEmpty()
 
     where:
@@ -487,7 +487,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
   void "should fail when customer cannot be found - domain failure"() {
     when:
-    Map responseContentMap = createBookingOffer_failed(
+    Map responseMap = createBookingOffer_failed(
         createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry()
             .userIdentifier("unknownUserIdentifier")
             .buildAsJsonString(),
@@ -496,13 +496,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isViolationOfDomain_badRequest()
       has_general_locale(localeStringParam)
       has_violation_message(violationMessageParam)
     }
 
-    assertResponseContentHasPayloadThat(responseContentMap)
+    assertResponseHasPayloadThat(responseMap)
         .isEmpty()
 
     where:
@@ -513,7 +513,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
   void "should fail when origin and destination locations are equal - domain failure"() {
     when:
-    Map responseContentMap = createBookingOffer_failed(
+    Map responseMap = createBookingOffer_failed(
         createBookingOfferCommandRequest_cargoDry()
             .routeSpecification(routeSpecificationRequestData_rijekaToRotterdam().destinationLocation("HRRJK"))
             .buildAsJsonString(),
@@ -522,13 +522,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isViolationOfDomain_badRequest()
       has_general_locale(localeStringParam)
       has_violation_message(violationMessageParam)
     }
 
-    assertResponseContentHasPayloadThat(responseContentMap)
+    assertResponseHasPayloadThat(responseMap)
         .isEmpty()
 
     where:
@@ -539,7 +539,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
   void "should fail when cargo can not be sent to destination location - domain failure"() {
     when:
-    Map responseContentMap = createBookingOffer_failed(
+    Map responseMap = createBookingOffer_failed(
         createBookingOfferCommandRequest_cargoDry()
             .routeSpecification(routeSpecificationRequestData_rotterdamToRijeka().destinationLocation("HRZAG"))
             .buildAsJsonString(),
@@ -548,13 +548,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isViolationOfDomain_badRequest()
       has_general_locale(localeStringParam)
       has_violation_message(violationMessageParam)
     }
 
-    assertResponseContentHasPayloadThat(responseContentMap)
+    assertResponseHasPayloadThat(responseMap)
         .isEmpty()
 
     where:
@@ -565,7 +565,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
   void "should fail when commodity weight is too high - domain failure"() {
     when:
-    Map responseContentMap = createBookingOffer_failed(
+    Map responseMap = createBookingOffer_failed(
         createBookingOfferCommandRequest_rijekaToRotterdam()
             .cargos([cargoRequestData_dry().commodityWeight(125_000_000.kg)])
             .buildAsJsonString(),
@@ -574,13 +574,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isViolationOfDomain_badRequest()
       has_general_locale(localeStringParam)
       has_violation_message(violationMessageParam)
     }
 
-    assertResponseContentHasPayloadThat(responseContentMap)
+    assertResponseHasPayloadThat(responseMap)
         .isEmpty()
 
     where:
@@ -591,7 +591,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
   void "should fail when commodity requested storage temperature is supplied but not supported for commodity type - domain failure"() {
     when:
-    Map responseContentMap = createBookingOffer_failed(
+    Map responseMap = createBookingOffer_failed(
         createBookingOfferCommandRequest_rotterdamToRijeka()
             .cargos([cargoRequestData_dry().commodityRequestedStorageTemperature(1.degC)])
             .buildAsJsonString(),
@@ -600,13 +600,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isViolationOfDomain_badRequest()
       has_general_locale(localeStringParam)
       has_violation_message(violationMessageParam)
     }
 
-    assertResponseContentHasPayloadThat(responseContentMap)
+    assertResponseHasPayloadThat(responseMap)
         .isEmpty()
 
     where:
@@ -617,7 +617,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
   void "should fail when requested storage temperature is out of range - domain failure"() {
     when:
-    Map responseContentMap = createBookingOffer_failed(
+    Map responseMap = createBookingOffer_failed(
         createBookingOfferCommandRequest_rotterdamToRijeka()
             .cargos_add(
                 cargoRequestData_base()
@@ -630,13 +630,13 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     )
 
     then:
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isViolationOfDomain_badRequest()
       has_general_locale(localeStringParam)
       has_violation_message(violationMessageParam)
     }
 
-    assertResponseContentHasPayloadThat(responseContentMap)
+    assertResponseHasPayloadThat(responseMap)
         .isEmpty()
 
     where:
@@ -664,19 +664,19 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
   void "should return expected response for a request with invalid HTTP method"() {
     when:
     MvcResult mvcResult = mockMvc.perform(put("/booking-offer/create-booking-offer").header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageParam)).andReturn()
-    Map responseContentMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
+    Map responseMap = objectMapper.readValue(mvcResult.response.contentAsString, Map)
 
     then:
     mvcResult.response.status == HttpStatus.METHOD_NOT_ALLOWED.value()
     mvcResult.response.contentType == MediaType.APPLICATION_JSON_VALUE
 
-    assertResponseContentHasMetaDataThat(responseContentMap) {
+    assertResponseHasMetaDataThat(responseMap) {
       isViolationOfInfrastructureWeb_methodNotAllowed()
       has_general_locale(localeStringParam)
       has_violation_message(violationMessageParam)
     }
 
-    assertResponseContentHasPayloadThat(responseContentMap)
+    assertResponseHasPayloadThat(responseMap)
         .isEmpty()
 
     where:
