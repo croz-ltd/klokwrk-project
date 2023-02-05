@@ -38,8 +38,8 @@ import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
  *     ],
  *     pageContent: [ // pageContent is a list of maps
  *       [
- *         // first pageContent element's key and values
- *         // second pageContent element's key and values
+ *         // first pageContent item's key and values
+ *         // second pageContent item's key and values
  *         // ...
  *       ]
  *     ]
@@ -48,18 +48,18 @@ import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
  * </pre>
  *
  * This class is defines general structures and rules (implemented as methods) for asserting {@code payload.pageInfo} and {@code payload.pageContent}. While {@code payload.pageInfo} asserting is
- * delegated to {@link ResponseContentPayloadPageInfoAssertion} instances, individual instances of {@code payload.pageContent} are asserted by {@code PAGE_CONTENT_ASSERTION} type.
+ * delegated to {@link ResponseContentPayloadPageInfoAssertion} instances, individual instances of {@code payload.pageContent} are asserted by {@code PAGE_ITEM_ASSERTION} type.
  * <p/>
- * Therefore, any concrete class extending this one, has to provide {@code PAGE_CONTENT_ASSERTION} type via generic declaration, where {@code PAGE_CONTENT_ASSERTION} instances are then responsible
- * for asserting the details of each element in {@code payload.pageContent}.
+ * Therefore, any concrete class extending this one, has to provide {@code PAGE_ITEM_ASSERTION} type via generic declaration, where {@code PAGE_ITEM_ASSERTION} instances are then responsible
+ * for asserting the details of each item in {@code payload.pageContent}.
  * <p/>
- * In addition, {@code PAGE_CONTENT_ASSERTION} types have to implement {@link PayloadPageContentAssertionable} to make it possible for instances of this class to invoke their methods when appropriate.
+ * In addition, {@code PAGE_ITEM_ASSERTION} types have to implement {@link PayloadPageContentAssertionable} to make it possible for instances of this class to invoke their methods when appropriate.
  *
  * @param <SELF> The type of "{@code this}" instance representing the instance of a subclass in the context of this abstract superclass.
- * @param <PAGE_CONTENT_ASSERTION> The type of class capable to assert individual elements of {@code pageContent} list.
+ * @param <PAGE_ITEM_ASSERTION> The type of class capable to assert individual element of {@code pageContent} list.
  */
 @CompileStatic
-abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseContentPageablePayloadAssertion<SELF, PAGE_CONTENT_ASSERTION>, PAGE_CONTENT_ASSERTION extends PayloadPageContentAssertionable> {
+abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseContentPageablePayloadAssertion<SELF, PAGE_ITEM_ASSERTION>, PAGE_ITEM_ASSERTION extends PayloadPageContentAssertionable> {
   static void assertResponseContent(Map responseContentMap) {
     assert responseContentMap instanceof Map
     responseContentMap.with {
@@ -69,7 +69,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
     }
   }
 
-  abstract PAGE_CONTENT_ASSERTION getPageContentAssertionInstance(Map pageContentElementPayloadMap)
+  abstract PAGE_ITEM_ASSERTION getPageContentAssertionInstance(Map pageContentElementPayloadMap)
 
   @SuppressWarnings("GrFinalVariableAccess")
   protected final Map payloadMap
@@ -151,28 +151,28 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
   }
 
   SELF hasPageContentWithAnyElementThat(
-      @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_FIRST)
+      @DelegatesTo(type = "PAGE_ITEM_ASSERTION", strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = FromString,
-          options = "PAGE_CONTENT_ASSERTION"
+          options = "PAGE_ITEM_ASSERTION"
       ) Closure aClosure)
   {
     Object pageContentListAsObject = payloadMap.pageContent
     assert pageContentListAsObject instanceof List
 
     List<Map> pageContentList = pageContentListAsObject as List<Map>
-    pageContentList.each { pageContentElementMap ->
-      assert pageContentElementMap instanceof Map
+    pageContentList.each { pageItemMap ->
+      assert pageItemMap instanceof Map
     }
 
     aClosure.resolveStrategy = Closure.DELEGATE_FIRST
 
-    boolean isAnyElementFound = pageContentList.any({ Map pageContentElementMap ->
-      PAGE_CONTENT_ASSERTION pageContentElementAssertion = getPageContentAssertionInstance(pageContentElementMap)
+    boolean isAnyItemFound = pageContentList.any({ Map pageItemMap ->
+      PAGE_ITEM_ASSERTION pageItemAssertion = getPageContentAssertionInstance(pageItemMap)
 
-      aClosure.delegate = pageContentElementAssertion
+      aClosure.delegate = pageItemAssertion
       try {
-        aClosure.call(pageContentElementAssertion)
+        aClosure.call(pageItemAssertion)
         return true
       }
       catch (PowerAssertionError ignore) {
@@ -181,18 +181,18 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
       return false
     })
 
-    if (!isAnyElementFound) {
-      throw new AssertionError("Assertion failed - none of the list elements satisfies provided conditions." as Object)
+    if (!isAnyItemFound) {
+      throw new AssertionError("Assertion failed - none of the page items satisfies provided conditions." as Object)
     }
 
     return this as SELF
   }
 
   SELF hasPageContentWithAllElementsThat(
-      @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_FIRST)
+      @DelegatesTo(type = "PAGE_ITEM_ASSERTION", strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = FromString,
-          options = "PAGE_CONTENT_ASSERTION"
+          options = "PAGE_ITEM_ASSERTION"
       ) Closure aClosure)
   {
     Object pageContentListAsObject = payloadMap.pageContent
@@ -200,22 +200,22 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
 
     List<Map> pageContentList = pageContentListAsObject as List<Map>
     assert !pageContentList.isEmpty()
-    pageContentList.each { pageContentElementMap ->
-      assert pageContentElementMap instanceof Map
+    pageContentList.each { pageItemMap ->
+      assert pageItemMap instanceof Map
     }
 
-    pageContentList.eachWithIndex({ Map pageContentElementMap, int anIndex ->
-      PAGE_CONTENT_ASSERTION aListElementPayloadAssertion = getPageContentAssertionInstance(pageContentElementMap)
+    pageContentList.eachWithIndex({ Map pageItemMap, int anIndex ->
+      PAGE_ITEM_ASSERTION pageItemAssertion = getPageContentAssertionInstance(pageItemMap)
 
-      aClosure.delegate = aListElementPayloadAssertion
+      aClosure.delegate = pageItemAssertion
       //noinspection UnnecessaryQualifiedReference
       aClosure.resolveStrategy = Closure.DELEGATE_FIRST
 
       try {
-        aClosure.call(aListElementPayloadAssertion)
+        aClosure.call(pageItemAssertion)
       }
-      catch (PowerAssertionError aPowerAssertionError) {
-        throw new AssertionError("Assertion failed at the element with the index of [${ anIndex }].", aPowerAssertionError)
+      catch (PowerAssertionError powerAssertionError) {
+        throw new AssertionError("Assertion failed at the page item with the index of [${ anIndex }].", powerAssertionError)
       }
     })
 
@@ -223,10 +223,10 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
   }
 
   SELF hasPageContentWithFirstElementThat(
-      @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_FIRST)
+      @DelegatesTo(type = "PAGE_ITEM_ASSERTION", strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = FromString,
-          options = "PAGE_CONTENT_ASSERTION"
+          options = "PAGE_ITEM_ASSERTION"
       ) Closure aClosure)
   {
     hasPageContentWithElementAtIndexThat(0, aClosure)
@@ -235,10 +235,10 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
 
   SELF hasPageContentWithElementAtIndexThat(
       Integer anIndex,
-      @DelegatesTo(type = "PAGE_CONTENT_ASSERTION", strategy = Closure.DELEGATE_FIRST)
+      @DelegatesTo(type = "PAGE_ITEM_ASSERTION", strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = FromString,
-          options = "PAGE_CONTENT_ASSERTION"
+          options = "PAGE_ITEM_ASSERTION"
       ) Closure aClosure)
   {
     Object pageContentListAsObject = payloadMap.pageContent
@@ -248,10 +248,10 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
     assert !pageContentList.isEmpty()
     assert pageContentList[anIndex] instanceof Map
 
-    PAGE_CONTENT_ASSERTION pageContentElementAssertion = getPageContentAssertionInstance(pageContentList[anIndex])
+    PAGE_ITEM_ASSERTION pageItemAssertion = getPageContentAssertionInstance(pageContentList[anIndex])
     aClosure.resolveStrategy = Closure.DELEGATE_FIRST
-    aClosure.delegate = pageContentElementAssertion
-    aClosure.call(pageContentElementAssertion)
+    aClosure.delegate = pageItemAssertion
+    aClosure.call(pageItemAssertion)
 
     return this as SELF
   }
