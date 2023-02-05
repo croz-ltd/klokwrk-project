@@ -24,9 +24,9 @@ import groovy.transform.stc.SimpleType
 /**
  * The class whose instances are responsible for asserting {@code payload.pageInfo} part in the response map.
  * <p/>
- * For more details, take a look at {@link ResponseContentPageablePayloadAssertion}.
+ * For more details, take a look at {@link PageablePayloadAssertion}.
  *
- * @see ResponseContentPageablePayloadAssertion
+ * @see PageablePayloadAssertion
  */
 @CompileStatic
 class ResponseContentPayloadPageInfoAssertion {

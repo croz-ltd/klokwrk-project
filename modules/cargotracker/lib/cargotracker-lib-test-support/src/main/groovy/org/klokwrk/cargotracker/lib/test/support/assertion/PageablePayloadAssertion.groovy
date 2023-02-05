@@ -59,7 +59,7 @@ import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
  * @param <PAGE_ITEM_ASSERTION> The type of class capable to assert individual element of {@code pageContent} list.
  */
 @CompileStatic
-abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseContentPageablePayloadAssertion<SELF, PAGE_ITEM_ASSERTION>, PAGE_ITEM_ASSERTION extends PageItemAssertionable> {
+abstract class PageablePayloadAssertion<SELF extends PageablePayloadAssertion<SELF, PAGE_ITEM_ASSERTION>, PAGE_ITEM_ASSERTION extends PageItemAssertionable> {
   static void assertResponseContent(Map responseContentMap) {
     assert responseContentMap instanceof Map
     responseContentMap.with {
@@ -74,7 +74,7 @@ abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseCont
   @SuppressWarnings("GrFinalVariableAccess")
   protected final Map payloadMap
 
-  protected ResponseContentPageablePayloadAssertion(Map responseContentMap) {
+  protected PageablePayloadAssertion(Map responseContentMap) {
     assert responseContentMap instanceof Map
     assert responseContentMap.payload instanceof Map
     this.payloadMap = responseContentMap.payload as Map

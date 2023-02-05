@@ -20,23 +20,23 @@ package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.app
 import groovy.transform.CompileStatic
 import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.SimpleType
-import org.klokwrk.cargotracker.lib.test.support.assertion.ResponseContentPageablePayloadAssertion
+import org.klokwrk.cargotracker.lib.test.support.assertion.PageablePayloadAssertion
 
 /**
  * Assertion class for a responses of BookingOfferSummaryFindAll and BookingOfferSummarySearchAll queries.
  * <p/>
- * BookingOfferSummaryFindAll and BookingOfferSummarySearchAll queries have the response structured in identical way, where that response is organized as a page of content. Each individual element
+ * BookingOfferSummaryFindAll and BookingOfferSummarySearchAll queries have the response structured in identical way, where that response is organized as a page of content. Each individual item
  * of that page is asserted by {@link BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion} instances.
  * <p/>
- * Therefore, this class extends {@link ResponseContentPageablePayloadAssertion}, and has to provide itself as a type (for a parent to be able to return "{@code this}" instances in a type-safe way),
- * and a {@link BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion} responsible for asserting individual elements of a page.
+ * Therefore, this class extends {@link PageablePayloadAssertion}, and has to provide itself as a type (for a parent to be able to return "{@code this}" instances in a type-safe way),
+ * and a {@link BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion} responsible for asserting individual items of a page.
  *
- * @see ResponseContentPageablePayloadAssertion
+ * @see PageablePayloadAssertion
  */
 @SuppressWarnings("CodeNarc.BracesForClass")
 @CompileStatic
 class BookingOfferSummaryPageableQueryResponseContentPayloadAssertion
-    extends ResponseContentPageablePayloadAssertion<BookingOfferSummaryPageableQueryResponseContentPayloadAssertion, BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion>
+    extends PageablePayloadAssertion<BookingOfferSummaryPageableQueryResponseContentPayloadAssertion, BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion>
 {
   /**
    * Entry point static assertion method for fluent-style top-level API.
