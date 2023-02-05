@@ -53,13 +53,13 @@ import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
  * Therefore, any concrete class extending this one, has to provide {@code PAGE_ITEM_ASSERTION} type via generic declaration, where {@code PAGE_ITEM_ASSERTION} instances are then responsible
  * for asserting the details of each item in {@code payload.pageContent}.
  * <p/>
- * In addition, {@code PAGE_ITEM_ASSERTION} types have to implement {@link PayloadPageContentAssertionable} to make it possible for instances of this class to invoke their methods when appropriate.
+ * In addition, {@code PAGE_ITEM_ASSERTION} types have to implement {@link PageItemAssertionable} to make it possible for instances of this class to invoke their methods when appropriate.
  *
  * @param <SELF> The type of "{@code this}" instance representing the instance of a subclass in the context of this abstract superclass.
  * @param <PAGE_ITEM_ASSERTION> The type of class capable to assert individual element of {@code pageContent} list.
  */
 @CompileStatic
-abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseContentPageablePayloadAssertion<SELF, PAGE_ITEM_ASSERTION>, PAGE_ITEM_ASSERTION extends PayloadPageContentAssertionable> {
+abstract class ResponseContentPageablePayloadAssertion<SELF extends ResponseContentPageablePayloadAssertion<SELF, PAGE_ITEM_ASSERTION>, PAGE_ITEM_ASSERTION extends PageItemAssertionable> {
   static void assertResponseContent(Map responseContentMap) {
     assert responseContentMap instanceof Map
     responseContentMap.with {
