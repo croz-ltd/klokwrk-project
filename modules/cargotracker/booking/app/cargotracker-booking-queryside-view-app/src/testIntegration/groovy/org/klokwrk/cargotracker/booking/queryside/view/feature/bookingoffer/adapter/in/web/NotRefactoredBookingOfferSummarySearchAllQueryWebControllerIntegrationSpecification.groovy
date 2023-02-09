@@ -87,7 +87,7 @@ class NotRefactoredBookingOfferSummarySearchAllQueryWebControllerIntegrationSpec
   }
 
   @SuppressWarnings("CodeNarc.AbcMetric")
-  void "should work for customized search request with default paging and sorting"() {
+  void "should work for search request with default paging and sorting"() {
     given:
     String requestBody = objectMapper.writeValueAsString([
         userIdentifier: "standard-customer@cargotracker.com",
