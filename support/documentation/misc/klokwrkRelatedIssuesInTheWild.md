@@ -24,13 +24,13 @@ This is a list of all issues, categorized per 3rd party software, that are repor
   * https://github.com/AxonFramework/AxonFramework/pull/1371#issuecomment-648673152
 * VERIFIED (4.4.2) - https://github.com/AxonFramework/AxonFramework/issues/1481
 * VERIFIED (4.5.1) - https://github.com/AxonFramework/AxonFramework/issues/1805
-* IN PROGRESS (4.6.0) - https://github.com/AxonFramework/AxonFramework/issues/1901
+* VERIFIED (4.6.2) - https://github.com/AxonFramework/AxonFramework/issues/1901
   * https://github.com/AxonFramework/AxonFramework/pull/1905
 * VERIFIED (4.6.0) - https://github.com/AxonFramework/AxonFramework/pull/1910
 * VERIFIED (4.6.2) - https://github.com/AxonFramework/AxonFramework/issues/2454
 
 ### Axon Framework - IDEA Plugin
-* IN PROGRESS - https://github.com/AxonFramework/IdeaPlugin/issues/64
+* REPORTED - https://github.com/AxonFramework/IdeaPlugin/issues/64
 
 ### Axon Server:
 * VERIFIED (in Axon Framework 4.4.1) - https://github.com/AxonIQ/axon-server-se/issues/148
@@ -85,21 +85,21 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (4.0.0) - https://issues.apache.org/jira/browse/GROOVY-10055
 * IN PROGRESS - https://issues.apache.org/jira/browse/GROOVY-10156
 * VERIFIED (3.0.10) - https://issues.apache.org/jira/browse/GROOVY-10318
-* FIXED (4.0.7) - https://issues.apache.org/jira/browse/GROOVY-10815
+* VERIFIED (4.0.7) - https://issues.apache.org/jira/browse/GROOVY-10815
 
 ### IDEA
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-216308
-* FIXED (2022.1) - https://youtrack.jetbrains.com/issue/IDEA-239626
+* VERIFIED (2022.1) - https://youtrack.jetbrains.com/issue/IDEA-239626
 * VERIFIED (2020.3) - https://youtrack.jetbrains.com/issue/IDEA-239966
 * IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-243620
 * VERIFIED (2021.1) - https://youtrack.jetbrains.com/issue/IDEA-255422
 * VERIFIED (2021.2) - https://youtrack.jetbrains.com/issue/IDEA-261239
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-270964
-* FIXED (2022.1) - https://youtrack.jetbrains.com/issue/IDEA-285153
+* VERIFIED (2022.1) - https://youtrack.jetbrains.com/issue/IDEA-285153
 * IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-285736
-* FIXED (2022.2) - https://youtrack.jetbrains.com/issue/IDEA-286813
+* VERIFIED (2022.2) - https://youtrack.jetbrains.com/issue/IDEA-286813
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-292254
-* RESOLVED - https://youtrack.jetbrains.com/issue/IDEA-295389
+* VERIFIED - https://youtrack.jetbrains.com/issue/IDEA-295389
 
 ### JReleaser
 * VERIFIED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/85
