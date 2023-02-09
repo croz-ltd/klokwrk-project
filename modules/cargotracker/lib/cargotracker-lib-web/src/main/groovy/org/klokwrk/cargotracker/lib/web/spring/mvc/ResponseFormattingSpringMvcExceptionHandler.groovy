@@ -136,7 +136,7 @@ class ResponseFormattingSpringMvcExceptionHandler extends ResponseEntityExceptio
     }
 
     HttpResponseMetaData httpResponseMetaData = makeHttpResponseMetaData(springMvcException, handlerMethod, locale, logUuid, httpStatus)
-    OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseMetaData.getPropertiesFiltered()) // codenarc-disable-line UnnecessaryGetter
+    OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseMetaData.propertiesFiltered)
     ResponseEntity responseEntity = new ResponseEntity(operationResponse, new HttpHeaders(), httpStatus)
 
     return responseEntity

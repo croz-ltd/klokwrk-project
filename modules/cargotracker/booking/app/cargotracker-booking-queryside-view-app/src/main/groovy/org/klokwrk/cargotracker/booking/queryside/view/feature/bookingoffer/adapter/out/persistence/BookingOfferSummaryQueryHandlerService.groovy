@@ -79,7 +79,7 @@ class BookingOfferSummaryQueryHandlerService {
   }
 
   protected Map<String, Object> fetchBookingOfferSummaryJpaEntityProperties(BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity) {
-    return bookingOfferSummaryJpaEntity.getProperties().tap({ // codenarc-disable-line UnnecessaryGetter
+    return bookingOfferSummaryJpaEntity.properties.tap({
       it[this.BOOKING_OFFER_IDENTIFIER] = bookingOfferSummaryJpaEntity.bookingOfferIdentifier.toString()
       it[this.TOTAL_COMMODITY_WEIGHT] = KwrkQuantityFormat.instance.parse(bookingOfferSummaryJpaEntity.totalCommodityWeight)
     })

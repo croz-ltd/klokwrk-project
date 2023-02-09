@@ -107,7 +107,7 @@ class ResponseFormattingDomainExceptionHandler implements MessageSourceAware {
   ResponseEntity handleDomainException(DomainException domainException, HandlerMethod handlerMethod, Locale locale) {
     HttpResponseMetaData httpResponseMetaData = makeHttpResponseMetaData(domainException, handlerMethod, locale)
     HttpStatus httpStatus = mapDomainExceptionToHttpStatus(domainException)
-    OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseMetaData.getPropertiesFiltered()) // codenarc-disable-line UnnecessaryGetter
+    OperationResponse operationResponse = new OperationResponse(payload: [:], metaData: httpResponseMetaData.propertiesFiltered)
     ResponseEntity responseEntity = new ResponseEntity(operationResponse, new HttpHeaders(), httpStatus)
 
     return responseEntity
