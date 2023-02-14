@@ -65,7 +65,7 @@ class BookingQuerySideProjectionRdbmsAppDependenciesSpecification extends Specif
         "javax.measure..",
         "tech.units.indriya..",
 
-        "com.vladmihalcea.spring.repository.."
+        "io.hypersistence.utils.spring.repository.."
     ]
 
     String[] cargotrackerBookingProjectionRdbmsAppAllPackages = [

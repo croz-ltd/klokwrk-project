@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @EnableJpaRepositories(
-    basePackages = ["org.klokwrk.cargotracker.booking.queryside.projection.rdbms.feature.bookingoffer.adapter.out.persistence", "com.vladmihalcea.spring.repository"]
+    basePackages = ["org.klokwrk.cargotracker.booking.queryside.projection.rdbms.feature.bookingoffer.adapter.out.persistence", "io.hypersistence.utils.spring.repository"]
 )
 @EntityScan(basePackages = ["org.axonframework.eventhandling.tokenstore.jpa", "org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa"])
 @Configuration(proxyBeanMethods = false)

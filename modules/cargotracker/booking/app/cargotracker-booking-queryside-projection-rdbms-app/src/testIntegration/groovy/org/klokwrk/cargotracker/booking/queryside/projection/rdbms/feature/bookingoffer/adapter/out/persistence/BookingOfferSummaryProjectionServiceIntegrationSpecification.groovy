@@ -173,7 +173,7 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
   void "should execute expected SQL insert statements"() {
     // NOTE: Here we are testing whether our Spring Data JPA repository implementation optimally works when persisting the new entity with the assigned identifier. We want only SQL inserts to be
     //       executed, without any additional and unnecessary SQL selects. For more information, take a look at the article at https://vladmihalcea.com/best-spring-data-jparepository/ and the usage
-    //       of com.vladmihalcea.spring.repository.HibernateRepository in BookingOfferSummaryProjectionJpaRepository.
+    //       of io.hypersistence.utils.spring.repository.HibernateRepository in BookingOfferSummaryProjectionJpaRepository.
     given:
     Logger logger = LoggerFactory.getLogger("klokwrk.datasourceproxy.queryLogger") as Logger
     logger.level = Level.DEBUG
