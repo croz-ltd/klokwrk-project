@@ -31,6 +31,8 @@ dependencies {
   implementation project(":klokwrk-lang-groovy-contracts-match")
   implementation project(":klokwrk-lang-groovy-contracts-simple")
 
+  implementation "com.fasterxml.jackson.core:jackson-databind"
+  implementation "io.hypersistence:hypersistence-utils-hibernate-55"
   implementation "jakarta.persistence:jakarta.persistence-api"
   implementation "javax.measure:unit-api"
   implementation "org.apache.groovy:groovy"

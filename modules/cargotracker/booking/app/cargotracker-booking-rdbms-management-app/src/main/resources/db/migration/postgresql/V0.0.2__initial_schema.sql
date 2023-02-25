@@ -63,3 +63,16 @@ CREATE TABLE booking_offer_summary_commodity_type (
   PRIMARY KEY (booking_offer_identifier, commodity_type),
   CONSTRAINT FK__booking_offer_summary_commodity_type__booking_offer_summary FOREIGN KEY (booking_offer_identifier) REFERENCES booking_offer_summary(booking_offer_identifier)
 );
+
+CREATE TABLE booking_offer_details (
+  booking_offer_identifier uuid PRIMARY KEY,
+
+  customer_identifier text NOT NULL,
+  details jsonb NOT NULL,
+
+  inbound_channel_name text NOT NULL,
+  inbound_channel_type text NOT NULL,
+  first_event_recorded_at timestamptz NOT NULL,
+  last_event_recorded_at timestamptz NOT NULL,
+  last_event_sequence_number bigint NOT NULL
+);
