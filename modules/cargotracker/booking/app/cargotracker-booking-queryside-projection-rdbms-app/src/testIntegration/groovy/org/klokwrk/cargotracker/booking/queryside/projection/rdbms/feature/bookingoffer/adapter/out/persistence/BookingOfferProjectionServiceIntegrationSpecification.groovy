@@ -48,7 +48,7 @@ import java.time.Instant
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class BookingOfferSummaryProjectionServiceIntegrationSpecification extends AbstractProjectionRdbmsIntegrationSpecification {
+class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProjectionRdbmsIntegrationSpecification {
 
   @TestConfiguration
   static class TestSpringBootConfiguration {
@@ -115,6 +115,22 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         // collections verification
         commodity_type_list == ["DRY"] as Set
       }
+
+      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferDetailsRecord(groovySql, bookingOfferIdentifier)) {
+        size() == 8
+
+        booking_offer_identifier == bookingOfferIdentifier
+        customer_identifier == customerIdentifier
+
+        (details as String).matches(/.*originLocation.*Rijeka.*destinationLocation.*Rotterdam.*/)
+
+        inbound_channel_name == WebMetaDataConstant.WEB_BOOKING_CHANNEL_NAME
+        inbound_channel_type == WebMetaDataConstant.WEB_BOOKING_CHANNEL_TYPE
+
+        (first_event_recorded_at as Timestamp).toInstant() >= startedAt
+        (last_event_recorded_at as Timestamp).toInstant() >= startedAt
+        last_event_sequence_number == 0
+      }
     }
   }
 
@@ -167,6 +183,22 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         // collections verification
         commodity_type_list == ["DRY"] as Set
       }
+
+      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferDetailsRecord(groovySql, bookingOfferIdentifier)) {
+        size() == 8
+
+        booking_offer_identifier == bookingOfferIdentifier
+        customer_identifier == customerIdentifier
+
+        (details as String).matches(/.*originLocation.*Rijeka.*destinationLocation.*Rotterdam.*/)
+
+        inbound_channel_name == CommonConstants.NOT_AVAILABLE
+        inbound_channel_type == CommonConstants.NOT_AVAILABLE
+
+        (first_event_recorded_at as Timestamp).toInstant() >= startedAt
+        (last_event_recorded_at as Timestamp).toInstant() >= startedAt
+        last_event_sequence_number == 0
+      }
     }
   }
 
@@ -192,16 +224,21 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0, delay: 0.1).eventually {
-      listAppender.list.size() == 2
+      listAppender.list.size() == 3
 
-      String firstFormattedMessage = listAppender.list[0].formattedMessage
-      firstFormattedMessage.contains("insert into booking_offer_summary")
-      firstFormattedMessage.contains(bookingOfferIdentifier.toString())
-      firstFormattedMessage.contains(customerIdentifier)
+      String matchingMessage1 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_summary \(.*customer_identifier, .*/) })
+      matchingMessage1 != null
+      matchingMessage1.contains(bookingOfferIdentifier.toString())
+      matchingMessage1.contains(customerIdentifier)
 
-      String secondFormattedMessage2 = listAppender.list[1].formattedMessage
-      secondFormattedMessage2.contains("insert into booking_offer_summary_commodity_type")
-      secondFormattedMessage2.contains(bookingOfferIdentifier.toString())
+      String matchingMessage2 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_summary_commodity_type.*/) })
+      matchingMessage2 != null
+      matchingMessage2.contains(bookingOfferIdentifier.toString())
+
+      String matchingMessage3 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_details \(.*customer_identifier, .*/) })
+      matchingMessage3 != null
+      matchingMessage3.contains(bookingOfferIdentifier.toString())
+      matchingMessage3.contains(customerIdentifier)
     }
 
     cleanup:

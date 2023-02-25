@@ -62,4 +62,19 @@ class BookingOfferSummarySqlHelper {
 
     return groovyRowResultList[0] as Map<String, ?>
   }
+
+  static Map<String, ?> selectBookingOfferDetailsRecord(Sql groovySql, UUID bookingOfferIdentifier) {
+    // because of join, for each value of contained collection we will have duplicate records of parent columns. So we have to filter the result set.
+    List<GroovyRowResult> groovyRowResultList =
+        groovySql.rows(
+            [bookingOfferIdentifier: bookingOfferIdentifier],
+            """
+            SELECT bod.*
+            FROM booking_offer_details bod
+            WHERE bod.booking_offer_identifier = :bookingOfferIdentifier
+            """
+        )
+
+    return groovyRowResultList[0] as Map<String, ?>
+  }
 }
