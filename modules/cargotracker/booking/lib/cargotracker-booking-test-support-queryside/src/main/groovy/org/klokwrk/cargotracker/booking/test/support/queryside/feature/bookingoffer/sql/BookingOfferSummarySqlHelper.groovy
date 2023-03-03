@@ -36,16 +36,16 @@ class BookingOfferSummarySqlHelper {
     return groovyRowResult.recordsCount as Integer
   }
 
-  static Map<String, ?> selectBookingOfferSummaryRecord(Sql groovySql, UUID bookingOfferIdentifier) {
+  static Map<String, ?> selectBookingOfferSummaryRecord(Sql groovySql, UUID bookingOfferId) {
     // because of join, for each value of contained collection we will have duplicate records of parent columns. So we have to filter the result set.
     List<GroovyRowResult> groovyRowResultList =
         groovySql.rows(
-            [bookingOfferIdentifier: bookingOfferIdentifier],
+            [bookingOfferId: bookingOfferId],
             """
             SELECT bos.*, bos_ct.commodity_type
             FROM booking_offer_summary bos
-            LEFT OUTER JOIN booking_offer_summary_commodity_type bos_ct ON bos.booking_offer_identifier = bos_ct.booking_offer_identifier
-            WHERE bos.booking_offer_identifier = :bookingOfferIdentifier
+            LEFT OUTER JOIN booking_offer_summary_commodity_type bos_ct ON bos.booking_offer_id = bos_ct.booking_offer_id
+            WHERE bos.booking_offer_id = :bookingOfferId
             """
         )
 
@@ -63,15 +63,15 @@ class BookingOfferSummarySqlHelper {
     return groovyRowResultList[0] as Map<String, ?>
   }
 
-  static Map<String, ?> selectBookingOfferDetailsRecord(Sql groovySql, UUID bookingOfferIdentifier) {
+  static Map<String, ?> selectBookingOfferDetailsRecord(Sql groovySql, UUID bookingOfferId) {
     // because of join, for each value of contained collection we will have duplicate records of parent columns. So we have to filter the result set.
     List<GroovyRowResult> groovyRowResultList =
         groovySql.rows(
-            [bookingOfferIdentifier: bookingOfferIdentifier],
+            [bookingOfferId: bookingOfferId],
             """
             SELECT bod.*
             FROM booking_offer_details bod
-            WHERE bod.booking_offer_identifier = :bookingOfferIdentifier
+            WHERE bod.booking_offer_id = :bookingOfferId
             """
         )
 

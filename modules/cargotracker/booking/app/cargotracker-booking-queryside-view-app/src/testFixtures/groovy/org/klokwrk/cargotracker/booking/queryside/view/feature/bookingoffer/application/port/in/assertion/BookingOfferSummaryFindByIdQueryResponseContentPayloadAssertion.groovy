@@ -81,7 +81,7 @@ class BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion implements
     payloadMap.with {
       assert size() == 17
 
-      assert bookingOfferIdentifier
+      assert bookingOfferId
       assert customerType
 
       assert originLocationUnLoCode
@@ -113,8 +113,8 @@ class BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion implements
     return this
   }
 
-  BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion hasBookingOfferIdentifier(String expectedBookingOfferIdentifier) {
-    assert payloadMap.bookingOfferIdentifier == expectedBookingOfferIdentifier
+  BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion hasBookingOfferId(String expectedBookingOfferId) {
+    assert payloadMap.bookingOfferId == expectedBookingOfferId
     return this
   }
 

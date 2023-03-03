@@ -84,7 +84,7 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
       EventBus eventBus, Sql groovySql, BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build())
   {
     Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
-    String bookingOfferIdentifier = bookingOfferCreatedEvent.bookingOfferId
+    String bookingOfferId = bookingOfferCreatedEvent.bookingOfferId
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage =
         GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, WebMetaDataFixtureBuilder.webMetaData_booking_default().build())
@@ -94,7 +94,7 @@ abstract class AbstractQuerySideIntegrationSpecification extends Specification {
     // Wait for projection to complete
     Awaitility.await().atMost(Duration.ofSeconds(10)).until({ BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1 })
 
-    return bookingOfferIdentifier
+    return bookingOfferId
   }
 
   @SuppressWarnings("CodeNarc.AbcMetric")

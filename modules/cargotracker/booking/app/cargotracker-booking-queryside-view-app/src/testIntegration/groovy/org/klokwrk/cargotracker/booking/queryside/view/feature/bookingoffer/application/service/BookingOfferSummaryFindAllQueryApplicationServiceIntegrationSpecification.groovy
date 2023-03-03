@@ -238,10 +238,10 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
     listAppender.list.size() == 2
 
     String firstFormattedMessage = listAppender.list[0].formattedMessage
-    firstFormattedMessage.matches(/.*select.*booking_offer_identifier.*from booking_offer_summary \w* where.*limit.*/)
+    firstFormattedMessage.matches(/.*select.*booking_offer_id.*from booking_offer_summary \w* where.*limit.*/)
 
     String secondFormattedMessage = listAppender.list[1].formattedMessage
-    secondFormattedMessage.matches(/.*select.*from booking_offer_summary \w* left outer join booking_offer_summary_commodity_type.*where.*booking_offer_identifier in .*/)
+    secondFormattedMessage.matches(/.*select.*from booking_offer_summary \w* left outer join booking_offer_summary_commodity_type.*where.*booking_offer_id in .*/)
 
     cleanup:
     logger.detachAppender(listAppender)
@@ -274,13 +274,13 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
     listAppender.list.size() == 3
 
     String firstFormattedMessage = listAppender.list[0].formattedMessage
-    firstFormattedMessage.matches(/.*select.*booking_offer_identifier.*from booking_offer_summary \w* where.*limit.*/)
+    firstFormattedMessage.matches(/.*select.*booking_offer_id.*from booking_offer_summary \w* where.*limit.*/)
 
     String secondFormattedMessage = listAppender.list[1].formattedMessage
-    secondFormattedMessage.matches(/.*select count\(\w*.booking_offer_identifier\).*from booking_offer_summary \w* where.*/)
+    secondFormattedMessage.matches(/.*select count\(\w*.booking_offer_id\).*from booking_offer_summary \w* where.*/)
 
     String thirdFormattedMessage = listAppender.list[2].formattedMessage
-    thirdFormattedMessage.matches(/.*select.*from booking_offer_summary \w* left outer join booking_offer_summary_commodity_type.*where.*booking_offer_identifier in .*/)
+    thirdFormattedMessage.matches(/.*select.*from booking_offer_summary \w* left outer join booking_offer_summary_commodity_type.*where.*booking_offer_id in .*/)
 
     cleanup:
     logger.detachAppender(listAppender)

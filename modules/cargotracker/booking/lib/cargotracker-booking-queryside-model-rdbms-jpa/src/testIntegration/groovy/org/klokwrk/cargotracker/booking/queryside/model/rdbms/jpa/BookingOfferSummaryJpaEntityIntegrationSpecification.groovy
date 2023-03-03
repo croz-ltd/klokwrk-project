@@ -69,7 +69,7 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
 
   void setup() {
     originalEntity = new BookingOfferSummaryJpaEntity(
-        bookingOfferIdentifier: UUID.randomUUID(),
+        bookingOfferId: UUID.randomUUID(),
 
         customerId: UUID.randomUUID().toString(),
         customerType: CustomerType.STANDARD,
@@ -159,7 +159,7 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
     testEntityManager.clear()
 
     when:
-    BookingOfferSummaryJpaEntity foundEntity = testEntityManager.find(BookingOfferSummaryJpaEntity, originalEntity.bookingOfferIdentifier)
+    BookingOfferSummaryJpaEntity foundEntity = testEntityManager.find(BookingOfferSummaryJpaEntity, originalEntity.bookingOfferId)
 
     then:
     entitySet.contains(foundEntity)
@@ -171,7 +171,7 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
     testEntityManager.clear()
 
     when:
-    BookingOfferSummaryJpaEntity entityProxy = testEntityManager.entityManager.getReference(BookingOfferSummaryJpaEntity, originalEntity.bookingOfferIdentifier)
+    BookingOfferSummaryJpaEntity entityProxy = testEntityManager.entityManager.getReference(BookingOfferSummaryJpaEntity, originalEntity.bookingOfferId)
 
     then:
     entitySet.contains(entityProxy)
@@ -183,7 +183,7 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
     testEntityManager.persistAndFlush(originalEntity)
     testEntityManager.clear()
 
-    BookingOfferSummaryJpaEntity proxyEntity = testEntityManager.entityManager.getReference(BookingOfferSummaryJpaEntity, originalEntity.bookingOfferIdentifier)
+    BookingOfferSummaryJpaEntity proxyEntity = testEntityManager.entityManager.getReference(BookingOfferSummaryJpaEntity, originalEntity.bookingOfferId)
 
     when:
     testEntityManager.remove(proxyEntity)
@@ -199,7 +199,7 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
     testEntityManager.clear()
 
     when:
-    BookingOfferSummaryJpaEntity foundEntity = testEntityManager.find(BookingOfferSummaryJpaEntity, originalEntity.bookingOfferIdentifier)
+    BookingOfferSummaryJpaEntity foundEntity = testEntityManager.find(BookingOfferSummaryJpaEntity, originalEntity.bookingOfferId)
 
     then:
     foundEntity.firstEventRecordedAt.truncatedTo(ChronoUnit.MILLIS) == currentInstant.truncatedTo(ChronoUnit.MILLIS)

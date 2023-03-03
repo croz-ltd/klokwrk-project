@@ -29,10 +29,10 @@ import org.klokwrk.lib.uom.format.KwrkQuantityFormat
 @CompileStatic
 class BookingOfferSummaryJpaEntityFactory {
   static BookingOfferSummaryJpaEntity makeBookingOfferSummaryJpaEntity(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
-    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
+    UUID bookingOfferId = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
 
     BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = new BookingOfferSummaryJpaEntity(
-        bookingOfferIdentifier: bookingOfferIdentifier,
+        bookingOfferId: bookingOfferId,
 
         customerId: bookingOfferCreatedEvent.customer.customerId,
         customerType: bookingOfferCreatedEvent.customer.customerType,

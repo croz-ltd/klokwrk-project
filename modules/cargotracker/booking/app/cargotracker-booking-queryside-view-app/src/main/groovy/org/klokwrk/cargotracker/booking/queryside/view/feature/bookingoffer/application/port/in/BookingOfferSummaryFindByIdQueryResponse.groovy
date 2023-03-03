@@ -32,7 +32,7 @@ import java.time.Instant
 @MapConstructor(noArg = true)
 @CompileStatic
 class BookingOfferSummaryFindByIdQueryResponse {
-  String bookingOfferIdentifier
+  String bookingOfferId
 
   CustomerType customerType
 

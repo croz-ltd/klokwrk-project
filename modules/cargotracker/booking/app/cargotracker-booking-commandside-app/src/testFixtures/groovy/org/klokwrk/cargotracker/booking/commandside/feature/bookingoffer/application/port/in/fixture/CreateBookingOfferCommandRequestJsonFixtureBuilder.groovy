@@ -46,7 +46,7 @@ class CreateBookingOfferCommandRequestJsonFixtureBuilder implements JsonFixtureB
 
     CreateBookingOfferCommandRequestJsonFixtureBuilder jsonFixtureBuilder = new CreateBookingOfferCommandRequestJsonFixtureBuilder()
         .userId("standard-customer@cargotracker.com")
-        .bookingOfferIdentifier(CombUuidShortPrefixUtils.makeCombShortPrefix().toString())
+        .bookingOfferId(CombUuidShortPrefixUtils.makeCombShortPrefix().toString())
         .routeSpecification(RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rijekaToRotterdam(currentTime))
         .cargos([CargoRequestDataJsonFixtureBuilder.cargoRequestData_dry()])
 
@@ -58,7 +58,7 @@ class CreateBookingOfferCommandRequestJsonFixtureBuilder implements JsonFixtureB
 
     CreateBookingOfferCommandRequestJsonFixtureBuilder jsonFixtureBuilder = new CreateBookingOfferCommandRequestJsonFixtureBuilder()
         .userId("standard-customer@cargotracker.com")
-        .bookingOfferIdentifier(CombUuidShortPrefixUtils.makeCombShortPrefix().toString())
+        .bookingOfferId(CombUuidShortPrefixUtils.makeCombShortPrefix().toString())
         .routeSpecification(RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rijekaToRotterdam(currentTime))
         .cargos([CargoRequestDataJsonFixtureBuilder.cargoRequestData_chilled()])
 
@@ -70,7 +70,7 @@ class CreateBookingOfferCommandRequestJsonFixtureBuilder implements JsonFixtureB
 
     CreateBookingOfferCommandRequestJsonFixtureBuilder jsonFixtureBuilder = new CreateBookingOfferCommandRequestJsonFixtureBuilder()
       .userId("standard-customer@cargotracker.com")
-      .bookingOfferIdentifier(CombUuidShortPrefixUtils.makeCombShortPrefix().toString())
+      .bookingOfferId(CombUuidShortPrefixUtils.makeCombShortPrefix().toString())
       .routeSpecification(RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rijekaToRotterdam(currentTime))
 
     return jsonFixtureBuilder
@@ -81,7 +81,7 @@ class CreateBookingOfferCommandRequestJsonFixtureBuilder implements JsonFixtureB
 
     CreateBookingOfferCommandRequestJsonFixtureBuilder jsonFixtureBuilder = new CreateBookingOfferCommandRequestJsonFixtureBuilder()
         .userId("standard-customer@cargotracker.com")
-        .bookingOfferIdentifier(CombUuidShortPrefixUtils.makeCombShortPrefix().toString())
+        .bookingOfferId(CombUuidShortPrefixUtils.makeCombShortPrefix().toString())
         .routeSpecification(RouteSpecificationRequestDataJsonFixtureBuilder.routeSpecificationRequestData_rotterdamToRijeka(currentTime))
 
     return jsonFixtureBuilder
@@ -90,7 +90,7 @@ class CreateBookingOfferCommandRequestJsonFixtureBuilder implements JsonFixtureB
   static CreateBookingOfferCommandRequestJsonFixtureBuilder createBookingOfferCommandRequest_cargoDry() {
     CreateBookingOfferCommandRequestJsonFixtureBuilder jsonFixtureBuilder = new CreateBookingOfferCommandRequestJsonFixtureBuilder()
         .userId("standard-customer@cargotracker.com")
-        .bookingOfferIdentifier(CombUuidShortPrefixUtils.makeCombShortPrefix().toString())
+        .bookingOfferId(CombUuidShortPrefixUtils.makeCombShortPrefix().toString())
         .cargos([CargoRequestDataJsonFixtureBuilder.cargoRequestData_dry()])
 
     return jsonFixtureBuilder
@@ -99,14 +99,14 @@ class CreateBookingOfferCommandRequestJsonFixtureBuilder implements JsonFixtureB
   static CreateBookingOfferCommandRequestJsonFixtureBuilder createBookingOfferCommandRequest_cargoChilled() {
     CreateBookingOfferCommandRequestJsonFixtureBuilder jsonFixtureBuilder = new CreateBookingOfferCommandRequestJsonFixtureBuilder()
         .userId("standard-customer@cargotracker.com")
-        .bookingOfferIdentifier(CombUuidShortPrefixUtils.makeCombShortPrefix().toString())
+        .bookingOfferId(CombUuidShortPrefixUtils.makeCombShortPrefix().toString())
         .cargos([CargoRequestDataJsonFixtureBuilder.cargoRequestData_chilled()])
 
     return jsonFixtureBuilder
   }
 
   String userId
-  String bookingOfferIdentifier
+  String bookingOfferId
   RouteSpecificationRequestDataJsonFixtureBuilder routeSpecification
   Collection<CargoRequestDataJsonFixtureBuilder> cargos = []
 
@@ -131,7 +131,7 @@ class CreateBookingOfferCommandRequestJsonFixtureBuilder implements JsonFixtureB
   Map<String, ?> buildAsMap() {
     Map<String, ?> mapToReturn = [
         userId: userId,
-        bookingOfferIdentifier: bookingOfferIdentifier,
+        bookingOfferId: bookingOfferId,
         routeSpecification: routeSpecification?.buildAsMap(),
         cargos: cargos?.collect({ CargoRequestDataJsonFixtureBuilder cargoRequestDataJsonFixtureBuilder ->
           cargoRequestDataJsonFixtureBuilder.buildAsMap()
@@ -151,7 +151,7 @@ class CreateBookingOfferCommandRequestJsonFixtureBuilder implements JsonFixtureB
     String stringToReturn = """
         {
             "userId": ${ stringToJsonString(userId) },
-            "bookingOfferIdentifier": ${ stringToJsonString(bookingOfferIdentifier) },
+            "bookingOfferId": ${ stringToJsonString(bookingOfferId) },
             "routeSpecification": ${ routeSpecification?.buildAsJsonString() },
             "cargos": ${ cargosToJsonString(cargos) }
         }

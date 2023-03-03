@@ -215,10 +215,10 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
 
   void "makeCreateBookingOfferCommand - should work for specified cargo identifier"() {
     given:
-    String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
+    String myBookingOfferId = CombUuidShortPrefixUtils.makeCombShortPrefix()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userId: "standard-customer@cargotracker.com",
-        bookingOfferIdentifier: bookingOfferIdentifier,
+        bookingOfferId: myBookingOfferId,
         routeSpecification: validRouteSpecificationRequestData,
         cargos: [validCargoRequestData]
     )
@@ -228,8 +228,8 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
 
     then:
     verifyAll(createBookingOfferCommand) {
-      aggregateIdentifier == bookingOfferIdentifier
-      bookingOfferId.identifier == bookingOfferIdentifier
+      aggregateIdentifier == myBookingOfferId
+      bookingOfferId.identifier == myBookingOfferId
       routeSpecification.originLocation.unLoCode.code == "HRRJK"
       routeSpecification.destinationLocation.unLoCode.code == "NLRTM"
       routeSpecification.departureEarliestTime == currentInstantRoundedAndOneHour
@@ -242,7 +242,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userId: "standard-customer@cargotracker.com",
-        bookingOfferIdentifier: "invalid",
+        bookingOfferId: "invalid",
         routeSpecification: validRouteSpecificationRequestData,
         cargos: [validCargoRequestData]
     )
@@ -256,7 +256,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
 
   void "makeCreateBookingOfferCommandResponse - should create expected response"() {
     given:
-    String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
+    String myBookingOfferId = CombUuidShortPrefixUtils.makeCombShortPrefix()
     Location myOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("HRRJK")
     Location myDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery("NLRTM")
 
@@ -265,7 +265,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
 
     BookingOfferAggregate bookingOfferAggregate = new BookingOfferAggregate(
         customer: Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),
-        bookingOfferId: BookingOfferId.make(myBookingOfferIdentifier),
+        bookingOfferId: BookingOfferId.make(myBookingOfferId),
         routeSpecification: new RouteSpecification(
             originLocation: myOriginLocation, destinationLocation: myDestinationLocation,
             creationTime: currentInstantRounded,
@@ -286,7 +286,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
       ]
 
       bookingOfferId == [
-          identifier: myBookingOfferIdentifier
+          identifier: myBookingOfferId
       ]
 
       routeSpecification == [

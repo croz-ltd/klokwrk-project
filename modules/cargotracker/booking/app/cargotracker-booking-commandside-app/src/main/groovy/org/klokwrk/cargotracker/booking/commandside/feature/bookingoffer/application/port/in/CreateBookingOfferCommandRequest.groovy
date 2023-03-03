@@ -66,7 +66,7 @@ class CreateBookingOfferCommandRequest {
   @TrimmedStringConstraint(groups = [Level3])
   @Size(min = 36, max = 36, groups = [Level2])
   @NotBlankWhenNullableConstraint(groups = [Level1])
-  String bookingOfferIdentifier
+  String bookingOfferId
 
   /**
    * Route specification data.

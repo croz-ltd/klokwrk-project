@@ -52,7 +52,7 @@ import static org.hamcrest.Matchers.not
 import static org.hamcrest.Matchers.notNullValue
 
 // Note about @EqualsAndHashCode:
-//   We assume bookingOfferIdentifier will never be null when equals and hashCode are used.
+//   We assume bookingOfferId will never be null when equals and hashCode are used.
 //   For this to work, identifier have to be assigned before passing an entity to JPA provider. For user code this is enforced with combination of @KwrkMapConstructorNoArgHideable and
 //   @KwrkMapConstructorDefaultPostCheck while Hibernate can still operate with private default constructor.
 //
@@ -64,7 +64,7 @@ import static org.hamcrest.Matchers.notNullValue
 //     https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
 @SuppressWarnings("CodeNarc.AbcMetric")
 @ToString
-@EqualsAndHashCode(includes = ["bookingOfferIdentifier"])
+@EqualsAndHashCode(includes = ["bookingOfferId"])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true, useSetters = true)
 @KwrkMapConstructorDefaultPostCheck
@@ -74,7 +74,7 @@ import static org.hamcrest.Matchers.notNullValue
 @CompileStatic
 class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Id
-  UUID bookingOfferIdentifier
+  UUID bookingOfferId
 
   @Column(nullable = false, updatable = false) String customerId
   @Column(nullable = false) @Enumerated(EnumType.STRING) CustomerType customerType
@@ -92,7 +92,7 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Column(nullable = false, columnDefinition = "timestamptz") Instant arrivalLatestTime
 
   @ElementCollection(fetch = FetchType.LAZY)
-  @CollectionTable(name = "booking_offer_summary_commodity_type", joinColumns = @JoinColumn(name = "booking_offer_identifier"))
+  @CollectionTable(name = "booking_offer_summary_commodity_type", joinColumns = @JoinColumn(name = "booking_offer_id"))
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, name = "commodity_type")
   Set<CommodityType> commodityTypes
@@ -114,8 +114,8 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @SuppressWarnings("CodeNarc.AbcMetric")
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
-    requireMatch(bookingOfferIdentifier, notNullValue())
-    requireMatch(RandomUuidUtils.checkIfRandomUuid(bookingOfferIdentifier), is(true))
+    requireMatch(bookingOfferId, notNullValue())
+    requireMatch(RandomUuidUtils.checkIfRandomUuid(bookingOfferId), is(true))
 
     requireMatch(customerId, not(emptyOrNullString()))
     requireMatch(customerType, notNullValue())

@@ -70,7 +70,7 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
     Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build()
-    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
+    UUID bookingOfferId = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
     String customerId = bookingOfferCreatedEvent.customer.customerId
     CustomerType customerType = bookingOfferCreatedEvent.customer.customerType
 
@@ -82,9 +82,9 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
     expect:
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
-      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
+      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferId)) {
         size() == 21
-        booking_offer_identifier == bookingOfferIdentifier
+        booking_offer_id == bookingOfferId
 
         customer_id == customerId
         customer_type == customerType.name()
@@ -116,10 +116,10 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
         commodity_type_list == ["DRY"] as Set
       }
 
-      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferDetailsRecord(groovySql, bookingOfferIdentifier)) {
+      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferDetailsRecord(groovySql, bookingOfferId)) {
         size() == 8
 
-        booking_offer_identifier == bookingOfferIdentifier
+        booking_offer_id == bookingOfferId
         customer_id == customerId
 
         (details as String).matches(/.*originLocation.*Rijeka.*destinationLocation.*Rotterdam.*/)
@@ -140,7 +140,7 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
     Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build()
-    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
+    UUID bookingOfferId = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
     String customerId = bookingOfferCreatedEvent.customer.customerId
     CustomerType customerType = bookingOfferCreatedEvent.customer.customerType
 
@@ -150,9 +150,9 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
     expect:
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
-      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
+      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferId)) {
         size() == 21
-        booking_offer_identifier == bookingOfferIdentifier
+        booking_offer_id == bookingOfferId
 
         customer_id == customerId
         customer_type == customerType.name()
@@ -184,10 +184,10 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
         commodity_type_list == ["DRY"] as Set
       }
 
-      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferDetailsRecord(groovySql, bookingOfferIdentifier)) {
+      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferDetailsRecord(groovySql, bookingOfferId)) {
         size() == 8
 
-        booking_offer_identifier == bookingOfferIdentifier
+        booking_offer_id == bookingOfferId
         customer_id == customerId
 
         (details as String).matches(/.*originLocation.*Rijeka.*destinationLocation.*Rotterdam.*/)
@@ -214,7 +214,7 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
     logger.addAppender(listAppender)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build()
-    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
+    UUID bookingOfferId = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
     String customerId = bookingOfferCreatedEvent.customer.customerId
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, [:])
@@ -228,16 +228,16 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
 
       String matchingMessage1 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_summary \(.*customer_id, .*/) })
       matchingMessage1 != null
-      matchingMessage1.contains(bookingOfferIdentifier.toString())
+      matchingMessage1.contains(bookingOfferId.toString())
       matchingMessage1.contains(customerId)
 
       String matchingMessage2 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_summary_commodity_type.*/) })
       matchingMessage2 != null
-      matchingMessage2.contains(bookingOfferIdentifier.toString())
+      matchingMessage2.contains(bookingOfferId.toString())
 
       String matchingMessage3 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_details \(.*customer_id, .*/) })
       matchingMessage3 != null
-      matchingMessage3.contains(bookingOfferIdentifier.toString())
+      matchingMessage3.contains(bookingOfferId.toString())
       matchingMessage3.contains(customerId)
     }
 

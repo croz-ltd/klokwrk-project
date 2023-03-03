@@ -44,7 +44,7 @@ import static org.hamcrest.Matchers.not
 import static org.hamcrest.Matchers.notNullValue
 
 @ToString
-@EqualsAndHashCode(includes = ["bookingOfferIdentifier"])
+@EqualsAndHashCode(includes = ["bookingOfferId"])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true, useSetters = true)
 @KwrkMapConstructorDefaultPostCheck
@@ -55,7 +55,7 @@ import static org.hamcrest.Matchers.notNullValue
 @CompileStatic
 class BookingOfferDetailsJpaEntity implements PostMapConstructorCheckable {
   @Id
-  UUID bookingOfferIdentifier
+  UUID bookingOfferId
 
   @Column(nullable = false, updatable = false) String customerId
   @Column(nullable = false) @Type(type = "json") String details
@@ -69,8 +69,8 @@ class BookingOfferDetailsJpaEntity implements PostMapConstructorCheckable {
 
   @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
-    requireMatch(bookingOfferIdentifier, notNullValue())
-    requireMatch(RandomUuidUtils.checkIfRandomUuid(bookingOfferIdentifier), is(true))
+    requireMatch(bookingOfferId, notNullValue())
+    requireMatch(RandomUuidUtils.checkIfRandomUuid(bookingOfferId), is(true))
 
     requireMatch(details, not(emptyOrNullString()))
 

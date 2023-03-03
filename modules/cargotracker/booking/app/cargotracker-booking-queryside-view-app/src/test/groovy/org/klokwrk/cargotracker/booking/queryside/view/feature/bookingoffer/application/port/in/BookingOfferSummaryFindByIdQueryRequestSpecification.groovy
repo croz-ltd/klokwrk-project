@@ -41,7 +41,7 @@ class BookingOfferSummaryFindByIdQueryRequestSpecification extends Specification
   void "should pass validation for valid data"() {
     given:
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
-        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: "00000000-0000-4000-8000-000000000000", userId: "someUserId")
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: "00000000-0000-4000-8000-000000000000", userId: "someUserId")
 
     when:
     validationService.validate(bookingOfferSummaryFindByIdQueryRequest)
@@ -53,7 +53,7 @@ class BookingOfferSummaryFindByIdQueryRequestSpecification extends Specification
   void "should not pass validation for invalid data"() {
     given:
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
-        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: bookingOfferIdentifierParam, userId: userIdParam)
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: bookingOfferIdParam, userId: userIdParam)
 
     when:
     validationService.validate(bookingOfferSummaryFindByIdQueryRequest)
@@ -65,7 +65,7 @@ class BookingOfferSummaryFindByIdQueryRequestSpecification extends Specification
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
-    bookingOfferIdentifierParam            | userIdParam    | constraintTypeParam
+    bookingOfferIdParam                    | userIdParam    | constraintTypeParam
     null                                   | "someUserId"   | NotBlank
     ""                                     | "someUserId"   | NotBlank
     "  "                                   | "someUserId"   | NotBlank
@@ -83,7 +83,7 @@ class BookingOfferSummaryFindByIdQueryRequestSpecification extends Specification
   void "should not pass validation for unexpected data"() {
     given:
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
-        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: UUID.randomUUID(), userId: "someUserId", customerId: "someCustomerId")
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: UUID.randomUUID(), userId: "someUserId", customerId: "someCustomerId")
 
     when:
     validationService.validate(bookingOfferSummaryFindByIdQueryRequest)

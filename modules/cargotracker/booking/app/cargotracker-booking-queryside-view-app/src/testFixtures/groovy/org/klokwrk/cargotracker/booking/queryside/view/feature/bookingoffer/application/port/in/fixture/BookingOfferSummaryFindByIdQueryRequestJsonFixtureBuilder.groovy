@@ -37,13 +37,13 @@ class BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder implements JsonF
   }
 
   String userId
-  String bookingOfferIdentifier
+  String bookingOfferId
 
   @Override
   Map<String, ?> buildAsMap() {
     Map<String, ?> mapToReturn = [
         userId: userId,
-        bookingOfferIdentifier: bookingOfferIdentifier,
+        bookingOfferId: bookingOfferId,
     ]
 
     return mapToReturn
@@ -54,7 +54,7 @@ class BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder implements JsonF
     String stringToReturn = """
         {
             "userId": ${ stringToJsonString(userId) },
-            "bookingOfferIdentifier": ${ stringToJsonString(bookingOfferIdentifier) }
+            "bookingOfferId": ${ stringToJsonString(bookingOfferId) }
         }
         """
 

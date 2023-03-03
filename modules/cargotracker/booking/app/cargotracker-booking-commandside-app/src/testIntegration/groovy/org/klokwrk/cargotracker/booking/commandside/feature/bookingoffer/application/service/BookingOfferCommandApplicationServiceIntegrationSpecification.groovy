@@ -57,10 +57,10 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
     Instant expectedDepartureLatestTime = InstantUtils.roundUpInstantToTheHour(departureLatestTime)
     Instant expectedArrivalLatestTime = InstantUtils.roundUpInstantToTheHour(arrivalLatestTime)
 
-    String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
+    String myBookingOfferId = CombUuidShortPrefixUtils.makeCombShortPrefix()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
         userId: "standard-customer@cargotracker.com",
-        bookingOfferIdentifier: myBookingOfferIdentifier,
+        bookingOfferId: myBookingOfferId,
         routeSpecification: new RouteSpecificationRequestData(
             originLocation: "NLRTM", destinationLocation: "HRRJK",
             departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
@@ -83,7 +83,7 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
     then:
     createBookingOfferCommandResponseMetadata.isEmpty()
     verifyAll(createBookingOfferCommandResponsePayload) {
-      bookingOfferId.identifier == myBookingOfferIdentifier
+      bookingOfferId.identifier == myBookingOfferId
 
       verifyAll(it.routeSpecification) {
         originLocation.name == "Rotterdam"

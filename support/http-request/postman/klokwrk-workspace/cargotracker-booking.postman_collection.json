@@ -35,7 +35,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -101,7 +101,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -167,7 +167,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -233,7 +233,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -299,7 +299,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -365,7 +365,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -431,7 +431,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -497,7 +497,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -563,7 +563,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -629,7 +629,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -1072,7 +1072,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": \"{{execution_receivedBookingOfferId}}\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1125,7 +1125,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": \"{{execution_receivedBookingOfferId}}\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1178,7 +1178,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": null\n}",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": null\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1230,7 +1230,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": null\n}",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": null\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1282,7 +1282,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{$randomUUID}}\"\n}",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": \"{{$randomUUID}}\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1334,7 +1334,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{$randomUUID}}\"\n}",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": \"{{$randomUUID}}\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1779,7 +1779,7 @@
 									"script": {
 										"exec": [
 											"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-											"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+											"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 											"",
 											"pm.test(\"booking offer created\", function () {",
 											"    pm.expect(pm.response.json().payload.bookingOfferId.identifier).to.not.null;",
@@ -1870,7 +1870,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
+									"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": \"{{execution_receivedBookingOfferId}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1911,7 +1911,7 @@
 									"script": {
 										"exec": [
 											"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-											"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+											"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 											"",
 											"pm.test(\"booking offer created\", function () {",
 											"    pm.expect(pm.response.json().payload.bookingOfferId.identifier).to.not.null;",
@@ -1975,7 +1975,7 @@
 									"script": {
 										"exec": [
 											"pm.test(\"summary received\", function () {",
-											"    pm.expect(pm.response.json().payload.bookingOfferIdentifier).to.not.null;",
+											"    pm.expect(pm.response.json().payload.bookingOfferId).to.not.null;",
 											"});",
 											"",
 											"pm.test(\"locale is en\", function () {",
@@ -2002,7 +2002,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
+									"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": \"{{execution_receivedBookingOfferId}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2048,7 +2048,7 @@
 											"",
 											"pm.test(\"expected pageContent received\", function () {",
 											"    pm.expect(pm.response.json().payload.pageContent).exist;",
-											"    pm.expect(pm.response.json().payload.pageContent[0].bookingOfferIdentifier).exist;",
+											"    pm.expect(pm.response.json().payload.pageContent[0].bookingOfferId).exist;",
 											"});",
 											""
 										],
@@ -2121,7 +2121,7 @@
 											"",
 											"pm.test(\"expected pageContent received\", function () {",
 											"    pm.expect(pm.response.json().payload.pageContent).exist;",
-											"    pm.expect(pm.response.json().payload.pageContent[0].bookingOfferIdentifier).exist;",
+											"    pm.expect(pm.response.json().payload.pageContent[0].bookingOfferId).exist;",
 											"});",
 											""
 										],
@@ -2226,10 +2226,10 @@
 					"    variableScope.unset(\"currentHourEnd\");",
 					"}",
 					"",
-					"Object.prototype.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible = function(response, variableScope) {",
+					"Object.prototype.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible = function(response, variableScope) {",
 					"    if (response.to.have.status(200)) {",
-					"        var receivedBookingOfferIdentifier = response.json().payload.bookingOfferId.identifier",
-					"        variableScope.set(\"execution_receivedBookingOfferIdentifier\", receivedBookingOfferIdentifier)",
+					"        var receivedBookingOfferId = response.json().payload.bookingOfferId.identifier",
+					"        variableScope.set(\"execution_receivedBookingOfferId\", receivedBookingOfferId)",
 					"    }",
 					"}",
 					""

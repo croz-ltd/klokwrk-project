@@ -81,12 +81,12 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
   void "should work for correct request"() {
     given:
     Instant startedAt = Instant.now()
-    String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
+    String myBookingOfferId = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
 
     when:
     Map responseMap = bookingOfferSummaryFindById_succeeded(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
-            .bookingOfferIdentifier(myBookingOfferIdentifier)
+            .bookingOfferId(myBookingOfferId)
             .buildAsJsonString(),
         acceptLanguageParam,
         mockMvc
@@ -100,7 +100,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
 
     assertResponseHasPayloadThat(responseMap) {
       isSuccessful()
-      hasBookingOfferIdentifier(myBookingOfferIdentifier)
+      hasBookingOfferId(myBookingOfferId)
       hasCustomerTypeOfStandard()
       hasCommodityOfDryTypeWithDefaultWeight()
       hasOriginLocationOfRijeka()
@@ -122,7 +122,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     when:
     Map responseMap = bookingOfferSummaryFindById_failed(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
-            .bookingOfferIdentifier(null)
+            .bookingOfferId(null)
             .userId(null)
             .buildAsJsonString(),
         acceptLanguageParam,
@@ -143,7 +143,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
 
       verifyAll(constraintViolations as List<Map>) {
         size() == 2
-        it.find({ it.path == "bookingOfferIdentifier" }).type == "notBlank"
+        it.find({ it.path == "bookingOfferId" }).type == "notBlank"
         it.find({ it.path == "userId" }).type == "notBlank"
       }
     }
@@ -159,12 +159,12 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
 
   void "should return expected response when specified user can not be found - stateful validation failure"() {
     given:
-    String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
+    String myBookingOfferId = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
 
     when:
     Map responseMap = bookingOfferSummaryFindById_failed(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
-            .bookingOfferIdentifier(myBookingOfferIdentifier)
+            .bookingOfferId(myBookingOfferId)
             .userId("someUserId")
             .buildAsJsonString(),
         acceptLanguageParam,
@@ -191,7 +191,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     when:
     Map responseMap = bookingOfferSummaryFindById_failedNotFound(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
-            .bookingOfferIdentifier(UUID.randomUUID().toString())
+            .bookingOfferId(UUID.randomUUID().toString())
             .buildAsJsonString(),
         acceptLanguageParam,
         mockMvc

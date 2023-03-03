@@ -39,27 +39,26 @@ interface BookingOfferSummaryViewJpaRepository extends
       SELECT b FROM BookingOfferSummaryJpaEntity b
       LEFT JOIN FETCH b.commodityTypes
       WHERE
-        b.bookingOfferIdentifier = :bookingOfferIdentifier
+        b.bookingOfferId = :bookingOfferId
         AND b.customerId = :customerId
   """)
-  BookingOfferSummaryJpaEntity findByBookingOfferIdentifierAndCustomerId(
-      @Param("bookingOfferIdentifier") UUID bookingOfferIdentifier, @Param("customerId") String customerId)
+  BookingOfferSummaryJpaEntity findByBookingOfferIdAndCustomerId(@Param("bookingOfferId") UUID bookingOfferId, @Param("customerId") String customerId)
 
-  // Intended to be used in combination with findAllByBookingOfferIdentifiersAndCustomerId to avoid paging in memory while fetching a collection.
+  // Intended to be used in combination with findAllByBookingOfferIdAndCustomerId to avoid paging in memory while fetching a collection.
   // Reference: https://vladmihalcea.com/fix-hibernate-hhh000104-entity-fetch-pagination-warning-message/
   @Query(
       value ="""
-          SELECT b.bookingOfferIdentifier FROM BookingOfferSummaryJpaEntity b
+          SELECT b.bookingOfferId FROM BookingOfferSummaryJpaEntity b
           WHERE b.customerId = :customerId
       """,
       countQuery = """
-          SELECT COUNT(b.bookingOfferIdentifier)
+          SELECT COUNT(b.bookingOfferId)
           FROM BookingOfferSummaryJpaEntity b
           WHERE b.customerId = :customerId"""
   )
-  Page<UUID> findPageOfBookingOfferIdentifiersByCustomerId(@Param("customerId") String customerId, Pageable pageable)
+  Page<UUID> findPageOfBookingOfferIdByCustomerId(@Param("customerId") String customerId, Pageable pageable)
 
-  // Intended to be used in combination with findPageOfBookingOfferIdentifiersByCustomerId to avoid paging in memory while fetching a collection.
+  // Intended to be used in combination with findPageOfBookingOfferIdsByCustomerId to avoid paging in memory while fetching a collection.
   // Fixing in-memory paging: https://vladmihalcea.com/fix-hibernate-hhh000104-entity-fetch-pagination-warning-message/
   // JOIN FETCH: https://vladmihalcea.com/n-plus-1-query-problem/
   // DISTINCT JPQL keyword and QueryHint: https://vladmihalcea.com/jpql-distinct-jpa-hibernate/
@@ -67,10 +66,9 @@ interface BookingOfferSummaryViewJpaRepository extends
       SELECT DISTINCT b FROM BookingOfferSummaryJpaEntity b
       LEFT JOIN FETCH b.commodityTypes
       WHERE
-        b.bookingOfferIdentifier IN :bookingOfferIdentifiers
+        b.bookingOfferId IN :bookingOfferIds
         AND b.customerId = :customerId
   """)
   @QueryHints(@QueryHint(name = org.hibernate.jpa.QueryHints.HINT_PASS_DISTINCT_THROUGH, value = "false"))
-  List<BookingOfferSummaryJpaEntity> findAllByBookingOfferIdentifiersAndCustomerId(
-      @Param("bookingOfferIdentifiers") List<UUID> bookingOfferIdentifiers, @Param("customerId") String customerId)
+  List<BookingOfferSummaryJpaEntity> findAllByBookingOfferIdsAndCustomerId(@Param("bookingOfferIds") List<UUID> bookingOfferIds, @Param("customerId") String customerId)
 }

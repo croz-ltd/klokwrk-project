@@ -81,5 +81,5 @@ class BookingOfferSummaryFindByIdQueryRequest {
   @RandomUuidFormatConstraint(groups = [Level3])
   @Size(min = 36, max = 36, groups = [Level2])
   @NotBlank(groups = [Level1])
-  String bookingOfferIdentifier
+  String bookingOfferId
 }

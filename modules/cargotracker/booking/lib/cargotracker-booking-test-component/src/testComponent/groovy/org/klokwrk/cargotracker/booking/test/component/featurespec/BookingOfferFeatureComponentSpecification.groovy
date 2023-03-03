@@ -88,7 +88,7 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
   void setupSpec() {
     // Execute a list of commands with predefined data used for findAll and searchAll queries
     List<String> commandRequestBodyList = makeCommandRequestBodyList_createBookingOffer()
-    List<String> createdBookingOfferIdentifierList = []
+    List<String> createdBookingOfferIdList = []
     commandRequestBodyList.each { String commandRequestBody ->
       Map commandResponseMap = createBookingOffer_succeeded(commandRequestBody, "en", commandSideApp)
 
@@ -96,14 +96,14 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
         countOf_createdBookingOffers_forStandardCustomer++
       }
 
-      String commandResponseBookingOfferIdentifier = commandResponseMap.payload.bookingOfferId.identifier
-      createdBookingOfferIdentifierList << commandResponseBookingOfferIdentifier
+      String commandResponseBookingOfferId = commandResponseMap.payload.bookingOfferId.identifier
+      createdBookingOfferIdList << commandResponseBookingOfferId
     }
 
     // Wait for projection of a event corresponding to the last command
     bookingOfferSummaryFindById_succeeded(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
-            .bookingOfferIdentifier(createdBookingOfferIdentifierList.last())
+            .bookingOfferId(createdBookingOfferIdList.last())
             .buildAsJsonString(),
         "en",
         querySideViewApp
@@ -185,13 +185,13 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
         commandSideApp
     )
 
-    String bookingOfferIdentifier = commandResponseMap.payload.bookingOfferId.identifier
-    assert bookingOfferIdentifier
+    String bookingOfferId = commandResponseMap.payload.bookingOfferId.identifier
+    assert bookingOfferId
 
     when:
     Map queryResponseMap = bookingOfferSummaryFindById_succeeded(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
-            .bookingOfferIdentifier(bookingOfferIdentifier)
+            .bookingOfferId(bookingOfferId)
             .buildAsJsonString(),
         acceptLanguageParam,
         querySideViewApp
@@ -226,7 +226,7 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
     when:
     Map queryResponseMap = bookingOfferSummaryFindById_notFound(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
-            .bookingOfferIdentifier(UUID.randomUUID().toString())
+            .bookingOfferId(UUID.randomUUID().toString())
             .buildAsJsonString(),
         acceptLanguageParam,
         querySideViewApp

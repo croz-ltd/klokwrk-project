@@ -88,7 +88,7 @@ class BookingOfferCommandFactoryService {
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
         customer: customer,
-        bookingOfferId: BookingOfferId.makeWithGeneratedIdentifierIfNeeded(createBookingOfferCommandRequest.bookingOfferIdentifier),
+        bookingOfferId: BookingOfferId.makeWithGeneratedIdentifierIfNeeded(createBookingOfferCommandRequest.bookingOfferId),
         routeSpecification: RouteSpecification.make(
             resolvedOriginLocation, resolvedDestinationLocation,
             createBookingOfferCommandRequest.routeSpecification.departureEarliestTime, createBookingOfferCommandRequest.routeSpecification.departureLatestTime,
