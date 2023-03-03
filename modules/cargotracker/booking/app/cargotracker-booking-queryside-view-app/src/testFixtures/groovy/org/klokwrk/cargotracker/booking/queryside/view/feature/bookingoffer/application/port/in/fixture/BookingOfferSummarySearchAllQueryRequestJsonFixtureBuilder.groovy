@@ -40,21 +40,21 @@ import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixture
 class BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder implements JsonFixtureBuilder {
   static BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder bookingOfferSummarySearchAllQueryRequest_standardCustomer() {
     BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder jsonFixtureBuilder = new BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder()
-        .userIdentifier("standard-customer@cargotracker.com")
+        .userId("standard-customer@cargotracker.com")
 
     return jsonFixtureBuilder
   }
 
   static BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder bookingOfferSummarySearchAllQueryRequest_originOfRijeka() {
     BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder jsonFixtureBuilder = new BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder()
-        .userIdentifier("standard-customer@cargotracker.com")
+        .userId("standard-customer@cargotracker.com")
         .customerTypeSearchList(["STANDARD", "GOLD"])
         .originLocationName("Rijeka")
 
     return jsonFixtureBuilder
   }
 
-  String userIdentifier
+  String userId
   List<String> customerTypeSearchList
   String originLocationName
   String originLocationCountryName
@@ -76,7 +76,7 @@ class BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder implements Json
   @Override
   Map<String, ?> buildAsMap() {
     Map<String, ?> mapToReturn = [
-        userIdentifier: userIdentifier
+        userId: userId
     ]
 
     customerTypeSearchList ? mapToReturn.customerTypeSearchList = customerTypeSearchList : mapToReturn
@@ -103,7 +103,7 @@ class BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder implements Json
   @SuppressWarnings("DuplicatedCode")
   @Override
   String buildAsJsonString() {
-    String jsonStringContent = /"userIdentifier": ${ stringToJsonString(userIdentifier) }/
+    String jsonStringContent = /"userId": ${ stringToJsonString(userId) }/
 
     customerTypeSearchList ? jsonStringContent += /, "customerTypeSearchList":[${ customerTypeSearchList.collect({ /"$it"/ }).join(",") }]/ : jsonStringContent
     originLocationName ? jsonStringContent += /, "originLocationName": ${ stringToJsonString(originLocationName) }/ : jsonStringContent

@@ -145,12 +145,12 @@ class BookingOfferFeatureTestHelpers {
             .cargos([cargoRequestData_frozen().commodityWeight(30_000.kg)])
             .buildAsJsonString(),
         createBookingOfferCommandRequest_base()
-            .userIdentifier("gold-customer@cargotracker.com")
+            .userId("gold-customer@cargotracker.com")
             .routeSpecification(routeSpecificationRequestData_base(currentTime).originLocation("DEHAM").destinationLocation("USLAX"))
             .cargos([cargoRequestData_airCooled().commodityWeight(70_000.kg)])
             .buildAsJsonString(),
         createBookingOfferCommandRequest_base()
-            .userIdentifier("platinum-customer@cargotracker.com")
+            .userId("platinum-customer@cargotracker.com")
             .routeSpecification(routeSpecificationRequestData_base(currentTime).originLocation("NLRTM").destinationLocation("USNYC"))
             .cargos([cargoRequestData_dry().commodityWeight(40_000.kg)])
             .buildAsJsonString(),

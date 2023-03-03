@@ -78,7 +78,7 @@ abstract class AbstractCommandRetrySchedulerIntegrationSpecification extends Abs
 
     String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: myBookingOfferIdentifier,
         routeSpecification: new RouteSpecificationRequestData(
             originLocation: "NLRTM", destinationLocation: "HRRJK",
@@ -141,7 +141,7 @@ abstract class AbstractCommandRetrySchedulerIntegrationSpecification extends Abs
 
     String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracker.com",
         bookingOfferIdentifier: bookingOfferIdentifier,
         routeSpecification: new RouteSpecificationRequestData(
             originLocation: "NLRTM", destinationLocation: "HRRJK",

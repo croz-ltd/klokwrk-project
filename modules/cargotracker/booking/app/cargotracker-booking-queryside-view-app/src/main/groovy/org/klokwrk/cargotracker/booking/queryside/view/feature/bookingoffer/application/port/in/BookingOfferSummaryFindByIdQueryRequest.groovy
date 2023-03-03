@@ -47,22 +47,22 @@ class BookingOfferSummaryFindByIdQueryRequest {
    * <p/>
    * Not null and not blank.
    * <p/>
-   * During request processing, {@code userIdentifier} is converted to the corresponding {@code customerId} which is used at the database level.
+   * During request processing, {@code userId} is converted to the corresponding {@code customerId} which is used at the database level.
    */
   @TrimmedStringConstraint(groups = [Level2])
   @NotBlank(groups = [Level1])
-  String userIdentifier
+  String userId
 
   /**
    * Internal customer identifier.
    * <p/>
    * In inbound request it must be null.
    * <p/>
-   * It is assigned during request processing based on corresponding {@code userIdentifier}. {@code customerId} is used at the database level, while the processing pipeline is responsible to
-   * map provided {@code userIdentifier} to {@code customerId}.
+   * It is assigned during request processing based on corresponding {@code userId}. {@code customerId} is used at the database level, while the processing pipeline is responsible to
+   * map provided {@code userId} to {@code customerId}.
    * <p/>
    * We could introduce another class for complete separation of concerns, i.e., something like {@code BookingOfferSummaryQuery} (and corresponding {@code }BookingOfferSummaryQueryResult}). That
-   * {@code BookingOfferSummaryQuery} class would then contain {@code customerId}, but not {@code userIdentifier} property. Of course, we should also implement appropriate mapping for such a
+   * {@code BookingOfferSummaryQuery} class would then contain {@code customerId}, but not {@code userId} property. Of course, we should also implement appropriate mapping for such a
    * scenario.
    * <p/>
    * However, for simplicity and the smaller number of DTO classes, we have just added the {@code customerId} property to the already existing {@code BookingOfferSummaryFindByIdQueryRequest}

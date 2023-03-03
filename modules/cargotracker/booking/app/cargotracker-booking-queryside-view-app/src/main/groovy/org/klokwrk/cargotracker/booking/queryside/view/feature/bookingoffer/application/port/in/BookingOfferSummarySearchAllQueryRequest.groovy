@@ -47,7 +47,7 @@ import java.time.Instant
 class BookingOfferSummarySearchAllQueryRequest {
   @TrimmedStringConstraint(groups = [Level2])
   @NotBlank(groups = [Level1])
-  String userIdentifier
+  String userId
 
   @Null(groups = [Level1])
   String customerId

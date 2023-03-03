@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.app
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryGateway
 import org.klokwrk.cargotracker.booking.domain.model.value.Customer
-import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdentifierPortOut
+import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdPortOut
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryResponse
@@ -49,12 +49,12 @@ import static org.hamcrest.Matchers.notNullValue
 class BookingOfferQueryApplicationService implements BookingOfferSummaryFindByIdQueryPortIn, BookingOfferSummaryFindAllQueryPortIn, BookingOfferSummarySearchAllQueryPortIn {
   private final QueryGatewayAdapter queryGatewayAdapter
   private final ValidationService validationService
-  private final CustomerByUserIdentifierPortOut customerByUserIdentifierPortOut
+  private final CustomerByUserIdPortOut customerByUserIdPortOut
 
-  BookingOfferQueryApplicationService(ValidationService validationService, QueryGateway queryGateway, CustomerByUserIdentifierPortOut customerByUserIdentifierPortOut) {
+  BookingOfferQueryApplicationService(ValidationService validationService, QueryGateway queryGateway, CustomerByUserIdPortOut customerByUserIdPortOut) {
     this.validationService = validationService
     this.queryGatewayAdapter = new QueryGatewayAdapter(queryGateway)
-    this.customerByUserIdentifierPortOut = customerByUserIdentifierPortOut
+    this.customerByUserIdPortOut = customerByUserIdPortOut
   }
 
   @Override
@@ -64,7 +64,7 @@ class BookingOfferQueryApplicationService implements BookingOfferSummaryFindById
     requireMatch(bookingOfferSummaryFindByIdQueryOperationRequest, notNullValue())
     validationService.validate(bookingOfferSummaryFindByIdQueryOperationRequest.payload)
 
-    Customer customer = customerByUserIdentifierPortOut.findCustomerByUserIdentifier(bookingOfferSummaryFindByIdQueryOperationRequest.payload.userIdentifier)
+    Customer customer = customerByUserIdPortOut.findCustomerByUserId(bookingOfferSummaryFindByIdQueryOperationRequest.payload.userId)
     bookingOfferSummaryFindByIdQueryOperationRequest.payload.customerId = customer.customerId.identifier
 
     BookingOfferSummaryFindByIdQueryResponse bookingOfferSummaryFindByIdQueryResponse =
@@ -85,7 +85,7 @@ class BookingOfferQueryApplicationService implements BookingOfferSummaryFindById
     requireMatch(bookingOfferSummaryFindAllQueryOperationRequest, notNullValue())
     validationService.validate(bookingOfferSummaryFindAllQueryOperationRequest.payload)
 
-    Customer customer = customerByUserIdentifierPortOut.findCustomerByUserIdentifier(bookingOfferSummaryFindAllQueryOperationRequest.payload.userIdentifier)
+    Customer customer = customerByUserIdPortOut.findCustomerByUserId(bookingOfferSummaryFindAllQueryOperationRequest.payload.userId)
     bookingOfferSummaryFindAllQueryOperationRequest.payload.customerId = customer.customerId.identifier
 
     BookingOfferSummaryFindAllQueryResponse queryResponse = queryGatewayAdapter.query(bookingOfferSummaryFindAllQueryOperationRequest, BookingOfferSummaryFindAllQueryResponse)
@@ -99,7 +99,7 @@ class BookingOfferQueryApplicationService implements BookingOfferSummaryFindById
     requireMatch(bookingOfferSummarySearchAllQueryOperationRequest, notNullValue())
     validationService.validate(bookingOfferSummarySearchAllQueryOperationRequest.payload)
 
-    Customer customer = customerByUserIdentifierPortOut.findCustomerByUserIdentifier(bookingOfferSummarySearchAllQueryOperationRequest.payload.userIdentifier)
+    Customer customer = customerByUserIdPortOut.findCustomerByUserId(bookingOfferSummarySearchAllQueryOperationRequest.payload.userId)
     bookingOfferSummarySearchAllQueryOperationRequest.payload.customerId = customer.customerId.identifier
 
     BookingOfferSummarySearchAllQueryResponse queryResponse = queryGatewayAdapter.query(

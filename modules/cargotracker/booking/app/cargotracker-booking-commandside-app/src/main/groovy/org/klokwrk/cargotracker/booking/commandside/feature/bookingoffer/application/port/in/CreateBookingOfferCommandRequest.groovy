@@ -55,7 +55,7 @@ import javax.validation.constraints.Size
 class CreateBookingOfferCommandRequest {
   @TrimmedStringConstraint(groups = [Level2])
   @NotBlank(groups = [Level1])
-  String userIdentifier
+  String userId
 
   /**
    * Optional identifier of a booking offer to be created.

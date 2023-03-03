@@ -73,7 +73,7 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
 
     // Note: "standard-customer@cargotracker.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
-        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: myBookingOfferIdentifier, userIdentifier: "standard-customer@cargotracker.com")
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: myBookingOfferIdentifier, userId: "standard-customer@cargotracker.com")
 
     OperationRequest<BookingOfferSummaryFindByIdQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryFindByIdQueryRequest,
@@ -123,7 +123,7 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
   void "should throw when booking offer summary cannot be found"() {
     given:
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
-        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: UUID.randomUUID(), userIdentifier: "standard-customer@cargotracker.com")
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: UUID.randomUUID(), userId: "standard-customer@cargotracker.com")
 
     OperationRequest<BookingOfferSummaryFindByIdQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryFindByIdQueryRequest,
@@ -150,7 +150,7 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
 
     // Note: "standard-customer@cargotracker.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
-        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: myBookingOfferIdentifier, userIdentifier: "standard-customer@cargotracker.com")
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: myBookingOfferIdentifier, userId: "standard-customer@cargotracker.com")
 
     OperationRequest<BookingOfferSummaryFindByIdQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryFindByIdQueryRequest,

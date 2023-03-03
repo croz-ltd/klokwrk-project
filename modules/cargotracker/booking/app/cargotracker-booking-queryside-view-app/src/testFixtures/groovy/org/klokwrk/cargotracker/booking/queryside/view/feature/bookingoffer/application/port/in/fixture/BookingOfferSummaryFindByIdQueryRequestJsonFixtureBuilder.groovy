@@ -31,18 +31,18 @@ class BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder implements JsonF
 
   static BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder bookingOfferSummaryFindByIdQueryRequest_standardCustomer() {
     BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder jsonFixtureBuilder = new BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder()
-        .userIdentifier("standard-customer@cargotracker.com")
+        .userId("standard-customer@cargotracker.com")
 
     return jsonFixtureBuilder
   }
 
-  String userIdentifier
+  String userId
   String bookingOfferIdentifier
 
   @Override
   Map<String, ?> buildAsMap() {
     Map<String, ?> mapToReturn = [
-        userIdentifier: userIdentifier,
+        userId: userId,
         bookingOfferIdentifier: bookingOfferIdentifier,
     ]
 
@@ -53,7 +53,7 @@ class BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder implements JsonF
   String buildAsJsonString() {
     String stringToReturn = """
         {
-            "userIdentifier": ${ stringToJsonString(userIdentifier) },
+            "userId": ${ stringToJsonString(userId) },
             "bookingOfferIdentifier": ${ stringToJsonString(bookingOfferIdentifier) }
         }
         """

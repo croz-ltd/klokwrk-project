@@ -123,7 +123,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     Map responseMap = bookingOfferSummaryFindById_failed(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
             .bookingOfferIdentifier(null)
-            .userIdentifier(null)
+            .userId(null)
             .buildAsJsonString(),
         acceptLanguageParam,
         mockMvc
@@ -144,7 +144,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
       verifyAll(constraintViolations as List<Map>) {
         size() == 2
         it.find({ it.path == "bookingOfferIdentifier" }).type == "notBlank"
-        it.find({ it.path == "userIdentifier" }).type == "notBlank"
+        it.find({ it.path == "userId" }).type == "notBlank"
       }
     }
 
@@ -165,7 +165,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     Map responseMap = bookingOfferSummaryFindById_failed(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
             .bookingOfferIdentifier(myBookingOfferIdentifier)
-            .userIdentifier("someUserIdentifier")
+            .userId("someUserId")
             .buildAsJsonString(),
         acceptLanguageParam,
         mockMvc
@@ -183,8 +183,8 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
 
     where:
     acceptLanguageParam | localeStringParam | myViolationMessageParam
-    "hr-HR"             | "hr_HR"           | "Nije pronađen potrošač s korisničkim imenom 'someUserIdentifier'."
-    "en"                | "en"              | "Can't find the customer with user id 'someUserIdentifier'."
+    "hr-HR"             | "hr_HR"           | "Nije pronađen potrošač s korisničkim imenom 'someUserId'."
+    "en"                | "en"              | "Can't find the customer with user id 'someUserId'."
   }
 
   void "should return expected response when BookingOfferSummary cannot be found - domain failure"() {
