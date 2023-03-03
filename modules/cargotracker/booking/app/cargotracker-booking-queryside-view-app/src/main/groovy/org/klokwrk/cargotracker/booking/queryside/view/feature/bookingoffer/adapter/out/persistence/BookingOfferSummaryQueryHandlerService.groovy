@@ -66,7 +66,7 @@ class BookingOfferSummaryQueryHandlerService {
   @QueryHandler
   BookingOfferSummaryFindByIdQueryResponse handleBookingOfferSummaryFindByIdQueryRequest(BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest) {
     BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = bookingOfferSummaryViewJpaRepository
-        .findByBookingOfferIdentifierAndCustomerIdentifier(UUID.fromString(bookingOfferSummaryFindByIdQueryRequest.bookingOfferIdentifier), bookingOfferSummaryFindByIdQueryRequest.customerIdentifier)
+        .findByBookingOfferIdentifierAndCustomerId(UUID.fromString(bookingOfferSummaryFindByIdQueryRequest.bookingOfferIdentifier), bookingOfferSummaryFindByIdQueryRequest.customerId)
 
     if (!bookingOfferSummaryJpaEntity) {
       throw new QueryException(ViolationInfo.NOT_FOUND)
@@ -107,7 +107,7 @@ class BookingOfferSummaryQueryHandlerService {
     Page<UUID> pageOfBookingOfferIdentifiers = null
     try {
       pageOfBookingOfferIdentifiers =
-          bookingOfferSummaryViewJpaRepository.findPageOfBookingOfferIdentifiersByCustomerIdentifier(bookingOfferSummaryFindAllQueryRequest.customerIdentifier, pageRequest)
+          bookingOfferSummaryViewJpaRepository.findPageOfBookingOfferIdentifiersByCustomerId(bookingOfferSummaryFindAllQueryRequest.customerId, pageRequest)
     }
     catch (InvalidDataAccessApiUsageException idaaue) {
       throw QueryHandlerSpringDataJpaUtil.makeQueryExceptionFromInvalidDataAccessApiUsageException(idaaue)
@@ -116,7 +116,7 @@ class BookingOfferSummaryQueryHandlerService {
     List<UUID> foundBookingOfferIdentifiers = pageOfBookingOfferIdentifiers.content
 
     List<BookingOfferSummaryJpaEntity> foundBookingOfferSummaryJpaEntities =
-        bookingOfferSummaryViewJpaRepository.findAllByBookingOfferIdentifiersAndCustomerIdentifier(foundBookingOfferIdentifiers, bookingOfferSummaryFindAllQueryRequest.customerIdentifier)
+        bookingOfferSummaryViewJpaRepository.findAllByBookingOfferIdentifiersAndCustomerId(foundBookingOfferIdentifiers, bookingOfferSummaryFindAllQueryRequest.customerId)
 
     BookingOfferSummaryFindAllQueryResponse bookingOfferSummaryFindAllQueryResponse = new BookingOfferSummaryFindAllQueryResponse().tap {
       pageContent = foundBookingOfferIdentifiers
@@ -148,7 +148,7 @@ class BookingOfferSummaryQueryHandlerService {
         .searchPropertyConfiguration(
             SearchPropertyConfiguration
                 .defaultSearchPropertyConfiguration()
-                .tap({ searchIgnoredPropertyList = ["customerIdentifier", "totalCommodityWeightFromIncluding", "totalCommodityWeightToIncluding"] })
+                .tap({ searchIgnoredPropertyList = ["customerId", "totalCommodityWeightFromIncluding", "totalCommodityWeightToIncluding"] })
         )
         .additionalRestrictionResolverList([new BookingOfferSummaryJpaEntityAdditionalRestrictionResolver()] as List<AdditionalRestrictionResolver>) // codenarc-disable-line UnnecessaryCast
         .build()
@@ -166,7 +166,7 @@ class BookingOfferSummaryQueryHandlerService {
 
     List<UUID> foundBookingOfferIdentifiers = (pageOfBookingOfferIdentifierDtos.content as List<BookingOfferIdentifierDto>).collect({ BookingOfferIdentifierDto dto -> dto.bookingOfferIdentifier })
     List<BookingOfferSummaryJpaEntity> foundBookingOfferSummaryJpaEntities =
-        bookingOfferSummaryViewJpaRepository.findAllByBookingOfferIdentifiersAndCustomerIdentifier(foundBookingOfferIdentifiers, bookingOfferSummarySearchAllQueryRequest.customerIdentifier)
+        bookingOfferSummaryViewJpaRepository.findAllByBookingOfferIdentifiersAndCustomerId(foundBookingOfferIdentifiers, bookingOfferSummarySearchAllQueryRequest.customerId)
 
     BookingOfferSummarySearchAllQueryResponse bookingOfferSummarySearchAllQueryResponse = new BookingOfferSummarySearchAllQueryResponse().tap {
       pageContent = foundBookingOfferIdentifiers

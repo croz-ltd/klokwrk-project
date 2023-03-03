@@ -28,10 +28,10 @@ class BookingOfferSummarySqlHelper {
     return groovyRowResult.recordsCount as Integer
   }
 
-  static Integer selectCurrentBookingOfferSummaryRecordsCount_forCustomerIdentifier(Sql groovySql, String customerIdentifier) {
+  static Integer selectCurrentBookingOfferSummaryRecordsCount_forCustomerId(Sql groovySql, String customerId) {
     GroovyRowResult groovyRowResult = groovySql.firstRow(
-        [customerIdentifier: customerIdentifier],
-        "SELECT count(*) as recordsCount from booking_offer_summary where customer_identifier = :customerIdentifier"
+        [customerId: customerId],
+        "SELECT count(*) as recordsCount from booking_offer_summary where customer_id = :customerId"
     )
     return groovyRowResult.recordsCount as Integer
   }

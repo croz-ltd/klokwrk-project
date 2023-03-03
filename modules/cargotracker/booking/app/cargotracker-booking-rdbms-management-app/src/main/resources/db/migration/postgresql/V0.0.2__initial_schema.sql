@@ -30,7 +30,7 @@ CREATE TABLE token_entry (
 CREATE TABLE booking_offer_summary (
   booking_offer_identifier uuid PRIMARY KEY,
 
-  customer_identifier text NOT NULL,
+  customer_id text NOT NULL,
   customer_type text NOT NULL,
 
   origin_location_un_lo_code text NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE booking_offer_summary_commodity_type (
 CREATE TABLE booking_offer_details (
   booking_offer_identifier uuid PRIMARY KEY,
 
-  customer_identifier text NOT NULL,
+  customer_id text NOT NULL,
   details jsonb NOT NULL,
 
   inbound_channel_name text NOT NULL,

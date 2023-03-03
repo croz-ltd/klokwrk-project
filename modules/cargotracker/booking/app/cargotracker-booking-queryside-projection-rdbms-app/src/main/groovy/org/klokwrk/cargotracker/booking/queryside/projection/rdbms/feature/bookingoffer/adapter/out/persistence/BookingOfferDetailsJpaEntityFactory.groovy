@@ -30,11 +30,11 @@ class BookingOfferDetailsJpaEntityFactory {
   static BookingOfferDetailsJpaEntity makeBookingOfferDetailsJpaEntity(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage, ObjectMapper objectMapper) {
     UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
     String details = objectMapper.writeValueAsString(bookingOfferCreatedEvent)
-    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId
+    String customerId = bookingOfferCreatedEvent.customer.customerId
 
     BookingOfferDetailsJpaEntity bookingOfferDetailsJpaEntity = new BookingOfferDetailsJpaEntity(
         bookingOfferIdentifier: bookingOfferIdentifier,
-        customerIdentifier: customerIdentifier,
+        customerId: customerId,
 
         details: details,
 

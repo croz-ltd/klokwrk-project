@@ -34,7 +34,7 @@ class BookingOfferSummaryJpaEntityFactory {
     BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = new BookingOfferSummaryJpaEntity(
         bookingOfferIdentifier: bookingOfferIdentifier,
 
-        customerIdentifier: bookingOfferCreatedEvent.customer.customerId,
+        customerId: bookingOfferCreatedEvent.customer.customerId,
         customerType: bookingOfferCreatedEvent.customer.customerType,
 
         originLocationUnLoCode: bookingOfferCreatedEvent.routeSpecification.originLocation.unLoCode,

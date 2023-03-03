@@ -39,11 +39,11 @@ class InMemoryCustomerRegistryServiceSpecification extends Specification {
 
     then:
     RandomUuidUtils.checkIfRandomUuidString(customer.customerId.identifier)
-    customer.customerId.identifier == customerIdentifierParam
+    customer.customerId.identifier == customerIdParam
     customer.customerType == customerTypeParam
 
     where:
-    userIdentifierParam                  | customerIdentifierParam                | customerTypeParam
+    userIdentifierParam                  | customerIdParam                        | customerTypeParam
     "anonymous123"                       | "44f57e34-cfa5-4413-9329-4c2cc338c997" | CustomerType.ANONYMOUS
     "standard-customer@cargotracker.com" | "26d5f7d8-9ded-4ce3-b320-03a75f674f4e" | CustomerType.STANDARD
     "gold-customer@cargotracker.com"     | "7517d07c-0031-4d4f-8d8f-58daeb3fad3c" | CustomerType.GOLD

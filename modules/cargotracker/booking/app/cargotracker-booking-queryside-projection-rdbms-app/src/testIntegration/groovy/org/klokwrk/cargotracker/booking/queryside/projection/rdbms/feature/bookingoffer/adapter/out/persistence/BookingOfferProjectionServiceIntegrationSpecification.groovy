@@ -71,7 +71,7 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build()
     UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
-    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId
+    String customerId = bookingOfferCreatedEvent.customer.customerId
     CustomerType customerType = bookingOfferCreatedEvent.customer.customerType
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage =
@@ -86,7 +86,7 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
         size() == 21
         booking_offer_identifier == bookingOfferIdentifier
 
-        customer_identifier == customerIdentifier
+        customer_id == customerId
         customer_type == customerType.name()
 
         origin_location_un_lo_code == "HRRJK"
@@ -120,7 +120,7 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
         size() == 8
 
         booking_offer_identifier == bookingOfferIdentifier
-        customer_identifier == customerIdentifier
+        customer_id == customerId
 
         (details as String).matches(/.*originLocation.*Rijeka.*destinationLocation.*Rotterdam.*/)
 
@@ -141,7 +141,7 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build()
     UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
-    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId
+    String customerId = bookingOfferCreatedEvent.customer.customerId
     CustomerType customerType = bookingOfferCreatedEvent.customer.customerType
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, [:])
@@ -154,7 +154,7 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
         size() == 21
         booking_offer_identifier == bookingOfferIdentifier
 
-        customer_identifier == customerIdentifier
+        customer_id == customerId
         customer_type == customerType.name()
 
         origin_location_un_lo_code == "HRRJK"
@@ -188,7 +188,7 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
         size() == 8
 
         booking_offer_identifier == bookingOfferIdentifier
-        customer_identifier == customerIdentifier
+        customer_id == customerId
 
         (details as String).matches(/.*originLocation.*Rijeka.*destinationLocation.*Rotterdam.*/)
 
@@ -215,7 +215,7 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build()
     UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
-    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId
+    String customerId = bookingOfferCreatedEvent.customer.customerId
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, [:])
 
@@ -226,19 +226,19 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
     new PollingConditions(timeout: 5, initialDelay: 0, delay: 0.1).eventually {
       listAppender.list.size() == 3
 
-      String matchingMessage1 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_summary \(.*customer_identifier, .*/) })
+      String matchingMessage1 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_summary \(.*customer_id, .*/) })
       matchingMessage1 != null
       matchingMessage1.contains(bookingOfferIdentifier.toString())
-      matchingMessage1.contains(customerIdentifier)
+      matchingMessage1.contains(customerId)
 
       String matchingMessage2 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_summary_commodity_type.*/) })
       matchingMessage2 != null
       matchingMessage2.contains(bookingOfferIdentifier.toString())
 
-      String matchingMessage3 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_details \(.*customer_identifier, .*/) })
+      String matchingMessage3 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_details \(.*customer_id, .*/) })
       matchingMessage3 != null
       matchingMessage3.contains(bookingOfferIdentifier.toString())
-      matchingMessage3.contains(customerIdentifier)
+      matchingMessage3.contains(customerId)
     }
 
     cleanup:

@@ -76,7 +76,7 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Id
   UUID bookingOfferIdentifier
 
-  @Column(nullable = false, updatable = false) String customerIdentifier
+  @Column(nullable = false, updatable = false) String customerId
   @Column(nullable = false) @Enumerated(EnumType.STRING) CustomerType customerType
 
   @Column(nullable = false) String originLocationUnLoCode
@@ -117,7 +117,7 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
     requireMatch(bookingOfferIdentifier, notNullValue())
     requireMatch(RandomUuidUtils.checkIfRandomUuid(bookingOfferIdentifier), is(true))
 
-    requireMatch(customerIdentifier, not(emptyOrNullString()))
+    requireMatch(customerId, not(emptyOrNullString()))
     requireMatch(customerType, notNullValue())
 
     requireMatch(originLocationUnLoCode, not(emptyOrNullString()))

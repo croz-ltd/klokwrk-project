@@ -71,7 +71,7 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
     originalEntity = new BookingOfferSummaryJpaEntity(
         bookingOfferIdentifier: UUID.randomUUID(),
 
-        customerIdentifier: UUID.randomUUID().toString(),
+        customerId: UUID.randomUUID().toString(),
         customerType: CustomerType.STANDARD,
 
         originLocationUnLoCode: "originLocationUnLoCode",

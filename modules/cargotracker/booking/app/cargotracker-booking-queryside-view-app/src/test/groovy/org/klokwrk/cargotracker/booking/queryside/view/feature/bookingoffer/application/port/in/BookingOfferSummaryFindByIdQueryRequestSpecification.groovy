@@ -83,7 +83,7 @@ class BookingOfferSummaryFindByIdQueryRequestSpecification extends Specification
   void "should not pass validation for unexpected data"() {
     given:
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
-        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: UUID.randomUUID(), userIdentifier: "someUserIdentifier", customerIdentifier: "someCustomerIdentifier")
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: UUID.randomUUID(), userIdentifier: "someUserIdentifier", customerId: "someCustomerId")
 
     when:
     validationService.validate(bookingOfferSummaryFindByIdQueryRequest)
@@ -92,7 +92,7 @@ class BookingOfferSummaryFindByIdQueryRequestSpecification extends Specification
     ConstraintViolationException constraintViolationException = thrown()
 
     constraintViolationException.constraintViolations.size() == 1
-    constraintViolationException.constraintViolations[0].propertyPath.toString() == "customerIdentifier"
+    constraintViolationException.constraintViolations[0].propertyPath.toString() == "customerId"
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == Null
   }
 }

@@ -50,7 +50,7 @@ class BookingOfferSummarySearchAllQueryRequest {
   String userIdentifier
 
   @Null(groups = [Level1])
-  String customerIdentifier
+  String customerId
 
   // Note: Groovy 3 did not output in bytecode the annotation of generic type (@NotNull in List<@NotNull CustomerType>). This feature is introduced in Groovy 4.
   //       Although we have upgraded to Groovy 4, we will stay on our own @NotNullElementsConstraint annotation for time being.

@@ -65,7 +65,7 @@ class BookingOfferQueryApplicationService implements BookingOfferSummaryFindById
     validationService.validate(bookingOfferSummaryFindByIdQueryOperationRequest.payload)
 
     Customer customer = customerByUserIdentifierPortOut.findCustomerByUserIdentifier(bookingOfferSummaryFindByIdQueryOperationRequest.payload.userIdentifier)
-    bookingOfferSummaryFindByIdQueryOperationRequest.payload.customerIdentifier = customer.customerId.identifier
+    bookingOfferSummaryFindByIdQueryOperationRequest.payload.customerId = customer.customerId.identifier
 
     BookingOfferSummaryFindByIdQueryResponse bookingOfferSummaryFindByIdQueryResponse =
         queryGatewayAdapter.query(bookingOfferSummaryFindByIdQueryOperationRequest, BookingOfferSummaryFindByIdQueryResponse)
@@ -86,7 +86,7 @@ class BookingOfferQueryApplicationService implements BookingOfferSummaryFindById
     validationService.validate(bookingOfferSummaryFindAllQueryOperationRequest.payload)
 
     Customer customer = customerByUserIdentifierPortOut.findCustomerByUserIdentifier(bookingOfferSummaryFindAllQueryOperationRequest.payload.userIdentifier)
-    bookingOfferSummaryFindAllQueryOperationRequest.payload.customerIdentifier = customer.customerId.identifier
+    bookingOfferSummaryFindAllQueryOperationRequest.payload.customerId = customer.customerId.identifier
 
     BookingOfferSummaryFindAllQueryResponse queryResponse = queryGatewayAdapter.query(bookingOfferSummaryFindAllQueryOperationRequest, BookingOfferSummaryFindAllQueryResponse)
     return operationResponseFromQueryResponse(queryResponse)
@@ -100,7 +100,7 @@ class BookingOfferQueryApplicationService implements BookingOfferSummaryFindById
     validationService.validate(bookingOfferSummarySearchAllQueryOperationRequest.payload)
 
     Customer customer = customerByUserIdentifierPortOut.findCustomerByUserIdentifier(bookingOfferSummarySearchAllQueryOperationRequest.payload.userIdentifier)
-    bookingOfferSummarySearchAllQueryOperationRequest.payload.customerIdentifier = customer.customerId.identifier
+    bookingOfferSummarySearchAllQueryOperationRequest.payload.customerId = customer.customerId.identifier
 
     BookingOfferSummarySearchAllQueryResponse queryResponse = queryGatewayAdapter.query(
         prepareBookingOfferSummarySearchAllQueryRequest(bookingOfferSummarySearchAllQueryOperationRequest), BookingOfferSummarySearchAllQueryResponse
