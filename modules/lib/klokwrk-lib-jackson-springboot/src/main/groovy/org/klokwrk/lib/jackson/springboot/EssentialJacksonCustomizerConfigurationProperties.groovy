@@ -65,6 +65,14 @@ class EssentialJacksonCustomizerConfigurationProperties {
       Boolean enabled = true
     }
 
+    RawJsonWrapperDeserializer rawJsonWrapperDeserializer = new RawJsonWrapperDeserializer()
+    class RawJsonWrapperDeserializer {
+      /**
+       * By default RawJsonWrapperDeserializer is enabled. Set to {@code false} to disable it.
+       */
+      Boolean enabled = true
+    }
+
     /**
      * By default json comments are allowed. Set to {@code false} to disable this behavior.
      */
@@ -101,6 +109,14 @@ class EssentialJacksonCustomizerConfigurationProperties {
     class UomQuantitySerializer {
       /**
        * By default UomQuantitySerializer is enabled. Set to {@code false} to disable it.
+       */
+      Boolean enabled = true
+    }
+
+    RawJsonWrapperSerializer rawJsonWrapperSerializer = new RawJsonWrapperSerializer()
+    class RawJsonWrapperSerializer {
+      /**
+       * By default RawJsonWrapperSerializer is enabled. Set to {@code false} to disable it.
        */
       Boolean enabled = true
     }

@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.deser.BeanDeserializerFactory
 import com.fasterxml.jackson.databind.deser.Deserializers
 import com.fasterxml.jackson.databind.ser.BeanSerializerFactory
 import com.fasterxml.jackson.databind.ser.Serializers
+import org.klokwrk.lang.groovy.json.RawJsonWrapper
 import org.springframework.boot.test.autoconfigure.json.JsonTest
 import org.springframework.boot.test.context.SpringBootTestContextBootstrapper
 import org.springframework.context.ApplicationContext
@@ -105,6 +106,21 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
   }
 
   @RestoreSystemProperties
+  void "should not add RawJsonWrapperDeserializer when configured so"() {
+    System.setProperty("klokwrk.jackson.customizer.essential.deserialization.rawJsonWrapperDeserializer.enabled", "false")
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
+    ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
+
+    when:
+    Deserializers jsonDeserializers = (objectMapper.deserializationContext.factory as BeanDeserializerFactory).factoryConfig.deserializers().find({ Deserializers deserializers ->
+      deserializers.findBeanDeserializer(objectMapper.constructType(RawJsonWrapper), null, null)
+    }) as Deserializers
+
+    then:
+    jsonDeserializers == null
+  }
+
+  @RestoreSystemProperties
   void "should not add GStringSerializer when configured so"() {
     given:
     System.setProperty("klokwrk.jackson.customizer.essential.serialization.gStringSerializer.enabled", "false")
@@ -130,6 +146,22 @@ class EssentialJacksonCustomizerCustomSetupSpecification extends Specification {
     when:
     Serializers jsonSerializers = (objectMapper.serializerFactory as BeanSerializerFactory).factoryConfig.serializers().find({ Serializers serializers ->
       serializers.findSerializer(null, objectMapper.constructType(Quantity), null)
+    }) as Serializers
+
+    then:
+    jsonSerializers == null
+  }
+
+  @RestoreSystemProperties
+  void "should not add RawJsonWrapperSerializer when configured so"() {
+    given:
+    System.setProperty("klokwrk.jackson.customizer.essential.serialization.rawJsonWrapperSerializer.enabled", "false")
+    ApplicationContext applicationContext = makeNewTestApplicationContext()
+    ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper)
+
+    when:
+    Serializers jsonSerializers = (objectMapper.serializerFactory as BeanSerializerFactory).factoryConfig.serializers().find({ Serializers serializers ->
+      serializers.findSerializer(null, objectMapper.constructType(RawJsonWrapper), null)
     }) as Serializers
 
     then:

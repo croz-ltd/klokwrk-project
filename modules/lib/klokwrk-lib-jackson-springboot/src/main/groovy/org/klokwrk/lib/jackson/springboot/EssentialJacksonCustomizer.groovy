@@ -27,9 +27,11 @@ import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
+import org.klokwrk.lib.jackson.databind.deser.RawJsonWrapperDeserializer
 import org.klokwrk.lib.jackson.databind.deser.StringSanitizingDeserializer
 import org.klokwrk.lib.jackson.databind.deser.UomQuantityDeserializer
 import org.klokwrk.lib.jackson.databind.ser.GStringSerializer
+import org.klokwrk.lib.jackson.databind.ser.RawJsonWrapperSerializer
 import org.klokwrk.lib.jackson.databind.ser.UomQuantitySerializer
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer
@@ -84,6 +86,10 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
       myDeserializerList << new UomQuantityDeserializer()
     }
 
+    if (essentialJacksonCustomizerConfigurationProperties.deserialization.rawJsonWrapperDeserializer.enabled == true) {
+      myDeserializerList << new RawJsonWrapperDeserializer()
+    }
+
     List<JsonSerializer> mySerializerList = []
     if (essentialJacksonCustomizerConfigurationProperties.serialization.gStringSerializer.enabled == true) {
       mySerializerList << new GStringSerializer()
@@ -91,6 +97,10 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
 
     if (essentialJacksonCustomizerConfigurationProperties.serialization.uomQuantitySerializer.enabled == true) {
       mySerializerList << new UomQuantitySerializer()
+    }
+
+    if (essentialJacksonCustomizerConfigurationProperties.serialization.rawJsonWrapperSerializer.enabled == true) {
+      mySerializerList << new RawJsonWrapperSerializer()
     }
 
     List<Object> myFeatureToEnableList = []
