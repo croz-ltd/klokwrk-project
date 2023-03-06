@@ -58,7 +58,6 @@ class BookingOfferSummaryQueryHandlerService {
 
   private final BookingOfferSummaryViewJpaRepository bookingOfferSummaryViewJpaRepository
 
-  @SuppressWarnings('SpringJavaInjectionPointsAutowiringInspection')
   BookingOfferSummaryQueryHandlerService(BookingOfferSummaryViewJpaRepository bookingOfferSummaryViewJpaRepository) {
     this.bookingOfferSummaryViewJpaRepository = bookingOfferSummaryViewJpaRepository
   }
