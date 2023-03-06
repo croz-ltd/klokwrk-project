@@ -17,10 +17,14 @@
  */
 package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryGateway
 import org.klokwrk.cargotracker.booking.domain.model.value.Customer
 import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdPortOut
+import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferDetailsFindByIdQueryPortIn
+import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferDetailsFindByIdQueryRequest
+import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferDetailsFindByIdQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryResponse
@@ -44,17 +48,22 @@ import java.math.RoundingMode
 
 import static org.hamcrest.Matchers.notNullValue
 
+@SuppressWarnings("CodeNarc.BracesForClass")
 @Service
 @CompileStatic
-class BookingOfferQueryApplicationService implements BookingOfferSummaryFindByIdQueryPortIn, BookingOfferSummaryFindAllQueryPortIn, BookingOfferSummarySearchAllQueryPortIn {
+class BookingOfferQueryApplicationService
+    implements BookingOfferSummaryFindByIdQueryPortIn, BookingOfferSummaryFindAllQueryPortIn, BookingOfferSummarySearchAllQueryPortIn, BookingOfferDetailsFindByIdQueryPortIn
+{
   private final QueryGatewayAdapter queryGatewayAdapter
   private final ValidationService validationService
   private final CustomerByUserIdPortOut customerByUserIdPortOut
+  private final ObjectMapper objectMapper
 
-  BookingOfferQueryApplicationService(ValidationService validationService, QueryGateway queryGateway, CustomerByUserIdPortOut customerByUserIdPortOut) {
+  BookingOfferQueryApplicationService(ValidationService validationService, QueryGateway queryGateway, CustomerByUserIdPortOut customerByUserIdPortOut, ObjectMapper objectMapper) {
     this.validationService = validationService
     this.queryGatewayAdapter = new QueryGatewayAdapter(queryGateway)
     this.customerByUserIdPortOut = customerByUserIdPortOut
+    this.objectMapper = objectMapper
   }
 
   @Override
@@ -71,11 +80,6 @@ class BookingOfferQueryApplicationService implements BookingOfferSummaryFindById
         queryGatewayAdapter.query(bookingOfferSummaryFindByIdQueryOperationRequest, BookingOfferSummaryFindByIdQueryResponse)
 
     return operationResponseFromQueryResponse(bookingOfferSummaryFindByIdQueryResponse)
-  }
-
-  protected <T> OperationResponse<T> operationResponseFromQueryResponse(T queryResponse) {
-    ResponseMetaData responseMetaData = ResponseMetaData.makeBasicInfoResponseMetaData()
-    return new OperationResponse<T>(payload: queryResponse, metaData: responseMetaData.propertiesFiltered)
   }
 
   @Override
@@ -124,5 +128,29 @@ class BookingOfferQueryApplicationService implements BookingOfferSummaryFindById
     }
 
     return bookingOfferSummarySearchAllQueryRequest
+  }
+
+  @Override
+  OperationResponse<BookingOfferDetailsFindByIdQueryResponse> bookingOfferDetailsFindByIdQuery(
+      OperationRequest<BookingOfferDetailsFindByIdQueryRequest> bookingOfferDetailsFindByIdQueryOperationRequest)
+  {
+    requireMatch(bookingOfferDetailsFindByIdQueryOperationRequest, notNullValue())
+    validationService.validate(bookingOfferDetailsFindByIdQueryOperationRequest.payload)
+
+    Customer customer = customerByUserIdPortOut.findCustomerByUserId(bookingOfferDetailsFindByIdQueryOperationRequest.payload.userId)
+    bookingOfferDetailsFindByIdQueryOperationRequest.payload.customerId = customer.customerId.identifier
+
+    BookingOfferDetailsFindByIdQueryResponse queryResponse = queryGatewayAdapter.query(bookingOfferDetailsFindByIdQueryOperationRequest, BookingOfferDetailsFindByIdQueryResponse)
+
+    Map<String, ?> operationResponsePropertiesMap = objectMapper.readValue(queryResponse.detailsRaw.rawJson, Map)
+    operationResponsePropertiesMap = queryResponse.getPropertiesFiltered(["class", "detailsRaw"]) + operationResponsePropertiesMap
+    BookingOfferDetailsFindByIdQueryResponse operationResponse = new BookingOfferDetailsFindByIdQueryResponse(operationResponsePropertiesMap)
+
+    return operationResponseFromQueryResponse(operationResponse)
+  }
+
+  protected <T> OperationResponse<T> operationResponseFromQueryResponse(T queryResponse) {
+    ResponseMetaData responseMetaData = ResponseMetaData.makeBasicInfoResponseMetaData()
+    return new OperationResponse<T>(payload: queryResponse, metaData: responseMetaData.propertiesFiltered)
   }
 }
