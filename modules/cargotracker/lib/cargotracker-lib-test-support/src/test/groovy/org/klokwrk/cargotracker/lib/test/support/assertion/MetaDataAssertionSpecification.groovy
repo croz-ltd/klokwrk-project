@@ -151,6 +151,55 @@ class MetaDataAssertionSpecification extends Specification {
     [general: generalMap_info, http: [message: "OK", status: "000"]]   | _
   }
 
+  void "isSuccessful_asReturnedFromFacadeApi - should work as expected"() {
+    given:
+    Map responseMap = [
+        metaData: [
+            general: [
+                timestamp: "123",
+                severity: "info"
+            ]
+        ],
+        payload: [a: 1]
+    ]
+
+    MetaDataAssertion assertion = assertResponseHasMetaDataThat(responseMap)
+
+    when:
+    assertion = assertion.isSuccessful_asReturnedFromFacadeApi()
+
+    then:
+    assertion
+  }
+
+  void "isSuccessful_asReturnedFromFacadeApi - should fail as expected"() {
+    given:
+    MetaDataAssertion assertion = new MetaDataAssertion(responseMapParam)
+
+    when:
+    assertion.isSuccessful_asReturnedFromFacadeApi()
+
+    then:
+    thrown(AssertionError)
+
+    where:
+    responseMapParam                             | _
+    null                                         | _
+    [:]                                          | _
+    [a: 1]                                       | _
+    [a: 1, b: 1]                                 | _
+    [general: null]                              | _
+    [general: 1]                                 | _
+    [general: [:]]                               | _
+    [general: [a: 1, b: 1, c: 1]]                | _
+    [general: [a: 1, b: 1]]                      | _
+    [general: [timestamp: 1, b: 1]]              | _
+    [general: [timestamp: 1, severity: null]]    | _
+    [general: [timestamp: 1, severity: 1]]       | _
+    [general: [timestamp: 1, severity: "bla"]]   | _
+    [general: [timestamp: 1, severity: "error"]] | _
+  }
+
   void "isViolationOfValidation - should work as expected"() {
     given:
     Map responseMap = [

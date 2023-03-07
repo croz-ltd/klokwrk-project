@@ -64,6 +64,11 @@ class MetaDataAssertion {
     this.metaDataMap = metaDataMap
   }
 
+  /**
+   * Weather metadata contains all properties as returned from web controller.
+   * <p/>
+   * Those properties differ from ones returned from application facade API. For example, web interceptors will add {@code metaData.http} or {@code metaData.general.locale} properties.
+   */
   MetaDataAssertion isSuccessful() {
     assert metaDataMap instanceof Map
     metaDataMap.with {
@@ -84,6 +89,28 @@ class MetaDataAssertion {
 
         assert message == "OK"
         assert status == "200"
+      }
+    }
+
+    return this
+  }
+
+  /**
+   * Weather metadata contains basic properties as returned from application facade API.
+   * <p/>
+   * Basic properties do not include properties added by interceptors specific for outbound channel like {@code metaData.http} or {@code metaData.general.locale}
+   */
+  MetaDataAssertion isSuccessful_asReturnedFromFacadeApi() {
+    assert metaDataMap instanceof Map
+    metaDataMap.with {
+      assert size() == 1
+
+      assert general instanceof Map
+      (general as Map).with {
+        assert size() == 2
+
+        assert timestamp
+        assert severity == "info"
       }
     }
 
