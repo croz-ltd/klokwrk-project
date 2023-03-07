@@ -36,6 +36,6 @@ class BookingOfferSummaryJpaEntityAdditionalRestrictionResolver implements
   List<Predicate> resolvePredicateList(
       CriteriaBuilder criteriaBuilder, CriteriaQuery<BookingOfferSummaryJpaEntity> query, Root<BookingOfferSummaryJpaEntity> root, BookingOfferSummarySearchAllQueryRequest request)
   {
-    return [criteriaBuilder.equal(root.get("customerIdentifier"), request.customerIdentifier)]
+    return [criteriaBuilder.equal(root.get("customerId"), request.customerId)]
   }
 }

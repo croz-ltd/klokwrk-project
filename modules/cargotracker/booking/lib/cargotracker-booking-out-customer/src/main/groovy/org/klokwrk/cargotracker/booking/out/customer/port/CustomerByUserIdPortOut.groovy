@@ -24,7 +24,7 @@ import org.klokwrk.cargotracker.booking.domain.model.value.Customer
  * Outbound port for fetching {@link Customer} from external bounded context.
  */
 @CompileStatic
-interface CustomerByUserIdentifierPortOut {
+interface CustomerByUserIdPortOut {
   /**
    * Finds {@link Customer} based on its user identifier.
    * <p/>
@@ -40,7 +40,7 @@ interface CustomerByUserIdentifierPortOut {
    * CustomerId.
    * <p/>
    * The implementation of this operation may throw {@link org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException} if customer can not be found. Message key for such exception
-   * can be something like '{@code customerByUserIdentifierPortOut.findCustomerByUserIdentifier.notFound}'.
+   * can be something like '{@code customerByUserIdPortOut.findCustomerByUserId.notFound}'.
    */
-  Customer findCustomerByUserIdentifier(String userIdentifier)
+  Customer findCustomerByUserId(String userId)
 }

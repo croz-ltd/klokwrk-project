@@ -36,17 +36,17 @@ import javax.validation.constraints.Null
 /**
  * Request DTO parameter for {@code bookingOfferSummaryFindAllQuery} operation from {@link BookingOfferSummaryFindAllQueryPortIn} inbound port interface.
  * <p/>
- * The usage and meaning of properties {@code userIdentifier} and {@code customerIdentifier} are the same as in {@code BookingOfferSummaryFindByIdQueryRequest}. Therefore, for more details, look there.
+ * The usage and meaning of properties {@code userId} and {@code customerId} are the same as in {@code BookingOfferSummaryFindByIdQueryRequest}. Therefore, for more details, look there.
  */
 @GroupSequence([BookingOfferSummaryFindAllQueryRequest, Level1, Level2])
 @CompileStatic
 class BookingOfferSummaryFindAllQueryRequest {
   @TrimmedStringConstraint(groups = [Level2])
   @NotBlank(groups = [Level1])
-  String userIdentifier
+  String userId
 
   @Null(groups = [Level1])
-  String customerIdentifier
+  String customerId
 
   /**
    * Specifies requirements for desired paged results of a query.

@@ -28,9 +28,9 @@ CREATE TABLE token_entry (
 );
 
 CREATE TABLE booking_offer_summary (
-  booking_offer_identifier uuid PRIMARY KEY,
+  booking_offer_id uuid PRIMARY KEY,
 
-  customer_identifier text NOT NULL,
+  customer_id text NOT NULL,
   customer_type text NOT NULL,
 
   origin_location_un_lo_code text NOT NULL,
@@ -58,8 +58,21 @@ CREATE TABLE booking_offer_summary (
 );
 
 CREATE TABLE booking_offer_summary_commodity_type (
-  booking_offer_identifier uuid NOT NULL,
+  booking_offer_id uuid NOT NULL,
   commodity_type text NOT NULL,
-  PRIMARY KEY (booking_offer_identifier, commodity_type),
-  CONSTRAINT FK__booking_offer_summary_commodity_type__booking_offer_summary FOREIGN KEY (booking_offer_identifier) REFERENCES booking_offer_summary(booking_offer_identifier)
+  PRIMARY KEY (booking_offer_id, commodity_type),
+  CONSTRAINT FK__booking_offer_summary_commodity_type__booking_offer_summary FOREIGN KEY (booking_offer_id) REFERENCES booking_offer_summary(booking_offer_id)
+);
+
+CREATE TABLE booking_offer_details (
+  booking_offer_id uuid PRIMARY KEY,
+
+  customer_id text NOT NULL,
+  details jsonb NOT NULL,
+
+  inbound_channel_name text NOT NULL,
+  inbound_channel_type text NOT NULL,
+  first_event_recorded_at timestamptz NOT NULL,
+  last_event_recorded_at timestamptz NOT NULL,
+  last_event_sequence_number bigint NOT NULL
 );

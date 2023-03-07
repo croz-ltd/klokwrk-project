@@ -63,6 +63,8 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
         "javax.validation..",
         "javax.persistence..",
 
+        "com.fasterxml.jackson.databind..",
+
         "net.croz.nrich.search..",
 
         "org.axonframework.messaging..",

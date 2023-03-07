@@ -53,12 +53,11 @@ import org.springframework.stereotype.Service
 @Service
 @CompileStatic
 class BookingOfferSummaryQueryHandlerService {
-  private static final String BOOKING_OFFER_IDENTIFIER = "bookingOfferIdentifier"
+  private static final String BOOKING_OFFER_IDENTIFIER = "bookingOfferId"
   private static final String TOTAL_COMMODITY_WEIGHT = "totalCommodityWeight"
 
   private final BookingOfferSummaryViewJpaRepository bookingOfferSummaryViewJpaRepository
 
-  @SuppressWarnings('SpringJavaInjectionPointsAutowiringInspection')
   BookingOfferSummaryQueryHandlerService(BookingOfferSummaryViewJpaRepository bookingOfferSummaryViewJpaRepository) {
     this.bookingOfferSummaryViewJpaRepository = bookingOfferSummaryViewJpaRepository
   }
@@ -66,7 +65,7 @@ class BookingOfferSummaryQueryHandlerService {
   @QueryHandler
   BookingOfferSummaryFindByIdQueryResponse handleBookingOfferSummaryFindByIdQueryRequest(BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest) {
     BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity = bookingOfferSummaryViewJpaRepository
-        .findByBookingOfferIdentifierAndCustomerIdentifier(UUID.fromString(bookingOfferSummaryFindByIdQueryRequest.bookingOfferIdentifier), bookingOfferSummaryFindByIdQueryRequest.customerIdentifier)
+        .findByBookingOfferIdAndCustomerId(UUID.fromString(bookingOfferSummaryFindByIdQueryRequest.bookingOfferId), bookingOfferSummaryFindByIdQueryRequest.customerId)
 
     if (!bookingOfferSummaryJpaEntity) {
       throw new QueryException(ViolationInfo.NOT_FOUND)
@@ -80,7 +79,7 @@ class BookingOfferSummaryQueryHandlerService {
 
   protected Map<String, Object> fetchBookingOfferSummaryJpaEntityProperties(BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity) {
     return bookingOfferSummaryJpaEntity.properties.tap({
-      it[this.BOOKING_OFFER_IDENTIFIER] = bookingOfferSummaryJpaEntity.bookingOfferIdentifier.toString()
+      it[this.BOOKING_OFFER_IDENTIFIER] = bookingOfferSummaryJpaEntity.bookingOfferId.toString()
       it[this.TOTAL_COMMODITY_WEIGHT] = KwrkQuantityFormat.instance.parse(bookingOfferSummaryJpaEntity.totalCommodityWeight)
     })
   }
@@ -104,51 +103,50 @@ class BookingOfferSummaryQueryHandlerService {
     PageRequest pageRequest =
         QueryHandlerSpringDataJpaUtil.makePageRequestFromPageAndSortRequirements(bookingOfferSummaryFindAllQueryRequest.pageRequirement, bookingOfferSummaryFindAllQueryRequest.sortRequirementList)
 
-    Page<UUID> pageOfBookingOfferIdentifiers = null
+    Page<UUID> pageOfBookingOfferIds = null
     try {
-      pageOfBookingOfferIdentifiers =
-          bookingOfferSummaryViewJpaRepository.findPageOfBookingOfferIdentifiersByCustomerIdentifier(bookingOfferSummaryFindAllQueryRequest.customerIdentifier, pageRequest)
+      pageOfBookingOfferIds = bookingOfferSummaryViewJpaRepository.findPageOfBookingOfferIdByCustomerId(bookingOfferSummaryFindAllQueryRequest.customerId, pageRequest)
     }
     catch (InvalidDataAccessApiUsageException idaaue) {
       throw QueryHandlerSpringDataJpaUtil.makeQueryExceptionFromInvalidDataAccessApiUsageException(idaaue)
     }
 
-    List<UUID> foundBookingOfferIdentifiers = pageOfBookingOfferIdentifiers.content
+    List<UUID> foundBookingOfferIds = pageOfBookingOfferIds.content
 
     List<BookingOfferSummaryJpaEntity> foundBookingOfferSummaryJpaEntities =
-        bookingOfferSummaryViewJpaRepository.findAllByBookingOfferIdentifiersAndCustomerIdentifier(foundBookingOfferIdentifiers, bookingOfferSummaryFindAllQueryRequest.customerIdentifier)
+        bookingOfferSummaryViewJpaRepository.findAllByBookingOfferIdsAndCustomerId(foundBookingOfferIds, bookingOfferSummaryFindAllQueryRequest.customerId)
 
     BookingOfferSummaryFindAllQueryResponse bookingOfferSummaryFindAllQueryResponse = new BookingOfferSummaryFindAllQueryResponse().tap {
-      pageContent = foundBookingOfferIdentifiers
-          .collect({ UUID bookingOfferIdentifier ->
+      pageContent = foundBookingOfferIds
+          .collect({ UUID bookingOfferId ->
             BookingOfferSummaryJpaEntity myBookingOfferSummaryJpaEntity = foundBookingOfferSummaryJpaEntities
-                .find({ BookingOfferSummaryJpaEntity foundBookingOfferSummaryJpaEntity -> foundBookingOfferSummaryJpaEntity.bookingOfferIdentifier == bookingOfferIdentifier })
+                .find({ BookingOfferSummaryJpaEntity foundBookingOfferSummaryJpaEntity -> foundBookingOfferSummaryJpaEntity.bookingOfferId == bookingOfferId })
 
             new BookingOfferSummaryFindByIdQueryResponse(fetchBookingOfferSummaryJpaEntityProperties(myBookingOfferSummaryJpaEntity))
           })
 
       pageInfo = QueryHandlerSpringDataJpaUtil
-          .makePageInfoFromPage(pageOfBookingOfferIdentifiers, bookingOfferSummaryFindAllQueryRequest.pageRequirement, bookingOfferSummaryFindAllQueryRequest.sortRequirementList)
+          .makePageInfoFromPage(pageOfBookingOfferIds, bookingOfferSummaryFindAllQueryRequest.pageRequirement, bookingOfferSummaryFindAllQueryRequest.sortRequirementList)
     }
 
     return bookingOfferSummaryFindAllQueryResponse
   }
 
   @TupleConstructor
-  static class BookingOfferIdentifierDto {
-    UUID bookingOfferIdentifier
+  static class BookingOfferIdDto {
+    UUID bookingOfferId
   }
 
   @QueryHandler
   BookingOfferSummarySearchAllQueryResponse handleBookingOfferSummarySearchAllQueryRequest(BookingOfferSummarySearchAllQueryRequest bookingOfferSummarySearchAllQueryRequest) {
-    SearchConfiguration<BookingOfferSummaryJpaEntity, BookingOfferIdentifierDto, BookingOfferSummarySearchAllQueryRequest> searchConfiguration = SearchConfiguration
-        .<BookingOfferSummaryJpaEntity, BookingOfferIdentifierDto, BookingOfferSummarySearchAllQueryRequest>builder()
-        .resultClass(BookingOfferIdentifierDto)
+    SearchConfiguration<BookingOfferSummaryJpaEntity, BookingOfferIdDto, BookingOfferSummarySearchAllQueryRequest> searchConfiguration = SearchConfiguration
+        .<BookingOfferSummaryJpaEntity, BookingOfferIdDto, BookingOfferSummarySearchAllQueryRequest>builder()
+        .resultClass(BookingOfferIdDto)
         .anyMatch(false)
         .searchPropertyConfiguration(
             SearchPropertyConfiguration
                 .defaultSearchPropertyConfiguration()
-                .tap({ searchIgnoredPropertyList = ["customerIdentifier", "totalCommodityWeightFromIncluding", "totalCommodityWeightToIncluding"] })
+                .tap({ searchIgnoredPropertyList = ["customerId", "totalCommodityWeightFromIncluding", "totalCommodityWeightToIncluding"] })
         )
         .additionalRestrictionResolverList([new BookingOfferSummaryJpaEntityAdditionalRestrictionResolver()] as List<AdditionalRestrictionResolver>) // codenarc-disable-line UnnecessaryCast
         .build()
@@ -156,29 +154,29 @@ class BookingOfferSummaryQueryHandlerService {
     PageRequest pageRequest =
         QueryHandlerSpringDataJpaUtil.makePageRequestFromPageAndSortRequirements(bookingOfferSummarySearchAllQueryRequest.pageRequirement, bookingOfferSummarySearchAllQueryRequest.sortRequirementList)
 
-    Page<BookingOfferIdentifierDto> pageOfBookingOfferIdentifierDtos = null
+    Page<BookingOfferIdDto> pageOfBookingOfferIdDtos = null
     try {
-      pageOfBookingOfferIdentifierDtos = bookingOfferSummaryViewJpaRepository.findAll(bookingOfferSummarySearchAllQueryRequest, searchConfiguration, pageRequest)
+      pageOfBookingOfferIdDtos = bookingOfferSummaryViewJpaRepository.findAll(bookingOfferSummarySearchAllQueryRequest, searchConfiguration, pageRequest)
     }
     catch (PropertyReferenceException pre) {
       throw QueryHandlerSpringDataJpaUtil.makeQueryExceptionFromPropertyReferenceException(pre)
     }
 
-    List<UUID> foundBookingOfferIdentifiers = (pageOfBookingOfferIdentifierDtos.content as List<BookingOfferIdentifierDto>).collect({ BookingOfferIdentifierDto dto -> dto.bookingOfferIdentifier })
+    List<UUID> foundBookingOfferIds = (pageOfBookingOfferIdDtos.content as List<BookingOfferIdDto>).collect({ BookingOfferIdDto dto -> dto.bookingOfferId })
     List<BookingOfferSummaryJpaEntity> foundBookingOfferSummaryJpaEntities =
-        bookingOfferSummaryViewJpaRepository.findAllByBookingOfferIdentifiersAndCustomerIdentifier(foundBookingOfferIdentifiers, bookingOfferSummarySearchAllQueryRequest.customerIdentifier)
+        bookingOfferSummaryViewJpaRepository.findAllByBookingOfferIdsAndCustomerId(foundBookingOfferIds, bookingOfferSummarySearchAllQueryRequest.customerId)
 
     BookingOfferSummarySearchAllQueryResponse bookingOfferSummarySearchAllQueryResponse = new BookingOfferSummarySearchAllQueryResponse().tap {
-      pageContent = foundBookingOfferIdentifiers
-          .collect({ UUID bookingOfferIdentifier ->
+      pageContent = foundBookingOfferIds
+          .collect({ UUID bookingOfferId ->
             BookingOfferSummaryJpaEntity myBookingOfferSummaryJpaEntity = foundBookingOfferSummaryJpaEntities
-                .find({ BookingOfferSummaryJpaEntity foundBookingOfferSummaryJpaEntity -> foundBookingOfferSummaryJpaEntity.bookingOfferIdentifier == bookingOfferIdentifier })
+                .find({ BookingOfferSummaryJpaEntity foundBookingOfferSummaryJpaEntity -> foundBookingOfferSummaryJpaEntity.bookingOfferId == bookingOfferId })
 
             new BookingOfferSummaryFindByIdQueryResponse(fetchBookingOfferSummaryJpaEntityProperties(myBookingOfferSummaryJpaEntity))
           })
 
       pageInfo = QueryHandlerSpringDataJpaUtil
-          .makePageInfoFromPage(pageOfBookingOfferIdentifierDtos, bookingOfferSummarySearchAllQueryRequest.pageRequirement, bookingOfferSummarySearchAllQueryRequest.sortRequirementList)
+          .makePageInfoFromPage(pageOfBookingOfferIdDtos, bookingOfferSummarySearchAllQueryRequest.pageRequirement, bookingOfferSummarySearchAllQueryRequest.sortRequirementList)
     }
 
     return bookingOfferSummarySearchAllQueryResponse

@@ -15,25 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-  id "java-library"
-  id "klokwrk-gradle-plugin-convention-base"
-  id "klokwrk-gradle-plugin-convention-groovy"
-}
+package org.klokwrk.lang.groovy.json
 
-dependencies {
-  implementation platform(project(":klokwrk-platform-spring-boot"))
+import groovy.transform.CompileStatic
 
-  implementation project(":klokwrk-lang-groovy")
-  implementation project(":klokwrk-lib-uom")
-
-  implementation "com.fasterxml.jackson.core:jackson-core"
-  implementation "com.fasterxml.jackson.core:jackson-databind"
-  implementation "javax.measure:unit-api"
-  implementation "org.apache.groovy:groovy"
-  implementation "tech.units:indriya"
-
-  testImplementation project(":klokwrk-lib-uom")
-
-  testImplementation "org.spockframework:spock-core"
+/**
+ * A wrapper for raw JSON.
+ * <p/>
+ * Intended to be used with Jackson library, when we need an unchanged JSON string serialization and deserialization.
+ * <p/>
+ * There are corresponding Jackson serializer and deserializer implementations in klokwrk-lib-jackson module. To understand how this works and if it fits your needs, take a look at the
+ * {@code RawJsonWrapperSerializerSpecification} and {@code RawJsonWrapperDeserializerSpecification} tests.
+ */
+@CompileStatic
+class RawJsonWrapper {
+  String rawJson
 }

@@ -33,7 +33,7 @@ import org.klokwrk.cargotracker.booking.domain.model.value.Customer
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilityType
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
-import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdentifierPortOut
+import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdPortOut
 import org.springframework.stereotype.Service
 
 import java.time.Clock
@@ -47,13 +47,13 @@ import static org.hamcrest.Matchers.notNullValue
 @Service
 @CompileStatic
 class BookingOfferCommandFactoryService {
-  private final CustomerByUserIdentifierPortOut customerByUserIdentifierPortOut
+  private final CustomerByUserIdPortOut customerByUserIdPortOut
   private final LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut
   private final Clock clock
 
   @SuppressWarnings("CodeNarc.OptionalMethodParameter")
-  BookingOfferCommandFactoryService(CustomerByUserIdentifierPortOut customerByUserIdentifierPortOut, LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut, Optional<Clock> clockOptional) {
-    this.customerByUserIdentifierPortOut = customerByUserIdentifierPortOut
+  BookingOfferCommandFactoryService(CustomerByUserIdPortOut customerByUserIdPortOut, LocationByUnLoCodeQueryPortOut locationByUnLoCodeQueryPortOut, Optional<Clock> clockOptional) {
+    this.customerByUserIdPortOut = customerByUserIdPortOut
     this.locationByUnLoCodeQueryPortOut = locationByUnLoCodeQueryPortOut
     this.clock = clockOptional.orElse(Clock.systemUTC())
   }
@@ -68,7 +68,7 @@ class BookingOfferCommandFactoryService {
     //       While creating a command, we sometimes have to resolve data from external services. The domain facade is an excellent choice for such activities. In this example, we resolve Customer
     //       and Location registry data (a.k.a. master data) from the outbound adapter.
 
-    Customer customer = customerByUserIdentifierPortOut.findCustomerByUserIdentifier(createBookingOfferCommandRequest.userIdentifier)
+    Customer customer = customerByUserIdPortOut.findCustomerByUserId(createBookingOfferCommandRequest.userId)
     Location resolvedOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(createBookingOfferCommandRequest.routeSpecification.originLocation)
     Location resolvedDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(createBookingOfferCommandRequest.routeSpecification.destinationLocation)
 
@@ -88,7 +88,7 @@ class BookingOfferCommandFactoryService {
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
         customer: customer,
-        bookingOfferId: BookingOfferId.makeWithGeneratedIdentifierIfNeeded(createBookingOfferCommandRequest.bookingOfferIdentifier),
+        bookingOfferId: BookingOfferId.makeWithGeneratedIdentifierIfNeeded(createBookingOfferCommandRequest.bookingOfferId),
         routeSpecification: RouteSpecification.make(
             resolvedOriginLocation, resolvedDestinationLocation,
             createBookingOfferCommandRequest.routeSpecification.departureEarliestTime, createBookingOfferCommandRequest.routeSpecification.departureLatestTime,

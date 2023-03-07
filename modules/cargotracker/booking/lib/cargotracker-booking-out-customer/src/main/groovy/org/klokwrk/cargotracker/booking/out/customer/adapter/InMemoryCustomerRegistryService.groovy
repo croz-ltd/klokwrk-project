@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.out.customer.adapter
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.value.Customer
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
-import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdentifierPortOut
+import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdPortOut
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 
@@ -36,24 +36,24 @@ import static org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtur
  * Of course, this implementation only contains what is needed in the booking context. All other aspects of customer management are ignored.
  */
 @CompileStatic
-class InMemoryCustomerRegistryService implements CustomerByUserIdentifierPortOut {
+class InMemoryCustomerRegistryService implements CustomerByUserIdPortOut {
   /**
    * Finds {@link Customer} based on its user identifier.
    * <p/>
    * If customer can not be found, implementation throws {@link DomainException}. Corresponding message key of the exception is
-   * '{@code customerByUserIdentifierPortOut.findCustomerByUserIdentifier.notFound}'.
+   * '{@code customerByUserIdPortOut.findCustomerByUserId.notFound}'.
    * <p/>
    * For concrete user identifiers and corresponding {@link org.klokwrk.cargotracker.booking.domain.model.value.CustomerId}s and {@link CustomerType}s, please take a look at the source code.
    *
-   * @see CustomerByUserIdentifierPortOut#findCustomerByUserIdentifier(java.lang.String)
+   * @see CustomerByUserIdPortOut#findCustomerByUserId(java.lang.String)
    */
   @Override
-  Customer findCustomerByUserIdentifier(String userIdentifier) {
-    requireMatch(userIdentifier, notNullValue())
+  Customer findCustomerByUserId(String userId) {
+    requireMatch(userId, notNullValue())
 
-    Customer customerFound = CustomerSample.findCustomerByUserIdentifier(userIdentifier)
+    Customer customerFound = CustomerSample.findCustomerByUserId(userId)
     if (customerFound == null) {
-      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey("customerByUserIdentifierPortOut.findCustomerByUserIdentifier.notFound", [userIdentifier]))
+      throw new DomainException(ViolationInfo.makeForBadRequestWithCustomCodeKey("customerByUserIdPortOut.findCustomerByUserId.notFound", [userId]))
     }
 
     return customerFound
@@ -67,8 +67,8 @@ class InMemoryCustomerRegistryService implements CustomerByUserIdentifierPortOut
         "platinum-customer@cargotracker.com": customer_platinum().build()
     ]
 
-    static Customer findCustomerByUserIdentifier(String userIdentifier) {
-      Customer customerFound = CUSTOMER_SAMPLE_MAP.get(userIdentifier)
+    static Customer findCustomerByUserId(String userId) {
+      Customer customerFound = CUSTOMER_SAMPLE_MAP.get(userId)
       return customerFound
     }
   }

@@ -79,8 +79,8 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
   MockMvc mockMvc
 
   void setupSpec() {
-    String customerIdentifier = CustomerFixtureBuilder.customer_standard().build().customerId.identifier
-    initialBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount_forCustomerIdentifier(groovySql, customerIdentifier)
+    String customerId = CustomerFixtureBuilder.customer_standard().build().customerId.identifier
+    initialBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount_forCustomerId(groovySql, customerId)
     5.times { publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql) }
   }
 
@@ -123,7 +123,7 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
     when:
     Map responseMap = bookingOfferSummaryFindAll_succeeded(
         bookingOfferSummaryFindAllQueryRequest_standardCustomer()
-            .userIdentifier("platinum-customer@cargotracker.com")
+            .userId("platinum-customer@cargotracker.com")
             .buildAsJsonString(),
         acceptLanguageParam,
         mockMvc

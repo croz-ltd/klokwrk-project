@@ -34,19 +34,19 @@ import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixture
 class BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder implements JsonFixtureBuilder {
   static BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder bookingOfferSummaryFindAllQueryRequest_standardCustomer() {
     BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder jsonFixtureBuilder = new BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder()
-        .userIdentifier("standard-customer@cargotracker.com")
+        .userId("standard-customer@cargotracker.com")
 
     return jsonFixtureBuilder
   }
 
-  String userIdentifier
+  String userId
   PageRequirementJsonFixtureBuilder pageRequirement
   List<SortRequirementJsonFixtureBuilder> sortRequirementList
 
   @Override
   Map<String, ?> buildAsMap() {
     Map<String, ?> mapToReturn = [
-        userIdentifier: userIdentifier
+        userId: userId
     ]
 
     pageRequirement ? mapToReturn.pageRequirement = pageRequirement.buildAsMap() : mapToReturn
@@ -58,7 +58,7 @@ class BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder implements JsonFi
   @SuppressWarnings("DuplicatedCode")
   @Override
   String buildAsJsonString() {
-    String jsonStringContent = /"userIdentifier": ${ stringToJsonString(userIdentifier) }/
+    String jsonStringContent = /"userId": ${ stringToJsonString(userId) }/
 
     pageRequirement ? jsonStringContent += /, "pageRequirement": ${ pageRequirement.buildAsJsonString() }/ : jsonStringContent
     sortRequirementList ? jsonStringContent += /, "sortRequirementList": ${ jsonFixtureBuilderListToJsonListString(sortRequirementList) }/ : jsonStringContent

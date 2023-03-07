@@ -17,6 +17,7 @@
  */
 package org.klokwrk.cargotracker.booking.queryside.projection.rdbms.feature.bookingoffer.adapter.out.persistence
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
 import org.axonframework.eventhandling.DomainEventMessage
 import org.axonframework.eventhandling.EventHandler
@@ -25,16 +26,24 @@ import org.springframework.stereotype.Service
 
 @Service
 @CompileStatic
-class BookingOfferSummaryProjectionService {
+class BookingOfferProjectionService {
   private final BookingOfferSummaryProjectionJpaRepository bookingOfferSummaryProjectionJpaRepository
+  private final BookingOfferDetailsProjectionJpaRepository bookingOfferDetailsProjectionJpaRepository
+  private final ObjectMapper objectMapper
 
   @SuppressWarnings('SpringJavaInjectionPointsAutowiringInspection')
-  BookingOfferSummaryProjectionService(BookingOfferSummaryProjectionJpaRepository bookingOfferSummaryProjectionJpaRepository) {
+  BookingOfferProjectionService(
+      BookingOfferSummaryProjectionJpaRepository bookingOfferSummaryProjectionJpaRepository, BookingOfferDetailsProjectionJpaRepository bookingOfferDetailsProjectionJpaRepository,
+      ObjectMapper objectMapper)
+  {
     this.bookingOfferSummaryProjectionJpaRepository = bookingOfferSummaryProjectionJpaRepository
+    this.bookingOfferDetailsProjectionJpaRepository = bookingOfferDetailsProjectionJpaRepository
+    this.objectMapper = objectMapper
   }
 
   @EventHandler
   void onBookingOfferCreatedEvent(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
     bookingOfferSummaryProjectionJpaRepository.persist(BookingOfferSummaryJpaEntityFactory.makeBookingOfferSummaryJpaEntity(bookingOfferCreatedEvent, domainEventMessage))
+    bookingOfferDetailsProjectionJpaRepository.persist(BookingOfferDetailsJpaEntityFactory.makeBookingOfferDetailsJpaEntity(bookingOfferCreatedEvent, domainEventMessage, objectMapper))
   }
 }

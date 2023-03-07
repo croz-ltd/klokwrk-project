@@ -79,14 +79,14 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
   Integer initialBookingOfferSummaryRecordsCount = null
 
   void setupSpec() {
-    String customerIdentifier = CustomerFixtureBuilder.customer_standard().build().customerId.identifier
-    initialBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount_forCustomerIdentifier(groovySql, customerIdentifier)
+    String customerId = CustomerFixtureBuilder.customer_standard().build().customerId.identifier
+    initialBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount_forCustomerId(groovySql, customerId)
     5.times { publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql) }
   }
 
   void "should work for correct request with default paging and sorting"() {
     given:
-    BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(userIdentifier: "standard-customer@cargotracker.com")
+    BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(userId: "standard-customer@cargotracker.com")
 
     OperationRequest<BookingOfferSummaryFindAllQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryFindAllQueryRequest,
@@ -126,7 +126,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
   void "should work for correct request with explicit paging and sorting"() {
     given:
     BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(
-        userIdentifier: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracker.com",
         pageRequirement: new PageRequirement(ordinal: 0, size: 3),
         sortRequirementList: [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.ASC)]
     )
@@ -158,7 +158,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
   void "should fail for invalid sort requirements list"() {
     given:
     BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(
-        userIdentifier: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracker.com",
         pageRequirement: new PageRequirement(ordinal: 0, size: 3),
         sortRequirementList: sortRequirementListParam
     )
@@ -185,7 +185,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
   void "should fail for invalid property name in sort requirements"() {
     given:
     BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(
-        userIdentifier: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracker.com",
         pageRequirement: new PageRequirement(ordinal: 0, size: 3),
         sortRequirementList: [new SortRequirement(propertyName: "nonExistingProperty", direction: SortDirection.ASC)]
     )
@@ -220,7 +220,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
     logger.addAppender(listAppender)
 
     BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(
-        userIdentifier: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracker.com",
         pageRequirement: new PageRequirement(ordinal: 0, size: 100),
         sortRequirementList: [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.ASC)]
     )
@@ -238,10 +238,10 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
     listAppender.list.size() == 2
 
     String firstFormattedMessage = listAppender.list[0].formattedMessage
-    firstFormattedMessage.matches(/.*select.*booking_offer_identifier.*from booking_offer_summary \w* where.*limit.*/)
+    firstFormattedMessage.matches(/.*select.*booking_offer_id.*from booking_offer_summary \w* where.*limit.*/)
 
     String secondFormattedMessage = listAppender.list[1].formattedMessage
-    secondFormattedMessage.matches(/.*select.*from booking_offer_summary \w* left outer join booking_offer_summary_commodity_type.*where.*booking_offer_identifier in .*/)
+    secondFormattedMessage.matches(/.*select.*from booking_offer_summary \w* left outer join booking_offer_summary_commodity_type.*where.*booking_offer_id in .*/)
 
     cleanup:
     logger.detachAppender(listAppender)
@@ -256,7 +256,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
     logger.addAppender(listAppender)
 
     BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(
-        userIdentifier: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracker.com",
         pageRequirement: new PageRequirement(ordinal: 0, size: 3),
         sortRequirementList: [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.ASC)]
     )
@@ -274,13 +274,13 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
     listAppender.list.size() == 3
 
     String firstFormattedMessage = listAppender.list[0].formattedMessage
-    firstFormattedMessage.matches(/.*select.*booking_offer_identifier.*from booking_offer_summary \w* where.*limit.*/)
+    firstFormattedMessage.matches(/.*select.*booking_offer_id.*from booking_offer_summary \w* where.*limit.*/)
 
     String secondFormattedMessage = listAppender.list[1].formattedMessage
-    secondFormattedMessage.matches(/.*select count\(\w*.booking_offer_identifier\).*from booking_offer_summary \w* where.*/)
+    secondFormattedMessage.matches(/.*select count\(\w*.booking_offer_id\).*from booking_offer_summary \w* where.*/)
 
     String thirdFormattedMessage = listAppender.list[2].formattedMessage
-    thirdFormattedMessage.matches(/.*select.*from booking_offer_summary \w* left outer join booking_offer_summary_commodity_type.*where.*booking_offer_identifier in .*/)
+    thirdFormattedMessage.matches(/.*select.*from booking_offer_summary \w* left outer join booking_offer_summary_commodity_type.*where.*booking_offer_id in .*/)
 
     cleanup:
     logger.detachAppender(listAppender)

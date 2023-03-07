@@ -41,7 +41,7 @@ import javax.validation.constraints.Size
 import java.time.Instant
 
 class CreateBookingOfferCommandRequestSpecification extends Specification {
-  static String validBookingOfferIdentifier = "00000000-0000-4000-8000-000000000000"
+  static String validBookingOfferId = "00000000-0000-4000-8000-000000000000"
   static RouteSpecificationRequestData validRouteSpecificationRequestData = new RouteSpecificationRequestData(
       originLocation: "AAAAA", destinationLocation: "AAAAA",
       departureEarliestTime: Instant.now(), departureLatestTime: Instant.now(),
@@ -62,11 +62,11 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     validationService.afterPropertiesSet()
   }
 
-  void "should pass validation for valid bookingOfferIdentifier"() {
+  void "should pass validation for valid bookingOfferId"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "userIdentifier",
-        bookingOfferIdentifier: bookingOfferIdentifierParam,
+        userId: "userId",
+        bookingOfferId: bookingOfferIdParam,
         routeSpecification: validRouteSpecificationRequestData,
         cargos: validCargoRequestDataCollection
     )
@@ -78,7 +78,7 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     notThrown(ConstraintViolationException)
 
     where:
-    bookingOfferIdentifierParam            | _
+    bookingOfferIdParam                    | _
     null                                   | _
     "00000000-0000-4000-8000-000000000000" | _
   }
@@ -86,8 +86,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
   void "should pass validation for valid commodityWeight data in CargoData"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "userIdentifier",
-        bookingOfferIdentifier: validBookingOfferIdentifier,
+        userId: "userId",
+        bookingOfferId: validBookingOfferId,
         routeSpecification: validRouteSpecificationRequestData,
         cargos: [new CargoRequestData(validCargoRequestData.properties).tap({ commodityWeight = commodityWeightParam })]
     )
@@ -110,8 +110,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
   void "should pass validation for valid commodityRequestedStorageTemperature data in CargoData"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "userIdentifier",
-        bookingOfferIdentifier: validBookingOfferIdentifier,
+        userId: "userId",
+        bookingOfferId: validBookingOfferId,
         routeSpecification: validRouteSpecificationRequestData,
         cargos: [new CargoRequestData(
             commodityType: CommodityType.CHILLED.name(),
@@ -140,11 +140,11 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     30.degC                                   | _
   }
 
-  void "should not pass validation for invalid userIdentifier"() {
+  void "should not pass validation for invalid userId"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: userIdentifierParam,
-        bookingOfferIdentifier: validBookingOfferIdentifier,
+        userId: userIdParam,
+        bookingOfferId: validBookingOfferId,
         routeSpecification: validRouteSpecificationRequestData,
         cargos: validCargoRequestDataCollection
     )
@@ -156,24 +156,24 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     ConstraintViolationException constraintViolationException = thrown()
 
     constraintViolationException.constraintViolations.size() == 1
-    constraintViolationException.constraintViolations[0].propertyPath.toString() == "userIdentifier"
+    constraintViolationException.constraintViolations[0].propertyPath.toString() == "userId"
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
-    userIdentifierParam | constraintTypeParam
-    null                | NotBlank
-    ""                  | NotBlank
-    "   "               | NotBlank
-    " userIdentifier"   | TrimmedStringConstraint
-    "userIdentifier "   | TrimmedStringConstraint
-    " userIdentifier "  | TrimmedStringConstraint
+    userIdParam | constraintTypeParam
+    null        | NotBlank
+    ""          | NotBlank
+    "   "       | NotBlank
+    " userId"   | TrimmedStringConstraint
+    "userId "   | TrimmedStringConstraint
+    " userId "  | TrimmedStringConstraint
   }
 
-  void "should not pass validation for invalid bookingOfferIdentifier"() {
+  void "should not pass validation for invalid bookingOfferId"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "userIdentifier",
-        bookingOfferIdentifier: bookingOfferIdentifierParam,
+        userId: "userId",
+        bookingOfferId: bookingOfferIdParam,
         routeSpecification: validRouteSpecificationRequestData,
         cargos: validCargoRequestDataCollection
     )
@@ -189,18 +189,18 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
-    bookingOfferIdentifierParam            | propertyPathParam        | constraintTypeParam
-    ""                                     | "bookingOfferIdentifier" | NotBlankWhenNullableConstraint
-    "123"                                  | "bookingOfferIdentifier" | Size
-    " 0000000-0000-0000-0000-00000000000 " | "bookingOfferIdentifier" | TrimmedStringConstraint
-    "00000000=0000=0000=0000=000000000000" | "bookingOfferIdentifier" | RandomUuidFormatConstraint
+    bookingOfferIdParam                    | propertyPathParam | constraintTypeParam
+    ""                                     | "bookingOfferId"  | NotBlankWhenNullableConstraint
+    "123"                                  | "bookingOfferId"  | Size
+    " 0000000-0000-0000-0000-00000000000 " | "bookingOfferId"  | TrimmedStringConstraint
+    "00000000=0000=0000=0000=000000000000" | "bookingOfferId"  | RandomUuidFormatConstraint
   }
 
   void "should not pass validation for null routeSpecification"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "userIdentifier",
-        bookingOfferIdentifier: validBookingOfferIdentifier,
+        userId: "userId",
+        bookingOfferId: validBookingOfferId,
         routeSpecification: null,
         cargos: validCargoRequestDataCollection
     )
@@ -219,8 +219,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
   void "should not pass validation for invalid locations data"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "userIdentifier",
-        bookingOfferIdentifier: validBookingOfferIdentifier,
+        userId: "userId",
+        bookingOfferId: validBookingOfferId,
         routeSpecification: new RouteSpecificationRequestData(
             originLocation: originLocationParam, destinationLocation: destinationLocationParam,
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now(),
@@ -257,8 +257,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
   void "should not pass validation for invalid departures instant data"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "userIdentifier",
-        bookingOfferIdentifier: validBookingOfferIdentifier,
+        userId: "userId",
+        bookingOfferId: validBookingOfferId,
         routeSpecification: new RouteSpecificationRequestData(
             originLocation: "AAAAA", destinationLocation: "AAAAA",
             departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam,
@@ -286,8 +286,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
   void "should not pass validation for invalid arrival instant data"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "userIdentifier",
-        bookingOfferIdentifier: validBookingOfferIdentifier,
+        userId: "userId",
+        bookingOfferId: validBookingOfferId,
         routeSpecification: new RouteSpecificationRequestData(
             originLocation: "AAAAA", destinationLocation: "AAAAA",
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now(),
@@ -310,8 +310,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
   void "should not pass validation for invalid cargos"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "userIdentifier",
-        bookingOfferIdentifier: validBookingOfferIdentifier,
+        userId: "userId",
+        bookingOfferId: validBookingOfferId,
         routeSpecification: validRouteSpecificationRequestData,
         cargos: cargosParam
     )
@@ -336,8 +336,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
   void "should not pass validation for invalid commodityType data in CargoData"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "userIdentifier",
-        bookingOfferIdentifier: validBookingOfferIdentifier,
+        userId: "userId",
+        bookingOfferId: validBookingOfferId,
         routeSpecification: validRouteSpecificationRequestData,
         cargos: [new CargoRequestData(validCargoRequestData.properties).tap({ commodityType = commodityTypeParam })]
     )
@@ -368,8 +368,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
   void "should not pass validation for invalid commodityWeight data in CargoData"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "userIdentifier",
-        bookingOfferIdentifier: validBookingOfferIdentifier,
+        userId: "userId",
+        bookingOfferId: validBookingOfferId,
         routeSpecification: validRouteSpecificationRequestData,
         cargos: [new CargoRequestData(validCargoRequestData.properties).tap({ commodityWeight = commodityWeightParam })]
     )
@@ -395,8 +395,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
   void "should not pass validation for invalid commodityRequestedStorageTemperature data in CargoData"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "userIdentifier",
-        bookingOfferIdentifier: validBookingOfferIdentifier,
+        userId: "userId",
+        bookingOfferId: validBookingOfferId,
         routeSpecification: validRouteSpecificationRequestData,
         cargos: [
             new CargoRequestData(
@@ -429,8 +429,8 @@ class CreateBookingOfferCommandRequestSpecification extends Specification {
   void "should not pass validation for invalid containerDimensionType data in CargoData"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "userIdentifier",
-        bookingOfferIdentifier: validBookingOfferIdentifier,
+        userId: "userId",
+        bookingOfferId: validBookingOfferId,
         routeSpecification: validRouteSpecificationRequestData,
         cargos: [new CargoRequestData(validCargoRequestData.properties).tap({ containerDimensionType = containerDimensionTypeParam })]
     )

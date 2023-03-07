@@ -15,25 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-  id "java-library"
-  id "klokwrk-gradle-plugin-convention-base"
-  id "klokwrk-gradle-plugin-convention-groovy"
-}
+package org.klokwrk.lib.jackson.databind.ser
 
-dependencies {
-  implementation platform(project(":klokwrk-platform-spring-boot"))
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.ser.std.StdSerializer
+import groovy.transform.CompileStatic
+import org.klokwrk.lang.groovy.json.RawJsonWrapper
 
-  implementation project(":klokwrk-lang-groovy")
-  implementation project(":klokwrk-lib-uom")
+@CompileStatic
+class RawJsonWrapperSerializer extends StdSerializer<RawJsonWrapper> {
+  RawJsonWrapperSerializer() {
+    super(RawJsonWrapper)
+  }
 
-  implementation "com.fasterxml.jackson.core:jackson-core"
-  implementation "com.fasterxml.jackson.core:jackson-databind"
-  implementation "javax.measure:unit-api"
-  implementation "org.apache.groovy:groovy"
-  implementation "tech.units:indriya"
-
-  testImplementation project(":klokwrk-lib-uom")
-
-  testImplementation "org.spockframework:spock-core"
+  @Override
+  void serialize(RawJsonWrapper value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) {
+    jsonGenerator.writeRawValue(value.rawJson)
+  }
 }

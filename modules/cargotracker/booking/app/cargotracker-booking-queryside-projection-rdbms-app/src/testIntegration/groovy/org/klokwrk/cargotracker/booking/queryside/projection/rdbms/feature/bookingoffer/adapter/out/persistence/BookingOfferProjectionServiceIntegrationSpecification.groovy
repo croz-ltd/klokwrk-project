@@ -48,7 +48,7 @@ import java.time.Instant
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class BookingOfferSummaryProjectionServiceIntegrationSpecification extends AbstractProjectionRdbmsIntegrationSpecification {
+class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProjectionRdbmsIntegrationSpecification {
 
   @TestConfiguration
   static class TestSpringBootConfiguration {
@@ -70,8 +70,8 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build()
-    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
-    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId
+    UUID bookingOfferId = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
+    String customerId = bookingOfferCreatedEvent.customer.customerId
     CustomerType customerType = bookingOfferCreatedEvent.customer.customerType
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage =
@@ -82,11 +82,11 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     expect:
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
-      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
+      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferId)) {
         size() == 21
-        booking_offer_identifier == bookingOfferIdentifier
+        booking_offer_id == bookingOfferId
 
-        customer_identifier == customerIdentifier
+        customer_id == customerId
         customer_type == customerType.name()
 
         origin_location_un_lo_code == "HRRJK"
@@ -115,6 +115,22 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         // collections verification
         commodity_type_list == ["DRY"] as Set
       }
+
+      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferDetailsRecord(groovySql, bookingOfferId)) {
+        size() == 8
+
+        booking_offer_id == bookingOfferId
+        customer_id == customerId
+
+        (details as String).matches(/.*originLocation.*Rijeka.*destinationLocation.*Rotterdam.*/)
+
+        inbound_channel_name == WebMetaDataConstant.WEB_BOOKING_CHANNEL_NAME
+        inbound_channel_type == WebMetaDataConstant.WEB_BOOKING_CHANNEL_TYPE
+
+        (first_event_recorded_at as Timestamp).toInstant() >= startedAt
+        (last_event_recorded_at as Timestamp).toInstant() >= startedAt
+        last_event_sequence_number == 0
+      }
     }
   }
 
@@ -124,8 +140,8 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     Long startingBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build()
-    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
-    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId
+    UUID bookingOfferId = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
+    String customerId = bookingOfferCreatedEvent.customer.customerId
     CustomerType customerType = bookingOfferCreatedEvent.customer.customerType
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, [:])
@@ -134,11 +150,11 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     expect:
     new PollingConditions(timeout: 10, initialDelay: 0, delay: 0.1).eventually {
       BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount(groovySql) == startingBookingOfferSummaryRecordsCount + 1
-      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferIdentifier)) {
+      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferSummaryRecord(groovySql, bookingOfferId)) {
         size() == 21
-        booking_offer_identifier == bookingOfferIdentifier
+        booking_offer_id == bookingOfferId
 
-        customer_identifier == customerIdentifier
+        customer_id == customerId
         customer_type == customerType.name()
 
         origin_location_un_lo_code == "HRRJK"
@@ -167,6 +183,22 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
         // collections verification
         commodity_type_list == ["DRY"] as Set
       }
+
+      verifyAll(BookingOfferSummarySqlHelper.selectBookingOfferDetailsRecord(groovySql, bookingOfferId)) {
+        size() == 8
+
+        booking_offer_id == bookingOfferId
+        customer_id == customerId
+
+        (details as String).matches(/.*originLocation.*Rijeka.*destinationLocation.*Rotterdam.*/)
+
+        inbound_channel_name == CommonConstants.NOT_AVAILABLE
+        inbound_channel_type == CommonConstants.NOT_AVAILABLE
+
+        (first_event_recorded_at as Timestamp).toInstant() >= startedAt
+        (last_event_recorded_at as Timestamp).toInstant() >= startedAt
+        last_event_sequence_number == 0
+      }
     }
   }
 
@@ -182,8 +214,8 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
     logger.addAppender(listAppender)
 
     BookingOfferCreatedEvent bookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder.bookingOfferCreatedEvent_default().build()
-    UUID bookingOfferIdentifier = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
-    String customerIdentifier = bookingOfferCreatedEvent.customer.customerId
+    UUID bookingOfferId = UUID.fromString(bookingOfferCreatedEvent.bookingOfferId)
+    String customerId = bookingOfferCreatedEvent.customer.customerId
 
     GenericDomainEventMessage<BookingOfferCreatedEvent> genericDomainEventMessage = GenericDomainEventMessageFactory.makeEventMessage(bookingOfferCreatedEvent, [:])
 
@@ -192,16 +224,21 @@ class BookingOfferSummaryProjectionServiceIntegrationSpecification extends Abstr
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0, delay: 0.1).eventually {
-      listAppender.list.size() == 2
+      listAppender.list.size() == 3
 
-      String firstFormattedMessage = listAppender.list[0].formattedMessage
-      firstFormattedMessage.contains("insert into booking_offer_summary")
-      firstFormattedMessage.contains(bookingOfferIdentifier.toString())
-      firstFormattedMessage.contains(customerIdentifier)
+      String matchingMessage1 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_summary \(.*customer_id, .*/) })
+      matchingMessage1 != null
+      matchingMessage1.contains(bookingOfferId.toString())
+      matchingMessage1.contains(customerId)
 
-      String secondFormattedMessage2 = listAppender.list[1].formattedMessage
-      secondFormattedMessage2.contains("insert into booking_offer_summary_commodity_type")
-      secondFormattedMessage2.contains(bookingOfferIdentifier.toString())
+      String matchingMessage2 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_summary_commodity_type.*/) })
+      matchingMessage2 != null
+      matchingMessage2.contains(bookingOfferId.toString())
+
+      String matchingMessage3 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_details \(.*customer_id, .*/) })
+      matchingMessage3 != null
+      matchingMessage3.contains(bookingOfferId.toString())
+      matchingMessage3.contains(customerId)
     }
 
     cleanup:

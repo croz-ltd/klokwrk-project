@@ -75,12 +75,12 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
-    String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
+    String myBookingOfferId = CombUuidShortPrefixUtils.makeCombShortPrefix()
 
     when:
     Map responseMap = createBookingOffer_succeeded(
         createBookingOfferCommandRequest_rijekaToRotterdam(currentTime)
-            .bookingOfferIdentifier(myBookingOfferIdentifier)
+            .bookingOfferId(myBookingOfferId)
             .cargos_add(cargoRequestData_dry().commodityWeight(commodityWeightParam))
             .buildAsJsonString(),
         acceptLanguageParam,
@@ -105,7 +105,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
         verifyAll(it.bookingOfferId as Map) {
           size() == 1
-          identifier == myBookingOfferIdentifier
+          identifier == myBookingOfferId
         }
 
         verifyAll(it.customer as Map) {
@@ -257,12 +257,12 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     Instant departureLatestTime = currentTime + Duration.ofHours(2)
     Instant arrivalLatestTime = currentTime + Duration.ofHours(3)
 
-    String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
+    String myBookingOfferId = CombUuidShortPrefixUtils.makeCombShortPrefix()
 
     when:
     Map responseMap = createBookingOffer_succeeded(
         createBookingOfferCommandRequest_rotterdamToRijeka(currentTime)
-            .bookingOfferIdentifier(myBookingOfferIdentifier)
+            .bookingOfferId(myBookingOfferId)
             .cargos_add(
                 cargoRequestData_base()
                     .commodityType("${ commodityTypeParam.name().toLowerCase() }")
@@ -291,7 +291,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
         verifyAll(it.bookingOfferId as Map) {
           size() == 1
-          identifier == myBookingOfferIdentifier
+          identifier == myBookingOfferId
         }
 
         verifyAll(it.customer as Map) {
@@ -489,7 +489,7 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     when:
     Map responseMap = createBookingOffer_failed(
         createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry()
-            .userIdentifier("unknownUserIdentifier")
+            .userId("unknownUserId")
             .buildAsJsonString(),
         acceptLanguageParam,
         mockMvc
@@ -507,8 +507,8 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
 
     where:
     acceptLanguageParam | localeStringParam | violationMessageParam
-    "hr-HR"             | "hr_HR"           | "Nije pronađen potrošač s korisničkim imenom 'unknownUserIdentifier'."
-    "en"                | "en"              | "Can't find the customer with user id 'unknownUserIdentifier'."
+    "hr-HR"             | "hr_HR"           | "Nije pronađen potrošač s korisničkim imenom 'unknownUserId'."
+    "en"                | "en"              | "Can't find the customer with user id 'unknownUserId'."
   }
 
   void "should fail when origin and destination locations are equal - domain failure"() {

@@ -76,10 +76,10 @@ abstract class AbstractCommandRetrySchedulerIntegrationSpecification extends Abs
     }
     Registration handlerInterceptorRegistration = commandBus.registerHandlerInterceptor(messageHandlerInterceptor)
 
-    String myBookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
+    String myBookingOfferId = CombUuidShortPrefixUtils.makeCombShortPrefix()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "standard-customer@cargotracker.com",
-        bookingOfferIdentifier: myBookingOfferIdentifier,
+        userId: "standard-customer@cargotracker.com",
+        bookingOfferId: myBookingOfferId,
         routeSpecification: new RouteSpecificationRequestData(
             originLocation: "NLRTM", destinationLocation: "HRRJK",
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
@@ -99,7 +99,7 @@ abstract class AbstractCommandRetrySchedulerIntegrationSpecification extends Abs
 
     then:
     createBookingOfferCommandResponseMetadata.isEmpty()
-    createBookingOfferCommandResponsePayload.bookingOfferId.identifier == myBookingOfferIdentifier
+    createBookingOfferCommandResponsePayload.bookingOfferId.identifier == myBookingOfferId
 
     loggingEventList.size() == 1
     loggingEventList[0].level == Level.INFO
@@ -139,10 +139,10 @@ abstract class AbstractCommandRetrySchedulerIntegrationSpecification extends Abs
     }
     Registration handlerInterceptorRegistration = commandBus.registerHandlerInterceptor(messageHandlerInterceptor)
 
-    String bookingOfferIdentifier = CombUuidShortPrefixUtils.makeCombShortPrefix()
+    String bookingOfferId = CombUuidShortPrefixUtils.makeCombShortPrefix()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userIdentifier: "standard-customer@cargotracker.com",
-        bookingOfferIdentifier: bookingOfferIdentifier,
+        userId: "standard-customer@cargotracker.com",
+        bookingOfferId: bookingOfferId,
         routeSpecification: new RouteSpecificationRequestData(
             originLocation: "NLRTM", destinationLocation: "HRRJK",
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),

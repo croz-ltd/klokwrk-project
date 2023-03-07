@@ -20,39 +20,37 @@ package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.app
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
-import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
+import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
+import org.klokwrk.lib.validation.group.Level1
+import org.klokwrk.lib.validation.group.Level2
+import org.klokwrk.lib.validation.group.Level3
 
-import javax.measure.Quantity
-import javax.measure.quantity.Mass
-import java.time.Instant
+import javax.validation.GroupSequence
+import javax.validation.constraints.NotBlank
+import javax.validation.constraints.Null
+import javax.validation.constraints.Size
 
+/**
+ * Request DTO for {@code bookingOfferDetailsFindByIdQuery} operation from {@link BookingOfferDetailsFindByIdQueryPortIn} inbound port interface.
+ * <p/>
+ * @see BookingOfferSummaryFindByIdQueryRequest
+ */
+@GroupSequence([BookingOfferDetailsFindByIdQueryRequest, Level1, Level2, Level3])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
-class BookingOfferSummaryFindByIdQueryResponse {
+class BookingOfferDetailsFindByIdQueryRequest {
+  @TrimmedStringConstraint(groups = [Level2])
+  @NotBlank(groups = [Level1])
+  String userId
+
+  @Null
+  String customerId
+
+  @RandomUuidFormatConstraint(groups = [Level3])
+  @Size(min = 36, max = 36, groups = [Level2])
+  @NotBlank(groups = [Level1])
   String bookingOfferId
-
-  CustomerType customerType
-
-  String originLocationUnLoCode
-  String originLocationName
-  String originLocationCountryName
-
-  String destinationLocationUnLoCode
-  String destinationLocationName
-  String destinationLocationCountryName
-
-  Instant departureEarliestTime
-  Instant departureLatestTime
-  Instant arrivalLatestTime
-
-  Set<CommodityType> commodityTypes
-  Quantity<Mass> totalCommodityWeight
-  BigDecimal totalContainerTeuCount
-
-  Instant firstEventRecordedAt
-  Instant lastEventRecordedAt
-  Long lastEventSequenceNumber
 }

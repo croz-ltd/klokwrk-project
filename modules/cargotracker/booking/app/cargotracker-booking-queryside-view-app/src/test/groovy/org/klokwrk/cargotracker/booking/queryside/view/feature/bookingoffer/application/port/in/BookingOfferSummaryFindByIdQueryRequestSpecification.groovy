@@ -41,7 +41,7 @@ class BookingOfferSummaryFindByIdQueryRequestSpecification extends Specification
   void "should pass validation for valid data"() {
     given:
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
-        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: "00000000-0000-4000-8000-000000000000", userIdentifier: "someUserIdentifier")
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: "00000000-0000-4000-8000-000000000000", userId: "someUserId")
 
     when:
     validationService.validate(bookingOfferSummaryFindByIdQueryRequest)
@@ -53,7 +53,7 @@ class BookingOfferSummaryFindByIdQueryRequestSpecification extends Specification
   void "should not pass validation for invalid data"() {
     given:
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
-        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: bookingOfferIdentifierParam, userIdentifier: userIdentifierParam)
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: bookingOfferIdParam, userId: userIdParam)
 
     when:
     validationService.validate(bookingOfferSummaryFindByIdQueryRequest)
@@ -65,25 +65,25 @@ class BookingOfferSummaryFindByIdQueryRequestSpecification extends Specification
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == constraintTypeParam
 
     where:
-    bookingOfferIdentifierParam            | userIdentifierParam    | constraintTypeParam
-    null                                   | "someUserIdentifier"   | NotBlank
-    ""                                     | "someUserIdentifier"   | NotBlank
-    "  "                                   | "someUserIdentifier"   | NotBlank
-    "123"                                  | "someUserIdentifier"   | Size
-    "00000000=0000=0000=0000=000000000000" | "someUserIdentifier"   | RandomUuidFormatConstraint
+    bookingOfferIdParam                    | userIdParam    | constraintTypeParam
+    null                                   | "someUserId"   | NotBlank
+    ""                                     | "someUserId"   | NotBlank
+    "  "                                   | "someUserId"   | NotBlank
+    "123"                                  | "someUserId"   | Size
+    "00000000=0000=0000=0000=000000000000" | "someUserId"   | RandomUuidFormatConstraint
 
-    "00000000-0000-0000-0000-000000000000" | null                   | NotBlank
-    "00000000-0000-0000-0000-000000000000" | ""                     | NotBlank
-    "00000000-0000-0000-0000-000000000000" | "  "                   | NotBlank
-    "00000000-0000-0000-0000-000000000000" | " someUserIdentifier"  | TrimmedStringConstraint
-    "00000000-0000-0000-0000-000000000000" | "someUserIdentifier "  | TrimmedStringConstraint
-    "00000000-0000-0000-0000-000000000000" | " someUserIdentifier " | TrimmedStringConstraint
+    "00000000-0000-0000-0000-000000000000" | null           | NotBlank
+    "00000000-0000-0000-0000-000000000000" | ""             | NotBlank
+    "00000000-0000-0000-0000-000000000000" | "  "           | NotBlank
+    "00000000-0000-0000-0000-000000000000" | " someUserId"  | TrimmedStringConstraint
+    "00000000-0000-0000-0000-000000000000" | "someUserId "  | TrimmedStringConstraint
+    "00000000-0000-0000-0000-000000000000" | " someUserId " | TrimmedStringConstraint
   }
 
   void "should not pass validation for unexpected data"() {
     given:
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
-        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: UUID.randomUUID(), userIdentifier: "someUserIdentifier", customerIdentifier: "someCustomerIdentifier")
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: UUID.randomUUID(), userId: "someUserId", customerId: "someCustomerId")
 
     when:
     validationService.validate(bookingOfferSummaryFindByIdQueryRequest)
@@ -92,7 +92,7 @@ class BookingOfferSummaryFindByIdQueryRequestSpecification extends Specification
     ConstraintViolationException constraintViolationException = thrown()
 
     constraintViolationException.constraintViolations.size() == 1
-    constraintViolationException.constraintViolations[0].propertyPath.toString() == "customerIdentifier"
+    constraintViolationException.constraintViolations[0].propertyPath.toString() == "customerId"
     constraintViolationException.constraintViolations[0].constraintDescriptor.annotation.annotationType() == Null
   }
 }

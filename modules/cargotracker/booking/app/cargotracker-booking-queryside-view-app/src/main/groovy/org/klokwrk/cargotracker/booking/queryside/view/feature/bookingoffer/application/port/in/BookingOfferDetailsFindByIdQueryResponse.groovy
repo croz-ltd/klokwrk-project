@@ -20,36 +20,23 @@ package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.app
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
-import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
+import org.klokwrk.lang.groovy.json.RawJsonWrapper
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
-import javax.measure.Quantity
-import javax.measure.quantity.Mass
 import java.time.Instant
 
+@SuppressWarnings("unused")
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
 @CompileStatic
-class BookingOfferSummaryFindByIdQueryResponse {
+class BookingOfferDetailsFindByIdQueryResponse {
+  RawJsonWrapper detailsRaw
+
   String bookingOfferId
-
-  CustomerType customerType
-
-  String originLocationUnLoCode
-  String originLocationName
-  String originLocationCountryName
-
-  String destinationLocationUnLoCode
-  String destinationLocationName
-  String destinationLocationCountryName
-
-  Instant departureEarliestTime
-  Instant departureLatestTime
-  Instant arrivalLatestTime
-
-  Set<CommodityType> commodityTypes
-  Quantity<Mass> totalCommodityWeight
+  Collection<Map<String, ?>> cargos
+  Map<String, ?> customer
+  Map<String, ?> routeSpecification
+  Map<String, ?> totalCommodityWeight
   BigDecimal totalContainerTeuCount
 
   Instant firstEventRecordedAt

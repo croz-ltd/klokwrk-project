@@ -64,6 +64,14 @@ class BookingOfferFeatureTestHelpers {
     return makeRequestAndReturnResponseContentMap_sync(makeQueryRequestUrl_bookingOfferSummary_searchAll(querySideViewApp), queryBody, acceptLanguage, 200)
   }
 
+  static Map bookingOfferDetailsFindById_succeeded(String queryBody, String acceptLanguage, GenericContainer querySideViewApp) {
+    return makeRequestAndReturnResponseContentMap_async(makeQueryRequestUrl_bookingOfferDetails_findById(querySideViewApp), queryBody, acceptLanguage, 200)
+  }
+
+  static Map bookingOfferDetailsFindById_notFound(String queryBody, String acceptLanguage, GenericContainer querySideViewApp) {
+    return makeRequestAndReturnResponseContentMap_async(makeQueryRequestUrl_bookingOfferDetails_findById(querySideViewApp), queryBody, acceptLanguage, 404)
+  }
+
   static String makeCommandRequestUrl_createBookingOffer(GenericContainer commandSideApp) {
     //noinspection HttpUrlsUsage
     String createBookingOfferCommandUrl = "http://${ commandSideApp.host }:${ commandSideApp.getMappedPort(8080) }/cargotracker-booking-commandside/booking-offer/create-booking-offer"
@@ -86,6 +94,12 @@ class BookingOfferFeatureTestHelpers {
     //noinspection HttpUrlsUsage
     String bookingOfferSummaryQueryUrl = "http://${ querySideViewApp.host }:${ querySideViewApp.getMappedPort(8084) }/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-search-all"
     return bookingOfferSummaryQueryUrl
+  }
+
+  static String makeQueryRequestUrl_bookingOfferDetails_findById(GenericContainer querySideViewApp) {
+    //noinspection HttpUrlsUsage
+    String bookingOfferDetailsQueryUrl = "http://${ querySideViewApp.host }:${ querySideViewApp.getMappedPort(8084) }/cargotracker-booking-queryside-view/booking-offer/booking-offer-details-find-by-id"
+    return bookingOfferDetailsQueryUrl
   }
 
   private static Map makeRequestAndReturnResponseContentMap_sync(String url, String requestBody, String acceptLanguage, Integer expectedResponseStatus) {
@@ -145,12 +159,12 @@ class BookingOfferFeatureTestHelpers {
             .cargos([cargoRequestData_frozen().commodityWeight(30_000.kg)])
             .buildAsJsonString(),
         createBookingOfferCommandRequest_base()
-            .userIdentifier("gold-customer@cargotracker.com")
+            .userId("gold-customer@cargotracker.com")
             .routeSpecification(routeSpecificationRequestData_base(currentTime).originLocation("DEHAM").destinationLocation("USLAX"))
             .cargos([cargoRequestData_airCooled().commodityWeight(70_000.kg)])
             .buildAsJsonString(),
         createBookingOfferCommandRequest_base()
-            .userIdentifier("platinum-customer@cargotracker.com")
+            .userId("platinum-customer@cargotracker.com")
             .routeSpecification(routeSpecificationRequestData_base(currentTime).originLocation("NLRTM").destinationLocation("USNYC"))
             .cargos([cargoRequestData_dry().commodityWeight(40_000.kg)])
             .buildAsJsonString(),

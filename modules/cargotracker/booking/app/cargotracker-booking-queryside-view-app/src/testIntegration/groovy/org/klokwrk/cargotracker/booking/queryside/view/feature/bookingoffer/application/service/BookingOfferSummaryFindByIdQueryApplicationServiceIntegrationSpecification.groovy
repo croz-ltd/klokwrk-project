@@ -69,11 +69,11 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
   void "should work for correct request"() {
     given:
     Instant startedAt = Instant.now()
-    String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
+    String myBookingOfferId = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
 
     // Note: "standard-customer@cargotracker.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
-        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: myBookingOfferIdentifier, userIdentifier: "standard-customer@cargotracker.com")
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: myBookingOfferId, userId: "standard-customer@cargotracker.com")
 
     OperationRequest<BookingOfferSummaryFindByIdQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryFindByIdQueryRequest,
@@ -87,7 +87,7 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
     verifyAll(operationResponse.payload) {
       propertiesFiltered.size() == 17
 
-      bookingOfferIdentifier == myBookingOfferIdentifier
+      bookingOfferId == myBookingOfferId
 
       customerType == CustomerType.STANDARD
 
@@ -123,7 +123,7 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
   void "should throw when booking offer summary cannot be found"() {
     given:
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
-        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: UUID.randomUUID(), userIdentifier: "standard-customer@cargotracker.com")
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: UUID.randomUUID(), userId: "standard-customer@cargotracker.com")
 
     OperationRequest<BookingOfferSummaryFindByIdQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryFindByIdQueryRequest,
@@ -146,11 +146,11 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
     listAppender.start()
     logger.addAppender(listAppender)
 
-    String myBookingOfferIdentifier = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
+    String myBookingOfferId = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
 
     // Note: "standard-customer@cargotracker.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
-        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferIdentifier: myBookingOfferIdentifier, userIdentifier: "standard-customer@cargotracker.com")
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: myBookingOfferId, userId: "standard-customer@cargotracker.com")
 
     OperationRequest<BookingOfferSummaryFindByIdQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryFindByIdQueryRequest,
@@ -161,7 +161,7 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
     OperationResponse<BookingOfferSummaryFindByIdQueryResponse> operationResponse = bookingOfferSummaryFindByIdQueryPortIn.bookingOfferSummaryFindByIdQuery(operationRequest)
 
     then:
-    operationResponse.payload.bookingOfferIdentifier
+    operationResponse.payload.bookingOfferId
 
     List<ILoggingEvent> filteredLoggingEventList =
         listAppender.list.dropWhile({ ILoggingEvent iLoggingEvent -> iLoggingEvent.formattedMessage.contains("SELECT count(*) as recordsCount from booking_offer_summary") })

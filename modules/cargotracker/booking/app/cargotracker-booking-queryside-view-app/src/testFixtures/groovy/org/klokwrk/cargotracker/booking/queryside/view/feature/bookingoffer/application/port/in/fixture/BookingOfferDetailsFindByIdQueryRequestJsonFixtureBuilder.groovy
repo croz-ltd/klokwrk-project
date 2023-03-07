@@ -27,10 +27,9 @@ import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixture
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic
-class BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder implements JsonFixtureBuilder {
-
-  static BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder bookingOfferSummaryFindByIdQueryRequest_standardCustomer() {
-    BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder jsonFixtureBuilder = new BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder()
+class BookingOfferDetailsFindByIdQueryRequestJsonFixtureBuilder implements JsonFixtureBuilder {
+  static BookingOfferDetailsFindByIdQueryRequestJsonFixtureBuilder bookingOfferDetailsFindByIdQueryRequest_standardCustomer() {
+    BookingOfferDetailsFindByIdQueryRequestJsonFixtureBuilder jsonFixtureBuilder = new BookingOfferDetailsFindByIdQueryRequestJsonFixtureBuilder()
         .userId("standard-customer@cargotracker.com")
 
     return jsonFixtureBuilder

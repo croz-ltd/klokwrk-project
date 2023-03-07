@@ -30,51 +30,51 @@ class InMemoryCustomerRegistryServiceSpecification extends Specification {
     InMemoryCustomerRegistryService.CustomerSample.CUSTOMER_SAMPLE_MAP.size() == 4
   }
 
-  void "findCustomerByUserIdentifier() should find customer for existing user identifier"() {
+  void "findCustomerByUserId() should find customer for existing user identifier"() {
     given:
     InMemoryCustomerRegistryService inMemoryCustomerRegistryService = new InMemoryCustomerRegistryService()
 
     when:
-    Customer customer = inMemoryCustomerRegistryService.findCustomerByUserIdentifier(userIdentifierParam)
+    Customer customer = inMemoryCustomerRegistryService.findCustomerByUserId(userIdParam)
 
     then:
     RandomUuidUtils.checkIfRandomUuidString(customer.customerId.identifier)
-    customer.customerId.identifier == customerIdentifierParam
+    customer.customerId.identifier == customerIdParam
     customer.customerType == customerTypeParam
 
     where:
-    userIdentifierParam                  | customerIdentifierParam                | customerTypeParam
+    userIdParam                          | customerIdParam                        | customerTypeParam
     "anonymous123"                       | "44f57e34-cfa5-4413-9329-4c2cc338c997" | CustomerType.ANONYMOUS
     "standard-customer@cargotracker.com" | "26d5f7d8-9ded-4ce3-b320-03a75f674f4e" | CustomerType.STANDARD
     "gold-customer@cargotracker.com"     | "7517d07c-0031-4d4f-8d8f-58daeb3fad3c" | CustomerType.GOLD
     "platinum-customer@cargotracker.com" | "46af8019-f5fe-4b67-a514-e784b8bdde27" | CustomerType.PLATINUM
   }
 
-  void "findCustomerByUserIdentifier() should fail for invalid param"() {
+  void "findCustomerByUserId() should fail for invalid param"() {
     given:
     InMemoryCustomerRegistryService inMemoryCustomerRegistryService = new InMemoryCustomerRegistryService()
 
     when:
-    inMemoryCustomerRegistryService.findCustomerByUserIdentifier(null)
+    inMemoryCustomerRegistryService.findCustomerByUserId(null)
 
     then:
     AssertionError assertionError = thrown()
-    assertionError.message.contains("item: userIdentifier, expected: notNullValue(), actual: null")
+    assertionError.message.contains("item: userId, expected: notNullValue(), actual: null")
   }
 
-  void "findCustomerByUserIdentifier() should fail when Customer cannot be found"() {
+  void "findCustomerByUserId() should fail when Customer cannot be found"() {
     given:
     InMemoryCustomerRegistryService inMemoryCustomerRegistryService = new InMemoryCustomerRegistryService()
 
     when:
-    inMemoryCustomerRegistryService.findCustomerByUserIdentifier("unknownUserIdentifier")
+    inMemoryCustomerRegistryService.findCustomerByUserId("unknownUserId")
 
     then:
     DomainException domainException = thrown()
     domainException.violationInfo.severity == Severity.WARNING
     domainException.violationInfo.violationCode.code == "400"
     domainException.violationInfo.violationCode.codeMessage == "Bad Request"
-    domainException.violationInfo.violationCode.resolvableMessageKey == "customerByUserIdentifierPortOut.findCustomerByUserIdentifier.notFound"
-    domainException.violationInfo.violationCode.resolvableMessageParameters == ["unknownUserIdentifier"]
+    domainException.violationInfo.violationCode.resolvableMessageKey == "customerByUserIdPortOut.findCustomerByUserId.notFound"
+    domainException.violationInfo.violationCode.resolvableMessageParameters == ["unknownUserId"]
   }
 }

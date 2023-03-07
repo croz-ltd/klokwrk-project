@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f5b8a04e-9d27-4755-babe-891cedd90124",
+		"_postman_id": "0f613845-ee27-4119-bcc9-08dfc1ee8ff6",
 		"name": "cargotracker-booking",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "1601377"
@@ -35,7 +35,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -61,7 +61,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    { \n      \"commodityType\": \"dry\", \n      \"commodityWeight\": {\n        \"value\": 50500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    { \n      \"commodityType\": \"dry\", \n      \"commodityWeight\": {\n        \"value\": 50500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -101,7 +101,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -127,7 +127,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"dry\", \n      \"commodityWeight\": {\n        \"value\": 50500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"dry\", \n      \"commodityWeight\": {\n        \"value\": 50500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -167,7 +167,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -193,7 +193,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"dry\", \n      \"commodityWeight\": {\n        \"value\": 50500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"dry\", \n      \"commodityWeight\": {\n        \"value\": 50500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -233,7 +233,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -259,7 +259,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"dry\", \n      \"commodityWeight\": {\n        \"value\": 50.5,\n        \"unitSymbol\": \"t\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"dry\", \n      \"commodityWeight\": {\n        \"value\": 50.5,\n        \"unitSymbol\": \"t\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -299,7 +299,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -325,7 +325,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"dry\", \n      \"commodityWeight\": {\n        \"value\": 111333,\n        \"unitSymbol\": \"lb\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"dry\", \n      \"commodityWeight\": {\n        \"value\": 111333,\n        \"unitSymbol\": \"lb\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -365,7 +365,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -391,7 +391,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"air_cooled\", \n      \"commodityWeight\": {\n        \"value\": 1500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"commodityRequestedStorageTemperature\": {\n        \"value\": 10,\n        \"unitSymbol\": \"°C\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"air_cooled\", \n      \"commodityWeight\": {\n        \"value\": 1500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"commodityRequestedStorageTemperature\": {\n        \"value\": 10,\n        \"unitSymbol\": \"°C\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -431,7 +431,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -457,7 +457,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"air_cooled\", \n      \"commodityWeight\": {\n        \"value\": 1500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"commodityRequestedStorageTemperature\": {\n        \"value\": 50,\n        \"unitSymbol\": \"°F\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"air_cooled\", \n      \"commodityWeight\": {\n        \"value\": 1500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"commodityRequestedStorageTemperature\": {\n        \"value\": 50,\n        \"unitSymbol\": \"°F\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -497,7 +497,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -523,7 +523,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"chilled\",\n      \"commodityWeight\": {\n        \"value\": 1500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"commodityRequestedStorageTemperature\": {\n        \"value\": 5,\n        \"unitSymbol\": \"°C\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"chilled\",\n      \"commodityWeight\": {\n        \"value\": 1500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"commodityRequestedStorageTemperature\": {\n        \"value\": 5,\n        \"unitSymbol\": \"°C\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -563,7 +563,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -589,7 +589,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"chilled\",\n      \"commodityWeight\": {\n        \"value\": 1.5,\n        \"unitSymbol\": \"t\"\n      },\n      \"commodityRequestedStorageTemperature\": {\n        \"value\": 41,\n        \"unitSymbol\": \"°F\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"chilled\",\n      \"commodityWeight\": {\n        \"value\": 1.5,\n        \"unitSymbol\": \"t\"\n      },\n      \"commodityRequestedStorageTemperature\": {\n        \"value\": 41,\n        \"unitSymbol\": \"°F\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -629,7 +629,7 @@
 													"script": {
 														"exec": [
 															"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+															"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 															"postman.setNextRequest(null);"
 														],
 														"type": "text/javascript"
@@ -655,7 +655,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"frozen\",\n      \"commodityWeight\": {\n        \"value\": 10500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"commodityRequestedStorageTemperature\": {\n        \"value\": -10,\n        \"unitSymbol\": \"°C\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"frozen\",\n      \"commodityWeight\": {\n        \"value\": 10500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"commodityRequestedStorageTemperature\": {\n        \"value\": -10,\n        \"unitSymbol\": \"°C\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -710,7 +710,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": null,\n  \"routeSpecification\": null,\n  \"cargos\": null\n}",
+													"raw": "{\n  \"userId\": null,\n  \"routeSpecification\": null,\n  \"cargos\": null\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -765,7 +765,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": null,\n  \"routeSpecification\": null,\n  \"cargos\": null\n}",
+													"raw": "{\n  \"userId\": null,\n  \"routeSpecification\": null,\n  \"cargos\": null\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -820,7 +820,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": null,\n  \"routeSpecification\": {\n    \"originLocation\": null,\n    \"destinationLocation\": null\n  },\n  \"cargos\": null\n}",
+													"raw": "{\n  \"userId\": null,\n  \"routeSpecification\": {\n    \"originLocation\": null,\n    \"destinationLocation\": null\n  },\n  \"cargos\": null\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -875,7 +875,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": null,\n  \"routeSpecification\": {\n    \"originLocation\": null,\n    \"destinationLocation\": null\n  },\n  \"cargos\": null\n}",
+													"raw": "{\n  \"userId\": null,\n  \"routeSpecification\": {\n    \"originLocation\": null,\n    \"destinationLocation\": null\n  },\n  \"cargos\": null\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -940,7 +940,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"dry\", \n      \"commodityWeightKg\": 50500,\n      \"commodityWeight\": {\n        \"value\": 50500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"dry\", \n      \"commodityWeightKg\": 50500,\n      \"commodityWeight\": {\n        \"value\": 50500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1005,7 +1005,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"dry\", \n      \"commodityWeight\": {\n        \"value\": 50500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"GRPIR\",\n    \"destinationLocation\": \"GRATH\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"dry\", \n      \"commodityWeight\": {\n        \"value\": 50500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1072,7 +1072,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": \"{{execution_receivedBookingOfferId}}\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1125,7 +1125,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": \"{{execution_receivedBookingOfferId}}\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1178,7 +1178,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": null\n}",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": null\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1230,7 +1230,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": null\n}",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": null\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1282,7 +1282,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{$randomUUID}}\"\n}",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": \"{{$randomUUID}}\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1334,7 +1334,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{$randomUUID}}\"\n}",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": \"{{$randomUUID}}\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1391,7 +1391,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\"\n}",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1444,7 +1444,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}\n",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1497,7 +1497,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"nonExistingProperty\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}\n",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"nonExistingProperty\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1555,7 +1555,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationName\": \"Rotterdam\",\n  \"destinationLocationCountryName\": \"The United States\",\n  \"totalCommodityWeightFromIncluding\": {\n    \"value\": 50500,\n    \"unitSymbol\": \"kg\"\n  },\n  \"totalCommodityWeightToIncluding\": {\n    \"value\": 60500,\n    \"unitSymbol\": \"kg\"\n  }\n}",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationName\": \"Rotterdam\",\n  \"destinationLocationCountryName\": \"The United States\",\n  \"totalCommodityWeightFromIncluding\": {\n    \"value\": 50500,\n    \"unitSymbol\": \"kg\"\n  },\n  \"totalCommodityWeightToIncluding\": {\n    \"value\": 60500,\n    \"unitSymbol\": \"kg\"\n  }\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1608,7 +1608,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationName\": \"Rotterdam\",\n  \"destinationLocationCountryName\": \"The United States\",\n  \"totalCommodityWeightFromIncluding\": {\n    \"value\": 50.5,\n    \"unitSymbol\": \"t\"\n  },\n  \"totalCommodityWeightToIncluding\": {\n    \"value\": 133379,\n    \"unitSymbol\": \"lb\"\n  }\n}",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationName\": \"Rotterdam\",\n  \"destinationLocationCountryName\": \"The United States\",\n  \"totalCommodityWeightFromIncluding\": {\n    \"value\": 50.5,\n    \"unitSymbol\": \"t\"\n  },\n  \"totalCommodityWeightToIncluding\": {\n    \"value\": 133379,\n    \"unitSymbol\": \"lb\"\n  }\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1671,7 +1671,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"originLocationCountryName\": \"Netherlands\",\n  \"destinationLocationName\": \"New York\",\n  \"totalContainerTeuCountFromIncluding\": 0.5,\n  \"totalContainerTeuCountToIncluding\": 4.5,\n  \"lastEventRecordedAtFromIncluding\": \"{{currentHourStart}}\",  \n  \"lastEventRecordedAtToIncluding\": \"{{currentHourEnd}}\",\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}\n",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"originLocationCountryName\": \"Netherlands\",\n  \"destinationLocationName\": \"New York\",\n  \"totalContainerTeuCountFromIncluding\": 0.5,\n  \"totalContainerTeuCountToIncluding\": 4.5,\n  \"lastEventRecordedAtFromIncluding\": \"{{currentHourStart}}\",  \n  \"lastEventRecordedAtToIncluding\": \"{{currentHourEnd}}\",\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1724,7 +1724,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationName\": \"Rotterdam\",\n  \"destinationLocationCountryName\": \"The United States\",\n    \"totalCommodityWeightFromIncluding\": {\n    \"value\": 1000,\n    \"unitSymbol\": \"kg\"\n  },\n  \"totalCommodityWeightToIncluding\": {\n    \"value\": 60500,\n    \"unitSymbol\": \"kg\"\n  },\n  \"commodityTypes\": [\"chilled\", \"frozen\"]\n}",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationName\": \"Rotterdam\",\n  \"destinationLocationCountryName\": \"The United States\",\n    \"totalCommodityWeightFromIncluding\": {\n    \"value\": 1000,\n    \"unitSymbol\": \"kg\"\n  },\n  \"totalCommodityWeightToIncluding\": {\n    \"value\": 60500,\n    \"unitSymbol\": \"kg\"\n  },\n  \"commodityTypes\": [\"chilled\", \"frozen\"]\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1745,6 +1745,168 @@
 													]
 												},
 												"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "booking-offer-details-find-by-id",
+									"item": [
+										{
+											"name": "ok, en",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "en",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": \"{{execution_receivedBookingOfferId}}\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-details-find-by-id",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-queryside}}",
+													"path": [
+														"cargotracker-booking-queryside-view",
+														"booking-offer",
+														"booking-offer-details-find-by-id"
+													]
+												},
+												"description": "Requires existence of previously created cargo identifier.\n\nThe easiest way is to execute one of \"book-cargo, success\" requests on commandside.\n\nThey will set \"execution_receivedCargoIdentifier\" collection variable required by this request."
+											},
+											"response": []
+										},
+										{
+											"name": "nok, validation, en",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "en",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": null\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-details-find-by-id",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-queryside}}",
+													"path": [
+														"cargotracker-booking-queryside-view",
+														"booking-offer",
+														"booking-offer-details-find-by-id"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "nok, domain not-found, en",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8",
+														"type": "text"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "en",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": \"{{$randomUUID}}\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-details-find-by-id",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-queryside}}",
+													"path": [
+														"cargotracker-booking-queryside-view",
+														"booking-offer",
+														"booking-offer-details-find-by-id"
+													]
+												}
 											},
 											"response": []
 										}
@@ -1779,7 +1941,7 @@
 									"script": {
 										"exec": [
 											"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-											"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+											"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 											"",
 											"pm.test(\"booking offer created\", function () {",
 											"    pm.expect(pm.response.json().payload.bookingOfferId.identifier).to.not.null;",
@@ -1812,7 +1974,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"dry\", \n      \"commodityWeight\": {\n        \"value\": 50500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
+									"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"dry\", \n      \"commodityWeight\": {\n        \"value\": 50500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1870,7 +2032,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
+									"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": \"{{execution_receivedBookingOfferId}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1911,7 +2073,7 @@
 									"script": {
 										"exec": [
 											"pm.klokwrk_cargotracker_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
-											"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible(pm.response, pm.collectionVariables);",
+											"pm.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
 											"",
 											"pm.test(\"booking offer created\", function () {",
 											"    pm.expect(pm.response.json().payload.bookingOfferId.identifier).to.not.null;",
@@ -1944,7 +2106,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"chilled\", \n      \"commodityWeight\": {\n        \"value\": 50500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
+									"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"chilled\", \n      \"commodityWeight\": {\n        \"value\": 50500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1975,7 +2137,7 @@
 									"script": {
 										"exec": [
 											"pm.test(\"summary received\", function () {",
-											"    pm.expect(pm.response.json().payload.bookingOfferIdentifier).to.not.null;",
+											"    pm.expect(pm.response.json().payload.bookingOfferId).to.not.null;",
 											"});",
 											"",
 											"pm.test(\"locale is en\", function () {",
@@ -2002,7 +2164,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferIdentifier\": \"{{execution_receivedBookingOfferIdentifier}}\"\n}",
+									"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"bookingOfferId\": \"{{execution_receivedBookingOfferId}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2048,7 +2210,7 @@
 											"",
 											"pm.test(\"expected pageContent received\", function () {",
 											"    pm.expect(pm.response.json().payload.pageContent).exist;",
-											"    pm.expect(pm.response.json().payload.pageContent[0].bookingOfferIdentifier).exist;",
+											"    pm.expect(pm.response.json().payload.pageContent[0].bookingOfferId).exist;",
 											"});",
 											""
 										],
@@ -2072,7 +2234,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}\n",
+									"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2121,7 +2283,7 @@
 											"",
 											"pm.test(\"expected pageContent received\", function () {",
 											"    pm.expect(pm.response.json().payload.pageContent).exist;",
-											"    pm.expect(pm.response.json().payload.pageContent[0].bookingOfferIdentifier).exist;",
+											"    pm.expect(pm.response.json().payload.pageContent[0].bookingOfferId).exist;",
 											"});",
 											""
 										],
@@ -2154,7 +2316,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userIdentifier\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationCountryName\": \"Netherlands\",\n  \"destinationLocationName\": \"New York\",\n  \"totalContainerTeuCountFromIncluding\": 0.5,\n  \"totalContainerTeuCountToIncluding\": 4.5,\n  \"lastEventRecordedAtFromIncluding\": \"{{currentHourStart}}\",  \n  \"lastEventRecordedAtToIncluding\": \"{{currentHourEnd}}\",\n  \"commodityTypes\": [\"chilled\", \"dry\"],\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}",
+									"raw": "{\n  \"userId\": \"standard-customer@cargotracker.com\",\n  \"customerTypeSearchList\": [\n      \"STANDARD\",\n      \"GOLD\"\n  ],\n  \"originLocationCountryName\": \"Netherlands\",\n  \"destinationLocationName\": \"New York\",\n  \"totalContainerTeuCountFromIncluding\": 0.5,\n  \"totalContainerTeuCountToIncluding\": 4.5,\n  \"lastEventRecordedAtFromIncluding\": \"{{currentHourStart}}\",  \n  \"lastEventRecordedAtToIncluding\": \"{{currentHourEnd}}\",\n  \"commodityTypes\": [\"chilled\", \"dry\"],\n  \"pageRequirement\": {\n      \"ordinal\": 0,\n      \"size\": 25\n  },\n  \"sortRequirementList\": [\n      {    \n          \"propertyName\": \"lastEventRecordedAt\",\n          \"direction\": \"DESC\"\n      }\n  ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2226,10 +2388,10 @@
 					"    variableScope.unset(\"currentHourEnd\");",
 					"}",
 					"",
-					"Object.prototype.klokwrk_cargotracker_booking.setReceivedBookingOfferIdentifierIfPossible = function(response, variableScope) {",
+					"Object.prototype.klokwrk_cargotracker_booking.setReceivedBookingOfferIdIfPossible = function(response, variableScope) {",
 					"    if (response.to.have.status(200)) {",
-					"        var receivedBookingOfferIdentifier = response.json().payload.bookingOfferId.identifier",
-					"        variableScope.set(\"execution_receivedBookingOfferIdentifier\", receivedBookingOfferIdentifier)",
+					"        var receivedBookingOfferId = response.json().payload.bookingOfferId.identifier",
+					"        variableScope.set(\"execution_receivedBookingOfferId\", receivedBookingOfferId)",
 					"    }",
 					"}",
 					""
@@ -2258,6 +2420,10 @@
 		{
 			"key": "port-queryside",
 			"value": "8084"
+		},
+		{
+			"key": "execution_receivedBookingOfferId",
+			"value": ""
 		}
 	]
 }
