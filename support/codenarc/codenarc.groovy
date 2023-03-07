@@ -244,7 +244,7 @@ ruleset {
     description = "For all 'test*' source sets, checks the maximum length for each line of source code., which is 210 characters. However, 'only' 200 characters should be really used. Extra 10 " +
                   "characters should be used only for special cases. Besides, expressions used for equality comparison and line comments are ignored and can have any length."
     applyToFilesMatching = TEST_FILES
-    length = 210
+    length = 250
     ignoreLineRegex = /^.*(==~?|\/\/).*$/ // ignore for equality comparisons, matches comparisons and line comments in tests
   }
   MissingBlankLineAfterImports
