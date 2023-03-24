@@ -19,10 +19,16 @@ package org.klokwrk.cargotracker.booking.test.component.test.util
 
 import groovy.json.JsonSlurper
 import groovy.transform.CompileStatic
+import groovy.transform.stc.ClosureParams
+import groovy.transform.stc.SimpleType
 import org.apache.http.HttpResponse
 import org.apache.http.client.fluent.Request
 import org.apache.http.entity.ContentType
 import org.awaitility.Awaitility
+import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion
+import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion
+import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion
+import org.klokwrk.lang.groovy.misc.InstantUtils
 import org.testcontainers.containers.GenericContainer
 
 import java.time.Duration
@@ -38,8 +44,68 @@ import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.
 
 @CompileStatic
 class BookingOfferFeatureTestHelpers {
+  static BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion assertBookingOfferSummaryFindByIdQueryResponseHasPayloadThat(Map queryResponseMap) {
+    return BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion.assertResponseHasPayloadThat(queryResponseMap)
+  }
+
+  static BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion assertBookingOfferSummaryFindByIdQueryResponseHasPayloadThat(
+      Map queryResponseMap,
+      @DelegatesTo(value = BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion, strategy = Closure.DELEGATE_FIRST)
+      @ClosureParams(
+          value = SimpleType,
+          options = "org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion"
+      ) Closure aClosure)
+  {
+    return BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion.assertResponseHasPayloadThat(queryResponseMap, aClosure)
+  }
+
+  static BookingOfferSummaryPageableQueryResponseContentPayloadAssertion assertBookingOfferSummaryFindAllQueryResponseContentHasPayloadThat(
+      Map queryResponseMap,
+      @DelegatesTo(value = BookingOfferSummaryPageableQueryResponseContentPayloadAssertion, strategy = Closure.DELEGATE_FIRST)
+      @ClosureParams(
+          value = SimpleType,
+          options = "org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion"
+      ) Closure aClosure)
+  {
+    return BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseHasPageablePayloadThat(queryResponseMap, aClosure)
+  }
+
+  static BookingOfferSummaryPageableQueryResponseContentPayloadAssertion assertBookingOfferSummarySearchAllQueryResponseContentHasPayloadThat(
+      Map queryResponseMap,
+      @DelegatesTo(value = BookingOfferSummaryPageableQueryResponseContentPayloadAssertion, strategy = Closure.DELEGATE_FIRST)
+      @ClosureParams(
+          value = SimpleType,
+          options = "org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion"
+      ) Closure aClosure)
+  {
+    return BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseHasPageablePayloadThat(queryResponseMap, aClosure)
+  }
+
+  static BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion assertBookingOfferDetailsFindByIdQueryResponseHasPayloadThat(Map queryResponseMap) {
+    return BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion.assertResponseHasPayloadThat(queryResponseMap)
+  }
+
+  static BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion assertBookingOfferDetailsFindByIdQueryResponseHasPayloadThat(
+      Map queryResponseMap,
+      @DelegatesTo(value = BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion, strategy = Closure.DELEGATE_FIRST)
+      @ClosureParams(
+          value = SimpleType,
+          options = "org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion"
+      ) Closure aClosure)
+  {
+    return BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion.assertResponseHasPayloadThat(queryResponseMap, aClosure)
+  }
+
+  static List<Instant> makeExpectedDepartureAndArrivalInstants(Instant baseTime) {
+    return [
+        InstantUtils.roundUpInstantToTheHour(baseTime + Duration.ofHours(1)),
+        InstantUtils.roundUpInstantToTheHour(baseTime + Duration.ofHours(2)),
+        InstantUtils.roundUpInstantToTheHour(baseTime + Duration.ofHours(3))
+    ]
+  }
+
   @SuppressWarnings("CodeNarc.FactoryMethodName")
-  static Map createBookingOffer_succeeded(String commandBody, String acceptLanguage, GenericContainer commandSideApp) {
+  static Map createBookingOffer_succeeded(String commandBody, String acceptLanguage = "en", GenericContainer commandSideApp) {
     return makeRequestAndReturnResponseContentMap_sync(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBody, acceptLanguage, 200)
   }
 
@@ -48,7 +114,7 @@ class BookingOfferFeatureTestHelpers {
     return makeRequestAndReturnResponseContentMap_sync(makeCommandRequestUrl_createBookingOffer(commandSideApp), commandBody, acceptLanguage, 400)
   }
 
-  static Map bookingOfferSummaryFindById_succeeded(String queryBody, String acceptLanguage, GenericContainer querySideViewApp) {
+  static Map bookingOfferSummaryFindById_succeeded(String queryBody, String acceptLanguage = "en", GenericContainer querySideViewApp) {
     return makeRequestAndReturnResponseContentMap_async(makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), queryBody, acceptLanguage, 200)
   }
 
@@ -56,15 +122,15 @@ class BookingOfferFeatureTestHelpers {
     return makeRequestAndReturnResponseContentMap_async(makeQueryRequestUrl_bookingOfferSummary_findById(querySideViewApp), queryBody, acceptLanguage, 404)
   }
 
-  static Map bookingOfferSummaryFindAll_succeeded(String queryBody, String acceptLanguage, GenericContainer querySideViewApp) {
+  static Map bookingOfferSummaryFindAll_succeeded(String queryBody, String acceptLanguage = "en", GenericContainer querySideViewApp) {
     return makeRequestAndReturnResponseContentMap_sync(makeQueryRequestUrl_bookingOfferSummary_findAll(querySideViewApp), queryBody, acceptLanguage, 200)
   }
 
-  static Map bookingOfferSummarySearchAll_succeeded(String queryBody, String acceptLanguage, GenericContainer querySideViewApp) {
+  static Map bookingOfferSummarySearchAll_succeeded(String queryBody, String acceptLanguage = "en", GenericContainer querySideViewApp) {
     return makeRequestAndReturnResponseContentMap_sync(makeQueryRequestUrl_bookingOfferSummary_searchAll(querySideViewApp), queryBody, acceptLanguage, 200)
   }
 
-  static Map bookingOfferDetailsFindById_succeeded(String queryBody, String acceptLanguage, GenericContainer querySideViewApp) {
+  static Map bookingOfferDetailsFindById_succeeded(String queryBody, String acceptLanguage = "en", GenericContainer querySideViewApp) {
     return makeRequestAndReturnResponseContentMap_async(makeQueryRequestUrl_bookingOfferDetails_findById(querySideViewApp), queryBody, acceptLanguage, 200)
   }
 
@@ -102,7 +168,7 @@ class BookingOfferFeatureTestHelpers {
     return bookingOfferDetailsQueryUrl
   }
 
-  private static Map makeRequestAndReturnResponseContentMap_sync(String url, String requestBody, String acceptLanguage, Integer expectedResponseStatus) {
+  protected static Map makeRequestAndReturnResponseContentMap_sync(String url, String requestBody, String acceptLanguage, Integer expectedResponseStatus) {
     Request request = makeRequest(url, requestBody, acceptLanguage)
 
     HttpResponse response = request.execute().returnResponse()
@@ -112,7 +178,7 @@ class BookingOfferFeatureTestHelpers {
     return responseContentMap
   }
 
-  private static Map makeRequestAndReturnResponseContentMap_async(String url, String requestBody, String acceptLanguage, Integer expectedResponseStatus) {
+  protected static Map makeRequestAndReturnResponseContentMap_async(String url, String requestBody, String acceptLanguage, Integer expectedResponseStatus) {
     Request request = makeRequest(url, requestBody, acceptLanguage)
 
     HttpResponse response = null
@@ -126,7 +192,7 @@ class BookingOfferFeatureTestHelpers {
     return responseContentMap
   }
 
-  private static Request makeRequest(String url, String body, String acceptLanguageHeaderValue) {
+  protected static Request makeRequest(String url, String body, String acceptLanguageHeaderValue) {
     Request request = Request.Post(url)
         .addHeader("Content-Type", "application/json")
         .addHeader("Accept", "application/json")
