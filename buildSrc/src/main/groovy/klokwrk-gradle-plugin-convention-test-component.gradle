@@ -60,6 +60,9 @@ tasks.register("testComponent", Test) { Test testComponentTask ->
   retry {
     maxRetries = 2
   }
+
+  // Configure defaults for spock-reports
+  testComponentTask.systemProperty("com.athaydes.spockframework.report.hideEmptyBlocks", true)
 }
 
 idea {

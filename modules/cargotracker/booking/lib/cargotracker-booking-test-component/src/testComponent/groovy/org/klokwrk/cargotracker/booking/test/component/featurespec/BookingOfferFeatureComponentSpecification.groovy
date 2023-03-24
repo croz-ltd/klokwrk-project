@@ -17,15 +17,10 @@
  */
 package org.klokwrk.cargotracker.booking.test.component.featurespec
 
-import groovy.transform.stc.ClosureParams
-import groovy.transform.stc.SimpleType
-import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion
-import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion
-import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion
 import org.klokwrk.cargotracker.booking.test.component.test.base.AbstractComponentSpecification
-import org.klokwrk.lang.groovy.misc.InstantUtils
+import spock.lang.Narrative
+import spock.lang.Title
 
-import java.time.Duration
 import java.time.Instant
 
 import static org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.assertion.CreateBookingOfferCommandResponseWebContentPayloadAssertion.assertResponseHasPayloadThat
@@ -37,6 +32,10 @@ import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoff
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder.bookingOfferSummaryFindAllQueryRequest_standardCustomer
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder.bookingOfferSummaryFindByIdQueryRequest_standardCustomer
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder.bookingOfferSummarySearchAllQueryRequest_originOfRijeka
+import static org.klokwrk.cargotracker.booking.test.component.test.util.BookingOfferFeatureTestHelpers.assertBookingOfferDetailsFindByIdQueryResponseHasPayloadThat
+import static org.klokwrk.cargotracker.booking.test.component.test.util.BookingOfferFeatureTestHelpers.assertBookingOfferSummaryFindAllQueryResponseContentHasPayloadThat
+import static org.klokwrk.cargotracker.booking.test.component.test.util.BookingOfferFeatureTestHelpers.assertBookingOfferSummaryFindByIdQueryResponseHasPayloadThat
+import static org.klokwrk.cargotracker.booking.test.component.test.util.BookingOfferFeatureTestHelpers.assertBookingOfferSummarySearchAllQueryResponseContentHasPayloadThat
 import static org.klokwrk.cargotracker.booking.test.component.test.util.BookingOfferFeatureTestHelpers.bookingOfferDetailsFindById_notFound
 import static org.klokwrk.cargotracker.booking.test.component.test.util.BookingOfferFeatureTestHelpers.bookingOfferDetailsFindById_succeeded
 import static org.klokwrk.cargotracker.booking.test.component.test.util.BookingOfferFeatureTestHelpers.bookingOfferSummaryFindAll_succeeded
@@ -46,66 +45,20 @@ import static org.klokwrk.cargotracker.booking.test.component.test.util.BookingO
 import static org.klokwrk.cargotracker.booking.test.component.test.util.BookingOfferFeatureTestHelpers.createBookingOffer_failed
 import static org.klokwrk.cargotracker.booking.test.component.test.util.BookingOfferFeatureTestHelpers.createBookingOffer_succeeded
 import static org.klokwrk.cargotracker.booking.test.component.test.util.BookingOfferFeatureTestHelpers.makeCommandRequestBodyList_createBookingOffer
+import static org.klokwrk.cargotracker.booking.test.component.test.util.BookingOfferFeatureTestHelpers.makeExpectedDepartureAndArrivalInstants
 import static org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion.assertResponseHasMetaDataThat
 
+@Title("Feature: basic booking offer handling")
+@Narrative("Ensures that basic booking offer handling works as expected")
 class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecification {
-  @SuppressWarnings("CodeNarc.PropertyName")
-  static Integer countOf_createdBookingOffers_forStandardCustomer = 0
-
-  static BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion assertBookingOfferSummaryFindByIdQueryResponseHasPayloadThat(Map queryResponseMap) {
-    return BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion.assertResponseHasPayloadThat(queryResponseMap)
-  }
-
-  static BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion assertBookingOfferSummaryFindByIdQueryResponseHasPayloadThat(
-      Map queryResponseMap,
-      @DelegatesTo(value = BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion, strategy = Closure.DELEGATE_FIRST)
-      @ClosureParams(
-          value = SimpleType,
-          options = "org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion"
-      ) Closure aClosure)
-  {
-    return BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion.assertResponseHasPayloadThat(queryResponseMap, aClosure)
-  }
-
-  static BookingOfferSummaryPageableQueryResponseContentPayloadAssertion assertBookingOfferSummaryFindAllQueryResponseContentHasPayloadThat(
-      Map queryResponseMap,
-      @DelegatesTo(value = BookingOfferSummaryPageableQueryResponseContentPayloadAssertion, strategy = Closure.DELEGATE_FIRST)
-      @ClosureParams(
-          value = SimpleType,
-          options = "org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion"
-      ) Closure aClosure)
-  {
-    return BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseHasPageablePayloadThat(queryResponseMap, aClosure)
-  }
-
-  static BookingOfferSummaryPageableQueryResponseContentPayloadAssertion assertBookingOfferSummarySearchAllQueryResponseContentHasPayloadThat(
-      Map queryResponseMap,
-      @DelegatesTo(value = BookingOfferSummaryPageableQueryResponseContentPayloadAssertion, strategy = Closure.DELEGATE_FIRST)
-      @ClosureParams(
-          value = SimpleType,
-          options = "org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion"
-      ) Closure aClosure)
-  {
-    return BookingOfferSummaryPageableQueryResponseContentPayloadAssertion.assertResponseHasPageablePayloadThat(queryResponseMap, aClosure)
-  }
-
-  static BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion assertBookingOfferDetailsFindByIdQueryResponseHasPayloadThat(
-      Map queryResponseMap,
-      @DelegatesTo(value = BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion, strategy = Closure.DELEGATE_FIRST)
-      @ClosureParams(
-          value = SimpleType,
-          options = "org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion"
-      ) Closure aClosure)
-  {
-    return BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion.assertResponseHasPayloadThat(queryResponseMap, aClosure)
-  }
+  static Integer countOf_createdBookingOffers_forStandardCustomer = 0 // codenarc-disable PropertyName
 
   void setupSpec() {
     // Execute a list of commands with predefined data used for findAll and searchAll queries
     List<String> commandRequestBodyList = makeCommandRequestBodyList_createBookingOffer()
     List<String> createdBookingOfferIdList = []
     commandRequestBodyList.each { String commandRequestBody ->
-      Map commandResponseMap = createBookingOffer_succeeded(commandRequestBody, "en", commandSideApp)
+      Map commandResponseMap = createBookingOffer_succeeded(commandRequestBody, commandSideApp)
 
       if (commandRequestBody.contains("standard-customer@cargotracker.com")) {
         countOf_createdBookingOffers_forStandardCustomer++
@@ -120,28 +73,22 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
             .bookingOfferId(createdBookingOfferIdList.last())
             .buildAsJsonString(),
-        "en",
         querySideViewApp
     )
   }
 
   void "command - createBookingOffer - should create booking offer"() {
-    when:
-    Map commandResponseMap = createBookingOffer_succeeded(commandBodyParam, acceptLanguageParam, commandSideApp)
+    when: "booking offer is created and response is returned"
+    Map commandResponseMap = createBookingOffer_succeeded(commandBodyParam, commandSideApp)
 
-    then:
-    assertResponseHasMetaDataThat(commandResponseMap) {
-      isSuccessful()
-      has_general_locale(localeStringParam)
-    }
+    then: "response includes expected metadata"
+    assertResponseHasMetaDataThat(commandResponseMap).isSuccessful()
 
+    and: "response includes expected payload containing booking offer identifier"
     verifyAll(commandResponseMap) {
-      size() == 2
-      metaData
-
       verifyAll(it.payload as Map) {
         size() == 4
-        bookingOfferId
+
         customer
         routeSpecification
         bookingOfferCargos
@@ -153,16 +100,14 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
       }
     }
 
-    where:
-    acceptLanguageParam | localeStringParam | commandBodyParam
-    "hr-HR"             | "hr_HR"           | createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry().buildAsJsonString()
-    "hr-HR"             | "hr_HR"           | createBookingOfferCommandRequest_rijekaToRotterdam_cargoChilled().buildAsJsonString()
-    "en"                | "en"              | createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry().buildAsJsonString()
-    "en"                | "en"              | createBookingOfferCommandRequest_rijekaToRotterdam_cargoChilled().buildAsJsonString()
+    where: "booking offer create command JSON body examples are"
+    commandBodyParam                                                                      | _
+    createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry().buildAsJsonString()     | _
+    createBookingOfferCommandRequest_rijekaToRotterdam_cargoChilled().buildAsJsonString() | _
   }
 
   void "command - createBookingOffer - should not create booking offer for invalid command - invalid destination location"() {
-    when:
+    when: "booking offer creation fails because of invalid destination"
     Map commandResponseMap = createBookingOffer_failed(
         createBookingOfferCommandRequest_cargoChilled()
             .routeSpecification(routeSpecificationRequestData_rotterdamToRijeka().destinationLocation("HRZAG"))
@@ -171,53 +116,50 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
         commandSideApp
     )
 
-    then:
+    then: "response metadata describes violation of domain rules including descriptive localized message"
     assertResponseHasMetaDataThat(commandResponseMap) {
       isViolationOfDomain_badRequest()
       has_general_locale(localeStringParam)
       has_violation_message(violationMessageParam)
     }
 
+    and: "response payload is empty"
     assertResponseHasPayloadThat(commandResponseMap)
         .isEmpty()
 
-    where:
+    where: "localized messages are"
     acceptLanguageParam | localeStringParam | violationMessageParam
     "hr-HR"             | "hr_HR"           | "Teret nije moguće poslati sa navedene početne lokacije na navedenu ciljnu lokaciju."
     "en"                | "en"              | "Cargo cannot be sent from the specified origin location to the destination location."
   }
 
   void "query - bookingOfferSummaryFindById - should find created booking offer"() {
-    given:
-    Instant currentTime = Instant.now()
-    Instant expectedDepartureEarliestTime = InstantUtils.roundUpInstantToTheHour(currentTime + Duration.ofHours(1))
-    Instant expectedDepartureLatestTime = InstantUtils.roundUpInstantToTheHour(currentTime + Duration.ofHours(2))
-    Instant expectedArrivalLatestTime = InstantUtils.roundUpInstantToTheHour(currentTime + Duration.ofHours(3))
+    given: "sample booking offer is created"
+    Instant startTime = Instant.now()
+    def (Instant expectedDepartureEarliestTime, Instant expectedDepartureLatestTime, Instant expectedArrivalLatestTime) = makeExpectedDepartureAndArrivalInstants(startTime)
 
     Map commandResponseMap = createBookingOffer_succeeded(
-        createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry(currentTime).buildAsJsonString(),
-        "en",
+        createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry().buildAsJsonString(),
         commandSideApp
     )
 
     String bookingOfferId = commandResponseMap.payload.bookingOfferId.identifier
-    assert bookingOfferId
 
-    when:
+    expect: "identifier of created booking offer is returned"
+    bookingOfferId
+
+    when: "looking for a summary of created booking offer"
     Map queryResponseMap = bookingOfferSummaryFindById_succeeded(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
             .bookingOfferId(bookingOfferId)
             .buildAsJsonString(),
-        acceptLanguageParam,
         querySideViewApp
     )
 
-    then:
-    assertResponseHasMetaDataThat(queryResponseMap) {
-      isSuccessful()
-      has_general_locale(localeStringParam)
-    }
+    then: "response includes expected metadata"
+    assertResponseHasMetaDataThat(queryResponseMap).isSuccessful()
 
+    and: "response includes expected payload containing correct TEU count"
     assertBookingOfferSummaryFindByIdQueryResponseHasPayloadThat(queryResponseMap) {
       isSuccessful()
       hasCustomerTypeOfStandard()
@@ -228,17 +170,12 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
       hasArrivalLatestTime(expectedArrivalLatestTime)
       hasCommodityOfDryTypeWithDefaultWeight()
       hasTotalContainerTeuCount(1.00G)
-      hasEventMetadataOfTheFirstEventWithCorrectTiming(currentTime)
+      hasEventMetadataOfTheFirstEventWithCorrectTiming(startTime)
     }
-
-    where:
-    acceptLanguageParam | localeStringParam
-    "hr-HR"             | "hr_HR"
-    "en"                | "en"
   }
 
   void "query - bookingOfferSummaryFindById - should not find non-existing booking offer"() {
-    when:
+    when: "looking for a summary of non-existing booking offer by identifier"
     Map queryResponseMap = bookingOfferSummaryFindById_notFound(
         bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
             .bookingOfferId(UUID.randomUUID().toString())
@@ -247,44 +184,41 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
         querySideViewApp
     )
 
-    then:
+    then: "response metadata describes 'not found' violation including descriptive localized message"
     assertResponseHasMetaDataThat(queryResponseMap) {
       isViolationOfDomain_notFound()
       has_general_locale(localeStringParam)
       has_violation_message(violationMessageParam)
     }
 
+    and: "response payload is empty"
     assertBookingOfferSummaryFindByIdQueryResponseHasPayloadThat(queryResponseMap)
         .isEmpty()
 
-    where:
+    where: "localized messages are"
     acceptLanguageParam | localeStringParam | violationMessageParam
     "hr-HR"             | "hr_HR"           | "Sumarni izvještaj za željenu ponudu za rezervaciju nije pronađen."
     "en"                | "en"              | "Summary report for specified booking offer is not found."
   }
 
-  @SuppressWarnings("UnnecessaryQualifiedReference")
   void "query - bookingOfferSummaryFindAll - should find existing booking offers with default paging and sorting"() {
-    when:
+    when: "looking for a summary of all booking offers for a customer"
     Map queryResponseMap = bookingOfferSummaryFindAll_succeeded(
         bookingOfferSummaryFindAllQueryRequest_standardCustomer().buildAsJsonString(),
-        "en",
         querySideViewApp
     )
 
-    then:
-    assertResponseHasMetaDataThat(queryResponseMap) {
-      isSuccessful()
-      has_general_locale("en")
-    }
+    then: "response includes expected metadata"
+    assertResponseHasMetaDataThat(queryResponseMap).isSuccessful()
 
+    and: "response includes a paged payload with booking offer summaries"
     assertBookingOfferSummaryFindAllQueryResponseContentHasPayloadThat(queryResponseMap) {
       isSuccessful()
       hasPageInfoOfFirstPageWithDefaults()
       hasPageInfoThat {
-        hasPageElementsCountGreaterThenOrEqual(this.countOf_createdBookingOffers_forStandardCustomer)
+        hasPageElementsCountGreaterThenOrEqual(countOf_createdBookingOffers_forStandardCustomer)
       }
-      hasPageContentSizeGreaterThanOrEqual(this.countOf_createdBookingOffers_forStandardCustomer)
+      hasPageContentSizeGreaterThanOrEqual(countOf_createdBookingOffers_forStandardCustomer)
       hasPageContentWithAllItemsThat {
         hasCustomerTypeOfStandard()
         hasEventMetadataOfTheFirstEvent()
@@ -293,23 +227,20 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
   }
 
   void "query - bookingOfferSummarySearchAll - should find existing booking offers with default paging and sorting"() {
-    when:
+    when: "searching for a summary of booking offers based on provided parameters"
     Map queryResponseMap = bookingOfferSummarySearchAll_succeeded(
         bookingOfferSummarySearchAllQueryRequest_originOfRijeka()
             .destinationLocationCountryName("The United States")
             .totalCommodityWeightFromIncluding(15_000.kg)
             .totalCommodityWeightToIncluding(100_000.kg)
             .buildAsJsonString(),
-        "en",
         querySideViewApp
     )
 
-    then:
-    assertResponseHasMetaDataThat(queryResponseMap) {
-      isSuccessful()
-      has_general_locale("en")
-    }
+    then: "response includes expected metadata"
+    assertResponseHasMetaDataThat(queryResponseMap).isSuccessful()
 
+    and: "response includes a paged payload with matching booking offer summaries"
     assertBookingOfferSummarySearchAllQueryResponseContentHasPayloadThat(queryResponseMap) {
       isSuccessful()
       hasPageInfoOfFirstPageWithDefaults()
@@ -325,51 +256,45 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
   }
 
   void "query - bookingOfferDetailsFindById - should find created booking offer"() {
-    given:
-    Instant currentTime = Instant.now()
-    Instant expectedDepartureEarliestTime = InstantUtils.roundUpInstantToTheHour(currentTime + Duration.ofHours(1))
-    Instant expectedDepartureLatestTime = InstantUtils.roundUpInstantToTheHour(currentTime + Duration.ofHours(2))
-    Instant expectedArrivalLatestTime = InstantUtils.roundUpInstantToTheHour(currentTime + Duration.ofHours(3))
+    given: "sample booking offer is created"
+    Instant startTime = Instant.now()
+    def (Instant expectedDepartureEarliestTime, Instant expectedDepartureLatestTime, Instant expectedArrivalLatestTime) = makeExpectedDepartureAndArrivalInstants(startTime)
 
     Map commandResponseMap = createBookingOffer_succeeded(
-        createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry(currentTime).buildAsJsonString(),
-        "en",
+        createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry(startTime).buildAsJsonString(),
         commandSideApp
     )
 
     String bookingOfferId = commandResponseMap.payload.bookingOfferId.identifier
-    assert bookingOfferId
 
-    when:
+    expect: "identifier of created booking offer is returned"
+    bookingOfferId
+
+    when: "looking for a details of created booking offer"
     Map queryResponseMap = bookingOfferDetailsFindById_succeeded(
         bookingOfferDetailsFindByIdQueryRequest_standardCustomer()
             .bookingOfferId(bookingOfferId)
             .buildAsJsonString(),
-        "en",
         querySideViewApp
     )
 
-    then:
-    assertResponseHasMetaDataThat(queryResponseMap) {
-      isSuccessful()
-    }
+    then: "response includes expected metadata"
+    assertResponseHasMetaDataThat(queryResponseMap).isSuccessful()
 
+    and: "response includes expected payload containing all booking offer details"
     assertBookingOfferDetailsFindByIdQueryResponseHasPayloadThat(queryResponseMap) {
       isSuccessful()
-
       hasBookingOfferId(bookingOfferId)
       hasCustomerTypeOfStandard()
       hasTotalCommodityWeight(1000.kg)
       hasTotalContainerTeuCount(1.0G)
-      hasEventMetadataOfTheFirstEventWithCorrectTiming(currentTime)
-
+      hasEventMetadataOfTheFirstEventWithCorrectTiming(startTime)
       hasCargosWithFirstCargoThat {
         isDryDefaultCargo()
         hasMaxAllowedWeightPerContainer(20615.kg)
       }
-
       hasRouteSpecificationThat {
-        hasCreationTimeGreaterThan(currentTime)
+        hasCreationTimeGreaterThan(startTime)
         hasDepartureEarliestTime(expectedDepartureEarliestTime)
         hasDepartureLatestTime(expectedDepartureLatestTime)
         hasArrivalLatestTime(expectedArrivalLatestTime)
@@ -380,7 +305,7 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
   }
 
   void "query - bookingOfferDetailsFindById - should not find details for non-existing booking offer"() {
-    when:
+    when: "looking for a details of non-existing booking offer by identifier"
     Map queryResponseMap = bookingOfferDetailsFindById_notFound(
         bookingOfferDetailsFindByIdQueryRequest_standardCustomer()
             .bookingOfferId(UUID.randomUUID().toString())
@@ -389,18 +314,18 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
         querySideViewApp
     )
 
-    then:
+    then: "response metadata describes 'not found' violation including descriptive localized message"
     assertResponseHasMetaDataThat(queryResponseMap) {
       isViolationOfDomain_notFound()
       has_general_locale(localeStringParam)
       has_violation_message(violationMessageParam)
     }
 
-    assertBookingOfferDetailsFindByIdQueryResponseHasPayloadThat(queryResponseMap) {
-      isEmpty()
-    }
+    and: "response payload is empty"
+    assertBookingOfferDetailsFindByIdQueryResponseHasPayloadThat(queryResponseMap)
+        .isEmpty()
 
-    where:
+    where: "localized messages are"
     acceptLanguageParam | localeStringParam | violationMessageParam
     "hr-HR"             | "hr_HR"           | "Detalji za željenu ponudu za rezervaciju nisu pronađeni."
     "en"                | "en"              | "Details for specified booking offer cannot be found."
