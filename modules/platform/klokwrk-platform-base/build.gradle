@@ -56,6 +56,7 @@ dependencies {
   api platform("org.axonframework:axon-bom:$axonBomVersion")
 
   constraints {
+    api "com.athaydes:spock-reports:$spockReportsVersion"
     api "com.github.f4b6a3:uuid-creator:$uuidCreatorVersion"
     api "com.github.javaparser:javaparser-core:$javaparserCoreVersion"
     api "com.tngtech.archunit:archunit-junit5:$archUnitVersion"

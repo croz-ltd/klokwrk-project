@@ -49,5 +49,6 @@ dependencies {
   testComponentImplementation "tech.units:indriya"
 
   testComponentRuntimeOnly "ch.qos.logback:logback-classic"
+  testComponentRuntimeOnly "com.athaydes:spock-reports"
   testComponentRuntimeOnly "org.postgresql:postgresql"
 }
