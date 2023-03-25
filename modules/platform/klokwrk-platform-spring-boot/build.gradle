@@ -16,39 +16,11 @@
  * limitations under the License.
  */
 plugins {
-  id "java-platform"
   id "klokwrk-gradle-plugin-convention-base"
+  id "klokwrk-gradle-plugin-convention-platform"
 }
 
 description = "Spring Boot related platform for klokwrk-project modules that need Spring Boot features or dependencies managed by Spring Boot."
-
-javaPlatform {
-  allowDependencies()
-}
-
-config {
-  info {
-    setName(project.name)
-    setDescription(project.description)
-  }
-
-  publishing {
-    setPublications(["klokwrkPlatformSpringBoot"])
-    pom {
-      setPackaging("pom")
-    }
-  }
-}
-
-publishing {
-  publications {
-    //noinspection GroovyAssignabilityCheck
-    klokwrkPlatformSpringBoot(MavenPublication) {
-      //noinspection GroovyAssignabilityCheck
-      from components.javaPlatform
-    }
-  }
-}
 
 dependencies {
   api platform(project(":klokwrk-platform-base"))
