@@ -127,19 +127,20 @@ jobs:
           name: Aggregated JaCoCo Report
           files: build/reports/jacoco/aggregate/jacocoTestReport.xml
 
-      - name: Groovydoc
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' && github.ref == 'refs/heads/master' && github.event_name == 'push' }}
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: aggregateGroovydoc --scan
-
-      - name: Publish Groovydoc on GitHub Pages
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' && github.ref == 'refs/heads/master' && github.event_name == 'push' }}
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages
-          token: ${{ secrets.GITHUB_TOKEN }}
-          folder: build/docs/aggregate-groovydoc
-          target-folder: groovydoc
-          clean: true
-          single-commit: true
+# TODO dmurat: Temporarily disable until https://github.com/kordamp/kordamp-gradle-plugins/issues/521 gets fixed
+#      - name: Groovydoc
+#        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' && github.ref == 'refs/heads/master' && github.event_name == 'push' }}
+#        uses: gradle/gradle-build-action@v2
+#        with:
+#          arguments: aggregateGroovydoc --scan
+#
+#      - name: Publish Groovydoc on GitHub Pages
+#        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' && github.ref == 'refs/heads/master' && github.event_name == 'push' }}
+#        uses: JamesIves/github-pages-deploy-action@v4
+#        with:
+#          branch: gh-pages
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#          folder: build/docs/aggregate-groovydoc
+#          target-folder: groovydoc
+#          clean: true
+#          single-commit: true
