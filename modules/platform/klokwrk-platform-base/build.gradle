@@ -16,39 +16,11 @@
  * limitations under the License.
  */
 plugins {
-  id "java-platform"
   id "klokwrk-gradle-plugin-convention-base"
+  id "klokwrk-gradle-plugin-convention-platform"
 }
 
 description = "Base dependencies platform for klokwrk-project modules."
-
-javaPlatform {
-  allowDependencies()
-}
-
-config {
-  info {
-    setName(project.name)
-    setDescription(project.description)
-  }
-
-  publishing {
-    setPublications(["klokwrkPlatformBase"])
-    pom {
-      setPackaging("pom")
-    }
-  }
-}
-
-publishing {
-  publications {
-    //noinspection GroovyAssignabilityCheck
-    klokwrkPlatformBase(MavenPublication) {
-      //noinspection GroovyAssignabilityCheck
-      from components.javaPlatform
-    }
-  }
-}
 
 dependencies {
   api platform("net.croz.nrich:nrich-bom:$nrichVersion")
