@@ -30,12 +30,6 @@ config {
     setDescription(project.description == rootProject.description ? project.name : project.description)
   }
 
-  artifacts {
-    source {
-      enabled = false
-    }
-  }
-
   publishing {
     setPublications(["klokwrkPlatform"])
     pom {
