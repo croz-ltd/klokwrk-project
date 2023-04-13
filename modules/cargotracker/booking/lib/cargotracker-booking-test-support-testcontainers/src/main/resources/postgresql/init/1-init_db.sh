@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This script demonstrates the initialization of a database via init script.
-# It should be the same as a script at location klokwrk-project/modules/cargotracker/booking/lib/cargotracker-booking-test-support-testcontainers/src/main/resources/postgresql/init/1-init_db.sh
+# It should be the same as a script at location klokwrk-project/support/docker/postgres/1-init_db.sh
 
 set -e
 
