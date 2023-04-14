@@ -68,7 +68,7 @@ However, if you are interested, there is a way to generate a changelog in a loca
 
 - execute the following commands:
 
-      env JRELEASER_PROJECT_VERSION=1.3.1 JRELEASER_GITHUB_TOKEN=1 \
+      env JRELEASER_PROJECT_VERSION=1.5.1 JRELEASER_GITHUB_TOKEN=1 \
       jreleaser changelog --basedir=. --config-file=./support/jreleaser/jreleaser-draft.yml --debug
 
       open out/jreleaser/release/CHANGELOG.md
