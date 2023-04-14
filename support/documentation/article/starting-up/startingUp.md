@@ -1,7 +1,7 @@
 # Starting up and trying the whole thing
 * **Author:** Damir Murat
 * **Created:** 26.05.2020.
-* **Updated:** 10.11.2022.
+* **Updated:** 13.04.2022.
 
 Environment:
 - OSX (should work with any desktop Linux distro and with Windows with appropriate bash-shell like git-bash)
@@ -68,7 +68,7 @@ However, if you are interested, there is a way to generate a changelog in a loca
 
 - execute the following commands:
 
-      env JRELEASER_PROJECT_VERSION=1.3.1 JRELEASER_GITHUB_TOKEN=1 \
+      env JRELEASER_PROJECT_VERSION=1.5.1 JRELEASER_GITHUB_TOKEN=1 \
       jreleaser changelog --basedir=. --config-file=./support/jreleaser/jreleaser-draft.yml --debug
 
       open out/jreleaser/release/CHANGELOG.md
@@ -226,6 +226,9 @@ Here is a very brief overview of Wavefront usage for a `klokwrk-project`:
   - [Tanzu Observability by Wavefront for Spring Boot Applications](https://www.youtube.com/watch?v=Jxwf-Iw-3T8) <br/>
   - [Wavefront for Spring Boot](https://docs.wavefront.com/wavefront_springboot.html) <br/>
   - [Wavefront for Spring Boot Tutorial](https://docs.wavefront.com/wavefront_springboot_tutorial.html)
+
+> Note: If you experience issues with Wavefront integration, like getting Wavefront related errors in the log, try removing Wavefront freemium account record from your home directory
+> (`rm ~/.wavefront_freemium`) and start the applications again.
 
 ### Supportive Gradle tasks
 While working on a project, a developer often needs access to various pieces of information about the current state of a project. These reports might provide beneficial information about code quality

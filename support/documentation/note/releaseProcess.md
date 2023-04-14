@@ -7,12 +7,12 @@
 ### **feature branch** (i.e., `feature_preparingRelease`)
 - manually generate changelog. From project root with the latest **JReleaser release**
 
-      env JRELEASER_PROJECT_VERSION=0.0.5-SNAPSHOT JRELEASER_GITHUB_TOKEN=1 \
+      env JRELEASER_PROJECT_VERSION=1.5.1 JRELEASER_GITHUB_TOKEN=1 \
       jreleaser changelog --basedir=. --config-file=./support/jreleaser/jreleaser-draft.yml --debug
 
   If you need to use the latest **JReleaser snapshot release**, it can be started via jbang installed locally (also via SDKMAN)
 
-      env JRELEASER_PROJECT_VERSION=0.0.5-SNAPSHOT JRELEASER_GITHUB_TOKEN=1 \
+      env JRELEASER_PROJECT_VERSION=1.5.2-SNAPSHOT JRELEASER_GITHUB_TOKEN=1 \
       jbang --verbose jreleaser-snapshot@jreleaser changelog --basedir=. --config-file=./support/jreleaser/jreleaser-draft.yml --debug
 
   When using JReleaser via jbang, and you need the latest release or snapshot version, before executing command make sure the cached JReleaser version is deleted from maven cache
@@ -22,17 +22,13 @@
       rm -rf ~/.m2/repository/org/jreleaser
       jbang cache clear
 
-
 - Verify generated changelog and make all necessary updates like:
   - delete uncategorized commits
   - deduplicate `deps` commits so that only the latest upgrade of particular dependency is included
   - add few sentences of release description if needed
   - fix any invalid commit message metadata (i.e. {m} from non-merge commits)
-
-
 - put all content of prepared changelog in `support/jreleaser/CHANGELOG-RELEASE.md` file. That file is use for creating a changelog during real release creation on GitHub.
 - commit `support/jreleaser/CHANGELOG-RELEASE.md` in `feature_preparingRelease`
-
 - change versions of of klokwrk application images.
 - commit properties file with updated versions in `feature_preparingRelease`
 

@@ -21,6 +21,7 @@ import com.github.dockerjava.api.command.CreateContainerCmd
 import groovy.transform.CompileStatic
 import org.testcontainers.containers.Network
 import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.utility.MountableFile
 
 @CompileStatic
 class PostgreSqlTestcontainersFactory {
@@ -40,7 +41,7 @@ class PostgreSqlTestcontainersFactory {
       withDatabaseName("postgres")
       withUsername("postgres")
       withPassword("postgres")
-      withInitScript("postgresql/init/001-init-cargotracker_booking_query_database.sql")
+      withCopyFileToContainer(MountableFile.forClasspathResource("postgresql/init/1-init_db.sh"), "/docker-entrypoint-initdb.d/1-init_db.sh")
 
       start()
     }

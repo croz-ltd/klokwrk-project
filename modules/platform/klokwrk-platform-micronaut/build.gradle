@@ -36,9 +36,9 @@ dependencies {
 
   constraints {
     api "com.github.javaparser:javaparser-core:$micronautJavaparserCoreVersion"
-    api "com.github.tomakehurst:wiremock-jre8:$wireMockVersion"
+    api "com.github.tomakehurst:wiremock-jre8:$micronautWireMockVersion"
     api "com.google.jimfs:jimfs:$jimfsVersion"
-    api "net.bytebuddy:byte-buddy:$byteBuddyVersion"
+    api "net.bytebuddy:byte-buddy:$micronautByteBuddyVersion"
     api "io.github.classgraph:classgraph:$classGraphVersion"
     api "org.codenarc:CodeNarc:$codeNarcVersion"
 //    api "com.github.codenarc:codenarc:$codeNarcJitpackVersion"
