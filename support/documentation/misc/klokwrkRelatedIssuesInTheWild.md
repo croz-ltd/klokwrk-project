@@ -14,6 +14,7 @@ Here we maintain list of issues in 3rd party software that are discovered during
 | INVALID             | Issue is reported, but is resolved as invalid.                                                    |
 | RESOLVED            | Issue is reported, and can be resolved without any fix. Similar to question.                      |
 | OBSOLETE            | Issue is reported and recognized, but will be resolved in some other way.                         |
+| NOT A BUG           | Issue is reported, but resolved as not a bug.                                                     |
 
 ## List of reported issues
 This is a list of all issues, categorized per 3rd party software, that are reported by `klokwrk-project` team members.
@@ -86,6 +87,9 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * IN PROGRESS - https://issues.apache.org/jira/browse/GROOVY-10156
 * VERIFIED (3.0.10) - https://issues.apache.org/jira/browse/GROOVY-10318
 * VERIFIED (4.0.7) - https://issues.apache.org/jira/browse/GROOVY-10815
+* VERIFIED (4.0.7) - https://issues.apache.org/jira/browse/GROOVY-10878
+* VERIFIED (4.0.8) - https://issues.apache.org/jira/browse/GROOVY-10882
+* NOT A BUG - https://issues.apache.org/jira/browse/GROOVY-10899
 
 ### IDEA
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-216308
@@ -100,6 +104,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (2022.2) - https://youtrack.jetbrains.com/issue/IDEA-286813
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-292254
 * VERIFIED - https://youtrack.jetbrains.com/issue/IDEA-295389
+* IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-315953
 
 ### JReleaser
 * VERIFIED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/85
@@ -130,8 +135,14 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/417
 * VERIFIED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/420
 * VERIFIED (0.42.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/421
-* IN PROGRESS - https://github.com/kordamp/kordamp-gradle-plugins/issues/469
-* IN PROGRESS - https://github.com/kordamp/kordamp-gradle-plugins/issues/486
+* OBSOLETE - https://github.com/kordamp/kordamp-gradle-plugins/issues/469
+* VERIFIED (0.50.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/486
+* VERIFIED (0.50.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/520
+* INVALID - https://github.com/kordamp/kordamp-gradle-plugins/issues/521
+* VERIFIED (0.50.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/522
+* VERIFIED (0.50.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/523
+* VERIFIED (0.50.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/524
+* VERIFIED (0.50.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/525
 
 ### micronaut-core
 * OBSOLETE - https://github.com/micronaut-projects/micronaut-core/issues/4622
