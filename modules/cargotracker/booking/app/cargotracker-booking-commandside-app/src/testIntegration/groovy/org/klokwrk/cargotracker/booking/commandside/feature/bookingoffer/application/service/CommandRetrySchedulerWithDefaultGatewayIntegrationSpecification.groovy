@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applic
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 
-@SpringBootTest(properties = ["axon.extension.tracing.enabled = false", 'axon.axonserver.servers = ${axonServerSecondInstanceUrl}'])
+@SpringBootTest(properties = ['axon.axonserver.servers = ${axonServerInstanceUrl}'])
 @ActiveProfiles("testIntegration")
 class CommandRetrySchedulerWithDefaultGatewayIntegrationSpecification extends AbstractCommandRetrySchedulerIntegrationSpecification {
 }
