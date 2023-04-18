@@ -23,8 +23,6 @@ plugins {
 
 dependencies {
   implementation platform(project(":klokwrk-platform-base"))
-
-  // TODO dmurat: remove after upgrade to spring boot 3
   implementation platform(project(":klokwrk-platform-spring-boot"))
 
   implementation project(":cargotracker-booking-domain-model-command")
@@ -55,7 +53,4 @@ dependencies {
 
   testImplementation "org.axonframework:axon-test"
   testImplementation "org.spockframework:spock-core"
-
-  // TODO dmurat: remove after upgrade to spring boot 3
-  testRuntimeOnly "org.slf4j:slf4j-api"
 }

@@ -29,14 +29,4 @@ dependencies {
   api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
 
   api "io.opentracing:opentracing-api:$openTracingApiVersion"
-
-  // Note: ArchUnit:1.x (1.0.0 at the time of writing) depends on slf4j:2.x (2.0.3 at the time of writing), but that version does not work with Spring Boot apps yet.
-  //       Therefore, we are constraining slf4j version to the one used by Spring Boot BOM. When Spring Boot is updated, this version range should be checked too.
-  //       After upgrading to Spring Boot 3.x, this version and related Gradle constraint should be removed.
-  // TODO dmurat: remove after upgrading to Spring Boot 3
-  api("org.slf4j:slf4j-api") {
-    version {
-      strictly "$springBootSlf4jVersion"
-    }
-  }
 }
