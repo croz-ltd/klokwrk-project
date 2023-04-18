@@ -33,6 +33,7 @@ import org.springframework.context.MessageSource
 import org.springframework.context.MessageSourceAware
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.lang.Nullable
 import org.springframework.web.context.request.RequestAttributes
@@ -109,7 +110,9 @@ class ResponseFormattingSpringMvcExceptionHandler extends ResponseEntityExceptio
 
   @SuppressWarnings("CodeNarc.Instanceof")
   @Override
-  protected ResponseEntity<Object> handleExceptionInternal(Exception springMvcException, @Nullable Object body, HttpHeaders httpHeaders, HttpStatus httpStatus, WebRequest webRequest) {
+  protected ResponseEntity<Object> handleExceptionInternal(Exception springMvcException, @Nullable Object body, HttpHeaders httpHeaders, HttpStatusCode httpStatusCode, WebRequest webRequest) {
+    HttpStatus httpStatus = HttpStatus.valueOf(httpStatusCode.value())
+
     if (HttpStatus.INTERNAL_SERVER_ERROR == httpStatus) {
       webRequest.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, springMvcException, WebRequest.SCOPE_REQUEST)
     }
