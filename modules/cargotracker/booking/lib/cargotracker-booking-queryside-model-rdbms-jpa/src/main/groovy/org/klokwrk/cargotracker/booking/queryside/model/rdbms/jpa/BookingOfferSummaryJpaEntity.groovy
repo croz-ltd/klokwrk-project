@@ -30,16 +30,16 @@ import org.klokwrk.lang.groovy.transform.KwrkMapConstructorDefaultPostCheck
 import org.klokwrk.lang.groovy.transform.KwrkMapConstructorNoArgHideable
 import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
 
-import javax.persistence.CollectionTable
-import javax.persistence.Column
-import javax.persistence.ElementCollection
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-import javax.persistence.FetchType
-import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.Table
+import jakarta.persistence.CollectionTable
+import jakarta.persistence.Column
+import jakarta.persistence.ElementCollection
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
+import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.Table
 import java.time.Instant
 
 import static org.hamcrest.Matchers.empty

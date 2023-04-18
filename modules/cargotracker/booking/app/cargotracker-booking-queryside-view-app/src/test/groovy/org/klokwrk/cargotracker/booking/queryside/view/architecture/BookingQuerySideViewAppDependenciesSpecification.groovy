@@ -60,9 +60,9 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
         "groovy..",
 
         "jakarta.validation..",
+        "jakarta.persistence..",
 
         "javax.measure..",
-        "javax.persistence..",
 
         "com.fasterxml.jackson.databind..",
 
