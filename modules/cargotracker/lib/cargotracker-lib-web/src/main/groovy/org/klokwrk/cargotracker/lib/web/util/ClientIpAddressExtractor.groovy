@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.lib.web.util
 
 import groovy.transform.CompileStatic
 
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 
 /**
  * Contains utility method trying to extract client's IP Address if possible.

@@ -23,7 +23,7 @@ import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applica
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.web.util.ClientIpAddressExtractor
 
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 
 // Not really needed since implementation is very simple and be easily inlined into controller. However, it demonstrates where web-to-applicationLayer assemblers should live and how to operate.
 @CompileStatic
