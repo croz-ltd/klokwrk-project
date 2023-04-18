@@ -28,10 +28,10 @@ import org.klokwrk.lib.validation.group.Level2
 import org.klokwrk.lib.validation.group.Level3
 import org.klokwrk.lib.validation.group.Level4
 
-import javax.validation.GroupSequence
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+import jakarta.validation.GroupSequence
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Size
 import java.time.Instant
 
 /**

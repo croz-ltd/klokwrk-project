@@ -22,10 +22,10 @@ import org.hibernate.validator.constraintvalidation.HibernateConstraintValidator
 import org.klokwrk.lib.uom.format.KwrkSimpleUnitFormat
 import org.klokwrk.lib.validation.constraint.uom.QuantityUnitConstraint
 
+import jakarta.validation.ConstraintValidator
+import jakarta.validation.ConstraintValidatorContext
 import javax.measure.Quantity
 import javax.measure.Unit
-import javax.validation.ConstraintValidator
-import javax.validation.ConstraintValidatorContext
 
 @CompileStatic
 class QuantityUnitConstraintValidator implements ConstraintValidator<QuantityUnitConstraint, Quantity> {

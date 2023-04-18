@@ -42,8 +42,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Shared
 
+import jakarta.validation.ConstraintViolationException
 import javax.sql.DataSource
-import javax.validation.ConstraintViolationException
 
 @SuppressWarnings("GroovyAccessibility")
 @EnableSharedInjection

@@ -23,9 +23,9 @@ import org.klokwrk.lib.uom.format.KwrkQuantityFormat
 import org.klokwrk.lib.validation.constraint.uom.QuantityMinConstraint
 import tech.units.indriya.ComparableQuantity
 
+import jakarta.validation.ConstraintValidator
+import jakarta.validation.ConstraintValidatorContext
 import javax.measure.Quantity
-import javax.validation.ConstraintValidator
-import javax.validation.ConstraintValidatorContext
 
 @CompileStatic
 class QuantityMinConstraintValidator implements ConstraintValidator<QuantityMinConstraint, Quantity> {

@@ -23,11 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
+import jakarta.validation.ConstraintViolationException
+import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Size
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
-import javax.validation.ConstraintViolationException
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
 
 @SpringBootTest
 class ValidationServiceDefaultSetupSpecification extends Specification {

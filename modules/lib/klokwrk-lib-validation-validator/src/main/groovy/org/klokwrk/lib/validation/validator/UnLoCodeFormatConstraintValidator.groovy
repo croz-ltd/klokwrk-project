@@ -21,8 +21,8 @@ import groovy.transform.CompileStatic
 import org.klokwrk.lang.groovy.constant.CommonConstants
 import org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint
 
-import javax.validation.ConstraintValidator
-import javax.validation.ConstraintValidatorContext
+import jakarta.validation.ConstraintValidator
+import jakarta.validation.ConstraintValidatorContext
 import java.util.regex.Pattern
 
 /**

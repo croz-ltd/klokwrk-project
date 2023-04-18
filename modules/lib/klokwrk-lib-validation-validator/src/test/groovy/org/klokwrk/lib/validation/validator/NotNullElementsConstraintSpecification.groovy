@@ -27,10 +27,10 @@ import org.klokwrk.lib.validation.constraint.NotNullElementsConstraint
 import spock.lang.Shared
 import spock.lang.Specification
 
-import javax.validation.ConstraintViolation
-import javax.validation.Validation
-import javax.validation.Validator
-import javax.validation.ValidatorFactory
+import jakarta.validation.ConstraintViolation
+import jakarta.validation.Validation
+import jakarta.validation.Validator
+import jakarta.validation.ValidatorFactory
 
 class NotNullElementsConstraintSpecification extends Specification {
   @Shared

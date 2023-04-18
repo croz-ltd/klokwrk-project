@@ -26,12 +26,12 @@ import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
 
-import javax.validation.GroupSequence
-import javax.validation.Valid
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotEmpty
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Null
+import jakarta.validation.GroupSequence
+import jakarta.validation.Valid
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Null
 
 /**
  * Request DTO parameter for {@code bookingOfferSummaryFindAllQuery} operation from {@link BookingOfferSummaryFindAllQueryPortIn} inbound port interface.

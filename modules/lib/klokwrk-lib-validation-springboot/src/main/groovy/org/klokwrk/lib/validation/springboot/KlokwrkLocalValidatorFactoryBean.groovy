@@ -24,8 +24,8 @@ import org.hibernate.validator.cfg.ConstraintMapping
 import org.hibernate.validator.cfg.context.ConstraintDefinitionContext
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 
-import javax.validation.ClockProvider
-import javax.validation.Configuration
+import jakarta.validation.ClockProvider
+import jakarta.validation.Configuration
 
 /**
  * Extension of Spring {@link LocalValidatorFactoryBean} with customized configuration.

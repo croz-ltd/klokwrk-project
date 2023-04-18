@@ -24,10 +24,10 @@ import org.klokwrk.lib.validation.springboot.ValidationService
 import spock.lang.Shared
 import spock.lang.Specification
 
-import javax.validation.ConstraintViolationException
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.Null
-import javax.validation.constraints.Size
+import jakarta.validation.ConstraintViolationException
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Null
+import jakarta.validation.constraints.Size
 
 class BookingOfferSummaryFindByIdQueryRequestSpecification extends Specification {
   @Shared

@@ -20,8 +20,8 @@ package org.klokwrk.lib.validation.validator
 import groovy.transform.CompileStatic
 import org.klokwrk.lib.validation.constraint.NotEmptyWhenNullableConstraint
 
-import javax.validation.ConstraintValidator
-import javax.validation.ConstraintValidatorContext
+import jakarta.validation.ConstraintValidator
+import jakarta.validation.ConstraintValidatorContext
 
 /**
  * Validates if {@code Map} is empty.

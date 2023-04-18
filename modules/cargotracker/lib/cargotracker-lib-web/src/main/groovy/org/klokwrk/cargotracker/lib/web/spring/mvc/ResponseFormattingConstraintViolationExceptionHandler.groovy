@@ -40,8 +40,8 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.method.HandlerMethod
 
-import javax.validation.ConstraintViolation
-import javax.validation.ConstraintViolationException
+import jakarta.validation.ConstraintViolation
+import jakarta.validation.ConstraintViolationException
 import java.time.Instant
 
 /**
