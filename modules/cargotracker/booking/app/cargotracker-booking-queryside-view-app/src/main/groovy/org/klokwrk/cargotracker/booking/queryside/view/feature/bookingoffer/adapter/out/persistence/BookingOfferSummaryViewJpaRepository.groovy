@@ -25,10 +25,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import org.springframework.data.jpa.repository.QueryHints
 import org.springframework.data.repository.query.Param
-
-import javax.persistence.QueryHint
 
 @SuppressWarnings("CodeNarc.BracesForClass")
 @CompileStatic
@@ -61,14 +58,16 @@ interface BookingOfferSummaryViewJpaRepository extends
   // Intended to be used in combination with findPageOfBookingOfferIdsByCustomerId to avoid paging in memory while fetching a collection.
   // Fixing in-memory paging: https://vladmihalcea.com/fix-hibernate-hhh000104-entity-fetch-pagination-warning-message/
   // JOIN FETCH: https://vladmihalcea.com/n-plus-1-query-problem/
+  //
   // DISTINCT JPQL keyword and QueryHint: https://vladmihalcea.com/jpql-distinct-jpa-hibernate/
+  // Note: With Hibernate 6, there is no more need to use DISTINCT in JPA query (and to pass HINT_PASS_DISTINCT_THROUGH = false query hint) to filter out the same parent entity references when join
+  //       fetching a child collection
   @Query("""
-      SELECT DISTINCT b FROM BookingOfferSummaryJpaEntity b
+      SELECT b FROM BookingOfferSummaryJpaEntity b
       LEFT JOIN FETCH b.commodityTypes
       WHERE
         b.bookingOfferId IN :bookingOfferIds
         AND b.customerId = :customerId
   """)
-  @QueryHints(@QueryHint(name = org.hibernate.jpa.QueryHints.HINT_PASS_DISTINCT_THROUGH, value = "false"))
   List<BookingOfferSummaryJpaEntity> findAllByBookingOfferIdsAndCustomerId(@Param("bookingOfferIds") List<UUID> bookingOfferIds, @Param("customerId") String customerId)
 }
