@@ -41,7 +41,7 @@ dependencies {
   // java.lang.NoClassDefFoundError id thrown for PostMapConstructorCheckable class.
   implementation project(":klokwrk-lang-groovy")
 
-  implementation "io.hypersistence:hypersistence-utils-hibernate-55"
+  implementation "io.hypersistence:hypersistence-utils-hibernate-60"
   implementation "javax.measure:unit-api"
   implementation "org.apache.groovy:groovy"
   implementation "org.axonframework:axon-spring-boot-starter"
