@@ -17,7 +17,10 @@
  */
 package org.klokwrk.cargotracker.lib.axon.logging
 
-import com.google.common.collect.ImmutableList
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.read.ListAppender
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.config.Configuration
 import org.axonframework.config.Configurer
@@ -32,21 +35,15 @@ import org.klokwrk.cargotracker.lib.axon.logging.stub.aggregate.MyTestAggregate
 import org.klokwrk.cargotracker.lib.axon.logging.stub.command.CreateMyTestAggregateCommand
 import org.klokwrk.cargotracker.lib.axon.logging.stub.command.UpdateMyTestAggregateCommand
 import org.klokwrk.cargotracker.lib.axon.logging.stub.projection.MyTestProjection
+import org.slf4j.LoggerFactory
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
-import uk.org.lidalia.slf4jext.Level
-import uk.org.lidalia.slf4jtest.LoggingEvent
-import uk.org.lidalia.slf4jtest.TestLogger
-import uk.org.lidalia.slf4jtest.TestLoggerFactory
 
 class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
   Configuration axonConfiguration
   CommandGateway axonCommandGateway
 
   void setup() {
-    TestLoggerFactory.clearAll()
-//    TestLoggerFactory.getInstance().setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test
-
     EventProcessingModule eventProcessingModule = new EventProcessingModule()
     eventProcessingModule.registerEventHandler((Configuration axonConfiguration) -> new MyTestProjection())
 
@@ -70,16 +67,27 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
   }
 
   void cleanup() {
-    TestLoggerFactory.clearAll()
-
     axonConfiguration.shutdown()
     axonCommandGateway = null
     axonConfiguration = null
   }
 
+  private List configureLoggerAndListAppender() {
+    Logger logger = LoggerFactory.getLogger("cargotracker.axon.event-handler-logging") as Logger
+    ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
+    listAppender.start()
+    logger.addAppender(listAppender)
+
+    return [logger, listAppender]
+  }
+
+  private void cleanupLogger(Logger logger, ListAppender listAppender) {
+    logger.detachAppender(listAppender)
+  }
+
   void "should work for event handler"() {
     given:
-    TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.event-handler-logging")
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
     String aggregateIdentifier = UUID.randomUUID()
 
     when:
@@ -88,26 +96,31 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-      loggingEvents.size() == 2
-      loggingEvents[0].level == Level.DEBUG
-      loggingEvents[0].message.contains(aggregateIdentifier)
+      listAppender.list.size() == 2
+      verifyAll(listAppender.list[0]) {
+        level == Level.DEBUG
+        message.contains(aggregateIdentifier)
 
-      // sample message: Executing EventSourcingHandler method [MyTestAggregate.onMyTestAggregateCreatedEvent(MyTestAggregateCreatedEvent)] with event [MyTestAggregateCreatedEvent(aggregateIdentifier: 4bbf8ddd-6310-424d-8085-882f9df64200, sequenceNumber: 0)]
-      loggingEvents[0].message ==~ /Executing EventHandler method \[MyTestProjection.handle\(MyTestAggregateCreatedEvent\)] with event \[eventGlobalIndex: 0, eventId: \p{Graph}{36}, MyTestAggregateCreatedEvent\(aggregateIdentifier: \p{Graph}{36}, sequenceNumber: 0\)]/
+        // sample message: Executing EventSourcingHandler method [MyTestAggregate.onMyTestAggregateCreatedEvent(MyTestAggregateCreatedEvent)] with event [MyTestAggregateCreatedEvent(aggregateIdentifier: 4bbf8ddd-6310-424d-8085-882f9df64200, sequenceNumber: 0)]
+        message ==~ /Executing EventHandler method \[MyTestProjection.handle\(MyTestAggregateCreatedEvent\)] with event \[eventGlobalIndex: 0, eventId: \p{Graph}{36}, MyTestAggregateCreatedEvent\(aggregateIdentifier: \p{Graph}{36}, sequenceNumber: 0\)]/
+      }
+      verifyAll(listAppender.list[1]) {
+        level == Level.DEBUG
+        message.contains(aggregateIdentifier)
 
-      loggingEvents[1].level == Level.DEBUG
-      loggingEvents[1].message.contains(aggregateIdentifier)
-
-      // sample message: Executing EventHandler method [MyTestProjection.handle(MyTestAggregateUpdatedEvent)] with event [eventId: bd88fa8e-d834-4c93-8cc2-d39dc619d009, MyTestAggregateUpdatedEvent(aggregateIdentifier: 000580e3-5682-46be-8b41-8aabbb39f7b5, sequenceNumber: 1)]
-      loggingEvents[1].message ==~ /Executing EventHandler method \[MyTestProjection.handle\(MyTestAggregateUpdatedEvent\)] with event \[eventGlobalIndex: 1, eventId: \p{Graph}{36}, MyTestAggregateUpdatedEvent\(aggregateIdentifier: \p{Graph}{36}, sequenceNumber: 1\)]/
+        // sample message: Executing EventHandler method [MyTestProjection.handle(MyTestAggregateUpdatedEvent)] with event [eventId: bd88fa8e-d834-4c93-8cc2-d39dc619d009, MyTestAggregateUpdatedEvent(aggregateIdentifier: 000580e3-5682-46be-8b41-8aabbb39f7b5, sequenceNumber: 1)]
+        message ==~ /Executing EventHandler method \[MyTestProjection.handle\(MyTestAggregateUpdatedEvent\)] with event \[eventGlobalIndex: 1, eventId: \p{Graph}{36}, MyTestAggregateUpdatedEvent\(aggregateIdentifier: \p{Graph}{36}, sequenceNumber: 1\)]/
+      }
     }
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 
   void "should not log for logger level higher than DEBUG"() {
     given:
-    TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.event-handler-logging")
-    logger.enabledLevelsForAllThreads = Level.INFO
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
+    logger.level = Level.INFO
     String aggregateIdentifier = UUID.randomUUID()
 
     when:
@@ -116,8 +129,10 @@ class LoggingEventHandlerEnhancerDefinitionSpecification extends Specification {
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-      loggingEvents.size() == 0
+      listAppender.list.size() == 0
     }
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 }

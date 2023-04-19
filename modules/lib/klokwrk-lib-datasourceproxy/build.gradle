@@ -30,6 +30,6 @@ dependencies {
   implementation "org.apache.groovy:groovy"
   implementation "org.slf4j:slf4j-api"
 
+  testImplementation "ch.qos.logback:logback-classic"
   testImplementation "org.spockframework:spock-core"
-  testImplementation "uk.org.lidalia:slf4j-test"
 }

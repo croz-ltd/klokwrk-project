@@ -17,7 +17,10 @@
  */
 package org.klokwrk.cargotracker.lib.axon.logging
 
-import com.google.common.collect.ImmutableList
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.read.ListAppender
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.config.Configuration
 import org.axonframework.config.Configurer
@@ -33,21 +36,15 @@ import org.klokwrk.cargotracker.lib.axon.logging.stub.command.CreateMyTestAggreg
 import org.klokwrk.cargotracker.lib.axon.logging.stub.command.UpdateMyTestAggregateCommand
 import org.klokwrk.cargotracker.lib.axon.logging.stub.command.UpdateMyTestAggregateWithoutExpectedIdentifiersCommand
 import org.klokwrk.lang.groovy.constant.CommonConstants
+import org.slf4j.LoggerFactory
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
-import uk.org.lidalia.slf4jext.Level
-import uk.org.lidalia.slf4jtest.LoggingEvent
-import uk.org.lidalia.slf4jtest.TestLogger
-import uk.org.lidalia.slf4jtest.TestLoggerFactory
 
 class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification {
   Configuration axonConfiguration
   CommandGateway axonCommandGateway
 
   void setup() {
-    TestLoggerFactory.clearAll()
-//    TestLoggerFactory.getInstance().setPrintLevel(Level.DEBUG) // uncomment if you want to see logging output during the test
-
     Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
     axonConfigurer.configureEmbeddedEventStore((Configuration axonConfiguration) -> new InMemoryEventStorageEngine())
                   .configureAggregate(MyTestAggregate)
@@ -67,16 +64,27 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
   }
 
   void cleanup() {
-    TestLoggerFactory.clearAll()
-
     axonConfiguration.shutdown()
     axonCommandGateway = null
     axonConfiguration = null
   }
 
+  private List configureLoggerAndListAppender() {
+    Logger logger = LoggerFactory.getLogger("cargotracker.axon.command-handler-logging") as Logger
+    ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
+    listAppender.start()
+    logger.addAppender(listAppender)
+
+    return [logger, listAppender]
+  }
+
+  private void cleanupLogger(Logger logger, ListAppender listAppender) {
+    logger.detachAppender(listAppender)
+  }
+
   void "should work for constructor command handler"() {
     given:
-    TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.command-handler-logging")
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
     String aggregateIdentifier = UUID.randomUUID()
 
     when:
@@ -84,18 +92,20 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-
-      loggingEvents.size() == 1
-
-      loggingEvents[0].level == Level.DEBUG
-      loggingEvents[0].message == "Executing CommandHandler constructor [MyTestAggregate(CreateMyTestAggregateCommand)] with command [CreateMyTestAggregateCommand(aggregateIdentifier: $aggregateIdentifier)]"
+      listAppender.list.size() == 1
+      verifyAll(listAppender.list[0]) {
+        level == Level.DEBUG
+        message == "Executing CommandHandler constructor [MyTestAggregate(CreateMyTestAggregateCommand)] with command [CreateMyTestAggregateCommand(aggregateIdentifier: $aggregateIdentifier)]"
+      }
     }
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 
   void "should work for constructor command handler when command does not have expected aggregate identifier"() {
     given:
-    TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.command-handler-logging")
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
     String unexpectedAggregateIdentifier = UUID.randomUUID()
 
     when:
@@ -103,20 +113,22 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-
-      loggingEvents.size() == 1
-
-      loggingEvents[0].level == Level.DEBUG
-      String expectedMessage = "Executing CommandHandler constructor [MyTestAggregate(CreateMyTestAggregateWithoutExpectedIdentifierCommand)] with command " +
-                               "[CreateMyTestAggregateWithoutExpectedIdentifierCommand(aggregateIdentifier: ${ CommonConstants.NOT_AVAILABLE })]"
-      loggingEvents[0].message == expectedMessage
+      listAppender.list.size() == 1
+      verifyAll(listAppender.list[0]) {
+        level == Level.DEBUG
+        String expectedMessage = "Executing CommandHandler constructor [MyTestAggregate(CreateMyTestAggregateWithoutExpectedIdentifierCommand)] with command " +
+                                 "[CreateMyTestAggregateWithoutExpectedIdentifierCommand(aggregateIdentifier: ${ CommonConstants.NOT_AVAILABLE })]"
+        message == expectedMessage
+      }
     }
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 
   void "should work for method command handler"() {
     given:
-    TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.command-handler-logging")
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
     String aggregateIdentifier = UUID.randomUUID()
 
     when:
@@ -125,21 +137,24 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-
-      loggingEvents.size() == 2
-
-      loggingEvents[0].level == Level.DEBUG
-      loggingEvents[0].message == "Executing CommandHandler constructor [MyTestAggregate(CreateMyTestAggregateCommand)] with command [CreateMyTestAggregateCommand(aggregateIdentifier: $aggregateIdentifier)]"
-
-      loggingEvents[1].level == Level.DEBUG
-      loggingEvents[1].message == "Executing CommandHandler method [MyTestAggregate.update(UpdateMyTestAggregateCommand)] with command [UpdateMyTestAggregateCommand(aggregateIdentifier: $aggregateIdentifier, sequenceNumber: 0)]"
+      listAppender.list.size() == 2
+      verifyAll(listAppender.list[0]) {
+        level == Level.DEBUG
+        message == "Executing CommandHandler constructor [MyTestAggregate(CreateMyTestAggregateCommand)] with command [CreateMyTestAggregateCommand(aggregateIdentifier: $aggregateIdentifier)]"
+      }
+      verifyAll(listAppender.list[1]) {
+        level == Level.DEBUG
+        message == "Executing CommandHandler method [MyTestAggregate.update(UpdateMyTestAggregateCommand)] with command [UpdateMyTestAggregateCommand(aggregateIdentifier: $aggregateIdentifier, sequenceNumber: 0)]"
+      }
     }
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 
   void "should work for method command handler when command does not have expected identifiers"() {
     given:
-    TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.command-handler-logging")
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
     String unexpectedAggregateIdentifier = UUID.randomUUID()
 
     when:
@@ -148,26 +163,29 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-
-      loggingEvents.size() == 2
-
-      loggingEvents[0].level == Level.DEBUG
-      String expectedMessage1 = "Executing CommandHandler constructor [MyTestAggregate(CreateMyTestAggregateWithoutExpectedIdentifierCommand)] with command " +
-                                "[CreateMyTestAggregateWithoutExpectedIdentifierCommand(aggregateIdentifier: ${ CommonConstants.NOT_AVAILABLE })]"
-      loggingEvents[0].message == expectedMessage1
-
-      loggingEvents[1].level == Level.DEBUG
-      String expectedMessage2 = "Executing CommandHandler method [MyTestAggregate.update(UpdateMyTestAggregateWithoutExpectedIdentifiersCommand)] with command " +
-                                "[UpdateMyTestAggregateWithoutExpectedIdentifiersCommand(aggregateIdentifier: ${ CommonConstants.NOT_AVAILABLE }, sequenceNumber: ${ CommonConstants.NOT_AVAILABLE })]"
-      loggingEvents[1].message == expectedMessage2
+      listAppender.list.size() == 2
+      verifyAll(listAppender.list[0]) {
+        level == Level.DEBUG
+        String expectedMessage = "Executing CommandHandler constructor [MyTestAggregate(CreateMyTestAggregateWithoutExpectedIdentifierCommand)] with command " +
+                                 "[CreateMyTestAggregateWithoutExpectedIdentifierCommand(aggregateIdentifier: ${ CommonConstants.NOT_AVAILABLE })]"
+        message == expectedMessage
+      }
+      verifyAll(listAppender.list[1]) {
+        level == Level.DEBUG
+        String expectedMessage = "Executing CommandHandler method [MyTestAggregate.update(UpdateMyTestAggregateWithoutExpectedIdentifiersCommand)] with command " +
+                                 "[UpdateMyTestAggregateWithoutExpectedIdentifiersCommand(aggregateIdentifier: ${ CommonConstants.NOT_AVAILABLE }, sequenceNumber: ${ CommonConstants.NOT_AVAILABLE })]"
+        message == expectedMessage
+      }
     }
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 
   void "should not log for logger level higher than DEBUG"() {
     given:
-    TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.command-handler-logging")
-    logger.enabledLevelsForAllThreads = Level.INFO
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
+    logger.level = Level.INFO
     String aggregateIdentifier = UUID.randomUUID()
 
     when:
@@ -176,8 +194,10 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-      loggingEvents.size() == 0
+      listAppender.list.size() == 0
     }
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 }

@@ -17,37 +17,23 @@
  */
 package org.klokwrk.lib.datasourceproxy
 
-import com.google.common.collect.ImmutableList
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.read.ListAppender
 import net.ttddyy.dsproxy.ExecutionInfo
 import net.ttddyy.dsproxy.QueryInfo
 import net.ttddyy.dsproxy.listener.logging.SLF4JQueryLoggingListener
+import org.slf4j.LoggerFactory
 import spock.lang.Specification
-import uk.org.lidalia.slf4jext.Level
-import uk.org.lidalia.slf4jtest.LoggingEvent
-import uk.org.lidalia.slf4jtest.TestLogger
-import uk.org.lidalia.slf4jtest.TestLoggerFactory
 
 class Slf4jFilterableQueryLoggingListenerSpecification extends Specification {
-  TestLogger logger
-
-  void setup() {
-    TestLoggerFactory.clearAll()
-//    TestLoggerFactory.getInstance().setPrintLevel(Level.TRACE) // uncomment if you want to see logging output during the test
-    logger = TestLoggerFactory.getTestLogger(SLF4JQueryLoggingListener.name)
-  }
-
   void "should have expected default logger name of a super class"() {
     given:
     Slf4jFilterableQueryLoggingListener listener = new Slf4jFilterableQueryLoggingListener()
 
     expect:
     listener.logger.name == SLF4JQueryLoggingListener.name
-  }
-
-  void configureEnabledLevels(TestLogger testLogger, Level enabledLevel) {
-    Level[] allLevels = [Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG, Level.TRACE]
-    Level[] selectedLevels = allLevels[0 .. allLevels.findIndexOf({ Level level -> level == enabledLevel })]
-    testLogger.enabledLevelsForAllThreads = selectedLevels
   }
 
   void "should fail for null regex pattern list"() {
@@ -58,61 +44,83 @@ class Slf4jFilterableQueryLoggingListenerSpecification extends Specification {
     thrown(AssertionError)
   }
 
+  private List configureLoggerAndListAppender(Level loggerLevel) {
+    Logger logger = LoggerFactory.getLogger(SLF4JQueryLoggingListener.name) as Logger
+    logger.level = loggerLevel
+    ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
+    listAppender.start()
+    logger.addAppender(listAppender)
+
+    return [logger, listAppender]
+  }
+
+  private void cleanupLogger(Logger logger, ListAppender listAppender) {
+    logger.detachAppender(listAppender)
+  }
+
   void "should not log anything on INFO level"() {
     given:
-    configureEnabledLevels(logger, Level.INFO)
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender(Level.INFO)
     Slf4jFilterableQueryLoggingListener listener = new Slf4jFilterableQueryLoggingListener([/^update token_entry.*$/])
 
     when:
     listener.afterQuery(new ExecutionInfo(), [new QueryInfo("select * from myTable")])
-    ImmutableList<LoggingEvent> loggingEventList = logger.allLoggingEvents
 
     then:
-    loggingEventList.size() == 0
+    listAppender.list.size() == 0
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 
   void "should not log anything for empty query info list"() {
     given:
-    configureEnabledLevels(logger, Level.INFO)
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender(Level.INFO)
     Slf4jFilterableQueryLoggingListener listener = new Slf4jFilterableQueryLoggingListener([/^update token_entry.*$/])
 
     when:
     listener.afterQuery(new ExecutionInfo(), [])
-    ImmutableList<LoggingEvent> loggingEventList = logger.allLoggingEvents
 
     then:
-    loggingEventList.size() == 0
+    listAppender.list.size() == 0
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 
   void "should log normally for empty regex pattern list"() {
     given:
-    configureEnabledLevels(logger, Level.DEBUG)
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender(Level.DEBUG)
     Slf4jFilterableQueryLoggingListener listener = new Slf4jFilterableQueryLoggingListener()
 
     when:
     listener.afterQuery(new ExecutionInfo(), [new QueryInfo("select * from myTable")])
-    ImmutableList<LoggingEvent> loggingEventList = logger.allLoggingEvents
 
     then:
-    loggingEventList.size() == 1
+    listAppender.list.size() == 1
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 
-  void "should filter out matching queries at debug DEBUG level for a single query in the execution"() {
+  void "should filter out matching queries at DEBUG level for a single query in the execution"() {
     given:
-    configureEnabledLevels(logger, Level.DEBUG)
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender(Level.DEBUG)
     Slf4jFilterableQueryLoggingListener listener = new Slf4jFilterableQueryLoggingListener([/^update token_entry.*$/])
 
     when:
     listener.afterQuery(new ExecutionInfo(), [new QueryInfo("update token_entry set timestamp=? where processor_name=? and segment=? and owner=?")])
-    ImmutableList<LoggingEvent> loggingEventList = logger.allLoggingEvents
 
     then:
-    loggingEventList.size() == 0
+    listAppender.list.size() == 0
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 
-  void "should filter out matching queries at debug DEBUG level for multiple queries in the execution"() {
+  void "should filter out matching queries at DEBUG level for multiple queries in the execution"() {
     given:
-    configureEnabledLevels(logger, Level.DEBUG)
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender(Level.DEBUG)
     Slf4jFilterableQueryLoggingListener listener = new Slf4jFilterableQueryLoggingListener([/^update token_entry.*$/])
 
     when:
@@ -124,35 +132,43 @@ class Slf4jFilterableQueryLoggingListenerSpecification extends Specification {
             new QueryInfo("select * from myOtherTable")
         ]
     )
-    ImmutableList<LoggingEvent> loggingEventList = logger.allLoggingEvents
 
     then:
-    loggingEventList.size() == 1
-    loggingEventList[0].level == Level.DEBUG
-    loggingEventList[0].message.contains("select * from myTable")
-    loggingEventList[0].message.contains("select * from myOtherTable")
-    //noinspection GroovyPointlessBoolean
-    loggingEventList[0].message.contains("update token_entry") == false
+    listAppender.list.size() == 1
+    verifyAll(listAppender.list[0]) {
+      level == Level.DEBUG
+      message.contains("select * from myTable")
+      message.contains("select * from myOtherTable")
+      //noinspection GroovyPointlessBoolean
+      message.contains("update token_entry") == false
+    }
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 
   void "should not filter out matching queries at TRACE level for a single query in the execution"() {
     given:
-    configureEnabledLevels(logger, Level.TRACE)
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender(Level.TRACE)
     Slf4jFilterableQueryLoggingListener listener = new Slf4jFilterableQueryLoggingListener([/^update token_entry.*$/])
 
     when:
     listener.afterQuery(new ExecutionInfo(), [new QueryInfo("update token_entry set timestamp=? where processor_name=? and segment=? and owner=?")])
-    ImmutableList<LoggingEvent> loggingEventList = logger.allLoggingEvents
 
     then:
-    loggingEventList.size() == 1
-    loggingEventList[0].level == Level.TRACE
-    loggingEventList[0].message.contains("update token_entry")
+    listAppender.list.size() == 1
+    verifyAll(listAppender.list[0]) {
+      level == Level.TRACE
+      message.contains("update token_entry")
+    }
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 
   void "should not filter out matching queries at TRACE level for multiple queries in the execution"() {
     given:
-    configureEnabledLevels(logger, Level.TRACE)
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender(Level.TRACE)
     Slf4jFilterableQueryLoggingListener listener = new Slf4jFilterableQueryLoggingListener([/^update token_entry.*$/])
 
     when:
@@ -164,13 +180,17 @@ class Slf4jFilterableQueryLoggingListenerSpecification extends Specification {
             new QueryInfo("select * from myOtherTable")
         ]
     )
-    ImmutableList<LoggingEvent> loggingEventList = logger.allLoggingEvents
 
     then:
-    loggingEventList.size() == 1
-    loggingEventList[0].level == Level.TRACE
-    loggingEventList[0].message.contains("select * from myTable")
-    loggingEventList[0].message.contains("select * from myOtherTable")
-    loggingEventList[0].message.contains("update token_entry")
+    listAppender.list.size() == 1
+    verifyAll(listAppender.list[0]) {
+      level == Level.TRACE
+      message.contains("select * from myTable")
+      message.contains("select * from myOtherTable")
+      message.contains("update token_entry")
+    }
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 }

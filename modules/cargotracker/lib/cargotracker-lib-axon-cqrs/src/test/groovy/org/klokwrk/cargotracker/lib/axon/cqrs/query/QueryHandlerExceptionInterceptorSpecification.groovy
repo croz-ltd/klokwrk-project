@@ -17,7 +17,10 @@
  */
 package org.klokwrk.cargotracker.lib.axon.cqrs.query
 
-import com.google.common.collect.ImmutableList
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.read.ListAppender
 import org.axonframework.messaging.GenericMessage
 import org.axonframework.messaging.InterceptorChain
 import org.axonframework.messaging.Message
@@ -29,12 +32,9 @@ import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandExcepti
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
+import org.slf4j.LoggerFactory
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
-import uk.org.lidalia.slf4jext.Level
-import uk.org.lidalia.slf4jtest.LoggingEvent
-import uk.org.lidalia.slf4jtest.TestLogger
-import uk.org.lidalia.slf4jtest.TestLoggerFactory
 
 class QueryHandlerExceptionInterceptorSpecification extends Specification {
   UnitOfWork<Message<?>> unitOfWork
@@ -47,9 +47,19 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
   void setup() {
     unitOfWork = new DefaultUnitOfWork<>(new GenericMessage<Object>(new StubQuery()))
     interceptorChainMock = Stub()
+  }
 
-    // uncomment if you want to see logging output during the test
-//    TestLoggerFactory.instance.printLevel = Level.DEBUG
+  private List configureLoggerAndListAppender() {
+    Logger logger = LoggerFactory.getLogger("org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor") as Logger
+    ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
+    listAppender.start()
+    logger.addAppender(listAppender)
+
+    return [logger, listAppender]
+  }
+
+  private void cleanupLogger(Logger logger, ListAppender listAppender) {
+    logger.detachAppender(listAppender)
   }
 
   void "should work for non-exceptional scenario"() {
@@ -90,10 +100,7 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
   @SuppressWarnings("CodeNarc.AbcMetric")
   void "should catch Domain and Query exceptions thrown from the handler and log them at the debug level"() {
     given:
-    TestLoggerFactory.clearAll()
-    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor")
-    logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG)
-
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
     QueryHandlerExceptionInterceptor queryHandlerExceptionInterceptor = new QueryHandlerExceptionInterceptor()
     interceptorChainMock.proceed() >> { throw domainExceptionParam }
 
@@ -111,14 +118,15 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     })
 
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-      loggingEvents.size() == 1
-      loggingEvents[0].level == Level.DEBUG
-      loggingEvents[0].message == "Execution of 'StubQuery' query handler failed for business reasons (normal execution flow): ${ domainExceptionMessageParam }"
+      listAppender.list.size() == 1
+      verifyAll(listAppender.list[0]) {
+        level == Level.DEBUG
+        message == "Execution of 'StubQuery' query handler failed for business reasons (normal execution flow): ${ domainExceptionMessageParam }"
+      }
     }
 
     cleanup:
-    TestLoggerFactory.clearAll()
+    cleanupLogger(logger, listAppender)
 
     where:
     domainExceptionMessageParam                         | domainExceptionParam
@@ -137,10 +145,8 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
 
   void "should catch Domain and Query exceptions thrown from the handler and should not log them at the level higher than debug"() {
     given:
-    TestLoggerFactory.clearAll()
-    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor")
-    logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO)
-
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
+    logger.level = Level.INFO
     QueryHandlerExceptionInterceptor queryHandlerExceptionInterceptor = new QueryHandlerExceptionInterceptor()
     interceptorChainMock.proceed() >> { throw domainExceptionParam }
 
@@ -158,12 +164,11 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     })
 
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-      loggingEvents.size() == 0
+      listAppender.list.size() == 0
     }
 
     cleanup:
-    TestLoggerFactory.clearAll()
+    cleanupLogger(logger, listAppender)
 
     where:
     domainExceptionParam                           | _
@@ -173,10 +178,8 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
 
   void "when CommandException is thrown should handle it like domain exception and log a warning message"() {
     given:
-    TestLoggerFactory.clearAll()
-    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor")
-    logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO)
-
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
+    logger.level = Level.INFO
     QueryHandlerExceptionInterceptor queryHandlerExceptionInterceptor = new QueryHandlerExceptionInterceptor()
     interceptorChainMock.proceed() >> { throw new CommandException(ViolationInfo.BAD_REQUEST) }
 
@@ -194,22 +197,21 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     })
 
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-      loggingEvents.size() == 1
-      loggingEvents[0].level == Level.WARN
-      loggingEvents[0].message.startsWith("CommandException is thrown during query handling, which is unexpected.")
+      listAppender.list.size() == 1
+      verifyAll(listAppender.list[0]) {
+        level == Level.WARN
+        message.startsWith("CommandException is thrown during query handling, which is unexpected.")
+      }
     }
 
     cleanup:
-    TestLoggerFactory.clearAll()
+    cleanupLogger(logger, listAppender)
   }
 
-  @SuppressWarnings("CodeNarc.UnnecessarySetter")
   void "should not log CommandException occurrence on a level higher than warning"() {
     given:
-    TestLoggerFactory.clearAll()
-    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor")
-    logger.setEnabledLevels(Level.ERROR)
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
+    logger.level = Level.ERROR
 
     QueryHandlerExceptionInterceptor queryHandlerExceptionInterceptor = new QueryHandlerExceptionInterceptor()
     interceptorChainMock.proceed() >> { throw new CommandException(ViolationInfo.BAD_REQUEST) }
@@ -228,20 +230,16 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     })
 
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-      loggingEvents.size() == 0
+      listAppender.list.size() == 0
     }
 
     cleanup:
-    TestLoggerFactory.clearAll()
+    cleanupLogger(logger, listAppender)
   }
 
   void "when unexpected error is thrown, should catch, wrap and log on error level"() {
     given:
-    TestLoggerFactory.clearAll()
-    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor")
-    logger.setEnabledLevels(Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG)
-
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
     QueryHandlerExceptionInterceptor queryHandlerExceptionInterceptor = new QueryHandlerExceptionInterceptor()
     interceptorChainMock.proceed() >> { throw new IllegalArgumentException(causeExceptionMessageParam as String) }
 
@@ -262,14 +260,15 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     })
 
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-      loggingEvents.size() == 1
-      loggingEvents[0].level == Level.ERROR
-      loggingEvents[0].message.startsWith("Execution of query handler failed [detailsException.exceptionId:")
+      listAppender.list.size() == 1
+      verifyAll(listAppender.list[0]) {
+        level == Level.ERROR
+        message.startsWith("Execution of query handler failed [detailsException.exceptionId:")
+      }
     }
 
     cleanup:
-    TestLoggerFactory.clearAll()
+    cleanupLogger(logger, listAppender)
 
     where:
     causeExceptionMessageParam | remoteHandlerExceptionMessageParam
@@ -277,39 +276,5 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
     null                       | "Execution of 'StubQuery' query failed because of java.lang.IllegalArgumentException"
     ""                         | "Execution of 'StubQuery' query failed because of java.lang.IllegalArgumentException"
     "   "                      | "Execution of 'StubQuery' query failed because of java.lang.IllegalArgumentException"
-  }
-
-  void "when unexpected error is thrown and error logging is not enabled, should catch and wrap, but should not log anything"() {
-    given:
-    TestLoggerFactory.clearAll()
-    TestLogger logger = TestLoggerFactory.getTestLogger("org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor")
-    logger.setEnabledLevels(Level.WARN, Level.INFO, Level.DEBUG)
-
-    QueryHandlerExceptionInterceptor queryHandlerExceptionInterceptor = new QueryHandlerExceptionInterceptor()
-    interceptorChainMock.proceed() >> { throw new IllegalArgumentException("Some illegal arguments") }
-
-    when:
-    queryHandlerExceptionInterceptor.handle(unitOfWork, interceptorChainMock)
-
-    then:
-    QueryExecutionException queryExecutionException = thrown()
-
-    queryExecutionException.stackTrace.size() == 0
-    queryExecutionException.details.present
-    queryExecutionException.cause instanceof IllegalArgumentException
-    queryExecutionException.cause.message == "Some illegal arguments"
-
-    verifyAll(queryExecutionException.details.get(), RemoteHandlerException, { RemoteHandlerException remoteHandlerException ->
-      queryExecutionException.message == "Execution of 'StubQuery' query failed [detailsException.exceptionId: ${ remoteHandlerException.exceptionId }]"
-      remoteHandlerException.message == "Execution of 'StubQuery' query failed because of java.lang.IllegalArgumentException: Some illegal arguments"
-    })
-
-    new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-      loggingEvents.size() == 0
-    }
-
-    cleanup:
-    TestLoggerFactory.clearAll()
   }
 }

@@ -17,10 +17,15 @@
  */
 package org.klokwrk.cargotracker.lib.web.spring.mvc
 
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.read.ListAppender
 import groovy.json.JsonSlurper
 import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
@@ -46,10 +51,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import spock.lang.Specification
-import uk.org.lidalia.slf4jext.Level
-import uk.org.lidalia.slf4jtest.LoggingEvent
-import uk.org.lidalia.slf4jtest.TestLogger
-import uk.org.lidalia.slf4jtest.TestLoggerFactory
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
@@ -114,14 +115,24 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
   void setup() {
     jsonSlurper = new JsonSlurper()
     mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build()
+  }
 
-    // uncomment if you want to see logging output during the test
-//    TestLoggerFactory.instance.printLevel = Level.DEBUG
+  private List configureLoggerAndListAppender() {
+    Logger logger = LoggerFactory.getLogger(ResponseFormattingSpringMvcExceptionHandler.name) as Logger
+    ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
+    listAppender.start()
+    logger.addAppender(listAppender)
+
+    return [logger, listAppender]
+  }
+
+  private void cleanupLogger(Logger logger, ListAppender listAppender) {
+    logger.detachAppender(listAppender)
   }
 
   void "should work for warning caused by HttpRequestMethodNotSupportedException (no handler selected, HttpStatus.METHOD_NOT_ALLOWED)"() {
     given:
-    TestLogger logger = TestLoggerFactory.getTestLogger(ResponseFormattingSpringMvcExceptionHandler)
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
 
     when:
     MvcResult mvcResult = mockMvc.perform(put("/test/springMvcExceptionHandlerTestControllerMethod").accept(MediaType.APPLICATION_JSON)).andReturn()
@@ -131,14 +142,13 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
     Map metadataMap = bodyMap.metaData as Map
     Map payloadMap = bodyMap.payload as Map
 
-    List<LoggingEvent> loggingEventList = logger.loggingEvents.findAll { it.creatingLogger.name == ResponseFormattingSpringMvcExceptionHandler.name && (it.level == Level.WARN) }
-    LoggingEvent springMvcExceptionLoggingEvent = loggingEventList[0]
-
     then:
-    loggingEventList.size() == 1
-    springMvcExceptionLoggingEvent.level == Level.WARN
-    springMvcExceptionLoggingEvent.message.contains("uuid")
-    springMvcExceptionLoggingEvent.message.contains(HttpRequestMethodNotSupportedException.name)
+    listAppender.list.size() == 1
+    verifyAll(listAppender.list[0]) {
+      level == Level.WARN
+      message.contains("uuid")
+      message.contains(HttpRequestMethodNotSupportedException.name)
+    }
 
     mvcResult.response.status == HttpStatus.METHOD_NOT_ALLOWED.value()
     payloadMap.size() == 0
@@ -166,13 +176,13 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
     }
 
     cleanup:
-    logger.clearAll()
+    cleanupLogger(logger, listAppender)
   }
 
   @SuppressWarnings("CodeNarc.AbcMetric")
   void "should work and be logged for error caused by MissingPathVariableException (handler selected, HttpStatus.INTERNAL_SERVER_ERROR)"() {
     given:
-    TestLogger logger = TestLoggerFactory.getTestLogger(ResponseFormattingSpringMvcExceptionHandler)
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
 
     when:
     MvcResult mvcResult = mockMvc.perform(post("/test/springMvcExceptionHandlerInvalidTestControllerMethod").accept(MediaType.APPLICATION_JSON)).andReturn()
@@ -182,15 +192,13 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
     Map metadataMap = bodyMap.metaData as Map
     Map payloadMap = bodyMap.payload as Map
 
-    List<LoggingEvent> loggingEventList = logger.loggingEvents.findAll { it.creatingLogger.name == ResponseFormattingSpringMvcExceptionHandler.name && (it.level == Level.ERROR) }
-    LoggingEvent springMvcExceptionLoggingEvent = loggingEventList[0]
-
     then:
-    loggingEventList.size() == 1
-    springMvcExceptionLoggingEvent.level == Level.ERROR
-    springMvcExceptionLoggingEvent.message.contains("uuid")
-    springMvcExceptionLoggingEvent.message.contains(MissingPathVariableException.name)
-    springMvcExceptionLoggingEvent.throwable.get().getClass() == MissingPathVariableException
+    listAppender.list.size() == 1
+    verifyAll(listAppender.list[0]) {
+      level == Level.ERROR
+      message.contains("uuid")
+      message.contains(MissingPathVariableException.name)
+    }
 
     mvcResult.response.status == HttpStatus.INTERNAL_SERVER_ERROR.value()
     payloadMap.size() == 0
@@ -218,13 +226,13 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
     }
 
     cleanup:
-    logger.clearAll()
+    cleanupLogger(logger, listAppender)
   }
 
   @SuppressWarnings("CodeNarc.AbcMetric")
   void "should work and be logged at info level when caused by MethodArgumentTypeMismatchException (handler selected, HttpStatus.BAD_REQUEST)"() {
     given:
-    TestLogger logger = TestLoggerFactory.getTestLogger(ResponseFormattingSpringMvcExceptionHandler)
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
 
     when:
     MvcResult mvcResult = mockMvc.perform(post("/test/springMvcExceptionHandlerInvalidBindingTestControllerMethod?integerParam=abc").accept(MediaType.APPLICATION_JSON)).andReturn()
@@ -234,14 +242,13 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
     Map metadataMap = bodyMap.metaData as Map
     Map payloadMap = bodyMap.payload as Map
 
-    List<LoggingEvent> loggingEventList = logger.loggingEvents.findAll { it.creatingLogger.name == ResponseFormattingSpringMvcExceptionHandler.name && (it.level == Level.WARN) }
-    LoggingEvent springMvcExceptionLoggingEvent = loggingEventList[0]
-
     then:
-    loggingEventList.size() == 1
-    springMvcExceptionLoggingEvent.level == Level.WARN
-    springMvcExceptionLoggingEvent.message.contains("uuid")
-    springMvcExceptionLoggingEvent.message.contains(MethodArgumentTypeMismatchException.name)
+    listAppender.list.size() == 1
+    verifyAll(listAppender.list[0]) {
+      level == Level.WARN
+      message.contains("uuid")
+      message.contains(MethodArgumentTypeMismatchException.name)
+    }
 
     mvcResult.response.status == HttpStatus.BAD_REQUEST.value()
     payloadMap.size() == 0
@@ -269,6 +276,6 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
     }
 
     cleanup:
-    logger.clearAll()
+    cleanupLogger(logger, listAppender)
   }
 }
