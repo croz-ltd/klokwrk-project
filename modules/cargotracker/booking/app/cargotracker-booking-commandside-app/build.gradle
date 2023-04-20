@@ -50,10 +50,7 @@ dependencies {
   implementation "javax.measure:unit-api"
   implementation "org.apache.groovy:groovy"
   implementation "org.apache.groovy:groovy-macro"
-  implementation("org.axonframework:axon-spring-boot-starter") {
-    // Remove unnecessary dependency to avoid a warning in the log when executing the first command. // TODO dmurat: check after Spring Boot 3 upgrade
-    exclude group: "jakarta.persistence", module: "jakarta.persistence-api"
-  }
+  implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.hamcrest:hamcrest"
   implementation "org.springframework.boot:spring-boot-starter-actuator"
   implementation "org.springframework.boot:spring-boot-starter-validation"
