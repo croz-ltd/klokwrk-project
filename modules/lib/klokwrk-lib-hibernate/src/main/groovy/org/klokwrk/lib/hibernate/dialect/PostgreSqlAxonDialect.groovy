@@ -18,9 +18,13 @@
 package org.klokwrk.lib.hibernate.dialect
 
 import groovy.transform.CompileStatic
-import org.hibernate.dialect.PostgreSQL10Dialect
-import org.hibernate.type.descriptor.sql.BinaryTypeDescriptor
-import org.hibernate.type.descriptor.sql.SqlTypeDescriptor
+import org.hibernate.boot.model.TypeContributions
+import org.hibernate.dialect.DatabaseVersion
+import org.hibernate.dialect.PostgreSQLDialect
+import org.hibernate.service.ServiceRegistry
+import org.hibernate.type.SqlTypes
+import org.hibernate.type.descriptor.jdbc.BinaryJdbcType
+import org.hibernate.type.descriptor.jdbc.spi.JdbcTypeRegistry
 
 import java.sql.Types
 
@@ -44,8 +48,9 @@ import java.sql.Types
  * <p/>
  * This dialect enforces the usage of PostgreSql's 'bytea' data type for storing BLOBs.
  * <p/>
- * For more information, there are few references around the web dealing with this problem:
+ * For more information, there are few references around the web dealing with this problem. The first reference is probably the most relevant and up-to-date.
  * <ul>
+ *   <li>https://developer.axoniq.io/w/axonframework-and-postgresql-without-toast</li>
  *   <li>https://blog.trifork.com/2017/10/09/axon-postgresql-without-toast/</li>
  *   <li>https://groups.google.com/forum/#!msg/axonframework/HhzQMbWfHTg/G04WbiixBAAJ</li>
  *   <li>https://github.com/AxonIQ/reference-guide/issues/115</li>
@@ -53,21 +58,33 @@ import java.sql.Types
  */
 @SuppressWarnings("unused")
 @CompileStatic
-class PostgreSqlAxonDialect extends PostgreSQL10Dialect {
+class PostgreSqlAxonDialect extends PostgreSQLDialect {
+  static final String BYTEA = "bytea"
+
   PostgreSqlAxonDialect() {
-    super()
-    registerColumnType(Types.BLOB, "bytea")
+    super(DatabaseVersion.make(10, 0))
   }
 
-  /**
-   * Together with registration of BLOB column type in the constructor, causes PostgreSQL to use inline BLOBS ('bytea' type).
-   */
   @Override
-  SqlTypeDescriptor remapSqlTypeDescriptor(SqlTypeDescriptor sqlTypeDescriptor) {
-    if (sqlTypeDescriptor.sqlType == Types.BLOB) {
-      return BinaryTypeDescriptor.INSTANCE
+  protected String columnType(int sqlTypeCode) {
+    if (sqlTypeCode == SqlTypes.BLOB) {
+      return BYTEA
     }
+    return super.columnType(sqlTypeCode)
+  }
 
-    return super.remapSqlTypeDescriptor(sqlTypeDescriptor)
+  @Override
+  protected String castType(int sqlTypeCode) {
+    if (sqlTypeCode == SqlTypes.BLOB) {
+      return BYTEA
+    }
+    return super.castType(sqlTypeCode)
+  }
+
+  @Override
+  void contributeTypes(TypeContributions typeContributions, ServiceRegistry serviceRegistry) {
+    super.contributeTypes(typeContributions, serviceRegistry)
+    JdbcTypeRegistry jdbcTypeRegistry = typeContributions.typeConfiguration.jdbcTypeRegistry
+    jdbcTypeRegistry.addDescriptor(Types.BLOB, BinaryJdbcType.INSTANCE)
   }
 }
