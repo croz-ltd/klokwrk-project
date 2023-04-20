@@ -34,7 +34,7 @@ import java.util.regex.Pattern
 
 @CompileStatic
 class QueryHandlerSpringDataJpaUtil {
-  private final static Pattern QUERY_EXCEPTION_PROPERTY_NAME_PATTERN = Pattern.compile(/(?s)^org.hibernate.QueryException:.could.not.resolve.property:\s(\w*)\sof:.*/)
+  private final static Pattern QUERY_EXCEPTION_PROPERTY_NAME_PATTERN = Pattern.compile(/(?s)^Could.not.resolve.attribute\s'(\w*)'\sof\s'.*/)
   private static final String INVALID_PROPERTY_MESSAGE_KEY = "badRequest.query.sorting.invalidProperty"
 
   static PageRequest makePageRequestFromPageAndSortRequirements(PageRequirement pageRequirement, List<SortRequirement> sortRequirementList) {
@@ -52,9 +52,9 @@ class QueryHandlerSpringDataJpaUtil {
   }
 
   static QueryException makeQueryExceptionFromInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException invalidDataAccessApiUsageException) {
-    if (invalidDataAccessApiUsageException.message.startsWith("org.hibernate.QueryException: could not resolve property:")) {
+    if (invalidDataAccessApiUsageException.rootCause?.message?.startsWith("Could not resolve attribute '")) {
       String propertyName = "unknown"
-      Matcher matcher = QUERY_EXCEPTION_PROPERTY_NAME_PATTERN.matcher(invalidDataAccessApiUsageException.message)
+      Matcher matcher = QUERY_EXCEPTION_PROPERTY_NAME_PATTERN.matcher(invalidDataAccessApiUsageException.rootCause.message)
       if (matcher.matches()) {
         propertyName = matcher.group(1)
       }
