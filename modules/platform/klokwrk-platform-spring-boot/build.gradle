@@ -24,9 +24,5 @@ description = "Spring Boot related platform for klokwrk-project modules that nee
 
 dependencies {
   api platform(project(":klokwrk-platform-base"))
-  api platform("com.wavefront:wavefront-spring-boot-bom:$wavefrontSpringBootVersion")
-  api platform("io.opentracing.contrib:opentracing-spring-cloud-starter:$openTracingSpringCloudVersion")
   api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
-
-  api "io.opentracing:opentracing-api:$openTracingApiVersion"
 }
