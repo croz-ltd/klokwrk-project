@@ -38,7 +38,7 @@ dependencies {
   implementation "org.apache.groovy:groovy"
   implementation "org.apache.groovy:groovy-macro"
   implementation "org.hamcrest:hamcrest"
-  implementation "org.hibernate:hibernate-core"
+  implementation "org.hibernate.orm:hibernate-core"
   implementation "tech.units:indriya"
 
   testIntegrationImplementation project(":cargotracker-booking-test-support-testcontainers")
