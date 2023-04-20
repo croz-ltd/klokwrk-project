@@ -22,9 +22,8 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import groovy.transform.ToString
-import io.hypersistence.utils.hibernate.type.json.JsonType
-import org.hibernate.annotations.Type
-import org.hibernate.annotations.TypeDef
+import org.hibernate.annotations.JdbcTypeCode
+import org.hibernate.type.SqlTypes
 import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lang.groovy.misc.RandomUuidUtils
 import org.klokwrk.lang.groovy.transform.KwrkMapConstructorDefaultPostCheck
@@ -43,13 +42,13 @@ import static org.hamcrest.Matchers.is
 import static org.hamcrest.Matchers.not
 import static org.hamcrest.Matchers.notNullValue
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @ToString
 @EqualsAndHashCode(includes = ["bookingOfferId"])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true, useSetters = true)
 @KwrkMapConstructorDefaultPostCheck
 @KwrkMapConstructorNoArgHideable(makePackagePrivate = true)
-@TypeDef(name = "json", typeClass = JsonType)
 @Entity
 @Table(name = "booking_offer_details")
 @CompileStatic
@@ -58,7 +57,7 @@ class BookingOfferDetailsJpaEntity implements PostMapConstructorCheckable {
   UUID bookingOfferId
 
   @Column(nullable = false, updatable = false) String customerId
-  @Column(nullable = false) @Type(type = "json") String details
+  @Column(nullable = false) @JdbcTypeCode(SqlTypes.JSON) String details
 
   @Column(nullable = false) String inboundChannelName
   @Column(nullable = false) String inboundChannelType
