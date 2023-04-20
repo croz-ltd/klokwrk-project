@@ -62,7 +62,7 @@ import static org.hamcrest.Matchers.notNullValue
 //   References:
 //     https://vladmihalcea.com/the-best-way-to-implement-equals-hashcode-and-tostring-with-jpa-and-hibernate/
 //     https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
-@SuppressWarnings("CodeNarc.AbcMetric")
+@SuppressWarnings(["CodeNarc.AbcMetric", "JpaDataSourceORMInspection"])
 @ToString
 @EqualsAndHashCode(includes = ["bookingOfferId"])
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
