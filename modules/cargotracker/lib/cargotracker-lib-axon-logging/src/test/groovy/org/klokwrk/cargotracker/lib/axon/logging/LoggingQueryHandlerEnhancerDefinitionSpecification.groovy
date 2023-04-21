@@ -17,7 +17,10 @@
  */
 package org.klokwrk.cargotracker.lib.axon.logging
 
-import com.google.common.collect.ImmutableList
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.read.ListAppender
 import org.axonframework.config.Configuration
 import org.axonframework.config.Configurer
 import org.axonframework.config.DefaultConfigurer
@@ -29,21 +32,15 @@ import org.axonframework.messaging.annotation.MultiHandlerEnhancerDefinition
 import org.axonframework.queryhandling.QueryGateway
 import org.klokwrk.cargotracker.lib.axon.logging.stub.query.MyTestQuery
 import org.klokwrk.cargotracker.lib.axon.logging.stub.query.MyTestQueryHandler
+import org.slf4j.LoggerFactory
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
-import uk.org.lidalia.slf4jext.Level
-import uk.org.lidalia.slf4jtest.LoggingEvent
-import uk.org.lidalia.slf4jtest.TestLogger
-import uk.org.lidalia.slf4jtest.TestLoggerFactory
 
 class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
   Configuration axonConfiguration
   QueryGateway axonQueryGateway
 
   void setup() {
-    TestLoggerFactory.clearAll()
-//    TestLoggerFactory.instance.printLevel = Level.DEBUG // uncomment if you want to see logging output during the test
-
     Configurer axonConfigurer = DefaultConfigurer.defaultConfiguration()
     axonConfigurer.configureEmbeddedEventStore((Configuration axonConfiguration) -> new InMemoryEventStorageEngine())
                   .registerQueryHandler((Configuration configuration) -> new MyTestQueryHandler())
@@ -63,41 +60,58 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
   }
 
   void cleanup() {
-    TestLoggerFactory.clearAll()
-
     axonConfiguration.shutdown()
     axonQueryGateway = null
     axonConfiguration = null
   }
 
+  private List configureLoggerAndListAppender() {
+    Logger logger = LoggerFactory.getLogger("cargotracker.axon.query-handler-logging") as Logger
+    ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
+    listAppender.start()
+    logger.addAppender(listAppender)
+
+    return [logger, listAppender]
+  }
+
+  private void cleanupLogger(Logger logger, ListAppender listAppender) {
+    logger.detachAppender(listAppender)
+  }
+
   void "should work for query handler"() {
     given:
-    TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.query-handler-logging")
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
 
     when:
     axonQueryGateway.query(new MyTestQuery(query: "123"), Map).join()
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-      loggingEvents.size() == 1
-      loggingEvents[0].level == Level.DEBUG
-      loggingEvents[0].message ==~ /Executing QueryHandler method \[MyTestQueryHandler.handleSomeQuery\(MyTestQuery\)] with payload \[query:123]/
+      listAppender.list.size() == 1
+      verifyAll(listAppender.list[0]) {
+        level == Level.DEBUG
+        message ==~ /Executing QueryHandler method \[MyTestQueryHandler.handleSomeQuery\(MyTestQuery\)] with payload \[query:123]/
+      }
     }
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 
   void "should not log for logger level higher than DEBUG"() {
     given:
-    TestLogger logger = TestLoggerFactory.getTestLogger("cargotracker.axon.query-handler-logging")
-    logger.enabledLevelsForAllThreads = Level.INFO
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
+    logger.level = Level.INFO
 
     when:
     axonQueryGateway.query(new MyTestQuery(query: "123"), Map).join()
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0.5, delay: 0.5).eventually {
-      ImmutableList<LoggingEvent> loggingEvents = logger.allLoggingEvents
-      loggingEvents.size() == 0
+      listAppender.list.size() == 0
     }
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 }

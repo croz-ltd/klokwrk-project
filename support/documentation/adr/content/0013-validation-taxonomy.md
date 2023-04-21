@@ -58,7 +58,7 @@ Syntax format validation verifies if the format is correct. For strings, this is
 validator implementations.
 
 We are reporting syntactic validation failures through means of an employed validation framework. As we are using JSR 380 (Jakarta Bean Validation 2.0) implementation, syntactic validation failures
-are reported through `javax.validation.ConstraintViolationException`. With JSR 380, we are implementing syntactic validation ordering with `GroupSequence` annotation, as demonstrated by
+are reported through `jakarta.validation.ConstraintViolationException`. With JSR 380, we are implementing syntactic validation ordering with `GroupSequence` annotation, as demonstrated by
 `BookCargoCommandRequest` class from `cargotracker-booking-commandside-app` module.
 
 ## Consequences

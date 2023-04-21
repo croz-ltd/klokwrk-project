@@ -27,10 +27,10 @@ import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.MessageSource
 import org.springframework.context.support.ResourceBundleMessageSource
 
-import javax.validation.ConstraintValidator
-import javax.validation.ConstraintViolation
-import javax.validation.ConstraintViolationException
-import javax.validation.Validator
+import jakarta.validation.ConstraintValidator
+import jakarta.validation.ConstraintViolation
+import jakarta.validation.ConstraintViolationException
+import jakarta.validation.Validator
 
 /**
  * Validation service intended to be configured and used as a singleton bean from Spring Boot application.

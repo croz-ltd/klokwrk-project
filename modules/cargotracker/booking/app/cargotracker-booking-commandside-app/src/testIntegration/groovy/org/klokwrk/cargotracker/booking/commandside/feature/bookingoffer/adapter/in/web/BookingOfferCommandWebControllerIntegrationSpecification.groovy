@@ -53,7 +53,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
 @SuppressWarnings("CodeNarc.AbcMetric")
-@SpringBootTest(properties = ['axon.axonserver.servers = ${axonServerFirstInstanceUrl}'])
+@SpringBootTest(properties = ['axon.axonserver.servers = ${axonServerInstanceUrl}'])
 @ActiveProfiles("testIntegration")
 class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
   @Autowired

@@ -27,10 +27,10 @@ import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
 import org.klokwrk.lib.validation.group.Level3
 
-import javax.validation.GroupSequence
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.Null
-import javax.validation.constraints.Size
+import jakarta.validation.GroupSequence
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Null
+import jakarta.validation.constraints.Size
 
 /**
  * Request DTO parameter for {@code bookingOfferSummaryFindByIdQuery} operation from {@link BookingOfferSummaryFindByIdQueryPortIn} inbound port interface.

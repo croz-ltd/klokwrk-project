@@ -30,8 +30,8 @@ dependencies {
   implementation "org.axonframework:axon-eventsourcing"
   implementation "org.axonframework:axon-messaging"
 
+  testImplementation "ch.qos.logback:logback-classic"
   testImplementation "org.axonframework:axon-configuration"
   testImplementation "org.slf4j:slf4j-api"
   testImplementation "org.spockframework:spock-core"
-  testImplementation "uk.org.lidalia:slf4j-test"
 }

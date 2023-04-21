@@ -168,7 +168,7 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
     filteredLoggingEventList.size() == 1
 
     String formattedMessage = filteredLoggingEventList.first().formattedMessage
-    formattedMessage.matches(/.*select.*from booking_offer_summary.*left outer join booking_offer_summary_commodity_type.*/)
+    formattedMessage.matches(/.*select.*from booking_offer_summary.*left join booking_offer_summary_commodity_type.*/)
 
     cleanup:
     logger.detachAppender(listAppender)

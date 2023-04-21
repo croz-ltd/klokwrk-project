@@ -24,9 +24,9 @@ import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
 import org.klokwrk.lib.validation.group.Level3
 
-import javax.validation.GroupSequence
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
+import jakarta.validation.GroupSequence
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 
 /**
  * Specifies requirements for desired sorting of query results.

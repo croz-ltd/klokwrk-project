@@ -27,12 +27,12 @@ import org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint
 import spock.lang.Shared
 import spock.lang.Specification
 
+import jakarta.validation.ConstraintViolation
+import jakarta.validation.Validation
+import jakarta.validation.Validator
+import jakarta.validation.ValidatorFactory
 import javax.measure.Quantity
 import javax.measure.format.MeasurementParseException
-import javax.validation.ConstraintViolation
-import javax.validation.Validation
-import javax.validation.Validator
-import javax.validation.ValidatorFactory
 
 class QuantityRangeConstraintValidatorSpecification extends Specification {
   @Shared

@@ -17,19 +17,20 @@
  */
 package org.klokwrk.cargotracker.lib.web.spring.mvc
 
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.read.ListAppender
 import org.klokwrk.cargotracker.lib.boundary.api.application.exception.RemoteHandlerException
 import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
+import org.slf4j.LoggerFactory
 import org.springframework.context.support.ResourceBundleMessageSource
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.method.HandlerMethod
 import spock.lang.Specification
-import uk.org.lidalia.slf4jext.Level
-import uk.org.lidalia.slf4jtest.LoggingEvent
-import uk.org.lidalia.slf4jtest.TestLogger
-import uk.org.lidalia.slf4jtest.TestLoggerFactory
 
 import java.lang.reflect.Method
 
@@ -46,9 +47,6 @@ class ResponseFormattingUnknownExceptionHandlerSpecification extends Specificati
   HandlerMethod handlerMethod
 
   void setup() {
-    TestLoggerFactory.clearAll()
-    //    TestLoggerFactory.instance.printLevel = Level.DEBUG // uncomment if you want to see logging output during the test
-
     locale = new Locale("en")
     ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource()
     messageSource.defaultEncoding = "UTF-8"
@@ -62,8 +60,17 @@ class ResponseFormattingUnknownExceptionHandlerSpecification extends Specificati
     handlerMethod = new HandlerMethod(testController, testControllerMethod)
   }
 
-  void cleanup() {
-    TestLoggerFactory.clearAll()
+  private List configureLoggerAndListAppender() {
+    Logger logger = LoggerFactory.getLogger(ResponseFormattingUnknownExceptionHandler.name) as Logger
+    ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
+    listAppender.start()
+    logger.addAppender(listAppender)
+
+    return [logger, listAppender]
+  }
+
+  private void cleanupLogger(Logger logger, ListAppender listAppender) {
+    logger.detachAppender(listAppender)
   }
 
   void "should work as expected for various unexpected exceptions [exceptionClass: #exceptionParam.getClass().simpleName]"() {
@@ -108,20 +115,22 @@ class ResponseFormattingUnknownExceptionHandlerSpecification extends Specificati
   void "should log unexpected exceptions on error level [exceptionClass: #exceptionParam.getClass().simpleName]"() {
     given:
     Throwable unknownException = exceptionParam
-    TestLogger logger = TestLoggerFactory.getTestLogger(ResponseFormattingUnknownExceptionHandler)
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
 
     when:
     responseFormattingUnknownExceptionHandler.handleUnknownException(unknownException, handlerMethod, locale)
-    List<LoggingEvent> loggingEventList = logger.loggingEvents.findAll { it.creatingLogger.name == ResponseFormattingUnknownExceptionHandler.name && it.level == Level.ERROR }
-    LoggingEvent unknownExceptionLoggingEvent = loggingEventList[0]
 
     then:
-    loggingEventList.size() == 1
-    unknownExceptionLoggingEvent.level == Level.ERROR
-    unknownExceptionLoggingEvent.message.contains("uuid: ")
-    !unknownExceptionLoggingEvent.message.contains("exceptionId: ")
-    unknownExceptionLoggingEvent.message.contains(exceptionParam.getClass().name)
-    unknownExceptionLoggingEvent.throwable.get() == exceptionParam
+    listAppender.list.size() == 1
+    verifyAll(listAppender.list[0]) {
+      level == Level.ERROR
+      message.contains("uuid: ")
+      !message.contains("exceptionId: ")
+      message.contains(exceptionParam.getClass().name)
+    }
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
 
     where:
     exceptionParam              | _
@@ -134,20 +143,22 @@ class ResponseFormattingUnknownExceptionHandlerSpecification extends Specificati
     given:
     String exceptionId = UUID.randomUUID()
     Throwable unknownException = new RemoteHandlerException(exceptionId, "some remote handler exception")
-    TestLogger logger = TestLoggerFactory.getTestLogger(ResponseFormattingUnknownExceptionHandler)
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender()
 
     when:
     responseFormattingUnknownExceptionHandler.handleUnknownException(unknownException, handlerMethod, locale)
-    List<LoggingEvent> loggingEventList = logger.loggingEvents.findAll { it.creatingLogger.name == ResponseFormattingUnknownExceptionHandler.name && it.level == Level.ERROR }
-    LoggingEvent unknownExceptionLoggingEvent = loggingEventList[0]
 
     then:
-    loggingEventList.size() == 1
-    unknownExceptionLoggingEvent.level == Level.ERROR
-    unknownExceptionLoggingEvent.message.contains("uuid: ")
-    unknownExceptionLoggingEvent.message.contains("exceptionId: ")
-    unknownExceptionLoggingEvent.message.contains(exceptionId)
-    unknownExceptionLoggingEvent.message.contains(unknownException.getClass().name)
-    unknownExceptionLoggingEvent.throwable.get() == unknownException
+    listAppender.list.size() == 1
+    verifyAll(listAppender.list[0]) {
+      level == Level.ERROR
+      message.contains("uuid: ")
+      message.contains("exceptionId: ")
+      message.contains(exceptionId)
+      message.contains(unknownException.getClass().name)
+    }
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 }

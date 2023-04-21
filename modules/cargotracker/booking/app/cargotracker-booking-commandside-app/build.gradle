@@ -47,23 +47,15 @@ dependencies {
   implementation project(":klokwrk-lang-groovy-contracts-match")
   implementation project(":klokwrk-lang-groovy-contracts-simple")
 
-  implementation "io.opentracing:opentracing-api"
   implementation "javax.measure:unit-api"
   implementation "org.apache.groovy:groovy"
   implementation "org.apache.groovy:groovy-macro"
-  implementation("org.axonframework:axon-spring-boot-starter") {
-    // Remove unnecessary dependency to avoid a warning in the log when executing the first command.
-    exclude group: "jakarta.persistence", module: "jakarta.persistence-api"
-  }
-  implementation "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
+  implementation "org.axonframework:axon-spring-boot-starter"
   implementation "org.hamcrest:hamcrest"
   implementation "org.springframework.boot:spring-boot-starter-actuator"
   implementation "org.springframework.boot:spring-boot-starter-validation"
   implementation "org.springframework.boot:spring-boot-starter-web"
   implementation "tech.units:indriya"
-
-  runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
-  runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"
 
   testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
 

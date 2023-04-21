@@ -28,17 +28,17 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.method.HandlerMethod
 import spock.lang.Specification
 
-import javax.validation.ConstraintViolation
-import javax.validation.ConstraintViolationException
-import javax.validation.Valid
-import javax.validation.Validation
-import javax.validation.Validator
-import javax.validation.ValidatorFactory
-import javax.validation.constraints.Min
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Past
-import javax.validation.constraints.Size
+import jakarta.validation.ConstraintViolation
+import jakarta.validation.ConstraintViolationException
+import jakarta.validation.Valid
+import jakarta.validation.Validation
+import jakarta.validation.Validator
+import jakarta.validation.ValidatorFactory
+import jakarta.validation.constraints.Min
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Past
+import jakarta.validation.constraints.Size
 import java.lang.reflect.Method
 import java.time.LocalDateTime
 

@@ -21,8 +21,8 @@ import groovy.transform.CompileStatic
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext
 import org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint
 
-import javax.validation.ConstraintValidator
-import javax.validation.ConstraintValidatorContext
+import jakarta.validation.ConstraintValidator
+import jakarta.validation.ConstraintValidatorContext
 
 /**
  * {@link ConstraintValidator} implementation of {@link ValueOfEnumConstraint} for validating {@code String} values.

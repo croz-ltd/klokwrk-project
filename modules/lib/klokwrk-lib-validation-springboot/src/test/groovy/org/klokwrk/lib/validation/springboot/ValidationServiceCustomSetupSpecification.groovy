@@ -28,8 +28,8 @@ import org.springframework.test.context.support.DefaultBootstrapContext
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
 
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Size
 
 @SpringBootTest
 class ValidationServiceCustomSetupSpecification extends Specification {

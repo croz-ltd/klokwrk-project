@@ -17,8 +17,12 @@
  */
 package org.klokwrk.lib.datasourceproxy.springboot
 
-import com.google.common.collect.ImmutableList
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.read.ListAppender
 import net.ttddyy.dsproxy.support.ProxyDataSource
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
@@ -26,18 +30,11 @@ import org.springframework.context.ApplicationContext
 import org.springframework.jdbc.core.ColumnMapRowMapper
 import org.springframework.jdbc.core.JdbcTemplate
 import spock.lang.Specification
-import uk.org.lidalia.slf4jext.Level
-import uk.org.lidalia.slf4jtest.LoggingEvent
-import uk.org.lidalia.slf4jtest.TestLogger
-import uk.org.lidalia.slf4jtest.TestLoggerFactory
 
 import javax.sql.DataSource
 
 @JdbcTest
 class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specification {
-
-  TestLogger queryLogger
-  TestLogger slowQueryLogger
 
   @Autowired
   ApplicationContext applicationContext
@@ -45,13 +42,20 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
   @Autowired
   JdbcTemplate jdbcTemplate
 
-  void configureEnabledLevels(TestLogger testLogger, Level enabledLevel) {
-    Level[] allLevels = [Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG, Level.TRACE]
-    Level[] selectedLevels = allLevels[0..allLevels.findIndexOf({ Level level -> level == enabledLevel })]
-    testLogger.enabledLevelsForAllThreads = selectedLevels
+  private List configureLoggerAndListAppender(Level loggerLevel, Logger logger = LoggerFactory.getLogger("klokwrk.datasourceproxy.queryLogger") as Logger) {
+    logger.level = loggerLevel
+    ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
+    listAppender.start()
+    logger.addAppender(listAppender)
+
+    return [logger, listAppender]
   }
 
-  DataSource makePlainDataSource() {
+  private void cleanupLogger(Logger logger, ListAppender listAppender) {
+    logger.detachAppender(listAppender)
+  }
+
+  private DataSource makePlainDataSource() {
     DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create()
 
     dataSourceBuilder
@@ -61,13 +65,6 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
         .password("")
 
     return dataSourceBuilder.build()
-  }
-
-  void setup() {
-    TestLoggerFactory.clearAll()
-//    TestLoggerFactory.instance.printLevel = Level.DEBUG // uncomment if you want to see logging output during the test
-    queryLogger = TestLoggerFactory.getTestLogger("klokwrk.datasourceproxy.queryLogger")
-    slowQueryLogger = TestLoggerFactory.getTestLogger("klokwrk.datasourceproxy.slowQueryLogger")
   }
 
   void "should configure proxying of default data source"() {
@@ -102,48 +99,56 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
 
   void "queryLogger - should filter out matching queries at DEBUG level"() {
     given:
-    configureEnabledLevels(queryLogger, Level.DEBUG)
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender(Level.DEBUG)
 
     when:
     jdbcTemplate.query("select * from person", new ColumnMapRowMapper())
     jdbcTemplate.query("select * from not_so_interesting_person", new ColumnMapRowMapper())
 
-    ImmutableList<LoggingEvent> loggingEventList = queryLogger.allLoggingEvents
-
     then:
-    loggingEventList.size() == 1
-    loggingEventList[0].level == Level.DEBUG
-    loggingEventList[0].message.contains("select * from person")
+    listAppender.list.size() == 1
+    verifyAll(listAppender.list[0]) {
+      level == Level.DEBUG
+      message.contains("select * from person")
+    }
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 
   void "queryLogger - should not filter out matching queries at TRACE level"() {
     given:
-    configureEnabledLevels(queryLogger, Level.TRACE)
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender(Level.TRACE)
 
     when:
     jdbcTemplate.query("select * from person", new ColumnMapRowMapper())
     jdbcTemplate.query("select * from not_so_interesting_person", new ColumnMapRowMapper())
 
-    ImmutableList<LoggingEvent> loggingEventList = queryLogger.allLoggingEvents
-
     then:
-    loggingEventList.size() == 2
-    loggingEventList[0].message.contains("select * from person")
-    loggingEventList[1].message.contains("select * from not_so_interesting_person")
+    listAppender.list.size() == 2
+    listAppender.list[0].message.contains("select * from person")
+    listAppender.list[1].message.contains("select * from not_so_interesting_person")
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 
   void "slowQueryLogger - should log slow queries"() {
     given:
-    configureEnabledLevels(slowQueryLogger, Level.INFO)
+    def (Logger logger, ListAppender listAppender) = configureLoggerAndListAppender(Level.INFO, LoggerFactory.getLogger("klokwrk.datasourceproxy.slowQueryLogger") as Logger)
 
     when:
     jdbcTemplate.query("select * from person", new ColumnMapRowMapper())
     jdbcTemplate.query("select sleep(2100), name from person", new ColumnMapRowMapper())
-    ImmutableList<LoggingEvent> loggingEventList = slowQueryLogger.allLoggingEvents
 
     then:
-    loggingEventList.size() == 1
-    loggingEventList[0].level == Level.WARN
-    loggingEventList[0].message.contains("select sleep(2100), name from person")
+    listAppender.list.size() == 1
+    verifyAll(listAppender.list[0]) {
+      level == Level.WARN
+      message.contains("select sleep(2100), name from person")
+    }
+
+    cleanup:
+    cleanupLogger(logger, listAppender)
   }
 }

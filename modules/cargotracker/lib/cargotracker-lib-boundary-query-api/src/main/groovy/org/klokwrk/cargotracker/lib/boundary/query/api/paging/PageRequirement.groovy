@@ -22,9 +22,9 @@ import groovy.transform.EqualsAndHashCode
 import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
 
-import javax.validation.GroupSequence
-import javax.validation.constraints.Min
-import javax.validation.constraints.NotNull
+import jakarta.validation.GroupSequence
+import jakarta.validation.constraints.Min
+import jakarta.validation.constraints.NotNull
 
 /**
  * Specifies requirements for desired paged results of a query.

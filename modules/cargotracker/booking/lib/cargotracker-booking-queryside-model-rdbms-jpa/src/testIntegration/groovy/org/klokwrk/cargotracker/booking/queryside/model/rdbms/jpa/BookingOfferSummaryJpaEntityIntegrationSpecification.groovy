@@ -135,7 +135,7 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
 
   void "should comply with equality consistency - after reattaching non-persisted entity"() {
     when:
-    testEntityManager.entityManager.unwrap(Session).update(originalEntity)
+    testEntityManager.entityManager.unwrap(Session).merge(originalEntity)
 
     then:
     entitySet.contains(originalEntity)
@@ -147,7 +147,7 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
     testEntityManager.clear()
 
     when:
-    testEntityManager.entityManager.unwrap(Session).update(originalEntity)
+    testEntityManager.entityManager.unwrap(Session).merge(originalEntity)
 
     then:
     entitySet.contains(originalEntity)

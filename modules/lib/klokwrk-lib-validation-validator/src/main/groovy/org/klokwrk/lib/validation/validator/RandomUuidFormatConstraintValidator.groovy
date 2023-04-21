@@ -21,8 +21,8 @@ import groovy.transform.CompileStatic
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext
 import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
 
-import javax.validation.ConstraintValidator
-import javax.validation.ConstraintValidatorContext
+import jakarta.validation.ConstraintValidator
+import jakarta.validation.ConstraintValidatorContext
 
 /**
  * Validates if {@code String} is a well-formed random UUID.

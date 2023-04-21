@@ -41,7 +41,7 @@ dependencies {
   // java.lang.NoClassDefFoundError id thrown for PostMapConstructorCheckable class.
   implementation project(":klokwrk-lang-groovy")
 
-  implementation "io.hypersistence:hypersistence-utils-hibernate-55"
+  implementation "io.hypersistence:hypersistence-utils-hibernate-60"
   implementation "javax.measure:unit-api"
   implementation "org.apache.groovy:groovy"
   implementation "org.axonframework:axon-spring-boot-starter"
@@ -51,9 +51,6 @@ dependencies {
   implementation "tech.units:indriya"
 
   runtimeOnly "com.fasterxml.jackson.core:jackson-databind"
-  runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
-  runtimeOnly "io.opentracing.contrib:opentracing-spring-cloud-starter"
-  runtimeOnly "org.axonframework.extensions.tracing:axon-tracing-spring-boot-starter"
   runtimeOnly "org.postgresql:postgresql"
 
   testImplementation project(":klokwrk-lib-archunit")

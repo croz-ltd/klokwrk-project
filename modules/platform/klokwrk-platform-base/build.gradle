@@ -33,7 +33,7 @@ dependencies {
     api "com.github.javaparser:javaparser-core:$javaparserCoreVersion"
     api "com.tngtech.archunit:archunit-junit5:$archUnitVersion"
     api "io.github.classgraph:classgraph:$classGraphVersion"
-    api "io.hypersistence:hypersistence-utils-hibernate-55:$hypersistenceUtils"
+    api "io.hypersistence:hypersistence-utils-hibernate-60:$hypersistenceUtils"
     api "javax.measure:unit-api:$uomApiVersion"
     api "net.ttddyy:datasource-proxy:$dataSourceProxyVersion"
     api "org.codenarc:CodeNarc:$codeNarcVersion"
@@ -44,6 +44,5 @@ dependencies {
     api "si.uom:si-units:$uomSiUnitsVersion" // uom SI units - https://github.com/unitsofmeasurement/si-units
     api "systems.uom:systems-common:$uomCommonUnitsVersion" // uom common units - part of https://github.com/unitsofmeasurement/uom-systems
     api "tech.units:indriya:$uomReferenceImplementationVersion"
-    api "uk.org.lidalia:slf4j-test:$slf4jTestVersion"
   }
 }

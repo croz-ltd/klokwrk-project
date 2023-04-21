@@ -31,15 +31,15 @@ import org.klokwrk.lib.validation.constraint.uom.QuantityMinConstraint
 import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
 
+import jakarta.validation.GroupSequence
+import jakarta.validation.Valid
+import jakarta.validation.constraints.Min
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Null
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
-import javax.validation.GroupSequence
-import javax.validation.Valid
-import javax.validation.constraints.Min
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotEmpty
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Null
 import java.time.Instant
 
 @GroupSequence([BookingOfferSummarySearchAllQueryRequest, Level1, Level2])

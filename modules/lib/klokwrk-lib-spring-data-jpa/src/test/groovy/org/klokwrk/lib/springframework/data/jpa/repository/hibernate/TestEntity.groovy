@@ -19,8 +19,8 @@ package org.klokwrk.lib.springframework.data.jpa.repository.hibernate
 
 import groovy.transform.CompileStatic
 
-import javax.persistence.Entity
-import javax.persistence.Id
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
 
 @Entity
 @CompileStatic

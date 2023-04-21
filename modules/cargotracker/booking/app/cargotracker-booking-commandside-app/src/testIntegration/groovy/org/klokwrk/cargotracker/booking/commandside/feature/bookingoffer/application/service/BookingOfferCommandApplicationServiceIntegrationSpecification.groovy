@@ -40,7 +40,7 @@ import org.springframework.test.context.ActiveProfiles
 import java.time.Duration
 import java.time.Instant
 
-@SpringBootTest(properties = ['axon.axonserver.servers = ${axonServerFirstInstanceUrl}'])
+@SpringBootTest(properties = ['axon.axonserver.servers = ${axonServerInstanceUrl}'])
 @ActiveProfiles("testIntegration")
 class BookingOfferCommandApplicationServiceIntegrationSpecification extends AbstractCommandSideIntegrationSpecification {
   @Autowired

@@ -31,12 +31,12 @@ import org.klokwrk.lib.validation.group.Level1
 import org.klokwrk.lib.validation.group.Level2
 import org.klokwrk.lib.validation.group.Level3
 
+import jakarta.validation.GroupSequence
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
 import javax.measure.quantity.Temperature
-import javax.validation.GroupSequence
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
 
 /**
  * DTO encapsulating cargo data pieces gathered from inbound ports/adapters.
