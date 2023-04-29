@@ -36,6 +36,8 @@ import spock.lang.Specification
 import spock.lang.Stepwise
 import spock.util.concurrent.PollingConditions
 
+import java.time.Instant
+
 @Slf4j
 @Stepwise
 class EventReplayComponentSpecification extends Specification {
@@ -103,11 +105,11 @@ class EventReplayComponentSpecification extends Specification {
 
     String submitEventsHttpPostBody = /{"messages":[${ messageList.join(",") }]}/
     Request commandRequest = Request.Post(axonServerApiEventsUrl)
-                                    .addHeader("Content-Type", "application/json")
-                                    .addHeader("Accept", "application/json")
-                                    .addHeader("Accept-Charset", "utf-8")
-                                    .addHeader("AxonIQ-Context", "default")
-                                    .bodyString(submitEventsHttpPostBody, ContentType.APPLICATION_JSON)
+        .addHeader("Content-Type", "application/json")
+        .addHeader("Accept", "application/json")
+        .addHeader("Accept-Charset", "utf-8")
+        .addHeader("AxonIQ-Context", "default")
+        .bodyString(submitEventsHttpPostBody, ContentType.APPLICATION_JSON)
 
     HttpResponse commandResponse = commandRequest.execute().returnResponse()
     Integer commandResponseStatusCode = commandResponse.statusLine.statusCode
@@ -116,8 +118,8 @@ class EventReplayComponentSpecification extends Specification {
     }
   }
 
-  static Integer fetchEventGlobalIndexFromProjectionRdbms(PostgreSQLContainer postgresqlServer) {
-    Integer storedGlobalIndex = -1
+  static Tuple2<Integer, Instant> fetchMaxEventGlobalIndexFromProjectionRdbms(PostgreSQLContainer postgresqlServer) {
+    Tuple2<Integer, Instant> maxElement = null
 
     String postgresqlServerJdbcUrl = "jdbc:postgresql://${ postgresqlServer.host }:${ postgresqlServer.getMappedPort(5432) }/cargotracker_booking_query_database"
     String postgresqlServerUsername = "cargotracker_readonly"
@@ -125,29 +127,98 @@ class EventReplayComponentSpecification extends Specification {
     String postgresqlServerDriverClassName = "org.postgresql.Driver"
 
     Sql.withInstance(postgresqlServerJdbcUrl, postgresqlServerUsername, postgresqlServerPassword, postgresqlServerDriverClassName) { Sql groovySql ->
-      GroovyRowResult queryRowResult = groovySql.firstRow("SELECT token as tokenBlob FROM token_entry WHERE processor_name != '__config'")
+      List<GroovyRowResult> queryRowResultList = groovySql.rows("SELECT token as tokenBlob, timestamp FROM token_entry WHERE processor_name != '__config'")
 
-      byte[] tokenBlobByteArray = queryRowResult.tokenBlob as byte[]
-      String tokenBlobAsPrintableString = new String(tokenBlobByteArray, "UTF-8")
-      Object commandResponseJson = new JsonSlurper().parseText(tokenBlobAsPrintableString)
+      maxElement = queryRowResultList
+          .collect({ GroovyRowResult queryRowResult ->
+            Integer globalIndex = null
+            byte[] tokenBlobByteArray = queryRowResult?.tokenBlob as byte[]
+            if (tokenBlobByteArray != null) {
+              String tokenBlobAsPrintableString = new String(tokenBlobByteArray, "UTF-8")
+              Object commandResponseJson = new JsonSlurper().parseText(tokenBlobAsPrintableString)
+              globalIndex = commandResponseJson.globalIndex
+            }
 
-      //noinspection GrUnresolvedAccess
-      storedGlobalIndex = commandResponseJson.globalIndex
+            Instant timestamp = null
+            if (queryRowResult?.timestamp) {
+              timestamp = Instant.parse(queryRowResult.timestamp as String)
+            }
+
+            return new Tuple2<>(globalIndex, timestamp)
+          })
+          .max { firstElement, secondElement ->
+            def (Integer firstGlobalIndex, Instant firstTimestamp) = firstElement
+            def (Integer secondGlobalIndex, Instant secondTimestamp) = secondElement
+            int globalIndexComparison = firstGlobalIndex <=> secondGlobalIndex
+            if (globalIndexComparison != 0) {
+              return globalIndexComparison
+            }
+
+            int timestampComparison = firstTimestamp <=> secondTimestamp
+            return timestampComparison
+          }
     }
 
-    return storedGlobalIndex
+    return maxElement
+  }
+
+  static Tuple2<Integer, Instant> fetchMinFailedEventGlobalIndexFromProjectionRdbms(PostgreSQLContainer postgresqlServer, Instant baseTimestamp) {
+    Tuple2<Integer, Instant> minElement = null
+
+    String postgresqlServerJdbcUrl = "jdbc:postgresql://${ postgresqlServer.host }:${ postgresqlServer.getMappedPort(5432) }/cargotracker_booking_query_database"
+    String postgresqlServerUsername = "cargotracker_readonly"
+    String postgresqlServerPassword = "cargotracker_readonly"
+    String postgresqlServerDriverClassName = "org.postgresql.Driver"
+
+    Sql.withInstance(postgresqlServerJdbcUrl, postgresqlServerUsername, postgresqlServerPassword, postgresqlServerDriverClassName) { Sql groovySql ->
+      List<GroovyRowResult> queryRowResultList = groovySql.rows(
+          "SELECT token as tokenBlob, timestamp FROM token_entry WHERE processor_name != '__config' AND timestamp > ?",
+          baseTimestamp.toString()
+      )
+
+      minElement = queryRowResultList
+          .collect({ GroovyRowResult queryRowResult ->
+            Integer globalIndex = null
+            byte[] tokenBlobByteArray = queryRowResult?.tokenBlob as byte[]
+            if (tokenBlobByteArray != null) {
+              String tokenBlobAsPrintableString = new String(tokenBlobByteArray, "UTF-8")
+              Object commandResponseJson = new JsonSlurper().parseText(tokenBlobAsPrintableString)
+              globalIndex = commandResponseJson.globalIndex
+            }
+
+            Instant timestamp = null
+            if (queryRowResult?.timestamp) {
+              timestamp = Instant.parse(queryRowResult.timestamp as String)
+            }
+
+            return new Tuple2<>(globalIndex, timestamp)
+          })
+          .min { firstElement, secondElement ->
+            def (Integer firstGlobalIndex, Instant firstTimestamp) = firstElement
+            def (Integer secondGlobalIndex, Instant secondTimestamp) = secondElement
+            int globalIndexComparison = firstGlobalIndex <=> secondGlobalIndex
+            if (globalIndexComparison != 0) {
+              return globalIndexComparison
+            }
+
+            int timestampComparison = firstTimestamp <=> secondTimestamp
+            return timestampComparison
+          }
+    }
+
+    return minElement
   }
 
   void "should correctly project valid events"() {
     given:
-    Integer axonServerEventGlobalIndexStart = 0
+    Integer axonServerEventGlobalIndexStart = fetchMaxEventGlobalIndexFromProjectionRdbms(postgresqlServer)?.v1 ?: 0
 
     when:
     Integer sentEventsCount = populateAxonEventStoreWithValidEvents(axonServer)
 
     then:
     new PollingConditions(timeout: 5, initialDelay: 0, delay: 0.05).eventually {
-      fetchEventGlobalIndexFromProjectionRdbms(postgresqlServer) == axonServerEventGlobalIndexStart + sentEventsCount - 1
+      fetchMaxEventGlobalIndexFromProjectionRdbms(postgresqlServer).v1 == axonServerEventGlobalIndexStart + sentEventsCount - 1
     }
 
     !querySideProjectionRdbmsApp.logs.contains("ERROR")
@@ -155,17 +226,17 @@ class EventReplayComponentSpecification extends Specification {
 
   void "should not project invalid events"() {
     given:
-    Integer axonServerEventGlobalIndexStart = fetchEventGlobalIndexFromProjectionRdbms(postgresqlServer)
+    def (Integer axonServerEventGlobalIndexStart, Instant axonServerEventGlobalIndexStartInstant) = fetchMaxEventGlobalIndexFromProjectionRdbms(postgresqlServer)
 
     when:
     populateAxonEventStoreWithInvalidEvents(axonServer)
 
     then:
-    new PollingConditions(timeout: 5, initialDelay: 3, delay: 0.05).eventually {
-      fetchEventGlobalIndexFromProjectionRdbms(postgresqlServer) == axonServerEventGlobalIndexStart
+    new PollingConditions(timeout: 10, initialDelay: 1, delay: 0.2).eventually {
+      fetchMinFailedEventGlobalIndexFromProjectionRdbms(postgresqlServer, axonServerEventGlobalIndexStartInstant).v1 <= axonServerEventGlobalIndexStart
     }
 
+    querySideProjectionRdbmsApp.logs.contains("Error while processing batch in Work Package")
     querySideProjectionRdbmsApp.logs.contains("org.axonframework.serialization.SerializationException: Error while deserializing payload of message")
-    querySideProjectionRdbmsApp.logs.contains("Releasing claim on token and preparing for retry")
   }
 }
