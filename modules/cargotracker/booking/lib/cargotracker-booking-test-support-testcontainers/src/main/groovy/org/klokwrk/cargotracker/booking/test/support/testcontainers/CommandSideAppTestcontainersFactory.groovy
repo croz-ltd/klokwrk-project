@@ -51,8 +51,9 @@ class CommandSideAppTestcontainersFactory {
       withEnv([
           "TZ": "Europe/Zagreb",
           "CARGOTRACKER_AXON_SERVER_HOSTNAME": "${ axonServer.containerInfo.config.hostName }".toString(),
-          "MANAGEMENT_METRICS_EXPORT_WAVEFRONT_ENABLED": "false",
-          "AXON.EXTENSION.TRACING.ENABLED": "false"
+          "MANAGEMENT_DEFAULTS_METRICS_EXPORT_ENABLED": "false",
+          "MANAGEMENT_WAVEFRONT_METRICS_EXPORT_ENABLED": "false",
+          "MANAGEMENT_TRACING_ENABLED": "false"
       ])
       withNetwork(klokwrkNetwork)
       waitingFor(Wait.forHttp("/cargotracker-booking-commandside/management/health"))
