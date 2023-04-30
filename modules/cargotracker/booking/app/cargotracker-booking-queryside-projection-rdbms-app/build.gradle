@@ -45,12 +45,17 @@ dependencies {
   implementation "javax.measure:unit-api"
   implementation "org.apache.groovy:groovy"
   implementation "org.axonframework:axon-spring-boot-starter"
+  implementation "org.axonframework:axon-tracing-opentelemetry"
   implementation "org.springframework.boot:spring-boot-starter-actuator"
   implementation "org.springframework.boot:spring-boot-starter-data-jpa"
   implementation "org.springframework.boot:spring-boot-starter-web"
   implementation "tech.units:indriya"
 
   runtimeOnly "com.fasterxml.jackson.core:jackson-databind"
+  runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
+  runtimeOnly "io.micrometer:micrometer-registry-wavefront"
+  runtimeOnly "io.micrometer:micrometer-tracing-bridge-otel"
+  runtimeOnly "io.micrometer:micrometer-tracing-reporter-wavefront"
   runtimeOnly "org.postgresql:postgresql"
 
   testImplementation project(":klokwrk-lib-archunit")

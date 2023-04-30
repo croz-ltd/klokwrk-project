@@ -51,11 +51,17 @@ dependencies {
   implementation "org.apache.groovy:groovy"
   implementation "org.apache.groovy:groovy-macro"
   implementation "org.axonframework:axon-spring-boot-starter"
+  implementation "org.axonframework:axon-tracing-opentelemetry"
   implementation "org.hamcrest:hamcrest"
   implementation "org.springframework.boot:spring-boot-starter-actuator"
   implementation "org.springframework.boot:spring-boot-starter-validation"
   implementation "org.springframework.boot:spring-boot-starter-web"
   implementation "tech.units:indriya"
+
+  runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
+  runtimeOnly "io.micrometer:micrometer-registry-wavefront"
+  runtimeOnly "io.micrometer:micrometer-tracing-bridge-otel"
+  runtimeOnly "io.micrometer:micrometer-tracing-reporter-wavefront"
 
   testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
 
