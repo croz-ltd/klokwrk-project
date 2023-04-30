@@ -68,8 +68,10 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
 
         "net.croz.nrich.search..",
 
+        "io.opentelemetry..",
         "org.axonframework.messaging..",
         "org.axonframework.spring..",
+        "org.axonframework.tracing..",
         "org.hamcrest",
         "org.springframework..",
 

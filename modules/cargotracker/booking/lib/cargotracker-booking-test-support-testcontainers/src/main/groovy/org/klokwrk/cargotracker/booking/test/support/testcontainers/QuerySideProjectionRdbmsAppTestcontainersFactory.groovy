@@ -57,8 +57,9 @@ class QuerySideProjectionRdbmsAppTestcontainersFactory {
           "CARGOTRACKER_POSTGRES_PORT": "5432",
           "CARGOTRACKER_POSTGRES_USERNAME": "cargotracker",
           "CARGOTRACKER_POSTGRES_PASSWORD": "cargotracker",
-          "MANAGEMENT_METRICS_EXPORT_WAVEFRONT_ENABLED": "false",
-          "AXON.EXTENSION.TRACING.ENABLED": "false"
+          "MANAGEMENT_DEFAULTS_METRICS_EXPORT_ENABLED": "false",
+          "MANAGEMENT_WAVEFRONT_METRICS_EXPORT_ENABLED": "false",
+          "MANAGEMENT_TRACING_ENABLED": "false"
       ])
       withNetwork(klokwrkNetwork)
       waitingFor(Wait.forHttp("/cargotracker-booking-queryside-projection-rdbms/management/health"))

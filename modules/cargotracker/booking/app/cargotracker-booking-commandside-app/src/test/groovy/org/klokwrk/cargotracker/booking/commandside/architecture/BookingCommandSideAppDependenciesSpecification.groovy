@@ -192,12 +192,12 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         "org.codehaus.groovy..",
         "groovy..",
 
+        "io.opentelemetry..",
         "org.axonframework.commandhandling",
         "org.axonframework.commandhandling.gateway",
         "org.axonframework.messaging",
         "org.axonframework.messaging.annotation",
-
-        "org.axonframework.extensions.tracing",
+        "org.axonframework.tracing..",
 
         "org.springframework.boot.context..",
         "org.springframework.beans..",
