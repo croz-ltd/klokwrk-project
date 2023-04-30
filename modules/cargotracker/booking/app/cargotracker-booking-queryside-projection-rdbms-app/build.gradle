@@ -56,6 +56,10 @@ dependencies {
   runtimeOnly "io.micrometer:micrometer-registry-wavefront"
   runtimeOnly "io.micrometer:micrometer-tracing-bridge-otel"
   runtimeOnly "io.micrometer:micrometer-tracing-reporter-wavefront"
+  // The following datasource-micrometer-spring-boot dependency is commented out for now. The reason are various issues related to not being able to filter out some of traced queries. In addition
+  // Axon's tracing implementation in event processors is not correct, I believe, since the spans are opened to late (they should be opened at the start of UnitOfWork, instead in interceptor, I think).
+//  runtimeOnly "io.opentelemetry:opentelemetry-exporter-otlp"
+//  runtimeOnly "net.ttddyy.observation:datasource-micrometer-spring-boot"
   runtimeOnly "org.postgresql:postgresql"
 
   testImplementation project(":klokwrk-lib-archunit")
