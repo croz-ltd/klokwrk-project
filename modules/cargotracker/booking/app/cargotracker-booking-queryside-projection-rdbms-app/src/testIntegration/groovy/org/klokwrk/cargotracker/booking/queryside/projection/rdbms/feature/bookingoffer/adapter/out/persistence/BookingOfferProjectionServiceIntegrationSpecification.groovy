@@ -226,7 +226,7 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
     new PollingConditions(timeout: 5, initialDelay: 0, delay: 0.1).eventually {
       listAppender.list.size() == 3
 
-      String matchingMessage1 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_summary \(.*customer_id, .*/) })
+      String matchingMessage1 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_summary \(.*customer_id,.*/) })
       matchingMessage1 != null
       matchingMessage1.contains(bookingOfferId.toString())
       matchingMessage1.contains(customerId)
@@ -235,7 +235,7 @@ class BookingOfferProjectionServiceIntegrationSpecification extends AbstractProj
       matchingMessage2 != null
       matchingMessage2.contains(bookingOfferId.toString())
 
-      String matchingMessage3 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_details \(.*customer_id, .*/) })
+      String matchingMessage3 = listAppender.list.find({ it.formattedMessage.matches(/.*insert into booking_offer_details \(.*customer_id,.*/) })
       matchingMessage3 != null
       matchingMessage3.contains(bookingOfferId.toString())
       matchingMessage3.contains(customerId)
