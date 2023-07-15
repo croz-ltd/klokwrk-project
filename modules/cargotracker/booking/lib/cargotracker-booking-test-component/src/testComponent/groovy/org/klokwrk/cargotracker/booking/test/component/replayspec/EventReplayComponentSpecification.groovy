@@ -22,9 +22,9 @@ import groovy.json.JsonSlurper
 import groovy.sql.GroovyRowResult
 import groovy.sql.Sql
 import groovy.util.logging.Slf4j
-import org.apache.http.HttpResponse
-import org.apache.http.client.fluent.Request
-import org.apache.http.entity.ContentType
+import org.apache.hc.client5.http.fluent.Request
+import org.apache.hc.core5.http.ClassicHttpResponse
+import org.apache.hc.core5.http.ContentType
 import org.klokwrk.cargotracker.booking.test.support.testcontainers.AxonServerTestcontainersFactory
 import org.klokwrk.cargotracker.booking.test.support.testcontainers.PostgreSqlTestcontainersFactory
 import org.klokwrk.cargotracker.booking.test.support.testcontainers.QuerySideProjectionRdbmsAppTestcontainersFactory
@@ -104,18 +104,20 @@ class EventReplayComponentSpecification extends Specification {
     String axonServerApiEventsUrl = "$axonServerBaseUrl/v1/events"
 
     String submitEventsHttpPostBody = /{"messages":[${ messageList.join(",") }]}/
-    Request commandRequest = Request.Post(axonServerApiEventsUrl)
+    Request commandRequest = Request.post(axonServerApiEventsUrl)
         .addHeader("Content-Type", "application/json")
         .addHeader("Accept", "application/json")
         .addHeader("Accept-Charset", "utf-8")
         .addHeader("AxonIQ-Context", "default")
         .bodyString(submitEventsHttpPostBody, ContentType.APPLICATION_JSON)
 
-    HttpResponse commandResponse = commandRequest.execute().returnResponse()
-    Integer commandResponseStatusCode = commandResponse.statusLine.statusCode
-    if (commandResponseStatusCode >= 400) {
-      log.warn("HTTP request resulted in an error. Content body: [$commandResponse.entity.content.text] ")
-    }
+    commandRequest.execute().handleResponse({ ClassicHttpResponse commandHttpResponse ->
+      if (commandHttpResponse.code >= 400) {
+        log.warn("HTTP request resulted in an error. Content body: [${ commandHttpResponse.entity.content.text }] ")
+      }
+
+      return null
+    })
   }
 
   static Tuple2<Integer, Instant> fetchMaxEventGlobalIndexFromProjectionRdbms(PostgreSQLContainer postgresqlServer) {

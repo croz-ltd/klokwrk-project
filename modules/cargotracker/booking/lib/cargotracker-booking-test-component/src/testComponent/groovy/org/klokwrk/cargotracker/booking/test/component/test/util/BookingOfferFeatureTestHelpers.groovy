@@ -21,9 +21,9 @@ import groovy.json.JsonSlurper
 import groovy.transform.CompileStatic
 import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.SimpleType
-import org.apache.http.HttpResponse
-import org.apache.http.client.fluent.Request
-import org.apache.http.entity.ContentType
+import org.apache.hc.client5.http.fluent.Request
+import org.apache.hc.core5.http.ClassicHttpResponse
+import org.apache.hc.core5.http.ContentType
 import org.awaitility.Awaitility
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion
@@ -171,29 +171,36 @@ class BookingOfferFeatureTestHelpers {
   protected static Map makeRequestAndReturnResponseContentMap_sync(String url, String requestBody, String acceptLanguage, Integer expectedResponseStatus) {
     Request request = makeRequest(url, requestBody, acceptLanguage)
 
-    HttpResponse response = request.execute().returnResponse()
-    assert response.statusLine.statusCode == expectedResponseStatus
+    Map responseContentMap = request.execute().handleResponse({ ClassicHttpResponse response ->
+      assert response.code == expectedResponseStatus
+      return new JsonSlurper().parseText(response.entity.content.text) as Map
+    })
 
-    Map responseContentMap = new JsonSlurper().parseText(response.entity.content.text) as Map
     return responseContentMap
   }
 
   protected static Map makeRequestAndReturnResponseContentMap_async(String url, String requestBody, String acceptLanguage, Integer expectedResponseStatus) {
     Request request = makeRequest(url, requestBody, acceptLanguage)
 
-    HttpResponse response = null
+    Map responseContentMap = null
     Awaitility.await().atMost(Duration.ofSeconds(5)).until({
-      response = request.execute().returnResponse()
-      Integer queryResponseStatusCode = response.statusLine.statusCode
+      Integer queryResponseStatusCode = null
+
+      request.execute().handleResponse({ ClassicHttpResponse response ->
+        queryResponseStatusCode = response.code
+        if (queryResponseStatusCode == expectedResponseStatus) {
+          responseContentMap = new JsonSlurper().parseText(response.entity.content.text) as Map
+        }
+      })
+
       queryResponseStatusCode == expectedResponseStatus
     })
 
-    Map responseContentMap = new JsonSlurper().parseText(response.entity.content.text) as Map
     return responseContentMap
   }
 
   protected static Request makeRequest(String url, String body, String acceptLanguageHeaderValue) {
-    Request request = Request.Post(url)
+    Request request = Request.post(url)
         .addHeader("Content-Type", "application/json")
         .addHeader("Accept", "application/json")
         .addHeader("Accept-Charset", "utf-8")

@@ -41,7 +41,7 @@ dependencies {
   // java.lang.NoClassDefFoundError id thrown for PostMapConstructorCheckable class.
   implementation project(":klokwrk-lang-groovy")
 
-  implementation "io.hypersistence:hypersistence-utils-hibernate-60"
+  implementation "io.hypersistence:hypersistence-utils-hibernate-62"
   implementation "javax.measure:unit-api"
   implementation "org.apache.groovy:groovy"
   implementation "org.axonframework:axon-spring-boot-starter"
@@ -58,7 +58,6 @@ dependencies {
   runtimeOnly "io.micrometer:micrometer-tracing-reporter-wavefront"
   // The following datasource-micrometer-spring-boot dependency is commented out for now. The reason are various issues related to not being able to filter out some of traced queries. In addition
   // Axon's tracing implementation in event processors is not correct, I believe, since the spans are opened to late (they should be opened at the start of UnitOfWork, instead in interceptor, I think).
-//  runtimeOnly "io.opentelemetry:opentelemetry-exporter-otlp"
 //  runtimeOnly "net.ttddyy.observation:datasource-micrometer-spring-boot"
   runtimeOnly "org.postgresql:postgresql"
 

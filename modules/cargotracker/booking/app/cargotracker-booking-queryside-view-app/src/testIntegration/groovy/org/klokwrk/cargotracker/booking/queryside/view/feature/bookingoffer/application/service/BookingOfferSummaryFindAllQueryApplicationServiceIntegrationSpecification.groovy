@@ -241,7 +241,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
     firstFormattedMessage.matches(/.*select.*booking_offer_id from booking_offer_summary \w* where.*offset.*rows fetch first.*rows only.*/)
 
     String secondFormattedMessage = listAppender.list[1].formattedMessage
-    secondFormattedMessage.matches(/.*select.*from booking_offer_summary \w* left join booking_offer_summary_commodity_type.*where.*booking_offer_id in\(.*/)
+    secondFormattedMessage.matches(/.*select.*from booking_offer_summary \w* left join booking_offer_summary_commodity_type.*where.*booking_offer_id in \(.*/)
 
     cleanup:
     logger.detachAppender(listAppender)
@@ -280,7 +280,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
     secondFormattedMessage.matches(/.*select count\(\w*.booking_offer_id\).*from booking_offer_summary \w* where.*/)
 
     String thirdFormattedMessage = listAppender.list[2].formattedMessage
-    thirdFormattedMessage.matches(/.*select.*from booking_offer_summary \w* left join booking_offer_summary_commodity_type.*where.*booking_offer_id in\(.*/)
+    thirdFormattedMessage.matches(/.*select.*from booking_offer_summary \w* left join booking_offer_summary_commodity_type.*where.*booking_offer_id in \(.*/)
 
     cleanup:
     logger.detachAppender(listAppender)

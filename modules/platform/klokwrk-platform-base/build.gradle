@@ -33,7 +33,7 @@ dependencies {
     api "com.github.javaparser:javaparser-core:$javaparserCoreVersion"
     api "com.tngtech.archunit:archunit-junit5:$archUnitVersion"
     api "io.github.classgraph:classgraph:$classGraphVersion"
-    api "io.hypersistence:hypersistence-utils-hibernate-60:$hypersistenceUtils"
+    api "io.hypersistence:hypersistence-utils-hibernate-62:$hypersistenceUtils"
     api "javax.measure:unit-api:$uomApiVersion"
     api "net.ttddyy:datasource-proxy:$dataSourceProxyVersion"
     api "org.codenarc:CodeNarc:$codeNarcVersion"
