@@ -37,8 +37,8 @@ dependencies {
   testComponentImplementation testFixtures(project(":cargotracker-booking-queryside-view-app"))
 
   testComponentImplementation "javax.measure:unit-api"
-  testComponentImplementation "org.apache.httpcomponents:fluent-hc"
-  testComponentImplementation "org.apache.httpcomponents:httpclient"
+  testComponentImplementation "org.apache.httpcomponents.client5:httpclient5"
+  testComponentImplementation "org.apache.httpcomponents.client5:httpclient5-fluent"
   testComponentImplementation "org.awaitility:awaitility"
   testComponentImplementation "org.apache.groovy:groovy"
   testComponentImplementation "org.apache.groovy:groovy-json"
