@@ -22,14 +22,20 @@ services:
   klokwrk-project-axon-server:
     container_name: klokwrk-project-axon-server
     image: axoniq/axonserver:${axonServerDockerImageVersion}
+    hostname: klokwrk-project-axon-server
     ports:
       - "8024:8024"
       - "8124:8124"
+      - "8224:8224"
+    environment:
+      - AXONIQ_AXONSERVER_AUTOCLUSTER_FIRST=klokwrk-project-axon-server
+      - AXONIQ_AXONSERVER_AUTOCLUSTER_CONTEXTS=default
     networks:
       - klokwrk-project-network
     volumes:
       - klokwrk-project-axon-server-data:/data
       - klokwrk-project-axon-server-eventdata:/eventdata
+      - klokwrk-project-axon-server-config:/axonserver/config:ro
     restart: unless-stopped
 
 networks:
@@ -43,3 +49,5 @@ volumes:
     name: klokwrk-project-axon-server-data
   klokwrk-project-axon-server-eventdata:
     name: klokwrk-project-axon-server-eventdata
+  klokwrk-project-axon-server-config:
+    name: klokwrk-project-axon-server-config

@@ -37,7 +37,9 @@ class AxonServerTestcontainersFactory {
    *   <li>Container time zone is set to {@code Europe/Zagreb}.</li>
    * </ul>
    */
-  static GenericContainer makeAndStartAxonServer(Network klokwrkNetwork, String containerName = "klokwrk-project-axon-server", Integer httpPort = 8024, Integer grpcPort = 8124) {
+  static GenericContainer makeAndStartAxonServer(
+      Network klokwrkNetwork, String containerName = "klokwrk-project-axon-server", String hostName = "klokwrk-project-axon-server", Integer httpPort = 8024, Integer grpcPort = 8124)
+  {
     String imageVersion = System.getProperty("axonServerDockerImageVersion")
     Integer[] exposedPorts = [httpPort, grpcPort]
 
@@ -50,8 +52,9 @@ class AxonServerTestcontainersFactory {
       withCreateContainerCmdModifier({ CreateContainerCmd cmd -> cmd.withName("${ containerName }-${ containerNameSuffix }") })
       withEnv([
           "TZ": "Europe/Zagreb",
-          "SERVER_PORT": "$httpPort".toString(),
-          "AXONIQ_AXONSERVER_PORT": "$grpcPort".toString()
+          "AXONIQ_AXONSERVER_HOSTNAME": "$hostName".toString(),
+          "AXONIQ_AXONSERVER_AUTOCLUSTER_FIRST": "$hostName".toString(),
+          "AXONIQ_AXONSERVER_AUTOCLUSTER_CONTEXTS": "default"
       ])
       withNetwork(klokwrkNetwork)
       waitingFor(Wait.forHttp("/v1/public/me").forPort(httpPort))
