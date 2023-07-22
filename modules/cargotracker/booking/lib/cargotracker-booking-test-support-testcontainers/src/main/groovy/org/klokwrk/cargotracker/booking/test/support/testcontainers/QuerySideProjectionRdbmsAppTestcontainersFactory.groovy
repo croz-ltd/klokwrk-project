@@ -58,7 +58,6 @@ class QuerySideProjectionRdbmsAppTestcontainersFactory {
           "CARGOTRACKER_POSTGRES_USERNAME": "cargotracker",
           "CARGOTRACKER_POSTGRES_PASSWORD": "cargotracker",
           "MANAGEMENT_DEFAULTS_METRICS_EXPORT_ENABLED": "false",
-          "MANAGEMENT_WAVEFRONT_METRICS_EXPORT_ENABLED": "false",
           "MANAGEMENT_TRACING_ENABLED": "false"
       ])
       withNetwork(klokwrkNetwork)

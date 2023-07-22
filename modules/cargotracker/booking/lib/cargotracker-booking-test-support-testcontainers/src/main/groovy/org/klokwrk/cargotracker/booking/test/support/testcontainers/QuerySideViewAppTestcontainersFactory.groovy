@@ -57,7 +57,6 @@ class QuerySideViewAppTestcontainersFactory {
           "CARGOTRACKER_POSTGRES_PORT": "5432",
           "CARGOTRACKER_POSTGRES_USERNAME": "cargotracker_readonly",
           "CARGOTRACKER_POSTGRES_PASSWORD": "cargotracker_readonly",
-          "MANAGEMENT_METRICS_EXPORT_WAVEFRONT_ENABLED": "false",
           "AXON.EXTENSION.TRACING.ENABLED": "false"
       ])
       withNetwork(klokwrkNetwork)

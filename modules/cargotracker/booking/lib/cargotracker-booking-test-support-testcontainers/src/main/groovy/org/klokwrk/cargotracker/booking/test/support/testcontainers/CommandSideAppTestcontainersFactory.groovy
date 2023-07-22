@@ -52,7 +52,6 @@ class CommandSideAppTestcontainersFactory {
           "TZ": "Europe/Zagreb",
           "CARGOTRACKER_AXON_SERVER_HOSTNAME": "${ axonServer.containerInfo.config.hostName }".toString(),
           "MANAGEMENT_DEFAULTS_METRICS_EXPORT_ENABLED": "false",
-          "MANAGEMENT_WAVEFRONT_METRICS_EXPORT_ENABLED": "false",
           "MANAGEMENT_TRACING_ENABLED": "false"
       ])
       withNetwork(klokwrkNetwork)
