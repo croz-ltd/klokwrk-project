@@ -46,6 +46,7 @@ import net.ttddyy.observation.tracing.ConnectionAttributesManager.ConnectionAttr
 import net.ttddyy.observation.tracing.ConnectionAttributesManager.ResultSetAttributes;
 import net.ttddyy.observation.tracing.JdbcObservationDocumentation.JdbcEvents;
 
+// TODO dmurat: Remove this class when datasource-micrometer-spring-boot 1.0.3 is released (https://github.com/jdbc-observations/datasource-micrometer/issues/18)
 /**
  * Datasource-proxy listener implementation for JDBC observation.
  *
@@ -114,13 +115,13 @@ public class DataSourceObservationListener implements QueryExecutionListener, Me
     executionInfo.addCustomValue(QueryContext.class.getName(), queryContext);
     populateFromConnectionAttributes(queryContext, executionInfo.getConnectionId());
 
+    populateQueryContext(executionInfo, queryInfoList, queryContext);
     Observation observation = createAndStartObservation(JdbcObservationDocumentation.QUERY, queryContext,
                                                         this.queryObservationConvention);
 
     if (logger.isDebugEnabled()) {
       logger.debug("Created a new child observation before query [" + observation + "]");
     }
-    populateQueryContext(executionInfo, queryInfoList, queryContext);
     executionInfo.addCustomValue(Observation.Scope.class.getName(), observation.openScope());
   }
 
