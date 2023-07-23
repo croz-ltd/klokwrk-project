@@ -53,6 +53,7 @@ dependencies {
   implementation "tech.units:indriya"
 
   runtimeOnly "com.fasterxml.jackson.core:jackson-databind"
+  runtimeOnly "com.grafana:grafana-opentelemetry-starter"
   runtimeOnly "io.micrometer:micrometer-tracing-bridge-otel"
   runtimeOnly "org.postgresql:postgresql"
 

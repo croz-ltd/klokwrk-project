@@ -59,6 +59,7 @@ dependencies {
   implementation "org.springframework.boot:spring-boot-starter-web"
   implementation "tech.units:indriya"
 
+  runtimeOnly "com.grafana:grafana-opentelemetry-starter"
   runtimeOnly "io.micrometer:micrometer-tracing-bridge-otel"
   runtimeOnly "net.ttddyy.observation:datasource-micrometer-spring-boot"
   runtimeOnly "org.postgresql:postgresql"
