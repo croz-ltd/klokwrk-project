@@ -19,6 +19,7 @@ package org.klokwrk.cargotracker.booking.queryside.projection.rdbms
 
 import groovy.transform.CompileStatic
 import groovy.transform.Generated
+import org.klokwrk.cargotracker.booking.queryside.projection.rdbms.infrastructure.springbootconfig.OpenTelemetryConfigOnApplicationEnvironmentPreparedListener
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
@@ -28,6 +29,8 @@ class BookingQuerySideProjectionRdbmsApplication {
   // Generated annotation ignores main method in JaCoCo report as main method is not covered by JaCoCo (probably it is too early for JaCoCo to chip in)
   @Generated
   static void main(String[] args) {
-    SpringApplication.run(BookingQuerySideProjectionRdbmsApplication, args)
+    SpringApplication springApplication = new SpringApplication(BookingQuerySideProjectionRdbmsApplication)
+    springApplication.addListeners(new OpenTelemetryConfigOnApplicationEnvironmentPreparedListener())
+    springApplication.run(args)
   }
 }

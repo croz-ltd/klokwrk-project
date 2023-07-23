@@ -55,6 +55,8 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         "org.springframework.boot"
     ]
 
+    String[] allowedApplicationSubPackages = ["org.klokwrk.cargotracker.booking.commandside.infrastructure.springbootconfig"]
+
     String[] cargotrackerBookingCommandsideAppSpringBootApplicationPackages = ["org.klokwrk.cargotracker.booking.commandside"]
 
     // @formatter:off
@@ -62,6 +64,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         .classes().that().resideInAnyPackage(cargotrackerBookingCommandsideAppSpringBootApplicationPackages)
         .should().onlyAccessClassesThat().resideInAnyPackage(
             cargotrackerBookingCommandsideAppSpringBootApplicationPackages +
+            allowedApplicationSubPackages +
 
             thirdPartyDependencyAllPackages as String[]
         )
@@ -201,7 +204,8 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
 
         "org.springframework.boot.context..",
         "org.springframework.beans..",
-        "org.springframework.context.."
+        "org.springframework.context..",
+        "org.springframework.core.env..",
     ]
 
     String[] cargotrackerBookingCommandsideAppInfrastructurePackages = ["org.klokwrk.cargotracker.booking.commandside.infrastructure.."]
