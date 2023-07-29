@@ -14,10 +14,13 @@ build/
 ### IntelliJ IDEA ###
 .idea/
 .run/**
-!.run/1 - cargotracker-booking-commandside-app \[bootRun\].run.xml
-!.run/2 - cargotracker-booking-queryside-projection-rdbms-app \[bootRun\].run.xml
-!.run/3 - cargotracker-booking-queryside-view-app \[bootRun\].run.xml
+!.run/01 - cargotracker-booking-commandside-app \[bootRun\].run.xml
+!.run/02 - cargotracker-booking-queryside-projection-rdbms-app \[bootRun\].run.xml
+!.run/03 - cargotracker-booking-queryside-view-app \[bootRun\].run.xml
 !.run/cargotracker-booking-rdbms-management-app \[bootRun\].run.xml
+!.run/11 - cargotracker-booking-commandside-app with observability \[bootRun\].run.xml
+!.run/12 - cargotracker-booking-queryside-projection-rdbms-app with observability \[bootRun\].run.xml
+!.run/13 - cargotracker-booking-queryside-view-app with observability \[bootRun\].run.xml
 *.iws
 *.iml
 *.ipr
@@ -34,3 +37,4 @@ nbdist/
 
 !tool/klokwrk-tool-gradle-source-repack/src/test/resources/testFiles/*.zip
 !tool/klokwrk-tool-gradle-source-repack/src/test/resources/testFiles/*.sha256
+/support/docker/grafana/grafana-agent/agent.env

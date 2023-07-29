@@ -12,6 +12,9 @@ export postgreSqlDockerImageVersion
 
 axonServerDockerImageVersion=$(prop 'axonServerDockerImageVersion')
 export axonServerDockerImageVersion
+
+grafanaAgentDockerImageVersion=$(prop 'grafanaAgentDockerImageVersion')
+export grafanaAgentDockerImageVersion
 # ---------- Configuring environment variables based on values from gradle.properties in the root directory. - END
 
 # shellcheck disable=SC2086

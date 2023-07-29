@@ -1,0 +1,84 @@
+logging {
+  level  = "info"
+}
+
+otelcol.receiver.otlp "default" {
+  // https://grafana.com/docs/agent/latest/flow/reference/components/otelcol.receiver.otlp/
+
+  // configures the default grpc endpoint "0.0.0.0:4317"
+  grpc { }
+  // configures the default http/protobuf endpoint "0.0.0.0:4318"
+  http { }
+
+  output {
+    metrics = [otelcol.processor.batch.default.input]
+    logs    = [otelcol.processor.batch.default.input]
+    traces  = [otelcol.processor.batch.default.input]
+  }
+}
+
+otelcol.processor.batch "default" {
+  // https://grafana.com/docs/agent/latest/flow/reference/components/otelcol.processor.batch/
+  output {
+    metrics = [otelcol.exporter.prometheus.grafana_cloud_prometheus.input]
+    logs    = [otelcol.exporter.loki.grafana_cloud_loki.input]
+    traces  = [otelcol.exporter.otlp.grafana_cloud_tempo.input]
+  }
+}
+
+otelcol.exporter.loki "grafana_cloud_loki" {
+  // https://grafana.com/docs/agent/latest/flow/reference/components/otelcol.exporter.loki/
+  forward_to = [loki.write.grafana_cloud_loki.receiver]
+}
+
+otelcol.exporter.prometheus "grafana_cloud_prometheus" {
+  // https://grafana.com/docs/agent/latest/flow/reference/components/otelcol.exporter.prometheus/
+  forward_to = [prometheus.remote_write.grafana_cloud_prometheus.receiver]
+}
+
+prometheus.scrape "axon_server" {
+  targets    = [
+    {"__address__" = "klokwrk-project-axon-server:8024", "instance" = "klokwrk-project-axon-server:8024"},
+  ]
+  forward_to = [prometheus.remote_write.grafana_cloud_prometheus.receiver]
+  scrape_interval = "15s"
+  metrics_path    = "/actuator/prometheus"
+}
+
+prometheus.remote_write "grafana_cloud_prometheus" {
+  // https://grafana.com/docs/agent/latest/flow/reference/components/prometheus.remote_write/
+  endpoint {
+    url = env("GRAFANA_CLOUD_PROMETHEUS_URL")
+
+    basic_auth {
+      username = env("GRAFANA_CLOUD_PROMETHEUS_USERNAME")
+      password = env("GRAFANA_CLOUD_API_KEY")
+    }
+  }
+}
+
+loki.write "grafana_cloud_loki" {
+  // https://grafana.com/docs/agent/latest/flow/reference/components/loki.write/
+  endpoint {
+    url = env("GRAFANA_CLOUD_LOKI_URL")
+
+    basic_auth {
+      username = env("GRAFANA_CLOUD_LOKI_USERNAME")
+      password = env("GRAFANA_CLOUD_API_KEY")
+    }
+  }
+}
+
+otelcol.exporter.otlp "grafana_cloud_tempo" {
+  // https://grafana.com/docs/agent/latest/flow/reference/components/otelcol.exporter.otlp/
+  client {
+    endpoint = env("GRAFANA_CLOUD_TEMPO_ENDPOINT")
+    auth     = otelcol.auth.basic.grafana_cloud_tempo.handler
+  }
+}
+
+otelcol.auth.basic "grafana_cloud_tempo" {
+  // https://grafana.com/docs/agent/latest/flow/reference/components/otelcol.auth.basic/
+  username = env("GRAFANA_CLOUD_TEMPO_USERNAME")
+  password = env("GRAFANA_CLOUD_API_KEY")
+}

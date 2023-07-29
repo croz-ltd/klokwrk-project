@@ -38,6 +38,27 @@ services:
       - klokwrk-project-axon-server-config:/axonserver/config:ro
     restart: unless-stopped
 
+  klokwrk-project-grafana-agent:
+    profiles:
+      - observability
+    container_name: klokwrk-project-grafana-agent
+    image: grafana/agent:${grafanaAgentDockerImageVersion}
+    hostname: klokwrk-project-grafana-agent
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+      - "12345:12345"
+    env_file:
+      - grafana/grafana-agent/agent.env
+    environment:
+      - AGENT_MODE=flow
+    command: ["run", "--server.http.listen-addr=0.0.0.0:12345", "/etc/agent/config.river"]
+    networks:
+      - klokwrk-project-network
+    volumes:
+      - ./grafana/grafana-agent/agent-config.river:/etc/agent/config.river
+    restart: unless-stopped
+
 networks:
   klokwrk-project-network:
     name: klokwrk-project-network
