@@ -30,6 +30,8 @@ services:
     environment:
       - AXONIQ_AXONSERVER_AUTOCLUSTER_FIRST=klokwrk-project-axon-server
       - AXONIQ_AXONSERVER_AUTOCLUSTER_CONTEXTS=default
+      - AXONIQ_AXONSERVER_METRICS_GRPC_ENABLED=true
+      - AXONIQ_AXONSERVER_METRICS_GRPC_PROMETHEUS_ENABLED=true
     networks:
       - klokwrk-project-network
     volumes:

@@ -61,6 +61,7 @@ dependencies {
   runtimeOnly "com.grafana:grafana-opentelemetry-starter"
   runtimeOnly "io.micrometer:micrometer-tracing-bridge-otel"
   runtimeOnly "net.ttddyy.observation:datasource-micrometer-spring-boot"
+  runtimeOnly "org.axonframework:axon-micrometer"
 
   testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
 

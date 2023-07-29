@@ -55,6 +55,7 @@ dependencies {
   runtimeOnly "com.fasterxml.jackson.core:jackson-databind"
   runtimeOnly "com.grafana:grafana-opentelemetry-starter"
   runtimeOnly "io.micrometer:micrometer-tracing-bridge-otel"
+  runtimeOnly "org.axonframework:axon-micrometer"
   runtimeOnly "org.postgresql:postgresql"
 
   testImplementation project(":klokwrk-lib-archunit")
