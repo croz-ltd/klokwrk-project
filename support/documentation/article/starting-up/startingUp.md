@@ -1,13 +1,13 @@
 # Starting up and trying the whole thing
 * **Author:** Damir Murat
 * **Created:** 26.05.2020.
-* **Updated:** 13.04.2022.
+* **Updated:** 30.07.2023.
 
 Environment:
 - OSX (should work with any desktop Linux distro and with Windows with appropriate bash-shell like git-bash)
 - JDK 17
-- Gradle 7.4.2 (exact version)
-- IDEA Community/Ultimate 2022.2.3
+- Gradle 7.6.1
+- IDEA Community/Ultimate 2023.2.0
 - Docker
 - Postman
 
@@ -68,7 +68,7 @@ However, if you are interested, there is a way to generate a changelog in a loca
 
 - execute the following commands:
 
-      env JRELEASER_PROJECT_VERSION=1.5.1 JRELEASER_GITHUB_TOKEN=1 \
+      env JRELEASER_PROJECT_VERSION=1.7.0 JRELEASER_GITHUB_TOKEN=1 \
       jreleaser changelog --basedir=. --config-file=./support/jreleaser/jreleaser-draft.yml --debug
 
       open out/jreleaser/release/CHANGELOG.md
@@ -103,7 +103,8 @@ After saving `.idea/gradle.xml`, you must reload all Gradle projects (use the Gr
 ![Module names without noisy qualifiers](images/02-module-names-without-noisy-qualifiers.jpg "Module names without noisy qualifiers")
 
 ## Running and exercising applications
-As in most distributed systems, we have multiple applications to run. Some of them are functional, while others have a supportive role. In addition, we also have required infrastructural pieces.
+As in most distributed systems, we have multiple applications to run. Some of them bring actual functionality, while others have a supportive role. In addition, we also have required infrastructural
+pieces.
 
 ### Starting applications
 In our case, infrastructure comprises Axon Server and PostgreSQL database. To **start those infrastructural components**, open the new shell (shell-2) at the project root and execute the following
@@ -212,24 +213,6 @@ Each request from the scenario contains tests that verify if a particular reques
 
 ![Execute scenario, step 3](images/10-executeScenarioStep3.jpg "Execute scenario, step 3")
 
-### Exploring Wavefront integration
-Since the 2.3.0 version, Spring Boot provides out-of-the-box free integration with Wavefront observability service. It offers zero-setup and feature-rich alternative to the standard observability
-solutions like Prometheus (metrics collection), Zipkin (distributed tracing) and Grafana (visualization) combo. Wavefront is very convenient and effortless to use from a development environment.
-
-Here is a very brief overview of Wavefront usage for a `klokwrk-project`:
-- Start all applications as described previously. From the output of any application, copy the link to the Wavefront service.
-
-  ![Wavefront link](images/11-wavefront-link.jpg "Wavefront link")
-
-- Execute a dozen of commandside and queryside requests as described above, to provide some data to the Wavefront.
-- Open previously copied Wavefront link and start exploring. The following resources will get you quickly up to speed: <br/>
-  - [Tanzu Observability by Wavefront for Spring Boot Applications](https://www.youtube.com/watch?v=Jxwf-Iw-3T8) <br/>
-  - [Wavefront for Spring Boot](https://docs.wavefront.com/wavefront_springboot.html) <br/>
-  - [Wavefront for Spring Boot Tutorial](https://docs.wavefront.com/wavefront_springboot_tutorial.html)
-
-> Note: If you experience issues with Wavefront integration, like getting Wavefront related errors in the log, try removing Wavefront freemium account record from your home directory
-> (`rm ~/.wavefront_freemium`) and start the applications again.
-
 ### Supportive Gradle tasks
 While working on a project, a developer often needs access to various pieces of information about the current state of a project. These reports might provide beneficial information about code quality
 and can point to the areas which require some attention and improvements. Project Klokwrk has a dozen of Gradle tasks that provide such information. They can be run for each individual module, or
@@ -272,3 +255,50 @@ from the project's root.
 - `gw aggregateGroovydoc`
 
   Creates a cumulative documentation for the whole project accessible at `build/docs/aggregate-groovydoc/index.html`.
+
+## Observability with Grfana Cloud (optional)
+To support observability features (metrics, logs, and traces), klokwrk uses the free plan of [Grafana Cloud](https://grafana.com/) offering. The instrumentation of applications is based on
+Spring Boot's micrometer support and OpenTelemetry. For integrating OpenTelemetry with Grafana, klokwrk uses the [grafana-opentelemetry-starter](https://github.com/grafana/grafana-opentelemetry-starter)
+library, and for instrumenting Axon components, the [axon-micrometer](https://github.com/AxonFramework/AxonFramework/blob/master/metrics-micrometer/pom.xml) library.
+
+The delivery of observability data to the Grafana Cloud leverages [Grafana Agent](https://github.com/grafana/agent), a single infrastructure component required to run locally (inside the Docker
+container).
+
+### Configuring observability infrastructure
+As a first step, you have to assign for a [permanent free plan](https://grafana.com/products/cloud/) at Grafana Clod. Make sure you save your Grafana Cloud API key in a safe place.
+
+Second, you must configure Grafana Agent for authorized access to all required components of your Grafana Cloud profile. That includes providing URLs and usernames for provisioned Grafana Cloud's
+Prometheus, Loki, and Tempo servers and your Grafana Cloud API key. Assuming you have the API key already, other information can be found on the
+[https://grafana.com/profile/org](https://grafana.com/profile/org) page.
+
+Now, you must provide that information to the Grafana Agent on your machine. You can do this in the following way:
+- create `support/docker/grafana/grafana-agent/agent.env` file. It will contain all necessary config data as environment variables. And do not worry; the `agent.env` is added to the git ignore list,
+  so you will not accidentally commit it.
+- copy the content of `support/docker/grafana/grafana-agent/agent.env.sample` file in the `agent.env`. The sample file contains comments with dummy URLs which should make it easy to guess the proper
+  format of URLs (Grafana Cloud instructions are not always clear enough).
+
+### Running with observability
+Running the application with observability enabled is similar to running it [without observability](#running-and-exercising-applications). The differences are listed below:
+- to run the infrastructure with Grafana Agent included, use the `dockerComposeInfrastructureUpWithObservability.sh` script:
+
+      ./dockerComposeInfrastructureUpWithObservability.sh
+
+- to run applications with required environment variables set up, use IDEA run configurations with names ending with "`with observability [bootRun]`" as shown in the following picture:
+  ![Run configuration with observability](images/11-observability-run-configurations.jpg "Run configuration with observability")
+
+### Exploring observability data
+After [executing some commands and queries](#executing-http-requests-via-postman), you can access Grafana Cloud UI at `https://your-org.grafana.net/a/cloud-home-app` and explore the collected data.
+For example, you can analyze the logs and related traces as shown in the following picture:
+
+[![Exploring logs and traces](images/12-grafana-explore-logs-and-traces.jpg)](images/12-grafana-explore-logs-and-traces.jpg "Exploring logs and traces")
+
+Another way is to import in Grafana some of the prepared dashboards from the `support/docker/grafana/dashboards` directory:
+
+> <br/>
+> Note: Every time the dashboard source file changes, the dashboard should be reimported in Grafana. <br/>
+> <br/>
+
+- `klokwrk - Axon app - simple metrics.json`<br/>
+  The dashboard displays simple metrics for commands, events, and queries processed by the Axon application. This dashboard is a modification of the original AxonIQ's
+  "[Axon Framework Application](https://grafana.com/grafana/dashboards/12963-axon-spring-boot-applications-statistics/)" dashboard, which didn't work correctly when writing this document.
+  [![Exploring logs and traces](images/13-grafana-dashboard-axon-app-simple-metrics.jpg)](images/13-grafana-dashboard-axon-app-simple-metrics.jpg "Axon app simple metrics dashboard")
