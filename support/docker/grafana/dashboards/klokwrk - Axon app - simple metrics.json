@@ -20,7 +20,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 12963,
   "graphTooltip": 0,
-  "id": 20,
+  "id": 22,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -65,8 +65,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -150,8 +149,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -235,8 +233,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -320,8 +317,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -405,8 +401,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -510,8 +505,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -644,8 +638,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -800,8 +793,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -904,8 +896,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -921,7 +912,7 @@
             "h": 3,
             "w": 4,
             "x": 0,
-            "y": 2
+            "y": 21
           },
           "id": 108,
           "links": [],
@@ -989,8 +980,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1006,7 +996,7 @@
             "h": 3,
             "w": 4,
             "x": 5,
-            "y": 2
+            "y": 21
           },
           "id": 109,
           "links": [],
@@ -1074,8 +1064,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1091,7 +1080,7 @@
             "h": 3,
             "w": 4,
             "x": 10,
-            "y": 2
+            "y": 21
           },
           "id": 110,
           "links": [],
@@ -1159,8 +1148,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1176,7 +1164,7 @@
             "h": 3,
             "w": 4,
             "x": 15,
-            "y": 2
+            "y": 21
           },
           "id": 111,
           "links": [],
@@ -1244,8 +1232,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1261,7 +1248,7 @@
             "h": 3,
             "w": 4,
             "x": 20,
-            "y": 2
+            "y": 21
           },
           "id": 112,
           "links": [],
@@ -1349,8 +1336,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1366,7 +1352,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 5
+            "y": 24
           },
           "id": 128,
           "options": {
@@ -1483,8 +1469,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1500,7 +1485,7 @@
             "h": 6,
             "w": 24,
             "x": 0,
-            "y": 12
+            "y": 31
           },
           "id": 113,
           "links": [],
@@ -1646,8 +1631,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1663,7 +1647,7 @@
             "h": 3,
             "w": 4,
             "x": 0,
-            "y": 3
+            "y": 22
           },
           "id": 118,
           "links": [],
@@ -1731,8 +1715,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1748,7 +1731,7 @@
             "h": 3,
             "w": 4,
             "x": 5,
-            "y": 3
+            "y": 22
           },
           "id": 119,
           "links": [],
@@ -1816,8 +1799,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1833,7 +1815,7 @@
             "h": 3,
             "w": 4,
             "x": 10,
-            "y": 3
+            "y": 22
           },
           "id": 120,
           "links": [],
@@ -1901,8 +1883,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1918,7 +1899,7 @@
             "h": 3,
             "w": 4,
             "x": 15,
-            "y": 3
+            "y": 22
           },
           "id": 121,
           "links": [],
@@ -1986,8 +1967,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2003,7 +1983,7 @@
             "h": 3,
             "w": 4,
             "x": 20,
-            "y": 3
+            "y": 22
           },
           "id": 122,
           "links": [],
@@ -2091,8 +2071,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2108,7 +2087,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 6
+            "y": 25
           },
           "id": 131,
           "options": {
@@ -2225,8 +2204,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2242,7 +2220,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 14
+            "y": 33
           },
           "id": 123,
           "links": [],
@@ -2381,8 +2359,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2398,7 +2375,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 14
+            "y": 33
           },
           "id": 130,
           "options": {
@@ -2461,7 +2438,7 @@
           "type": "prometheus",
           "uid": "grafanacloud-prom"
         },
-        "definition": "label_values(job)",
+        "definition": "label_values(app)",
         "hide": 0,
         "includeAll": true,
         "label": "Application",
@@ -2469,7 +2446,7 @@
         "name": "application",
         "options": [],
         "query": {
-          "query": "label_values(job)",
+          "query": "label_values(app)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -2548,6 +2525,6 @@
   "timezone": "",
   "title": "klokwrk - Axon app - simple metrics",
   "uid": "klokwrk_axon_simple_metrics_1",
-  "version": 44,
+  "version": 3,
   "weekStart": ""
 }
