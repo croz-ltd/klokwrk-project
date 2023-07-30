@@ -25,7 +25,6 @@ description = "Spring Boot related platform for klokwrk-project modules that nee
 dependencies {
   api platform(project(":klokwrk-platform-base"))
   api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
-  api platform("com.wavefront:wavefront-spring-boot-bom:$wavefrontSpringBootBomVersion")
 
   constraints {
     api "net.ttddyy.observation:datasource-micrometer-spring-boot:$dataSourceProxyMicrometerSpringBootVersion"

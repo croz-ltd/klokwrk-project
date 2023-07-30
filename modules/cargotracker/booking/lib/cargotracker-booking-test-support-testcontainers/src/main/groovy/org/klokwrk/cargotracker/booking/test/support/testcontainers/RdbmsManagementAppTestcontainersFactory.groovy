@@ -41,7 +41,6 @@ class RdbmsManagementAppTestcontainersFactory {
         "CARGOTRACKER_POSTGRES_DB_MIGRATION_USERNAME": "db_migration",
         "CARGOTRACKER_POSTGRES_DB_MIGRATION_PASSWORD": "db_migration",
         "MANAGEMENT_DEFAULTS_METRICS_EXPORT_ENABLED": "false",
-        "MANAGEMENT_WAVEFRONT_METRICS_EXPORT_ENABLED": "false",
         "MANAGEMENT_TRACING_ENABLED": "false"
     ])
     rdbmsManagementApp.withNetwork(klokwrkNetwork)

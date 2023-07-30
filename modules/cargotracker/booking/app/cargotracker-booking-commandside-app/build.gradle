@@ -58,11 +58,10 @@ dependencies {
   implementation "org.springframework.boot:spring-boot-starter-web"
   implementation "tech.units:indriya"
 
-  runtimeOnly "com.wavefront:wavefront-spring-boot-starter"
-  runtimeOnly "io.micrometer:micrometer-registry-wavefront"
+  runtimeOnly "com.grafana:grafana-opentelemetry-starter"
   runtimeOnly "io.micrometer:micrometer-tracing-bridge-otel"
-  runtimeOnly "io.micrometer:micrometer-tracing-reporter-wavefront"
   runtimeOnly "net.ttddyy.observation:datasource-micrometer-spring-boot"
+  runtimeOnly "org.axonframework:axon-micrometer"
 
   testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
 
