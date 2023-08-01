@@ -31,19 +31,19 @@
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-lib-axon-cqrs" id="999e476a2a41627b0858c2523a699c8e" language="Java">
 		<description></description>
-		<rootPath name="../../modules/cargotracker/lib/cargotracker-lib-axon-cqrs/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/bc/cargotracker/lib/cargotracker-lib-axon-cqrs/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-lib-axon-logging" id="531f23cadcc5ea0d30c83880f6e998c1" language="Java">
 		<description></description>
-		<rootPath name="../../modules/cargotracker/lib/cargotracker-lib-axon-logging/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/bc/cargotracker/lib/cargotracker-lib-axon-logging/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-lib-boundary-api" id="771eea1c054bb421bf51fc1add2c94fb" language="Java">
 		<description></description>
-		<rootPath name="../../modules/cargotracker/lib/cargotracker-lib-boundary-api/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/bc/cargotracker/lib/cargotracker-lib-boundary-api/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-lib-web" id="6227501579de345a8ad26de6d06df19f" language="Java">
 		<description></description>
-		<rootPath name="../../modules/cargotracker/lib/cargotracker-lib-web/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/bc/cargotracker/lib/cargotracker-lib-web/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-archunit" id="e3b27757925496f27f0aeb23d3fe606b" language="Java">
 		<description></description>
@@ -103,11 +103,11 @@
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-lib-domain-model-command" id="7a6ea09a1deab91dba7fe331f46ba4c1" language="Java">
 		<description></description>
-		<rootPath name="../../modules/cargotracker/lib/cargotracker-lib-domain-model-command/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/bc/cargotracker/lib/cargotracker-lib-domain-model-command/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-lib-domain-model-event" id="0061f452c55a651ac6bce1d10ec54403" language="Java">
 		<description></description>
-		<rootPath name="../../modules/cargotracker/lib/cargotracker-lib-domain-model-event/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/bc/cargotracker/lib/cargotracker-lib-domain-model-event/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-domain-model-command" id="295527c4e3b43009f3ea006622a35cb1" language="Java">
 		<description></description>
@@ -131,7 +131,7 @@
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-lib-boundary-query-api" id="4b7278c4e952cf491c3f90b5376153f8" language="Java">
 		<description></description>
-		<rootPath name="../../modules/cargotracker/lib/cargotracker-lib-boundary-query-api/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/bc/cargotracker/lib/cargotracker-lib-boundary-query-api/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-test-support-queryside" id="01988f1743ed8b1ca82b03a3e7f521de" language="Java">
 		<description></description>
