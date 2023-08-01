@@ -55,7 +55,7 @@
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-datasourceproxy-springboot" id="865468c990dcd2dc5910f63a57e53f79" language="Java">
 		<description></description>
-		<rootPath name="../../modules/lib/klokwrk-lib-datasourceproxy-springboot/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/lib/hi/klokwrk-lib-datasourceproxy-springboot/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-hibernate" id="45e81d020cb446257a59412f0358df60" language="Java">
 		<description></description>
@@ -67,11 +67,11 @@
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-jackson-springboot" id="d40a6e4258dc23757787a2d4cdcb152b" language="Java">
 		<description></description>
-		<rootPath name="../../modules/lib/klokwrk-lib-jackson-springboot/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/lib/hi/klokwrk-lib-jackson-springboot/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-spring-context" id="9716a4c196151f747f529319cbb39bbb" language="Java">
 		<description></description>
-		<rootPath name="../../modules/lib/klokwrk-lib-spring-context/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/lib/hi/klokwrk-lib-spring-context/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lang-groovy" id="8fceb7f243264de800ea1bb7e57fe666" language="Java">
 		<description></description>
@@ -91,7 +91,7 @@
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-validation-springboot" id="9403ba559b21456bc28b70f1e18a9fe3" language="Java">
 		<description></description>
-		<rootPath name="../../modules/lib/klokwrk-lib-validation-springboot/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/lib/hi/klokwrk-lib-validation-springboot/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-validation-validator" id="b86033548216844f24c5d202c9423915" language="Java">
 		<description></description>
