@@ -16,10 +16,10 @@
   <property name="project-excluded" />
   <property name="show-needs-to-compile" value="false" />
   <classpath>
-    <classpathentry kind="lib" path="../../modules/cargotracker/booking/app/cargotracker-booking-commandside-app/build/classes/groovy/main" module="cargotracker-booking-commandside-app" displaymodule="cargotracker-booking-commandside-app" />
-    <classpathentry kind="lib" path="../../modules/cargotracker/booking/app/cargotracker-booking-queryside-projection-rdbms-app/build/classes/groovy/main" module="cargotracker-booking-queryside-projection-rdbms-app" displaymodule="cargotracker-booking-queryside-projection-rdbms-app" />
-    <classpathentry kind="lib" path="../../modules/cargotracker/booking/app/cargotracker-booking-queryside-view-app/build/classes/groovy/main" module="cargotracker-booking-queryside-view-app" displaymodule="cargotracker-booking-queryside-view-app" />
-    <classpathentry kind="lib" path="../../modules/cargotracker/booking/app/cargotracker-booking-rdbms-management-app/build/classes/groovy/main" module="cargotracker-booking-rdbms-management-app" displaymodule="cargotracker-booking-rdbms-management-app" />
+    <classpathentry kind="lib" path="../../modules/bc/cargotracker/asd/booking/app/cargotracker-booking-commandside-app/build/classes/groovy/main" module="cargotracker-booking-commandside-app" displaymodule="cargotracker-booking-commandside-app" />
+    <classpathentry kind="lib" path="../../modules/bc/cargotracker/asd/booking/app/cargotracker-booking-queryside-projection-rdbms-app/build/classes/groovy/main" module="cargotracker-booking-queryside-projection-rdbms-app" displaymodule="cargotracker-booking-queryside-projection-rdbms-app" />
+    <classpathentry kind="lib" path="../../modules/bc/cargotracker/asd/booking/app/cargotracker-booking-queryside-view-app/build/classes/groovy/main" module="cargotracker-booking-queryside-view-app" displaymodule="cargotracker-booking-queryside-view-app" />
+    <classpathentry kind="lib" path="../../modules/bc/cargotracker/asd/booking/app/cargotracker-booking-rdbms-management-app/build/classes/groovy/main" module="cargotracker-booking-rdbms-management-app" displaymodule="cargotracker-booking-rdbms-management-app" />
     <classpathentry kind="lib" path="../../modules/cargotracker/booking/lib/cargotracker-booking-boundary-web/build/classes/groovy/main" module="cargotracker-booking-boundary-web" displaymodule="cargotracker-booking-boundary-web" />
     <classpathentry kind="lib" path="../../modules/cargotracker/booking/lib/cargotracker-booking-domain-model-aggregate/build/classes/groovy/main" module="cargotracker-booking-domain-model-aggregate" displaymodule="cargotracker-booking-domain-model-aggregate" />
     <classpathentry kind="lib" path="../../modules/cargotracker/booking/lib/cargotracker-booking-domain-model-command/build/classes/groovy/main" module="cargotracker-booking-domain-model-command" displaymodule="cargotracker-booking-domain-model-command" />
