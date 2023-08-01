@@ -23,7 +23,7 @@
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-domain-model-value" id="e40ce62140f7b2333df8fe1ca52c5865" language="Java">
 		<description></description>
-		<rootPath name="../../modules/cargotracker/booking/lib/cargotracker-booking-domain-model-value/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/bc/cargotracker/domain-model/cargotracker-booking-domain-model-value/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-queryside-model-rdbms-jpa" id="c2c474c822fb875ecf3d9c445cb02773" language="Java">
 		<description></description>
@@ -111,19 +111,19 @@
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-domain-model-command" id="295527c4e3b43009f3ea006622a35cb1" language="Java">
 		<description></description>
-		<rootPath name="../../modules/cargotracker/booking/lib/cargotracker-booking-domain-model-command/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/bc/cargotracker/domain-model/cargotracker-booking-domain-model-command/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-domain-model-event" id="4784abb78106ff3510620acd9f096051" language="Java">
 		<description></description>
-		<rootPath name="../../modules/cargotracker/booking/lib/cargotracker-booking-domain-model-event/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/bc/cargotracker/domain-model/cargotracker-booking-domain-model-event/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-domain-model-aggregate" id="19009ea21bf293bfe4492813e88a8523" language="Java">
 		<description></description>
-		<rootPath name="../../modules/cargotracker/booking/lib/cargotracker-booking-domain-model-aggregate/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/bc/cargotracker/domain-model/cargotracker-booking-domain-model-aggregate/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-domain-model-service" id="45a14c3367698bd7c450b86d54961429" language="Java">
 		<description></description>
-		<rootPath name="../../modules/cargotracker/booking/lib/cargotracker-booking-domain-model-service/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/bc/cargotracker/domain-model/cargotracker-booking-domain-model-service/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-out-customer" id="d36dd8c8de39c9bc532f6aabc9a18a72" language="Java">
 		<description></description>
