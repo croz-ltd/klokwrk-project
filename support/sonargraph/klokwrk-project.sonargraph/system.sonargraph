@@ -47,11 +47,11 @@
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-archunit" id="e3b27757925496f27f0aeb23d3fe606b" language="Java">
 		<description></description>
-		<rootPath name="../../modules/lib/klokwrk-lib-archunit/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/lib/lo/klokwrk-lib-archunit/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-datasourceproxy" id="a7f439d842a6a6d53cd176ba44ff0382" language="Java">
 		<description></description>
-		<rootPath name="../../modules/lib/klokwrk-lib-datasourceproxy/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/lib/lo/klokwrk-lib-datasourceproxy/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-datasourceproxy-springboot" id="865468c990dcd2dc5910f63a57e53f79" language="Java">
 		<description></description>
@@ -59,11 +59,11 @@
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-hibernate" id="45e81d020cb446257a59412f0358df60" language="Java">
 		<description></description>
-		<rootPath name="../../modules/lib/klokwrk-lib-hibernate/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/lib/lo/klokwrk-lib-hibernate/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-jackson" id="c962002e2dc04b85961d4059c9a1ec93" language="Java">
 		<description></description>
-		<rootPath name="../../modules/lib/klokwrk-lib-jackson/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/lib/lo/klokwrk-lib-jackson/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-jackson-springboot" id="d40a6e4258dc23757787a2d4cdcb152b" language="Java">
 		<description></description>
@@ -87,7 +87,7 @@
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-validation-constraint" id="68f99af69b159b1a2bece47891eedfa0" language="Java">
 		<description></description>
-		<rootPath name="../../modules/lib/klokwrk-lib-validation-constraint/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/lib/lo/klokwrk-lib-validation-constraint/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-validation-springboot" id="9403ba559b21456bc28b70f1e18a9fe3" language="Java">
 		<description></description>
@@ -95,7 +95,7 @@
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-validation-validator" id="b86033548216844f24c5d202c9423915" language="Java">
 		<description></description>
-		<rootPath name="../../modules/lib/klokwrk-lib-validation-validator/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/lib/lo/klokwrk-lib-validation-validator/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-test-component" id="55bf2e40e489cd5e54e95fcd66389a4c" language="Java">
 		<description></description>

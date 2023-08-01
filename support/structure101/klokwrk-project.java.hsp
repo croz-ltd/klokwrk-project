@@ -41,16 +41,16 @@
     <classpathentry kind="lib" path="../../modules/lang/klokwrk-lang-groovy/build/classes/groovy/main" module="klokwrk-lang-groovy" displaymodule="klokwrk-lang-groovy" />
     <classpathentry kind="lib" path="../../modules/lang/klokwrk-lang-groovy-contracts-match/build/classes/groovy/main" module="klokwrk-lang-groovy-contracts-match" displaymodule="klokwrk-lang-groovy-contracts-match" />
     <classpathentry kind="lib" path="../../modules/lang/klokwrk-lang-groovy-contracts-simple/build/classes/groovy/main" module="klokwkr-lang-groovy-contracts-simple" displaymodule="klokwkr-lang-groovy-contracts-simple" />
-    <classpathentry kind="lib" path="../../modules/lib/klokwrk-lib-archunit/build/classes/groovy/main" module="klokwrk-lib-archunit" displaymodule="klokwrk-lib-archunit" />
-    <classpathentry kind="lib" path="../../modules/lib/klokwrk-lib-datasourceproxy/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy" displaymodule="klokwrk-lib-datasourceproxy" />
+    <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-archunit/build/classes/groovy/main" module="klokwrk-lib-archunit" displaymodule="klokwrk-lib-archunit" />
+    <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-datasourceproxy/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy" displaymodule="klokwrk-lib-datasourceproxy" />
     <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-datasourceproxy-springboot/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy-springboot" displaymodule="klokwrk-lib-datasourceproxy-springboot" />
-    <classpathentry kind="lib" path="../../modules/lib/klokwrk-lib-hibernate/build/classes/groovy/main" module="klokwrk-lib-hibernate" displaymodule="klokwrk-lib-hibernate" />
-    <classpathentry kind="lib" path="../../modules/lib/klokwrk-lib-jackson/build/classes/groovy/main" module="klokwrk-lib-jackson" displaymodule="klokwrk-lib-jackson" />
+    <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-hibernate/build/classes/groovy/main" module="klokwrk-lib-hibernate" displaymodule="klokwrk-lib-hibernate" />
+    <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-jackson/build/classes/groovy/main" module="klokwrk-lib-jackson" displaymodule="klokwrk-lib-jackson" />
     <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-jackson-springboot/build/classes/groovy/main" module="klokwrk-lib-jackson-springboot" displaymodule="klokwrk-lib-jackson-springboot" />
     <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-spring-context/build/classes/groovy/main" module="klokwrk-lib-spring-context" displaymodule="klokwrk-lib-spring-context" />
-    <classpathentry kind="lib" path="../../modules/lib/klokwrk-lib-validation-constraint/build/classes/groovy/main" module="klokwrk-lib-validation-constraint" displaymodule="klokwrk-lib-validation-constraint" />
+    <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-validation-constraint/build/classes/groovy/main" module="klokwrk-lib-validation-constraint" displaymodule="klokwrk-lib-validation-constraint" />
     <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-validation-springboot/build/classes/groovy/main" module="klokwrk-lib-validation-springboot" displaymodule="klokwrk-lib-validation-springboot" />
-    <classpathentry kind="lib" path="../../modules/lib/klokwrk-lib-validation-validator/build/classes/groovy/main" module="klokwrk-lib-validation-validator" displaymodule="klokwrk-lib-validation-validator" />
+    <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-validation-validator/build/classes/groovy/main" module="klokwrk-lib-validation-validator" displaymodule="klokwrk-lib-validation-validator" />
   </classpath>
   <pom-root-files />
   <modules-in-scope />
