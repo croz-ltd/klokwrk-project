@@ -75,15 +75,15 @@
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lang-groovy" id="8fceb7f243264de800ea1bb7e57fe666" language="Java">
 		<description></description>
-		<rootPath name="../../modules/lang/klokwrk-lang-groovy/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/lib/xlang/klokwrk-lang-groovy/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lang-groovy-contracts-match" id="9eac0728a96a8dd1e57490df06647eee" language="Java">
 		<description></description>
-		<rootPath name="../../modules/lang/klokwrk-lang-groovy-contracts-match/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/lib/xlang/klokwrk-lang-groovy-contracts-match/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lang-groovy-contracts-simple" id="6d6ea9c0941cc6f601d968116202dc4e" language="Java">
 		<description></description>
-		<rootPath name="../../modules/lang/klokwrk-lang-groovy-contracts-simple/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/lib/xlang/klokwrk-lang-groovy-contracts-simple/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-validation-constraint" id="68f99af69b159b1a2bece47891eedfa0" language="Java">
 		<description></description>

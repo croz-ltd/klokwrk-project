@@ -38,9 +38,9 @@
     <classpathentry kind="lib" path="../../modules/bc/cargotracker/lib/cargotracker-lib-domain-model-command/build/classes/groovy/main" module="cargotracker-lib-domain-model-command" displaymodule="cargotracker-lib-domain-model-command" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracker/lib/cargotracker-lib-domain-model-event/build/classes/groovy/main" module="cargotracker-lib-domain-model-event" displaymodule="cargotracker-lib-domain-model-event" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracker/lib/cargotracker-lib-web/build/classes/groovy/main" module="cargotracker-lib-web" displaymodule="cargotracker-lib-web" />
-    <classpathentry kind="lib" path="../../modules/lang/klokwrk-lang-groovy/build/classes/groovy/main" module="klokwrk-lang-groovy" displaymodule="klokwrk-lang-groovy" />
-    <classpathentry kind="lib" path="../../modules/lang/klokwrk-lang-groovy-contracts-match/build/classes/groovy/main" module="klokwrk-lang-groovy-contracts-match" displaymodule="klokwrk-lang-groovy-contracts-match" />
-    <classpathentry kind="lib" path="../../modules/lang/klokwrk-lang-groovy-contracts-simple/build/classes/groovy/main" module="klokwkr-lang-groovy-contracts-simple" displaymodule="klokwkr-lang-groovy-contracts-simple" />
+    <classpathentry kind="lib" path="../../modules/lib/xlang/klokwrk-lang-groovy/build/classes/groovy/main" module="klokwrk-lang-groovy" displaymodule="klokwrk-lang-groovy" />
+    <classpathentry kind="lib" path="../../modules/lib/xlang/klokwrk-lang-groovy-contracts-match/build/classes/groovy/main" module="klokwrk-lang-groovy-contracts-match" displaymodule="klokwrk-lang-groovy-contracts-match" />
+    <classpathentry kind="lib" path="../../modules/lib/xlang/klokwrk-lang-groovy-contracts-simple/build/classes/groovy/main" module="klokwkr-lang-groovy-contracts-simple" displaymodule="klokwkr-lang-groovy-contracts-simple" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-archunit/build/classes/groovy/main" module="klokwrk-lib-archunit" displaymodule="klokwrk-lib-archunit" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-datasourceproxy/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy" displaymodule="klokwrk-lib-datasourceproxy" />
     <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-datasourceproxy-springboot/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy-springboot" displaymodule="klokwrk-lib-datasourceproxy-springboot" />
