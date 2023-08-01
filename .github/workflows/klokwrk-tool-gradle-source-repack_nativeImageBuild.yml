@@ -40,35 +40,35 @@ jobs:
       - name: Assemble
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: --project-dir modules/tool/klokwrk-tool-gradle-source-repack --continue --exclude-task groovydoc --scan clean assemble testClasses
+          arguments: --project-dir modules/other/tool/klokwrk-tool-gradle-source-repack --continue --exclude-task groovydoc --scan clean assemble testClasses
 
       - name: Test Unit
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: --project-dir modules/tool/klokwrk-tool-gradle-source-repack --continue --scan check
+          arguments: --project-dir modules/other/tool/klokwrk-tool-gradle-source-repack --continue --scan check
 
       - name: Get upload version
         shell: bash
         run: |
-          echo "UPLOAD_VERSION=$(./gradlew --quiet --project-dir modules/tool/klokwrk-tool-gradle-source-repack properties | grep "^version:." | awk '{print $2}')" >> $GITHUB_ENV
+          echo "UPLOAD_VERSION=$(./gradlew --quiet --project-dir modules/other/tool/klokwrk-tool-gradle-source-repack properties | grep "^version:." | awk '{print $2}')" >> $GITHUB_ENV
 
       - name: Jar upload
         if: ${{ matrix.label == 'linux' }}
         uses: actions/upload-artifact@v3
         with:
           name: klokwrk-tool-gradle-source-repack_${{ env.UPLOAD_VERSION }}-jar
-          path: modules/tool/klokwrk-tool-gradle-source-repack/build/libs/*-all.jar
+          path: modules/other/tool/klokwrk-tool-gradle-source-repack/build/libs/*-all.jar
 
       - name: Build GraalVM native image
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: --project-dir modules/tool/klokwrk-tool-gradle-source-repack --continue --scan kwrkNativeImage
+          arguments: --project-dir modules/other/tool/klokwrk-tool-gradle-source-repack --continue --scan kwrkNativeImage
 
       - name: GraalVM native image upload
         uses: actions/upload-artifact@v3
         with:
           name: klokwrk-tool-gradle-source-repack_${{ env.UPLOAD_VERSION }}-${{ matrix.label }}
-          path: modules/tool/klokwrk-tool-gradle-source-repack/build/native-image/${{ matrix.native-image-name }}
+          path: modules/other/tool/klokwrk-tool-gradle-source-repack/build/native-image/${{ matrix.native-image-name }}
 
   build-windows:
     strategy:
@@ -122,25 +122,25 @@ jobs:
       - name: Assemble
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: --project-dir modules/tool/klokwrk-tool-gradle-source-repack --continue --exclude-task groovydoc --scan clean assemble testClasses
+          arguments: --project-dir modules/other/tool/klokwrk-tool-gradle-source-repack --continue --exclude-task groovydoc --scan clean assemble testClasses
 
       - name: Test Unit
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: --project-dir modules/tool/klokwrk-tool-gradle-source-repack --continue --scan check
+          arguments: --project-dir modules/other/tool/klokwrk-tool-gradle-source-repack --continue --scan check
 
       - name: Get upload version
         shell: bash
         run: |
-          echo "UPLOAD_VERSION=$(./gradlew --quiet --project-dir modules/tool/klokwrk-tool-gradle-source-repack properties | grep "^version:." | awk '{print $2}')" >> $GITHUB_ENV
+          echo "UPLOAD_VERSION=$(./gradlew --quiet --project-dir modules/other/tool/klokwrk-tool-gradle-source-repack properties | grep "^version:." | awk '{print $2}')" >> $GITHUB_ENV
 
       - name: Build GraalVM native image for windows
         shell: cmd
         run: |
-          ./gradlew.bat --project-dir modules/tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
+          ./gradlew.bat --project-dir modules/other/tool/klokwrk-tool-gradle-source-repack --continue kwrkNativeImage
 
       - name: GraalVM native image upload
         uses: actions/upload-artifact@v3
         with:
           name: klokwrk-tool-gradle-source-repack_${{ env.UPLOAD_VERSION }}-${{ matrix.label }}
-          path: modules/tool/klokwrk-tool-gradle-source-repack/build/native-image/${{ matrix.native-image-name }}
+          path: modules/other/tool/klokwrk-tool-gradle-source-repack/build/native-image/${{ matrix.native-image-name }}

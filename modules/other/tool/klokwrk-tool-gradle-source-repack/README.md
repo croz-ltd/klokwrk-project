@@ -107,7 +107,7 @@ short variant.
 To create and run the executable jar:
 
 ```
-cd <klokwrk-project-dir>/modules/tool/klokwrk-tool-gradle-source-repack
+cd <klokwrk-project-dir>/modules/other/tool/klokwrk-tool-gradle-source-repack
 ../../../gradlew clean assemble
 java -jar ./build/libs/klokwrk-tool-gradle-source-repack-<tool-version>-all.jar <Gradle-version>
 ```
@@ -130,7 +130,7 @@ With GraalVM set up, for creating the native image, downloading of GraalVM `nati
 Now, the native image for `klokwrk-tool-gradle-source-repack` can be created with the following commands (this will take several minutes):
 
 ```
-cd <klokwrk-project-dir>/modules/tool/klokwrk-tool-gradle-source-repack
+cd <klokwrk-project-dir>/modules/other/tool/klokwrk-tool-gradle-source-repack
 ../../../gradlew clean assemble
 ../../../gradlew kwrkNativeImage
 ```
