@@ -34,7 +34,7 @@ dependencies {
   testComponentImplementation project(":klokwrk-lib-uom")
 
   testComponentImplementation testFixtures(project(":cargotracking-booking-app-commandside"))
-  testComponentImplementation testFixtures(project(":cargotracker-booking-queryside-view-app"))
+  testComponentImplementation testFixtures(project(":cargotracking-booking-app-queryside-view"))
 
   testComponentImplementation "javax.measure:unit-api"
   testComponentImplementation "org.apache.httpcomponents.client5:httpclient5"

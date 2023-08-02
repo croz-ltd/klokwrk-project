@@ -50,7 +50,7 @@ In this structure variant, all structure-related directories are placed directly
     │   ├── cargotracker-booking-out-customer
     │   ├── cargotracker-booking-queryside-model-rdbms-jpa
     │   ├── cargotracking-booking-app-queryside-projection-rdbms
-    │   ├── cargotracker-booking-queryside-view-app
+    │   ├── cargotracking-booking-app-queryside-view
     │   ├── cargotracker-booking-rdbms-management-app
     │   ├── cargotracker-booking-test-component
     │   ├── cargotracker-booking-test-support-queryside
@@ -131,7 +131,7 @@ The following listing shows the example of the elaborate strategic structure as 
     │   │   │   ├── app
     │   │   │   │   ├── cargotracking-booking-app-commandside
     │   │   │   │   ├── cargotracking-booking-app-queryside-projection-rdbms
-    │   │   │   │   ├── cargotracker-booking-queryside-view-app
+    │   │   │   │   ├── cargotracking-booking-app-queryside-view
     │   │   │   │   └── cargotracker-booking-rdbms-management-app
     │   │   │   └── lib
     │   │   │       ├── cargotracker-booking-boundary-web

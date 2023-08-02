@@ -16,11 +16,11 @@ build/
 .run/**
 !.run/01 - cargotracking-booking-app-commandside \[bootRun\].run.xml
 !.run/02 - cargotracking-booking-app-queryside-projection-rdbms \[bootRun\].run.xml
-!.run/03 - cargotracker-booking-queryside-view-app \[bootRun\].run.xml
+!.run/03 - cargotracking-booking-app-queryside-view \[bootRun\].run.xml
 !.run/cargotracker-booking-rdbms-management-app \[bootRun\].run.xml
 !.run/11 - cargotracking-booking-app-commandside with observability \[bootRun\].run.xml
 !.run/12 - cargotracking-booking-app-queryside-projection-rdbms with observability \[bootRun\].run.xml
-!.run/13 - cargotracker-booking-queryside-view-app with observability \[bootRun\].run.xml
+!.run/13 - cargotracking-booking-app-queryside-view with observability \[bootRun\].run.xml
 *.iws
 *.iml
 *.ipr

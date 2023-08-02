@@ -25,15 +25,15 @@ import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.containers.wait.strategy.Wait
 
 /**
- * Factory for creating and starting {@code cargotracker-booking-queryside-view-app} in Testcontainers.
+ * Factory for creating and starting {@code cargotracking-booking-app-queryside-view} in Testcontainers.
  */
 @CompileStatic
 class QuerySideViewAppTestcontainersFactory {
   /**
-   * Creates and start cargotracker-booking-queryside-view-app in container.
+   * Creates and start cargotracking-booking-app-queryside-view in container.
    * <p/>
    * <ul>
-   *   <li>Container name prefix: {@code cargotracker-booking-queryside-view-app}.</li>
+   *   <li>Container name prefix: {@code cargotracking-booking-app-queryside-view}.</li>
    *   <li>Exposed internal ports: 8084.</li>
    *   <li>Container time zone: {@code Europe/Zagreb}.</li>
    * </ul>
@@ -41,11 +41,11 @@ class QuerySideViewAppTestcontainersFactory {
   static GenericContainer makeAndStartQuerySideViewApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
     String imageVersion = System.getProperty("cargotrackerBookingQuerySideViewAppDockerImageVersion")
     Integer[] exposedPorts = [8084]
-    String containerName = "cargotracker-booking-queryside-view-app"
+    String containerName = "cargotracking-booking-app-queryside-view"
     String containerNameSuffix = UUID.randomUUID()
 
     //noinspection DuplicatedCode
-    GenericContainer querySideViewApp = new GenericContainer("klokwrkprj/cargotracker-booking-queryside-view-app:${ imageVersion }")
+    GenericContainer querySideViewApp = new GenericContainer("klokwrkprj/cargotracking-booking-app-queryside-view:${ imageVersion }")
 
     querySideViewApp.with {
       withExposedPorts(exposedPorts)
