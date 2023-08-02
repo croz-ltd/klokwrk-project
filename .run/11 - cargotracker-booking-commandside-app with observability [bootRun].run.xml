@@ -7,7 +7,7 @@
         </map>
       </option>
       <option name="executionName" />
-      <option name="externalProjectPath" value="$PROJECT_DIR$/modules/bc/cargotracker/asd/booking/app/cargotracker-booking-commandside-app" />
+      <option name="externalProjectPath" value="$PROJECT_DIR$/modules/bc/cargotracking/asd/booking/app/cargotracker-booking-commandside-app" />
       <option name="externalSystemIdString" value="GRADLE" />
       <option name="scriptParameters" value="" />
       <option name="taskDescriptions">

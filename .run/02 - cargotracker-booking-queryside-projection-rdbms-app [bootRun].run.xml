@@ -2,7 +2,7 @@
   <configuration default="false" name="02 - cargotracker-booking-queryside-projection-rdbms-app [bootRun]" type="GradleRunConfiguration" factoryName="Gradle" folderName="gradle - cargotracker-booking">
     <ExternalSystemSettings>
       <option name="executionName" />
-      <option name="externalProjectPath" value="$PROJECT_DIR$/modules/bc/cargotracker/asd/booking/app/cargotracker-booking-queryside-projection-rdbms-app" />
+      <option name="externalProjectPath" value="$PROJECT_DIR$/modules/bc/cargotracking/asd/booking/app/cargotracker-booking-queryside-projection-rdbms-app" />
       <option name="externalSystemIdString" value="GRADLE" />
       <option name="scriptParameters" value="" />
       <option name="taskDescriptions">
