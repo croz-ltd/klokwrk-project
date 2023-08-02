@@ -61,7 +61,7 @@ class QuerySideProjectionRdbmsAppTestcontainersFactory {
           "MANAGEMENT_TRACING_ENABLED": "false"
       ])
       withNetwork(klokwrkNetwork)
-      waitingFor(Wait.forHttp("/cargotracker-booking-queryside-projection-rdbms/management/health"))
+      waitingFor(Wait.forHttp("/cargotracking-booking-app-queryside-projection-rdbms/management/health"))
 
       start()
     }
