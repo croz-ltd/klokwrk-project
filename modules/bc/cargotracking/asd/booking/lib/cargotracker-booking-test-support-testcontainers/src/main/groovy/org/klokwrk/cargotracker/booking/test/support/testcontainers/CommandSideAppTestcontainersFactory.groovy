@@ -55,7 +55,7 @@ class CommandSideAppTestcontainersFactory {
           "MANAGEMENT_TRACING_ENABLED": "false"
       ])
       withNetwork(klokwrkNetwork)
-      waitingFor(Wait.forHttp("/cargotracker-booking-commandside/management/health"))
+      waitingFor(Wait.forHttp("/cargotracking-booking-app-commandside/management/health"))
 
       start()
     }

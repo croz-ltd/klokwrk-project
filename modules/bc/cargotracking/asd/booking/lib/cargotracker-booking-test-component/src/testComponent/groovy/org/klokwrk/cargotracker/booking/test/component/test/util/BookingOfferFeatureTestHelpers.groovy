@@ -140,7 +140,7 @@ class BookingOfferFeatureTestHelpers {
 
   static String makeCommandRequestUrl_createBookingOffer(GenericContainer commandSideApp) {
     //noinspection HttpUrlsUsage
-    String createBookingOfferCommandUrl = "http://${ commandSideApp.host }:${ commandSideApp.getMappedPort(8080) }/cargotracker-booking-commandside/booking-offer/create-booking-offer"
+    String createBookingOfferCommandUrl = "http://${ commandSideApp.host }:${ commandSideApp.getMappedPort(8080) }/cargotracking-booking-app-commandside/booking-offer/create-booking-offer"
     return createBookingOfferCommandUrl
   }
 

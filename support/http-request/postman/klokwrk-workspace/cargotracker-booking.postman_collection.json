@@ -69,14 +69,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-commandside}}",
 													"path": [
-														"cargotracker-booking-commandside",
+														"cargotracking-booking-app-commandside",
 														"booking-offer",
 														"create-booking-offer"
 													]
@@ -135,14 +135,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-commandside}}",
 													"path": [
-														"cargotracker-booking-commandside",
+														"cargotracking-booking-app-commandside",
 														"booking-offer",
 														"create-booking-offer"
 													]
@@ -201,14 +201,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-commandside}}",
 													"path": [
-														"cargotracker-booking-commandside",
+														"cargotracking-booking-app-commandside",
 														"booking-offer",
 														"create-booking-offer"
 													]
@@ -267,14 +267,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-commandside}}",
 													"path": [
-														"cargotracker-booking-commandside",
+														"cargotracking-booking-app-commandside",
 														"booking-offer",
 														"create-booking-offer"
 													]
@@ -333,14 +333,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-commandside}}",
 													"path": [
-														"cargotracker-booking-commandside",
+														"cargotracking-booking-app-commandside",
 														"booking-offer",
 														"create-booking-offer"
 													]
@@ -399,14 +399,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-commandside}}",
 													"path": [
-														"cargotracker-booking-commandside",
+														"cargotracking-booking-app-commandside",
 														"booking-offer",
 														"create-booking-offer"
 													]
@@ -465,14 +465,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-commandside}}",
 													"path": [
-														"cargotracker-booking-commandside",
+														"cargotracking-booking-app-commandside",
 														"booking-offer",
 														"create-booking-offer"
 													]
@@ -531,14 +531,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-commandside}}",
 													"path": [
-														"cargotracker-booking-commandside",
+														"cargotracking-booking-app-commandside",
 														"booking-offer",
 														"create-booking-offer"
 													]
@@ -597,14 +597,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-commandside}}",
 													"path": [
-														"cargotracker-booking-commandside",
+														"cargotracking-booking-app-commandside",
 														"booking-offer",
 														"create-booking-offer"
 													]
@@ -663,14 +663,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-commandside}}",
 													"path": [
-														"cargotracker-booking-commandside",
+														"cargotracking-booking-app-commandside",
 														"booking-offer",
 														"create-booking-offer"
 													]
@@ -718,14 +718,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-commandside}}",
 													"path": [
-														"cargotracker-booking-commandside",
+														"cargotracking-booking-app-commandside",
 														"booking-offer",
 														"create-booking-offer"
 													]
@@ -773,14 +773,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-commandside}}",
 													"path": [
-														"cargotracker-booking-commandside",
+														"cargotracking-booking-app-commandside",
 														"booking-offer",
 														"create-booking-offer"
 													]
@@ -828,14 +828,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-commandside}}",
 													"path": [
-														"cargotracker-booking-commandside",
+														"cargotracking-booking-app-commandside",
 														"booking-offer",
 														"create-booking-offer"
 													]
@@ -883,14 +883,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-commandside}}",
 													"path": [
-														"cargotracker-booking-commandside",
+														"cargotracking-booking-app-commandside",
 														"booking-offer",
 														"create-booking-offer"
 													]
@@ -948,14 +948,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-commandside}}",
 													"path": [
-														"cargotracker-booking-commandside",
+														"cargotracking-booking-app-commandside",
 														"booking-offer",
 														"create-booking-offer"
 													]
@@ -1013,14 +1013,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-commandside}}",
 													"path": [
-														"cargotracker-booking-commandside",
+														"cargotracking-booking-app-commandside",
 														"booking-offer",
 														"create-booking-offer"
 													]
@@ -1982,14 +1982,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+									"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"port": "{{port-commandside}}",
 									"path": [
-										"cargotracker-booking-commandside",
+										"cargotracking-booking-app-commandside",
 										"booking-offer",
 										"create-booking-offer"
 									]
@@ -2114,14 +2114,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{host}}:{{port-commandside}}/cargotracker-booking-commandside/booking-offer/create-booking-offer",
+									"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"port": "{{port-commandside}}",
 									"path": [
-										"cargotracker-booking-commandside",
+										"cargotracking-booking-app-commandside",
 										"booking-offer",
 										"create-booking-offer"
 									]
