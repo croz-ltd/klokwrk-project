@@ -1,8 +1,13 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="02 - cargotracker-booking-queryside-projection-rdbms-app [bootRun]" type="GradleRunConfiguration" factoryName="Gradle" folderName="gradle - cargotracker-booking">
+  <configuration default="false" name="12 - cargotracking-booking-app-queryside-projection-rdbms with observability [bootRun]" type="GradleRunConfiguration" factoryName="Gradle" folderName="gradle - cargotracker-booking">
     <ExternalSystemSettings>
+      <option name="env">
+        <map>
+          <entry key="GRAFANA_OTLP_ENABLED" value="true" />
+        </map>
+      </option>
       <option name="executionName" />
-      <option name="externalProjectPath" value="$PROJECT_DIR$/modules/bc/cargotracking/asd/booking/app/cargotracker-booking-queryside-projection-rdbms-app" />
+      <option name="externalProjectPath" value="$PROJECT_DIR$/modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-queryside-projection-rdbms" />
       <option name="externalSystemIdString" value="GRADLE" />
       <option name="scriptParameters" value="" />
       <option name="taskDescriptions">
