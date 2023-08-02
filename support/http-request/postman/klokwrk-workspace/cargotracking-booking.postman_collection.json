@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "0f613845-ee27-4119-bcc9-08dfc1ee8ff6",
-		"name": "cargotracker-booking",
+		"name": "cargotracking-booking",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "1601377"
 	},

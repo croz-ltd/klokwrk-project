@@ -163,7 +163,7 @@ them up properly, execute the following shell script (from shell-2):
 For executing HTTP requests, we will use [Postman](https://www.postman.com/). Please [download](https://www.postman.com/downloads/) a free local application for your OS and install it if you don't
 have it already.
 
-First, you have to import `support/http-request/postman/klokwrk-workspace/cargotracker-booking.postman_collection.json` collection.
+First, you have to import `support/http-request/postman/klokwrk-workspace/cargotracking-booking.postman_collection.json` collection.
 
 > <br/>
 > Note: Every time the collection source file changes, the collection must be deleted and reimported in Postman. <br/>
@@ -173,7 +173,7 @@ Inside your Postman workspace, click on `Import` button, select `File` tab in `I
 
 ![Postman Import dialog](images/05-postmanImportDialog.jpg "Postman Import dialog")
 
-Navigate to the `support/http-request/postman/klokwrk-workspace/cargotracker-booking.postman_collection.json` collection and open it. Then, in the `Import` dialog, click the `Import` button to finish
+Navigate to the `support/http-request/postman/klokwrk-workspace/cargotracking-booking.postman_collection.json` collection and open it. Then, in the `Import` dialog, click the `Import` button to finish
 the process. Now, you should have your `cargotracker-booking` collection available.
 
 ![Imported Postman collection](images/06-importedPostmanCollection.jpg "Imported Postman collection")
