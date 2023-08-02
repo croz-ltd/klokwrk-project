@@ -24,15 +24,15 @@ import org.testcontainers.containers.Network
 import org.testcontainers.containers.wait.strategy.Wait
 
 /**
- * Factory for creating and starting cargotracker-booking-commandside-app in Testcontainers.
+ * Factory for creating and starting cargotracking-booking-app-commandside in Testcontainers.
  */
 @CompileStatic
 class CommandSideAppTestcontainersFactory {
   /**
-   * Creates and start {@code cargotracker-booking-commandside-app} in container.
+   * Creates and start {@code cargotracking-booking-app-commandside} in container.
    * <p/>
    * <ul>
-   *   <li>Container name prefix: {@code cargotracker-booking-commandside-app}.</li>
+   *   <li>Container name prefix: {@code cargotracking-booking-app-commandside}.</li>
    *   <li>Exposed internal ports: 8080.</li>
    *   <li>Container time zone: {@code Europe/Zagreb}.</li>
    * </ul>
@@ -40,10 +40,10 @@ class CommandSideAppTestcontainersFactory {
   static GenericContainer makeAndStartCommandSideApp(Network klokwrkNetwork, GenericContainer axonServer) {
     String imageVersion = System.getProperty("cargotrackerBookingCommandSideAppDockerImageVersion")
     Integer[] exposedPorts = [8080]
-    String containerName = "cargotracker-booking-commandside-app"
+    String containerName = "cargotracking-booking-app-commandside"
     String containerNameSuffix = UUID.randomUUID()
 
-    GenericContainer commandSideApp = new GenericContainer("klokwrkprj/cargotracker-booking-commandside-app:${ imageVersion }")
+    GenericContainer commandSideApp = new GenericContainer("klokwrkprj/cargotracking-booking-app-commandside:${ imageVersion }")
 
     commandSideApp.with {
       withExposedPorts(exposedPorts)

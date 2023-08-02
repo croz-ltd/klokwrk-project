@@ -130,17 +130,17 @@ Alternatively, you can use corresponding shell script:
 Now we are ready for **running functional applications**. First, please make sure you are at the root of the project, and then execute the following commands, each one from a separate shell (shell-3,
 shell-4, and shell-5 where shell-3 is reused from the previous step). Wait until applications are fully started:
 
-    gw :cargotracker-booking-commandside-app:bootRun
+    gw :cargotracking-booking-app-commandside:bootRun
     gw :cargotracker-booking-queryside-projection-rdbms-app:bootRun
     gw :cargotracker-booking-queryside-view-app:bootRun
 
 or
 
-    gw -p modules/bc/cargotracking/asd/booking/app/cargotracker-booking-commandside-app bootRun
+    gw -p modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-commandside bootRun
     gw -p modules/bc/cargotracking/asd/booking/app/cargotracker-booking-queryside-projection-rdbms-app bootRun
     gw -p modules/bc/cargotracking/asd/booking/app/cargotracker-booking-queryside-view-app bootRun
 
-If you prefer, you might want to run applications from IDE. In that case, select the application's `bootRun` Gradle task as is shown in the picture for the `cargotracker-booking-commandside-app`
+If you prefer, you might want to run applications from IDE. In that case, select the application's `bootRun` Gradle task as is shown in the picture for the `cargotracking-booking-app-commandside`
 application.
 
 ![Starting commandside application from IDE](images/03-commandside-bootRun.jpg "Starting commandside application from IDE")
@@ -180,7 +180,7 @@ the process. Now, you should have your `cargotracker-booking` collection availab
 
 #### Commandside requests
 For executing some command requests, expand the collection and navigate to `cargotracker-booking/individual-requests/commandside/booking-offer/create-booking-offer`. Here `create-booking-offer`
-folder corresponds to multiple variations of the `CreateBookingOfferCommand` command from the `cargotracker-booking-commandside-app` application.
+folder corresponds to multiple variations of the `CreateBookingOfferCommand` command from the `cargotracking-booking-app-commandside` application.
 
 For example, select the `ok, en` request and click the `Send` button. You should get the appropriate response:
 

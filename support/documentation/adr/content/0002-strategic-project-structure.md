@@ -41,7 +41,7 @@ In this structure variant, all structure-related directories are placed directly
     ├── ... (other files or directories)
     ├── cargotracker
     │   ├── cargotracker-booking-boundary-web
-    │   ├── cargotracker-booking-commandside-app
+    │   ├── cargotracking-booking-app-commandside
     │   ├── cargotracker-booking-domain-model-aggregate
     │   ├── cargotracker-booking-domain-model-command
     │   ├── cargotracker-booking-domain-model-event
@@ -129,7 +129,7 @@ The following listing shows the example of the elaborate strategic structure as 
     │   ├── cargotracker
     │   │   ├── booking
     │   │   │   ├── app
-    │   │   │   │   ├── cargotracker-booking-commandside-app
+    │   │   │   │   ├── cargotracking-booking-app-commandside
     │   │   │   │   ├── cargotracker-booking-queryside-projection-rdbms-app
     │   │   │   │   ├── cargotracker-booking-queryside-view-app
     │   │   │   │   └── cargotracker-booking-rdbms-management-app

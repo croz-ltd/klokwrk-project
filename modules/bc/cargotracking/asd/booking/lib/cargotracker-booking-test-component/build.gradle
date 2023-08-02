@@ -33,7 +33,7 @@ dependencies {
   testComponentImplementation project(":klokwrk-lang-groovy")
   testComponentImplementation project(":klokwrk-lib-uom")
 
-  testComponentImplementation testFixtures(project(":cargotracker-booking-commandside-app"))
+  testComponentImplementation testFixtures(project(":cargotracking-booking-app-commandside"))
   testComponentImplementation testFixtures(project(":cargotracker-booking-queryside-view-app"))
 
   testComponentImplementation "javax.measure:unit-api"

@@ -14,11 +14,11 @@ build/
 ### IntelliJ IDEA ###
 .idea/
 .run/**
-!.run/01 - cargotracker-booking-commandside-app \[bootRun\].run.xml
+!.run/01 - cargotracking-booking-app-commandside \[bootRun\].run.xml
 !.run/02 - cargotracker-booking-queryside-projection-rdbms-app \[bootRun\].run.xml
 !.run/03 - cargotracker-booking-queryside-view-app \[bootRun\].run.xml
 !.run/cargotracker-booking-rdbms-management-app \[bootRun\].run.xml
-!.run/11 - cargotracker-booking-commandside-app with observability \[bootRun\].run.xml
+!.run/11 - cargotracking-booking-app-commandside with observability \[bootRun\].run.xml
 !.run/12 - cargotracker-booking-queryside-projection-rdbms-app with observability \[bootRun\].run.xml
 !.run/13 - cargotracker-booking-queryside-view-app with observability \[bootRun\].run.xml
 *.iws

@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <ns2:softwareSystem xmlns:ns2="http://www.hello2morrow.com/sonargraph/core" id="edd1ad79d85b492f81d20049f28e84f2" version="13.0.1.803">
 	<description></description>
-	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-commandside-app" id="e792ed73624e0d1f43b5dd411f35313d" language="Java">
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracking-booking-app-commandside" id="e792ed73624e0d1f43b5dd411f35313d" language="Java">
 		<description></description>
-		<rootPath name="../../modules/bc/cargotracking/asd/booking/app/cargotracker-booking-commandside-app/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-commandside/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-queryside-view-app" id="7f8cb652de137cff243e6e945f6ee102" language="Java">
 		<description></description>
