@@ -23,7 +23,7 @@
 - publish a local image to Docker Hub
 
       docker login
-      docker push klokwrkprj/cargotracker-booking-rdbms-management-app:[version_tag]
+      docker push klokwrkprj/cargotracking-booking-app-rdbms-management:[version_tag]
       docker push klokwrkprj/cargotracking-booking-app-commandside:[version_tag]
       docker push klokwrkprj/cargotracking-booking-app-queryside-projection-rdbms:[version_tag]
       docker push klokwrkprj/cargotracking-booking-app-queryside-view:[version_tag]

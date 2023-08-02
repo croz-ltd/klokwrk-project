@@ -1,9 +1,9 @@
 version: "3.7"
 
 services:
-  cargotracker-booking-rdbms-management-app:
-    container_name: cargotracker-booking-rdbms-management-app
-    image: klokwrkprj/cargotracker-booking-rdbms-management-app:${cargotrackerBookingRdbmsManagementAppDockerImageVersion}
+  cargotracking-booking-app-rdbms-management:
+    container_name: cargotracking-booking-app-rdbms-management
+    image: klokwrkprj/cargotracking-booking-app-rdbms-management:${cargotrackerBookingRdbmsManagementAppDockerImageVersion}
     networks:
       - klokwrk-project-network
     environment:

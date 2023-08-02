@@ -116,11 +116,11 @@ commands:
 Open the next shell (shell-3) at the root of the project. Before we run applications, we must **execute a database schema management application** first. It will migrate the database schema to the
 state expected by other applications (it wraps [flyway](https://flywaydb.org/) for implementing database migrations):
 
-    gw :cargotracker-booking-rdbms-management-app:bootRun
+    gw :cargotracking-booking-app-rdbms-management:bootRun
 
 or
 
-    gw -p modules/bc/cargotracking/asd/booking/app/cargotracker-booking-rdbms-management-app bootRun
+    gw -p modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-rdbms-management bootRun
 
 Alternatively, you can use corresponding shell script:
 

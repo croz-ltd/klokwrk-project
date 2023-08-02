@@ -11,8 +11,8 @@ export cargotrackerBookingRdbmsManagementAppDockerImageVersion
 
 # docker-compose --file docker-compose-rdbms-migration.yml up
 
-# docker container rm cargotracker-booking-rdbms-management-app
+# docker container rm cargotracking-booking-app-rdbms-management
 
 ### Starting with docker-compose of version 2.3.3 `docker-compose up` command above does not return to the terminal after container exits. I believe it is a bug. Until fixed, the `run` command
 ### bellow can be used as an alternative
-docker-compose --file docker-compose-rdbms-migration.yml run --rm cargotracker-booking-rdbms-management-app
+docker-compose --file docker-compose-rdbms-migration.yml run --rm cargotracking-booking-app-rdbms-management

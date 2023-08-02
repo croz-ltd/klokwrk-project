@@ -28,10 +28,10 @@ import org.testcontainers.containers.wait.strategy.Wait
 class RdbmsManagementAppTestcontainersFactory {
   static GenericContainer makeAndStartRdbmsManagementApp(Network klokwrkNetwork, PostgreSQLContainer postgresqlServer) {
     String imageVersion = System.getProperty("cargotrackerBookingRdbmsManagementAppDockerImageVersion")
-    String containerName = "cargotracker-booking-rdbms-management-app"
+    String containerName = "cargotracking-booking-app-rdbms-management"
     String containerNameSuffix = UUID.randomUUID()
 
-    GenericContainer rdbmsManagementApp = new GenericContainer("klokwrkprj/cargotracker-booking-rdbms-management-app:${ imageVersion }")
+    GenericContainer rdbmsManagementApp = new GenericContainer("klokwrkprj/cargotracking-booking-app-rdbms-management:${ imageVersion }")
 
     rdbmsManagementApp.withCreateContainerCmdModifier({ CreateContainerCmd cmd -> cmd.withName("${ containerName }-${ containerNameSuffix }") })
     rdbmsManagementApp.withEnv([
