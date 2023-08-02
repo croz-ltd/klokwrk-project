@@ -60,7 +60,7 @@ class QuerySideViewAppTestcontainersFactory {
           "AXON.EXTENSION.TRACING.ENABLED": "false"
       ])
       withNetwork(klokwrkNetwork)
-      waitingFor(Wait.forHttp("/cargotracker-booking-queryside-view/management/health"))
+      waitingFor(Wait.forHttp("/cargotracking-booking-app-queryside-view/management/health"))
 
       start()
     }

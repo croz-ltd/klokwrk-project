@@ -1080,14 +1080,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-by-id",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-find-by-id",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-queryside}}",
 													"path": [
-														"cargotracker-booking-queryside-view",
+														"cargotracking-booking-app-queryside-view",
 														"booking-offer",
 														"booking-offer-summary-find-by-id"
 													]
@@ -1133,14 +1133,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-by-id",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-find-by-id",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-queryside}}",
 													"path": [
-														"cargotracker-booking-queryside-view",
+														"cargotracking-booking-app-queryside-view",
 														"booking-offer",
 														"booking-offer-summary-find-by-id"
 													]
@@ -1186,14 +1186,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-by-id",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-find-by-id",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-queryside}}",
 													"path": [
-														"cargotracker-booking-queryside-view",
+														"cargotracking-booking-app-queryside-view",
 														"booking-offer",
 														"booking-offer-summary-find-by-id"
 													]
@@ -1238,14 +1238,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-by-id",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-find-by-id",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-queryside}}",
 													"path": [
-														"cargotracker-booking-queryside-view",
+														"cargotracking-booking-app-queryside-view",
 														"booking-offer",
 														"booking-offer-summary-find-by-id"
 													]
@@ -1290,14 +1290,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-by-id",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-find-by-id",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-queryside}}",
 													"path": [
-														"cargotracker-booking-queryside-view",
+														"cargotracking-booking-app-queryside-view",
 														"booking-offer",
 														"booking-offer-summary-find-by-id"
 													]
@@ -1342,14 +1342,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-by-id",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-find-by-id",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-queryside}}",
 													"path": [
-														"cargotracker-booking-queryside-view",
+														"cargotracking-booking-app-queryside-view",
 														"booking-offer",
 														"booking-offer-summary-find-by-id"
 													]
@@ -1399,14 +1399,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-all",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-find-all",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-queryside}}",
 													"path": [
-														"cargotracker-booking-queryside-view",
+														"cargotracking-booking-app-queryside-view",
 														"booking-offer",
 														"booking-offer-summary-find-all"
 													]
@@ -1452,14 +1452,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-all",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-find-all",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-queryside}}",
 													"path": [
-														"cargotracker-booking-queryside-view",
+														"cargotracking-booking-app-queryside-view",
 														"booking-offer",
 														"booking-offer-summary-find-all"
 													]
@@ -1505,14 +1505,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-all",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-find-all",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-queryside}}",
 													"path": [
-														"cargotracker-booking-queryside-view",
+														"cargotracking-booking-app-queryside-view",
 														"booking-offer",
 														"booking-offer-summary-find-all"
 													]
@@ -1563,14 +1563,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-search-all",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-search-all",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-queryside}}",
 													"path": [
-														"cargotracker-booking-queryside-view",
+														"cargotracking-booking-app-queryside-view",
 														"booking-offer",
 														"booking-offer-summary-search-all"
 													]
@@ -1616,14 +1616,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-search-all",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-search-all",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-queryside}}",
 													"path": [
-														"cargotracker-booking-queryside-view",
+														"cargotracking-booking-app-queryside-view",
 														"booking-offer",
 														"booking-offer-summary-search-all"
 													]
@@ -1679,14 +1679,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-search-all",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-search-all",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-queryside}}",
 													"path": [
-														"cargotracker-booking-queryside-view",
+														"cargotracking-booking-app-queryside-view",
 														"booking-offer",
 														"booking-offer-summary-search-all"
 													]
@@ -1732,14 +1732,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-search-all",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-search-all",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-queryside}}",
 													"path": [
-														"cargotracker-booking-queryside-view",
+														"cargotracking-booking-app-queryside-view",
 														"booking-offer",
 														"booking-offer-summary-search-all"
 													]
@@ -1790,14 +1790,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-details-find-by-id",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-details-find-by-id",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-queryside}}",
 													"path": [
-														"cargotracker-booking-queryside-view",
+														"cargotracking-booking-app-queryside-view",
 														"booking-offer",
 														"booking-offer-details-find-by-id"
 													]
@@ -1843,14 +1843,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-details-find-by-id",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-details-find-by-id",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-queryside}}",
 													"path": [
-														"cargotracker-booking-queryside-view",
+														"cargotracking-booking-app-queryside-view",
 														"booking-offer",
 														"booking-offer-details-find-by-id"
 													]
@@ -1895,14 +1895,14 @@
 													}
 												},
 												"url": {
-													"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-details-find-by-id",
+													"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-details-find-by-id",
 													"protocol": "http",
 													"host": [
 														"{{host}}"
 													],
 													"port": "{{port-queryside}}",
 													"path": [
-														"cargotracker-booking-queryside-view",
+														"cargotracking-booking-app-queryside-view",
 														"booking-offer",
 														"booking-offer-details-find-by-id"
 													]
@@ -2040,14 +2040,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-by-id",
+									"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-find-by-id",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"port": "{{port-queryside}}",
 									"path": [
-										"cargotracker-booking-queryside-view",
+										"cargotracking-booking-app-queryside-view",
 										"booking-offer",
 										"booking-offer-summary-find-by-id"
 									]
@@ -2172,14 +2172,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-by-id",
+									"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-find-by-id",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"port": "{{port-queryside}}",
 									"path": [
-										"cargotracker-booking-queryside-view",
+										"cargotracking-booking-app-queryside-view",
 										"booking-offer",
 										"booking-offer-summary-find-by-id"
 									]
@@ -2242,14 +2242,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-find-all",
+									"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-find-all",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"port": "{{port-queryside}}",
 									"path": [
-										"cargotracker-booking-queryside-view",
+										"cargotracking-booking-app-queryside-view",
 										"booking-offer",
 										"booking-offer-summary-find-all"
 									]
@@ -2324,14 +2324,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{host}}:{{port-queryside}}/cargotracker-booking-queryside-view/booking-offer/booking-offer-summary-search-all",
+									"raw": "http://{{host}}:{{port-queryside}}/cargotracking-booking-app-queryside-view/booking-offer/booking-offer-summary-search-all",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"port": "{{port-queryside}}",
 									"path": [
-										"cargotracker-booking-queryside-view",
+										"cargotracking-booking-app-queryside-view",
 										"booking-offer",
 										"booking-offer-summary-search-all"
 									]
