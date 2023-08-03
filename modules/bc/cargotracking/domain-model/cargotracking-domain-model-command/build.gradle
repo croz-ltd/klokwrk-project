@@ -27,7 +27,7 @@ dependencies {
 
   implementation project(":cargotracking-domain-model-value")
   implementation project(":cargotracking-lib-boundary-api")
-  implementation project(":cargotracker-lib-domain-model-command")
+  implementation project(":cargotracking-lib-domain-model-command")
   implementation project(":klokwrk-lang-groovy")
   implementation project(":klokwrk-lang-groovy-contracts-match")
   implementation project(":klokwrk-lang-groovy-contracts-simple")
@@ -41,7 +41,7 @@ dependencies {
   testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
 
   testFixturesImplementation project(":cargotracking-domain-model-value")
-  testFixturesImplementation project(":cargotracker-lib-domain-model-command")
+  testFixturesImplementation project(":cargotracking-lib-domain-model-command")
   testFixturesImplementation project(":klokwrk-lang-groovy")
 
   testFixturesImplementation testFixtures(project(":cargotracking-domain-model-value"))

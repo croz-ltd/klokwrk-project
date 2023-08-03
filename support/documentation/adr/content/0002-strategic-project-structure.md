@@ -59,7 +59,7 @@ In this structure variant, all structure-related directories are placed directly
     │   ├── cargotracking-lib-axon-logging
     │   ├── cargotracking-lib-boundary-api
     │   ├── cargotracking-lib-boundary-query-api
-    │   ├── cargotracker-lib-domain-model-command
+    │   ├── cargotracking-lib-domain-model-command
     │   ├── cargotracker-lib-domain-model-event
     │   └── cargotracker-lib-web
     ├── ... (other files or directories)
@@ -150,7 +150,7 @@ The following listing shows the example of the elaborate strategic structure as 
     │   │       ├── cargotracking-lib-axon-logging
     │   │       ├── cargotracking-lib-boundary-api
     │   │       ├── cargotracking-lib-boundary-query-api
-    │   │       ├── cargotracker-lib-domain-model-command
+    │   │       ├── cargotracking-lib-domain-model-command
     │   │       ├── cargotracker-lib-domain-model-event
     │   │       └── cargotracker-lib-web
     │   ├── lang
