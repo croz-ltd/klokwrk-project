@@ -43,7 +43,7 @@
     <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-hi-jackson-springboot/build/classes/groovy/main" module="klokwrk-lib-hi-jackson-springboot" displaymodule="klokwrk-lib-hi-jackson-springboot" />
     <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-hi-spring-context/build/classes/groovy/main" module="klokwrk-lib-hi-spring-context" displaymodule="klokwrk-lib-hi-spring-context" />
     <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-hi-spring-data-jpa/build/classes/groovy/main" module="klokwrk-lib-hi-spring-data-jpa" displaymodule="klokwrk-lib-hi-spring-data-jpa" />
-    <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-validation-springboot/build/classes/groovy/main" module="klokwrk-lib-validation-springboot" displaymodule="klokwrk-lib-validation-springboot" />
+    <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-hi-validation-springboot/build/classes/groovy/main" module="klokwrk-lib-hi-validation-springboot" displaymodule="klokwrk-lib-hi-validation-springboot" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-archunit/build/classes/groovy/main" module="klokwrk-lib-archunit" displaymodule="klokwrk-lib-archunit" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-datasourceproxy/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy" displaymodule="klokwrk-lib-datasourceproxy" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-hibernate/build/classes/groovy/main" module="klokwrk-lib-hibernate" displaymodule="klokwrk-lib-hibernate" />
@@ -139,7 +139,7 @@
                   <row>
                     <cell name="klokwrk-lib-hi-jackson-springboot" pattern="klokwrk-lib-hi-jackson-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                     <cell name="klokwrk-lib-hi-datasourceproxy-springboot" pattern="klokwrk-lib-hi-datasourceproxy-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                    <cell name="klokwrk-lib-validation-springboot" pattern="klokwrk-lib-validation-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="klokwrk-lib-hi-validation-springboot" pattern="klokwrk-lib-hi-validation-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                     <cell name="klokwrk-lib-hi-spring-context" pattern="klokwrk-lib-hi-spring-context.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                     <cell name="klokwrk-lib-hi-spring-data-jpa" pattern="klokwrk-lib-hi-spring-data-jpa.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
@@ -310,7 +310,7 @@
                   </row>
                 </grid>
               </cell>
-              <cell name="klokwrk-lib-validation-springboot" pattern="klokwrk-lib-validation-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="klokwrk-lib-hi-validation-springboot" pattern="klokwrk-lib-hi-validation-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
               <cell name="klokwrk-lib-hi-spring-data-jpa" pattern="klokwrk-lib-hi-spring-data-jpa.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
               <cell name="klokwrk-lib-hi-spring-context" pattern="klokwrk-lib-hi-spring-context.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
