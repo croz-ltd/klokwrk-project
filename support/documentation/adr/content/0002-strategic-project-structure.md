@@ -47,13 +47,13 @@ In this structure variant, all structure-related directories are placed directly
     │   ├── cargotracking-booking-lib-boundary-web
     │   ├── cargotracking-booking-lib-out-customer
     │   ├── cargotracking-booking-lib-queryside-model-rdbms-jpa
+    │   ├── cargotracking-booking-test-support-queryside
     │   ├── cargotracker-booking-domain-model-aggregate
     │   ├── cargotracker-booking-domain-model-command
     │   ├── cargotracker-booking-domain-model-event
     │   ├── cargotracker-booking-domain-model-service
     │   ├── cargotracker-booking-domain-model-value
     │   ├── cargotracker-booking-test-component
-    │   ├── cargotracker-booking-test-support-queryside
     │   ├── cargotracker-booking-test-support-testcontainers
     │   ├── cargotracker-lib-axon-cqrs
     │   ├── cargotracker-lib-axon-logging
@@ -137,13 +137,13 @@ The following listing shows the example of the elaborate strategic structure as 
     │   │   │       ├── cargotracking-booking-lib-boundary-web
     │   │   │       ├── cargotracking-booking-lib-out-customer
     │   │   │       ├── cargotracking-booking-lib-queryside-model-rdbms-jpa
+    │   │   │       ├── cargotracking-booking-test-support-queryside
     │   │   │       ├── cargotracker-booking-domain-model-aggregate
     │   │   │       ├── cargotracker-booking-domain-model-command
     │   │   │       ├── cargotracker-booking-domain-model-event
     │   │   │       ├── cargotracker-booking-domain-model-service
     │   │   │       ├── cargotracker-booking-domain-model-value
     │   │   │       ├── cargotracker-booking-test-component
-    │   │   │       ├── cargotracker-booking-test-support-queryside
     │   │   │       └── cargotracker-booking-test-support-testcontainers
     │   │   └── lib
     │   │       ├── cargotracker-lib-axon-cqrs

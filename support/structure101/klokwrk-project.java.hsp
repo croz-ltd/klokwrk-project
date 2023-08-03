@@ -24,7 +24,7 @@
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracking-booking-lib-out-customer/build/classes/groovy/main" module="cargotracking-booking-lib-out-customer" displaymodule="cargotracking-booking-lib-out-customer" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracking-booking-lib-queryside-model-rdbms-jpa/build/classes/groovy/main" module="cargotracking-booking-lib-queryside-model-rdbms-jpa" displaymodule="cargotracking-booking-lib-queryside-model-rdbms-jpa" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracker-booking-test-component/build/classes/groovy/testIntegration" module="cargotracker-booking-test-component" displaymodule="cargotracker-booking-test-component" />
-    <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracker-booking-test-support-queryside/build/classes/groovy/main" module="cargotracker-booking-test-support-queryside" displaymodule="cargotracker-booking-test-support-queryside" />
+    <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracking-booking-test-support-queryside/build/classes/groovy/main" module="cargotracking-booking-test-support-queryside" displaymodule="cargotracking-booking-test-support-queryside" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracker-booking-test-support-testcontainers/build/classes/groovy/main" module="cargotracker-booking-test-support-testcontainers" displaymodule="cargotracker-booking-test-support-testcontainers" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/domain-model/cargotracker-booking-domain-model-aggregate/build/classes/groovy/main" module="cargotracker-booking-domain-model-aggregate" displaymodule="cargotracker-booking-domain-model-aggregate" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/domain-model/cargotracker-booking-domain-model-command/build/classes/groovy/main" module="cargotracker-booking-domain-model-command" displaymodule="cargotracker-booking-domain-model-command" />
@@ -202,7 +202,7 @@
                   </row>
                   <row>
                     <cell name="cargotracker-booking-test-support-testcontainers" pattern="cargotracker-booking-test-support-testcontainers.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                    <cell name="cargotracker-booking-test-support-queryside" pattern="cargotracker-booking-test-support-queryside.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-booking-test-support-queryside" pattern="cargotracking-booking-test-support-queryside.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                 </grid>
               </cell>
