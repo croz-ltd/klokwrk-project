@@ -28,12 +28,12 @@ dependencies {
   testIntegrationImplementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
 
   implementation project(":cargotracking-booking-lib-boundary-web")
+  implementation project(":cargotracking-booking-lib-out-customer")
   implementation project(":cargotracker-booking-domain-model-aggregate")
   implementation project(":cargotracker-booking-domain-model-command")
   implementation project(":cargotracker-booking-domain-model-event")
   implementation project(":cargotracker-booking-domain-model-service")
   implementation project(":cargotracker-booking-domain-model-value")
-  implementation project(":cargotracker-booking-out-customer")
   implementation project(":cargotracker-lib-axon-cqrs")
   implementation project(":cargotracker-lib-axon-logging")
   implementation project(":cargotracker-lib-boundary-api")
