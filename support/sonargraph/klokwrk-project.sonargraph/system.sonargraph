@@ -149,8 +149,8 @@
 		<description></description>
 		<rootPath name="../../modules/lib/hi/klokwrk-lib-hi-spring-data-jpa/build/classes/groovy/main"></rootPath>
 	</module>
-	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-uom" id="2df96dd3945e795934791dc43c9f9ad3" language="Java">
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-lo-uom" id="2df96dd3945e795934791dc43c9f9ad3" language="Java">
 		<description></description>
-		<rootPath name="../../modules/lib/lo/klokwrk-lib-uom/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/lib/lo/klokwrk-lib-lo-uom/build/classes/groovy/main"></rootPath>
 	</module>
 </ns2:softwareSystem>

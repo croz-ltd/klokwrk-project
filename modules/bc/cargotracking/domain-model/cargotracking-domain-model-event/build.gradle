@@ -37,8 +37,8 @@ dependencies {
 
   testFixturesImplementation project(":cargotracking-domain-model-value")
   testFixturesImplementation project(":cargotracking-lib-domain-model-event")
+  testFixturesImplementation project(":klokwrk-lib-lo-uom")
   testFixturesImplementation project(":klokwrk-lib-xlang-groovy-base")
-  testFixturesImplementation project(":klokwrk-lib-uom")
 
   testFixturesImplementation testFixtures(project(":cargotracking-domain-model-value"))
 

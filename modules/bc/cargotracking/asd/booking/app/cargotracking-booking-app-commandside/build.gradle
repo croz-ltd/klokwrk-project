@@ -67,8 +67,8 @@ dependencies {
 
   testFixturesImplementation project(":cargotracking-domain-model-value")
   testFixturesImplementation project(":cargotracking-test-support")
+  testFixturesImplementation project(":klokwrk-lib-lo-uom")
   testFixturesImplementation project(":klokwrk-lib-xlang-groovy-base")
-  testFixturesImplementation project(":klokwrk-lib-uom")
 
   testFixturesImplementation "javax.measure:unit-api"
   testFixturesImplementation "org.apache.groovy:groovy"
@@ -76,7 +76,7 @@ dependencies {
   testFixturesImplementation "tech.units:indriya"
 
   testImplementation project(":klokwrk-lib-lo-archunit")
-  testImplementation project(":klokwrk-lib-uom")
+  testImplementation project(":klokwrk-lib-lo-uom")
 
   testImplementation "com.tngtech.archunit:archunit-junit5"
   testImplementation "org.axonframework:axon-test"

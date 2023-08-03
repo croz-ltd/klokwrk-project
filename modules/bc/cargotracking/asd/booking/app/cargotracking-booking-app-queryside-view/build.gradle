@@ -40,7 +40,7 @@ dependencies {
   implementation project(":klokwrk-lib-hi-spring-data-jpa")
   implementation project(":klokwrk-lib-hi-validation-springboot")
   implementation project(":klokwrk-lib-lo-hibernate")
-  implementation project(":klokwrk-lib-uom")
+  implementation project(":klokwrk-lib-lo-uom")
   implementation project(":klokwrk-lib-validation-constraint")
   implementation project(":klokwrk-lib-xlang-groovy-base")
   implementation project(":klokwrk-lib-xlang-groovy-contracts-match")
@@ -68,8 +68,8 @@ dependencies {
   testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
 
   testFixturesImplementation project(":cargotracking-test-support")
+  testFixturesImplementation project(":klokwrk-lib-lo-uom")
   testFixturesImplementation project(":klokwrk-lib-xlang-groovy-base")
-  testFixturesImplementation project(":klokwrk-lib-uom")
 
   testFixturesImplementation "javax.measure:unit-api"
   testFixturesImplementation "org.apache.groovy:groovy"
@@ -86,7 +86,7 @@ dependencies {
   testIntegrationImplementation project(":cargotracking-domain-model-event")
   testIntegrationImplementation project(":cargotracking-lib-domain-model-event")
   testIntegrationImplementation project(":cargotracking-test-support")
-  testIntegrationImplementation project(":klokwrk-lib-uom")
+  testIntegrationImplementation project(":klokwrk-lib-lo-uom")
 
   testIntegrationImplementation testFixtures(project(":cargotracking-booking-lib-boundary-web"))
   testIntegrationImplementation testFixtures(project(":cargotracking-domain-model-event"))

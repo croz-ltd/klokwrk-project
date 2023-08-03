@@ -48,7 +48,7 @@
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-lo-datasourceproxy/build/classes/groovy/main" module="klokwrk-lib-lo-datasourceproxy" displaymodule="klokwrk-lib-lo-datasourceproxy" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-lo-hibernate/build/classes/groovy/main" module="klokwrk-lib-lo-hibernate" displaymodule="klokwrk-lib-lo-hibernate" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-lo-jackson/build/classes/groovy/main" module="klokwrk-lib-lo-jackson" displaymodule="klokwrk-lib-lo-jackson" />
-    <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-uom/build/classes/groovy/main" module="klokwrk-lib-uom" displaymodule="klokwrk-lib-uom" />
+    <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-lo-uom/build/classes/groovy/main" module="klokwrk-lib-lo-uom" displaymodule="klokwrk-lib-lo-uom" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-validation-constraint/build/classes/groovy/main" module="klokwrk-lib-validation-constraint" displaymodule="klokwrk-lib-validation-constraint" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-validation-validator/build/classes/groovy/main" module="klokwrk-lib-validation-validator" displaymodule="klokwrk-lib-validation-validator" />
     <classpathentry kind="lib" path="../../modules/lib/xlang/klokwrk-lib-xlang-groovy-base/build/classes/groovy/main" module="klokwrk-lib-xlang-groovy-base" displaymodule="klokwrk-lib-xlang-groovy-base" />
@@ -165,7 +165,7 @@
                     <cell name="klokwrk-lib-lo-hibernate" pattern="klokwrk-lib-lo-hibernate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
-                    <cell name="klokwrk-lib-uom" pattern="klokwrk-lib-uom.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="klokwrk-lib-lo-uom" pattern="klokwrk-lib-lo-uom.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                 </grid>
               </cell>
@@ -331,7 +331,7 @@
               <cell name="klokwrk-lib-lo-archunit" pattern="klokwrk-lib-lo-archunit.*" vexpanded="false" illegal="false" visibility="public" drill="true" bgcolor="204,255,204" />
             </row>
             <row>
-              <cell name="klokwrk-lib-uom" pattern="klokwrk-lib-uom.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="klokwrk-lib-lo-uom" pattern="klokwrk-lib-lo-uom.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
           </grid>
         </cell>

@@ -32,10 +32,10 @@ dependencies {
   implementation project(":cargotracking-lib-boundary-api")
   implementation project(":cargotracking-lib-domain-model-command")
   implementation project(":cargotracking-lib-domain-model-event")
+  implementation project(":klokwrk-lib-lo-uom")
   implementation project(":klokwrk-lib-xlang-groovy-base")
   implementation project(":klokwrk-lib-xlang-groovy-contracts-match")
   implementation project(":klokwrk-lib-xlang-groovy-contracts-simple")
-  implementation project(":klokwrk-lib-uom")
 
   implementation "javax.measure:unit-api"
   implementation "org.apache.groovy:groovy"

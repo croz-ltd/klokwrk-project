@@ -24,9 +24,9 @@ plugins {
 dependencies {
   implementation platform(project(":klokwrk-platform-spring-boot"))
 
-  implementation project(":klokwrk-lib-xlang-groovy-base")
-  implementation project(":klokwrk-lib-uom")
+  implementation project(":klokwrk-lib-lo-uom")
   implementation project(":klokwrk-lib-validation-constraint")
+  implementation project(":klokwrk-lib-xlang-groovy-base")
 
   implementation "jakarta.validation:jakarta.validation-api"
   implementation "javax.measure:unit-api"
