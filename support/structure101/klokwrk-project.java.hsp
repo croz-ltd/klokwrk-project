@@ -34,7 +34,7 @@
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-axon-cqrs/build/classes/groovy/main" module="cargotracking-lib-axon-cqrs" displaymodule="cargotracking-lib-axon-cqrs" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-axon-logging/build/classes/groovy/main" module="cargotracking-lib-axon-logging" displaymodule="cargotracking-lib-axon-logging" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-boundary-api/build/classes/groovy/main" module="cargotracking-lib-boundary-api" displaymodule="cargotracking-lib-boundary-api" />
-    <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracker-lib-boundary-query-api/build/classes/groovy/main" module="cargotracker-lib-boundary-query-api" displaymodule="cargotracker-lib-boundary-query-api" />
+    <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-boundary-query-api/build/classes/groovy/main" module="cargotracking-lib-boundary-query-api" displaymodule="cargotracking-lib-boundary-query-api" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracker-lib-domain-model-command/build/classes/groovy/main" module="cargotracker-lib-domain-model-command" displaymodule="cargotracker-lib-domain-model-command" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracker-lib-domain-model-event/build/classes/groovy/main" module="cargotracker-lib-domain-model-event" displaymodule="cargotracker-lib-domain-model-event" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracker-lib-test-support/build/classes/groovy/main" module="cargotracker-lib-test-support" displaymodule="cargotracker-lib-test-support" />
@@ -122,7 +122,7 @@
                   </row>
                   <row>
                     <cell name="cargotracking-lib-boundary-api" pattern="cargotracking-lib-boundary-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                    <cell name="cargotracker-lib-boundary-query-api" pattern="cargotracker-lib-boundary-query-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-lib-boundary-query-api" pattern="cargotracking-lib-boundary-query-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                 </grid>
               </cell>
@@ -281,7 +281,7 @@
               <cell name="cargotracker-lib-web" pattern="cargotracker-lib-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
             <row>
-              <cell name="cargotracker-lib-boundary-query-api" pattern="cargotracker-lib-boundary-query-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="cargotracking-lib-boundary-query-api" pattern="cargotracking-lib-boundary-query-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
             <row>
               <cell name="cargotracking-lib-boundary-api" pattern="cargotracking-lib-boundary-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />

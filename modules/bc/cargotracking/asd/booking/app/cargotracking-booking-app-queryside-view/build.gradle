@@ -33,7 +33,7 @@ dependencies {
   implementation project(":cargotracking-lib-axon-cqrs")
   implementation project(":cargotracking-lib-axon-logging")
   implementation project(":cargotracking-lib-boundary-api")
-  implementation project(":cargotracker-lib-boundary-query-api")
+  implementation project(":cargotracking-lib-boundary-query-api")
   implementation project(":cargotracker-lib-web")
   implementation project(":klokwrk-lib-datasourceproxy-springboot")
   implementation project(":klokwrk-lib-hibernate")
