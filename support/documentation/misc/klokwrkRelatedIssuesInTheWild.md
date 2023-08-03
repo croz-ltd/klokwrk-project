@@ -2,19 +2,19 @@
 Here we maintain list of issues in 3rd party software that are discovered during `klokwrk-project` development.
 
 ## Statuses
-| Status              | Description                                                                                       |
-|:--------------------|:--------------------------------------------------------------------------------------------------|
-| REPORTED            | Issue is reported but without any response.                                                       |
-| IN PROGRESS         | Issue is reported, and some activity happened.                                                    |
-| FIXED               | Issue is fixed and is waiting to be published as part of official release.                        |
-| RELEASED            | Issue is fixed and released, but not yet applied in `klokwrk-project`.                            |
-| VERIFIED            | After release (or after our own jitpack release), we tried it and it works for `klokwkr-project`. |
-| VERIFICATION FAILED | After release, we did try it and it does not work for `klokwrk-project`.                          |
-| WON'T FIX           | Issue is declined by a maintainer.                                                                |
-| INVALID             | Issue is reported, but is resolved as invalid.                                                    |
-| RESOLVED            | Issue is reported, and can be resolved without any fix. Similar to question.                      |
-| OBSOLETE            | Issue is reported and recognized, but will be resolved in some other way.                         |
-| NOT A BUG           | Issue is reported, but resolved as not a bug.                                                     |
+| Status              | Description                                                                                         |
+|:--------------------|:----------------------------------------------------------------------------------------------------|
+| REPORTED            | Issue is reported but without any response.                                                         |
+| IN PROGRESS         | Issue is reported, and some activity happened.                                                      |
+| FIXED               | Issue is fixed and is waiting to be published as part of official release.                          |
+| RELEASED            | Issue is fixed and released, but not yet applied in `klokwrk-project`.                              |
+| VERIFIED            | After release (or after our own jitpack release), we tried it and it works for `klokwrk-project`.   |
+| VERIFICATION FAILED | After release, we did try it and it does not work for `klokwrk-project`.                            |
+| WON'T FIX           | Issue is declined by a maintainer.                                                                  |
+| INVALID             | Issue is reported, but is resolved as invalid.                                                      |
+| RESOLVED            | Issue is reported, and can be resolved without any fix. Similar to question.                        |
+| OBSOLETE            | Issue is reported and recognized, but will be resolved in some other way.                           |
+| NOT A BUG           | Issue is reported, but resolved as not a bug.                                                       |
 
 ## List of reported issues
 This is a list of all issues, categorized per 3rd party software, that are reported by `klokwrk-project` team members.
