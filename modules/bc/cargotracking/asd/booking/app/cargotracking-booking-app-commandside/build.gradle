@@ -66,7 +66,7 @@ dependencies {
   testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
 
   testFixturesImplementation project(":cargotracking-domain-model-value")
-  testFixturesImplementation project(":cargotracker-lib-test-support")
+  testFixturesImplementation project(":cargotracking-test-support")
   testFixturesImplementation project(":klokwrk-lang-groovy")
   testFixturesImplementation project(":klokwrk-lib-uom")
 
@@ -85,7 +85,7 @@ dependencies {
   testImplementation "systems.uom:systems-common"
 
   testIntegrationImplementation project(":cargotracking-booking-test-support-testcontainers")
-  testIntegrationImplementation project(":cargotracker-lib-test-support")
+  testIntegrationImplementation project(":cargotracking-test-support")
 
   testIntegrationImplementation testFixtures(project(":cargotracking-booking-lib-boundary-web"))
 

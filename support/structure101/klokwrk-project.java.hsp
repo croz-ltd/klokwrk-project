@@ -37,7 +37,7 @@
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-boundary-query-api/build/classes/groovy/main" module="cargotracking-lib-boundary-query-api" displaymodule="cargotracking-lib-boundary-query-api" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-domain-model-command/build/classes/groovy/main" module="cargotracking-lib-domain-model-command" displaymodule="cargotracking-lib-domain-model-command" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-domain-model-event/build/classes/groovy/main" module="cargotracking-lib-domain-model-event" displaymodule="cargotracking-lib-domain-model-event" />
-    <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracker-lib-test-support/build/classes/groovy/main" module="cargotracker-lib-test-support" displaymodule="cargotracker-lib-test-support" />
+    <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-test-support/build/classes/groovy/main" module="cargotracking-test-support" displaymodule="cargotracking-test-support" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-web/build/classes/groovy/main" module="cargotracking-lib-web" displaymodule="cargotracking-lib-web" />
     <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-datasourceproxy-springboot/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy-springboot" displaymodule="klokwrk-lib-datasourceproxy-springboot" />
     <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-jackson-springboot/build/classes/groovy/main" module="klokwrk-lib-jackson-springboot" displaymodule="klokwrk-lib-jackson-springboot" />
@@ -287,7 +287,7 @@
               <cell name="cargotracking-lib-boundary-api" pattern="cargotracking-lib-boundary-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
             <row>
-              <cell name="cargotracker-lib-test-support" pattern="cargotracker-lib-test-support.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="cargotracking-test-support" pattern="cargotracking-test-support.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
           </grid>
         </cell>

@@ -141,9 +141,9 @@
 		<description></description>
 		<rootPath name="../../modules/lib/xlang/klokwrk-lang-groovy-contracts-simple/build/classes/groovy/main"></rootPath>
 	</module>
-	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-lib-test-support" id="484ba69bff396ee9e97b104fb148a83c" language="Java">
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracking-test-support" id="484ba69bff396ee9e97b104fb148a83c" language="Java">
 		<description></description>
-		<rootPath name="../../modules/bc/cargotracking/lib/cargotracker-lib-test-support/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/bc/cargotracking/lib/cargotracking-test-support/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-spring-data-jpa" id="4862fe86762e05c508f4fc4baafaef28" language="Java">
 		<description></description>
