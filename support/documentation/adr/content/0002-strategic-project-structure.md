@@ -78,7 +78,7 @@ In this structure variant, all structure-related directories are placed directly
     │   ├── klokwrk-lib-lo-datasourceproxy
     │   ├── klokwrk-lib-lo-hibernate
     │   ├── klokwrk-lib-lo-jackson
-    │   ├── klokwrk-lib-validation-constraint
+    │   ├── klokwrk-lib-lo-validation-constraint
     │   └── klokwrk-lib-validation-validator
     ├── ... (other files or directories)
     ├── platform
@@ -167,7 +167,7 @@ The following listing shows the example of the elaborate strategic structure as 
     │   │   ├── klokwrk-lib-lo-datasourceproxy
     │   │   ├── klokwrk-lib-lo-hibernate
     │   │   ├── klokwrk-lib-lo-jackson
-    │   │   ├── klokwrk-lib-validation-constraint
+    │   │   ├── klokwrk-lib-lo-validation-constraint
     │   │   └── klokwrk-lib-validation-validator
     │   ├── platform
     │   │   ├── klokwrk-platform-base

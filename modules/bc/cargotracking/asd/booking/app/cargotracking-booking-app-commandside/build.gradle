@@ -42,7 +42,7 @@ dependencies {
   implementation project(":cargotracking-lib-web")
   implementation project(":klokwrk-lib-hi-jackson-springboot")
   implementation project(":klokwrk-lib-hi-validation-springboot")
-  implementation project(":klokwrk-lib-validation-constraint")
+  implementation project(":klokwrk-lib-lo-validation-constraint")
   implementation project(":klokwrk-lib-xlang-groovy-base")
   implementation project(":klokwrk-lib-xlang-groovy-contracts-match")
   implementation project(":klokwrk-lib-xlang-groovy-contracts-simple")
