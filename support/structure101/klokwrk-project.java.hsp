@@ -23,7 +23,7 @@
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracking-booking-lib-boundary-web/build/classes/groovy/main" module="cargotracking-booking-lib-boundary-web" displaymodule="cargotracking-booking-lib-boundary-web" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracking-booking-lib-out-customer/build/classes/groovy/main" module="cargotracking-booking-lib-out-customer" displaymodule="cargotracking-booking-lib-out-customer" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracking-booking-lib-queryside-model-rdbms-jpa/build/classes/groovy/main" module="cargotracking-booking-lib-queryside-model-rdbms-jpa" displaymodule="cargotracking-booking-lib-queryside-model-rdbms-jpa" />
-    <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracker-booking-test-component/build/classes/groovy/testIntegration" module="cargotracker-booking-test-component" displaymodule="cargotracker-booking-test-component" />
+    <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracking-booking-test-component/build/classes/groovy/testIntegration" module="cargotracking-booking-test-component" displaymodule="cargotracking-booking-test-component" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracking-booking-test-support-queryside/build/classes/groovy/main" module="cargotracking-booking-test-support-queryside" displaymodule="cargotracking-booking-test-support-queryside" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracking-booking-test-support-testcontainers/build/classes/groovy/main" module="cargotracking-booking-test-support-testcontainers" displaymodule="cargotracking-booking-test-support-testcontainers" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/domain-model/cargotracker-booking-domain-model-aggregate/build/classes/groovy/main" module="cargotracker-booking-domain-model-aggregate" displaymodule="cargotracker-booking-domain-model-aggregate" />
@@ -61,7 +61,7 @@
     <set version="3" name="Action list 1" hiview="Codemap" active="true" todo="false" list="0" />
   </restructuring>
   <grid-set sep="." version="6.1.23194">
-    <grid name="General Architecture" enforce="true" locked="false" strict="false" excludes="cargotracker-booking-commandside-test-support.*,cargotracker-booking-queryside-test-support.*,cargotracking-booking-app-rdbms-management.*,klokwrk-lib-archunit.*,cargotracker-booking-test-component.*">
+    <grid name="General Architecture" enforce="true" locked="false" strict="false" excludes="cargotracker-booking-commandside-test-support.*,cargotracker-booking-queryside-test-support.*,cargotracking-booking-app-rdbms-management.*,klokwrk-lib-archunit.*,cargotracking-booking-test-component.*">
       <row>
         <cell name="cargotracking (bounded context)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
@@ -198,7 +198,7 @@
               <cell name="test-support" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="204,255,204">
                 <grid>
                   <row>
-                    <cell name="cargotracker-booking-test-component" pattern="cargotracker-booking-test-component.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-booking-test-component" pattern="cargotracking-booking-test-component.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
                     <cell name="cargotracking-booking-test-support-testcontainers" pattern="cargotracking-booking-test-support-testcontainers.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
