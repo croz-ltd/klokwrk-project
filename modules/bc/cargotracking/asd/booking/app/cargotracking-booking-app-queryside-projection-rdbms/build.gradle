@@ -58,7 +58,7 @@ dependencies {
   runtimeOnly "org.axonframework:axon-micrometer"
   runtimeOnly "org.postgresql:postgresql"
 
-  testImplementation project(":klokwrk-lib-archunit")
+  testImplementation project(":klokwrk-lib-lo-archunit")
 
   testImplementation "com.tngtech.archunit:archunit-junit5"
   testImplementation "org.spockframework:spock-core"

@@ -44,7 +44,7 @@
     <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-hi-spring-context/build/classes/groovy/main" module="klokwrk-lib-hi-spring-context" displaymodule="klokwrk-lib-hi-spring-context" />
     <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-hi-spring-data-jpa/build/classes/groovy/main" module="klokwrk-lib-hi-spring-data-jpa" displaymodule="klokwrk-lib-hi-spring-data-jpa" />
     <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-hi-validation-springboot/build/classes/groovy/main" module="klokwrk-lib-hi-validation-springboot" displaymodule="klokwrk-lib-hi-validation-springboot" />
-    <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-archunit/build/classes/groovy/main" module="klokwrk-lib-archunit" displaymodule="klokwrk-lib-archunit" />
+    <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-lo-archunit/build/classes/groovy/main" module="klokwrk-lib-lo-archunit" displaymodule="klokwrk-lib-lo-archunit" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-datasourceproxy/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy" displaymodule="klokwrk-lib-datasourceproxy" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-hibernate/build/classes/groovy/main" module="klokwrk-lib-hibernate" displaymodule="klokwrk-lib-hibernate" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-jackson/build/classes/groovy/main" module="klokwrk-lib-jackson" displaymodule="klokwrk-lib-jackson" />
@@ -61,7 +61,7 @@
     <set version="3" name="Action list 1" hiview="Codemap" active="true" todo="false" list="0" />
   </restructuring>
   <grid-set sep="." version="6.1.23194">
-    <grid name="General Architecture" enforce="true" locked="false" strict="false" excludes="cargotracker-booking-commandside-test-support.*,cargotracker-booking-queryside-test-support.*,cargotracking-booking-app-rdbms-management.*,klokwrk-lib-archunit.*,cargotracking-booking-test-component.*">
+    <grid name="General Architecture" enforce="true" locked="false" strict="false" excludes="cargotracker-booking-commandside-test-support.*,cargotracker-booking-queryside-test-support.*,cargotracking-booking-app-rdbms-management.*,klokwrk-lib-lo-archunit.*,cargotracking-booking-test-component.*">
       <row>
         <cell name="cargotracking (bounded context)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
@@ -328,7 +328,7 @@
                 </grid>
               </cell>
               <cell name="klokwrk-lib-hibernate" pattern="klokwrk-lib-hibernate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-              <cell name="klokwrk-lib-archunit" pattern="klokwrk-lib-archunit.*" vexpanded="false" illegal="false" visibility="public" drill="true" bgcolor="204,255,204" />
+              <cell name="klokwrk-lib-lo-archunit" pattern="klokwrk-lib-lo-archunit.*" vexpanded="false" illegal="false" visibility="public" drill="true" bgcolor="204,255,204" />
             </row>
             <row>
               <cell name="klokwrk-lib-uom" pattern="klokwrk-lib-uom.*" vexpanded="false" illegal="false" visibility="public" drill="true" />

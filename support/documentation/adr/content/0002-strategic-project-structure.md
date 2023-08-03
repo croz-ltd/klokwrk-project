@@ -74,7 +74,7 @@ In this structure variant, all structure-related directories are placed directly
     │   ├── klokwrk-lib-hi-spring-context
     │   ├── klokwrk-lib-hi-spring-data-jpa
     │   ├── klokwrk-lib-hi-validation-springboot
-    │   ├── klokwrk-lib-archunit
+    │   ├── klokwrk-lib-lo-archunit
     │   ├── klokwrk-lib-datasourceproxy
     │   ├── klokwrk-lib-hibernate
     │   ├── klokwrk-lib-jackson
@@ -163,7 +163,7 @@ The following listing shows the example of the elaborate strategic structure as 
     │   │   ├── klokwrk-lib-hi-spring-context
     │   │   ├── klokwrk-lib-hi-spring-data-jpa
     │   │   ├── klokwrk-lib-hi-validation-springboot
-    │   │   ├── klokwrk-lib-archunit
+    │   │   ├── klokwrk-lib-lo-archunit
     │   │   ├── klokwrk-lib-datasourceproxy
     │   │   ├── klokwrk-lib-hibernate
     │   │   ├── klokwrk-lib-jackson
