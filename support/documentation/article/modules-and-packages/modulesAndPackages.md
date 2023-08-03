@@ -356,13 +356,13 @@ see `cargotracking-lib-axon-cqrs` being used from `commandside` and `queryside-v
 lowered module cohesion, problematic naming, and different consumers are not enough, taking into account that required 3rd party libraries are different gives us more than enough reasons for
 justifying the existence of separate library modules.
 
-Next, we have two low-level libraries supporting extension, customization, and configurability of 3rd party "datasource-proxy" library. Module `klokwrk-lib-datasourceproxy` provides extension itself,
-while `klokwrk-lib-hi-datasourceproxy-springboot` implements support and configurability for the Spring Boot environment.
+Next, we have two low-level libraries supporting extension, customization, and configurability of 3rd party "datasource-proxy" library. Module `klokwrk-lib-lo-datasourceproxy` provides extension
+itself, while `klokwrk-lib-hi-datasourceproxy-springboot` implements support and configurability for the Spring Boot environment.
 
 ![Image 6 - Datasourceproxy libraries packaging comparison](images/06-datasourceproxy-libraries-packaging-comparison.jpg "Image 6 - Datasourceproxy libraries packaging comparison") <br/>
 *Image 6 - Datasourceproxy libraries packaging comparison*
 
-After glancing over packages, one might think there is an error in `klokwrk-lib-datasourceproxy` since there are no subpackages. It's true. This is an error unless you take a less strict approach.
+After glancing over packages, one might think there is an error in `klokwrk-lib-lo-datasourceproxy` since there are no subpackages. It's true. This is an error unless you take a less strict approach.
 We have only a single class and no intention to add some more in the foreseeable future, so there is no real need for a subpackage. But it can be added if you really want it.
 
 If you only target Spring Boot apps, both modules can be combined. But with separate modules, you are allowing for core functionality to be used outside of the Spring Boot environment. Although for

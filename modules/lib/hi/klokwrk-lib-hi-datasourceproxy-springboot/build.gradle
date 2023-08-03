@@ -31,7 +31,7 @@ dependencies {
 
   annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
-  implementation project(":klokwrk-lib-datasourceproxy")
+  implementation project(":klokwrk-lib-lo-datasourceproxy")
 
   implementation "net.ttddyy:datasource-proxy"
   implementation "org.apache.groovy:groovy"

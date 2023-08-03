@@ -45,7 +45,7 @@
     <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-hi-spring-data-jpa/build/classes/groovy/main" module="klokwrk-lib-hi-spring-data-jpa" displaymodule="klokwrk-lib-hi-spring-data-jpa" />
     <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-hi-validation-springboot/build/classes/groovy/main" module="klokwrk-lib-hi-validation-springboot" displaymodule="klokwrk-lib-hi-validation-springboot" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-lo-archunit/build/classes/groovy/main" module="klokwrk-lib-lo-archunit" displaymodule="klokwrk-lib-lo-archunit" />
-    <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-datasourceproxy/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy" displaymodule="klokwrk-lib-datasourceproxy" />
+    <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-lo-datasourceproxy/build/classes/groovy/main" module="klokwrk-lib-lo-datasourceproxy" displaymodule="klokwrk-lib-lo-datasourceproxy" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-hibernate/build/classes/groovy/main" module="klokwrk-lib-hibernate" displaymodule="klokwrk-lib-hibernate" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-jackson/build/classes/groovy/main" module="klokwrk-lib-jackson" displaymodule="klokwrk-lib-jackson" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-uom/build/classes/groovy/main" module="klokwrk-lib-uom" displaymodule="klokwrk-lib-uom" />
@@ -151,7 +151,7 @@
                 <grid>
                   <row>
                     <cell name="klokwrk-lib-jackson" pattern="klokwrk-lib-jackson.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                    <cell name="klokwrk-lib-datasourceproxy" pattern="klokwrk-lib-datasourceproxy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="klokwrk-lib-lo-datasourceproxy" pattern="klokwrk-lib-lo-datasourceproxy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                     <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                       <grid>
                         <row>
@@ -316,7 +316,7 @@
             </row>
             <row>
               <cell name="klokwrk-lib-jackson" pattern="klokwrk-lib-jackson.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-              <cell name="klokwrk-lib-datasourceproxy" pattern="klokwrk-lib-datasourceproxy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="klokwrk-lib-lo-datasourceproxy" pattern="klokwrk-lib-lo-datasourceproxy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
               <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                 <grid>
                   <row>
