@@ -221,7 +221,7 @@ bounded context libraries can also contain "incubating" libraries destined to be
 bounded context level temporarily.
 
 Bounded context libraries will never contain code speaking the ubiquitous language of the bounded context. This is reserved only for subdomains. However, in bounded context libraries, we can have
-infrastructure supporting the implementation of the domain model. One typical example is the `cargotracker-lib-boundary-api` module which formalizes general structures and exceptions of bounded
+infrastructure supporting the implementation of the domain model. One typical example is the `cargotracking-lib-boundary-api` module which formalizes general structures and exceptions of bounded
 context boundary API that all inbound adapters (web, messaging, etc.) must know, understand and use to be able to speak with domain application services (a.k.a. domain facades).
 
 Therefore, the boundary API defines essential building elements of a contract between the outside world and the domain. Domain application services use boundary API elements to define interfaces

@@ -36,7 +36,7 @@ dependencies {
   implementation project(":cargotracking-domain-model-value")
   implementation project(":cargotracking-lib-axon-cqrs")
   implementation project(":cargotracking-lib-axon-logging")
-  implementation project(":cargotracker-lib-boundary-api")
+  implementation project(":cargotracking-lib-boundary-api")
   implementation project(":cargotracker-lib-domain-model-command")
   implementation project(":cargotracker-lib-domain-model-event")
   implementation project(":cargotracker-lib-web")

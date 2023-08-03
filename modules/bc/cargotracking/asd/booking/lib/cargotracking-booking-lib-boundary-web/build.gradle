@@ -25,14 +25,14 @@ plugins {
 dependencies {
   implementation platform(project(":klokwrk-platform-base"))
 
-  implementation project(":cargotracker-lib-boundary-api")
+  implementation project(":cargotracking-lib-boundary-api")
   implementation project(":klokwrk-lang-groovy")
 
   implementation "org.apache.groovy:groovy"
 
   testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
 
-  testFixturesImplementation project(":cargotracker-lib-boundary-api")
+  testFixturesImplementation project(":cargotracking-lib-boundary-api")
 
   testFixturesImplementation "org.apache.groovy:groovy"
 }
