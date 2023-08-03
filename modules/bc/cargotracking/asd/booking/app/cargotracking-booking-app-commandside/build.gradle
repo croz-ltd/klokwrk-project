@@ -84,7 +84,7 @@ dependencies {
   testImplementation "si.uom:si-units"
   testImplementation "systems.uom:systems-common"
 
-  testIntegrationImplementation project(":cargotracker-booking-test-support-testcontainers")
+  testIntegrationImplementation project(":cargotracking-booking-test-support-testcontainers")
   testIntegrationImplementation project(":cargotracker-lib-test-support")
 
   testIntegrationImplementation testFixtures(project(":cargotracking-booking-lib-boundary-web"))
