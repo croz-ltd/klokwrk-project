@@ -155,7 +155,7 @@ There are several modules in the group of reusable libraries. `klokwrk-lib-jacks
 the Spring Boot environment. Opinionated selection of Jackson defaults tries to provide Jackson configuration suitable for avoiding usage of Jackson annotations as much as possible.
 
 Another pair of related modules deal with the excellent [datasource-proxy](https://github.com/ttddyy/datasource-proxy) library. `klokwrk-lib-datasourceproxy` introduces useful extensions to the
-library like the implementation of a logging suppression filter that can ignore not-interesting queries (i.e. Axon's token store polling). `klokwrk-lib-datasourceproxy-springboot` provides support
+library like the implementation of a logging suppression filter that can ignore not-interesting queries (i.e. Axon's token store polling). `klokwrk-lib-hi-datasourceproxy-springboot` provides support
 for setting up and configuring the library in the Spring Boot context.
 
 Module `klokwrk-lib-spring-context` contains customized extensions to the classes from the [Spring framework's](https://spring.io/projects/spring-framework) `spring-context` module. Currently, there
@@ -208,7 +208,7 @@ cohesion, problematic naming, and different consumers are not enough, taking int
 existence of separate library modules.
 
 Next, we have two low-level libraries supporting extension, customization, and configurability of 3rd party "datasource-proxy" library. Module `klokwrk-lib-datasourceproxy` provides extension itself,
-while `klokwrk-lib-datasourceproxy-springboot` implements support and configurability for the Spring Boot environment.
+while `klokwrk-lib-hi-datasourceproxy-springboot` implements support and configurability for the Spring Boot environment.
 
 ![Image 6 - datasourceproxy library packaging comparison](images/06-datasourceproxy-library-packaging-comparison.jpg "Image 6 - datasourceproxy library packaging comparison") <br/>
 *Image 6 - datasourceproxy library packaging comparison*

@@ -69,9 +69,9 @@ In this structure variant, all structure-related directories are placed directly
     │   └── klokwrk-lib-xlang-groovy-contracts-simple
     ├── ... (other files or directories)
     ├── lib
+    │   ├── klokwrk-lib-hi-datasourceproxy-springboot
     │   ├── klokwrk-lib-archunit
     │   ├── klokwrk-lib-datasourceproxy
-    │   ├── klokwrk-lib-datasourceproxy-springboot
     │   ├── klokwrk-lib-hibernate
     │   ├── klokwrk-lib-jackson
     │   ├── klokwrk-lib-jackson-springboot
@@ -158,9 +158,9 @@ The following listing shows the example of the elaborate strategic structure as 
     │   │   ├── klokwrk-lib-xlang-groovy-contracts-match
     │   │   └── klokwrk-lib-xlang-groovy-contracts-simple
     │   ├── lib
+    │   │   ├── klokwrk-lib-hi-datasourceproxy-springboot
     │   │   ├── klokwrk-lib-archunit
     │   │   ├── klokwrk-lib-datasourceproxy
-    │   │   ├── klokwrk-lib-datasourceproxy-springboot
     │   │   ├── klokwrk-lib-hibernate
     │   │   ├── klokwrk-lib-jackson
     │   │   ├── klokwrk-lib-jackson-springboot

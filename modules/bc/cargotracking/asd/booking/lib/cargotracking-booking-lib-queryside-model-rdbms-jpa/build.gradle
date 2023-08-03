@@ -42,7 +42,7 @@ dependencies {
   implementation "tech.units:indriya"
 
   testIntegrationImplementation project(":cargotracking-booking-test-support-testcontainers")
-  testIntegrationImplementation project(":klokwrk-lib-datasourceproxy-springboot")
+  testIntegrationImplementation project(":klokwrk-lib-hi-datasourceproxy-springboot")
   testIntegrationImplementation project(":klokwrk-lib-hibernate")
 
   testIntegrationImplementation "org.spockframework:spock-core"

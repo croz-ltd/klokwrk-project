@@ -357,7 +357,7 @@ lowered module cohesion, problematic naming, and different consumers are not eno
 justifying the existence of separate library modules.
 
 Next, we have two low-level libraries supporting extension, customization, and configurability of 3rd party "datasource-proxy" library. Module `klokwrk-lib-datasourceproxy` provides extension itself,
-while `klokwrk-lib-datasourceproxy-springboot` implements support and configurability for the Spring Boot environment.
+while `klokwrk-lib-hi-datasourceproxy-springboot` implements support and configurability for the Spring Boot environment.
 
 ![Image 6 - Datasourceproxy libraries packaging comparison](images/06-datasourceproxy-libraries-packaging-comparison.jpg "Image 6 - Datasourceproxy libraries packaging comparison") <br/>
 *Image 6 - Datasourceproxy libraries packaging comparison*
