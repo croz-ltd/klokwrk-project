@@ -158,9 +158,9 @@ Another pair of related modules deal with the excellent [datasource-proxy](https
 library like the implementation of a logging suppression filter that can ignore not-interesting queries (i.e. Axon's token store polling). `klokwrk-lib-hi-datasourceproxy-springboot` provides support
 for setting up and configuring the library in the Spring Boot context.
 
-Module `klokwrk-lib-spring-context` contains customized extensions to the classes from the [Spring framework's](https://spring.io/projects/spring-framework) `spring-context` module. Currently, there
-is support for creating a list of message codes used when resolving localized messages from resource bundles. Finally, `klokwrk-lib-hibernate` deals with some peculiarities of the internal workings
-of [Hibernate ORM](https://hibernate.org/orm/).
+Module `klokwrk-lib-hi-spring-context` contains customized extensions to the classes from the [Spring framework's](https://spring.io/projects/spring-framework) `spring-context` module. Currently,
+there is support for creating a list of message codes used when resolving localized messages from resource bundles. Finally, `klokwrk-lib-hibernate` deals with some peculiarities of the internal
+workings of [Hibernate ORM](https://hibernate.org/orm/).
 
 In the group of language extensions, we have a `klokwrk-lib-xlang-groovy-base` module. It contains some general-purpose constants, utility methods for convenient fetching of object's properties, and
 some infrastructure helping with relaxing requirements of Groovy map constructor. The last two features can help create immutable objects and support simple mapping of data from one object into
