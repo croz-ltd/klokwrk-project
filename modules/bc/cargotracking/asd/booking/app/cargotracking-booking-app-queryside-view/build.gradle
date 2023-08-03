@@ -42,7 +42,7 @@ dependencies {
   implementation project(":klokwrk-lib-uom")
   implementation project(":klokwrk-lib-validation-constraint")
   implementation project(":klokwrk-lib-validation-springboot")
-  implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lib-xlang-groovy-base")
   implementation project(":klokwrk-lib-xlang-groovy-contracts-match")
   implementation project(":klokwrk-lib-xlang-groovy-contracts-simple")
 
@@ -68,7 +68,7 @@ dependencies {
   testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
 
   testFixturesImplementation project(":cargotracking-test-support")
-  testFixturesImplementation project(":klokwrk-lang-groovy")
+  testFixturesImplementation project(":klokwrk-lib-xlang-groovy-base")
   testFixturesImplementation project(":klokwrk-lib-uom")
 
   testFixturesImplementation "javax.measure:unit-api"

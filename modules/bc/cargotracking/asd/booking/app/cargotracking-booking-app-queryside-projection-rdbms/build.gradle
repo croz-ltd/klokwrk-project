@@ -37,9 +37,9 @@ dependencies {
   implementation project(":klokwrk-lib-jackson-springboot")
   implementation project(":klokwrk-lib-uom")
 
-  // Note: although currently there is no direct code dependencies to the klokwrk-lang-groovy module, need to have it as implementation dependency for CompileStatic to work. Otherwise,
+  // Note: although currently there is no direct code dependencies to the klokwrk-lib-xlang-groovy-base module, need to have it as implementation dependency for CompileStatic to work. Otherwise,
   // java.lang.NoClassDefFoundError id thrown for PostMapConstructorCheckable class.
-  implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lib-xlang-groovy-base")
 
   implementation "io.hypersistence:hypersistence-utils-hibernate-62"
   implementation "javax.measure:unit-api"

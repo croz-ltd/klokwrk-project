@@ -24,7 +24,7 @@ plugins {
 dependencies {
   implementation platform(project(":klokwrk-platform-spring-boot"))
 
-  implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lib-xlang-groovy-base")
   implementation project(":klokwrk-lib-uom")
 
   implementation "com.fasterxml.jackson.core:jackson-core"

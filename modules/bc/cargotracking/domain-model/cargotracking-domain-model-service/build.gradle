@@ -25,7 +25,7 @@ dependencies {
   implementation platform(project(":klokwrk-platform-spring-boot"))
 
   implementation project(":cargotracking-domain-model-value")
-  implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lib-xlang-groovy-base")
   implementation project(":klokwrk-lib-xlang-groovy-contracts-match")
   implementation project(":klokwrk-lib-xlang-groovy-contracts-simple")
 

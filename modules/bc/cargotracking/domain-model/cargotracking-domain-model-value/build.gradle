@@ -26,7 +26,7 @@ dependencies {
   implementation platform(project(":klokwrk-platform-spring-boot"))
 
   implementation project(":cargotracking-lib-boundary-api")
-  implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lib-xlang-groovy-base")
   implementation project(":klokwrk-lib-xlang-groovy-contracts-match")
   implementation project(":klokwrk-lib-xlang-groovy-contracts-simple")
   implementation project(":klokwrk-lib-uom")
@@ -39,7 +39,7 @@ dependencies {
 
   testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
 
-  testFixturesImplementation project(":klokwrk-lang-groovy")
+  testFixturesImplementation project(":klokwrk-lib-xlang-groovy-base")
   testFixturesImplementation project(":klokwrk-lib-uom")
 
   testFixturesImplementation "javax.measure:unit-api"

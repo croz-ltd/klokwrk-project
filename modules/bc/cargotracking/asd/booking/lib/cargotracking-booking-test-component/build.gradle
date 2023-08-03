@@ -30,7 +30,7 @@ dependencies {
 
   testComponentImplementation project(":cargotracking-booking-test-support-testcontainers")
   testComponentImplementation project(":cargotracking-test-support")
-  testComponentImplementation project(":klokwrk-lang-groovy")
+  testComponentImplementation project(":klokwrk-lib-xlang-groovy-base")
   testComponentImplementation project(":klokwrk-lib-uom")
 
   testComponentImplementation testFixtures(project(":cargotracking-booking-app-commandside"))

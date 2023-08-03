@@ -51,7 +51,7 @@
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-uom/build/classes/groovy/main" module="klokwrk-lib-uom" displaymodule="klokwrk-lib-uom" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-validation-constraint/build/classes/groovy/main" module="klokwrk-lib-validation-constraint" displaymodule="klokwrk-lib-validation-constraint" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-validation-validator/build/classes/groovy/main" module="klokwrk-lib-validation-validator" displaymodule="klokwrk-lib-validation-validator" />
-    <classpathentry kind="lib" path="../../modules/lib/xlang/klokwrk-lang-groovy/build/classes/groovy/main" module="klokwrk-lang-groovy" displaymodule="klokwrk-lang-groovy" />
+    <classpathentry kind="lib" path="../../modules/lib/xlang/klokwrk-lib-xlang-groovy-base/build/classes/groovy/main" module="klokwrk-lib-xlang-groovy-base" displaymodule="klokwrk-lib-xlang-groovy-base" />
     <classpathentry kind="lib" path="../../modules/lib/xlang/klokwrk-lib-xlang-groovy-contracts-match/build/classes/groovy/main" module="klokwrk-lib-xlang-groovy-contracts-match" displaymodule="klokwrk-lib-xlang-groovy-contracts-match" />
     <classpathentry kind="lib" path="../../modules/lib/xlang/klokwrk-lib-xlang-groovy-contracts-simple/build/classes/groovy/main" module="klokwrk-lib-xlang-groovy-contracts-simple" displaymodule="klokwrk-lib-xlang-groovy-contracts-simple" />
   </classpath>
@@ -178,7 +178,7 @@
                     <cell name="klokwrk-lib-xlang-groovy-contracts-match" pattern="klokwrk-lib-xlang-groovy-contracts-match.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
-                    <cell name="klokwrk-lang-groovy" pattern="klokwrk-lang-groovy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="klokwrk-lib-xlang-groovy-base" pattern="klokwrk-lib-xlang-groovy-base.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                 </grid>
               </cell>
@@ -344,7 +344,7 @@
               <cell name="klokwrk-lib-xlang-groovy-contracts-match" pattern="klokwrk-lib-xlang-groovy-contracts-match.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
             <row>
-              <cell name="klokwrk-lang-groovy" pattern="klokwrk-lang-groovy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="klokwrk-lib-xlang-groovy-base" pattern="klokwrk-lib-xlang-groovy-base.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
             </row>
           </grid>
         </cell>

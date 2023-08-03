@@ -37,7 +37,7 @@ compileGroovy {
 dependencies {
   implementation platform(project(":klokwrk-platform-base"))
 
-  implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lib-xlang-groovy-base")
 
   implementation "org.apache.groovy:groovy"
   implementation "org.apache.groovy:groovy-macro"

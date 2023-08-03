@@ -64,7 +64,7 @@ In this structure variant, all structure-related directories are placed directly
     │   └── cargotracking-lib-web
     ├── ... (other files or directories)
     ├── lang
-    │   ├── klokwrk-lang-groovy
+    │   ├── klokwrk-lib-xlang-groovy-base
     │   ├── klokwrk-lib-xlang-groovy-contracts-match
     │   └── klokwrk-lib-xlang-groovy-contracts-simple
     ├── ... (other files or directories)
@@ -154,7 +154,7 @@ The following listing shows the example of the elaborate strategic structure as 
     │   │       ├── cargotracking-lib-domain-model-event
     │   │       └── cargotracking-lib-web
     │   ├── lang
-    │   │   ├── klokwrk-lang-groovy
+    │   │   ├── klokwrk-lib-xlang-groovy-base
     │   │   ├── klokwrk-lib-xlang-groovy-contracts-match
     │   │   └── klokwrk-lib-xlang-groovy-contracts-simple
     │   ├── lib

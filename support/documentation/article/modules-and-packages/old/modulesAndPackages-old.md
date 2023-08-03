@@ -162,9 +162,9 @@ Module `klokwrk-lib-spring-context` contains customized extensions to the classe
 is support for creating a list of message codes used when resolving localized messages from resource bundles. Finally, `klokwrk-lib-hibernate` deals with some peculiarities of the internal workings
 of [Hibernate ORM](https://hibernate.org/orm/).
 
-In the group of language extensions, we have a `klokwrk-lang-groovy` module. It contains some general-purpose constants, utility methods for convenient fetching of object's properties, and some
-infrastructure helping with relaxing requirements of Groovy map constructor. The last two features can help create immutable objects and support simple mapping of data from one object into another.
-Quite often, this is more than enough for data mapping purposes without requiring any additional library.
+In the group of language extensions, we have a `klokwrk-lib-xlang-groovy-base` module. It contains some general-purpose constants, utility methods for convenient fetching of object's properties, and
+some infrastructure helping with relaxing requirements of Groovy map constructor. The last two features can help create immutable objects and support simple mapping of data from one object into
+another. Quite often, this is more than enough for data mapping purposes without requiring any additional library.
 
 ## Basic package organization principles
 In the domain of separating **applications into packages**, several strategies are often mentioned. In most cases, we can hear about "packaging by layers" and "packaging by features" where

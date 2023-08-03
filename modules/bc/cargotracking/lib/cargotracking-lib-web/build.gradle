@@ -26,7 +26,7 @@ dependencies {
 
   implementation project(":cargotracking-lib-boundary-api")
   implementation project(":klokwrk-lib-spring-context")
-  implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lib-xlang-groovy-base")
 
   implementation "jakarta.validation:jakarta.validation-api"
   implementation "org.apache.groovy:groovy"

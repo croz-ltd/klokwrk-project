@@ -31,7 +31,7 @@ dependencies {
 
   annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
-  implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lib-xlang-groovy-base")
   implementation project(":klokwrk-lib-jackson")
 
   implementation "com.fasterxml.jackson.core:jackson-annotations"

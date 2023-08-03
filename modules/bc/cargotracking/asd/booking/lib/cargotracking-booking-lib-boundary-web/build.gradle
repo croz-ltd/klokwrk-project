@@ -26,7 +26,7 @@ dependencies {
   implementation platform(project(":klokwrk-platform-base"))
 
   implementation project(":cargotracking-lib-boundary-api")
-  implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lib-xlang-groovy-base")
 
   implementation "org.apache.groovy:groovy"
 

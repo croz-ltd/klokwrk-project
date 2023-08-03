@@ -27,7 +27,7 @@ dependencies {
 
   implementation project(":cargotracking-domain-model-value")
   implementation project(":cargotracking-lib-domain-model-event")
-  implementation project(":klokwrk-lang-groovy")
+  implementation project(":klokwrk-lib-xlang-groovy-base")
 
   implementation "javax.measure:unit-api"
   implementation "org.apache.groovy:groovy"
@@ -37,7 +37,7 @@ dependencies {
 
   testFixturesImplementation project(":cargotracking-domain-model-value")
   testFixturesImplementation project(":cargotracking-lib-domain-model-event")
-  testFixturesImplementation project(":klokwrk-lang-groovy")
+  testFixturesImplementation project(":klokwrk-lib-xlang-groovy-base")
   testFixturesImplementation project(":klokwrk-lib-uom")
 
   testFixturesImplementation testFixtures(project(":cargotracking-domain-model-value"))

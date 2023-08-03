@@ -1,6 +1,6 @@
-# klokwrk-lang-groovy
+# klokwrk-lib-xlang-groovy-base
 
-Module `klokwrk-lang-groovy` contains some general-purpose low-level utilities.
+Module `klokwrk-lib-xlang-groovy-base` contains some general-purpose low-level utilities.
 
 Those utilities classes include:
 - general-purpose constants that can be used from any module in the project.
