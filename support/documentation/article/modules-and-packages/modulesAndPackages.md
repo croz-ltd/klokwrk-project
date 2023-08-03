@@ -145,8 +145,8 @@ directly reused. In general, if we have to reuse some part of application module
 Similarly, subdomain libraries can also reuse modules from the lower abstraction levels, but the reverse does not hold. Subdomain libraries are reusable only inside the boundaries of their subdomain.
 It is not just because of the high abstraction level. Subdomain libraries, together with subdomain applications, are the place where technology meets business requirements. This is where we have a
 coupling between business and our technology choices. Since the business concepts are part of the bounded context, it does not make sense to reuse subdomain libraries from lower levels that are
-technology-specific and not aware of a business. The klokwrk strategic structure has a typical example - `cargotracker-booking-queryside-model-rdbms-jpa`, the module containing JPA entities specific
-only for `booking` subdomain.
+technology-specific and not aware of a business. The klokwrk strategic structure has a typical example - `cargotracking-booking-lib-queryside-model-rdbms-jpa`, the module containing JPA entities
+specific only for `booking` subdomain.
 
 Despite this, it is not forbidden to have generic infrastructural code at the subdomain library level. It may be that a particular infrastructural code is not interesting in other subdomains, or we
 have just created a temporary subdomain library destined to become a bounded context library or a generic reusable library at the end.
