@@ -1,6 +1,6 @@
-# cargotracker-lib-axon-cqrs
+# cargotracking-lib-axon-cqrs
 
-Module `cargotracker-lib-axon-cqrs` contains helper classes for easier usage of Axon API.
+Module `cargotracking-lib-axon-cqrs` contains helper classes for easier usage of Axon API.
 
 Those helper classes include:
 - adapters for Axon command and query gateways, where adapters simplify sending of metadata through Axon gateways and handling of remote Axon exceptions on the client-side

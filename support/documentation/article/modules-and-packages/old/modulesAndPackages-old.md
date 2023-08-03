@@ -115,7 +115,7 @@ libraries used by each module (not shown in the picture).
 If we have multiple domains using the same tech stack, domain libraries can be pulled out into the generic libraries layer to make them more available. Besides, domain libraries can also contain
 "incubating" libraries that are destined to be generic and widely reusable at the end. But for various reasons, it is more convenient to keep them at the domain level temporarily.
 
-Let's look quickly at what each of these modules contains. `cargotracker-lib-axon-cqrs` includes helpers that ease some aspects of working with Axon APIs. Module `cargotracker-lib-axon-logging`
+Let's look quickly at what each of these modules contains. `cargotracking-lib-axon-cqrs` includes helpers that ease some aspects of working with Axon APIs. Module `cargotracker-lib-axon-logging`
 provides logging infrastructure that gives more insight into the inner working of various Axon components. `cargotracker-lib-axon-api` brings in base classes and interfaces for working with commands
 and events.
 
@@ -194,16 +194,16 @@ heterogeneous.
 Since we are extending or customizing features of concrete libraries, it is quite important to monitor required 3rd party dependencies. If they are disparate, we might need more fine-grained modules.
 On the other hand, if we target specific higher-level consumers, we might want to include more heterogeneous features to avoid too fine-grained modules that no one will use in isolation.
 
-The first example (Image 5) shows the packaging of `cargotracker-lib-axon-cqrs` and `cargotracker-lib-axon-logging` modules dealing with different aspects of the Axon framework.
+The first example (Image 5) shows the packaging of `cargotracking-lib-axon-cqrs` and `cargotracker-lib-axon-logging` modules dealing with different aspects of the Axon framework.
 
 ![Image 5 - general example of library packaging comparison](images/05-general-example-of-library-packaging-comparison.jpg "Image 5 - general example of library packaging comparison") <br/>
 *Image 5 - general example of library packaging comparison*
 
 Without exploring Axon's internal workings, packages seem to be understandable and coherent, keeping the right level of cohesion. After all, it is hard to fail with cohesion for that small number of
-classes. Subpackages in `cargotracker-lib-axon-cqrs` are a bit more elaborate and look slightly unrelated, which lowers the cohesion of a module, but they all deal with similar enough things.
+classes. Subpackages in `cargotracking-lib-axon-cqrs` are a bit more elaborate and look slightly unrelated, which lowers the cohesion of a module, but they all deal with similar enough things.
 
 It might be surprising why these two modules are not combined into a single one. Putting aside that coming up with a meaningful name might be hard, if we look at consumers (Image 3), we can
-see `cargotracker-lib-axon-cqrs` being used from `commandside` and `queryside` apps. At the same time, `cargotracker-lib-axon-logging` is also a dependency of the `projection` app. If lowered module
+see `cargotracking-lib-axon-cqrs` being used from `commandside` and `queryside` apps. At the same time, `cargotracker-lib-axon-logging` is also a dependency of the `projection` app. If lowered module
 cohesion, problematic naming, and different consumers are not enough, taking into account that required 3rd party libraries are different gives us more than enough reasons for justifying the
 existence of separate library modules.
 
