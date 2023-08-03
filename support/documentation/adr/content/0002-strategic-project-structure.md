@@ -51,7 +51,7 @@ In this structure variant, all structure-related directories are placed directly
     │   ├── cargotracking-booking-test-support-queryside
     │   ├── cargotracking-booking-test-support-testcontainers
     │   ├── cargotracking-domain-model-aggregate
-    │   ├── cargotracker-booking-domain-model-command
+    │   ├── cargotracking-domain-model-command
     │   ├── cargotracker-booking-domain-model-event
     │   ├── cargotracker-booking-domain-model-service
     │   ├── cargotracker-booking-domain-model-value
@@ -108,7 +108,7 @@ Inside domain directories (`cargotracker` in our example), we have three differe
 `[domain-name]-lib-*` pattern in their name (i.e., `cargotracker-lib-axon-cqrs`, `cargotracker-lib-web`, etc.). Domain libraries contain code reusable across the domain.
 
 Then we have **subdomain libraries**, recognized by `[domain-name]-[subdomain-name]-*` pattern. These contain code reusable only inside a single subdomain. In our example, the name of a subdomain
-is `booking`, so `cargotracker-booking-boundary-web`, `cargotracker-booking-domain-model-command`, etc., are examples of subdomain libraries.
+is `booking`, so `cargotracking-booking-lib-boundary-web`, `cargotracking-booking-lib-out-customer`, etc., are examples of subdomain libraries.
 
 And finally, at the highest abstraction level, we have applications. Since, usually, applications belong to subdomains, their name will follow the `[domain-name]-[subdomain-name]-*-app` pattern
 where the `app` suffix distinguishes them from subdomain libraries.
@@ -141,7 +141,7 @@ The following listing shows the example of the elaborate strategic structure as 
     │   │   │       ├── cargotracking-booking-test-support-queryside
     │   │   │       ├── cargotracking-booking-test-support-testcontainers
     │   │   │       ├── cargotracking-domain-model-aggregate
-    │   │   │       ├── cargotracker-booking-domain-model-command
+    │   │   │       ├── cargotracking-domain-model-command
     │   │   │       ├── cargotracker-booking-domain-model-event
     │   │   │       ├── cargotracker-booking-domain-model-service
     │   │   │       └── cargotracker-booking-domain-model-value

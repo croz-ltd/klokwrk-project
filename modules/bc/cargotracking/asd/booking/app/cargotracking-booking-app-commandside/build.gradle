@@ -30,7 +30,7 @@ dependencies {
   implementation project(":cargotracking-booking-lib-boundary-web")
   implementation project(":cargotracking-booking-lib-out-customer")
   implementation project(":cargotracking-domain-model-aggregate")
-  implementation project(":cargotracker-booking-domain-model-command")
+  implementation project(":cargotracking-domain-model-command")
   implementation project(":cargotracker-booking-domain-model-event")
   implementation project(":cargotracker-booking-domain-model-service")
   implementation project(":cargotracker-booking-domain-model-value")
