@@ -84,7 +84,7 @@ dependencies {
   testIntegrationImplementation project(":cargotracking-booking-test-support-queryside")
   testIntegrationImplementation project(":cargotracking-booking-test-support-testcontainers")
   testIntegrationImplementation project(":cargotracking-domain-model-event")
-  testIntegrationImplementation project(":cargotracker-lib-domain-model-event")
+  testIntegrationImplementation project(":cargotracking-lib-domain-model-event")
   testIntegrationImplementation project(":cargotracker-lib-test-support")
   testIntegrationImplementation project(":klokwrk-lib-uom")
 

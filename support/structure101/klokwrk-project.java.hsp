@@ -36,7 +36,7 @@
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-boundary-api/build/classes/groovy/main" module="cargotracking-lib-boundary-api" displaymodule="cargotracking-lib-boundary-api" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-boundary-query-api/build/classes/groovy/main" module="cargotracking-lib-boundary-query-api" displaymodule="cargotracking-lib-boundary-query-api" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-domain-model-command/build/classes/groovy/main" module="cargotracking-lib-domain-model-command" displaymodule="cargotracking-lib-domain-model-command" />
-    <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracker-lib-domain-model-event/build/classes/groovy/main" module="cargotracker-lib-domain-model-event" displaymodule="cargotracker-lib-domain-model-event" />
+    <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-domain-model-event/build/classes/groovy/main" module="cargotracking-lib-domain-model-event" displaymodule="cargotracking-lib-domain-model-event" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracker-lib-test-support/build/classes/groovy/main" module="cargotracker-lib-test-support" displaymodule="cargotracker-lib-test-support" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracker-lib-web/build/classes/groovy/main" module="cargotracker-lib-web" displaymodule="cargotracker-lib-web" />
     <classpathentry kind="lib" path="../../modules/lib/hi/klokwrk-lib-datasourceproxy-springboot/build/classes/groovy/main" module="klokwrk-lib-datasourceproxy-springboot" displaymodule="klokwrk-lib-datasourceproxy-springboot" />
@@ -117,7 +117,7 @@
                     <cell name="cargotracking-lib-axon-logging" pattern="cargotracking-lib-axon-logging.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                     <cell name="cargotracking-lib-domain-model-command" pattern="cargotracking-lib-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                     <cell name="cargotracking-lib-axon-cqrs" pattern="cargotracking-lib-axon-cqrs.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                    <cell name="cargotracker-lib-domain-model-event" pattern="cargotracker-lib-domain-model-event.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-lib-domain-model-event" pattern="cargotracking-lib-domain-model-event.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                     <cell name="cargotracker-lib-web" pattern="cargotracker-lib-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
@@ -274,7 +274,7 @@
                   </row>
                   <row>
                     <cell name="cargotracking-lib-domain-model-command" pattern="cargotracking-lib-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                    <cell name="cargotracker-lib-domain-model-event" pattern="cargotracker-lib-domain-model-event.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-lib-domain-model-event" pattern="cargotracking-lib-domain-model-event.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                 </grid>
               </cell>

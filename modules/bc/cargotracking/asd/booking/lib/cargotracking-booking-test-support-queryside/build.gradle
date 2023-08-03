@@ -24,7 +24,7 @@ plugins {
 dependencies {
   implementation platform(project(":klokwrk-platform-base"))
 
-  implementation project(":cargotracker-lib-domain-model-event")
+  implementation project(":cargotracking-lib-domain-model-event")
 
   implementation "org.apache.groovy:groovy"
   implementation "org.apache.groovy:groovy-sql"
