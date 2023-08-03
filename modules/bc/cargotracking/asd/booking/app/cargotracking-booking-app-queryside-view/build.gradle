@@ -83,13 +83,13 @@ dependencies {
 
   testIntegrationImplementation project(":cargotracking-booking-test-support-queryside")
   testIntegrationImplementation project(":cargotracking-booking-test-support-testcontainers")
-  testIntegrationImplementation project(":cargotracker-booking-domain-model-event")
+  testIntegrationImplementation project(":cargotracking-domain-model-event")
   testIntegrationImplementation project(":cargotracker-lib-domain-model-event")
   testIntegrationImplementation project(":cargotracker-lib-test-support")
   testIntegrationImplementation project(":klokwrk-lib-uom")
 
   testIntegrationImplementation testFixtures(project(":cargotracking-booking-lib-boundary-web"))
-  testIntegrationImplementation testFixtures(project(":cargotracker-booking-domain-model-event"))
+  testIntegrationImplementation testFixtures(project(":cargotracking-domain-model-event"))
   testIntegrationImplementation testFixtures(project(":cargotracker-booking-domain-model-value"))
 
   testIntegrationImplementation "javax.measure:unit-api"

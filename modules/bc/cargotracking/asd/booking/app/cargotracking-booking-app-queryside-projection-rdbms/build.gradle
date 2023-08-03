@@ -27,7 +27,7 @@ dependencies {
   testIntegrationImplementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
 
   implementation project(":cargotracking-booking-lib-queryside-model-rdbms-jpa")
-  implementation project(":cargotracker-booking-domain-model-event")
+  implementation project(":cargotracking-domain-model-event")
   implementation project(":cargotracker-booking-domain-model-value")
   implementation project(":cargotracker-lib-axon-logging")
   implementation project(":cargotracker-lib-boundary-api")
@@ -70,7 +70,7 @@ dependencies {
   testIntegrationImplementation project(":cargotracker-lib-domain-model-command")
 
   testIntegrationImplementation testFixtures(project(":cargotracking-booking-lib-boundary-web"))
-  testIntegrationImplementation testFixtures(project(":cargotracker-booking-domain-model-event"))
+  testIntegrationImplementation testFixtures(project(":cargotracking-domain-model-event"))
 
   testIntegrationImplementation "org.apache.groovy:groovy-sql"
   testIntegrationImplementation "org.springframework:spring-test"

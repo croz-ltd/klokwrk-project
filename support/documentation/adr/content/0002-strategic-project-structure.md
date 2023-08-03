@@ -52,7 +52,7 @@ In this structure variant, all structure-related directories are placed directly
     │   ├── cargotracking-booking-test-support-testcontainers
     │   ├── cargotracking-domain-model-aggregate
     │   ├── cargotracking-domain-model-command
-    │   ├── cargotracker-booking-domain-model-event
+    │   ├── cargotracking-domain-model-event
     │   ├── cargotracker-booking-domain-model-service
     │   ├── cargotracker-booking-domain-model-value
     │   ├── cargotracker-lib-axon-cqrs
@@ -142,7 +142,7 @@ The following listing shows the example of the elaborate strategic structure as 
     │   │   │       ├── cargotracking-booking-test-support-testcontainers
     │   │   │       ├── cargotracking-domain-model-aggregate
     │   │   │       ├── cargotracking-domain-model-command
-    │   │   │       ├── cargotracker-booking-domain-model-event
+    │   │   │       ├── cargotracking-domain-model-event
     │   │   │       ├── cargotracker-booking-domain-model-service
     │   │   │       └── cargotracker-booking-domain-model-value
     │   │   └── lib
