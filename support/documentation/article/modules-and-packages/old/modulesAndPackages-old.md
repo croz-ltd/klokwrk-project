@@ -139,7 +139,7 @@ any domain. Here we can discover supportive additions for various commonly used 
 *Image 4 - `klokwrk` generic libraries and language extensions*
 
 These modules are used as direct compile-time dependencies from higher levels. Still, we can also have runtime-only modules that need to be available in the classpath but are not directly referenced
-from higher-level code (`klokwrk-lib-hibernate` is an example).
+from higher-level code (`klokwrk-lib-lo-hibernate` is an example).
 
 As the reusability of generic libraries is high and the abstraction level relatively low, it is standard for infrastructural code at the higher abstraction level to reference these modules.
 In contrast, it is not expected that business-level domain classes (i.e., aggregates, entities, and value objects) use them. However, language extensions are different. As they expand the
@@ -159,7 +159,7 @@ library like the implementation of a logging suppression filter that can ignore 
 for setting up and configuring the library in the Spring Boot context.
 
 Module `klokwrk-lib-hi-spring-context` contains customized extensions to the classes from the [Spring framework's](https://spring.io/projects/spring-framework) `spring-context` module. Currently,
-there is support for creating a list of message codes used when resolving localized messages from resource bundles. Finally, `klokwrk-lib-hibernate` deals with some peculiarities of the internal
+there is support for creating a list of message codes used when resolving localized messages from resource bundles. Finally, `klokwrk-lib-lo-hibernate` deals with some peculiarities of the internal
 workings of [Hibernate ORM](https://hibernate.org/orm/).
 
 In the group of language extensions, we have a `klokwrk-lib-xlang-groovy-base` module. It contains some general-purpose constants, utility methods for convenient fetching of object's properties, and

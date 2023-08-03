@@ -39,7 +39,7 @@ dependencies {
   implementation project(":klokwrk-lib-hi-jackson-springboot")
   implementation project(":klokwrk-lib-hi-spring-data-jpa")
   implementation project(":klokwrk-lib-hi-validation-springboot")
-  implementation project(":klokwrk-lib-hibernate")
+  implementation project(":klokwrk-lib-lo-hibernate")
   implementation project(":klokwrk-lib-uom")
   implementation project(":klokwrk-lib-validation-constraint")
   implementation project(":klokwrk-lib-xlang-groovy-base")
