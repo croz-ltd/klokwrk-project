@@ -117,9 +117,9 @@
 		<description></description>
 		<rootPath name="../../modules/lib/lo/klokwrk-lib-lo-hibernate/build/classes/groovy/main"></rootPath>
 	</module>
-	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-jackson" id="c962002e2dc04b85961d4059c9a1ec93" language="Java">
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-lo-jackson" id="c962002e2dc04b85961d4059c9a1ec93" language="Java">
 		<description></description>
-		<rootPath name="../../modules/lib/lo/klokwrk-lib-jackson/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/lib/lo/klokwrk-lib-lo-jackson/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-validation-constraint" id="68f99af69b159b1a2bece47891eedfa0" language="Java">
 		<description></description>

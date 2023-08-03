@@ -24,7 +24,7 @@ import groovy.transform.CompileStatic
  * <p/>
  * Intended to be used with Jackson library, when we need an unchanged JSON string serialization and deserialization.
  * <p/>
- * There are corresponding Jackson serializer and deserializer implementations in klokwrk-lib-jackson module. To understand how this works and if it fits your needs, take a look at the
+ * There are corresponding Jackson serializer and deserializer implementations in klokwrk-lib-lo-jackson module. To understand how this works and if it fits your needs, take a look at the
  * {@code RawJsonWrapperSerializerSpecification} and {@code RawJsonWrapperDeserializerSpecification} tests.
  */
 @CompileStatic

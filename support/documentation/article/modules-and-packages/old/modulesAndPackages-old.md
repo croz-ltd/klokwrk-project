@@ -150,7 +150,7 @@ Another aspect worth keeping in mind is the potential number of dependencies tha
 it is desirable to achieve the right level of implementation stability as soon as possible. In general, this will be easier to accomplish with modules narrower in their scope. A high level of code
 coverage, proper and meaningful documentation, and several concrete usage scenarios are some tools that can all improve stability.
 
-There are several modules in the group of reusable libraries. `klokwrk-lib-jackson` provides some custom serializers and deserializers not available in the
+There are several modules in the group of reusable libraries. `klokwrk-lib-lo-jackson` provides some custom serializers and deserializers not available in the
 [Jackson](https://github.com/FasterXML/jackson) distribution. `klokwrk-lib-hi-jackson-springboot` brings an opinionated way of setting Jackson's defaults and means for configuring them, if needed, from
 the Spring Boot environment. Opinionated selection of Jackson defaults tries to provide Jackson configuration suitable for avoiding usage of Jackson annotations as much as possible.
 
@@ -224,7 +224,7 @@ The last example is very similar, but now it's about the Jackson library.
 ![Image 7 - jackson library packaging comparison](images/07-jackson-library-packaging-comparison.jpg "Image 7 - jackson library packaging comparison") <br/>
 *Image 7 - jackson library packaging comparison*
 
-This time, in the core `klokwrk-lib-jackson` library, we need separated subpackages for splitting different functions. It is worth noting the names of subpackages. They are the same as for
+This time, in the core `klokwrk-lib-lo-jackson` library, we need separated subpackages for splitting different functions. It is worth noting the names of subpackages. They are the same as for
 corresponding packages in the Jackson library. This is standard practice when you are extending existing libraries, which aids in understanding and maintenance.
 
 ## Packaging for applications

@@ -373,7 +373,7 @@ The last example is very similar, but now it's about the Jackson library.
 ![Image 7 - Jackson libraries packaging comparison](images/07-jackson-libraries-packaging-comparison.jpg "Image 7 - Jackson libraries packaging comparison") <br/>
 *Image 7 - Jackson libraries packaging comparison*
 
-This time, in the core `klokwrk-lib-jackson` library, we need separated subpackages for splitting different functions. It is worth noting the names of subpackages - `deser` and `ser`. They are the
+This time, in the core `klokwrk-lib-lo-jackson` library, we need separated subpackages for splitting different functions. It is worth noting the names of subpackages - `deser` and `ser`. They are the
 same as for corresponding packages in the Jackson library. This is standard practice when you are extending existing libraries, which aids in understanding and maintenance.
 
 ## Packaging for applications
