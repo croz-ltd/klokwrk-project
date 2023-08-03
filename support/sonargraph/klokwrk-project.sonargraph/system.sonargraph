@@ -125,9 +125,9 @@
 		<description></description>
 		<rootPath name="../../modules/lib/lo/klokwrk-lib-lo-validation-constraint/build/classes/groovy/main"></rootPath>
 	</module>
-	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-validation-validator" id="b86033548216844f24c5d202c9423915" language="Java">
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-lo-validation-validator" id="b86033548216844f24c5d202c9423915" language="Java">
 		<description></description>
-		<rootPath name="../../modules/lib/lo/klokwrk-lib-validation-validator/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/lib/lo/klokwrk-lib-lo-validation-validator/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="klokwrk-lib-xlang-groovy-base" id="8fceb7f243264de800ea1bb7e57fe666" language="Java">
 		<description></description>

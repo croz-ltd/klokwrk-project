@@ -30,7 +30,7 @@ dependencies {
   implementation "org.apache.groovy:groovy"
   implementation "jakarta.validation:jakarta.validation-api"
 
-  runtimeOnly project(":klokwrk-lib-validation-validator")
+  runtimeOnly project(":klokwrk-lib-lo-validation-validator")
 
   testImplementation "org.spockframework:spock-core"
 }

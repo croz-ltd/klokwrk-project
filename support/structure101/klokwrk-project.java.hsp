@@ -50,7 +50,7 @@
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-lo-jackson/build/classes/groovy/main" module="klokwrk-lib-lo-jackson" displaymodule="klokwrk-lib-lo-jackson" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-lo-uom/build/classes/groovy/main" module="klokwrk-lib-lo-uom" displaymodule="klokwrk-lib-lo-uom" />
     <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-lo-validation-constraint/build/classes/groovy/main" module="klokwrk-lib-lo-validation-constraint" displaymodule="klokwrk-lib-lo-validation-constraint" />
-    <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-validation-validator/build/classes/groovy/main" module="klokwrk-lib-validation-validator" displaymodule="klokwrk-lib-validation-validator" />
+    <classpathentry kind="lib" path="../../modules/lib/lo/klokwrk-lib-lo-validation-validator/build/classes/groovy/main" module="klokwrk-lib-lo-validation-validator" displaymodule="klokwrk-lib-lo-validation-validator" />
     <classpathentry kind="lib" path="../../modules/lib/xlang/klokwrk-lib-xlang-groovy-base/build/classes/groovy/main" module="klokwrk-lib-xlang-groovy-base" displaymodule="klokwrk-lib-xlang-groovy-base" />
     <classpathentry kind="lib" path="../../modules/lib/xlang/klokwrk-lib-xlang-groovy-contracts-match/build/classes/groovy/main" module="klokwrk-lib-xlang-groovy-contracts-match" displaymodule="klokwrk-lib-xlang-groovy-contracts-match" />
     <classpathentry kind="lib" path="../../modules/lib/xlang/klokwrk-lib-xlang-groovy-contracts-simple/build/classes/groovy/main" module="klokwrk-lib-xlang-groovy-contracts-simple" displaymodule="klokwrk-lib-xlang-groovy-contracts-simple" />
@@ -155,7 +155,7 @@
                     <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                       <grid>
                         <row>
-                          <cell name="klokwrk-lib-validation-validator" pattern="klokwrk-lib-validation-validator.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                          <cell name="klokwrk-lib-lo-validation-validator" pattern="klokwrk-lib-lo-validation-validator.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                         </row>
                         <row>
                           <cell name="klokwrk-lib-lo-validation-constraint" pattern="klokwrk-lib-lo-validation-constraint.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
@@ -320,7 +320,7 @@
               <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                 <grid>
                   <row>
-                    <cell name="klokwrk-lib-validation-validator" pattern="klokwrk-lib-validation-validator.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="klokwrk-lib-lo-validation-validator" pattern="klokwrk-lib-lo-validation-validator.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
                     <cell name="klokwrk-lib-lo-validation-constraint" pattern="klokwrk-lib-lo-validation-constraint.*" vexpanded="false" illegal="false" visibility="public" drill="true" />

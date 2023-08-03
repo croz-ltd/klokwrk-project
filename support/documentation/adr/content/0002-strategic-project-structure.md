@@ -79,7 +79,7 @@ In this structure variant, all structure-related directories are placed directly
     │   ├── klokwrk-lib-lo-hibernate
     │   ├── klokwrk-lib-lo-jackson
     │   ├── klokwrk-lib-lo-validation-constraint
-    │   └── klokwrk-lib-validation-validator
+    │   └── klokwrk-lib-lo-validation-validator
     ├── ... (other files or directories)
     ├── platform
     │   ├── klokwrk-platform-base
@@ -168,7 +168,7 @@ The following listing shows the example of the elaborate strategic structure as 
     │   │   ├── klokwrk-lib-lo-hibernate
     │   │   ├── klokwrk-lib-lo-jackson
     │   │   ├── klokwrk-lib-lo-validation-constraint
-    │   │   └── klokwrk-lib-validation-validator
+    │   │   └── klokwrk-lib-lo-validation-validator
     │   ├── platform
     │   │   ├── klokwrk-platform-base
     │   │   ├── klokwrk-platform-micronaut
