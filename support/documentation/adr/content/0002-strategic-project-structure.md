@@ -66,7 +66,7 @@ In this structure variant, all structure-related directories are placed directly
     ├── lang
     │   ├── klokwrk-lang-groovy
     │   ├── klokwrk-lib-xlang-groovy-contracts-match
-    │   └── klokwrk-lang-groovy-contracts-simple
+    │   └── klokwrk-lib-xlang-groovy-contracts-simple
     ├── ... (other files or directories)
     ├── lib
     │   ├── klokwrk-lib-archunit
@@ -156,7 +156,7 @@ The following listing shows the example of the elaborate strategic structure as 
     │   ├── lang
     │   │   ├── klokwrk-lang-groovy
     │   │   ├── klokwrk-lib-xlang-groovy-contracts-match
-    │   │   └── klokwrk-lang-groovy-contracts-simple
+    │   │   └── klokwrk-lib-xlang-groovy-contracts-simple
     │   ├── lib
     │   │   ├── klokwrk-lib-archunit
     │   │   ├── klokwrk-lib-datasourceproxy

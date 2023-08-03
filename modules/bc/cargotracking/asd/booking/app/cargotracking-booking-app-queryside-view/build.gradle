@@ -44,7 +44,7 @@ dependencies {
   implementation project(":klokwrk-lib-validation-springboot")
   implementation project(":klokwrk-lang-groovy")
   implementation project(":klokwrk-lib-xlang-groovy-contracts-match")
-  implementation project(":klokwrk-lang-groovy-contracts-simple")
+  implementation project(":klokwrk-lib-xlang-groovy-contracts-simple")
 
   implementation "javax.measure:unit-api"
   implementation "net.croz.nrich:nrich-search"

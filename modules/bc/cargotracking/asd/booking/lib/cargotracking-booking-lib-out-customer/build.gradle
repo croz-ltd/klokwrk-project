@@ -27,7 +27,7 @@ dependencies {
   implementation project(":cargotracking-lib-boundary-api")
   implementation project(":klokwrk-lang-groovy")
   implementation project(":klokwrk-lib-xlang-groovy-contracts-match")
-  implementation project(":klokwrk-lang-groovy-contracts-simple")
+  implementation project(":klokwrk-lib-xlang-groovy-contracts-simple")
 
   implementation testFixtures(project(":cargotracking-domain-model-value"))
 
