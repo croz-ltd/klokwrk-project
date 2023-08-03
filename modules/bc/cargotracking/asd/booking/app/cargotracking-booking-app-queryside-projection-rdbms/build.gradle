@@ -33,8 +33,8 @@ dependencies {
   implementation project(":cargotracking-lib-boundary-api")
   implementation project(":cargotracking-lib-domain-model-event")
   implementation project(":klokwrk-lib-hi-datasourceproxy-springboot")
+  implementation project(":klokwrk-lib-hi-jackson-springboot")
   implementation project(":klokwrk-lib-hibernate")
-  implementation project(":klokwrk-lib-jackson-springboot")
   implementation project(":klokwrk-lib-uom")
 
   // Note: although currently there is no direct code dependencies to the klokwrk-lib-xlang-groovy-base module, need to have it as implementation dependency for CompileStatic to work. Otherwise,

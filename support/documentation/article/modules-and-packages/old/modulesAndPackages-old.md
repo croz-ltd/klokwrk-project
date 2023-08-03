@@ -151,7 +151,7 @@ it is desirable to achieve the right level of implementation stability as soon a
 coverage, proper and meaningful documentation, and several concrete usage scenarios are some tools that can all improve stability.
 
 There are several modules in the group of reusable libraries. `klokwrk-lib-jackson` provides some custom serializers and deserializers not available in the
-[Jackson](https://github.com/FasterXML/jackson) distribution. `klokwrk-lib-jackson-springboot` brings an opinionated way of setting Jackson's defaults and means for configuring them, if needed, from
+[Jackson](https://github.com/FasterXML/jackson) distribution. `klokwrk-lib-hi-jackson-springboot` brings an opinionated way of setting Jackson's defaults and means for configuring them, if needed, from
 the Spring Boot environment. Opinionated selection of Jackson defaults tries to provide Jackson configuration suitable for avoiding usage of Jackson annotations as much as possible.
 
 Another pair of related modules deal with the excellent [datasource-proxy](https://github.com/ttddyy/datasource-proxy) library. `klokwrk-lib-datasourceproxy` introduces useful extensions to the

@@ -40,7 +40,7 @@ dependencies {
   implementation project(":cargotracking-lib-domain-model-command")
   implementation project(":cargotracking-lib-domain-model-event")
   implementation project(":cargotracking-lib-web")
-  implementation project(":klokwrk-lib-jackson-springboot")
+  implementation project(":klokwrk-lib-hi-jackson-springboot")
   implementation project(":klokwrk-lib-validation-constraint")
   implementation project(":klokwrk-lib-validation-springboot")
   implementation project(":klokwrk-lib-xlang-groovy-base")
