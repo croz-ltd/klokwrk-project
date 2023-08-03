@@ -32,7 +32,7 @@ dependencies {
   implementation project(":cargotracking-domain-model-aggregate")
   implementation project(":cargotracking-domain-model-command")
   implementation project(":cargotracking-domain-model-event")
-  implementation project(":cargotracker-booking-domain-model-service")
+  implementation project(":cargotracking-domain-model-service")
   implementation project(":cargotracker-booking-domain-model-value")
   implementation project(":cargotracker-lib-axon-cqrs")
   implementation project(":cargotracker-lib-axon-logging")

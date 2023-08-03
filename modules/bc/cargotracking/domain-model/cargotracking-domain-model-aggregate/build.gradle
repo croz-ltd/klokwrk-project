@@ -27,7 +27,7 @@ dependencies {
 
   implementation project(":cargotracking-domain-model-command")
   implementation project(":cargotracking-domain-model-event")
-  implementation project(":cargotracker-booking-domain-model-service")
+  implementation project(":cargotracking-domain-model-service")
   implementation project(":cargotracker-booking-domain-model-value")
   implementation project(":cargotracker-lib-boundary-api")
   implementation project(":cargotracker-lib-domain-model-command")

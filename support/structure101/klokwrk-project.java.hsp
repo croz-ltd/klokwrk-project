@@ -29,7 +29,7 @@
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/domain-model/cargotracking-domain-model-aggregate/build/classes/groovy/main" module="cargotracking-domain-model-aggregate" displaymodule="cargotracking-domain-model-aggregate" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/domain-model/cargotracking-domain-model-command/build/classes/groovy/main" module="cargotracking-domain-model-command" displaymodule="cargotracking-domain-model-command" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/domain-model/cargotracking-domain-model-event/build/classes/groovy/main" module="cargotracking-domain-model-event" displaymodule="cargotracking-domain-model-event" />
-    <classpathentry kind="lib" path="../../modules/bc/cargotracking/domain-model/cargotracker-booking-domain-model-service/build/classes/groovy/main" module="cargotracker-booking-domain-model-service" displaymodule="cargotracker-booking-domain-model-service" />
+    <classpathentry kind="lib" path="../../modules/bc/cargotracking/domain-model/cargotracking-domain-model-service/build/classes/groovy/main" module="cargotracking-domain-model-service" displaymodule="cargotracking-domain-model-service" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/domain-model/cargotracker-booking-domain-model-value/build/classes/groovy/main" module="cargotracker-booking-domain-model-value" displaymodule="cargotracker-booking-domain-model-value" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracker-lib-axon-cqrs/build/classes/groovy/main" module="cargotracker-lib-axon-cqrs" displaymodule="cargotracker-lib-axon-cqrs" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracker-lib-axon-logging/build/classes/groovy/main" module="cargotracker-lib-axon-logging" displaymodule="cargotracker-lib-axon-logging" />
@@ -101,7 +101,7 @@
                   </row>
                   <row>
                     <cell name="cargotracking-domain-model-command" pattern="cargotracking-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                    <cell name="cargotracker-booking-domain-model-service" pattern="cargotracker-booking-domain-model-service.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-domain-model-service" pattern="cargotracking-domain-model-service.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                     <cell name="cargotracking-domain-model-event" pattern="cargotracking-domain-model-event.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
@@ -242,7 +242,7 @@
                           <cell name="cargotracking-domain-model-aggregate" pattern="cargotracking-domain-model-aggregate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                         </row>
                         <row>
-                          <cell name="cargotracker-booking-domain-model-service" pattern="cargotracker-booking-domain-model-service.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                          <cell name="cargotracking-domain-model-service" pattern="cargotracking-domain-model-service.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                         </row>
                         <row>
                           <cell name="cargotracking-domain-model-command" pattern="cargotracking-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
