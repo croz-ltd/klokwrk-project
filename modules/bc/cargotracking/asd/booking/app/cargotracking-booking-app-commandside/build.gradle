@@ -27,7 +27,7 @@ dependencies {
   implementation platform(project(":klokwrk-platform-spring-boot"))
   testIntegrationImplementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
 
-  implementation project(":cargotracker-booking-boundary-web")
+  implementation project(":cargotracking-booking-lib-boundary-web")
   implementation project(":cargotracker-booking-domain-model-aggregate")
   implementation project(":cargotracker-booking-domain-model-command")
   implementation project(":cargotracker-booking-domain-model-event")
@@ -87,7 +87,7 @@ dependencies {
   testIntegrationImplementation project(":cargotracker-booking-test-support-testcontainers")
   testIntegrationImplementation project(":cargotracker-lib-test-support")
 
-  testIntegrationImplementation testFixtures(project(":cargotracker-booking-boundary-web"))
+  testIntegrationImplementation testFixtures(project(":cargotracking-booking-lib-boundary-web"))
 
   testIntegrationImplementation "org.apache.groovy:groovy-json"
   testIntegrationImplementation "org.springframework:spring-test"

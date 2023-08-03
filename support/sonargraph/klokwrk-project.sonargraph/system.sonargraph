@@ -17,9 +17,9 @@
 		<description></description>
 		<rootPath name="../../modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-rdbms-management/build/classes/groovy/main"></rootPath>
 	</module>
-	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-boundary-web" id="f54e83ab16bd39a96bb029831a9309d9" language="Java">
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracking-booking-lib-boundary-web" id="f54e83ab16bd39a96bb029831a9309d9" language="Java">
 		<description></description>
-		<rootPath name="../../modules/bc/cargotracking/asd/booking/lib/cargotracker-booking-boundary-web/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/bc/cargotracking/asd/booking/lib/cargotracking-booking-lib-boundary-web/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-out-customer" id="d36dd8c8de39c9bc532f6aabc9a18a72" language="Java">
 		<description></description>

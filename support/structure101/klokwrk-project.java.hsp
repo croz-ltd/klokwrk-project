@@ -20,7 +20,7 @@
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-queryside-projection-rdbms/build/classes/groovy/main" module="cargotracking-booking-app-queryside-projection-rdbms" displaymodule="cargotracking-booking-app-queryside-projection-rdbms" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-queryside-view/build/classes/groovy/main" module="cargotracking-booking-app-queryside-view" displaymodule="cargotracking-booking-app-queryside-view" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-rdbms-management/build/classes/groovy/main" module="cargotracking-booking-app-rdbms-management" displaymodule="cargotracking-booking-app-rdbms-management" />
-    <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracker-booking-boundary-web/build/classes/groovy/main" module="cargotracker-booking-boundary-web" displaymodule="cargotracker-booking-boundary-web" />
+    <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracking-booking-lib-boundary-web/build/classes/groovy/main" module="cargotracking-booking-lib-boundary-web" displaymodule="cargotracking-booking-lib-boundary-web" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracker-booking-out-customer/build/classes/groovy/main" module="cargotracker-booking-out-customer" displaymodule="cargotracker-booking-out-customer" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracker-booking-queryside-model-rdbms-jpa/build/classes/groovy/main" module="cargotracker-booking-queryside-model-rdbms-jpa" displaymodule="cargotracker-booking-queryside-model-rdbms-jpa" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracker-booking-test-component/build/classes/groovy/testIntegration" module="cargotracker-booking-test-component" displaymodule="cargotracker-booking-test-component" />
@@ -83,7 +83,7 @@
                     <cell name="subdomain libraries" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                       <grid>
                         <row>
-                          <cell name="cargotracker-booking-boundary-web" pattern="cargotracker-booking-boundary-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                          <cell name="cargotracking-booking-lib-boundary-web" pattern="cargotracking-booking-lib-boundary-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                           <cell name="cargotracker-booking-queryside-model-rdbms-jpa" pattern="cargotracker-booking-queryside-model-rdbms-jpa.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                           <cell name="cargotracker-booking-out-customer" pattern="cargotracker-booking-out-customer.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                         </row>
@@ -225,7 +225,7 @@
               <cell name="booking-libs" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                 <grid>
                   <row>
-                    <cell name="cargotracker-booking-boundary-web" pattern="cargotracker-booking-boundary-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-booking-lib-boundary-web" pattern="cargotracking-booking-lib-boundary-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                     <cell name="cargotracker-booking-queryside-model-rdbms-jpa" pattern="cargotracker-booking-queryside-model-rdbms-jpa.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                     <cell name="outbound adapter" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                       <grid>

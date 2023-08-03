@@ -40,8 +40,11 @@ In this structure variant, all structure-related directories are placed directly
     klokwrk-project
     ├── ... (other files or directories)
     ├── cargotracker
-    │   ├── cargotracker-booking-boundary-web
     │   ├── cargotracking-booking-app-commandside
+    │   ├── cargotracking-booking-app-queryside-projection-rdbms
+    │   ├── cargotracking-booking-app-queryside-view
+    │   ├── cargotracking-booking-app-rdbms-management
+    │   ├── cargotracking-booking-lib-boundary-web
     │   ├── cargotracker-booking-domain-model-aggregate
     │   ├── cargotracker-booking-domain-model-command
     │   ├── cargotracker-booking-domain-model-event
@@ -49,9 +52,6 @@ In this structure variant, all structure-related directories are placed directly
     │   ├── cargotracker-booking-domain-model-value
     │   ├── cargotracker-booking-out-customer
     │   ├── cargotracker-booking-queryside-model-rdbms-jpa
-    │   ├── cargotracking-booking-app-queryside-projection-rdbms
-    │   ├── cargotracking-booking-app-queryside-view
-    │   ├── cargotracking-booking-app-rdbms-management
     │   ├── cargotracker-booking-test-component
     │   ├── cargotracker-booking-test-support-queryside
     │   ├── cargotracker-booking-test-support-testcontainers
@@ -134,7 +134,7 @@ The following listing shows the example of the elaborate strategic structure as 
     │   │   │   │   ├── cargotracking-booking-app-queryside-view
     │   │   │   │   └── cargotracking-booking-app-rdbms-management
     │   │   │   └── lib
-    │   │   │       ├── cargotracker-booking-boundary-web
+    │   │   │       ├── cargotracking-booking-lib-boundary-web
     │   │   │       ├── cargotracker-booking-domain-model-aggregate
     │   │   │       ├── cargotracker-booking-domain-model-command
     │   │   │       ├── cargotracker-booking-domain-model-event
