@@ -33,7 +33,7 @@ dependencies {
   implementation project(":cargotracking-lib-domain-model-command")
   implementation project(":cargotracking-lib-domain-model-event")
   implementation project(":klokwrk-lang-groovy")
-  implementation project(":klokwrk-lang-groovy-contracts-match")
+  implementation project(":klokwrk-lib-xlang-groovy-contracts-match")
   implementation project(":klokwrk-lang-groovy-contracts-simple")
   implementation project(":klokwrk-lib-uom")
 

@@ -26,7 +26,7 @@ dependencies {
 
   implementation project(":cargotracking-domain-model-value")
   implementation project(":klokwrk-lang-groovy")
-  implementation project(":klokwrk-lang-groovy-contracts-match")
+  implementation project(":klokwrk-lib-xlang-groovy-contracts-match")
   implementation project(":klokwrk-lang-groovy-contracts-simple")
 
   implementation "javax.measure:unit-api"

@@ -45,7 +45,7 @@ import groovy.transform.Generated
  * </pre>
  * <p/>
  * When used on abstraction levels higher than language extensions and reusable generic libraries, it is more idiomatic to use global {@code requireTrue} or {@code requireMatch} methods provided
- * by {@code klokwrk-lang-groovy-contracts-simple} or by {@code klokwrk-lang-groovy-contracts-match} modules like in the following example:
+ * by {@code klokwrk-lang-groovy-contracts-simple} or by {@code klokwrk-lib-xlang-groovy-contracts-match} modules like in the following example:
  * <pre>
  *   &#64;MapConstructor(post = { postMapConstructorCheckProtocol(args as Map) })
  *   class UnLoCode implements PostMapConstructorCheckable {
