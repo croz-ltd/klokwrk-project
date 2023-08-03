@@ -57,9 +57,9 @@
 		<description></description>
 		<rootPath name="../../modules/bc/cargotracking/domain-model/cargotracking-domain-model-service/build/classes/groovy/main"></rootPath>
 	</module>
-	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-booking-domain-model-value" id="e40ce62140f7b2333df8fe1ca52c5865" language="Java">
+	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracking-domain-model-value" id="e40ce62140f7b2333df8fe1ca52c5865" language="Java">
 		<description></description>
-		<rootPath name="../../modules/bc/cargotracking/domain-model/cargotracker-booking-domain-model-value/build/classes/groovy/main"></rootPath>
+		<rootPath name="../../modules/bc/cargotracking/domain-model/cargotracking-domain-model-value/build/classes/groovy/main"></rootPath>
 	</module>
 	<module xmlns:ns4="http://www.hello2morrow.com/sonargraph/languageprovider/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:xsdJavaModule" name="cargotracker-lib-axon-cqrs" id="999e476a2a41627b0858c2523a699c8e" language="Java">
 		<description></description>

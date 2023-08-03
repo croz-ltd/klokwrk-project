@@ -25,7 +25,7 @@ plugins {
 dependencies {
   implementation platform(project(":klokwrk-platform-base"))
 
-  implementation project(":cargotracker-booking-domain-model-value")
+  implementation project(":cargotracking-domain-model-value")
   implementation project(":cargotracker-lib-domain-model-event")
   implementation project(":klokwrk-lang-groovy")
 
@@ -35,18 +35,18 @@ dependencies {
 
   testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
 
-  testFixturesImplementation project(":cargotracker-booking-domain-model-value")
+  testFixturesImplementation project(":cargotracking-domain-model-value")
   testFixturesImplementation project(":cargotracker-lib-domain-model-event")
   testFixturesImplementation project(":klokwrk-lang-groovy")
   testFixturesImplementation project(":klokwrk-lib-uom")
 
-  testFixturesImplementation testFixtures(project(":cargotracker-booking-domain-model-value"))
+  testFixturesImplementation testFixtures(project(":cargotracking-domain-model-value"))
 
   testFixturesImplementation "javax.measure:unit-api"
   testFixturesImplementation "org.apache.groovy:groovy"
   testFixturesImplementation "tech.units:indriya"
 
-  testImplementation testFixtures(project(":cargotracker-booking-domain-model-value"))
+  testImplementation testFixtures(project(":cargotracking-domain-model-value"))
 
   testImplementation "org.spockframework:spock-core"
 }

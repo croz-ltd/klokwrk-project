@@ -29,7 +29,7 @@ dependencies {
 
   implementation project(":cargotracking-booking-lib-out-customer")
   implementation project(":cargotracking-booking-lib-queryside-model-rdbms-jpa")
-  implementation project(":cargotracker-booking-domain-model-value")
+  implementation project(":cargotracking-domain-model-value")
   implementation project(":cargotracker-lib-axon-cqrs")
   implementation project(":cargotracker-lib-axon-logging")
   implementation project(":cargotracker-lib-boundary-api")
@@ -90,7 +90,7 @@ dependencies {
 
   testIntegrationImplementation testFixtures(project(":cargotracking-booking-lib-boundary-web"))
   testIntegrationImplementation testFixtures(project(":cargotracking-domain-model-event"))
-  testIntegrationImplementation testFixtures(project(":cargotracker-booking-domain-model-value"))
+  testIntegrationImplementation testFixtures(project(":cargotracking-domain-model-value"))
 
   testIntegrationImplementation "javax.measure:unit-api"
   testIntegrationImplementation "org.apache.groovy:groovy-json"

@@ -23,13 +23,13 @@ plugins {
 dependencies {
   implementation platform(project(":klokwrk-platform-spring-boot"))
 
-  implementation project(":cargotracker-booking-domain-model-value")
+  implementation project(":cargotracking-domain-model-value")
   implementation project(":cargotracker-lib-boundary-api")
   implementation project(":klokwrk-lang-groovy")
   implementation project(":klokwrk-lang-groovy-contracts-match")
   implementation project(":klokwrk-lang-groovy-contracts-simple")
 
-  implementation testFixtures(project(":cargotracker-booking-domain-model-value"))
+  implementation testFixtures(project(":cargotracking-domain-model-value"))
 
   implementation "org.apache.groovy:groovy"
   implementation "org.apache.groovy:groovy-macro"

@@ -28,7 +28,7 @@ dependencies {
   implementation project(":cargotracking-domain-model-command")
   implementation project(":cargotracking-domain-model-event")
   implementation project(":cargotracking-domain-model-service")
-  implementation project(":cargotracker-booking-domain-model-value")
+  implementation project(":cargotracking-domain-model-value")
   implementation project(":cargotracker-lib-boundary-api")
   implementation project(":cargotracker-lib-domain-model-command")
   implementation project(":cargotracker-lib-domain-model-event")
@@ -49,7 +49,7 @@ dependencies {
 
   testImplementation testFixtures(project(":cargotracking-domain-model-command"))
   testImplementation testFixtures(project(":cargotracking-domain-model-event"))
-  testImplementation testFixtures(project(":cargotracker-booking-domain-model-value"))
+  testImplementation testFixtures(project(":cargotracking-domain-model-value"))
 
   testImplementation "org.axonframework:axon-test"
   testImplementation "org.spockframework:spock-core"
