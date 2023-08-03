@@ -50,7 +50,7 @@ In this structure variant, all structure-related directories are placed directly
     │   ├── cargotracking-booking-test-component
     │   ├── cargotracking-booking-test-support-queryside
     │   ├── cargotracking-booking-test-support-testcontainers
-    │   ├── cargotracker-booking-domain-model-aggregate
+    │   ├── cargotracking-domain-model-aggregate
     │   ├── cargotracker-booking-domain-model-command
     │   ├── cargotracker-booking-domain-model-event
     │   ├── cargotracker-booking-domain-model-service
@@ -140,7 +140,7 @@ The following listing shows the example of the elaborate strategic structure as 
     │   │   │       ├── cargotracking-booking-test-component
     │   │   │       ├── cargotracking-booking-test-support-queryside
     │   │   │       ├── cargotracking-booking-test-support-testcontainers
-    │   │   │       ├── cargotracker-booking-domain-model-aggregate
+    │   │   │       ├── cargotracking-domain-model-aggregate
     │   │   │       ├── cargotracker-booking-domain-model-command
     │   │   │       ├── cargotracker-booking-domain-model-event
     │   │   │       ├── cargotracker-booking-domain-model-service

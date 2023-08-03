@@ -26,7 +26,7 @@
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracking-booking-test-component/build/classes/groovy/testIntegration" module="cargotracking-booking-test-component" displaymodule="cargotracking-booking-test-component" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracking-booking-test-support-queryside/build/classes/groovy/main" module="cargotracking-booking-test-support-queryside" displaymodule="cargotracking-booking-test-support-queryside" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/asd/booking/lib/cargotracking-booking-test-support-testcontainers/build/classes/groovy/main" module="cargotracking-booking-test-support-testcontainers" displaymodule="cargotracking-booking-test-support-testcontainers" />
-    <classpathentry kind="lib" path="../../modules/bc/cargotracking/domain-model/cargotracker-booking-domain-model-aggregate/build/classes/groovy/main" module="cargotracker-booking-domain-model-aggregate" displaymodule="cargotracker-booking-domain-model-aggregate" />
+    <classpathentry kind="lib" path="../../modules/bc/cargotracking/domain-model/cargotracking-domain-model-aggregate/build/classes/groovy/main" module="cargotracking-domain-model-aggregate" displaymodule="cargotracking-domain-model-aggregate" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/domain-model/cargotracker-booking-domain-model-command/build/classes/groovy/main" module="cargotracker-booking-domain-model-command" displaymodule="cargotracker-booking-domain-model-command" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/domain-model/cargotracker-booking-domain-model-event/build/classes/groovy/main" module="cargotracker-booking-domain-model-event" displaymodule="cargotracker-booking-domain-model-event" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/domain-model/cargotracker-booking-domain-model-service/build/classes/groovy/main" module="cargotracker-booking-domain-model-service" displaymodule="cargotracker-booking-domain-model-service" />
@@ -97,7 +97,7 @@
               <cell name="domain-model" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                 <grid>
                   <row>
-                    <cell name="cargotracker-booking-domain-model-aggregate" pattern="cargotracker-booking-domain-model-aggregate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-domain-model-aggregate" pattern="cargotracking-domain-model-aggregate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
                     <cell name="cargotracker-booking-domain-model-command" pattern="cargotracker-booking-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
@@ -239,7 +239,7 @@
                     <cell name="domain model" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                       <grid>
                         <row>
-                          <cell name="cargotracker-booking-domain-model-aggregate" pattern="cargotracker-booking-domain-model-aggregate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                          <cell name="cargotracking-domain-model-aggregate" pattern="cargotracking-domain-model-aggregate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                         </row>
                         <row>
                           <cell name="cargotracker-booking-domain-model-service" pattern="cargotracker-booking-domain-model-service.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
