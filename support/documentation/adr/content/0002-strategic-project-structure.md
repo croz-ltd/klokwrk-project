@@ -61,7 +61,7 @@ In this structure variant, all structure-related directories are placed directly
     │   ├── cargotracking-lib-boundary-query-api
     │   ├── cargotracking-lib-domain-model-command
     │   ├── cargotracking-lib-domain-model-event
-    │   └── cargotracker-lib-web
+    │   └── cargotracking-lib-web
     ├── ... (other files or directories)
     ├── lang
     │   ├── klokwrk-lang-groovy
@@ -105,7 +105,7 @@ dependency management), and `support`. Directory `support` contains every other 
 supportive scripts, git hooks, etc.
 
 Inside domain directories (`cargotracker` in our example), we have three different artifact types. At the lowest abstraction level are **domain libraries** that can be recognized by
-`[domain-name]-lib-*` pattern in their name (i.e., `cargotracking-lib-axon-cqrs`, `cargotracker-lib-web`, etc.). Domain libraries contain code reusable across the domain.
+`[domain-name]-lib-*` pattern in their name (i.e., `cargotracking-lib-axon-cqrs`, `cargotracking-lib-web`, etc.). Domain libraries contain code reusable across the domain.
 
 Then we have **subdomain libraries**, recognized by `[domain-name]-[subdomain-name]-*` pattern. These contain code reusable only inside a single subdomain. In our example, the name of a subdomain
 is `booking`, so `cargotracking-booking-lib-boundary-web`, `cargotracking-booking-lib-out-customer`, etc., are examples of subdomain libraries.
@@ -152,7 +152,7 @@ The following listing shows the example of the elaborate strategic structure as 
     │   │       ├── cargotracking-lib-boundary-query-api
     │   │       ├── cargotracking-lib-domain-model-command
     │   │       ├── cargotracking-lib-domain-model-event
-    │   │       └── cargotracker-lib-web
+    │   │       └── cargotracking-lib-web
     │   ├── lang
     │   │   ├── klokwrk-lang-groovy
     │   │   ├── klokwrk-lang-groovy-contracts-match

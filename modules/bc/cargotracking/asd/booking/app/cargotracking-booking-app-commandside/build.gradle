@@ -39,7 +39,7 @@ dependencies {
   implementation project(":cargotracking-lib-boundary-api")
   implementation project(":cargotracking-lib-domain-model-command")
   implementation project(":cargotracking-lib-domain-model-event")
-  implementation project(":cargotracker-lib-web")
+  implementation project(":cargotracking-lib-web")
   implementation project(":klokwrk-lib-jackson-springboot")
   implementation project(":klokwrk-lib-validation-constraint")
   implementation project(":klokwrk-lib-validation-springboot")
