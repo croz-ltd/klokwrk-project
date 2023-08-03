@@ -21,7 +21,7 @@ rules.
 **We will execute syntactic validation at the application facade layer. If necessary for UI requirements, it may also be executed on the adapter layer.**
 
 Core validation at the application facade layer ensures that input data from any inbound channel will be validated in the same way. An example can be seen in `BookingOfferCommandApplicationService`
-class from `cargotracker-booking-commandside-app` module.
+class from `cargotracking-booking-app-commandside` module.
 
 Validation at the inbound channel adapter layer is used when there is a need for UI or client-specific validations. A typical example is an email verification scenario where, with repetition, we want
 to assure that the user submitted the correct email.
@@ -59,7 +59,7 @@ validator implementations.
 
 We are reporting syntactic validation failures through means of an employed validation framework. As we are using JSR 380 (Jakarta Bean Validation 2.0) implementation, syntactic validation failures
 are reported through `jakarta.validation.ConstraintViolationException`. With JSR 380, we are implementing syntactic validation ordering with `GroupSequence` annotation, as demonstrated by
-`BookCargoCommandRequest` class from `cargotracker-booking-commandside-app` module.
+`BookCargoCommandRequest` class from `cargotracking-booking-app-commandside` module.
 
 ## Consequences
 ### Positive

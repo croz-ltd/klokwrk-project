@@ -96,7 +96,7 @@ projection application and queryside application.
 Therefore, both modules require quite different 3rd party libraries (Axon or JPA) and are used by different modules. Even if you think that both modules can be combined into one, significant
 differences in the usage and differences in 3rd party libraries should convince you otherwise.
 
-Module `cargotracker-booking-domain-model-value` contains subdomain's value objects. In CQRS applications, aggregates and entities belong only to the command side. They cannot be used either from
+Module `cargotracking-domain-model-value` contains subdomain's value objects. In CQRS applications, aggregates and entities belong only to the command side. They cannot be used either from
 projections or query side. But domain value objects can be shared among all of these. In one part, value objects are used for expressing the internal state of aggregates. They are also used as
 building blocks for modeling events. Query side can also use domain value objects while describing query requirements.
 
@@ -115,7 +115,7 @@ libraries used by each module (not shown in the picture).
 If we have multiple domains using the same tech stack, domain libraries can be pulled out into the generic libraries layer to make them more available. Besides, domain libraries can also contain
 "incubating" libraries that are destined to be generic and widely reusable at the end. But for various reasons, it is more convenient to keep them at the domain level temporarily.
 
-Let's look quickly at what each of these modules contains. `cargotracker-lib-axon-cqrs` includes helpers that ease some aspects of working with Axon APIs. Module `cargotracker-lib-axon-logging`
+Let's look quickly at what each of these modules contains. `cargotracking-lib-axon-cqrs` includes helpers that ease some aspects of working with Axon APIs. Module `cargotracking-lib-axon-logging`
 provides logging infrastructure that gives more insight into the inner working of various Axon components. `cargotracker-lib-axon-api` brings in base classes and interfaces for working with commands
 and events.
 
@@ -123,8 +123,8 @@ You may wonder why so many Axon related library modules? As we decided to have m
 to use different Axon dependencies (Axon framework is not delivered as a single jar, but instead contains multiple modules addressing different concerns). Beside high cohesion and low coupling,
 differences in 3rd party dependencies are usually a significant hint for creating independent modules, even when high cohesion and low coupling attributes are not yet clearly visible and apparent.
 
-We have two modules left. `cargotracker-lib-web` contains classes related to the handling of HTTP requests and responses. For example, here we deal with the formatting and localization of successful
-and exceptional JSON responses. Module `cargotracker-lib-boundary-api` formalizes general structures of domain boundary API that all inbound adapters (web, messaging, etc.) must follow to be able to
+We have two modules left. `cargotracking-lib-web` contains classes related to the handling of HTTP requests and responses. For example, here we deal with the formatting and localization of successful
+and exceptional JSON responses. Module `cargotracking-lib-boundary-api` formalizes general structures of domain boundary API that all inbound adapters (web, messaging, etc.) must follow to be able to
 speak with domain application services (a.k.a. domain facades).
 
 Boundary API refers to classes defining the data structures and exceptions that are part of the contract between the outside world and domain hidden behind domain application services. They are
@@ -139,7 +139,7 @@ any domain. Here we can discover supportive additions for various commonly used 
 *Image 4 - `klokwrk` generic libraries and language extensions*
 
 These modules are used as direct compile-time dependencies from higher levels. Still, we can also have runtime-only modules that need to be available in the classpath but are not directly referenced
-from higher-level code (`klokwrk-lib-hibernate` is an example).
+from higher-level code (`klokwrk-lib-lo-hibernate` is an example).
 
 As the reusability of generic libraries is high and the abstraction level relatively low, it is standard for infrastructural code at the higher abstraction level to reference these modules.
 In contrast, it is not expected that business-level domain classes (i.e., aggregates, entities, and value objects) use them. However, language extensions are different. As they expand the
@@ -150,21 +150,21 @@ Another aspect worth keeping in mind is the potential number of dependencies tha
 it is desirable to achieve the right level of implementation stability as soon as possible. In general, this will be easier to accomplish with modules narrower in their scope. A high level of code
 coverage, proper and meaningful documentation, and several concrete usage scenarios are some tools that can all improve stability.
 
-There are several modules in the group of reusable libraries. `klokwrk-lib-jackson` provides some custom serializers and deserializers not available in the
-[Jackson](https://github.com/FasterXML/jackson) distribution. `klokwrk-lib-jackson-springboot` brings an opinionated way of setting Jackson's defaults and means for configuring them, if needed, from
+There are several modules in the group of reusable libraries. `klokwrk-lib-lo-jackson` provides some custom serializers and deserializers not available in the
+[Jackson](https://github.com/FasterXML/jackson) distribution. `klokwrk-lib-hi-jackson-springboot` brings an opinionated way of setting Jackson's defaults and means for configuring them, if needed, from
 the Spring Boot environment. Opinionated selection of Jackson defaults tries to provide Jackson configuration suitable for avoiding usage of Jackson annotations as much as possible.
 
-Another pair of related modules deal with the excellent [datasource-proxy](https://github.com/ttddyy/datasource-proxy) library. `klokwrk-lib-datasourceproxy` introduces useful extensions to the
-library like the implementation of a logging suppression filter that can ignore not-interesting queries (i.e. Axon's token store polling). `klokwrk-lib-datasourceproxy-springboot` provides support
+Another pair of related modules deal with the excellent [datasource-proxy](https://github.com/ttddyy/datasource-proxy) library. `klokwrk-lib-lo-datasourceproxy` introduces useful extensions to the
+library like the implementation of a logging suppression filter that can ignore not-interesting queries (i.e. Axon's token store polling). `klokwrk-lib-hi-datasourceproxy-springboot` provides support
 for setting up and configuring the library in the Spring Boot context.
 
-Module `klokwrk-lib-spring-context` contains customized extensions to the classes from the [Spring framework's](https://spring.io/projects/spring-framework) `spring-context` module. Currently, there
-is support for creating a list of message codes used when resolving localized messages from resource bundles. Finally, `klokwrk-lib-hibernate` deals with some peculiarities of the internal workings
-of [Hibernate ORM](https://hibernate.org/orm/).
+Module `klokwrk-lib-hi-spring-context` contains customized extensions to the classes from the [Spring framework's](https://spring.io/projects/spring-framework) `spring-context` module. Currently,
+there is support for creating a list of message codes used when resolving localized messages from resource bundles. Finally, `klokwrk-lib-lo-hibernate` deals with some peculiarities of the internal
+workings of [Hibernate ORM](https://hibernate.org/orm/).
 
-In the group of language extensions, we have a `klokwrk-lang-groovy` module. It contains some general-purpose constants, utility methods for convenient fetching of object's properties, and some
-infrastructure helping with relaxing requirements of Groovy map constructor. The last two features can help create immutable objects and support simple mapping of data from one object into another.
-Quite often, this is more than enough for data mapping purposes without requiring any additional library.
+In the group of language extensions, we have a `klokwrk-lib-xlang-groovy-base` module. It contains some general-purpose constants, utility methods for convenient fetching of object's properties, and
+some infrastructure helping with relaxing requirements of Groovy map constructor. The last two features can help create immutable objects and support simple mapping of data from one object into
+another. Quite often, this is more than enough for data mapping purposes without requiring any additional library.
 
 ## Basic package organization principles
 In the domain of separating **applications into packages**, several strategies are often mentioned. In most cases, we can hear about "packaging by layers" and "packaging by features" where
@@ -194,26 +194,26 @@ heterogeneous.
 Since we are extending or customizing features of concrete libraries, it is quite important to monitor required 3rd party dependencies. If they are disparate, we might need more fine-grained modules.
 On the other hand, if we target specific higher-level consumers, we might want to include more heterogeneous features to avoid too fine-grained modules that no one will use in isolation.
 
-The first example (Image 5) shows the packaging of `cargotracker-lib-axon-cqrs` and `cargotracker-lib-axon-logging` modules dealing with different aspects of the Axon framework.
+The first example (Image 5) shows the packaging of `cargotracking-lib-axon-cqrs` and `cargotracking-lib-axon-logging` modules dealing with different aspects of the Axon framework.
 
 ![Image 5 - general example of library packaging comparison](images/05-general-example-of-library-packaging-comparison.jpg "Image 5 - general example of library packaging comparison") <br/>
 *Image 5 - general example of library packaging comparison*
 
 Without exploring Axon's internal workings, packages seem to be understandable and coherent, keeping the right level of cohesion. After all, it is hard to fail with cohesion for that small number of
-classes. Subpackages in `cargotracker-lib-axon-cqrs` are a bit more elaborate and look slightly unrelated, which lowers the cohesion of a module, but they all deal with similar enough things.
+classes. Subpackages in `cargotracking-lib-axon-cqrs` are a bit more elaborate and look slightly unrelated, which lowers the cohesion of a module, but they all deal with similar enough things.
 
 It might be surprising why these two modules are not combined into a single one. Putting aside that coming up with a meaningful name might be hard, if we look at consumers (Image 3), we can
-see `cargotracker-lib-axon-cqrs` being used from `commandside` and `queryside` apps. At the same time, `cargotracker-lib-axon-logging` is also a dependency of the `projection` app. If lowered module
+see `cargotracking-lib-axon-cqrs` being used from `commandside` and `queryside` apps. At the same time, `cargotracking-lib-axon-logging` is also a dependency of the `projection` app. If lowered module
 cohesion, problematic naming, and different consumers are not enough, taking into account that required 3rd party libraries are different gives us more than enough reasons for justifying the
 existence of separate library modules.
 
-Next, we have two low-level libraries supporting extension, customization, and configurability of 3rd party "datasource-proxy" library. Module `klokwrk-lib-datasourceproxy` provides extension itself,
-while `klokwrk-lib-datasourceproxy-springboot` implements support and configurability for the Spring Boot environment.
+Next, we have two low-level libraries supporting extension, customization, and configurability of 3rd party "datasource-proxy" library. Module `klokwrk-lib-lo-datasourceproxy` provides extension
+itself, while `klokwrk-lib-hi-datasourceproxy-springboot` implements support and configurability for the Spring Boot environment.
 
 ![Image 6 - datasourceproxy library packaging comparison](images/06-datasourceproxy-library-packaging-comparison.jpg "Image 6 - datasourceproxy library packaging comparison") <br/>
 *Image 6 - datasourceproxy library packaging comparison*
 
-After glancing over packages, one might think there is an error in `klokwrk-lib-datasourceproxy` since there are no subpackages. It's true. This is an error unless you take a less strict approach.
+After glancing over packages, one might think there is an error in `klokwrk-lib-lo-datasourceproxy` since there are no subpackages. It's true. This is an error unless you take a less strict approach.
 We have only a single class and no intention to add some more in the foreseeable future, so there is no real need for a subpackage. But it can be added if you really want it.
 
 If you only target Spring Boot apps, both modules can be combined. But with separate modules, you are allowing for core functionality to be used outside of the Spring Boot environment. Although for
@@ -224,7 +224,7 @@ The last example is very similar, but now it's about the Jackson library.
 ![Image 7 - jackson library packaging comparison](images/07-jackson-library-packaging-comparison.jpg "Image 7 - jackson library packaging comparison") <br/>
 *Image 7 - jackson library packaging comparison*
 
-This time, in the core `klokwrk-lib-jackson` library, we need separated subpackages for splitting different functions. It is worth noting the names of subpackages. They are the same as for
+This time, in the core `klokwrk-lib-lo-jackson` library, we need separated subpackages for splitting different functions. It is worth noting the names of subpackages. They are the same as for
 corresponding packages in the Jackson library. This is standard practice when you are extending existing libraries, which aids in understanding and maintenance.
 
 ## Packaging for applications

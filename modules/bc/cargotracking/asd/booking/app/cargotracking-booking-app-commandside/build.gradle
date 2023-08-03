@@ -1,0 +1,98 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2020-2023 CROZ d.o.o, the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+plugins {
+  id "java-test-fixtures"
+  id "klokwrk-gradle-plugin-convention-base"
+  id "klokwrk-gradle-plugin-convention-groovy"
+  id "klokwrk-gradle-plugin-convention-springboot-app"
+  id "klokwrk-gradle-plugin-convention-test-integration"
+}
+
+dependencies {
+  implementation platform(project(":klokwrk-platform-spring-boot"))
+  testIntegrationImplementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")
+
+  implementation project(":cargotracking-booking-lib-boundary-web")
+  implementation project(":cargotracking-booking-lib-out-customer")
+  implementation project(":cargotracking-domain-model-aggregate")
+  implementation project(":cargotracking-domain-model-command")
+  implementation project(":cargotracking-domain-model-event")
+  implementation project(":cargotracking-domain-model-service")
+  implementation project(":cargotracking-domain-model-value")
+  implementation project(":cargotracking-lib-axon-cqrs")
+  implementation project(":cargotracking-lib-axon-logging")
+  implementation project(":cargotracking-lib-boundary-api")
+  implementation project(":cargotracking-lib-domain-model-command")
+  implementation project(":cargotracking-lib-domain-model-event")
+  implementation project(":cargotracking-lib-web")
+  implementation project(":klokwrk-lib-hi-jackson-springboot")
+  implementation project(":klokwrk-lib-hi-validation-springboot")
+  implementation project(":klokwrk-lib-lo-validation-constraint")
+  implementation project(":klokwrk-lib-xlang-groovy-base")
+  implementation project(":klokwrk-lib-xlang-groovy-contracts-match")
+  implementation project(":klokwrk-lib-xlang-groovy-contracts-simple")
+
+  implementation "javax.measure:unit-api"
+  implementation "org.apache.groovy:groovy"
+  implementation "org.apache.groovy:groovy-macro"
+  implementation "org.axonframework:axon-spring-boot-starter"
+  implementation "org.axonframework:axon-tracing-opentelemetry"
+  implementation "org.hamcrest:hamcrest"
+  implementation "org.springframework.boot:spring-boot-starter-actuator"
+  implementation "org.springframework.boot:spring-boot-starter-validation"
+  implementation "org.springframework.boot:spring-boot-starter-web"
+  implementation "tech.units:indriya"
+
+  runtimeOnly "com.grafana:grafana-opentelemetry-starter"
+  runtimeOnly "io.micrometer:micrometer-tracing-bridge-otel"
+  runtimeOnly "net.ttddyy.observation:datasource-micrometer-spring-boot"
+  runtimeOnly "org.axonframework:axon-micrometer"
+
+  testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
+
+  testFixturesImplementation project(":cargotracking-domain-model-value")
+  testFixturesImplementation project(":cargotracking-test-support")
+  testFixturesImplementation project(":klokwrk-lib-lo-uom")
+  testFixturesImplementation project(":klokwrk-lib-xlang-groovy-base")
+
+  testFixturesImplementation "javax.measure:unit-api"
+  testFixturesImplementation "org.apache.groovy:groovy"
+  testFixturesImplementation "org.apache.groovy:groovy-json"
+  testFixturesImplementation "tech.units:indriya"
+
+  testImplementation project(":klokwrk-lib-lo-archunit")
+  testImplementation project(":klokwrk-lib-lo-uom")
+
+  testImplementation "com.tngtech.archunit:archunit-junit5"
+  testImplementation "org.axonframework:axon-test"
+  testImplementation "org.spockframework:spock-core"
+  testImplementation "si.uom:si-units"
+  testImplementation "systems.uom:systems-common"
+
+  testIntegrationImplementation project(":cargotracking-booking-test-support-testcontainers")
+  testIntegrationImplementation project(":cargotracking-test-support")
+
+  testIntegrationImplementation testFixtures(project(":cargotracking-booking-lib-boundary-web"))
+
+  testIntegrationImplementation "org.apache.groovy:groovy-json"
+  testIntegrationImplementation "org.springframework:spring-test"
+  testIntegrationImplementation "org.springframework.boot:spring-boot-test"
+  testIntegrationImplementation "org.testcontainers:testcontainers"
+
+  testIntegrationRuntimeOnly "org.spockframework:spock-spring"
+}

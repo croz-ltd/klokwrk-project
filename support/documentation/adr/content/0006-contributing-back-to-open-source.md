@@ -14,10 +14,10 @@ help with the issues we encountered.
 * System (`klokwrk-project`)
 
 ## Decision
-**At least, we will report the issues in 3rd party open source software that are encountered during `klokwkr-project` development.** We'll strive to do this as consistently as possible. Besides being
+**At least, we will report the issues in 3rd party open source software that are encountered during `klokwrk-project` development.** We'll strive to do this as consistently as possible. Besides being
 constructive community members, resolving encountered issues should benefit us with an easier and streamlined workflow.
 
-We will actively maintain [the list of reported issues and monitored issues](../../misc/klokwrkRelatedIssuesInTheWild.md) that are relevant for `klokwkr-project.`
+We will actively maintain [the list of reported issues and monitored issues](../../misc/klokwrkRelatedIssuesInTheWild.md) that are relevant for `klokwrk-project.`
 
 Putting open source contribution in ADR makes it an official guideline and moral obligation for all `klokwrk-project` members.
 

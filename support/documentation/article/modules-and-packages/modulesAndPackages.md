@@ -145,8 +145,8 @@ directly reused. In general, if we have to reuse some part of application module
 Similarly, subdomain libraries can also reuse modules from the lower abstraction levels, but the reverse does not hold. Subdomain libraries are reusable only inside the boundaries of their subdomain.
 It is not just because of the high abstraction level. Subdomain libraries, together with subdomain applications, are the place where technology meets business requirements. This is where we have a
 coupling between business and our technology choices. Since the business concepts are part of the bounded context, it does not make sense to reuse subdomain libraries from lower levels that are
-technology-specific and not aware of a business. The klokwrk strategic structure has a typical example - `cargotracker-booking-queryside-model-rdbms-jpa`, the module containing JPA entities specific
-only for `booking` subdomain.
+technology-specific and not aware of a business. The klokwrk strategic structure has a typical example - `cargotracking-booking-lib-queryside-model-rdbms-jpa`, the module containing JPA entities
+specific only for `booking` subdomain.
 
 Despite this, it is not forbidden to have generic infrastructural code at the subdomain library level. It may be that a particular infrastructural code is not interesting in other subdomains, or we
 have just created a temporary subdomain library destined to become a bounded context library or a generic reusable library at the end.
@@ -221,7 +221,7 @@ bounded context libraries can also contain "incubating" libraries destined to be
 bounded context level temporarily.
 
 Bounded context libraries will never contain code speaking the ubiquitous language of the bounded context. This is reserved only for subdomains. However, in bounded context libraries, we can have
-infrastructure supporting the implementation of the domain model. One typical example is the `cargotracker-lib-boundary-api` module which formalizes general structures and exceptions of bounded
+infrastructure supporting the implementation of the domain model. One typical example is the `cargotracking-lib-boundary-api` module which formalizes general structures and exceptions of bounded
 context boundary API that all inbound adapters (web, messaging, etc.) must know, understand and use to be able to speak with domain application services (a.k.a. domain facades).
 
 Therefore, the boundary API defines essential building elements of a contract between the outside world and the domain. Domain application services use boundary API elements to define interfaces
@@ -340,29 +340,29 @@ heterogeneous.
 Since we are extending or customizing features of concrete libraries, it is quite important to monitor required 3rd party dependencies. If they are disparate, we might need more fine-grained modules.
 On the other hand, if we target specific higher-level consumers, we might want to include more heterogeneous features to avoid too fine-grained modules that no one will use in isolation.
 
-The first example (Image 4) shows the packaging of `cargotracker-lib-axon-cqrs` and `cargotracker-lib-axon-logging` modules dealing with different aspects of the Axon framework.
+The first example (Image 4) shows the packaging of `cargotracking-lib-axon-cqrs` and `cargotracking-lib-axon-logging` modules dealing with different aspects of the Axon framework.
 
 ![Image 4 - Example of Axon libraries packaging comparison](images/04-axon-libraries-packaging-comparison.jpg "Image 4 - Example of Axon libraries packaging comparison") <br/>
 *Image 4 - Example of Axon libraries packaging comparison*
 
 Without exploring Axon's internal workings, packages seem to be understandable and coherent, keeping the right level of cohesion. After all, it is hard to fail with cohesion for that small number of
-classes. Subpackages in `cargotracker-lib-axon-cqrs` are a bit more elaborate and look slightly unrelated, which lowers the cohesion of a module, but they all deal with similar enough things.
+classes. Subpackages in `cargotracking-lib-axon-cqrs` are a bit more elaborate and look slightly unrelated, which lowers the cohesion of a module, but they all deal with similar enough things.
 
 ![Image 5 - Dependencies of Axon libraries](images/05-axon-libraries-dependencies.jpg "Image 5 - Dependencies of Axon libraries") <br/>
 *Image 5 - Dependencies of Axon libraries*
 
 It might be surprising why these two modules are not combined into a single one. Putting aside that coming up with a meaningful name might be hard, if we look at consumers (Image 5), we can
-see `cargotracker-lib-axon-cqrs` being used from `commandside` and `queryside-view` apps. At the same time, `cargotracker-lib-axon-logging` is also a dependency of the `queryside-projection` app. If
+see `cargotracking-lib-axon-cqrs` being used from `commandside` and `queryside-view` apps. At the same time, `cargotracking-lib-axon-logging` is also a dependency of the `queryside-projection` app. If
 lowered module cohesion, problematic naming, and different consumers are not enough, taking into account that required 3rd party libraries are different gives us more than enough reasons for
 justifying the existence of separate library modules.
 
-Next, we have two low-level libraries supporting extension, customization, and configurability of 3rd party "datasource-proxy" library. Module `klokwrk-lib-datasourceproxy` provides extension itself,
-while `klokwrk-lib-datasourceproxy-springboot` implements support and configurability for the Spring Boot environment.
+Next, we have two low-level libraries supporting extension, customization, and configurability of 3rd party "datasource-proxy" library. Module `klokwrk-lib-lo-datasourceproxy` provides extension
+itself, while `klokwrk-lib-hi-datasourceproxy-springboot` implements support and configurability for the Spring Boot environment.
 
 ![Image 6 - Datasourceproxy libraries packaging comparison](images/06-datasourceproxy-libraries-packaging-comparison.jpg "Image 6 - Datasourceproxy libraries packaging comparison") <br/>
 *Image 6 - Datasourceproxy libraries packaging comparison*
 
-After glancing over packages, one might think there is an error in `klokwrk-lib-datasourceproxy` since there are no subpackages. It's true. This is an error unless you take a less strict approach.
+After glancing over packages, one might think there is an error in `klokwrk-lib-lo-datasourceproxy` since there are no subpackages. It's true. This is an error unless you take a less strict approach.
 We have only a single class and no intention to add some more in the foreseeable future, so there is no real need for a subpackage. But it can be added if you really want it.
 
 If you only target Spring Boot apps, both modules can be combined. But with separate modules, you are allowing for core functionality to be used outside of the Spring Boot environment. Although for
@@ -373,7 +373,7 @@ The last example is very similar, but now it's about the Jackson library.
 ![Image 7 - Jackson libraries packaging comparison](images/07-jackson-libraries-packaging-comparison.jpg "Image 7 - Jackson libraries packaging comparison") <br/>
 *Image 7 - Jackson libraries packaging comparison*
 
-This time, in the core `klokwrk-lib-jackson` library, we need separated subpackages for splitting different functions. It is worth noting the names of subpackages - `deser` and `ser`. They are the
+This time, in the core `klokwrk-lib-lo-jackson` library, we need separated subpackages for splitting different functions. It is worth noting the names of subpackages - `deser` and `ser`. They are the
 same as for corresponding packages in the Jackson library. This is standard practice when you are extending existing libraries, which aids in understanding and maintenance.
 
 ## Packaging for applications

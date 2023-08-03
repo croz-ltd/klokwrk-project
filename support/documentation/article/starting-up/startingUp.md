@@ -116,11 +116,11 @@ commands:
 Open the next shell (shell-3) at the root of the project. Before we run applications, we must **execute a database schema management application** first. It will migrate the database schema to the
 state expected by other applications (it wraps [flyway](https://flywaydb.org/) for implementing database migrations):
 
-    gw :cargotracker-booking-rdbms-management-app:bootRun
+    gw :cargotracking-booking-app-rdbms-management:bootRun
 
 or
 
-    gw -p modules/bc/cargotracking/asd/booking/app/cargotracker-booking-rdbms-management-app bootRun
+    gw -p modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-rdbms-management bootRun
 
 Alternatively, you can use corresponding shell script:
 
@@ -130,17 +130,17 @@ Alternatively, you can use corresponding shell script:
 Now we are ready for **running functional applications**. First, please make sure you are at the root of the project, and then execute the following commands, each one from a separate shell (shell-3,
 shell-4, and shell-5 where shell-3 is reused from the previous step). Wait until applications are fully started:
 
-    gw :cargotracker-booking-commandside-app:bootRun
-    gw :cargotracker-booking-queryside-projection-rdbms-app:bootRun
-    gw :cargotracker-booking-queryside-view-app:bootRun
+    gw :cargotracking-booking-app-commandside:bootRun
+    gw :cargotracking-booking-app-queryside-projection-rdbms:bootRun
+    gw :cargotracking-booking-app-queryside-view:bootRun
 
 or
 
-    gw -p modules/bc/cargotracking/asd/booking/app/cargotracker-booking-commandside-app bootRun
-    gw -p modules/bc/cargotracking/asd/booking/app/cargotracker-booking-queryside-projection-rdbms-app bootRun
-    gw -p modules/bc/cargotracking/asd/booking/app/cargotracker-booking-queryside-view-app bootRun
+    gw -p modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-commandside bootRun
+    gw -p modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-queryside-projection-rdbms bootRun
+    gw -p modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-queryside-view bootRun
 
-If you prefer, you might want to run applications from IDE. In that case, select the application's `bootRun` Gradle task as is shown in the picture for the `cargotracker-booking-commandside-app`
+If you prefer, you might want to run applications from IDE. In that case, select the application's `bootRun` Gradle task as is shown in the picture for the `cargotracking-booking-app-commandside`
 application.
 
 ![Starting commandside application from IDE](images/03-commandside-bootRun.jpg "Starting commandside application from IDE")
@@ -163,7 +163,7 @@ them up properly, execute the following shell script (from shell-2):
 For executing HTTP requests, we will use [Postman](https://www.postman.com/). Please [download](https://www.postman.com/downloads/) a free local application for your OS and install it if you don't
 have it already.
 
-First, you have to import `support/http-request/postman/klokwrk-workspace/cargotracker-booking.postman_collection.json` collection.
+First, you have to import `support/http-request/postman/klokwrk-workspace/cargotracking-booking.postman_collection.json` collection.
 
 > <br/>
 > Note: Every time the collection source file changes, the collection must be deleted and reimported in Postman. <br/>
@@ -173,14 +173,14 @@ Inside your Postman workspace, click on `Import` button, select `File` tab in `I
 
 ![Postman Import dialog](images/05-postmanImportDialog.jpg "Postman Import dialog")
 
-Navigate to the `support/http-request/postman/klokwrk-workspace/cargotracker-booking.postman_collection.json` collection and open it. Then, in the `Import` dialog, click the `Import` button to finish
+Navigate to the `support/http-request/postman/klokwrk-workspace/cargotracking-booking.postman_collection.json` collection and open it. Then, in the `Import` dialog, click the `Import` button to finish
 the process. Now, you should have your `cargotracker-booking` collection available.
 
 ![Imported Postman collection](images/06-importedPostmanCollection.jpg "Imported Postman collection")
 
 #### Commandside requests
 For executing some command requests, expand the collection and navigate to `cargotracker-booking/individual-requests/commandside/booking-offer/create-booking-offer`. Here `create-booking-offer`
-folder corresponds to multiple variations of the `CreateBookingOfferCommand` command from the `cargotracker-booking-commandside-app` application.
+folder corresponds to multiple variations of the `CreateBookingOfferCommand` command from the `cargotracking-booking-app-commandside` application.
 
 For example, select the `ok, en` request and click the `Send` button. You should get the appropriate response:
 

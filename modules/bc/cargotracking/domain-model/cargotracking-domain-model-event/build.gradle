@@ -1,0 +1,52 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2020-2023 CROZ d.o.o, the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+plugins {
+  id "java-library"
+  id "java-test-fixtures"
+  id "klokwrk-gradle-plugin-convention-base"
+  id "klokwrk-gradle-plugin-convention-groovy"
+}
+
+dependencies {
+  implementation platform(project(":klokwrk-platform-base"))
+
+  implementation project(":cargotracking-domain-model-value")
+  implementation project(":cargotracking-lib-domain-model-event")
+  implementation project(":klokwrk-lib-xlang-groovy-base")
+
+  implementation "javax.measure:unit-api"
+  implementation "org.apache.groovy:groovy"
+  implementation "tech.units:indriya"
+
+  testFixturesImplementation platform(project(":klokwrk-platform-spring-boot"))
+
+  testFixturesImplementation project(":cargotracking-domain-model-value")
+  testFixturesImplementation project(":cargotracking-lib-domain-model-event")
+  testFixturesImplementation project(":klokwrk-lib-lo-uom")
+  testFixturesImplementation project(":klokwrk-lib-xlang-groovy-base")
+
+  testFixturesImplementation testFixtures(project(":cargotracking-domain-model-value"))
+
+  testFixturesImplementation "javax.measure:unit-api"
+  testFixturesImplementation "org.apache.groovy:groovy"
+  testFixturesImplementation "tech.units:indriya"
+
+  testImplementation testFixtures(project(":cargotracking-domain-model-value"))
+
+  testImplementation "org.spockframework:spock-core"
+}

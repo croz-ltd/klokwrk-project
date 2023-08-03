@@ -29,7 +29,7 @@ practice implementations of various programming patterns.
 * Groovy can be used in various contexts, from scripting to developing full-featured enterprise applications.
 * Groovy is an open-source language, maintained by the community, and hosted by Apache foundation.
 * Groovy offers ways for quick prototyping with minimal ceremony.
-* `klokwkr-project` development team has a significant experience with Groovy.
+* `klokwrk-project` development team has a significant experience with Groovy.
 
 ### Negative
 * Java tooling often lags with support for Groovy.

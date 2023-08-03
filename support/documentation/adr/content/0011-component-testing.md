@@ -28,7 +28,7 @@ it can also be used. Therefore, the applied scope of tests is the major differen
 Implementation of component tests will rely on the Testcontainers library. In contrast with [integration tests](0010-integration-testing-with-containerized-infrastructure.md), component tests do not
 only containerize infrastructure but also logical microservices under the test. With such a setup, component tests usually leverage an external client for exercising the public API of microservices.
 
-As an example of component tests, take a look at the `klokwrk-project` module `cargotracker-booking-test-component`.
+As an example of component tests, take a look at the `klokwrk-project` module `cargotracking-booking-test-component`.
 
 ## Consequences
 ### Positive

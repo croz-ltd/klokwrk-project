@@ -32,7 +32,7 @@ is enough to click on a module in an appropriate view, as is shown in a picture 
 Although Structure 101 is very useful for visualization, exploration, and time-to-time monitoring of dependencies, we are still missing automated dependency checks. We can implement them by
 leveraging the ArchUnit library.
 
-As an example, take a look at the `BookingCommandSideAppDependenciesSpecification` test. It is checking dependencies for the `cargotracker-booking-commandside-app` module. After a closer look,
+As an example, take a look at the `BookingCommandSideAppDependenciesSpecification` test. It is checking dependencies for the `cargotracking-booking-app-commandside` module. After a closer look,
 it can be seen that we are testing dependencies displayed in the picture above. This is very convenient since we can use the Structure101 diagram as direct input for our test.
 
 `BookingCommandSideAppDependenciesSpecification` test is a basic test since it enumerates all dependencies of a module without any additional criteria. Of course, the test can be expanded to verify

@@ -40,46 +40,46 @@ In this structure variant, all structure-related directories are placed directly
     klokwrk-project
     ├── ... (other files or directories)
     ├── cargotracker
-    │   ├── cargotracker-booking-boundary-web
-    │   ├── cargotracker-booking-commandside-app
-    │   ├── cargotracker-booking-domain-model-aggregate
-    │   ├── cargotracker-booking-domain-model-command
-    │   ├── cargotracker-booking-domain-model-event
-    │   ├── cargotracker-booking-domain-model-service
-    │   ├── cargotracker-booking-domain-model-value
-    │   ├── cargotracker-booking-out-customer
-    │   ├── cargotracker-booking-queryside-model-rdbms-jpa
-    │   ├── cargotracker-booking-queryside-projection-rdbms-app
-    │   ├── cargotracker-booking-queryside-view-app
-    │   ├── cargotracker-booking-rdbms-management-app
-    │   ├── cargotracker-booking-test-component
-    │   ├── cargotracker-booking-test-support-queryside
-    │   ├── cargotracker-booking-test-support-testcontainers
-    │   ├── cargotracker-lib-axon-cqrs
-    │   ├── cargotracker-lib-axon-logging
-    │   ├── cargotracker-lib-boundary-api
-    │   ├── cargotracker-lib-boundary-query-api
-    │   ├── cargotracker-lib-domain-model-command
-    │   ├── cargotracker-lib-domain-model-event
-    │   └── cargotracker-lib-web
+    │   ├── cargotracking-booking-app-commandside
+    │   ├── cargotracking-booking-app-queryside-projection-rdbms
+    │   ├── cargotracking-booking-app-queryside-view
+    │   ├── cargotracking-booking-app-rdbms-management
+    │   ├── cargotracking-booking-lib-boundary-web
+    │   ├── cargotracking-booking-lib-out-customer
+    │   ├── cargotracking-booking-lib-queryside-model-rdbms-jpa
+    │   ├── cargotracking-booking-test-component
+    │   ├── cargotracking-booking-test-support-queryside
+    │   ├── cargotracking-booking-test-support-testcontainers
+    │   ├── cargotracking-domain-model-aggregate
+    │   ├── cargotracking-domain-model-command
+    │   ├── cargotracking-domain-model-event
+    │   ├── cargotracking-domain-model-service
+    │   ├── cargotracking-domain-model-value
+    │   ├── cargotracking-lib-axon-cqrs
+    │   ├── cargotracking-lib-axon-logging
+    │   ├── cargotracking-lib-boundary-api
+    │   ├── cargotracking-lib-boundary-query-api
+    │   ├── cargotracking-lib-domain-model-command
+    │   ├── cargotracking-lib-domain-model-event
+    │   └── cargotracking-lib-web
     ├── ... (other files or directories)
     ├── lang
-    │   ├── klokwrk-lang-groovy
-    │   ├── klokwrk-lang-groovy-contracts-match
-    │   └── klokwrk-lang-groovy-contracts-simple
+    │   ├── klokwrk-lib-xlang-groovy-base
+    │   ├── klokwrk-lib-xlang-groovy-contracts-match
+    │   └── klokwrk-lib-xlang-groovy-contracts-simple
     ├── ... (other files or directories)
     ├── lib
-    │   ├── klokwrk-lib-archunit
-    │   ├── klokwrk-lib-datasourceproxy
-    │   ├── klokwrk-lib-datasourceproxy-springboot
-    │   ├── klokwrk-lib-hibernate
-    │   ├── klokwrk-lib-jackson
-    │   ├── klokwrk-lib-jackson-springboot
-    │   ├── klokwrk-lib-spring-context
-    │   ├── klokwrk-lib-spring-data-jpa
-    │   ├── klokwrk-lib-validation-constraint
-    │   ├── klokwrk-lib-validation-springboot
-    │   └── klokwrk-lib-validation-validator
+    │   ├── klokwrk-lib-hi-datasourceproxy-springboot
+    │   ├── klokwrk-lib-hi-jackson-springboot
+    │   ├── klokwrk-lib-hi-spring-context
+    │   ├── klokwrk-lib-hi-spring-data-jpa
+    │   ├── klokwrk-lib-hi-validation-springboot
+    │   ├── klokwrk-lib-lo-archunit
+    │   ├── klokwrk-lib-lo-datasourceproxy
+    │   ├── klokwrk-lib-lo-hibernate
+    │   ├── klokwrk-lib-lo-jackson
+    │   ├── klokwrk-lib-lo-validation-constraint
+    │   └── klokwrk-lib-lo-validation-validator
     ├── ... (other files or directories)
     ├── platform
     │   ├── klokwrk-platform-base
@@ -105,10 +105,10 @@ dependency management), and `support`. Directory `support` contains every other 
 supportive scripts, git hooks, etc.
 
 Inside domain directories (`cargotracker` in our example), we have three different artifact types. At the lowest abstraction level are **domain libraries** that can be recognized by
-`[domain-name]-lib-*` pattern in their name (i.e., `cargotracker-lib-axon-cqrs`, `cargotracker-lib-web`, etc.). Domain libraries contain code reusable across the domain.
+`[domain-name]-lib-*` pattern in their name (i.e., `cargotracking-lib-axon-cqrs`, `cargotracking-lib-web`, etc.). Domain libraries contain code reusable across the domain.
 
 Then we have **subdomain libraries**, recognized by `[domain-name]-[subdomain-name]-*` pattern. These contain code reusable only inside a single subdomain. In our example, the name of a subdomain
-is `booking`, so `cargotracker-booking-boundary-web`, `cargotracker-booking-domain-model-command`, etc., are examples of subdomain libraries.
+is `booking`, so `cargotracking-booking-lib-boundary-web`, `cargotracking-booking-lib-out-customer`, etc., are examples of subdomain libraries.
 
 And finally, at the highest abstraction level, we have applications. Since, usually, applications belong to subdomains, their name will follow the `[domain-name]-[subdomain-name]-*-app` pattern
 where the `app` suffix distinguishes them from subdomain libraries.
@@ -129,46 +129,46 @@ The following listing shows the example of the elaborate strategic structure as 
     │   ├── cargotracker
     │   │   ├── booking
     │   │   │   ├── app
-    │   │   │   │   ├── cargotracker-booking-commandside-app
-    │   │   │   │   ├── cargotracker-booking-queryside-projection-rdbms-app
-    │   │   │   │   ├── cargotracker-booking-queryside-view-app
-    │   │   │   │   └── cargotracker-booking-rdbms-management-app
+    │   │   │   │   ├── cargotracking-booking-app-commandside
+    │   │   │   │   ├── cargotracking-booking-app-queryside-projection-rdbms
+    │   │   │   │   ├── cargotracking-booking-app-queryside-view
+    │   │   │   │   └── cargotracking-booking-app-rdbms-management
     │   │   │   └── lib
-    │   │   │       ├── cargotracker-booking-boundary-web
-    │   │   │       ├── cargotracker-booking-domain-model-aggregate
-    │   │   │       ├── cargotracker-booking-domain-model-command
-    │   │   │       ├── cargotracker-booking-domain-model-event
-    │   │   │       ├── cargotracker-booking-domain-model-service
-    │   │   │       ├── cargotracker-booking-domain-model-value
-    │   │   │       ├── cargotracker-booking-out-customer
-    │   │   │       ├── cargotracker-booking-queryside-model-rdbms-jpa
-    │   │   │       ├── cargotracker-booking-test-component
-    │   │   │       ├── cargotracker-booking-test-support-queryside
-    │   │   │       └── cargotracker-booking-test-support-testcontainers
+    │   │   │       ├── cargotracking-booking-lib-boundary-web
+    │   │   │       ├── cargotracking-booking-lib-out-customer
+    │   │   │       ├── cargotracking-booking-lib-queryside-model-rdbms-jpa
+    │   │   │       ├── cargotracking-booking-test-component
+    │   │   │       ├── cargotracking-booking-test-support-queryside
+    │   │   │       ├── cargotracking-booking-test-support-testcontainers
+    │   │   │       ├── cargotracking-domain-model-aggregate
+    │   │   │       ├── cargotracking-domain-model-command
+    │   │   │       ├── cargotracking-domain-model-event
+    │   │   │       ├── cargotracking-domain-model-service
+    │   │   │       └── cargotracking-domain-model-value
     │   │   └── lib
-    │   │       ├── cargotracker-lib-axon-cqrs
-    │   │       ├── cargotracker-lib-axon-logging
-    │   │       ├── cargotracker-lib-boundary-api
-    │   │       ├── cargotracker-lib-boundary-query-api
-    │   │       ├── cargotracker-lib-domain-model-command
-    │   │       ├── cargotracker-lib-domain-model-event
-    │   │       └── cargotracker-lib-web
+    │   │       ├── cargotracking-lib-axon-cqrs
+    │   │       ├── cargotracking-lib-axon-logging
+    │   │       ├── cargotracking-lib-boundary-api
+    │   │       ├── cargotracking-lib-boundary-query-api
+    │   │       ├── cargotracking-lib-domain-model-command
+    │   │       ├── cargotracking-lib-domain-model-event
+    │   │       └── cargotracking-lib-web
     │   ├── lang
-    │   │   ├── klokwrk-lang-groovy
-    │   │   ├── klokwrk-lang-groovy-contracts-match
-    │   │   └── klokwrk-lang-groovy-contracts-simple
+    │   │   ├── klokwrk-lib-xlang-groovy-base
+    │   │   ├── klokwrk-lib-xlang-groovy-contracts-match
+    │   │   └── klokwrk-lib-xlang-groovy-contracts-simple
     │   ├── lib
-    │   │   ├── klokwrk-lib-archunit
-    │   │   ├── klokwrk-lib-datasourceproxy
-    │   │   ├── klokwrk-lib-datasourceproxy-springboot
-    │   │   ├── klokwrk-lib-hibernate
-    │   │   ├── klokwrk-lib-jackson
-    │   │   ├── klokwrk-lib-jackson-springboot
-    │   │   ├── klokwrk-lib-spring-context
-    │   │   ├── klokwrk-lib-spring-data-jpa
-    │   │   ├── klokwrk-lib-validation-constraint
-    │   │   ├── klokwrk-lib-validation-springboot
-    │   │   └── klokwrk-lib-validation-validator
+    │   │   ├── klokwrk-lib-hi-datasourceproxy-springboot
+    │   │   ├── klokwrk-lib-hi-jackson-springboot
+    │   │   ├── klokwrk-lib-hi-spring-context
+    │   │   ├── klokwrk-lib-hi-spring-data-jpa
+    │   │   ├── klokwrk-lib-hi-validation-springboot
+    │   │   ├── klokwrk-lib-lo-archunit
+    │   │   ├── klokwrk-lib-lo-datasourceproxy
+    │   │   ├── klokwrk-lib-lo-hibernate
+    │   │   ├── klokwrk-lib-lo-jackson
+    │   │   ├── klokwrk-lib-lo-validation-constraint
+    │   │   └── klokwrk-lib-lo-validation-validator
     │   ├── platform
     │   │   ├── klokwrk-platform-base
     │   │   ├── klokwrk-platform-micronaut
