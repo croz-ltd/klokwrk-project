@@ -25,7 +25,7 @@ import org.codehaus.groovy.ast.expr.StaticMethodCallExpression
 import org.codehaus.groovy.ast.tools.GeneralUtils
 import org.codehaus.groovy.macro.runtime.Macro
 import org.codehaus.groovy.macro.runtime.MacroContext
-import org.klokwrk.lib.xlang.groovy.base.contracts.base.ContractsBase
+import org.klokwrk.lib.xlang.groovy.base.contracts.ContractsBase
 
 /**
  * Defines simple DBC (Design-by-Contracts) methods with enhanced messages containing textual representation of used boolean expressions.

@@ -18,9 +18,9 @@
 package org.klokwrk.lib.xlang.groovy.base.extension
 
 import groovy.transform.CompileStatic
-import org.klokwrk.lib.xlang.groovy.base.contracts.base.ContractsBase
+import org.klokwrk.lib.xlang.groovy.base.contracts.ContractsBase
 
-import static org.klokwrk.lib.xlang.groovy.base.contracts.base.ContractsBase.requireTrueBase
+import static org.klokwrk.lib.xlang.groovy.base.contracts.ContractsBase.requireTrueBase
 
 /**
  * Groovy extension for <code>Object</code> that fetches properties without commonly unwanted properties like "<code>class</code>".

@@ -19,7 +19,7 @@ package org.klokwrk.lib.xlang.groovy.base.misc
 
 import com.github.f4b6a3.uuid.factory.nonstandard.ShortPrefixCombFactory
 import groovy.transform.CompileStatic
-import org.klokwrk.lib.xlang.groovy.base.contracts.base.ContractsBase
+import org.klokwrk.lib.xlang.groovy.base.contracts.ContractsBase
 
 import java.security.SecureRandom
 import java.time.Clock
