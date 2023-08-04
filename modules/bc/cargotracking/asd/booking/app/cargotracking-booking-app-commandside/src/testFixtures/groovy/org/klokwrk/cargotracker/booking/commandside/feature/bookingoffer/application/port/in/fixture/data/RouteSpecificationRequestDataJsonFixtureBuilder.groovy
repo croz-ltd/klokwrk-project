@@ -20,12 +20,12 @@ package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applic
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
-import org.klokwrk.cargotracker.lib.test.support.fixture.base.JsonFixtureBuilder
+import org.klokwrk.cargotracking.test.support.fixture.base.JsonFixtureBuilder
 
 import java.time.Duration
 import java.time.Instant
 
-import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.stringToJsonString
+import static org.klokwrk.cargotracking.test.support.fixture.util.JsonFixtureUtils.stringToJsonString
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic

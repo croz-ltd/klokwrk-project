@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.test.support.assertion
+package org.klokwrk.cargotracking.test.support.assertion
 
 import groovy.transform.CompileStatic
 import groovy.transform.stc.ClosureParams
@@ -202,7 +202,7 @@ class PageInfoAssertion {
       @DelegatesTo(value = RequestedPageRequirementAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
-          options = 'org.klokwrk.cargotracker.lib.test.support.assertion.PageInfoAssertion$RequestedPageRequirementAssertion'
+          options = 'org.klokwrk.cargotracking.test.support.assertion.PageInfoAssertion$RequestedPageRequirementAssertion'
       ) Closure aClosure)
   {
     Object requestedPageRequirementMap = pageInfoMap?.requestedPageRequirement
@@ -220,7 +220,7 @@ class PageInfoAssertion {
       @DelegatesTo(value = RequestedSortRequirementAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
-          options = 'org.klokwrk.cargotracker.lib.test.support.assertion.PageInfoAssertion$RequestedSortRequirementAssertion'
+          options = 'org.klokwrk.cargotracking.test.support.assertion.PageInfoAssertion$RequestedSortRequirementAssertion'
       ) Closure aClosure)
   {
     hasRequestedSortRequirementListWithElementAtIndexThat(0, aClosure)
@@ -232,7 +232,7 @@ class PageInfoAssertion {
       @DelegatesTo(value = RequestedSortRequirementAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
-          options = 'org.klokwrk.cargotracker.lib.test.support.assertion.PageInfoAssertion$RequestedSortRequirementAssertion'
+          options = 'org.klokwrk.cargotracking.test.support.assertion.PageInfoAssertion$RequestedSortRequirementAssertion'
       ) Closure aClosure)
   {
     Object requestedSortRequirementMapAsObject = pageInfoMap?.requestedSortRequirementList

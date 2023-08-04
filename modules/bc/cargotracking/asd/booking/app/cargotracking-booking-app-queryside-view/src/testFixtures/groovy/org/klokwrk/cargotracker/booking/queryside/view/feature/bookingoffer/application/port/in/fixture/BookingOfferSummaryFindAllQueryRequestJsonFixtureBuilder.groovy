@@ -23,11 +23,11 @@ import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.data.PageRequirementJsonFixtureBuilder
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.fixture.data.SortRequirementJsonFixtureBuilder
-import org.klokwrk.cargotracker.lib.test.support.fixture.base.JsonFixtureBuilder
+import org.klokwrk.cargotracking.test.support.fixture.base.JsonFixtureBuilder
 
-import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.jsonFixtureBuilderListToJsonListString
-import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.jsonFixtureBuilderListToJsonList
-import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.stringToJsonString
+import static org.klokwrk.cargotracking.test.support.fixture.util.JsonFixtureUtils.jsonFixtureBuilderListToJsonListString
+import static org.klokwrk.cargotracking.test.support.fixture.util.JsonFixtureUtils.jsonFixtureBuilderListToJsonList
+import static org.klokwrk.cargotracking.test.support.fixture.util.JsonFixtureUtils.stringToJsonString
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic

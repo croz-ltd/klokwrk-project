@@ -15,12 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.test.support.fixture.base
+package org.klokwrk.cargotracking.test.support.assertion.testobject
 
 import groovy.transform.CompileStatic
+import org.klokwrk.cargotracking.test.support.assertion.PageablePayloadAssertion
 
 @CompileStatic
-interface JsonFixtureBuilder {
-  Map<String, ?> buildAsMap()
-  String buildAsJsonString()
+class TestPersonPageableResponseAssertion extends PageablePayloadAssertion<TestPersonPageableResponseAssertion, TestPersonAssertion> {
+  TestPersonPageableResponseAssertion(Map responseContentMap) {
+    super(responseContentMap)
+  }
+
+  @Override
+  TestPersonAssertion getPageItemAssertionInstance(Map pageItemMap) {
+    return new TestPersonAssertion(pageItemMap)
+  }
 }

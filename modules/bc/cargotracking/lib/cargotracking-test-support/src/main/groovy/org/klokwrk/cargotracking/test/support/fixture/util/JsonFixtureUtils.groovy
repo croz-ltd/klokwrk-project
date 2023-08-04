@@ -1,7 +1,7 @@
-package org.klokwrk.cargotracker.lib.test.support.fixture.util
+package org.klokwrk.cargotracking.test.support.fixture.util
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.test.support.fixture.base.JsonFixtureBuilder
+import org.klokwrk.cargotracking.test.support.fixture.base.JsonFixtureBuilder
 
 import javax.measure.Quantity
 

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.test.support.assertion
+package org.klokwrk.cargotracking.test.support.assertion
 
 import groovy.transform.CompileStatic
 import groovy.transform.stc.ClosureParams
@@ -47,7 +47,7 @@ class MetaDataAssertion {
       @DelegatesTo(value = MetaDataAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
-          options = "org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion"
+          options = "org.klokwrk.cargotracking.test.support.assertion.MetaDataAssertion"
       ) Closure aClosure)
   {
     MetaDataAssertion metaDataAssertion = assertResponseHasMetaDataThat(responseMap)
@@ -297,7 +297,7 @@ class MetaDataAssertion {
       @DelegatesTo(value = ConstraintViolationAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
-          options = 'org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion$ConstraintViolationAssertion'
+          options = 'org.klokwrk.cargotracking.test.support.assertion.MetaDataAssertion$ConstraintViolationAssertion'
       ) Closure aClosure)
   {
     List<Map> constraintViolations = ((metaDataMap?.violation as Map)?.validationReport as Map)?.constraintViolations as List<Map>

@@ -23,12 +23,12 @@ import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.CargoRequestDataJsonFixtureBuilder
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder
-import org.klokwrk.cargotracker.lib.test.support.fixture.base.JsonFixtureBuilder
+import org.klokwrk.cargotracking.test.support.fixture.base.JsonFixtureBuilder
 import org.klokwrk.lib.xlang.groovy.base.misc.CombUuidShortPrefixUtils
 
 import java.time.Instant
 
-import static org.klokwrk.cargotracker.lib.test.support.fixture.util.JsonFixtureUtils.stringToJsonString
+import static org.klokwrk.cargotracking.test.support.fixture.util.JsonFixtureUtils.stringToJsonString
 
 @SuppressWarnings("CodeNarc.FactoryMethodName")
 @Builder(builderStrategy = SimpleStrategy, prefix = "")

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.test.support.assertion
+package org.klokwrk.cargotracking.test.support.assertion
 
 import groovy.transform.CompileStatic
 import groovy.transform.stc.ClosureParams
@@ -125,7 +125,7 @@ abstract class PageablePayloadAssertion<SELF extends PageablePayloadAssertion<SE
       @DelegatesTo(value = PageInfoAssertion, strategy = Closure.DELEGATE_FIRST)
       @ClosureParams(
           value = SimpleType,
-          options = "org.klokwrk.cargotracker.lib.test.support.assertion.PageInfoAssertion"
+          options = "org.klokwrk.cargotracking.test.support.assertion.PageInfoAssertion"
       ) Closure aClosure)
   {
     Object pageInfoMap = payloadMap.pageInfo

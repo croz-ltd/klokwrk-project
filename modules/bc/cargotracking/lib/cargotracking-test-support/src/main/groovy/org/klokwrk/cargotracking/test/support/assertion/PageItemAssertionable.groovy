@@ -1,4 +1,4 @@
-package org.klokwrk.cargotracker.lib.test.support.assertion
+package org.klokwrk.cargotracking.test.support.assertion
 
 import groovy.transform.CompileStatic
 

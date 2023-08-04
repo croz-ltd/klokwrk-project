@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.test.support.assertion.testobject
+package org.klokwrk.cargotracking.test.support.assertion.testobject
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.test.support.assertion.PageItemAssertionable
+import org.klokwrk.cargotracking.test.support.assertion.PageItemAssertionable
 
 @CompileStatic
 class TestPersonAssertion implements PageItemAssertionable {
