@@ -18,8 +18,8 @@
 package org.klokwrk.cargotracker.booking.domain.model.value
 
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
-import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
-import org.klokwrk.lang.groovy.misc.RandomUuidUtils
+import org.klokwrk.lib.xlang.groovy.base.misc.CombUuidShortPrefixUtils
+import org.klokwrk.lib.xlang.groovy.base.misc.RandomUuidUtils
 import spock.lang.Specification
 
 import java.time.Clock

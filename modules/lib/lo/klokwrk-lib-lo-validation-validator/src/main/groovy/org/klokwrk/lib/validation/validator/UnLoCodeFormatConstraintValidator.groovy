@@ -18,7 +18,7 @@
 package org.klokwrk.lib.validation.validator
 
 import groovy.transform.CompileStatic
-import org.klokwrk.lang.groovy.constant.CommonConstants
+import org.klokwrk.lib.xlang.groovy.base.constant.CommonConstants
 import org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint
 
 import jakarta.validation.ConstraintValidator

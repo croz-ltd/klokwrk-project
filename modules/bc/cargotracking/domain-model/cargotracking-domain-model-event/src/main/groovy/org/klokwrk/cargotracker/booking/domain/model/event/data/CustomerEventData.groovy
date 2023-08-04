@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.domain.model.event.data
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.value.Customer
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
-import org.klokwrk.lang.groovy.transform.KwrkImmutable
+import org.klokwrk.lib.xlang.groovy.base.transform.KwrkImmutable
 
 @KwrkImmutable
 @CompileStatic

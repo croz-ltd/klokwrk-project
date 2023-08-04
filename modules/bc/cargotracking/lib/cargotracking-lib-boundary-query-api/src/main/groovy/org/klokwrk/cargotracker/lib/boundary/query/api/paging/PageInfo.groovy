@@ -21,7 +21,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortRequirement
-import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
 
 /**
  * Info about paged response.

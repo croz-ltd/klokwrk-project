@@ -23,7 +23,7 @@ import org.axonframework.eventhandling.GenericDomainEventMessage
 import org.axonframework.eventhandling.GenericTrackedDomainEventMessage
 import org.axonframework.eventhandling.GlobalSequenceTrackingToken
 import org.axonframework.messaging.GenericMessage
-import org.klokwrk.lang.groovy.constant.CommonConstants
+import org.klokwrk.lib.xlang.groovy.base.constant.CommonConstants
 import spock.lang.Specification
 
 class AxonMessageHelperSpecification extends Specification {

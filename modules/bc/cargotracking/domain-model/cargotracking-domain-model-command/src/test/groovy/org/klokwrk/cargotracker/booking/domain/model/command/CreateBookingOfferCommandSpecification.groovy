@@ -29,7 +29,7 @@ import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
-import org.klokwrk.lang.groovy.misc.RandomUuidUtils
+import org.klokwrk.lib.xlang.groovy.base.misc.RandomUuidUtils
 import spock.lang.Specification
 
 import java.time.Clock

@@ -20,8 +20,8 @@ package org.klokwrk.cargotracker.booking.domain.model.command.data
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
-import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
-import org.klokwrk.lang.groovy.transform.KwrkImmutable
+import org.klokwrk.lib.xlang.groovy.base.constructor.support.PostMapConstructorCheckable
+import org.klokwrk.lib.xlang.groovy.base.transform.KwrkImmutable
 
 import static org.hamcrest.Matchers.notNullValue
 

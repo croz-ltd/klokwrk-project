@@ -21,7 +21,7 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.value.Location
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
 import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilityType
-import org.klokwrk.lang.groovy.transform.KwrkImmutable
+import org.klokwrk.lib.xlang.groovy.base.transform.KwrkImmutable
 
 @KwrkImmutable
 @CompileStatic

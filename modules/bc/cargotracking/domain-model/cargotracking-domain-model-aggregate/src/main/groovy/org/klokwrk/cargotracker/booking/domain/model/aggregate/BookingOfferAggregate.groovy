@@ -41,7 +41,7 @@ import org.klokwrk.cargotracker.booking.domain.model.value.Customer
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
-import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass

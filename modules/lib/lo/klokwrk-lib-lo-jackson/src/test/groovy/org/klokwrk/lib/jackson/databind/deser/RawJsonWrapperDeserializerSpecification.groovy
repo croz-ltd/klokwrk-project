@@ -19,7 +19,7 @@ package org.klokwrk.lib.jackson.databind.deser
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
-import org.klokwrk.lang.groovy.json.RawJsonWrapper
+import org.klokwrk.lib.xlang.groovy.base.json.RawJsonWrapper
 import spock.lang.Specification
 
 class RawJsonWrapperDeserializerSpecification extends Specification {

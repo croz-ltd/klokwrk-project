@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.deser.BeanDeserializerFactory
 import com.fasterxml.jackson.databind.deser.Deserializers
 import com.fasterxml.jackson.databind.ser.BeanSerializerFactory
 import com.fasterxml.jackson.databind.ser.Serializers
-import org.klokwrk.lang.groovy.json.RawJsonWrapper
+import org.klokwrk.lib.xlang.groovy.base.json.RawJsonWrapper
 import org.springframework.boot.test.autoconfigure.json.JsonTest
 import org.springframework.boot.test.context.SpringBootTestContextBootstrapper
 import org.springframework.context.ApplicationContext

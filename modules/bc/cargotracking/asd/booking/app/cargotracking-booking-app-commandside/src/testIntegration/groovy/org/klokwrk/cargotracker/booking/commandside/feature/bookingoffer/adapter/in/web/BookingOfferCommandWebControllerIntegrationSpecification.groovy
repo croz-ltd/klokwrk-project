@@ -21,8 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
-import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
-import org.klokwrk.lang.groovy.misc.InstantUtils
+import org.klokwrk.lib.xlang.groovy.base.misc.CombUuidShortPrefixUtils
+import org.klokwrk.lib.xlang.groovy.base.misc.InstantUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpHeaders

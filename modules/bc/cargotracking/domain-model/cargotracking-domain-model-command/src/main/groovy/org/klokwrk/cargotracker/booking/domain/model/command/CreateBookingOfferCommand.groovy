@@ -27,8 +27,8 @@ import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.cargotracker.lib.domain.model.command.BaseCreateCommand
-import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
-import org.klokwrk.lang.groovy.transform.KwrkImmutable
+import org.klokwrk.lib.xlang.groovy.base.constructor.support.PostMapConstructorCheckable
+import org.klokwrk.lib.xlang.groovy.base.transform.KwrkImmutable
 
 import static org.hamcrest.Matchers.empty
 import static org.hamcrest.Matchers.everyItem

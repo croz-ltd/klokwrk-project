@@ -26,7 +26,7 @@ import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventDat
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventDataFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder
-import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
+import org.klokwrk.lib.xlang.groovy.base.misc.CombUuidShortPrefixUtils
 import tech.units.indriya.unit.Units
 
 import javax.measure.Quantity

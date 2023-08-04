@@ -21,7 +21,7 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import groovy.transform.CompileStatic
-import org.klokwrk.lang.groovy.json.RawJsonWrapper
+import org.klokwrk.lib.xlang.groovy.base.json.RawJsonWrapper
 
 @CompileStatic
 class RawJsonWrapperSerializer extends StdSerializer<RawJsonWrapper> {

@@ -20,10 +20,10 @@ package org.klokwrk.cargotracker.booking.domain.model.value
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
-import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
-import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
-import org.klokwrk.lang.groovy.misc.RandomUuidUtils
-import org.klokwrk.lang.groovy.transform.KwrkImmutable
+import org.klokwrk.lib.xlang.groovy.base.constructor.support.PostMapConstructorCheckable
+import org.klokwrk.lib.xlang.groovy.base.misc.CombUuidShortPrefixUtils
+import org.klokwrk.lib.xlang.groovy.base.misc.RandomUuidUtils
+import org.klokwrk.lib.xlang.groovy.base.transform.KwrkImmutable
 
 import java.time.Clock
 

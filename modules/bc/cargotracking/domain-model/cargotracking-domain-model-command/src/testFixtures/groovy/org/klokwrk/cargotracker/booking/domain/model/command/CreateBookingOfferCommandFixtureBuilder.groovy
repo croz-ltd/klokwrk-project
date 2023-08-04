@@ -25,7 +25,7 @@ import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandDa
 import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Customer
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
-import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
+import org.klokwrk.lib.xlang.groovy.base.misc.CombUuidShortPrefixUtils
 
 import java.time.Clock
 

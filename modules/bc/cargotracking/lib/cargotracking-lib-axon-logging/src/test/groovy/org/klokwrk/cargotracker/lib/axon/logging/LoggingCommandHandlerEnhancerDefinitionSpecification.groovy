@@ -35,7 +35,7 @@ import org.klokwrk.cargotracker.lib.axon.logging.stub.command.CreateMyTestAggreg
 import org.klokwrk.cargotracker.lib.axon.logging.stub.command.CreateMyTestAggregateWithoutExpectedIdentifierCommand
 import org.klokwrk.cargotracker.lib.axon.logging.stub.command.UpdateMyTestAggregateCommand
 import org.klokwrk.cargotracker.lib.axon.logging.stub.command.UpdateMyTestAggregateWithoutExpectedIdentifiersCommand
-import org.klokwrk.lang.groovy.constant.CommonConstants
+import org.klokwrk.lib.xlang.groovy.base.constant.CommonConstants
 import org.slf4j.LoggerFactory
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions

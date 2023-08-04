@@ -20,8 +20,8 @@ package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.app
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
-import org.klokwrk.lang.groovy.json.RawJsonWrapper
-import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lib.xlang.groovy.base.json.RawJsonWrapper
+import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
 
 import java.time.Instant
 

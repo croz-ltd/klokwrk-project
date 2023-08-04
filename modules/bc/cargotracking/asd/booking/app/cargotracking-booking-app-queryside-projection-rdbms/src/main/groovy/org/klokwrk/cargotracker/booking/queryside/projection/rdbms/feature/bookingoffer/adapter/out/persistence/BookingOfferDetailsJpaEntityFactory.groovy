@@ -23,7 +23,7 @@ import org.axonframework.eventhandling.DomainEventMessage
 import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.BookingOfferDetailsJpaEntity
 import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDataConstant
-import org.klokwrk.lang.groovy.constant.CommonConstants
+import org.klokwrk.lib.xlang.groovy.base.constant.CommonConstants
 
 @CompileStatic
 class BookingOfferDetailsJpaEntityFactory {

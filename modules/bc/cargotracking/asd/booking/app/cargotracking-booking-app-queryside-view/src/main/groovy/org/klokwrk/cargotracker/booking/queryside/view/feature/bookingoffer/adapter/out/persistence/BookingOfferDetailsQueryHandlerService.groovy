@@ -25,7 +25,7 @@ import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.appl
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferDetailsFindByIdQueryResponse
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
-import org.klokwrk.lang.groovy.json.RawJsonWrapper
+import org.klokwrk.lib.xlang.groovy.base.json.RawJsonWrapper
 import org.springframework.stereotype.Service
 
 @Service

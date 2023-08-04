@@ -28,7 +28,7 @@ import org.awaitility.Awaitility
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryPageableQueryResponseContentPayloadAssertion
-import org.klokwrk.lang.groovy.misc.InstantUtils
+import org.klokwrk.lib.xlang.groovy.base.misc.InstantUtils
 import org.testcontainers.containers.GenericContainer
 
 import java.time.Duration

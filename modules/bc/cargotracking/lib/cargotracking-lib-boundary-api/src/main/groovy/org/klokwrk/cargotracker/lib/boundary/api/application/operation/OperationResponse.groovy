@@ -20,9 +20,9 @@ package org.klokwrk.cargotracker.lib.boundary.api.application.operation
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
-import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
-import org.klokwrk.lang.groovy.transform.KwrkMapConstructorDefaultPostCheck
-import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lib.xlang.groovy.base.constructor.support.PostMapConstructorCheckable
+import org.klokwrk.lib.xlang.groovy.base.transform.KwrkMapConstructorDefaultPostCheck
+import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
 
 import static org.hamcrest.Matchers.notNullValue
 

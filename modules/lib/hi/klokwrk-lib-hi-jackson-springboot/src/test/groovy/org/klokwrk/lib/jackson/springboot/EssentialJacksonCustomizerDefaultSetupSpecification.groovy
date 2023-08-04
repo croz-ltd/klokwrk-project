@@ -31,7 +31,7 @@ import com.fasterxml.jackson.databind.deser.BeanDeserializerFactory
 import com.fasterxml.jackson.databind.deser.Deserializers
 import com.fasterxml.jackson.databind.ser.BeanSerializerFactory
 import com.fasterxml.jackson.databind.ser.Serializers
-import org.klokwrk.lang.groovy.json.RawJsonWrapper
+import org.klokwrk.lib.xlang.groovy.base.json.RawJsonWrapper
 import org.klokwrk.lib.jackson.databind.deser.RawJsonWrapperDeserializer
 import org.klokwrk.lib.jackson.databind.deser.StringSanitizingDeserializer
 import org.klokwrk.lib.jackson.databind.deser.UomQuantityDeserializer

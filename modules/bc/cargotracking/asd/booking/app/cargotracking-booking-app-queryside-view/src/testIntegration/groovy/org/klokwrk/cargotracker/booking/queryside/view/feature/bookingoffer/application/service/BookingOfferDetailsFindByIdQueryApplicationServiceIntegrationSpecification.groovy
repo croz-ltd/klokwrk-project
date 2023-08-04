@@ -46,7 +46,7 @@ import java.time.Instant
 
 import static org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion.assertResponseHasPayloadThat
 import static org.klokwrk.cargotracker.lib.test.support.assertion.MetaDataAssertion.assertResponseHasMetaDataThat
-import static org.klokwrk.lang.groovy.misc.InstantUtils.roundUpInstantToTheHour
+import static org.klokwrk.lib.xlang.groovy.base.misc.InstantUtils.roundUpInstantToTheHour
 
 @SpringBootTest
 @ActiveProfiles("testIntegration")

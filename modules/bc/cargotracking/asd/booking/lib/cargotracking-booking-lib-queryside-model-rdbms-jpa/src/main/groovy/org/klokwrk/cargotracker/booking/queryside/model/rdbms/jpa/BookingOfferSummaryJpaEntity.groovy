@@ -24,11 +24,11 @@ import groovy.transform.PropertyOptions
 import groovy.transform.ToString
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
-import org.klokwrk.lang.groovy.constructor.support.PostMapConstructorCheckable
-import org.klokwrk.lang.groovy.misc.RandomUuidUtils
-import org.klokwrk.lang.groovy.transform.KwrkMapConstructorDefaultPostCheck
-import org.klokwrk.lang.groovy.transform.KwrkMapConstructorNoArgHideable
-import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lib.xlang.groovy.base.constructor.support.PostMapConstructorCheckable
+import org.klokwrk.lib.xlang.groovy.base.misc.RandomUuidUtils
+import org.klokwrk.lib.xlang.groovy.base.transform.KwrkMapConstructorDefaultPostCheck
+import org.klokwrk.lib.xlang.groovy.base.transform.KwrkMapConstructorNoArgHideable
+import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
 
 import jakarta.persistence.CollectionTable
 import jakarta.persistence.Column

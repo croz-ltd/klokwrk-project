@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applic
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
-import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
 import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint
 import org.klokwrk.lib.validation.group.Level1

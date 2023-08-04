@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.domain.model.event.data
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
-import org.klokwrk.lang.groovy.misc.InstantUtils
+import org.klokwrk.lib.xlang.groovy.base.misc.InstantUtils
 
 import java.time.Clock
 import java.time.Duration

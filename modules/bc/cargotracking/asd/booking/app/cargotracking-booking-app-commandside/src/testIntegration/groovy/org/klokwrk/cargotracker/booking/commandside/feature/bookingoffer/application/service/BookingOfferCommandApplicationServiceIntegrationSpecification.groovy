@@ -31,8 +31,8 @@ import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
-import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
-import org.klokwrk.lang.groovy.misc.InstantUtils
+import org.klokwrk.lib.xlang.groovy.base.misc.CombUuidShortPrefixUtils
+import org.klokwrk.lib.xlang.groovy.base.misc.InstantUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles

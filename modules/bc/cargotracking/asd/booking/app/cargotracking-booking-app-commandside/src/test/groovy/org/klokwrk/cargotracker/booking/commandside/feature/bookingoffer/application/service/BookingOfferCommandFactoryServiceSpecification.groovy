@@ -39,7 +39,7 @@ import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerReg
 import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdPortOut
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
-import org.klokwrk.lang.groovy.misc.CombUuidShortPrefixUtils
+import org.klokwrk.lib.xlang.groovy.base.misc.CombUuidShortPrefixUtils
 import spock.lang.Specification
 
 import java.time.Clock

@@ -22,7 +22,7 @@ import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
-import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass

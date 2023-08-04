@@ -22,7 +22,7 @@ import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
-import org.klokwrk.lang.groovy.transform.options.RelaxedPropertyHandler
+import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
 import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint
 import org.klokwrk.lib.validation.constraint.uom.QuantityMinConstraint

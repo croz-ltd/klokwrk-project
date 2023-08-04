@@ -96,8 +96,7 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
     String[] klokwrkLibUomPackages = ["org.klokwrk.lib.uom.."]
     String[] klokwrkLibValidationPackages = ["org.klokwrk.lib.validation.."]
 
-    // TODO dmurat: after repackaging org.klokwrk.lang.groovy, remove it
-    String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lang.groovy..", "org.klokwrk.lib.xlang.groovy.."]
+    String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lib.xlang.groovy.."]
 
     // @formatter:off
     //noinspection ChangeToOperator
