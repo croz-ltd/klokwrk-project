@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.commandside.infrastructure.springbootco
 
 import groovy.transform.CompileStatic
 import org.axonframework.commandhandling.CommandBus
-import org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor
+import org.klokwrk.cargotracking.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor
 import org.springframework.boot.context.event.ApplicationStartedEvent
 import org.springframework.context.ApplicationListener
 import org.springframework.context.ConfigurableApplicationContext

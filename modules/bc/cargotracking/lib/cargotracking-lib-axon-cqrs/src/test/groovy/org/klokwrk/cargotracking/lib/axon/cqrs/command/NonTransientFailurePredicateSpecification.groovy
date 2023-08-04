@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.axon.cqrs.command
+package org.klokwrk.cargotracking.lib.axon.cqrs.command
 
 import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.common.AxonNonTransientException

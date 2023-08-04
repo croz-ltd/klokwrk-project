@@ -34,7 +34,7 @@ import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.appl
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryResponse
-import org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryGatewayAdapter
+import org.klokwrk.cargotracking.lib.axon.cqrs.query.QueryGatewayAdapter
 import org.klokwrk.cargotracking.lib.boundary.api.application.metadata.response.ResponseMetaData
 import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationResponse

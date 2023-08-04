@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.axon.cqrs.query
+package org.klokwrk.cargotracking.lib.axon.cqrs.query
 
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Logger
@@ -50,7 +50,7 @@ class QueryHandlerExceptionInterceptorSpecification extends Specification {
   }
 
   private List configureLoggerAndListAppender() {
-    Logger logger = LoggerFactory.getLogger("org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor") as Logger
+    Logger logger = LoggerFactory.getLogger("org.klokwrk.cargotracking.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor") as Logger
     ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
     listAppender.start()
     logger.addAppender(listAppender)
