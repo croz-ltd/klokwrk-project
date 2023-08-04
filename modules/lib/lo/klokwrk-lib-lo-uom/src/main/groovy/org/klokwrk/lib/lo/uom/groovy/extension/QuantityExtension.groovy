@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.uom.groovy.extension
+package org.klokwrk.lib.lo.uom.groovy.extension
 
 import groovy.transform.CompileStatic
 import si.uom.NonSI

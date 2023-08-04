@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import com.fasterxml.jackson.databind.node.NumericNode
 import com.fasterxml.jackson.databind.node.TextNode
 import groovy.transform.CompileStatic
-import org.klokwrk.lib.uom.format.KwrkSimpleUnitFormat
+import org.klokwrk.lib.lo.uom.format.KwrkSimpleUnitFormat
 import tech.units.indriya.quantity.Quantities
 import tech.units.indriya.unit.UnitDimension
 

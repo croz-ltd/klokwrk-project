@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.uom.format
+package org.klokwrk.lib.lo.uom.format
 
 import groovy.transform.CompileStatic
 import si.uom.NonSI
@@ -26,7 +26,7 @@ import tech.units.indriya.unit.Units
 import javax.measure.MetricPrefix
 import javax.measure.format.UnitFormat
 
-import static org.klokwrk.lib.uom.constants.UomConstants.CELSIUS_SYMBOL
+import static org.klokwrk.lib.lo.uom.constants.UomConstants.CELSIUS_SYMBOL
 
 /**
  * Customization of indriya (JSR-385 reference implementation) {@code SimpleUnitFormat} with default flavor.

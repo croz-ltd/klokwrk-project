@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.uom.format
+package org.klokwrk.lib.lo.uom.format
 
 import groovy.transform.CompileStatic
 import tech.units.indriya.format.NumberDelimiterQuantityFormat

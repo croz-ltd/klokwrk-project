@@ -21,7 +21,7 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import groovy.transform.CompileStatic
-import org.klokwrk.lib.uom.format.KwrkSimpleUnitFormat
+import org.klokwrk.lib.lo.uom.format.KwrkSimpleUnitFormat
 
 import javax.measure.Quantity
 import javax.measure.Unit

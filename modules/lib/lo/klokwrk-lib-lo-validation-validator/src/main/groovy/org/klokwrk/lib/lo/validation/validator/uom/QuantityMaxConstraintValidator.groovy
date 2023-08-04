@@ -19,7 +19,7 @@ package org.klokwrk.lib.lo.validation.validator.uom
 
 import groovy.transform.CompileStatic
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext
-import org.klokwrk.lib.uom.format.KwrkQuantityFormat
+import org.klokwrk.lib.lo.uom.format.KwrkQuantityFormat
 import org.klokwrk.lib.lo.validation.constraint.uom.QuantityMaxConstraint
 import tech.units.indriya.ComparableQuantity
 

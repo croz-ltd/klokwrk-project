@@ -89,7 +89,7 @@ class BookingQuerySideProjectionRdbmsAppDependenciesSpecification extends Specif
 
     String[] klokwrkLibDatasourceProxyAllPackages = ["org.klokwrk.lib.hi.datasourceproxy.."]
     String[] klokwrkLibJacksonAllPackages = ["org.klokwrk.lib.hi.jackson.."]
-    String[] klokwrkLibUomAllPackages = ["org.klokwrk.lib.uom.."]
+    String[] klokwrkLibUomAllPackages = ["org.klokwrk.lib.lo.uom.."]
 
     String[] klokwrkLangGroovy = ["org.klokwrk.lib.xlang.groovy.."]
 

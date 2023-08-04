@@ -1,4 +1,4 @@
 moduleName=@extensionModuleName@
 moduleVersion=@extensionModuleVersion@
 extensionClasses=\
-  org.klokwrk.lib.uom.groovy.extension.QuantityExtension
+  org.klokwrk.lib.lo.uom.groovy.extension.QuantityExtension

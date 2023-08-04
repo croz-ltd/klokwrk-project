@@ -98,7 +98,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
 
     String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracker.lib.boundary.api.."]
 
-    String[] klokwrkLibUomAllPackages = ["org.klokwrk.lib.uom.."]
+    String[] klokwrkLibUomAllPackages = ["org.klokwrk.lib.lo.uom.."]
 
     String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lib.xlang.groovy.."]
 

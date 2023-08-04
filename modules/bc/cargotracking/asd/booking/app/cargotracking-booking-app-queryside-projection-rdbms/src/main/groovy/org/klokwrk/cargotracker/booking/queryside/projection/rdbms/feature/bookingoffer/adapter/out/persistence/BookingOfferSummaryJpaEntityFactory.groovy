@@ -23,7 +23,7 @@ import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEv
 import org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.BookingOfferSummaryJpaEntity
 import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDataConstant
 import org.klokwrk.lib.xlang.groovy.base.constant.CommonConstants
-import org.klokwrk.lib.uom.format.KwrkQuantityFormat
+import org.klokwrk.lib.lo.uom.format.KwrkQuantityFormat
 
 @SuppressWarnings("CodeNarc.AbcMetric")
 @CompileStatic
