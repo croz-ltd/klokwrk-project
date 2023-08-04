@@ -18,8 +18,8 @@
 package org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa
 
 import groovy.transform.CompileStatic
-import org.klokwrk.lib.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
-import org.klokwrk.lib.datasourceproxy.springboot.DataSourceProxyConfigurationProperties
+import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
+import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyConfigurationProperties
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties

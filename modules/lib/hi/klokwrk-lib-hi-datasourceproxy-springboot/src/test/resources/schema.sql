@@ -16,7 +16,7 @@
 -- limitations under the License.
 --
 
-CREATE ALIAS SLEEP FOR "org.klokwrk.lib.datasourceproxy.springboot.H2Functions.sleep";
+CREATE ALIAS SLEEP FOR "org.klokwrk.lib.hi.datasourceproxy.springboot.H2Functions.sleep";
 
 CREATE TABLE IF NOT EXISTS person (
   id integer not null auto_increment,

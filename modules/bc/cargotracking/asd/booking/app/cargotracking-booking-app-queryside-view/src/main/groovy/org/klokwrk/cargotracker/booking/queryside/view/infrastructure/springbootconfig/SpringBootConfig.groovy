@@ -24,8 +24,8 @@ import org.axonframework.spring.messaging.unitofwork.SpringTransactionManager
 import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerRegistryService
 import org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingQueryHandlerEnhancerDefinition
-import org.klokwrk.lib.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
-import org.klokwrk.lib.datasourceproxy.springboot.DataSourceProxyConfigurationProperties
+import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
+import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyConfigurationProperties
 import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizer
 import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
 import org.klokwrk.lib.validation.springboot.ValidationConfigurationProperties

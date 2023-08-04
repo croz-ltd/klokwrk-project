@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.datasourceproxy.springboot
+package org.klokwrk.lib.hi.datasourceproxy.springboot
 
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Logger
