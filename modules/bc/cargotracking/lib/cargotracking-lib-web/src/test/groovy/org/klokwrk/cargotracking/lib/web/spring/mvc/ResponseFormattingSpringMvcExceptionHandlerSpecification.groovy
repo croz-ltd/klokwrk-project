@@ -22,9 +22,9 @@ import ch.qos.logback.classic.Logger
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.read.ListAppender
 import groovy.json.JsonSlurper
-import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
-import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
-import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
+import org.klokwrk.cargotracking.lib.boundary.api.application.metadata.response.ViolationType
+import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationResponse
+import org.klokwrk.cargotracking.lib.boundary.api.domain.severity.Severity
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.MessageSource

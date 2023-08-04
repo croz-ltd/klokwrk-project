@@ -20,8 +20,8 @@ package org.klokwrk.cargotracker.lib.axon.cqrs.command
 import groovy.transform.CompileStatic
 import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.common.AxonNonTransientException
-import org.klokwrk.cargotracker.lib.boundary.api.application.exception.RemoteHandlerException
-import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
+import org.klokwrk.cargotracking.lib.boundary.api.application.exception.RemoteHandlerException
+import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.DomainException
 
 import java.util.function.Predicate
 

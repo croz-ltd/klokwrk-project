@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.lib.axon.cqrs.command
 import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.MetaData
-import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
+import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.CommandException
 import spock.lang.Specification
 
 class CommandGatewayAdapterSpecification extends Specification {

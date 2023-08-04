@@ -18,8 +18,8 @@
 package org.klokwrk.cargotracker.booking.domain.model.value
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
-import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
+import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.DomainException
+import org.klokwrk.cargotracking.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.lib.xlang.groovy.base.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lib.xlang.groovy.base.transform.KwrkImmutable
 import tech.units.indriya.unit.Units

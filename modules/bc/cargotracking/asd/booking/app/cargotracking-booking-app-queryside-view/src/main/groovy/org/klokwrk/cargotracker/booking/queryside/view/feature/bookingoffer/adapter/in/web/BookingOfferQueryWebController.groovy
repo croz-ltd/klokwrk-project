@@ -30,9 +30,9 @@ import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.appl
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryResponse
-import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
-import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
-import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDataConstant
+import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationRequest
+import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationResponse
+import org.klokwrk.cargotracking.lib.boundary.api.domain.metadata.constant.MetaDataConstant
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping

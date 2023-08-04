@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.boundary.web.metadata
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
-import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDataConstant
+import org.klokwrk.cargotracking.lib.boundary.api.domain.metadata.constant.MetaDataConstant
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic

@@ -39,8 +39,8 @@ import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
 import org.klokwrk.cargotracker.booking.domain.model.value.Customer
 import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
-import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
-import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
+import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.CommandException
+import org.klokwrk.cargotracking.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
 
 import javax.measure.Quantity

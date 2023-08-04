@@ -35,9 +35,9 @@ import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applica
 import org.klokwrk.cargotracker.booking.commandside.infrastructure.springbootconfig.SpringBootConfig
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
-import org.klokwrk.cargotracker.lib.boundary.api.application.exception.RemoteHandlerException
-import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
-import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
+import org.klokwrk.cargotracking.lib.boundary.api.application.exception.RemoteHandlerException
+import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationRequest
+import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationResponse
 import org.klokwrk.lib.xlang.groovy.base.misc.CombUuidShortPrefixUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

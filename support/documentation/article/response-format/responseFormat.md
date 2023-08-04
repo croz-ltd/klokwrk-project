@@ -63,7 +63,7 @@ shape.
 Having an exact format for response metadata brings consistency in the client-side implementation. The client now knows where to look for information regardless of the channel and protocol type.
 Consequently, significant parts of implementation can be reused as each new channel is added.
 
-In `kolkwrk-project`, the general response metadata structures are implemented in classes of `org.klokwrk.cargotracker.lib.boundary.api.metadata.response` package from `cargotracking-lib-boundary-api`
+In `kolkwrk-project`, the general response metadata structures are implemented in classes of `org.klokwrk.cargotracking.lib.boundary.api.metadata.response` package from `cargotracking-lib-boundary-api`
 module. The general response metadata format can be extended for specific outbound channels, if needed. Those extensions communicate additional metadata required for seamless response handling tied
 to some concrete protocol. For example, we can find HTTP-specific response metadata format extensions in the `org.klokwrk.cargotracking.lib.web.metadata.response` package of `cargotracking-lib-web`
 module.

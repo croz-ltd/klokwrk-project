@@ -22,8 +22,8 @@ import org.axonframework.messaging.MetaData
 import org.axonframework.messaging.responsetypes.ResponseType
 import org.axonframework.queryhandling.QueryExecutionException
 import org.axonframework.queryhandling.QueryGateway
-import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
-import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
+import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationRequest
+import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.QueryException
 import spock.lang.Specification
 
 import java.util.concurrent.CompletableFuture

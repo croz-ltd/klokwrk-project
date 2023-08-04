@@ -39,7 +39,7 @@ interface CustomerByUserIdPortOut {
    * be short-lived in that case. When an anonymous user deletes its temporary identifier (session closed or cookie deleted), there will be no way to access data related to the corresponding
    * CustomerId.
    * <p/>
-   * The implementation of this operation may throw {@link org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException} if customer can not be found. Message key for such exception
+   * The implementation of this operation may throw {@link org.klokwrk.cargotracking.lib.boundary.api.domain.exception.DomainException} if customer can not be found. Message key for such exception
    * can be something like '{@code customerByUserIdPortOut.findCustomerByUserId.notFound}'.
    */
   Customer findCustomerByUserId(String userId)

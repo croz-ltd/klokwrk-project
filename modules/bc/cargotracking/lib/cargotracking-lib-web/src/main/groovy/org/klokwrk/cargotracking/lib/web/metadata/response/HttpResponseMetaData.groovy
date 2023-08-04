@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracking.lib.web.metadata.response
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ResponseMetaData
+import org.klokwrk.cargotracking.lib.boundary.api.application.metadata.response.ResponseMetaData
 
 @CompileStatic
 class HttpResponseMetaData extends ResponseMetaData {

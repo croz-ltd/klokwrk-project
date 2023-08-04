@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.boundary.web.metadata
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDataConstant
+import org.klokwrk.cargotracking.lib.boundary.api.domain.metadata.constant.MetaDataConstant
 
 @CompileStatic
 class WebMetaDataFactory {

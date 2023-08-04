@@ -30,8 +30,8 @@ import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.appl
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindByIdQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryResponse
-import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
-import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
+import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.QueryException
+import org.klokwrk.cargotracking.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.lib.lo.uom.format.KwrkQuantityFormat
 import org.springframework.dao.InvalidDataAccessApiUsageException
 import org.springframework.data.domain.Page

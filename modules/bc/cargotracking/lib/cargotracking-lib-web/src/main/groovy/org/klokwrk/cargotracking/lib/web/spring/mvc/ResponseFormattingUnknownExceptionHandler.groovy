@@ -18,12 +18,12 @@
 package org.klokwrk.cargotracking.lib.web.spring.mvc
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.boundary.api.application.exception.IdentifiedRuntimeException
-import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ResponseMetaDataGeneralPart
-import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ResponseMetaDataViolationPart
-import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
-import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
-import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
+import org.klokwrk.cargotracking.lib.boundary.api.application.exception.IdentifiedRuntimeException
+import org.klokwrk.cargotracking.lib.boundary.api.application.metadata.response.ResponseMetaDataGeneralPart
+import org.klokwrk.cargotracking.lib.boundary.api.application.metadata.response.ResponseMetaDataViolationPart
+import org.klokwrk.cargotracking.lib.boundary.api.application.metadata.response.ViolationType
+import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationResponse
+import org.klokwrk.cargotracking.lib.boundary.api.domain.severity.Severity
 import org.klokwrk.cargotracking.lib.web.metadata.response.HttpResponseMetaData
 import org.klokwrk.cargotracking.lib.web.metadata.response.HttpResponseMetaDataHttpPart
 import org.klokwrk.lib.hi.spring.context.MessageSourceResolvableHelper

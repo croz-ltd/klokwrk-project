@@ -17,7 +17,7 @@
  */
 package org.klokwrk.cargotracker.booking.domain.model.value
 
-import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
+import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.DomainException
 import org.objenesis.ObjenesisHelper
 import spock.lang.Specification
 import tech.units.indriya.quantity.QuantityRange

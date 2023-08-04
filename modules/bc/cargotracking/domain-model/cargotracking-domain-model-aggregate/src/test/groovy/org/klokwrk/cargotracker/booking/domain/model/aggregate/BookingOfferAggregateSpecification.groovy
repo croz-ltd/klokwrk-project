@@ -38,7 +38,7 @@ import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
 import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
 import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
 import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
-import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
+import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.CommandException
 import spock.lang.Specification
 
 class BookingOfferAggregateSpecification extends Specification {

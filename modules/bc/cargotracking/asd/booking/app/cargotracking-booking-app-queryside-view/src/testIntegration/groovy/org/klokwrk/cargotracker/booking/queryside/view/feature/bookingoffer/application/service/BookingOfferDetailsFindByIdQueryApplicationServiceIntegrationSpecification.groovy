@@ -28,11 +28,11 @@ import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.appl
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferDetailsFindByIdQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferDetailsFindByIdQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
-import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
-import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
-import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
-import org.klokwrk.cargotracker.lib.boundary.api.domain.metadata.constant.MetaDataConstant
-import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
+import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationRequest
+import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationResponse
+import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.QueryException
+import org.klokwrk.cargotracking.lib.boundary.api.domain.metadata.constant.MetaDataConstant
+import org.klokwrk.cargotracking.lib.boundary.api.domain.violation.ViolationInfo
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest

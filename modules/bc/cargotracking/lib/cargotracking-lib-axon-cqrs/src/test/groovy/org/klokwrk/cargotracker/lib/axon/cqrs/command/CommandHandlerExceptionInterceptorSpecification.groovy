@@ -27,11 +27,11 @@ import org.axonframework.messaging.InterceptorChain
 import org.axonframework.messaging.Message
 import org.axonframework.messaging.unitofwork.DefaultUnitOfWork
 import org.axonframework.messaging.unitofwork.UnitOfWork
-import org.klokwrk.cargotracker.lib.boundary.api.application.exception.RemoteHandlerException
-import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.CommandException
-import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
-import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
-import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
+import org.klokwrk.cargotracking.lib.boundary.api.application.exception.RemoteHandlerException
+import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.CommandException
+import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.DomainException
+import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.QueryException
+import org.klokwrk.cargotracking.lib.boundary.api.domain.violation.ViolationInfo
 import org.slf4j.LoggerFactory
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions

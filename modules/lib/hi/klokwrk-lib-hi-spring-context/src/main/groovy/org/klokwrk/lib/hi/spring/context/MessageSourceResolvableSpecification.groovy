@@ -63,7 +63,7 @@ class MessageSourceResolvableSpecification {
    * Inside of a message category, this property determines a more specific type of outcome.
    * <p/>
    * For our purposes, in case of responses communicating some kind of error, {@code messageType} will contain a string which categorizes the failure type. For this purpose we are using lowercase
-   * values of {@code org.klokwrk.cargotracker.lib.boundary.api.metadata.response.ViolationType} enum ({@code domain}, {@code validation}, etc.).
+   * values of {@code org.klokwrk.cargotracking.lib.boundary.api.metadata.response.ViolationType} enum ({@code domain}, {@code validation}, etc.).
    */
   String messageType
 
@@ -91,7 +91,7 @@ class MessageSourceResolvableSpecification {
   /**
    * Specifies the severity of a message.
    * <p/>
-   * The value of this property corresponds to the lowercase values of {@code org.klokwrk.cargotracker.lib.boundary.api.severity.Severity} enum ({@code error}, {@code warning}, and {@code info}).
+   * The value of this property corresponds to the lowercase values of {@code org.klokwrk.cargotracking.lib.boundary.api.severity.Severity} enum ({@code error}, {@code warning}, and {@code info}).
    */
   String severity
 

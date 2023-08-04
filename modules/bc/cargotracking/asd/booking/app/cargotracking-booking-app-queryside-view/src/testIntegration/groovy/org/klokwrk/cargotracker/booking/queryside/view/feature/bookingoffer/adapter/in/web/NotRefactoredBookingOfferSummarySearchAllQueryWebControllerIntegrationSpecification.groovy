@@ -22,7 +22,7 @@ import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
-import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
+import org.klokwrk.cargotracking.lib.boundary.api.domain.severity.Severity
 import org.klokwrk.cargotracking.lib.boundary.query.api.sorting.SortDirection
 import org.spockframework.spring.EnableSharedInjection
 import org.springframework.beans.factory.annotation.Autowired

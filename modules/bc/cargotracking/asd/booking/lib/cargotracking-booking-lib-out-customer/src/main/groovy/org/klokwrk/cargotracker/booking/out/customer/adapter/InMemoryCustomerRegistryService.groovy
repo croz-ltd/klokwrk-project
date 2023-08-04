@@ -21,8 +21,8 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.value.Customer
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdPortOut
-import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
-import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
+import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.DomainException
+import org.klokwrk.cargotracking.lib.boundary.api.domain.violation.ViolationInfo
 
 import static org.hamcrest.Matchers.notNullValue
 import static org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder.customer_anonymous

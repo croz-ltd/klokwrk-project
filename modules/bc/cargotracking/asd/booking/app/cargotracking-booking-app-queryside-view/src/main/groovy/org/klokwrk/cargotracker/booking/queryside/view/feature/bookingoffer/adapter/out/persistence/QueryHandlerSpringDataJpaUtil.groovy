@@ -18,8 +18,8 @@
 package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.adapter.out.persistence
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
-import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
+import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.QueryException
+import org.klokwrk.cargotracking.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.cargotracking.lib.boundary.query.api.paging.PageInfo
 import org.klokwrk.cargotracking.lib.boundary.query.api.paging.PageRequirement
 import org.klokwrk.cargotracking.lib.boundary.query.api.sorting.SortRequirement
