@@ -18,8 +18,8 @@
 package org.klokwrk.lib.lo.validation.validator
 
 import groovy.transform.CompileStatic
-import org.klokwrk.lib.xlang.groovy.base.constant.CommonConstants
 import org.klokwrk.lib.lo.validation.constraint.UuidFormatConstraint
+import org.klokwrk.lib.xlang.groovy.base.constant.CommonConstants
 
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext

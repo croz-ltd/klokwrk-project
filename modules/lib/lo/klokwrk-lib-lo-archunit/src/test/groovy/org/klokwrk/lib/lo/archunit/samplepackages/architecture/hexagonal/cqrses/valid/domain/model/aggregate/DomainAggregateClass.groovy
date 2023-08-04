@@ -18,11 +18,11 @@
 package org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.aggregate
 
 import groovy.transform.CompileStatic
+import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.valid.application.port.out.ApplicationPortOutInterface
 import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.command.DomainCommandClass
 import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.event.DomainEventClass
-import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.value.DomainModelValueClass
-import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.valid.application.port.out.ApplicationPortOutInterface
 import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.service.DomainServiceClass
+import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.valid.domain.model.value.DomainModelValueClass
 
 @SuppressWarnings('unused')
 @CompileStatic

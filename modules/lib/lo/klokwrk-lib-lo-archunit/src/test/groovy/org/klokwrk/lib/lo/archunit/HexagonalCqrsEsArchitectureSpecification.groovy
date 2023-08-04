@@ -30,30 +30,30 @@ import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.
 import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.violation.adapter.in.AdapterInViolationClass
 import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.violation.adapter.out.AdapterOutViolationClass
 import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.violation.adapter.projection.AdapterProjectionViolationClass
+import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.violation.application.port.in.ApplicationPortInViolationInterface
 import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.violation.application.port.out.ApplicationPortOutViolationInterface
 import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.violation.application.service.ApplicationServiceViolationClass
-import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.value.DomainModelValueViolationClass
-import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.violation.application.port.in.ApplicationPortInViolationInterface
 import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.aggregate.DomainAggregateViolationClass
 import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.command.DomainCommandViolationClass
 import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.event.DomainEventViolationClass
 import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.service.DomainServiceViolationClass
+import org.klokwrk.lib.lo.archunit.samplepackages.architecture.hexagonal.cqrses.violation.domain.model.value.DomainModelValueViolationClass
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAnyPackage
-import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideOutsideOfPackages
 import static HexagonalCqrsEsArchitecture.ADAPTER_INBOUND_LAYER
 import static HexagonalCqrsEsArchitecture.ADAPTER_OUTBOUND_LAYER
 import static HexagonalCqrsEsArchitecture.ADAPTER_PROJECTION_LAYER
 import static HexagonalCqrsEsArchitecture.APPLICATION_INBOUND_PORT_LAYER
 import static HexagonalCqrsEsArchitecture.APPLICATION_OUTBOUND_PORT_LAYER
 import static HexagonalCqrsEsArchitecture.APPLICATION_SERVICE_LAYER
-import static HexagonalCqrsEsArchitecture.DOMAIN_SERVICE_LAYER
 import static HexagonalCqrsEsArchitecture.DOMAIN_AGGREGATE_LAYER
 import static HexagonalCqrsEsArchitecture.DOMAIN_COMMAND_LAYER
 import static HexagonalCqrsEsArchitecture.DOMAIN_EVENT_LAYER
+import static HexagonalCqrsEsArchitecture.DOMAIN_SERVICE_LAYER
 import static HexagonalCqrsEsArchitecture.DOMAIN_VALUE_LAYER
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAnyPackage
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideOutsideOfPackages
 
 @Slf4j
 class HexagonalCqrsEsArchitectureSpecification extends Specification {

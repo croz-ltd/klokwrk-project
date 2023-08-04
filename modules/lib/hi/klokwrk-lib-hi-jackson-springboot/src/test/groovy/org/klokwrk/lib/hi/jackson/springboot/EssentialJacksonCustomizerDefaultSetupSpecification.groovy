@@ -31,13 +31,13 @@ import com.fasterxml.jackson.databind.deser.BeanDeserializerFactory
 import com.fasterxml.jackson.databind.deser.Deserializers
 import com.fasterxml.jackson.databind.ser.BeanSerializerFactory
 import com.fasterxml.jackson.databind.ser.Serializers
-import org.klokwrk.lib.xlang.groovy.base.json.RawJsonWrapper
 import org.klokwrk.lib.lo.jackson.databind.deser.RawJsonWrapperDeserializer
 import org.klokwrk.lib.lo.jackson.databind.deser.StringSanitizingDeserializer
 import org.klokwrk.lib.lo.jackson.databind.deser.UomQuantityDeserializer
 import org.klokwrk.lib.lo.jackson.databind.ser.GStringSerializer
 import org.klokwrk.lib.lo.jackson.databind.ser.RawJsonWrapperSerializer
 import org.klokwrk.lib.lo.jackson.databind.ser.UomQuantitySerializer
+import org.klokwrk.lib.xlang.groovy.base.json.RawJsonWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.json.JsonTest
 import spock.lang.Specification
