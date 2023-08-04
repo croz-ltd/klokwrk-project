@@ -21,7 +21,7 @@ import groovy.transform.CompileStatic
 import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder
 import org.aopalliance.intercept.MethodInterceptor
 import org.aopalliance.intercept.MethodInvocation
-import org.klokwrk.lib.datasourceproxy.Slf4jFilterableQueryLoggingListener
+import org.klokwrk.lib.lo.datasourceproxy.Slf4jFilterableQueryLoggingListener
 import org.springframework.util.ReflectionUtils
 
 import javax.sql.DataSource

@@ -55,7 +55,7 @@ import javax.sql.DataSource
  * klokwrk.datasourceproxy.query-logger.filtering-out-regular-expression-list: >
  *   ^update token_entry.*$
  * </pre>
- * This 'filterable query logging' feature is implemented in <code>org.klokwrk.lib.datasourceproxy.Slf4jFilterableQueryLoggingListener</code>.
+ * This 'filterable query logging' feature is implemented in <code>org.klokwrk.lib.lo.datasourceproxy.Slf4jFilterableQueryLoggingListener</code>.
  *
  * @see DataSourceProxyConfigurationProperties
  * @see DataSourceProxyInterceptor

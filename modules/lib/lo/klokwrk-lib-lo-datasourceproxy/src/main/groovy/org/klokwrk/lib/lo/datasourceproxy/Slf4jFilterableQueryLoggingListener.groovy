@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.datasourceproxy
+package org.klokwrk.lib.lo.datasourceproxy
 
 import groovy.transform.CompileStatic
 import net.ttddyy.dsproxy.ExecutionInfo
