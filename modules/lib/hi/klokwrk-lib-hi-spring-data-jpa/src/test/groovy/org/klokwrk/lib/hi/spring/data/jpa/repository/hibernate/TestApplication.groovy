@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.springframework.data.jpa.repository.hibernate
+package org.klokwrk.lib.hi.spring.data.jpa.repository.hibernate
 
 import groovy.transform.CompileStatic
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
-@EnableJpaRepositories("org.klokwrk.lib.springframework.data.jpa.repository.hibernate")
+@EnableJpaRepositories("org.klokwrk.lib.hi.spring.data.jpa.repository.hibernate")
 @SpringBootApplication(proxyBeanMethods = false)
 @CompileStatic
 class TestApplication {

@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.ada
 import groovy.transform.CompileStatic
 import net.croz.nrich.search.api.repository.SearchExecutor
 import org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.BookingOfferSummaryJpaEntity
-import org.klokwrk.lib.springframework.data.jpa.repository.hibernate.ReadOnlyJpaRepository
+import org.klokwrk.lib.hi.spring.data.jpa.repository.hibernate.ReadOnlyJpaRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository

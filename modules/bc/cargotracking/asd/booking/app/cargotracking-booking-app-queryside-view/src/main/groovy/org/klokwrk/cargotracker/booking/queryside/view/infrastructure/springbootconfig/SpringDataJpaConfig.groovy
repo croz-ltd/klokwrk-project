@@ -34,7 +34,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
     repositoryFactoryBeanClass = SearchExecutorJpaRepositoryFactoryBean,
     basePackages = [
         "org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.adapter.out.persistence",
-        "org.klokwrk.lib.springframework.data.jpa.repository.hibernate"
+        "org.klokwrk.lib.hi.spring.data.jpa.repository.hibernate"
     ]
 )
 @EntityScan(basePackages = ["org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa"])
