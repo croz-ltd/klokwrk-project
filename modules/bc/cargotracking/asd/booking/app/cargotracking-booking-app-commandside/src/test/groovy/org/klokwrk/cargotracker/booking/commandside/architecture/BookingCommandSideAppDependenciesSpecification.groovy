@@ -152,7 +152,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracker.lib.boundary.api.."]
     String[] cargotrackerLibWebAllPackages = ["org.klokwrk.cargotracker.lib.web.."]
 
-    String[] klokwrkLibValidationPackages = ["org.klokwrk.lib.validation.."]
+    String[] klokwrkLibValidationPackages = ["org.klokwrk.lib.hi.validation.."]
 
     String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lib.xlang.groovy.."]
 
@@ -218,7 +218,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     String[] cargotrackerLibWebAllPackages = ["org.klokwrk.cargotracker.lib.web.."]
 
     String[] klokwrkLibJacksonAllPackages = ["org.klokwrk.lib.hi.jackson.."]
-    String[] klokwrkLibValidationSpringBootPackages = ["org.klokwrk.lib.validation.springboot"]
+    String[] klokwrkLibValidationSpringBootPackages = ["org.klokwrk.lib.hi.validation.springboot"]
 
     // @formatter:off
     ArchRule rule = ArchRuleDefinition

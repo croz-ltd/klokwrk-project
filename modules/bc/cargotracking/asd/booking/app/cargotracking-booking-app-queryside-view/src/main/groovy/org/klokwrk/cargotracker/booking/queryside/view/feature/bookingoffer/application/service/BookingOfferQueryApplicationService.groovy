@@ -38,7 +38,7 @@ import org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ResponseMetaData
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
-import org.klokwrk.lib.validation.springboot.ValidationService
+import org.klokwrk.lib.hi.validation.springboot.ValidationService
 import org.springframework.stereotype.Service
 import tech.units.indriya.unit.Units
 

@@ -27,7 +27,7 @@ import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferC
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandGatewayAdapter
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
-import org.klokwrk.lib.validation.springboot.ValidationService
+import org.klokwrk.lib.hi.validation.springboot.ValidationService
 import org.springframework.stereotype.Service
 
 import static org.hamcrest.Matchers.notNullValue

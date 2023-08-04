@@ -28,8 +28,8 @@ import org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint
 import org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint
 import org.klokwrk.lib.validation.constraint.uom.QuantityMinConstraint
 import org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint
-import org.klokwrk.lib.validation.springboot.ValidationConfigurationProperties
-import org.klokwrk.lib.validation.springboot.ValidationService
+import org.klokwrk.lib.hi.validation.springboot.ValidationConfigurationProperties
+import org.klokwrk.lib.hi.validation.springboot.ValidationService
 import spock.lang.Shared
 import spock.lang.Specification
 

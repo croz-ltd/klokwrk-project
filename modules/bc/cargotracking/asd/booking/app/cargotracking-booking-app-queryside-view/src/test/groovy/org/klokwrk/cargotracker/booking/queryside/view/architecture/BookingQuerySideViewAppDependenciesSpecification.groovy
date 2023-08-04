@@ -94,7 +94,7 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
     String[] klokwrkLibDatasourceProxyAllPackages = ["org.klokwrk.lib.hi.datasourceproxy.."]
     String[] klokwrkLibJacksonAllPackages = ["org.klokwrk.lib.hi.jackson.."]
     String[] klokwrkLibUomPackages = ["org.klokwrk.lib.uom.."]
-    String[] klokwrkLibValidationPackages = ["org.klokwrk.lib.validation.."]
+    String[] klokwrkLibValidationPackages = ["org.klokwrk.lib.hi.validation.."]
 
     String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lib.xlang.groovy.."]
 

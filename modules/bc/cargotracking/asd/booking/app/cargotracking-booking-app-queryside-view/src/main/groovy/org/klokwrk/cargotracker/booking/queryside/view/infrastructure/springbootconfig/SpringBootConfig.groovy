@@ -28,8 +28,8 @@ import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyBeanPostProc
 import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyConfigurationProperties
 import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizer
 import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
-import org.klokwrk.lib.validation.springboot.ValidationConfigurationProperties
-import org.klokwrk.lib.validation.springboot.ValidationService
+import org.klokwrk.lib.hi.validation.springboot.ValidationConfigurationProperties
+import org.klokwrk.lib.hi.validation.springboot.ValidationService
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean

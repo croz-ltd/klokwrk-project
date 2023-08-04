@@ -37,8 +37,8 @@ import org.klokwrk.cargotracker.lib.axon.logging.LoggingCommandHandlerEnhancerDe
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingEventSourcingHandlerEnhancerDefinition
 import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizer
 import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
-import org.klokwrk.lib.validation.springboot.ValidationConfigurationProperties
-import org.klokwrk.lib.validation.springboot.ValidationService
+import org.klokwrk.lib.hi.validation.springboot.ValidationConfigurationProperties
+import org.klokwrk.lib.hi.validation.springboot.ValidationService
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
