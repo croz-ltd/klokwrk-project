@@ -23,6 +23,8 @@ import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.containers.wait.strategy.Wait
 
+import java.time.Duration
+
 /**
  * Factory for creating and starting Axon Server in Testcontainers.
  */
@@ -57,7 +59,7 @@ class AxonServerTestcontainersFactory {
           "AXONIQ_AXONSERVER_AUTOCLUSTER_CONTEXTS": "default"
       ])
       withNetwork(klokwrkNetwork)
-      waitingFor(Wait.forHttp("/v1/public/me").forPort(httpPort))
+      waitingFor(Wait.forLogMessage(/.*default: context default created.*/, 1).withStartupTimeout(Duration.ofMinutes(10)))
 
       start()
     }
