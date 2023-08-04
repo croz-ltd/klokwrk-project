@@ -1,4 +1,4 @@
-package org.klokwrk.lang.groovy.contracts.match
+package org.klokwrk.lib.xlang.groovy.contracts.match
 
 /**
  * Provides IDEA specific type definitions and auto-complete for macro methods defined in ContractsMatch class.

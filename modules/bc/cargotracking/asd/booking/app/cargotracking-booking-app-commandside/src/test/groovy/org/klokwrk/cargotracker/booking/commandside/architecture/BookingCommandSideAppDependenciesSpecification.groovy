@@ -100,7 +100,8 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
 
     String[] klokwrkLibUomAllPackages = ["org.klokwrk.lib.uom.."]
 
-    String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lang.groovy.."]
+    // TODO dmurat: after repackaging org.klokwrk.lang.groovy, remove it
+    String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lang.groovy..", "org.klokwrk.lib.xlang.groovy.."]
 
     // @formatter:off
     ArchRule rule = ArchRuleDefinition
@@ -154,7 +155,8 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
 
     String[] klokwrkLibValidationPackages = ["org.klokwrk.lib.validation.."]
 
-    String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lang.groovy.."]
+    // TODO dmurat: after repackaging org.klokwrk.lang.groovy, remove it
+    String[] klokwrkLangGroovyAllPackages = ["org.klokwrk.lang.groovy..", "org.klokwrk.lib.xlang.groovy.."]
 
     // @formatter:off
     ArchRule rule = ArchRuleDefinition
