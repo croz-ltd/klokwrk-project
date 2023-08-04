@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lang.groovy.contracts.simple
+package org.klokwrk.lib.xlang.groovy.contracts.simple
 
 import spock.lang.Specification
 
