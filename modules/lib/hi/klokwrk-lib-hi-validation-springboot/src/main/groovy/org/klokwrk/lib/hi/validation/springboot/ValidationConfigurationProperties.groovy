@@ -52,8 +52,8 @@ class ValidationConfigurationProperties {
   String[] messageSourceBaseNames = ["klokwrkValidationConstraintMessages"]
 
   /**
-   * The list of packages containing custom validator implementations to be configured for hibernate validator. By default it includes "org.klokwrk.lib.validation.validator" package and all its
-   * subpackages.
+   * The list of packages containing custom validator implementations to be configured for hibernate validator. By default it includes {@code org.klokwrk.lib.lo.validation.validator} package and all
+   * its subpackages.
    */
-  String[] validatorImplementationPackages = ["org.klokwrk.lib.validation.validator.."]
+  String[] validatorImplementationPackages = ["org.klokwrk.lib.lo.validation.validator.."]
 }

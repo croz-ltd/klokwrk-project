@@ -48,7 +48,7 @@ class ValidationServiceDefaultSetupSpecification extends Specification {
     expect:
     validationService.enabled
     validationService.messageSourceBaseNames == ["klokwrkValidationConstraintMessages"] as String[]
-    validationService.validatorImplementationPackagesToScan == ["org.klokwrk.lib.validation.validator.."] as String[]
+    validationService.validatorImplementationPackagesToScan == ["org.klokwrk.lib.lo.validation.validator.."] as String[]
   }
 
   void "should not throw for valid object"() {
