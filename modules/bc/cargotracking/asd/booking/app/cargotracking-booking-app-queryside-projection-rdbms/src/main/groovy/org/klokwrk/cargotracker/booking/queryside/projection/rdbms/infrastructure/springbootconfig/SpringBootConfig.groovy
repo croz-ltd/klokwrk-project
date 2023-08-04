@@ -28,8 +28,8 @@ import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingEventHandlerEnhancerDefinition
 import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
 import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyConfigurationProperties
-import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizer
-import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
+import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizer
+import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean

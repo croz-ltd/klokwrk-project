@@ -26,8 +26,8 @@ import org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterce
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingQueryHandlerEnhancerDefinition
 import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
 import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyConfigurationProperties
-import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizer
-import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
+import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizer
+import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
 import org.klokwrk.lib.validation.springboot.ValidationConfigurationProperties
 import org.klokwrk.lib.validation.springboot.ValidationService
 import org.springframework.beans.factory.config.BeanPostProcessor

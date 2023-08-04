@@ -35,8 +35,8 @@ import org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandHandlerExceptionInt
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.NonTransientFailurePredicate
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingCommandHandlerEnhancerDefinition
 import org.klokwrk.cargotracker.lib.axon.logging.LoggingEventSourcingHandlerEnhancerDefinition
-import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizer
-import org.klokwrk.lib.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
+import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizer
+import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
 import org.klokwrk.lib.validation.springboot.ValidationConfigurationProperties
 import org.klokwrk.lib.validation.springboot.ValidationService
 import org.springframework.boot.context.properties.EnableConfigurationProperties

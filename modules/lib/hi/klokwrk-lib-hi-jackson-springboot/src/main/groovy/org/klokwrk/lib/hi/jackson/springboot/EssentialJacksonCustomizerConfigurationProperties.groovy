@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.jackson.springboot
+package org.klokwrk.lib.hi.jackson.springboot
 
 import groovy.transform.CompileStatic
 import org.springframework.boot.context.properties.ConfigurationProperties
