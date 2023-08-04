@@ -23,7 +23,7 @@ import org.hibernate.validator.cfg.ConstraintMapping
 import org.hibernate.validator.internal.engine.messageinterpolation.DefaultLocaleResolver
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator
-import org.klokwrk.lib.validation.constraint.NotEmptyWhenNullableConstraint
+import org.klokwrk.lib.lo.validation.constraint.NotEmptyWhenNullableConstraint
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -124,7 +124,7 @@ class NotEmptyWhenNullableConstraintSpecification extends Specification {
     verifyAll(constraintViolations[0]) {
       it.invalidValue == []
       it.propertyPath.toString() == "testList"
-      it.messageTemplate == "{org.klokwrk.lib.validation.constraint.NotEmptyWhenNullableConstraint.message}"
+      it.messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.NotEmptyWhenNullableConstraint.message}"
     }
   }
 
@@ -140,7 +140,7 @@ class NotEmptyWhenNullableConstraintSpecification extends Specification {
     verifyAll(constraintViolations[0]) {
       it.invalidValue == [:]
       it.propertyPath.toString() == "testMap"
-      it.messageTemplate == "{org.klokwrk.lib.validation.constraint.NotEmptyWhenNullableConstraint.message}"
+      it.messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.NotEmptyWhenNullableConstraint.message}"
     }
   }
 
@@ -155,7 +155,7 @@ class NotEmptyWhenNullableConstraintSpecification extends Specification {
     then:
     constraintViolations.size() == 1
     verifyAll(constraintViolations[0]) {
-      it.messageTemplate == "{org.klokwrk.lib.validation.constraint.NotEmptyWhenNullableConstraint.message}"
+      it.messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.NotEmptyWhenNullableConstraint.message}"
       it.message == messageParam
     }
 

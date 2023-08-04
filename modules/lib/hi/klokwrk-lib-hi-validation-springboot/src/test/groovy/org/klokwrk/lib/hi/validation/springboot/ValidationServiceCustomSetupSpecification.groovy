@@ -17,7 +17,7 @@
  */
 package org.klokwrk.lib.hi.validation.springboot
 
-import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
+import org.klokwrk.lib.lo.validation.constraint.TrimmedStringConstraint
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTestContextBootstrapper
 import org.springframework.context.ApplicationContext

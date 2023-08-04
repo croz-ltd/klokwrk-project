@@ -20,7 +20,7 @@ package org.klokwrk.lib.lo.validation.validator.uom
 import groovy.transform.CompileStatic
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext
 import org.klokwrk.lib.uom.format.KwrkQuantityFormat
-import org.klokwrk.lib.validation.constraint.uom.QuantityMinConstraint
+import org.klokwrk.lib.lo.validation.constraint.uom.QuantityMinConstraint
 import tech.units.indriya.ComparableQuantity
 
 import jakarta.validation.ConstraintValidator

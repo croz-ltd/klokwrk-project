@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.validation.constraint.uom
+package org.klokwrk.lib.lo.validation.constraint.uom
 
 import jakarta.validation.Constraint
 import jakarta.validation.Payload
@@ -72,7 +72,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
  * Parameter {@code compatibleUnitSymbolsForMessage} is optional and is used only for creating failed validation messages. When configured, the failed validation message will contain all listed unit
  * symbols as a convenience for a user.
  * <p/>
- * In default validator implementation, default message interpolation key is {@code org.klokwrk.lib.validation.constraint.uom.QuantityUnitConstraint.invalidUnitSymbolMessage}.
+ * In default validator implementation, default message interpolation key is {@code org.klokwrk.lib.lo.validation.constraint.uom.QuantityUnitConstraint.invalidUnitSymbolMessage}.
  * <p/>
  * For custom message interpolation (when {@code message} annotation param is defined), default validator implementation exposes {@code expectedUnitSymbol}, {@code providedUnitSymbol}, and
  * {@code compatibleUnitSymbols} expressions.
@@ -86,7 +86,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
 @Retention(RUNTIME)
 @Constraint(validatedBy = [])
 @interface QuantityUnitConstraint {
-  static final String INVALID_UNIT_SYMBOL_MESSAGE_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityUnitConstraint.invalidUnitSymbolMessage"
+  static final String INVALID_UNIT_SYMBOL_MESSAGE_KEY = "org.klokwrk.lib.lo.validation.constraint.uom.QuantityUnitConstraint.invalidUnitSymbolMessage"
 
   String unitSymbol() default ""
   boolean acceptOnlyExactUnitSymbol() default false

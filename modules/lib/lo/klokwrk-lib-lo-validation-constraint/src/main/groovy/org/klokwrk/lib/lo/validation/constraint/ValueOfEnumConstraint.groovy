@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.validation.constraint
+package org.klokwrk.lib.lo.validation.constraint
 
 import jakarta.validation.Constraint
 import jakarta.validation.Payload
@@ -42,7 +42,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
  * When {@code enumNamesSubset} is specified, provided string values must be names (ignoring case) from provided {@code enumClass}.
  * <p/>
  * In default validator implementation, default message interpolation keys (when {@code message} annotation param is empty) are
- * {@code org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint.invalidEnumValueMessage} and {@code org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint.invalidSubsetOfEnumMessage}.
+ * {@code org.klokwrk.lib.lo.validation.constraint.ValueOfEnumConstraint.invalidEnumValueMessage} and {@code org.klokwrk.lib.lo.validation.constraint.ValueOfEnumConstraint.invalidSubsetOfEnumMessage}.
  * <p/>
  * For custom message interpolation (when {@code message} annotation param is configured), default implementation exposes {@code enumClassSimpleName} and {@code enumNamesSubsetList} expressions.
  * <p/>
@@ -55,8 +55,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
 @Retention(RUNTIME)
 @Constraint(validatedBy = [])
 @interface ValueOfEnumConstraint {
-  static final String INVALID_ENUM_VALUE_MESSAGE_KEY = "org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint.invalidEnumValueMessage"
-  static final String INVALID_SUBSET_OF_ENUM_VALUE_MESSAGE_KEY = "org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint.invalidSubsetOfEnumMessage"
+  static final String INVALID_ENUM_VALUE_MESSAGE_KEY = "org.klokwrk.lib.lo.validation.constraint.ValueOfEnumConstraint.invalidEnumValueMessage"
+  static final String INVALID_SUBSET_OF_ENUM_VALUE_MESSAGE_KEY = "org.klokwrk.lib.lo.validation.constraint.ValueOfEnumConstraint.invalidSubsetOfEnumMessage"
 
   Class<? extends Enum> enumClass()
   String[] enumNamesSubset() default []

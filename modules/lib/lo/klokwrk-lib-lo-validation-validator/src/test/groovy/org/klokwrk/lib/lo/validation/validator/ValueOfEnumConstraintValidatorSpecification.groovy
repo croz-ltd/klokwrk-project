@@ -23,7 +23,7 @@ import org.hibernate.validator.cfg.ConstraintMapping
 import org.hibernate.validator.internal.engine.messageinterpolation.DefaultLocaleResolver
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator
-import org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint
+import org.klokwrk.lib.lo.validation.constraint.ValueOfEnumConstraint
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -192,7 +192,7 @@ class ValueOfEnumConstraintValidatorSpecification extends Specification {
     then:
     constraintViolations.size() == 1
     verifyAll(constraintViolations[0]) {
-      messageTemplate == "{org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint.invalidEnumValueMessage}"
+      messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.ValueOfEnumConstraint.invalidEnumValueMessage}"
       message == messageParam
     }
 
@@ -213,7 +213,7 @@ class ValueOfEnumConstraintValidatorSpecification extends Specification {
     then:
     constraintViolations.size() == 1
     verifyAll(constraintViolations[0]) {
-      messageTemplate == "{org.klokwrk.lib.validation.constraint.ValueOfEnumConstraint.invalidSubsetOfEnumMessage}"
+      messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.ValueOfEnumConstraint.invalidSubsetOfEnumMessage}"
       message == messageParam
     }
 

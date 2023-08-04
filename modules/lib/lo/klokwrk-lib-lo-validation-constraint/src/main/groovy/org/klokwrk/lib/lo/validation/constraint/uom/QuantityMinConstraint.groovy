@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.validation.constraint.uom
+package org.klokwrk.lib.lo.validation.constraint.uom
 
 import jakarta.validation.Constraint
 import jakarta.validation.Payload
@@ -72,22 +72,22 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
  * For message interpolation, the default validator provides four types of message templates with corresponding resource bundle keys:
  * <ul>
  * <li>
- *   INVALID_UNIT_EQUAL: {@code org.klokwrk.lib.validation.constraint.uom.QuantityMinConstraint.invalidUnitEqualMessage}
+ *   INVALID_UNIT_EQUAL: {@code org.klokwrk.lib.lo.validation.constraint.uom.QuantityMinConstraint.invalidUnitEqualMessage}
  *   <br/>
  *   Used when equal unit matching is required but not satisfied.
  * </li>
  * <li>
- *   INVALID_UNIT_COMPATIBLE: {@code org.klokwrk.lib.validation.constraint.uom.QuantityMinConstraint.invalidUnitCompatibleMessage}
+ *   INVALID_UNIT_COMPATIBLE: {@code org.klokwrk.lib.lo.validation.constraint.uom.QuantityMinConstraint.invalidUnitCompatibleMessage}
  *   <br/>
  *   Used when compatible unit matching is required but not satisfied.
  * </li>
  * <li>
- *   INVALID_QUANTITY_INCLUSIVE: {@code org.klokwrk.lib.validation.constraint.uom.QuantityMinConstraint.invalidQuantityInclusiveMessage}
+ *   INVALID_QUANTITY_INCLUSIVE: {@code org.klokwrk.lib.lo.validation.constraint.uom.QuantityMinConstraint.invalidQuantityInclusiveMessage}
  *   <br/>
  *   Used when the inclusive minimum is required but not satisfied.
  * </li>
  * <li>
- *   INVALID_QUANTITY_EXCLUSIVE: {@code org.klokwrk.lib.validation.constraint.uom.QuantityMinConstraint.invalidQuantityExclusiveMessage}
+ *   INVALID_QUANTITY_EXCLUSIVE: {@code org.klokwrk.lib.lo.validation.constraint.uom.QuantityMinConstraint.invalidQuantityExclusiveMessage}
  *   <br/>
  *   Used when the exclusive minimum is required but not satisfied.
  * </li>
@@ -110,10 +110,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
 @Retention(RUNTIME)
 @Constraint(validatedBy = [])
 @interface QuantityMinConstraint {
-  static final String INVALID_UNIT_EQUAL_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityMinConstraint.invalidUnitEqualMessage"
-  static final String INVALID_UNIT_COMPATIBLE_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityMinConstraint.invalidUnitCompatibleMessage"
-  static final String INVALID_QUANTITY_INCLUSIVE_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityMinConstraint.invalidQuantityInclusiveMessage"
-  static final String INVALID_QUANTITY_EXCLUSIVE_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityMinConstraint.invalidQuantityExclusiveMessage"
+  static final String INVALID_UNIT_EQUAL_KEY = "org.klokwrk.lib.lo.validation.constraint.uom.QuantityMinConstraint.invalidUnitEqualMessage"
+  static final String INVALID_UNIT_COMPATIBLE_KEY = "org.klokwrk.lib.lo.validation.constraint.uom.QuantityMinConstraint.invalidUnitCompatibleMessage"
+  static final String INVALID_QUANTITY_INCLUSIVE_KEY = "org.klokwrk.lib.lo.validation.constraint.uom.QuantityMinConstraint.invalidQuantityInclusiveMessage"
+  static final String INVALID_QUANTITY_EXCLUSIVE_KEY = "org.klokwrk.lib.lo.validation.constraint.uom.QuantityMinConstraint.invalidQuantityExclusiveMessage"
 
   String minQuantity() default ""
   boolean inclusive() default true

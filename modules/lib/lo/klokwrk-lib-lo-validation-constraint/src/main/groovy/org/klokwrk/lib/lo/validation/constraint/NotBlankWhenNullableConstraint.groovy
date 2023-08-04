@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.validation.constraint
+package org.klokwrk.lib.lo.validation.constraint
 
 import jakarta.validation.Constraint
 import jakarta.validation.Payload
@@ -33,38 +33,32 @@ import static java.lang.annotation.ElementType.TYPE_USE
 import static java.lang.annotation.RetentionPolicy.RUNTIME
 
 /**
- * The annotated element must be well-formed UN/LOCODE string.
- * <p/>
- * Accepts only {@code String} types. Message interpolation key is {@code org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint.message}.
- * <p/>
- * Useful reference: https://service.unece.org/trade/locode/Service/LocodeColumn.htm - Section "1.2 Column LOCODE".
- * <p/>
- * The two first digits indicates the country in which the place is located. The values used concur with the  ISO 3166 alpha-2 Country Code. In cases where no ISO 3166 country code element is
- * available, e.g. installations in international waters or international cooperation zones, the code element "XZ" will be used.
- * <p/>
- * Next part contains a 3-character code for the location. The 3-character code element for the location will normally comprise three letters. However, where all permutations available for a
- * country have been exhausted, the numerals 2-9 may also be used.
+ *  The annotated element must must contain at least one non-whitespace character when it is not null.
+ *  <p/>
+ *  Accepts only {@code String} types. Message interpolation key is {@code org.klokwrk.lib.lo.validation.constraint.NotBlankWhenNullableConstraint.message}.
+ *  <p/>
+ *  This constraint is very similar to the bean validation's {@code NotBlank}, but this one skips null values and does not report them as violations.
  */
 @Documented
-@Repeatable(UnLoCodeFormatConstraintList)
+@Repeatable(NotBlankWhenNullableConstraintList)
 @Target([FIELD, METHOD, PARAMETER, TYPE_USE, ANNOTATION_TYPE])
 @Retention(RUNTIME)
 @Constraint(validatedBy = [])
-@interface UnLoCodeFormatConstraint {
-  String message() default "{org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint.message}"
+@interface NotBlankWhenNullableConstraint {
+  String message() default "{org.klokwrk.lib.lo.validation.constraint.NotBlankWhenNullableConstraint.message}"
 
   Class<?>[] groups() default []
   Class<? extends Payload>[] payload() default []
 }
 
 /**
- * Defines several {@link UnLoCodeFormatConstraint} annotations on the same element.
+ * Defines several {@link NotBlankWhenNullableConstraint} annotations on the same element.
  *
- * @see UnLoCodeFormatConstraint
+ * @see NotBlankWhenNullableConstraint
  */
 @Documented
 @Target([METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE])
 @Retention(RUNTIME)
-@interface UnLoCodeFormatConstraintList {
-  UnLoCodeFormatConstraint[] value()
+@interface NotBlankWhenNullableConstraintList {
+  NotBlankWhenNullableConstraint[] value()
 }

@@ -23,7 +23,7 @@ import org.hibernate.validator.cfg.ConstraintMapping
 import org.hibernate.validator.internal.engine.messageinterpolation.DefaultLocaleResolver
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator
-import org.klokwrk.lib.validation.constraint.UuidFormatConstraint
+import org.klokwrk.lib.lo.validation.constraint.UuidFormatConstraint
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -117,7 +117,7 @@ class UuidFormatConstraintValidatorSpecification extends Specification {
     verifyAll(constraintViolations[0]) {
       it.invalidValue == uuidStringParam
       it.propertyPath.toString() == "uuidString"
-      it.messageTemplate == "{org.klokwrk.lib.validation.constraint.UuidFormatConstraint.message}"
+      it.messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.UuidFormatConstraint.message}"
     }
 
     where:
@@ -138,7 +138,7 @@ class UuidFormatConstraintValidatorSpecification extends Specification {
     then:
     constraintViolations.size() == 1
     verifyAll(constraintViolations[0]) {
-      it.messageTemplate == "{org.klokwrk.lib.validation.constraint.UuidFormatConstraint.message}"
+      it.messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.UuidFormatConstraint.message}"
       it.message == messageParam
     }
 

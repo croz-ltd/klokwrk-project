@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.validation.constraint
+package org.klokwrk.lib.lo.validation.constraint
 
 import jakarta.validation.Constraint
 import jakarta.validation.Payload
@@ -25,7 +25,6 @@ import java.lang.annotation.Retention
 import java.lang.annotation.Target
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE
-import static java.lang.annotation.ElementType.CONSTRUCTOR
 import static java.lang.annotation.ElementType.FIELD
 import static java.lang.annotation.ElementType.METHOD
 import static java.lang.annotation.ElementType.PARAMETER
@@ -33,32 +32,29 @@ import static java.lang.annotation.ElementType.TYPE_USE
 import static java.lang.annotation.RetentionPolicy.RUNTIME
 
 /**
- *  The annotated element must must contain at least one non-whitespace character when it is not null.
- *  <p/>
- *  Accepts only {@code String} types. Message interpolation key is {@code org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint.message}.
- *  <p/>
- *  This constraint is very similar to the bean validation's {@code NotBlank}, but this one skips null values and does not report them as violations.
+ * The annotated element must be a string without any spaces in front or at the end.
+ * <p/>
+ * Accepts only {@code String} types.
+ * <p/>
+ * Default message interpolation key is {@code org.klokwrk.lib.lo.validation.constraint.NotBlankWhenNullableConstraint.message}.
  */
 @Documented
-@Repeatable(NotBlankWhenNullableConstraintList)
+@Repeatable(TrimmedStringConstraintList)
 @Target([FIELD, METHOD, PARAMETER, TYPE_USE, ANNOTATION_TYPE])
 @Retention(RUNTIME)
 @Constraint(validatedBy = [])
-@interface NotBlankWhenNullableConstraint {
-  String message() default "{org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint.message}"
+@interface TrimmedStringConstraint {
+  String message() default "{org.klokwrk.lib.lo.validation.constraint.TrimmedStringConstraint.message}"
 
   Class<?>[] groups() default []
   Class<? extends Payload>[] payload() default []
 }
 
 /**
- * Defines several {@link NotBlankWhenNullableConstraint} annotations on the same element.
+ * Defines several {@link TrimmedStringConstraint} annotations on the same element.
  *
- * @see NotBlankWhenNullableConstraint
+ * @see TrimmedStringConstraint
  */
-@Documented
-@Target([METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE])
-@Retention(RUNTIME)
-@interface NotBlankWhenNullableConstraintList {
-  NotBlankWhenNullableConstraint[] value()
+@interface TrimmedStringConstraintList {
+  TrimmedStringConstraint[] value()
 }

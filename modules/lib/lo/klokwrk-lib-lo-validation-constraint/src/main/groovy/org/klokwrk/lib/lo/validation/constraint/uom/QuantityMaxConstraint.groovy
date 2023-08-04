@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.validation.constraint.uom
+package org.klokwrk.lib.lo.validation.constraint.uom
 
 import jakarta.validation.Constraint
 import jakarta.validation.Payload
@@ -72,22 +72,22 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
  * For message interpolation, the default validator provides four types of message templates with corresponding resource bundle keys:
  * <ul>
  * <li>
- *   INVALID_UNIT_EQUAL_UNIT: {@code org.klokwrk.lib.validation.constraint.uom.QuantityMaxConstraint.invalidUnitEqualMessage}
+ *   INVALID_UNIT_EQUAL_UNIT: {@code org.klokwrk.lib.lo.validation.constraint.uom.QuantityMaxConstraint.invalidUnitEqualMessage}
  *   <br/>
  *   Used when equal unit matching is required but not satisfied.
  * </li>
  * <li>
- *   INVALID_UNIT_COMPATIBLE_UNIT: {@code org.klokwrk.lib.validation.constraint.uom.QuantityMaxConstraint.invalidUnitCompatibleMessage}
+ *   INVALID_UNIT_COMPATIBLE_UNIT: {@code org.klokwrk.lib.lo.validation.constraint.uom.QuantityMaxConstraint.invalidUnitCompatibleMessage}
  *   <br/>
  *   Used when compatible unit matching is required but not satisfied.
  * </li>
  * <li>
- *   INVALID_QUANTITY_INCLUSIVE: {@code org.klokwrk.lib.validation.constraint.uom.QuantityMaxConstraint.invalidQuantityInclusiveMessage}
+ *   INVALID_QUANTITY_INCLUSIVE: {@code org.klokwrk.lib.lo.validation.constraint.uom.QuantityMaxConstraint.invalidQuantityInclusiveMessage}
  *   <br/>
  *   Used when the inclusive maximum is required but not satisfied.
  * </li>
  * <li>
- *   INVALID_QUANTITY_EXCLUSIVE: {@code org.klokwrk.lib.validation.constraint.uom.QuantityMaxConstraint.invalidQuantityExclusiveMessage}
+ *   INVALID_QUANTITY_EXCLUSIVE: {@code org.klokwrk.lib.lo.validation.constraint.uom.QuantityMaxConstraint.invalidQuantityExclusiveMessage}
  *   <br/>
  *   Used when the exclusive maximum is required but not satisfied.
  * </li>
@@ -110,10 +110,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
 @Retention(RUNTIME)
 @Constraint(validatedBy = [])
 @interface QuantityMaxConstraint {
-  static final String INVALID_UNIT_EQUAL_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityMaxConstraint.invalidUnitEqualMessage"
-  static final String INVALID_UNIT_COMPATIBLE_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityMaxConstraint.invalidUnitCompatibleMessage"
-  static final String INVALID_QUANTITY_INCLUSIVE_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityMaxConstraint.invalidQuantityInclusiveMessage"
-  static final String INVALID_QUANTITY_EXCLUSIVE_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityMaxConstraint.invalidQuantityExclusiveMessage"
+  static final String INVALID_UNIT_EQUAL_KEY = "org.klokwrk.lib.lo.validation.constraint.uom.QuantityMaxConstraint.invalidUnitEqualMessage"
+  static final String INVALID_UNIT_COMPATIBLE_KEY = "org.klokwrk.lib.lo.validation.constraint.uom.QuantityMaxConstraint.invalidUnitCompatibleMessage"
+  static final String INVALID_QUANTITY_INCLUSIVE_KEY = "org.klokwrk.lib.lo.validation.constraint.uom.QuantityMaxConstraint.invalidQuantityInclusiveMessage"
+  static final String INVALID_QUANTITY_EXCLUSIVE_KEY = "org.klokwrk.lib.lo.validation.constraint.uom.QuantityMaxConstraint.invalidQuantityExclusiveMessage"
 
   String maxQuantity() default ""
   boolean inclusive() default true

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.validation.constraint
+package org.klokwrk.lib.lo.validation.constraint
 
 import jakarta.validation.Constraint
 import jakarta.validation.Payload
@@ -33,30 +33,34 @@ import static java.lang.annotation.ElementType.TYPE_USE
 import static java.lang.annotation.RetentionPolicy.RUNTIME
 
 /**
- * The annotated element must be well-formed UUID string.
- * <p/>
- * Accepts only {@code String} types. Message interpolation key is {@code org.klokwrk.lib.validation.constraint.UuidFormatConstraint.message}.
+ *  The annotated element must not contain {@code null} elements.
+ *  <p/>
+ *  Accepts {@code Collection} and {@code Map} types. In case of {@code Maps}, both keys and values must be {@code not-null}. Message interpolation key is
+ *  {@code org.klokwrk.lib.lo.validation.constraint.NotNullElementsConstraint.message}.
+ *  <p/>
+ *  {@code null} containers ({@code Collection} and {@code Map}), or empty containers are not reported as violations.
  */
 @Documented
-@Repeatable(UuidFormatConstraintList)
+@Repeatable(NotNullElementsConstraintList)
 @Target([FIELD, METHOD, PARAMETER, TYPE_USE, ANNOTATION_TYPE])
 @Retention(RUNTIME)
 @Constraint(validatedBy = [])
-@interface UuidFormatConstraint {
-  String message() default "{org.klokwrk.lib.validation.constraint.UuidFormatConstraint.message}"
+@interface NotNullElementsConstraint {
+  String message() default "{org.klokwrk.lib.lo.validation.constraint.NotNullElementsConstraint.message}"
 
   Class<?>[] groups() default []
   Class<? extends Payload>[] payload() default []
 }
 
 /**
- * Defines several {@link UuidFormatConstraint} annotations on the same element.
+ * Defines several {@link NotNullElementsConstraint} annotations on the same element.
  *
- * @see UuidFormatConstraint
+ * @see NotNullElementsConstraint
  */
 @Documented
 @Target([METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE])
 @Retention(RUNTIME)
-@interface UuidFormatConstraintList {
-  UuidFormatConstraint[] value()
+@interface NotNullElementsConstraintList {
+  NotNullElementsConstraint[] value()
 }
+

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.validation.constraint
+package org.klokwrk.lib.lo.validation.constraint
 
 import jakarta.validation.Constraint
 import jakarta.validation.Payload
@@ -35,7 +35,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
 /**
  *  The annotated element must not be empty when it is not {@code null}.
  *  <p/>
- *  Accepts {@code Collection} and {@code Map} types. Message interpolation key is {@code org.klokwrk.lib.validation.constraint.NotEmptyWhenNullableConstraint.message}.
+ *  Accepts {@code Collection} and {@code Map} types. Message interpolation key is {@code org.klokwrk.lib.lo.validation.constraint.NotEmptyWhenNullableConstraint.message}.
  *  <p/>
  *  This constraint is very similar to the standard bean validation's {@code NotEmpty}, but this one allows for {@code null} containers and does not report them as violations.
  */
@@ -45,7 +45,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
 @Retention(RUNTIME)
 @Constraint(validatedBy = [])
 @interface NotEmptyWhenNullableConstraint {
-  String message() default "{org.klokwrk.lib.validation.constraint.NotEmptyWhenNullableConstraint.message}"
+  String message() default "{org.klokwrk.lib.lo.validation.constraint.NotEmptyWhenNullableConstraint.message}"
 
   Class<?>[] groups() default []
   Class<? extends Payload>[] payload() default []

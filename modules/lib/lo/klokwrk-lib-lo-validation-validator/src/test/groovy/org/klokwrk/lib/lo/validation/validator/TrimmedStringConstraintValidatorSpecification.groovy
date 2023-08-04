@@ -23,7 +23,7 @@ import org.hibernate.validator.cfg.ConstraintMapping
 import org.hibernate.validator.internal.engine.messageinterpolation.DefaultLocaleResolver
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator
-import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
+import org.klokwrk.lib.lo.validation.constraint.TrimmedStringConstraint
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -112,7 +112,7 @@ class TrimmedStringConstraintValidatorSpecification extends Specification {
     verifyAll(constraintViolations[0]) {
       it.invalidValue == someStringParam
       it.propertyPath.toString() == "someString"
-      it.messageTemplate == "{org.klokwrk.lib.validation.constraint.TrimmedStringConstraint.message}"
+      it.messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.TrimmedStringConstraint.message}"
     }
 
     where:
@@ -136,7 +136,7 @@ class TrimmedStringConstraintValidatorSpecification extends Specification {
     then:
     constraintViolations.size() == 1
     verifyAll(constraintViolations[0]) {
-      it.messageTemplate == "{org.klokwrk.lib.validation.constraint.TrimmedStringConstraint.message}"
+      it.messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.TrimmedStringConstraint.message}"
       it.message == messageParam
     }
 

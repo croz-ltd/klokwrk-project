@@ -17,8 +17,8 @@
  */
 package org.klokwrk.lib.hi.validation.springboot
 
-import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
-import org.klokwrk.lib.validation.constraint.uom.QuantityUnitConstraint
+import org.klokwrk.lib.lo.validation.constraint.TrimmedStringConstraint
+import org.klokwrk.lib.lo.validation.constraint.uom.QuantityUnitConstraint
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.validation.constraint.uom
+package org.klokwrk.lib.lo.validation.constraint.uom
 
 import jakarta.validation.Constraint
 import jakarta.validation.Payload
@@ -72,32 +72,32 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
  * For message interpolation, the default validator provides six types of message templates with corresponding resource bundle keys:
  * <ul>
  * <li>
- *   INVALID_UNIT_EQUAL: {@code org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint.invalidUnitEqualMessage}
+ *   INVALID_UNIT_EQUAL: {@code org.klokwrk.lib.lo.validation.constraint.uom.QuantityRangeConstraint.invalidUnitEqualMessage}
  *   <br/>
  *   Used when equal unit matching is required but not satisfied.
  * </li>
  * <li>
- *   INVALID_UNIT_COMPATIBLE: {@code org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint.invalidUnitCompatibleMessage}
+ *   INVALID_UNIT_COMPATIBLE: {@code org.klokwrk.lib.lo.validation.constraint.uom.QuantityRangeConstraint.invalidUnitCompatibleMessage}
  *   <br/>
  *   Used when compatible unit matching is required but not satisfied.
  * </li>
  * <li>
- *   INVALID_QUANTITY_MIN_INCLUSIVE_MAX_INCLUSIVE: {@code org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint.invalidQuantityMinInclusiveMaxInclusiveMessage}
+ *   INVALID_QUANTITY_MIN_INCLUSIVE_MAX_INCLUSIVE: {@code org.klokwrk.lib.lo.validation.constraint.uom.QuantityRangeConstraint.invalidQuantityMinInclusiveMaxInclusiveMessage}
  *   <br/>
  *   Used when the inclusive minimum and inclusive maximum are required but not satisfied.
  * </li>
  * <li>
- *   INVALID_QUANTITY_MIN_INCLUSIVE_MAX_EXCLUSIVE: {@code org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint.invalidQuantityMinInclusiveMaxExclusiveMessage}
+ *   INVALID_QUANTITY_MIN_INCLUSIVE_MAX_EXCLUSIVE: {@code org.klokwrk.lib.lo.validation.constraint.uom.QuantityRangeConstraint.invalidQuantityMinInclusiveMaxExclusiveMessage}
  *   <br/>
  *   Used when the inclusive minimum and exclusive maximum are required but not satisfied.
  * </li>
  * <li>
- *   INVALID_QUANTITY_MIN_EXCLUSIVE_MAX_INCLUSIVE: {@code org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint.invalidQuantityMinExclusiveMaxInclusiveMessage}
+ *   INVALID_QUANTITY_MIN_EXCLUSIVE_MAX_INCLUSIVE: {@code org.klokwrk.lib.lo.validation.constraint.uom.QuantityRangeConstraint.invalidQuantityMinExclusiveMaxInclusiveMessage}
  *   <br/>
  *   Used when the exclusive minimum and inclusive maximum are required but not satisfied.
  * </li>
  * <li>
- *   INVALID_QUANTITY_MIN_EXCLUSIVE_MAX_EXCLUSIVE: {@code org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint.invalidQuantityMinExclusiveMaxExclusiveMessage}
+ *   INVALID_QUANTITY_MIN_EXCLUSIVE_MAX_EXCLUSIVE: {@code org.klokwrk.lib.lo.validation.constraint.uom.QuantityRangeConstraint.invalidQuantityMinExclusiveMaxExclusiveMessage}
  *   <br/>
  *   Used when the exclusive minimum and exclusive maximum are required but not satisfied.
  * </li>
@@ -126,13 +126,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
 @Retention(RUNTIME)
 @Constraint(validatedBy = [])
 @interface QuantityRangeConstraint {
-  static final String INVALID_UNIT_EQUAL_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint.invalidUnitEqualMessage"
-  static final String INVALID_UNIT_COMPATIBLE_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint.invalidUnitCompatibleMessage"
+  static final String INVALID_UNIT_EQUAL_KEY = "org.klokwrk.lib.lo.validation.constraint.uom.QuantityRangeConstraint.invalidUnitEqualMessage"
+  static final String INVALID_UNIT_COMPATIBLE_KEY = "org.klokwrk.lib.lo.validation.constraint.uom.QuantityRangeConstraint.invalidUnitCompatibleMessage"
 
-  static final String INVALID_QUANTITY_MIN_INCLUSIVE_MAX_INCLUSIVE_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint.invalidQuantityMinInclusiveMaxInclusiveMessage"
-  static final String INVALID_QUANTITY_MIN_INCLUSIVE_MAX_EXCLUSIVE_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint.invalidQuantityMinInclusiveMaxExclusiveMessage"
-  static final String INVALID_QUANTITY_MIN_EXCLUSIVE_MAX_INCLUSIVE_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint.invalidQuantityMinExclusiveMaxInclusiveMessage"
-  static final String INVALID_QUANTITY_MIN_EXCLUSIVE_MAX_EXCLUSIVE_KEY = "org.klokwrk.lib.validation.constraint.uom.QuantityRangeConstraint.invalidQuantityMinExclusiveMaxExclusiveMessage"
+  static final String INVALID_QUANTITY_MIN_INCLUSIVE_MAX_INCLUSIVE_KEY = "org.klokwrk.lib.lo.validation.constraint.uom.QuantityRangeConstraint.invalidQuantityMinInclusiveMaxInclusiveMessage"
+  static final String INVALID_QUANTITY_MIN_INCLUSIVE_MAX_EXCLUSIVE_KEY = "org.klokwrk.lib.lo.validation.constraint.uom.QuantityRangeConstraint.invalidQuantityMinInclusiveMaxExclusiveMessage"
+  static final String INVALID_QUANTITY_MIN_EXCLUSIVE_MAX_INCLUSIVE_KEY = "org.klokwrk.lib.lo.validation.constraint.uom.QuantityRangeConstraint.invalidQuantityMinExclusiveMaxInclusiveMessage"
+  static final String INVALID_QUANTITY_MIN_EXCLUSIVE_MAX_EXCLUSIVE_KEY = "org.klokwrk.lib.lo.validation.constraint.uom.QuantityRangeConstraint.invalidQuantityMinExclusiveMaxExclusiveMessage"
 
   String minQuantity() default ""
   boolean minInclusive() default true

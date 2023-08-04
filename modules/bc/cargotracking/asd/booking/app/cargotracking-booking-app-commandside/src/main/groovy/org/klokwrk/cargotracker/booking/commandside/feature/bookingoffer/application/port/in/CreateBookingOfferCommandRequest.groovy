@@ -23,14 +23,14 @@ import groovy.transform.PropertyOptions
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestData
 import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
-import org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint
-import org.klokwrk.lib.validation.constraint.NotNullElementsConstraint
-import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
-import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
-import org.klokwrk.lib.validation.group.Level1
-import org.klokwrk.lib.validation.group.Level2
-import org.klokwrk.lib.validation.group.Level3
-import org.klokwrk.lib.validation.group.Level4
+import org.klokwrk.lib.lo.validation.constraint.NotBlankWhenNullableConstraint
+import org.klokwrk.lib.lo.validation.constraint.NotNullElementsConstraint
+import org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint
+import org.klokwrk.lib.lo.validation.constraint.TrimmedStringConstraint
+import org.klokwrk.lib.lo.validation.group.Level1
+import org.klokwrk.lib.lo.validation.group.Level2
+import org.klokwrk.lib.lo.validation.group.Level3
+import org.klokwrk.lib.lo.validation.group.Level4
 
 import jakarta.validation.GroupSequence
 import jakarta.validation.Valid

@@ -19,10 +19,10 @@ package org.klokwrk.cargotracker.lib.boundary.query.api.sorting
 
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
-import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
-import org.klokwrk.lib.validation.group.Level1
-import org.klokwrk.lib.validation.group.Level2
-import org.klokwrk.lib.validation.group.Level3
+import org.klokwrk.lib.lo.validation.constraint.TrimmedStringConstraint
+import org.klokwrk.lib.lo.validation.group.Level1
+import org.klokwrk.lib.lo.validation.group.Level2
+import org.klokwrk.lib.lo.validation.group.Level3
 
 import jakarta.validation.GroupSequence
 import jakarta.validation.constraints.NotBlank

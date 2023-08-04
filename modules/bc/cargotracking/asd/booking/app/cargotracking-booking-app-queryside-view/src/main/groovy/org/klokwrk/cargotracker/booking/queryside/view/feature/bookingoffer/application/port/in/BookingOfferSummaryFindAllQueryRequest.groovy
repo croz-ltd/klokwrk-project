@@ -21,10 +21,10 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageRequirement
 import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortDirection
 import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortRequirement
-import org.klokwrk.lib.validation.constraint.NotNullElementsConstraint
-import org.klokwrk.lib.validation.constraint.TrimmedStringConstraint
-import org.klokwrk.lib.validation.group.Level1
-import org.klokwrk.lib.validation.group.Level2
+import org.klokwrk.lib.lo.validation.constraint.NotNullElementsConstraint
+import org.klokwrk.lib.lo.validation.constraint.TrimmedStringConstraint
+import org.klokwrk.lib.lo.validation.group.Level1
+import org.klokwrk.lib.lo.validation.group.Level2
 
 import jakarta.validation.GroupSequence
 import jakarta.validation.Valid

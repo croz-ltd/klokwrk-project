@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.validation.constraint
+package org.klokwrk.lib.lo.validation.constraint
 
 import jakarta.validation.Constraint
 import jakarta.validation.Payload
@@ -47,10 +47,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
  * This constraint accepts only {@code String} types.
  * <p/>
  * In default validator implementation, default message interpolation keys (when {@code message} annotation param is empty) are
- * {@code org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint.invalidRandomUuidFormatMessage} and
- * {@code org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint.invalidUuidFormatMessage}. Default implementation uses
- * {@code org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint.invalidUuidFormatMessage} when corresponding string cannot be parsed into a UUID. Similarly, default implementation uses
- * {@code org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint.invalidRandomUuidFormatMessage} when corresponding string does represent an UUID but is not a random UUID (version 4 and
+ * {@code org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint.invalidRandomUuidFormatMessage} and
+ * {@code org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint.invalidUuidFormatMessage}. Default implementation uses
+ * {@code org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint.invalidUuidFormatMessage} when corresponding string cannot be parsed into a UUID. Similarly, default implementation uses
+ * {@code org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint.invalidRandomUuidFormatMessage} when corresponding string does represent an UUID but is not a random UUID (version 4 and
  * variant 2).
  * <p/>
  * When custom annotation {@code message} parameter value is specified, it can be either a reference to the resource bundle key (must be enclosed in curly braces '<code>{}</code>'), or a hardcoded
@@ -62,8 +62,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
 @Retention(RUNTIME)
 @Constraint(validatedBy = [])
 @interface RandomUuidFormatConstraint {
-  static final String INVALID_UUID_FORMAT_MESSAGE_KEY = "org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint.invalidUuidFormatMessage"
-  static final String INVALID_RANDOM_UUID_FORMAT_MESSAGE_KEY = "org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint.invalidRandomUuidFormatMessage"
+  static final String INVALID_UUID_FORMAT_MESSAGE_KEY = "org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint.invalidUuidFormatMessage"
+  static final String INVALID_RANDOM_UUID_FORMAT_MESSAGE_KEY = "org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint.invalidRandomUuidFormatMessage"
 
   // Must be specified, but is not used. See implementation notes at the end of annotation description in groovydoc.
   String message() default ""

@@ -23,7 +23,7 @@ import org.hibernate.validator.cfg.ConstraintMapping
 import org.hibernate.validator.internal.engine.messageinterpolation.DefaultLocaleResolver
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator
-import org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint
+import org.klokwrk.lib.lo.validation.constraint.NotBlankWhenNullableConstraint
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -103,7 +103,7 @@ class NotBlankWhenNullableConstraintValidatorSpecification extends Specification
     verifyAll(constraintViolations[0]) {
       it.invalidValue == testStringParam
       it.propertyPath.toString() == "testString"
-      it.messageTemplate == "{org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint.message}"
+      it.messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.NotBlankWhenNullableConstraint.message}"
     }
 
     where:
@@ -123,7 +123,7 @@ class NotBlankWhenNullableConstraintValidatorSpecification extends Specification
     then:
     constraintViolations.size() == 1
     verifyAll(constraintViolations[0]) {
-      it.messageTemplate == "{org.klokwrk.lib.validation.constraint.NotBlankWhenNullableConstraint.message}"
+      it.messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.NotBlankWhenNullableConstraint.message}"
       it.message == messageParam
     }
 

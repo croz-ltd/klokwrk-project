@@ -23,7 +23,7 @@ import org.hibernate.validator.cfg.ConstraintMapping
 import org.hibernate.validator.internal.engine.messageinterpolation.DefaultLocaleResolver
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator
-import org.klokwrk.lib.validation.constraint.uom.QuantityUnitConstraint
+import org.klokwrk.lib.lo.validation.constraint.uom.QuantityUnitConstraint
 import spock.lang.Shared
 import spock.lang.Specification
 

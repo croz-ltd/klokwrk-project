@@ -23,7 +23,7 @@ import org.hibernate.validator.cfg.ConstraintMapping
 import org.hibernate.validator.internal.engine.messageinterpolation.DefaultLocaleResolver
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator
-import org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint
+import org.klokwrk.lib.lo.validation.constraint.UnLoCodeFormatConstraint
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -118,7 +118,7 @@ class UnLoCodeFormatConstraintValidatorSpecification extends Specification {
     verifyAll(constraintViolations[0]) {
       it.invalidValue == unLoCodeStringParam
       it.propertyPath.toString() == "unLoCodeString"
-      it.messageTemplate == "{org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint.message}"
+      it.messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.UnLoCodeFormatConstraint.message}"
     }
 
     where:
@@ -141,7 +141,7 @@ class UnLoCodeFormatConstraintValidatorSpecification extends Specification {
     then:
     constraintViolations.size() == 1
     verifyAll(constraintViolations[0]) {
-      it.messageTemplate == "{org.klokwrk.lib.validation.constraint.UnLoCodeFormatConstraint.message}"
+      it.messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.UnLoCodeFormatConstraint.message}"
       it.message == messageParam
     }
 

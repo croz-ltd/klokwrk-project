@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.validation.group
+package org.klokwrk.lib.lo.validation.group
 
 /**
  * Interface intended to be used for specifying validation ordering through {@link jakarta.validation.GroupSequence} annotation.

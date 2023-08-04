@@ -19,7 +19,7 @@ package org.klokwrk.lib.lo.validation.validator
 
 import groovy.transform.CompileStatic
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext
-import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
+import org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint
 
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext

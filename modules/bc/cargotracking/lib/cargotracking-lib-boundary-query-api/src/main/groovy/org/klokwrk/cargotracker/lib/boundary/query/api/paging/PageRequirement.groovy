@@ -19,8 +19,8 @@ package org.klokwrk.cargotracker.lib.boundary.query.api.paging
 
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
-import org.klokwrk.lib.validation.group.Level1
-import org.klokwrk.lib.validation.group.Level2
+import org.klokwrk.lib.lo.validation.group.Level1
+import org.klokwrk.lib.lo.validation.group.Level2
 
 import jakarta.validation.GroupSequence
 import jakarta.validation.constraints.Min

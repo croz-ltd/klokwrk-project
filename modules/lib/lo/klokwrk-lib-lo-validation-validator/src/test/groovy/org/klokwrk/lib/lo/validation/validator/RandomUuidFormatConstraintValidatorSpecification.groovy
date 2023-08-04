@@ -23,7 +23,7 @@ import org.hibernate.validator.cfg.ConstraintMapping
 import org.hibernate.validator.internal.engine.messageinterpolation.DefaultLocaleResolver
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator
-import org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint
+import org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -127,7 +127,7 @@ class RandomUuidFormatConstraintValidatorSpecification extends Specification {
     verifyAll(constraintViolations[0]) {
       it.invalidValue == randomUuidStringParam
       it.propertyPath.toString() == "randomUuidString"
-      it.messageTemplate == "{org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint.invalidUuidFormatMessage}"
+      it.messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint.invalidUuidFormatMessage}"
     }
 
     where:
@@ -149,7 +149,7 @@ class RandomUuidFormatConstraintValidatorSpecification extends Specification {
     verifyAll(constraintViolations[0]) {
       it.invalidValue == randomUuidStringParam
       it.propertyPath.toString() == "randomUuidString"
-      it.messageTemplate == "{org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint.invalidRandomUuidFormatMessage}"
+      it.messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint.invalidRandomUuidFormatMessage}"
     }
 
     where:
@@ -174,7 +174,7 @@ class RandomUuidFormatConstraintValidatorSpecification extends Specification {
     then:
     constraintViolations.size() == 1
     verifyAll(constraintViolations[0]) {
-      it.messageTemplate == "{org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint.invalidUuidFormatMessage}"
+      it.messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint.invalidUuidFormatMessage}"
       it.message == messageParam
     }
 
@@ -195,7 +195,7 @@ class RandomUuidFormatConstraintValidatorSpecification extends Specification {
     then:
     constraintViolations.size() == 1
     verifyAll(constraintViolations[0]) {
-      it.messageTemplate == "{org.klokwrk.lib.validation.constraint.RandomUuidFormatConstraint.invalidRandomUuidFormatMessage}"
+      it.messageTemplate == "{org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint.invalidRandomUuidFormatMessage}"
       it.message == messageParam
     }
 
