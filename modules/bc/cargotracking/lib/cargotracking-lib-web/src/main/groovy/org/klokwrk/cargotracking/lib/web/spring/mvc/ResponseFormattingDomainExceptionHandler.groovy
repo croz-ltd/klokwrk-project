@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.web.spring.mvc
+package org.klokwrk.cargotracking.lib.web.spring.mvc
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ResponseMetaDataGeneralPart
@@ -24,8 +24,8 @@ import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.V
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.DomainException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationCode
-import org.klokwrk.cargotracker.lib.web.metadata.response.HttpResponseMetaData
-import org.klokwrk.cargotracker.lib.web.metadata.response.HttpResponseMetaDataHttpPart
+import org.klokwrk.cargotracking.lib.web.metadata.response.HttpResponseMetaData
+import org.klokwrk.cargotracking.lib.web.metadata.response.HttpResponseMetaDataHttpPart
 import org.klokwrk.lib.hi.spring.context.MessageSourceResolvableHelper
 import org.klokwrk.lib.hi.spring.context.MessageSourceResolvableSpecification
 import org.springframework.context.MessageSource

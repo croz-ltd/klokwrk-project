@@ -27,7 +27,7 @@ import org.springframework.context.support.DefaultMessageSourceResolvable
  * The most significant part are highly specialized static utility methods for creating message codes.
  * <p/>
  * At this moment, methods in this class and properties from {@code org.klokwrk.lib.hi.spring.context.MessageSourceResolvableSpecification}, are highly specialized to localize parts of JSON responses
- * whose structure is defined by {@code ResponseFormatting*} interceptors from {@code org.klokwrk.cargotracker.lib.web.spring.mvc} package. Currently, only JSON responses representing failures have
+ * whose structure is defined by {@code ResponseFormatting*} interceptors from {@code org.klokwrk.cargotracking.lib.web.spring.mvc} package. Currently, only JSON responses representing failures have
  * parts that need to be localized.
  * <p/>
  * To better understand each utility method's purpose, it is useful to observe the complete message format of JSON responses representing failures. Here is an example for response roughly

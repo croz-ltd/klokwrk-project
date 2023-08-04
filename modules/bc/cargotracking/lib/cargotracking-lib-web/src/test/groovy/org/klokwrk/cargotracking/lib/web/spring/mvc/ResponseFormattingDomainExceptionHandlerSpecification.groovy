@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.web.spring.mvc
+package org.klokwrk.cargotracking.lib.web.spring.mvc
 
 import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ViolationType
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationResponse

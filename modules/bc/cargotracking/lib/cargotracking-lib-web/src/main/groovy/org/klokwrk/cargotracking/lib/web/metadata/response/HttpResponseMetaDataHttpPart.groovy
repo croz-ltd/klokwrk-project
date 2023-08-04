@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.web.metadata.response
+package org.klokwrk.cargotracking.lib.web.metadata.response
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.boundary.api.application.metadata.response.ResponseMetaData
 
 @CompileStatic
-class HttpResponseMetaData extends ResponseMetaData {
-  HttpResponseMetaDataHttpPart http
+class HttpResponseMetaDataHttpPart {
+  String status
+  String message
 }

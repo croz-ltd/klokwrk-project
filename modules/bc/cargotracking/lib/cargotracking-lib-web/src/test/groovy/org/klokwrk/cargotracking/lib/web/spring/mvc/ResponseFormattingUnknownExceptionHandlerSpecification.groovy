@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.web.spring.mvc
+package org.klokwrk.cargotracking.lib.web.spring.mvc
 
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Logger

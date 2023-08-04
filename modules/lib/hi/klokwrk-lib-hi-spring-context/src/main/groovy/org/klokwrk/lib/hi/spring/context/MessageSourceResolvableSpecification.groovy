@@ -23,7 +23,7 @@ import groovy.transform.CompileStatic
  * Data structure (a record) that defines the specification for creating message codes suitable for resolving messages against resource bundle.
  * <p/>
  * At this moment, properties in this class, and corresponding implementations of message code resolvers from {@code org.klokwrk.lib.hi.spring.context.MessageSourceResolvableHelper}, are highly
- * specialized to localize parts of JSON responses whose structure is defined by {@code ResponseFormatting*} interceptors from {@code org.klokwrk.cargotracker.lib.web.spring.mvc} package.
+ * specialized to localize parts of JSON responses whose structure is defined by {@code ResponseFormatting*} interceptors from {@code org.klokwrk.cargotracking.lib.web.spring.mvc} package.
  * <p/>
  * Be aware that actual implementations of message resolvers can choose to ignore any property from this specification.
  */

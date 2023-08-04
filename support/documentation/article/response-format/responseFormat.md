@@ -65,7 +65,7 @@ Consequently, significant parts of implementation can be reused as each new chan
 
 In `kolkwrk-project`, the general response metadata structures are implemented in classes of `org.klokwrk.cargotracker.lib.boundary.api.metadata.response` package from `cargotracking-lib-boundary-api`
 module. The general response metadata format can be extended for specific outbound channels, if needed. Those extensions communicate additional metadata required for seamless response handling tied
-to some concrete protocol. For example, we can find HTTP-specific response metadata format extensions in the `org.klokwrk.cargotracker.lib.web.metadata.response` package of `cargotracking-lib-web`
+to some concrete protocol. For example, we can find HTTP-specific response metadata format extensions in the `org.klokwrk.cargotracking.lib.web.metadata.response` package of `cargotracking-lib-web`
 module.
 
 Now, we'll take a look how the response format looks like for various response types. All following examples are presented with a typical web outbound channel in mind. It means that some parts of the

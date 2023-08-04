@@ -150,7 +150,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
 
     String[] cargotrackerLibAxonCqrsCommandPackages = ["org.klokwrk.cargotracker.lib.axon.cqrs.command.."]
     String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracker.lib.boundary.api.."]
-    String[] cargotrackerLibWebAllPackages = ["org.klokwrk.cargotracker.lib.web.."]
+    String[] cargotrackerLibWebAllPackages = ["org.klokwrk.cargotracking.lib.web.."]
 
     String[] klokwrkLibValidationPackages = ["org.klokwrk.lib.hi.validation.."]
 
@@ -215,7 +215,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
 
     String[] cargotrackerLibAxonCqrsCommandPackages = ["org.klokwrk.cargotracker.lib.axon.cqrs.command.."]
     String[] cargotrackerLibAxonLoggingAllPackages = ["org.klokwrk.cargotracker.lib.axon.logging.."]
-    String[] cargotrackerLibWebAllPackages = ["org.klokwrk.cargotracker.lib.web.."]
+    String[] cargotrackerLibWebAllPackages = ["org.klokwrk.cargotracking.lib.web.."]
 
     String[] klokwrkLibJacksonAllPackages = ["org.klokwrk.lib.hi.jackson.."]
     String[] klokwrkLibValidationSpringBootPackages = ["org.klokwrk.lib.hi.validation.springboot"]

@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.queryside.view.infrastructure.spring.web.mvc
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.web.spring.mvc.ResponseFormattingResponseBodyAdvice
+import org.klokwrk.cargotracking.lib.web.spring.mvc.ResponseFormattingResponseBodyAdvice
 import org.springframework.web.bind.annotation.ControllerAdvice
 
 /**

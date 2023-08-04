@@ -21,7 +21,7 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFactory
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.lib.boundary.api.application.operation.OperationRequest
-import org.klokwrk.cargotracker.lib.web.util.ClientIpAddressExtractor
+import org.klokwrk.cargotracking.lib.web.util.ClientIpAddressExtractor
 
 import jakarta.servlet.http.HttpServletRequest
 
