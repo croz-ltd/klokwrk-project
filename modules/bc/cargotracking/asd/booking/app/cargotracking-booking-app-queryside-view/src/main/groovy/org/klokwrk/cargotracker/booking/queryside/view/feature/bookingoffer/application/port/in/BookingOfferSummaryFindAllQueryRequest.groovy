@@ -18,9 +18,9 @@
 package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageRequirement
-import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortDirection
-import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortRequirement
+import org.klokwrk.cargotracking.lib.boundary.query.api.paging.PageRequirement
+import org.klokwrk.cargotracking.lib.boundary.query.api.sorting.SortDirection
+import org.klokwrk.cargotracking.lib.boundary.query.api.sorting.SortRequirement
 import org.klokwrk.lib.lo.validation.constraint.NotNullElementsConstraint
 import org.klokwrk.lib.lo.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.lo.validation.group.Level1

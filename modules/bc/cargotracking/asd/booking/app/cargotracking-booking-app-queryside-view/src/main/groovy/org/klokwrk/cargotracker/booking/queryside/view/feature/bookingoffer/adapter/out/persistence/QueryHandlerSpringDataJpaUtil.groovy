@@ -20,9 +20,9 @@ package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.ada
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.lib.boundary.api.domain.exception.QueryException
 import org.klokwrk.cargotracker.lib.boundary.api.domain.violation.ViolationInfo
-import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageInfo
-import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageRequirement
-import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortRequirement
+import org.klokwrk.cargotracking.lib.boundary.query.api.paging.PageInfo
+import org.klokwrk.cargotracking.lib.boundary.query.api.paging.PageRequirement
+import org.klokwrk.cargotracking.lib.boundary.query.api.sorting.SortRequirement
 import org.springframework.dao.InvalidDataAccessApiUsageException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest

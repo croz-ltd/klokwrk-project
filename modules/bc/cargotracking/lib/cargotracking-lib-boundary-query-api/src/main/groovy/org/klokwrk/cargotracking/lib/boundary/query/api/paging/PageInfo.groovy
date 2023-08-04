@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.boundary.query.api.paging
+package org.klokwrk.cargotracking.lib.boundary.query.api.paging
 
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
-import org.klokwrk.cargotracker.lib.boundary.query.api.sorting.SortRequirement
+import org.klokwrk.cargotracking.lib.boundary.query.api.sorting.SortRequirement
 import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
 
 /**

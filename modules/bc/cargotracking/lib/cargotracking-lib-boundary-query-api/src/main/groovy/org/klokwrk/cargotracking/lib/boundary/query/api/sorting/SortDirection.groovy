@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.boundary.query.api.sorting
+package org.klokwrk.cargotracking.lib.boundary.query.api.sorting
 
 import groovy.transform.CompileStatic
 

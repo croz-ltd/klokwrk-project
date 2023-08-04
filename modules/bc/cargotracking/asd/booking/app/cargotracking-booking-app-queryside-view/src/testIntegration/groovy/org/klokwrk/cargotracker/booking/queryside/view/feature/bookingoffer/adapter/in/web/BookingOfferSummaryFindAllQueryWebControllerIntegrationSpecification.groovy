@@ -23,7 +23,7 @@ import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder
 import org.klokwrk.cargotracker.booking.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
 import org.klokwrk.cargotracker.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
-import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageRequirement
+import org.klokwrk.cargotracking.lib.boundary.query.api.paging.PageRequirement
 import org.spockframework.spring.EnableSharedInjection
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest

@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.app
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
-import org.klokwrk.cargotracker.lib.boundary.query.api.paging.PageInfo
+import org.klokwrk.cargotracking.lib.boundary.query.api.paging.PageInfo
 import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
 
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)

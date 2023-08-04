@@ -15,44 +15,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.boundary.query.api.sorting
+package org.klokwrk.cargotracking.lib.boundary.query.api.paging
 
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
-import org.klokwrk.lib.lo.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.lo.validation.group.Level1
 import org.klokwrk.lib.lo.validation.group.Level2
-import org.klokwrk.lib.lo.validation.group.Level3
 
 import jakarta.validation.GroupSequence
-import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotNull
 
 /**
- * Specifies requirements for desired sorting of query results.
+ * Specifies requirements for desired paged results of a query.
  * <p/>
- * We have specifications for the property name on which results should be sorted, and desired sort direction (default is ascending direction).
+ * We have specifications for the desired page's ordinal number (default is 0) and size (default is 25) as specified by the api client.
  */
-@GroupSequence([SortRequirement, Level1, Level2, Level3])
+@GroupSequence([PageRequirement, Level1, Level2])
 @EqualsAndHashCode
 @CompileStatic
-class SortRequirement {
-  static final SortDirection SORT_REQUIREMENT_DIRECTION_DEFAULT = SortDirection.ASC
+class PageRequirement {
+  static final Integer PAGE_REQUIREMENT_SIZE_DEFAULT = 25
+  static final PageRequirement PAGE_REQUIREMENT_INSTANCE_DEFAULT = new PageRequirement(ordinal: 0, size: PAGE_REQUIREMENT_SIZE_DEFAULT)
 
   /**
-   * The property name on which results will be sorted.
+   * The ordinal number of requested page.
    * <p/>
-   * Must not be blank and must be trimmed of whitespace.
+   * Must be not {@code null}, and must be greater or equal to 0. Default is 0.
    */
-  @TrimmedStringConstraint(groups = [Level2])
-  @NotBlank(groups = [Level1])
-  String propertyName
-
-  /**
-   * The desired sort direction.
-   * <p/>
-   * Must be not {@code null}, and must be a valid element of {@link SortDirection} enum.
-   */
+  @Min(value = 0L, groups = [Level2])
   @NotNull(groups = [Level1])
-  SortDirection direction = SORT_REQUIREMENT_DIRECTION_DEFAULT
+  Integer ordinal = 0
+
+  /**
+   * The requested number of page elements.
+   * <p/>
+   * Must be not {@code null}, and must be greater or equal to 1. Default is 25.
+   */
+  @Min(value = 1L, groups = [Level2])
+  @NotNull(groups = [Level1])
+  Integer size = PAGE_REQUIREMENT_SIZE_DEFAULT
 }
