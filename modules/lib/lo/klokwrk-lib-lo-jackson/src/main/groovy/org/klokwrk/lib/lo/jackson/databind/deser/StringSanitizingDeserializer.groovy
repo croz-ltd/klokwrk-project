@@ -15,22 +15,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.jackson.databind.ser
+package org.klokwrk.lib.lo.jackson.databind.deser
 
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.databind.ser.std.StdSerializer
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.DeserializationContext
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import groovy.transform.CompileStatic
-import org.klokwrk.lib.xlang.groovy.base.json.RawJsonWrapper
 
+/**
+ * Jackson deserializer which deserializes any empty string as <code>null</code>.
+ */
 @CompileStatic
-class RawJsonWrapperSerializer extends StdSerializer<RawJsonWrapper> {
-  RawJsonWrapperSerializer() {
-    super(RawJsonWrapper)
+class StringSanitizingDeserializer extends StdDeserializer<String> {
+  StringSanitizingDeserializer() {
+    super(String)
   }
 
   @Override
-  void serialize(RawJsonWrapper value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) {
-    jsonGenerator.writeRawValue(value.rawJson)
+  String deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) {
+    JsonNode node = jsonParser.readValueAsTree() as JsonNode
+    if (node.asText().trim().isEmpty()) {
+      return null
+    }
+
+    return node.asText()
   }
 }

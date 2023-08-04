@@ -15,24 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.jackson.databind.ser
+package org.klokwrk.lib.lo.jackson.databind.ser
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import groovy.transform.CompileStatic
+import org.klokwrk.lib.xlang.groovy.base.json.RawJsonWrapper
 
-/**
- * Jackson serializer which serializes Groovy's <code>GString</code> type by converting it into a <code>String</code>.
- */
 @CompileStatic
-class GStringSerializer extends StdSerializer<GString> {
-  GStringSerializer() {
-    super(GString)
+class RawJsonWrapperSerializer extends StdSerializer<RawJsonWrapper> {
+  RawJsonWrapperSerializer() {
+    super(RawJsonWrapper)
   }
 
   @Override
-  void serialize(GString value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) {
-    jsonGenerator.writeString(value.toString())
+  void serialize(RawJsonWrapper value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) {
+    jsonGenerator.writeRawValue(value.rawJson)
   }
 }

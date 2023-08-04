@@ -15,25 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.jackson.databind.deser
+package org.klokwrk.lib.lo.jackson.databind.deser
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
-import org.klokwrk.lib.xlang.groovy.base.json.RawJsonWrapper
 import spock.lang.Specification
 
-class RawJsonWrapperDeserializerSpecification extends Specification {
-  static class MyBeanWithRawJson {
-    String name
-    Integer age
-    RawJsonWrapper details
-  }
-
+class StringSanitizingDeserializerSpecification extends Specification {
   ObjectMapper objectMapper
 
   void setup() {
     SimpleModule simpleModule = new SimpleModule()
-    simpleModule.addDeserializer(RawJsonWrapper, new RawJsonWrapperDeserializer())
+    simpleModule.addDeserializer(String, new StringSanitizingDeserializer())
 
     ObjectMapper objectMapper = new ObjectMapper()
     objectMapper.registerModule(simpleModule)
@@ -41,41 +34,42 @@ class RawJsonWrapperDeserializerSpecification extends Specification {
     this.objectMapper = objectMapper
   }
 
-  void "should work as expected for json string"() {
+  void "should deserialize empty string into null"() {
     given:
     String stringToDeserialize = """
       {
-        "name": "someName",
-        "age": 25,
-        "details": {"a": "aValue"}
+        "cargoIdentifier": ${ cargoIdentifierStringValue },
+        "originLocation": "myOrigin",
+        "destinationLocation": "myDestination"
       }
       """
 
     when:
-    MyBeanWithRawJson deserializedMyBean = objectMapper.readValue(stringToDeserialize, MyBeanWithRawJson)
+    Map<String, ?> deserializedMap = objectMapper.readValue(stringToDeserialize, Map)
 
     then:
-    deserializedMyBean.name == "someName"
-    deserializedMyBean.age == 25
-    deserializedMyBean.details.rawJson == /{"a": "aValue"}/
+    deserializedMap.cargoIdentifier == null
+
+    where:
+    cargoIdentifierStringValue | _
+    '""'                       | _
+    '"    "'                   | _
   }
 
-  void "should work as expected for json bytes"() {
+  void "should deserialize null into null"() {
     given:
     String stringToDeserialize = """
       {
-        "name": "someName",
-        "age": 25,
-        "details": {"a": "aValue"}
+        "cargoIdentifier": null,
+        "originLocation": "myOrigin",
+        "destinationLocation": "myDestination"
       }
       """
 
     when:
-    MyBeanWithRawJson deserializedMyBean = objectMapper.readValue(stringToDeserialize.bytes, MyBeanWithRawJson)
+    Map<String, ?> deserializedMap = objectMapper.readValue(stringToDeserialize, Map)
 
     then:
-    deserializedMyBean.name == "someName"
-    deserializedMyBean.age == 25
-    deserializedMyBean.details.rawJson == /{"a": "aValue"}/
+    deserializedMap.cargoIdentifier == null
   }
 }

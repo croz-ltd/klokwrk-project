@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.jackson.databind
+package org.klokwrk.lib.lo.jackson.databind
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import groovy.transform.EqualsAndHashCode
-import org.klokwrk.lib.jackson.databind.deser.UomQuantityDeserializer
-import org.klokwrk.lib.jackson.databind.ser.UomQuantitySerializer
+import org.klokwrk.lib.lo.jackson.databind.deser.UomQuantityDeserializer
+import org.klokwrk.lib.lo.jackson.databind.ser.UomQuantitySerializer
 import spock.lang.Specification
 
 import javax.measure.Quantity

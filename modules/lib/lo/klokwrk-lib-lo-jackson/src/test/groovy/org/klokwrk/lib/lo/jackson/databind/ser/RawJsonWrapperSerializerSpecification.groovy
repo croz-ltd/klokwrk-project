@@ -15,18 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.jackson.databind.ser
+package org.klokwrk.lib.lo.jackson.databind.ser
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
+import org.klokwrk.lib.xlang.groovy.base.json.RawJsonWrapper
 import spock.lang.Specification
 
-class GStringSerializerSpecification extends Specification {
+class RawJsonWrapperSerializerSpecification extends Specification {
   ObjectMapper objectMapper
 
   void setup() {
     SimpleModule simpleModule = new SimpleModule()
-    simpleModule.addSerializer(GString, new GStringSerializer())
+    simpleModule.addSerializer(RawJsonWrapper, new RawJsonWrapperSerializer())
 
     ObjectMapper objectMapper = new ObjectMapper()
     objectMapper.registerModule(simpleModule)
@@ -34,20 +35,15 @@ class GStringSerializerSpecification extends Specification {
     this.objectMapper = objectMapper
   }
 
-  void "should serialize GString as a String"() {
+  void "should serialize raw json unchanged"() {
     given:
-    Closure closure = {
-      return "${123} 456"
-    }
-
-    Map mapToSerialize = [
-        "bla": closure()
-    ]
+    String rawJsonValue = /{"a": "aValue", "b": 123, "c": true, "d": {"x: "xValue", "y": "yValue"}}/
+    RawJsonWrapper rawJsonString = new RawJsonWrapper(rawJson: rawJsonValue)
 
     when:
-    String serializedString = objectMapper.writeValueAsString(mapToSerialize)
+    String serializedString = objectMapper.writeValueAsString(rawJsonString)
 
     then:
-    serializedString.contains("123 456")
+    serializedString == /{"a": "aValue", "b": 123, "c": true, "d": {"x: "xValue", "y": "yValue"}}/
   }
 }
