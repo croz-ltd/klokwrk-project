@@ -25,7 +25,7 @@ import org.axonframework.config.EventProcessingConfigurer
 import org.axonframework.eventhandling.PropagatingErrorHandler
 import org.axonframework.eventhandling.pooled.PooledStreamingEventProcessor
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
-import org.klokwrk.cargotracker.lib.axon.logging.LoggingEventHandlerEnhancerDefinition
+import org.klokwrk.cargotracking.lib.axon.logging.LoggingEventHandlerEnhancerDefinition
 import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
 import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyConfigurationProperties
 import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizer

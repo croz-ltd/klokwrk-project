@@ -33,8 +33,8 @@ import org.klokwrk.cargotracker.booking.domain.model.service.PercentBasedMaxAllo
 import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerRegistryService
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor
 import org.klokwrk.cargotracker.lib.axon.cqrs.command.NonTransientFailurePredicate
-import org.klokwrk.cargotracker.lib.axon.logging.LoggingCommandHandlerEnhancerDefinition
-import org.klokwrk.cargotracker.lib.axon.logging.LoggingEventSourcingHandlerEnhancerDefinition
+import org.klokwrk.cargotracking.lib.axon.logging.LoggingCommandHandlerEnhancerDefinition
+import org.klokwrk.cargotracking.lib.axon.logging.LoggingEventSourcingHandlerEnhancerDefinition
 import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizer
 import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
 import org.klokwrk.lib.hi.validation.springboot.ValidationConfigurationProperties

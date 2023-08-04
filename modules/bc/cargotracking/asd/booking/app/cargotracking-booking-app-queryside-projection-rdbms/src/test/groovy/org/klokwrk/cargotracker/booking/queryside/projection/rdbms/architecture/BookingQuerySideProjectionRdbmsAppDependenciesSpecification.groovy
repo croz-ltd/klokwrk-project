@@ -84,7 +84,7 @@ class BookingQuerySideProjectionRdbmsAppDependenciesSpecification extends Specif
         "org.klokwrk.lib.hi.spring.data.jpa.repository.hibernate.."
     ]
 
-    String[] cargotrackerLibAxonLoggingAllPackages = ["org.klokwrk.cargotracker.lib.axon.logging.."]
+    String[] cargotrackerLibAxonLoggingAllPackages = ["org.klokwrk.cargotracking.lib.axon.logging.."]
     String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracking.lib.boundary.api.."]
 
     String[] klokwrkLibDatasourceProxyAllPackages = ["org.klokwrk.lib.hi.datasourceproxy.."]

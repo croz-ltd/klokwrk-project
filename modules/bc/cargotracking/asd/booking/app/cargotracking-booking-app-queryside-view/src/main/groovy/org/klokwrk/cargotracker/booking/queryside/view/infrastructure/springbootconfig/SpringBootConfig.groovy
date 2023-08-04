@@ -23,7 +23,7 @@ import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
 import org.axonframework.spring.messaging.unitofwork.SpringTransactionManager
 import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerRegistryService
 import org.klokwrk.cargotracker.lib.axon.cqrs.query.QueryHandlerExceptionInterceptor
-import org.klokwrk.cargotracker.lib.axon.logging.LoggingQueryHandlerEnhancerDefinition
+import org.klokwrk.cargotracking.lib.axon.logging.LoggingQueryHandlerEnhancerDefinition
 import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
 import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyConfigurationProperties
 import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizer
