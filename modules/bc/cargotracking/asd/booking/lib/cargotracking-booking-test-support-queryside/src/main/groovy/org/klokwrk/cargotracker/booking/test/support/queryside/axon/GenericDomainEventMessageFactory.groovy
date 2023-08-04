@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.test.support.queryside.axon
 
 import groovy.transform.CompileStatic
 import org.axonframework.eventhandling.GenericDomainEventMessage
-import org.klokwrk.cargotracker.lib.domain.model.event.BaseEvent
+import org.klokwrk.cargotracking.lib.domain.model.event.BaseEvent
 
 @CompileStatic
 class GenericDomainEventMessageFactory {

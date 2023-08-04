@@ -21,7 +21,7 @@ import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
-import org.klokwrk.cargotracker.lib.domain.model.event.BaseEvent
+import org.klokwrk.cargotracking.lib.domain.model.event.BaseEvent
 import org.klokwrk.lib.xlang.groovy.base.transform.KwrkImmutable
 
 import javax.measure.Quantity

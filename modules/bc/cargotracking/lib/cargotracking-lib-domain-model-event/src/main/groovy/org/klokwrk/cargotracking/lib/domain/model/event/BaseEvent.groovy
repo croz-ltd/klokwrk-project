@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.lib.domain.model.event
+package org.klokwrk.cargotracking.lib.domain.model.event
 
 /**
  * Defines read-only properties for all Axon events.
