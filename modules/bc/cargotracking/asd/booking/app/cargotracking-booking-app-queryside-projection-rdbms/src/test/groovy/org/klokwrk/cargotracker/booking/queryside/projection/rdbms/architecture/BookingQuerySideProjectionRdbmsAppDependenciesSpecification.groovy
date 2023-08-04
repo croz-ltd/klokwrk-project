@@ -25,7 +25,7 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition
 import com.tngtech.archunit.library.dependencies.SliceRule
 import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition
 import org.klokwrk.cargotracker.booking.queryside.projection.rdbms.BookingQuerySideProjectionRdbmsApplication
-import org.klokwrk.lib.archunit.ArchUnitUtils
+import org.klokwrk.lib.lo.archunit.ArchUnitUtils
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -36,7 +36,7 @@ class BookingQuerySideProjectionRdbmsAppDependenciesSpecification extends Specif
   void setupSpec() {
     allKlokwrkClasses = ArchUnitUtils.importJavaClassesFromPackages(
         ["org.klokwrk"],
-        ["org.klokwrk.cargotracker.booking.commandside.test", "org.klokwrk.cargotracker.booking.queryside.test", "org.klokwrk.lib.archunit"]
+        ["org.klokwrk.cargotracker.booking.commandside.test", "org.klokwrk.cargotracker.booking.queryside.test", "org.klokwrk.lib.lo.archunit"]
     )
   }
 

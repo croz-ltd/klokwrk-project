@@ -22,8 +22,8 @@ import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition
 import com.tngtech.archunit.library.Architectures
 import groovy.util.logging.Slf4j
-import org.klokwrk.lib.archunit.ArchUnitUtils
-import org.klokwrk.lib.archunit.HexagonalCqrsEsArchitecture
+import org.klokwrk.lib.lo.archunit.ArchUnitUtils
+import org.klokwrk.lib.lo.archunit.HexagonalCqrsEsArchitecture
 import spock.lang.Shared
 import spock.lang.Specification
 
