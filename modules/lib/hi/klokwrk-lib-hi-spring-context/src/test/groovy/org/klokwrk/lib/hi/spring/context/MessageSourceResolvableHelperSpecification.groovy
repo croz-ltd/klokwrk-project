@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.spring.context
+package org.klokwrk.lib.hi.spring.context
 
 import spock.lang.Specification
 

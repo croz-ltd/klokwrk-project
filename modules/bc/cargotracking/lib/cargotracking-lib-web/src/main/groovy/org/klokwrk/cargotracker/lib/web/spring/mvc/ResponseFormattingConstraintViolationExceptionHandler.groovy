@@ -30,8 +30,8 @@ import org.klokwrk.cargotracker.lib.boundary.api.application.operation.Operation
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import org.klokwrk.cargotracker.lib.web.metadata.response.HttpResponseMetaData
 import org.klokwrk.cargotracker.lib.web.metadata.response.HttpResponseMetaDataHttpPart
-import org.klokwrk.lib.spring.context.MessageSourceResolvableHelper
-import org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification
+import org.klokwrk.lib.hi.spring.context.MessageSourceResolvableHelper
+import org.klokwrk.lib.hi.spring.context.MessageSourceResolvableSpecification
 import org.springframework.context.MessageSource
 import org.springframework.context.MessageSourceAware
 import org.springframework.http.HttpHeaders

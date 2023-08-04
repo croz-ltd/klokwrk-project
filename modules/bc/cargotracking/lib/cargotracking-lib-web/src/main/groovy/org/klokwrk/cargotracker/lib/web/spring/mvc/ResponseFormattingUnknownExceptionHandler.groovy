@@ -26,8 +26,8 @@ import org.klokwrk.cargotracker.lib.boundary.api.application.operation.Operation
 import org.klokwrk.cargotracker.lib.boundary.api.domain.severity.Severity
 import org.klokwrk.cargotracker.lib.web.metadata.response.HttpResponseMetaData
 import org.klokwrk.cargotracker.lib.web.metadata.response.HttpResponseMetaDataHttpPart
-import org.klokwrk.lib.spring.context.MessageSourceResolvableHelper
-import org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification
+import org.klokwrk.lib.hi.spring.context.MessageSourceResolvableHelper
+import org.klokwrk.lib.hi.spring.context.MessageSourceResolvableSpecification
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.MessageSource
@@ -82,11 +82,11 @@ import java.time.Instant
  * ...
  * </pre>
  * Localization message codes for {@code metaData.violation.message} property is created with
- * {@link MessageSourceResolvableHelper#makeMessageCodeListForViolationMessageOfUnknownFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)} method, where you can look
+ * {@link MessageSourceResolvableHelper#makeMessageCodeListForViolationMessageOfUnknownFailure(MessageSourceResolvableSpecification)} method, where you can look
  * for further details.
  *
  * @see MessageSourceResolvableHelper
- * @see MessageSourceResolvableHelper#makeMessageCodeListForViolationMessageOfUnknownFailure(org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification)
+ * @see MessageSourceResolvableHelper#makeMessageCodeListForViolationMessageOfUnknownFailure(MessageSourceResolvableSpecification)
  */
 @CompileStatic
 class ResponseFormattingUnknownExceptionHandler implements MessageSourceAware {

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.lib.spring.context
+package org.klokwrk.lib.hi.spring.context
 
 import groovy.transform.CompileStatic
 import org.springframework.context.MessageSource
@@ -26,7 +26,7 @@ import org.springframework.context.support.DefaultMessageSourceResolvable
  * <p/>
  * The most significant part are highly specialized static utility methods for creating message codes.
  * <p/>
- * At this moment, methods in this class and properties from {@code org.klokwrk.lib.spring.context.MessageSourceResolvableSpecification}, are highly specialized to localize parts of JSON responses
+ * At this moment, methods in this class and properties from {@code org.klokwrk.lib.hi.spring.context.MessageSourceResolvableSpecification}, are highly specialized to localize parts of JSON responses
  * whose structure is defined by {@code ResponseFormatting*} interceptors from {@code org.klokwrk.cargotracker.lib.web.spring.mvc} package. Currently, only JSON responses representing failures have
  * parts that need to be localized.
  * <p/>
