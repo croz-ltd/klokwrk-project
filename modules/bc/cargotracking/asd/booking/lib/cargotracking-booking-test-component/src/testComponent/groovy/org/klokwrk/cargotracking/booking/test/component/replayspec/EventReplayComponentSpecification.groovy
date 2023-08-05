@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.test.component.replayspec
+package org.klokwrk.cargotracking.booking.test.component.replayspec
 
 import com.github.dockerjava.api.command.CreateNetworkCmd
 import groovy.json.JsonSlurper
