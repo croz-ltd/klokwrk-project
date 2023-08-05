@@ -66,13 +66,13 @@ import static org.hamcrest.Matchers.not
  * ArchRule rule = HexagonalCqrsEsArchitecture
  *     .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.PROJECTION)
  *     .domainModelValues("..cargotracking.domain.model.value..")
- *     .domainEvents("..cargotracker.booking.axon.api.feature.*.event..")
+ *     .domainEvents("..cargotracking.domain.model.event..")
  *
  *     .adapterProjection("out.persistence", "..cargotracking.booking.app.queryside.projection.rdbms.feature.*.adapter.out..")
  *
  *     // We are ignoring dependencies originating from command classes. Command classes should not be used in projections. Only events can be used. Since command and events are not split it their
  *     // own modules, we need to ignore commands here. Illegal access to commands is verified in other test.
- *     .ignoreDependency(JavaClass.Predicates.resideInAPackage("org.klokwrk.cargotracker.booking.axon.api.feature.*.command.."), JavaClass.Predicates.resideInAPackage("org.klokwrk.cargotracker.."))
+ *     .ignoreDependency(JavaClass.Predicates.resideInAPackage("org.klokwrk.cargotracking.domain.model.command.."), JavaClass.Predicates.resideInAPackage("org.klokwrk.cargotracking.."))
  *     .withOptionalLayers(false)
  *
  * rule.check(importedClasses)
@@ -85,12 +85,12 @@ import static org.hamcrest.Matchers.not
  *     .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.QUERYSIDE)
  *     .domainModelValues("..cargotracking.domain.model.value..")
  *
- *     .applicationInboundPorts("..cargotracker.booking.queryside.feature.*.application.port.in..")
- *     .applicationOutboundPorts("..cargotracker.booking.queryside.feature.*.application.port.out..")
- *     .applicationServices("..cargotracker.booking.queryside.feature.*.application.service..")
+ *     .applicationInboundPorts("..cargotracking.booking.app.queryside.view.feature.*.application.port.in..")
+ *     .applicationOutboundPorts("..cargotracking.booking.app.queryside.view.feature.*.application.port.out..")
+ *     .applicationServices("..cargotracking.booking.app.queryside.view.feature.*.application.service..")
  *
- *     .adapterInbound("in.web", "..cargotracker.booking.queryside.feature.*.adapter.in.web..")
- *     .adapterOutbound("out.persistence", "..cargotracker.booking.queryside.feature.*.adapter.out.persistence..")
+ *     .adapterInbound("in.web", "..cargotracking.booking.app.queryside.view.feature.*.adapter.in.web..")
+ *     .adapterOutbound("out.persistence", "..cargotracking.booking.app.queryside.view.feature.*.adapter.out.persistence..")
  *
  *     .withOptionalLayers(false)
  *
