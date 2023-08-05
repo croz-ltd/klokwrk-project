@@ -35,8 +35,7 @@ class BookingQuerySideProjectionRdbmsAppDependenciesSpecification extends Specif
 
   void setupSpec() {
     allKlokwrkClasses = ArchUnitUtils.importJavaClassesFromPackages(
-        ["org.klokwrk"],
-        ["org.klokwrk.cargotracking.booking.app.commandside.test", "org.klokwrk.cargotracker.booking.queryside.test", "org.klokwrk.lib.lo.archunit"]
+        ["org.klokwrk.."]
     )
   }
 
