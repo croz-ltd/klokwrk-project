@@ -1,4 +1,4 @@
-# cargotracker-booking-out-customer
+# cargotracking-booking-lib-out-customer
 
 This module contains a standalone outbound adapter towards a customer management bounded context.
 
