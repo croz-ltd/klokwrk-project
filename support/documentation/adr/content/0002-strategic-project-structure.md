@@ -39,7 +39,7 @@ In this structure variant, all structure-related directories are placed directly
 
     klokwrk-project
     ├── ... (other files or directories)
-    ├── cargotracker
+    ├── cargotracking
     │   ├── cargotracking-booking-app-commandside
     │   ├── cargotracking-booking-app-queryside-projection-rdbms
     │   ├── cargotracking-booking-app-queryside-view
@@ -126,7 +126,7 @@ The following listing shows the example of the elaborate strategic structure as 
     klokwrk-project
     ├── ... (other files or directories)
     ├── modules
-    │   ├── cargotracker
+    │   ├── cargotracking
     │   │   ├── booking
     │   │   │   ├── app
     │   │   │   │   ├── cargotracking-booking-app-commandside
