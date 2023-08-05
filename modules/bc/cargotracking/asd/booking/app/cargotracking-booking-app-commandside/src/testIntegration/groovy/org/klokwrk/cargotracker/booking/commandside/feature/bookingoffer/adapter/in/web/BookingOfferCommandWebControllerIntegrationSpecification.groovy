@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.adapte
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.fixture.data.RouteSpecificationRequestDataJsonFixtureBuilder
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
+import org.klokwrk.cargotracking.domain.model.value.CommodityType
 import org.klokwrk.lib.xlang.groovy.base.misc.CombUuidShortPrefixUtils
 import org.klokwrk.lib.xlang.groovy.base.misc.InstantUtils
 import org.springframework.beans.factory.annotation.Autowired

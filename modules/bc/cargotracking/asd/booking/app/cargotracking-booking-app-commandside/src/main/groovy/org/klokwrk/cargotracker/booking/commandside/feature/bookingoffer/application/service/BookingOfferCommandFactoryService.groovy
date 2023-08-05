@@ -25,14 +25,14 @@ import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applica
 import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandData
-import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
-import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
-import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
-import org.klokwrk.cargotracker.booking.domain.model.value.Customer
-import org.klokwrk.cargotracker.booking.domain.model.value.Location
-import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilityType
-import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
+import org.klokwrk.cargotracking.domain.model.value.BookingOfferId
+import org.klokwrk.cargotracking.domain.model.value.Commodity
+import org.klokwrk.cargotracking.domain.model.value.CommodityType
+import org.klokwrk.cargotracking.domain.model.value.ContainerDimensionType
+import org.klokwrk.cargotracking.domain.model.value.Customer
+import org.klokwrk.cargotracking.domain.model.value.Location
+import org.klokwrk.cargotracking.domain.model.value.PortCapabilityType
+import org.klokwrk.cargotracking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdPortOut
 import org.springframework.stereotype.Service
 

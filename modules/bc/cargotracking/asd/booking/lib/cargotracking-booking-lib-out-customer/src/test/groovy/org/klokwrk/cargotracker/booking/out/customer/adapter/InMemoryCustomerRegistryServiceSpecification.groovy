@@ -17,8 +17,8 @@
  */
 package org.klokwrk.cargotracker.booking.out.customer.adapter
 
-import org.klokwrk.cargotracker.booking.domain.model.value.Customer
-import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
+import org.klokwrk.cargotracking.domain.model.value.Customer
+import org.klokwrk.cargotracking.domain.model.value.CustomerType
 import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.DomainException
 import org.klokwrk.cargotracking.lib.boundary.api.domain.severity.Severity
 import org.klokwrk.lib.xlang.groovy.base.misc.RandomUuidUtils

@@ -34,10 +34,10 @@ import org.klokwrk.cargotracker.booking.domain.model.service.ConstantBasedMaxAll
 import org.klokwrk.cargotracker.booking.domain.model.service.DefaultCargoCreatorService
 import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracker.booking.domain.model.service.PercentBasedMaxAllowedWeightPerContainerPolicy
-import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
-import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
-import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
+import org.klokwrk.cargotracking.domain.model.value.Cargo
+import org.klokwrk.cargotracking.domain.model.value.Commodity
+import org.klokwrk.cargotracking.domain.model.value.CommodityType
+import org.klokwrk.cargotracking.domain.model.value.ContainerType
 import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.CommandException
 import spock.lang.Specification
 

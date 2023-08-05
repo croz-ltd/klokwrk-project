@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applic
 
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestData
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
+import org.klokwrk.cargotracking.domain.model.value.CommodityType
 import org.klokwrk.lib.lo.validation.constraint.NotBlankWhenNullableConstraint
 import org.klokwrk.lib.lo.validation.constraint.NotNullElementsConstraint
 import org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint

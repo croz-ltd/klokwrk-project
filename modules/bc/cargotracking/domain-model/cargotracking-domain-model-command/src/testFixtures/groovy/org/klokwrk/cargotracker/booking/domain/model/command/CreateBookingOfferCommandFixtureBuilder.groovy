@@ -22,15 +22,15 @@ import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
 import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandData
 import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandDataFixtureBuilder
-import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
-import org.klokwrk.cargotracker.booking.domain.model.value.Customer
-import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
+import org.klokwrk.cargotracking.domain.model.value.BookingOfferId
+import org.klokwrk.cargotracking.domain.model.value.Customer
+import org.klokwrk.cargotracking.domain.model.value.RouteSpecification
 import org.klokwrk.lib.xlang.groovy.base.misc.CombUuidShortPrefixUtils
 
 import java.time.Clock
 
-import static org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder.customer_standard
-import static org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecificationFixtureBuilder.routeSpecification_rijekaToRotterdam
+import static org.klokwrk.cargotracking.domain.model.value.CustomerFixtureBuilder.customer_standard
+import static org.klokwrk.cargotracking.domain.model.value.RouteSpecificationFixtureBuilder.routeSpecification_rijekaToRotterdam
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic

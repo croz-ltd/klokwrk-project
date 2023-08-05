@@ -78,7 +78,7 @@ class BookingQuerySideProjectionRdbmsAppDependenciesSpecification extends Specif
         "org.klokwrk.cargotracker.booking.queryside.projection.rdbms.feature..", "org.klokwrk.cargotracker.booking.queryside.projection.rdbms.infrastructure.."
     ]
     String[] cargotrackerBookingDomainEventAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.event.."]
-    String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.value.."]
+    String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracking.domain.model.value.."]
     String[] cargotrackerBookingQuerysideProjectionRdbmsModelAllPackages = [
         "org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa..",
         "org.klokwrk.lib.hi.spring.data.jpa.repository.hibernate.."

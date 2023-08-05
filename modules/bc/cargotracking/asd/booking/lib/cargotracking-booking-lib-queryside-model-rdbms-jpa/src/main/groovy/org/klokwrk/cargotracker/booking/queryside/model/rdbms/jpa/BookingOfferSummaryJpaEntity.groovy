@@ -22,8 +22,8 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
 import groovy.transform.ToString
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
-import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
+import org.klokwrk.cargotracking.domain.model.value.CommodityType
+import org.klokwrk.cargotracking.domain.model.value.CustomerType
 import org.klokwrk.lib.xlang.groovy.base.constructor.support.PostMapConstructorCheckable
 import org.klokwrk.lib.xlang.groovy.base.misc.RandomUuidUtils
 import org.klokwrk.lib.xlang.groovy.base.transform.KwrkMapConstructorDefaultPostCheck

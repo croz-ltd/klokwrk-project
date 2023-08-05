@@ -18,17 +18,17 @@
 package org.klokwrk.cargotracker.booking.out.customer.adapter
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.domain.model.value.Customer
-import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
+import org.klokwrk.cargotracking.domain.model.value.Customer
+import org.klokwrk.cargotracking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdPortOut
 import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.DomainException
 import org.klokwrk.cargotracking.lib.boundary.api.domain.violation.ViolationInfo
 
 import static org.hamcrest.Matchers.notNullValue
-import static org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder.customer_anonymous
-import static org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder.customer_gold
-import static org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder.customer_platinum
-import static org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder.customer_standard
+import static org.klokwrk.cargotracking.domain.model.value.CustomerFixtureBuilder.customer_anonymous
+import static org.klokwrk.cargotracking.domain.model.value.CustomerFixtureBuilder.customer_gold
+import static org.klokwrk.cargotracking.domain.model.value.CustomerFixtureBuilder.customer_platinum
+import static org.klokwrk.cargotracking.domain.model.value.CustomerFixtureBuilder.customer_standard
 
 /**
  * In-memory implementation of customer management bounded context.
@@ -43,7 +43,7 @@ class InMemoryCustomerRegistryService implements CustomerByUserIdPortOut {
    * If customer can not be found, implementation throws {@link DomainException}. Corresponding message key of the exception is
    * '{@code customerByUserIdPortOut.findCustomerByUserId.notFound}'.
    * <p/>
-   * For concrete user identifiers and corresponding {@link org.klokwrk.cargotracker.booking.domain.model.value.CustomerId}s and {@link CustomerType}s, please take a look at the source code.
+   * For concrete user identifiers and corresponding {@link org.klokwrk.cargotracking.domain.model.value.CustomerId}s and {@link CustomerType}s, please take a look at the source code.
    *
    * @see CustomerByUserIdPortOut#findCustomerByUserId(java.lang.String)
    */

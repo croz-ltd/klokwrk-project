@@ -40,7 +40,7 @@ class BookingQuerySideViewAppArchitectureSpecification extends Specification {
     importedClasses = ArchUnitUtils.importJavaClassesFromPackages(
         [
             "org.klokwrk.cargotracker.booking.queryside.view",
-            "org.klokwrk.cargotracker.booking.domain.model.value",
+            "org.klokwrk.cargotracking.domain.model.value",
             "org.klokwrk.cargotracker.booking.out.customer"
         ],
         ["org.klokwrk.cargotracker.booking.queryside.projection.rdbms"]
@@ -75,7 +75,7 @@ class BookingQuerySideViewAppArchitectureSpecification extends Specification {
     // @formatter:off
     ArchRule rule = HexagonalCqrsEsArchitecture
         .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.QUERYSIDE)
-        .domainValues("..cargotracker.booking.domain.model.value..")
+        .domainValues("..cargotracking.domain.model.value..")
 
         .applicationInboundPorts("..cargotracker.booking.queryside.view.feature.*.application.port.in..")
         .applicationOutboundPorts(

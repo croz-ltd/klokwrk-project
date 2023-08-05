@@ -401,4 +401,4 @@ complicated ways for implementing idempotency yourself. We've described several 
 - [19] UUID Creator - Short Prefix COMB - https://github.com/f4b6a3/uuid-creator/wiki/2.3.-Short-Prefix-COMB
 - [20] UUID Creator - Short Suffix COMB - https://github.com/f4b6a3/uuid-creator/wiki/2.4.-Short-Suffix-COMB
 - [21] Custom Types in Hibernate - https://www.baeldung.com/hibernate-custom-types
-- [22] BookingOfferId class - https://github.com/croz-ltd/klokwrk-project/blob/master/cargotracker/cargotracking-domain-model-value/src/main/groovy/org/klokwrk/cargotracker/booking/domain/model/value/BookingOfferId.groovy#L129
+- [22] BookingOfferId class - https://github.com/croz-ltd/klokwrk-project/blob/master/cargotracker/cargotracking-domain-model-value/src/main/groovy/org/klokwrk/cargotracking/domain/model/value/BookingOfferId.groovy#L129

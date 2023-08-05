@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.domain.model.event.data
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
+import org.klokwrk.cargotracking.domain.model.value.RouteSpecification
 import org.klokwrk.lib.xlang.groovy.base.transform.KwrkImmutable
 
 import java.time.Instant

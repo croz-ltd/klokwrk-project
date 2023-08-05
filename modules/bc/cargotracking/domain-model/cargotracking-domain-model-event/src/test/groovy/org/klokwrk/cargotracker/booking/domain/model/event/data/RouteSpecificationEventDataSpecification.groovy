@@ -17,8 +17,8 @@
  */
 package org.klokwrk.cargotracker.booking.domain.model.event.data
 
-import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
-import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecificationFixtureBuilder
+import org.klokwrk.cargotracking.domain.model.value.RouteSpecification
+import org.klokwrk.cargotracking.domain.model.value.RouteSpecificationFixtureBuilder
 import spock.lang.Specification
 
 import java.time.Clock

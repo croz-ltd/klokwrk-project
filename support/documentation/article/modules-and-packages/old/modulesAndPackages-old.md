@@ -333,7 +333,7 @@ To better understand how this works, we can look at the test fragment for comman
     given:
     ArchRule rule = HexagonalCqrsEsArchitecture
         .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
-        .domainValues("..cargotracker.booking.domain.model.value..")
+        .domainValues("..cargotracking.domain.model.value..")
         .domainEvents("..cargotracker.booking.domain.model.event..")
         .domainCommands("..cargotracker.booking.domain.model.command..")
         .domainAggregates("..cargotracker.booking.domain.model.aggregate..")

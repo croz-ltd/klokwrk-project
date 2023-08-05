@@ -17,11 +17,11 @@
  */
 package org.klokwrk.cargotracker.booking.domain.model.service
 
-import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
-import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
-import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
-import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
+import org.klokwrk.cargotracking.domain.model.value.Cargo
+import org.klokwrk.cargotracking.domain.model.value.Commodity
+import org.klokwrk.cargotracking.domain.model.value.CommodityType
+import org.klokwrk.cargotracking.domain.model.value.ContainerDimensionType
+import org.klokwrk.cargotracking.domain.model.value.ContainerType
 import spock.lang.Specification
 
 class DefaultCargoCreatorServiceSpecification extends Specification {

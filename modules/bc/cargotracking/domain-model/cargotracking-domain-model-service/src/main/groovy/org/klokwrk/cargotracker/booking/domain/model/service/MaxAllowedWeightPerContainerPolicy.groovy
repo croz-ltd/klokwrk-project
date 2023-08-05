@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.domain.model.service
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.domain.model.value.ContainerType
+import org.klokwrk.cargotracking.domain.model.value.ContainerType
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass

@@ -19,8 +19,8 @@ package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.adapte
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.out.LocationByUnLoCodeQueryPortOut
-import org.klokwrk.cargotracker.booking.domain.model.value.Location
-import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
+import org.klokwrk.cargotracking.domain.model.value.Location
+import org.klokwrk.cargotracking.domain.model.value.PortCapabilities
 import org.springframework.stereotype.Service
 
 // TODO dmurat: implement real registry

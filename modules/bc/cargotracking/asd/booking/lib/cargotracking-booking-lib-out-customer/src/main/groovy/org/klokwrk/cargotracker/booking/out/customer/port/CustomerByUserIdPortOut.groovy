@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.out.customer.port
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.domain.model.value.Customer
+import org.klokwrk.cargotracking.domain.model.value.Customer
 
 /**
  * Outbound port for fetching {@link Customer} from external bounded context.

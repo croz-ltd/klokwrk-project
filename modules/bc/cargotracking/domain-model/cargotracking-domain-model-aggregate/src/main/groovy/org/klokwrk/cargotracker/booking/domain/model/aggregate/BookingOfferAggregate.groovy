@@ -35,10 +35,10 @@ import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventDat
 import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
 import org.klokwrk.cargotracker.booking.domain.model.service.CargoCreatorService
 import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
-import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
-import org.klokwrk.cargotracker.booking.domain.model.value.Cargo
-import org.klokwrk.cargotracker.booking.domain.model.value.Customer
-import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
+import org.klokwrk.cargotracking.domain.model.value.BookingOfferId
+import org.klokwrk.cargotracking.domain.model.value.Cargo
+import org.klokwrk.cargotracking.domain.model.value.Customer
+import org.klokwrk.cargotracking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.CommandException
 import org.klokwrk.cargotracking.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler

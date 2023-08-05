@@ -18,8 +18,8 @@
 package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
-import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
+import org.klokwrk.cargotracking.domain.model.value.CommodityType
+import org.klokwrk.cargotracking.domain.model.value.CustomerType
 import org.klokwrk.cargotracking.lib.boundary.query.api.paging.PageRequirement
 import org.klokwrk.cargotracking.lib.boundary.query.api.sorting.SortDirection
 import org.klokwrk.cargotracking.lib.boundary.query.api.sorting.SortRequirement

@@ -24,12 +24,12 @@ import javax.measure.Quantity
 import javax.measure.quantity.Mass
 import java.math.RoundingMode
 
-import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_12G1
-import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_12R1_STANDARD_REEFER
-import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_22G1
-import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_22R1_STANDARD_REEFER
-import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_42G1
-import static org.klokwrk.cargotracker.booking.domain.model.value.ContainerType.TYPE_ISO_42R1_STANDARD_REEFER
+import static org.klokwrk.cargotracking.domain.model.value.ContainerType.TYPE_ISO_12G1
+import static org.klokwrk.cargotracking.domain.model.value.ContainerType.TYPE_ISO_12R1_STANDARD_REEFER
+import static org.klokwrk.cargotracking.domain.model.value.ContainerType.TYPE_ISO_22G1
+import static org.klokwrk.cargotracking.domain.model.value.ContainerType.TYPE_ISO_22R1_STANDARD_REEFER
+import static org.klokwrk.cargotracking.domain.model.value.ContainerType.TYPE_ISO_42G1
+import static org.klokwrk.cargotracking.domain.model.value.ContainerType.TYPE_ISO_42R1_STANDARD_REEFER
 
 class PercentBasedMaxAllowedWeightPerContainerPolicySpecification extends Specification {
   void "constructor default params should work as expected"() {

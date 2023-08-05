@@ -20,8 +20,8 @@ package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applic
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
-import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
+import org.klokwrk.cargotracking.domain.model.value.CommodityType
+import org.klokwrk.cargotracking.domain.model.value.ContainerDimensionType
 import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
 import org.klokwrk.lib.lo.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.lo.validation.constraint.ValueOfEnumConstraint

@@ -19,8 +19,8 @@ package org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa
 
 import com.github.dockerjava.api.command.CreateNetworkCmd
 import org.hibernate.Session
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
-import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
+import org.klokwrk.cargotracking.domain.model.value.CommodityType
+import org.klokwrk.cargotracking.domain.model.value.CustomerType
 import org.klokwrk.cargotracker.booking.test.support.testcontainers.PostgreSqlTestcontainersFactory
 import org.klokwrk.cargotracker.booking.test.support.testcontainers.RdbmsManagementAppTestcontainersFactory
 import org.springframework.beans.factory.annotation.Autowired

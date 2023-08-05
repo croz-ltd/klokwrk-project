@@ -20,8 +20,8 @@ package org.klokwrk.cargotracker.booking.domain.model.event.data
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
-import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
-import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilityType
+import org.klokwrk.cargotracking.domain.model.value.PortCapabilities
+import org.klokwrk.cargotracking.domain.model.value.PortCapabilityType
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic

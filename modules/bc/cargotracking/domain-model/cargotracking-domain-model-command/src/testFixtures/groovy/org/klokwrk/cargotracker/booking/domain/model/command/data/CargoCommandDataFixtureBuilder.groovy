@@ -20,9 +20,9 @@ package org.klokwrk.cargotracker.booking.domain.model.command.data
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
-import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityFixtureBuilder
-import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
+import org.klokwrk.cargotracking.domain.model.value.Commodity
+import org.klokwrk.cargotracking.domain.model.value.CommodityFixtureBuilder
+import org.klokwrk.cargotracking.domain.model.value.ContainerDimensionType
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
 @CompileStatic

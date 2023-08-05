@@ -17,8 +17,8 @@
  */
 package org.klokwrk.cargotracker.booking.domain.model.event.data
 
-import org.klokwrk.cargotracker.booking.domain.model.value.Customer
-import org.klokwrk.cargotracker.booking.domain.model.value.CustomerFixtureBuilder
+import org.klokwrk.cargotracking.domain.model.value.Customer
+import org.klokwrk.cargotracking.domain.model.value.CustomerFixtureBuilder
 import spock.lang.Specification
 
 class CustomerEventDataSpecification extends Specification {

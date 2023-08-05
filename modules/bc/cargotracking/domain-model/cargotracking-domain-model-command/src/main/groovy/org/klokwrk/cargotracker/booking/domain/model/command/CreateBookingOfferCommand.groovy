@@ -20,10 +20,10 @@ package org.klokwrk.cargotracker.booking.domain.model.command
 import groovy.transform.CompileStatic
 import groovy.transform.Generated
 import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandData
-import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
-import org.klokwrk.cargotracker.booking.domain.model.value.Customer
-import org.klokwrk.cargotracker.booking.domain.model.value.Location
-import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
+import org.klokwrk.cargotracking.domain.model.value.BookingOfferId
+import org.klokwrk.cargotracking.domain.model.value.Customer
+import org.klokwrk.cargotracking.domain.model.value.Location
+import org.klokwrk.cargotracking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.CommandException
 import org.klokwrk.cargotracking.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.cargotracking.lib.domain.model.command.BaseCreateCommand

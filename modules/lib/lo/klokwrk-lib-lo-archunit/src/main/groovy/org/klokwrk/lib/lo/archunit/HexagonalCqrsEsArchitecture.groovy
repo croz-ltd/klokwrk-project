@@ -43,7 +43,7 @@ import static org.hamcrest.Matchers.not
  * <pre>
  * ArchRule rule = HexagonalCqrsEsArchitecture
  *     .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
- *     .domainValues("..cargotracker.booking.domain.model.value..")
+ *     .domainValues("..cargotracking.domain.model.value..")
  *     .domainEvents("..cargotracker.booking.domain.model.event..")
  *     .domainCommands("..cargotracker.booking.domain.model.command..")
  *     .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
@@ -65,7 +65,7 @@ import static org.hamcrest.Matchers.not
  * <pre>
  * ArchRule rule = HexagonalCqrsEsArchitecture
  *     .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.PROJECTION)
- *     .domainModelValues("..cargotracker.booking.domain.model.value..")
+ *     .domainModelValues("..cargotracking.domain.model.value..")
  *     .domainEvents("..cargotracker.booking.axon.api.feature.*.event..")
  *
  *     .adapterProjection("out.persistence", "..cargotracker.booking.queryside.projection.rdbms.feature.*.adapter.out..")
@@ -83,7 +83,7 @@ import static org.hamcrest.Matchers.not
  * <pre>
  * ArchRule rule = HexagonalCqrsEsArchitecture
  *     .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.QUERYSIDE)
- *     .domainModelValues("..cargotracker.booking.domain.model.value..")
+ *     .domainModelValues("..cargotracking.domain.model.value..")
  *
  *     .applicationInboundPorts("..cargotracker.booking.queryside.feature.*.application.port.in..")
  *     .applicationOutboundPorts("..cargotracker.booking.queryside.feature.*.application.port.out..")

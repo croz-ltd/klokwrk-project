@@ -18,15 +18,15 @@
 package org.klokwrk.cargotracker.booking.domain.model.command
 
 import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandData
-import org.klokwrk.cargotracker.booking.domain.model.value.BookingOfferId
-import org.klokwrk.cargotracker.booking.domain.model.value.Commodity
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
-import org.klokwrk.cargotracker.booking.domain.model.value.ContainerDimensionType
-import org.klokwrk.cargotracker.booking.domain.model.value.Customer
-import org.klokwrk.cargotracker.booking.domain.model.value.CustomerType
-import org.klokwrk.cargotracker.booking.domain.model.value.Location
-import org.klokwrk.cargotracker.booking.domain.model.value.PortCapabilities
-import org.klokwrk.cargotracker.booking.domain.model.value.RouteSpecification
+import org.klokwrk.cargotracking.domain.model.value.BookingOfferId
+import org.klokwrk.cargotracking.domain.model.value.Commodity
+import org.klokwrk.cargotracking.domain.model.value.CommodityType
+import org.klokwrk.cargotracking.domain.model.value.ContainerDimensionType
+import org.klokwrk.cargotracking.domain.model.value.Customer
+import org.klokwrk.cargotracking.domain.model.value.CustomerType
+import org.klokwrk.cargotracking.domain.model.value.Location
+import org.klokwrk.cargotracking.domain.model.value.PortCapabilities
+import org.klokwrk.cargotracking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.DomainException
 import org.klokwrk.cargotracking.lib.boundary.api.domain.severity.Severity
 import org.klokwrk.lib.xlang.groovy.base.misc.RandomUuidUtils

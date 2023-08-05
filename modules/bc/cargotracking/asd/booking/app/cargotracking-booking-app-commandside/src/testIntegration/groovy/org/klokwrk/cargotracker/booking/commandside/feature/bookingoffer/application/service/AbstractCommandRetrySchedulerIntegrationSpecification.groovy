@@ -34,7 +34,7 @@ import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applica
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestData
 import org.klokwrk.cargotracker.booking.commandside.infrastructure.springbootconfig.SpringBootConfig
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
-import org.klokwrk.cargotracker.booking.domain.model.value.CommodityType
+import org.klokwrk.cargotracking.domain.model.value.CommodityType
 import org.klokwrk.cargotracking.lib.boundary.api.application.exception.RemoteHandlerException
 import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationResponse

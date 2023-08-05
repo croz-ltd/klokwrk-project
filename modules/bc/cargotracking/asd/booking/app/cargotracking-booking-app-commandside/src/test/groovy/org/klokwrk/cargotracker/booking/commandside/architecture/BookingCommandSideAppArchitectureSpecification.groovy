@@ -40,7 +40,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
             "org.klokwrk.cargotracker.booking.commandside",
             "org.klokwrk.cargotracker.booking.domain.model.aggregate",
             "org.klokwrk.cargotracker.booking.domain.model.service",
-            "org.klokwrk.cargotracker.booking.domain.model.value",
+            "org.klokwrk.cargotracking.domain.model.value",
             "org.klokwrk.cargotracker.booking.domain.model.command",
             "org.klokwrk.cargotracker.booking.domain.model.event",
             "org.klokwrk.cargotracker.booking.out.customer"
@@ -98,7 +98,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
             "..cargotracker.booking.domain.model.service..",   // domainServices
             "..cargotracker.booking.domain.model.command..",   // domainCommands
             "..cargotracker.booking.domain.model.event..",     // domainEvents
-            "..cargotracker.booking.domain.model.value.."      // domainValueObjects
+            "..cargotracking.domain.model.value.."      // domainValueObjects
         )
         .applicationServices(
             "..cargotracker.booking.commandside.feature.*.application.service..", // applicationServices
@@ -136,7 +136,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
     // @formatter:off
     ArchRule rule = HexagonalCqrsEsArchitecture
         .architecture()
-        .domainValues("..cargotracker.booking.domain.model.value..")
+        .domainValues("..cargotracking.domain.model.value..")
         .domainEvents("..cargotracker.booking.domain.model.event..")
         .domainCommands("..cargotracker.booking.domain.model.command..")
         .domainServices("..cargotracker.booking.domain.model.service..")
@@ -181,7 +181,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
     // @formatter:off
     ArchRule rule = HexagonalCqrsEsArchitecture
         .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
-        .domainValues("..cargotracker.booking.domain.model.value..")
+        .domainValues("..cargotracking.domain.model.value..")
         .domainEvents("..cargotracker.booking.domain.model.event..")
         .domainCommands("..cargotracker.booking.domain.model.command..")
         .domainServices("..cargotracker.booking.domain.model.service..")
