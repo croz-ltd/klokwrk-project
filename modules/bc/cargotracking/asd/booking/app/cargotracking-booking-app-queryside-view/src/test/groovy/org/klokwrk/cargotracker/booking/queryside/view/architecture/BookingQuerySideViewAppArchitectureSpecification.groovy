@@ -89,7 +89,7 @@ class BookingQuerySideViewAppArchitectureSpecification extends Specification {
             "out.persistence",
             [
                 "..cargotracker.booking.queryside.view.feature.*.adapter.out.persistence..",
-                "..cargotracker.booking.queryside.model.rdbms.jpa.."
+                "..cargotracking.booking.lib.queryside.model.rdbms.jpa.."
             ] as String[]
         )
         .adapterOutbound("out.standalone.customer", "..cargotracker.booking.out.customer.adapter..")

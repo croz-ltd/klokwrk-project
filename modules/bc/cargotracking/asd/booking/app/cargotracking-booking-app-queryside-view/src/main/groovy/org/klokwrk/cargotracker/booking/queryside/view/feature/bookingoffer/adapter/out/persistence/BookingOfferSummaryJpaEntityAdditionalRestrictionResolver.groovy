@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.ada
 
 import groovy.transform.CompileStatic
 import net.croz.nrich.search.api.model.AdditionalRestrictionResolver
-import org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.BookingOfferSummaryJpaEntity
+import org.klokwrk.cargotracking.booking.lib.queryside.model.rdbms.jpa.BookingOfferSummaryJpaEntity
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryRequest
 
 import jakarta.persistence.criteria.CriteriaBuilder

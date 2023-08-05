@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa
+package org.klokwrk.cargotracking.booking.lib.queryside.model.rdbms.jpa
 
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode

@@ -66,7 +66,7 @@ class BookingQuerySideProjectionRdbmsAppArchitectureSpecification extends Specif
             "out.persistence",
             [
                 "..cargotracker.booking.queryside.projection.rdbms.feature.*.adapter.out..",
-                "..cargotracker.booking.queryside.model.rdbms.jpa.."
+                "..cargotracking.booking.lib.queryside.model.rdbms.jpa.."
             ] as String[]
         )
 

@@ -23,7 +23,7 @@ import net.croz.nrich.search.api.model.AdditionalRestrictionResolver
 import net.croz.nrich.search.api.model.SearchConfiguration
 import net.croz.nrich.search.api.model.property.SearchPropertyConfiguration
 import org.axonframework.queryhandling.QueryHandler
-import org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.BookingOfferSummaryJpaEntity
+import org.klokwrk.cargotracking.booking.lib.queryside.model.rdbms.jpa.BookingOfferSummaryJpaEntity
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindByIdQueryRequest

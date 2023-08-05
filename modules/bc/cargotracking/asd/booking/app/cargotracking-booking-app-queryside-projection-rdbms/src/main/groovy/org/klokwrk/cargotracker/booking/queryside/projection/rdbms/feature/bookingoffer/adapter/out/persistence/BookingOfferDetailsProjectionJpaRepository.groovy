@@ -19,7 +19,7 @@ package org.klokwrk.cargotracker.booking.queryside.projection.rdbms.feature.book
 
 import groovy.transform.CompileStatic
 import io.hypersistence.utils.spring.repository.HibernateRepository
-import org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.BookingOfferDetailsJpaEntity
+import org.klokwrk.cargotracking.booking.lib.queryside.model.rdbms.jpa.BookingOfferDetailsJpaEntity
 import org.springframework.data.jpa.repository.JpaRepository
 
 @CompileStatic

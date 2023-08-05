@@ -20,7 +20,7 @@ package org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.ada
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryHandler
-import org.klokwrk.cargotracker.booking.queryside.model.rdbms.jpa.BookingOfferDetailsJpaEntity
+import org.klokwrk.cargotracking.booking.lib.queryside.model.rdbms.jpa.BookingOfferDetailsJpaEntity
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferDetailsFindByIdQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferDetailsFindByIdQueryResponse
 import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.QueryException
