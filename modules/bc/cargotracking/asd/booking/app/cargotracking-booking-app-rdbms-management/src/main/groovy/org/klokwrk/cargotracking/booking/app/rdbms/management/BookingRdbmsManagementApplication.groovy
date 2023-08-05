@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.rdbms.management
+package org.klokwrk.cargotracking.booking.app.rdbms.management
 
 import groovy.transform.CompileStatic
 import org.springframework.boot.SpringApplication
