@@ -26,12 +26,12 @@ import org.axonframework.common.Registration
 import org.axonframework.messaging.InterceptorChain
 import org.axonframework.messaging.MessageHandlerInterceptor
 import org.axonframework.messaging.unitofwork.UnitOfWork
-import org.klokwrk.cargotracking.booking.lib.boundary.web.metadata.WebMetaDataFixtureBuilder
 import org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandPortIn
 import org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponse
 import org.klokwrk.cargotracking.booking.app.commandside.infrastructure.springbootconfig.SpringBootConfig
 import org.klokwrk.cargotracking.booking.app.commandside.test.base.AbstractCommandSideIntegrationSpecification
+import org.klokwrk.cargotracking.booking.lib.boundary.web.metadata.WebMetaDataFixtureBuilder
 import org.klokwrk.cargotracking.domain.model.value.CommodityType
 import org.klokwrk.cargotracking.lib.boundary.api.application.exception.RemoteHandlerException
 import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationRequest

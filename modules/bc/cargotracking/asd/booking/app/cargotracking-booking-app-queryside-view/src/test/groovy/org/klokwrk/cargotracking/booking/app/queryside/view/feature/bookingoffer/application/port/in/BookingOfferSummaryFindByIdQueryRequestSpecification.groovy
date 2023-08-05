@@ -17,10 +17,10 @@
  */
 package org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in
 
-import org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint
-import org.klokwrk.lib.lo.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.hi.validation.springboot.ValidationConfigurationProperties
 import org.klokwrk.lib.hi.validation.springboot.ValidationService
+import org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint
+import org.klokwrk.lib.lo.validation.constraint.TrimmedStringConstraint
 import spock.lang.Shared
 import spock.lang.Specification
 

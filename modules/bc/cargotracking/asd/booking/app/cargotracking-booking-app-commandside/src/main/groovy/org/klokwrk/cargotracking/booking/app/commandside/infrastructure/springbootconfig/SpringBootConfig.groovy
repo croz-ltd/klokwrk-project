@@ -24,13 +24,13 @@ import org.axonframework.commandhandling.gateway.DefaultCommandGateway
 import org.axonframework.commandhandling.gateway.IntervalRetryScheduler
 import org.axonframework.commandhandling.gateway.RetryScheduler
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
+import org.klokwrk.cargotracking.booking.lib.out.customer.adapter.InMemoryCustomerRegistryService
 import org.klokwrk.cargotracking.domain.model.service.CargoCreatorService
 import org.klokwrk.cargotracking.domain.model.service.ConstantBasedMaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracking.domain.model.service.DefaultCargoCreatorService
 import org.klokwrk.cargotracking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracking.domain.model.service.MaxAllowedWeightPerContainerPolicy
 import org.klokwrk.cargotracking.domain.model.service.PercentBasedMaxAllowedWeightPerContainerPolicy
-import org.klokwrk.cargotracking.booking.lib.out.customer.adapter.InMemoryCustomerRegistryService
 import org.klokwrk.cargotracking.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor
 import org.klokwrk.cargotracking.lib.axon.cqrs.command.NonTransientFailurePredicate
 import org.klokwrk.cargotracking.lib.axon.logging.LoggingCommandHandlerEnhancerDefinition

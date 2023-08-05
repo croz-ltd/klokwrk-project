@@ -20,12 +20,12 @@ package org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffe
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 import groovy.transform.PropertyOptions
-import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
 import org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint
 import org.klokwrk.lib.lo.validation.constraint.TrimmedStringConstraint
 import org.klokwrk.lib.lo.validation.group.Level1
 import org.klokwrk.lib.lo.validation.group.Level2
 import org.klokwrk.lib.lo.validation.group.Level3
+import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
 
 import jakarta.validation.GroupSequence
 import jakarta.validation.constraints.NotBlank

@@ -24,14 +24,14 @@ import ch.qos.logback.core.read.ListAppender
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
 import org.axonframework.eventhandling.GenericDomainEventMessage
+import org.klokwrk.cargotracking.booking.app.queryside.projection.rdbms.test.base.AbstractProjectionRdbmsIntegrationSpecification
 import org.klokwrk.cargotracking.booking.lib.boundary.web.metadata.WebMetaDataConstant
 import org.klokwrk.cargotracking.booking.lib.boundary.web.metadata.WebMetaDataFixtureBuilder
+import org.klokwrk.cargotracking.booking.test.support.queryside.axon.GenericDomainEventMessageFactory
+import org.klokwrk.cargotracking.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.cargotracking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracking.domain.model.event.BookingOfferCreatedEventFixtureBuilder
 import org.klokwrk.cargotracking.domain.model.value.CustomerType
-import org.klokwrk.cargotracking.booking.app.queryside.projection.rdbms.test.base.AbstractProjectionRdbmsIntegrationSpecification
-import org.klokwrk.cargotracking.booking.test.support.queryside.axon.GenericDomainEventMessageFactory
-import org.klokwrk.cargotracking.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.lib.xlang.groovy.base.constant.CommonConstants
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

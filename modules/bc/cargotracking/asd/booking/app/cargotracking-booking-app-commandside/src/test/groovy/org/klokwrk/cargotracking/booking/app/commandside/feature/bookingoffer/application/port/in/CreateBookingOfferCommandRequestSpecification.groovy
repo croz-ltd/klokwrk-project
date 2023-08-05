@@ -20,6 +20,8 @@ package org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.a
 import org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.data.CargoRequestData
 import org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestData
 import org.klokwrk.cargotracking.domain.model.value.CommodityType
+import org.klokwrk.lib.hi.validation.springboot.ValidationConfigurationProperties
+import org.klokwrk.lib.hi.validation.springboot.ValidationService
 import org.klokwrk.lib.lo.validation.constraint.NotBlankWhenNullableConstraint
 import org.klokwrk.lib.lo.validation.constraint.NotNullElementsConstraint
 import org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint
@@ -28,8 +30,6 @@ import org.klokwrk.lib.lo.validation.constraint.UnLoCodeFormatConstraint
 import org.klokwrk.lib.lo.validation.constraint.ValueOfEnumConstraint
 import org.klokwrk.lib.lo.validation.constraint.uom.QuantityMinConstraint
 import org.klokwrk.lib.lo.validation.constraint.uom.QuantityRangeConstraint
-import org.klokwrk.lib.hi.validation.springboot.ValidationConfigurationProperties
-import org.klokwrk.lib.hi.validation.springboot.ValidationService
 import spock.lang.Shared
 import spock.lang.Specification
 

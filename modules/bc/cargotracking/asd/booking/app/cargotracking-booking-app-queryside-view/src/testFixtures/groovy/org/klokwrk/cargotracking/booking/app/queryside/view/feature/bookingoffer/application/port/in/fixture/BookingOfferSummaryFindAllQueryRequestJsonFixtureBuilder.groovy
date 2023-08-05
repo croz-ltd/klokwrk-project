@@ -25,8 +25,8 @@ import org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer
 import org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.fixture.data.SortRequirementJsonFixtureBuilder
 import org.klokwrk.cargotracking.test.support.fixture.base.JsonFixtureBuilder
 
-import static org.klokwrk.cargotracking.test.support.fixture.util.JsonFixtureUtils.jsonFixtureBuilderListToJsonListString
 import static org.klokwrk.cargotracking.test.support.fixture.util.JsonFixtureUtils.jsonFixtureBuilderListToJsonList
+import static org.klokwrk.cargotracking.test.support.fixture.util.JsonFixtureUtils.jsonFixtureBuilderListToJsonListString
 import static org.klokwrk.cargotracking.test.support.fixture.util.JsonFixtureUtils.stringToJsonString
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
