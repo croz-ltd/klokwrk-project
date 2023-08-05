@@ -25,8 +25,8 @@ import org.axonframework.eventhandling.GenericDomainEventMessage
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFixtureBuilder
 import org.klokwrk.cargotracking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracking.domain.model.event.BookingOfferCreatedEventFixtureBuilder
-import org.klokwrk.cargotracker.booking.test.support.queryside.axon.GenericDomainEventMessageFactory
-import org.klokwrk.cargotracker.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
+import org.klokwrk.cargotracking.booking.test.support.queryside.axon.GenericDomainEventMessageFactory
+import org.klokwrk.cargotracking.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.cargotracking.booking.test.support.testcontainers.AxonServerTestcontainersFactory
 import org.klokwrk.cargotracking.booking.test.support.testcontainers.PostgreSqlTestcontainersFactory
 import org.klokwrk.cargotracking.booking.test.support.testcontainers.QuerySideProjectionRdbmsAppTestcontainersFactory

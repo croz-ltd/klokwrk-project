@@ -29,7 +29,7 @@ import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.appl
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryResponse
 import org.klokwrk.cargotracker.booking.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
-import org.klokwrk.cargotracker.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
+import org.klokwrk.cargotracking.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationResponse
 import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.QueryException

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.test.support.queryside.feature.bookingoffer.sql
+package org.klokwrk.cargotracking.booking.test.support.queryside.feature.bookingoffer.sql
 
 import groovy.sql.GroovyRowResult
 import groovy.sql.Sql
