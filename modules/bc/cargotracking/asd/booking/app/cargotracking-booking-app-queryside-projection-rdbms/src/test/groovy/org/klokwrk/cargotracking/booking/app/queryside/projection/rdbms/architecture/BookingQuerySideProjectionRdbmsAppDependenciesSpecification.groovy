@@ -74,18 +74,18 @@ class BookingQuerySideProjectionRdbmsAppDependenciesSpecification extends Specif
         "io.micrometer.observation.."
     ]
 
-    String[] cargotrackerBookingProjectionRdbmsAppAllPackages = [
+    String[] cargotrackingBookingProjectionRdbmsAppAllPackages = [
         "org.klokwrk.cargotracking.booking.app.queryside.projection.rdbms.feature..", "org.klokwrk.cargotracking.booking.app.queryside.projection.rdbms.infrastructure.."
     ]
-    String[] cargotrackerBookingDomainEventAllPackages = ["org.klokwrk.cargotracking.domain.model.event.."]
-    String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracking.domain.model.value.."]
-    String[] cargotrackerBookingQuerysideProjectionRdbmsModelAllPackages = [
+    String[] cargotrackingBookingDomainEventAllPackages = ["org.klokwrk.cargotracking.domain.model.event.."]
+    String[] cargotrackingBookingDomainValueAllPackages = ["org.klokwrk.cargotracking.domain.model.value.."]
+    String[] cargotrackingBookingQuerysideProjectionRdbmsModelAllPackages = [
         "org.klokwrk.cargotracking.booking.lib.queryside.model.rdbms.jpa..",
         "org.klokwrk.lib.hi.spring.data.jpa.repository.hibernate.."
     ]
 
-    String[] cargotrackerLibAxonLoggingAllPackages = ["org.klokwrk.cargotracking.lib.axon.logging.."]
-    String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracking.lib.boundary.api.."]
+    String[] cargotrackingLibAxonLoggingAllPackages = ["org.klokwrk.cargotracking.lib.axon.logging.."]
+    String[] cargotrackingLibBoundaryApiAllPackages = ["org.klokwrk.cargotracking.lib.boundary.api.."]
 
     String[] klokwrkLibDatasourceProxyAllPackages = ["org.klokwrk.lib.hi.datasourceproxy.."]
     String[] klokwrkLibJacksonAllPackages = ["org.klokwrk.lib.hi.jackson.."]
@@ -97,18 +97,18 @@ class BookingQuerySideProjectionRdbmsAppDependenciesSpecification extends Specif
     //noinspection ChangeToOperator
     ArchRule rule = ArchRuleDefinition
         .classes().that(
-            JavaClass.Predicates.resideInAnyPackage(cargotrackerBookingProjectionRdbmsAppAllPackages)
+            JavaClass.Predicates.resideInAnyPackage(cargotrackingBookingProjectionRdbmsAppAllPackages)
                                 .or(JavaClass.Predicates.belongToAnyOf(BookingQuerySideProjectionRdbmsApplication) as DescribedPredicate<JavaClass>)
         )
         .should().onlyAccessClassesThat(JavaClass.Predicates
             .resideInAnyPackage(
-                cargotrackerBookingProjectionRdbmsAppAllPackages +
-                cargotrackerBookingDomainEventAllPackages +
-                cargotrackerBookingDomainValueAllPackages +
-                cargotrackerBookingQuerysideProjectionRdbmsModelAllPackages +
+                cargotrackingBookingProjectionRdbmsAppAllPackages +
+                cargotrackingBookingDomainEventAllPackages +
+                cargotrackingBookingDomainValueAllPackages +
+                cargotrackingBookingQuerysideProjectionRdbmsModelAllPackages +
 
-                cargotrackerLibAxonLoggingAllPackages +
-                cargotrackerLibBoundaryApiAllPackages +
+                cargotrackingLibAxonLoggingAllPackages +
+                cargotrackingLibBoundaryApiAllPackages +
 
                 klokwrkLibDatasourceProxyAllPackages +
                 klokwrkLibJacksonAllPackages +

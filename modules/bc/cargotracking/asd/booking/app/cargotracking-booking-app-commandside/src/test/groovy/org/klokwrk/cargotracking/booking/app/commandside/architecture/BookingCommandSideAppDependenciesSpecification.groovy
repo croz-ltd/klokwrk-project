@@ -57,13 +57,13 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
 
     String[] allowedApplicationSubPackages = ["org.klokwrk.cargotracking.booking.app.commandside.infrastructure.springbootconfig"]
 
-    String[] cargotrackerBookingCommandsideAppSpringBootApplicationPackages = ["org.klokwrk.cargotracking.booking.app.commandside"]
+    String[] cargotrackingBookingCommandsideAppSpringBootApplicationPackages = ["org.klokwrk.cargotracking.booking.app.commandside"]
 
     // @formatter:off
     ArchRule rule = ArchRuleDefinition
-        .classes().that().resideInAnyPackage(cargotrackerBookingCommandsideAppSpringBootApplicationPackages)
+        .classes().that().resideInAnyPackage(cargotrackingBookingCommandsideAppSpringBootApplicationPackages)
         .should().onlyAccessClassesThat().resideInAnyPackage(
-            cargotrackerBookingCommandsideAppSpringBootApplicationPackages +
+            cargotrackingBookingCommandsideAppSpringBootApplicationPackages +
             allowedApplicationSubPackages +
 
             thirdPartyDependencyAllPackages as String[]
@@ -89,14 +89,14 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         "org.hamcrest"
     ]
 
-    String[] cargotrackerBookingDomainAggregateAllPackages = ["org.klokwrk.cargotracking.domain.model.aggregate.."]
+    String[] cargotrackingBookingDomainAggregateAllPackages = ["org.klokwrk.cargotracking.domain.model.aggregate.."]
 
-    String[] cargotrackerBookingServiceAllPackages = ["org.klokwrk.cargotracking.domain.model.service.."]
-    String[] cargotrackerBookingCommandAllPackages = ["org.klokwrk.cargotracking.domain.model.command.."]
-    String[] cargotrackerBookingEventAllPackages = ["org.klokwrk.cargotracking.domain.model.event.."]
-    String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracking.domain.model.value.."]
+    String[] cargotrackingBookingServiceAllPackages = ["org.klokwrk.cargotracking.domain.model.service.."]
+    String[] cargotrackingBookingCommandAllPackages = ["org.klokwrk.cargotracking.domain.model.command.."]
+    String[] cargotrackingBookingEventAllPackages = ["org.klokwrk.cargotracking.domain.model.event.."]
+    String[] cargotrackingBookingDomainValueAllPackages = ["org.klokwrk.cargotracking.domain.model.value.."]
 
-    String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracking.lib.boundary.api.."]
+    String[] cargotrackingLibBoundaryApiAllPackages = ["org.klokwrk.cargotracking.lib.boundary.api.."]
 
     String[] klokwrkLibUomAllPackages = ["org.klokwrk.lib.lo.uom.."]
 
@@ -104,16 +104,16 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
 
     // @formatter:off
     ArchRule rule = ArchRuleDefinition
-        .classes().that().resideInAnyPackage(cargotrackerBookingDomainAggregateAllPackages)
+        .classes().that().resideInAnyPackage(cargotrackingBookingDomainAggregateAllPackages)
         .should().onlyAccessClassesThat().resideInAnyPackage(
-            cargotrackerBookingDomainAggregateAllPackages +
+            cargotrackingBookingDomainAggregateAllPackages +
 
-            cargotrackerBookingServiceAllPackages +
-            cargotrackerBookingCommandAllPackages +
-            cargotrackerBookingEventAllPackages +
-            cargotrackerBookingDomainValueAllPackages +
+            cargotrackingBookingServiceAllPackages +
+            cargotrackingBookingCommandAllPackages +
+            cargotrackingBookingEventAllPackages +
+            cargotrackingBookingDomainValueAllPackages +
 
-            cargotrackerLibBoundaryApiAllPackages +
+            cargotrackingLibBoundaryApiAllPackages +
 
             klokwrkLibUomAllPackages +
 
@@ -139,18 +139,18 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         "tech.units.indriya.."
     ]
 
-    String[] cargotrackerBookingCommandsideAppFeaturePackages = ["org.klokwrk.cargotracking.booking.app.commandside.feature.."]
+    String[] cargotrackingBookingCommandsideAppFeaturePackages = ["org.klokwrk.cargotracking.booking.app.commandside.feature.."]
 
-    String[] cargotrackerBookingCommandAllPackages = ["org.klokwrk.cargotracking.domain.model.command.."]
-    String[] cargotrackerBookingEventAllPackages = ["org.klokwrk.cargotracking.domain.model.event.."]
-    String[] cargotrackerBookingBoundaryWebAllPackages = ["org.klokwrk.cargotracking.booking.lib.boundary.web.."]
-    String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracking.domain.model.value.."]
-    String[] cargotrackerBookingDomainAggregateAllPackages = ["org.klokwrk.cargotracking.domain.model.aggregate.."]
-    String[] cargotrackerBookingStandaloneOutAdapterAllPackages = ["org.klokwrk.cargotracking.booking.lib.out.customer.."]
+    String[] cargotrackingBookingCommandAllPackages = ["org.klokwrk.cargotracking.domain.model.command.."]
+    String[] cargotrackingBookingEventAllPackages = ["org.klokwrk.cargotracking.domain.model.event.."]
+    String[] cargotrackingBookingBoundaryWebAllPackages = ["org.klokwrk.cargotracking.booking.lib.boundary.web.."]
+    String[] cargotrackingBookingDomainValueAllPackages = ["org.klokwrk.cargotracking.domain.model.value.."]
+    String[] cargotrackingBookingDomainAggregateAllPackages = ["org.klokwrk.cargotracking.domain.model.aggregate.."]
+    String[] cargotrackingBookingStandaloneOutAdapterAllPackages = ["org.klokwrk.cargotracking.booking.lib.out.customer.."]
 
-    String[] cargotrackerLibAxonCqrsCommandPackages = ["org.klokwrk.cargotracking.lib.axon.cqrs.command.."]
-    String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracking.lib.boundary.api.."]
-    String[] cargotrackerLibWebAllPackages = ["org.klokwrk.cargotracking.lib.web.."]
+    String[] cargotrackingLibAxonCqrsCommandPackages = ["org.klokwrk.cargotracking.lib.axon.cqrs.command.."]
+    String[] cargotrackingLibBoundaryApiAllPackages = ["org.klokwrk.cargotracking.lib.boundary.api.."]
+    String[] cargotrackingLibWebAllPackages = ["org.klokwrk.cargotracking.lib.web.."]
 
     String[] klokwrkLibValidationPackages = ["org.klokwrk.lib.hi.validation.."]
 
@@ -159,22 +159,22 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     // @formatter:off
     ArchRule rule = ArchRuleDefinition
         .classes().that()
-            .resideInAnyPackage(cargotrackerBookingCommandsideAppFeaturePackages)
+            .resideInAnyPackage(cargotrackingBookingCommandsideAppFeaturePackages)
             .and()
             .haveNameNotMatching(/.*JsonFixtureBuilder$/)
         .should().onlyAccessClassesThat().resideInAnyPackage(
-            cargotrackerBookingCommandsideAppFeaturePackages +
+            cargotrackingBookingCommandsideAppFeaturePackages +
 
-            cargotrackerBookingCommandAllPackages +
-            cargotrackerBookingEventAllPackages +
-            cargotrackerBookingBoundaryWebAllPackages +
-            cargotrackerBookingDomainValueAllPackages +
-            cargotrackerBookingDomainAggregateAllPackages +
-            cargotrackerBookingStandaloneOutAdapterAllPackages +
+            cargotrackingBookingCommandAllPackages +
+            cargotrackingBookingEventAllPackages +
+            cargotrackingBookingBoundaryWebAllPackages +
+            cargotrackingBookingDomainValueAllPackages +
+            cargotrackingBookingDomainAggregateAllPackages +
+            cargotrackingBookingStandaloneOutAdapterAllPackages +
 
-            cargotrackerLibAxonCqrsCommandPackages +
-            cargotrackerLibBoundaryApiAllPackages +
-            cargotrackerLibWebAllPackages +
+            cargotrackingLibAxonCqrsCommandPackages +
+            cargotrackingLibBoundaryApiAllPackages +
+            cargotrackingLibWebAllPackages +
 
             klokwrkLibValidationPackages +
 
@@ -208,30 +208,30 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         "org.springframework.core.env..",
     ]
 
-    String[] cargotrackerBookingCommandsideAppInfrastructurePackages = ["org.klokwrk.cargotracking.booking.app.commandside.infrastructure.."]
+    String[] cargotrackingBookingCommandsideAppInfrastructurePackages = ["org.klokwrk.cargotracking.booking.app.commandside.infrastructure.."]
 
-    String[] cargotrackerBookingServiceAllPackages = ["org.klokwrk.cargotracking.domain.model.service.."]
-    String[] cargotrackerBookingStandaloneOutAdapterAllPackages = ["org.klokwrk.cargotracking.booking.lib.out.customer.."]
+    String[] cargotrackingBookingServiceAllPackages = ["org.klokwrk.cargotracking.domain.model.service.."]
+    String[] cargotrackingBookingStandaloneOutAdapterAllPackages = ["org.klokwrk.cargotracking.booking.lib.out.customer.."]
 
-    String[] cargotrackerLibAxonCqrsCommandPackages = ["org.klokwrk.cargotracking.lib.axon.cqrs.command.."]
-    String[] cargotrackerLibAxonLoggingAllPackages = ["org.klokwrk.cargotracking.lib.axon.logging.."]
-    String[] cargotrackerLibWebAllPackages = ["org.klokwrk.cargotracking.lib.web.."]
+    String[] cargotrackingLibAxonCqrsCommandPackages = ["org.klokwrk.cargotracking.lib.axon.cqrs.command.."]
+    String[] cargotrackingLibAxonLoggingAllPackages = ["org.klokwrk.cargotracking.lib.axon.logging.."]
+    String[] cargotrackingLibWebAllPackages = ["org.klokwrk.cargotracking.lib.web.."]
 
     String[] klokwrkLibJacksonAllPackages = ["org.klokwrk.lib.hi.jackson.."]
     String[] klokwrkLibValidationSpringBootPackages = ["org.klokwrk.lib.hi.validation.springboot"]
 
     // @formatter:off
     ArchRule rule = ArchRuleDefinition
-        .classes().that().resideInAnyPackage(cargotrackerBookingCommandsideAppInfrastructurePackages)
+        .classes().that().resideInAnyPackage(cargotrackingBookingCommandsideAppInfrastructurePackages)
         .should().onlyAccessClassesThat().resideInAnyPackage(
-            cargotrackerBookingCommandsideAppInfrastructurePackages +
+            cargotrackingBookingCommandsideAppInfrastructurePackages +
 
-            cargotrackerBookingServiceAllPackages +
-            cargotrackerBookingStandaloneOutAdapterAllPackages +
+            cargotrackingBookingServiceAllPackages +
+            cargotrackingBookingStandaloneOutAdapterAllPackages +
 
-            cargotrackerLibAxonCqrsCommandPackages +
-            cargotrackerLibAxonLoggingAllPackages +
-            cargotrackerLibWebAllPackages +
+            cargotrackingLibAxonCqrsCommandPackages +
+            cargotrackingLibAxonLoggingAllPackages +
+            cargotrackingLibWebAllPackages +
 
             klokwrkLibJacksonAllPackages +
             klokwrkLibValidationSpringBootPackages +

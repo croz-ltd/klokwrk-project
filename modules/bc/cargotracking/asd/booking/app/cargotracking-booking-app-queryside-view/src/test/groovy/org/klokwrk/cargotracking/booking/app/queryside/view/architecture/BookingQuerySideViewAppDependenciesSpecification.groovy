@@ -78,18 +78,18 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
         "tech.units.indriya.unit.."
     ]
 
-    String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracking.domain.model.value.."]
+    String[] cargotrackingBookingDomainValueAllPackages = ["org.klokwrk.cargotracking.domain.model.value.."]
 
-    String[] cargotrackerBookingQuerySideViewAppAllPackages = ["org.klokwrk.cargotracking.booking.app.queryside.view.feature..", "org.klokwrk.cargotracking.booking.app.queryside.view.infrastructure.."]
-    String[] cargotrackerBookingQuerySideModelRdbmsAllPackages = ["org.klokwrk.cargotracking.booking.lib.queryside.model.rdbms.jpa.."]
+    String[] cargotrackingBookingQuerySideViewAppAllPackages = ["org.klokwrk.cargotracking.booking.app.queryside.view.feature..", "org.klokwrk.cargotracking.booking.app.queryside.view.infrastructure.."]
+    String[] cargotrackingBookingQuerySideModelRdbmsAllPackages = ["org.klokwrk.cargotracking.booking.lib.queryside.model.rdbms.jpa.."]
 
-    String[] cargotrackerBookingStandaloneOutAdapterAllPackages = ["org.klokwrk.cargotracking.booking.lib.out.customer.."]
+    String[] cargotrackingBookingStandaloneOutAdapterAllPackages = ["org.klokwrk.cargotracking.booking.lib.out.customer.."]
 
-    String[] cargotrackerLibAxonCqrsAllPackages = ["org.klokwrk.cargotracking.lib.axon.cqrs.."]
-    String[] cargotrackerLibAxonLoggingAllPackages = ["org.klokwrk.cargotracking.lib.axon.logging.."]
-    String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracking.lib.boundary.api.."]
-    String[] cargotrackerLibBoundaryQueryApiAllPackages = ["org.klokwrk.cargotracking.lib.boundary.query.api.."]
-    String[] cargotrackerLibWebAllPackages = ["org.klokwrk.cargotracking.lib.web.."]
+    String[] cargotrackingLibAxonCqrsAllPackages = ["org.klokwrk.cargotracking.lib.axon.cqrs.."]
+    String[] cargotrackingLibAxonLoggingAllPackages = ["org.klokwrk.cargotracking.lib.axon.logging.."]
+    String[] cargotrackingLibBoundaryApiAllPackages = ["org.klokwrk.cargotracking.lib.boundary.api.."]
+    String[] cargotrackingLibBoundaryQueryApiAllPackages = ["org.klokwrk.cargotracking.lib.boundary.query.api.."]
+    String[] cargotrackingLibWebAllPackages = ["org.klokwrk.cargotracking.lib.web.."]
 
     String[] klokwrkLibDatasourceProxyAllPackages = ["org.klokwrk.lib.hi.datasourceproxy.."]
     String[] klokwrkLibJacksonAllPackages = ["org.klokwrk.lib.hi.jackson.."]
@@ -103,7 +103,7 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
     ArchRule rule = ArchRuleDefinition
         .classes()
             .that(
-                resideInAnyPackage(cargotrackerBookingQuerySideViewAppAllPackages)
+                resideInAnyPackage(cargotrackingBookingQuerySideViewAppAllPackages)
                 .or(belongToAnyOf(BookingQuerySideViewApplication) as DescribedPredicate<JavaClass>)
             )
             // ignore testFixtures sourceSet
@@ -113,18 +113,18 @@ class BookingQuerySideViewAppDependenciesSpecification extends Specification {
             .haveNameNotMatching(/org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.assertion.*$/)
         .should().onlyAccessClassesThat(
             resideInAnyPackage(
-                cargotrackerBookingDomainValueAllPackages +
+                cargotrackingBookingDomainValueAllPackages +
 
-                cargotrackerBookingQuerySideViewAppAllPackages +
-                cargotrackerBookingQuerySideModelRdbmsAllPackages +
+                cargotrackingBookingQuerySideViewAppAllPackages +
+                cargotrackingBookingQuerySideModelRdbmsAllPackages +
 
-                cargotrackerBookingStandaloneOutAdapterAllPackages +
+                cargotrackingBookingStandaloneOutAdapterAllPackages +
 
-                cargotrackerLibAxonCqrsAllPackages +
-                cargotrackerLibAxonLoggingAllPackages +
-                cargotrackerLibBoundaryApiAllPackages +
-                cargotrackerLibBoundaryQueryApiAllPackages +
-                cargotrackerLibWebAllPackages +
+                cargotrackingLibAxonCqrsAllPackages +
+                cargotrackingLibAxonLoggingAllPackages +
+                cargotrackingLibBoundaryApiAllPackages +
+                cargotrackingLibBoundaryQueryApiAllPackages +
+                cargotrackingLibWebAllPackages +
 
                 klokwrkLibDatasourceProxyAllPackages +
                 klokwrkLibJacksonAllPackages +
