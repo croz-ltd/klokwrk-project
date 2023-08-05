@@ -23,8 +23,8 @@ import org.awaitility.Awaitility
 import org.axonframework.eventhandling.EventBus
 import org.axonframework.eventhandling.GenericDomainEventMessage
 import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFixtureBuilder
-import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
-import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEventFixtureBuilder
+import org.klokwrk.cargotracking.domain.model.event.BookingOfferCreatedEvent
+import org.klokwrk.cargotracking.domain.model.event.BookingOfferCreatedEventFixtureBuilder
 import org.klokwrk.cargotracker.booking.test.support.queryside.axon.GenericDomainEventMessageFactory
 import org.klokwrk.cargotracker.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
 import org.klokwrk.cargotracker.booking.test.support.testcontainers.AxonServerTestcontainersFactory
@@ -40,17 +40,17 @@ import spock.lang.Specification
 
 import java.time.Duration
 
-import static org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventDataFixtureBuilder.cargo_airCooled
-import static org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventDataFixtureBuilder.cargo_chilled
-import static org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventDataFixtureBuilder.cargo_dry
-import static org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventDataFixtureBuilder.cargo_frozen
-import static org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_hamburgToLosAngeles
-import static org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_hamburgToRotterdam
-import static org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToHamburg
-import static org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToLosAngeles
-import static org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToNewYork
-import static org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToRotterdam
-import static org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_rotterdamToNewYork
+import static org.klokwrk.cargotracking.domain.model.event.data.CargoEventDataFixtureBuilder.cargo_airCooled
+import static org.klokwrk.cargotracking.domain.model.event.data.CargoEventDataFixtureBuilder.cargo_chilled
+import static org.klokwrk.cargotracking.domain.model.event.data.CargoEventDataFixtureBuilder.cargo_dry
+import static org.klokwrk.cargotracking.domain.model.event.data.CargoEventDataFixtureBuilder.cargo_frozen
+import static org.klokwrk.cargotracking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_hamburgToLosAngeles
+import static org.klokwrk.cargotracking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_hamburgToRotterdam
+import static org.klokwrk.cargotracking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToHamburg
+import static org.klokwrk.cargotracking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToLosAngeles
+import static org.klokwrk.cargotracking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToNewYork
+import static org.klokwrk.cargotracking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToRotterdam
+import static org.klokwrk.cargotracking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder.routeSpecification_rotterdamToNewYork
 
 abstract class AbstractQuerySideIntegrationSpecification extends Specification {
   static GenericContainer axonServer

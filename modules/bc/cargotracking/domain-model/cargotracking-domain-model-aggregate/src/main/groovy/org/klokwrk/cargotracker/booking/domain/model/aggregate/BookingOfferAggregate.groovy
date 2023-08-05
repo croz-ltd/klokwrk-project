@@ -29,10 +29,10 @@ import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
 import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandData
-import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
-import org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventData
-import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
-import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
+import org.klokwrk.cargotracking.domain.model.event.BookingOfferCreatedEvent
+import org.klokwrk.cargotracking.domain.model.event.data.CargoEventData
+import org.klokwrk.cargotracking.domain.model.event.data.CustomerEventData
+import org.klokwrk.cargotracking.domain.model.event.data.RouteSpecificationEventData
 import org.klokwrk.cargotracking.domain.model.service.CargoCreatorService
 import org.klokwrk.cargotracking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracking.domain.model.value.BookingOfferId

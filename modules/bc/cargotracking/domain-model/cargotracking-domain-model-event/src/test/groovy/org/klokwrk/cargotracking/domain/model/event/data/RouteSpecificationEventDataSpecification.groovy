@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.domain.model.event.data
+package org.klokwrk.cargotracking.domain.model.event.data
 
 import org.klokwrk.cargotracking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracking.domain.model.value.RouteSpecificationFixtureBuilder

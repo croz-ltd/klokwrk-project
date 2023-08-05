@@ -93,7 +93,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
 
     String[] cargotrackerBookingServiceAllPackages = ["org.klokwrk.cargotracking.domain.model.service.."]
     String[] cargotrackerBookingCommandAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.command.."]
-    String[] cargotrackerBookingEventAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.event.."]
+    String[] cargotrackerBookingEventAllPackages = ["org.klokwrk.cargotracking.domain.model.event.."]
     String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracking.domain.model.value.."]
 
     String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracking.lib.boundary.api.."]
@@ -142,7 +142,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     String[] cargotrackerBookingCommandsideAppFeaturePackages = ["org.klokwrk.cargotracker.booking.commandside.feature.."]
 
     String[] cargotrackerBookingCommandAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.command.."]
-    String[] cargotrackerBookingEventAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.event.."]
+    String[] cargotrackerBookingEventAllPackages = ["org.klokwrk.cargotracking.domain.model.event.."]
     String[] cargotrackerBookingBoundaryWebAllPackages = ["org.klokwrk.cargotracker.booking.boundary.web.."]
     String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracking.domain.model.value.."]
     String[] cargotrackerBookingDomainAggregateAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.aggregate.."]

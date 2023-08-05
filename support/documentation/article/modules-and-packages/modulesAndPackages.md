@@ -478,7 +478,7 @@ To better understand how this works, we can look at the architectural test fragm
     ArchRule rule = HexagonalCqrsEsArchitecture
         .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
         .domainValues("..cargotracking.domain.model.value..")
-        .domainEvents("..cargotracker.booking.domain.model.event..")
+        .domainEvents("..cargotracking.domain.model.event..")
         .domainCommands("..cargotracker.booking.domain.model.command..")
         .domainServices("..cargotracking.domain.model.service..")
         .domainAggregates("..cargotracker.booking.domain.model.aggregate..")

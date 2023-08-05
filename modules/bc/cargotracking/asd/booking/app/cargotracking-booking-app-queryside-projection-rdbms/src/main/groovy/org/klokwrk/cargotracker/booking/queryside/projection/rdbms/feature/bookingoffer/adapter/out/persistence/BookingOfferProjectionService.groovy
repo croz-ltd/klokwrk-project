@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
 import org.axonframework.eventhandling.DomainEventMessage
 import org.axonframework.eventhandling.EventHandler
-import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEvent
+import org.klokwrk.cargotracking.domain.model.event.BookingOfferCreatedEvent
 import org.springframework.stereotype.Service
 
 @Service
