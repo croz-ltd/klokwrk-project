@@ -21,10 +21,10 @@ import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
 import org.klokwrk.cargotracking.domain.model.event.data.CargoEventData
-import org.klokwrk.cargotracking.domain.model.event.data.CustomerEventData
-import org.klokwrk.cargotracking.domain.model.event.data.RouteSpecificationEventData
 import org.klokwrk.cargotracking.domain.model.event.data.CargoEventDataFixtureBuilder
+import org.klokwrk.cargotracking.domain.model.event.data.CustomerEventData
 import org.klokwrk.cargotracking.domain.model.event.data.CustomerEventDataFixtureBuilder
+import org.klokwrk.cargotracking.domain.model.event.data.RouteSpecificationEventData
 import org.klokwrk.cargotracking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder
 import org.klokwrk.lib.xlang.groovy.base.misc.CombUuidShortPrefixUtils
 import tech.units.indriya.unit.Units
