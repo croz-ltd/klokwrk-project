@@ -17,7 +17,7 @@
  */
 package org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.service
 
-import org.klokwrk.cargotracker.booking.boundary.web.metadata.WebMetaDataFixtureBuilder
+import org.klokwrk.cargotracking.booking.lib.boundary.web.metadata.WebMetaDataFixtureBuilder
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandPortIn
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponse

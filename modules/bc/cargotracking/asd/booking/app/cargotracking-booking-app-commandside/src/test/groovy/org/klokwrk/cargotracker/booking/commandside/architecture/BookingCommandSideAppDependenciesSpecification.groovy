@@ -143,7 +143,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
 
     String[] cargotrackerBookingCommandAllPackages = ["org.klokwrk.cargotracking.domain.model.command.."]
     String[] cargotrackerBookingEventAllPackages = ["org.klokwrk.cargotracking.domain.model.event.."]
-    String[] cargotrackerBookingBoundaryWebAllPackages = ["org.klokwrk.cargotracker.booking.boundary.web.."]
+    String[] cargotrackerBookingBoundaryWebAllPackages = ["org.klokwrk.cargotracking.booking.lib.boundary.web.."]
     String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracking.domain.model.value.."]
     String[] cargotrackerBookingDomainAggregateAllPackages = ["org.klokwrk.cargotracking.domain.model.aggregate.."]
     String[] cargotrackerBookingStandaloneOutAdapterAllPackages = ["org.klokwrk.cargotracking.booking.lib.out.customer.."]

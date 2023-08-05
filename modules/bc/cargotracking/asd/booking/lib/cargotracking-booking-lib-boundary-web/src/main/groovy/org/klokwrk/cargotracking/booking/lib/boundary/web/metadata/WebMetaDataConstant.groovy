@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.boundary.web.metadata
+package org.klokwrk.cargotracking.booking.lib.boundary.web.metadata
 
 import groovy.transform.CompileStatic
 
