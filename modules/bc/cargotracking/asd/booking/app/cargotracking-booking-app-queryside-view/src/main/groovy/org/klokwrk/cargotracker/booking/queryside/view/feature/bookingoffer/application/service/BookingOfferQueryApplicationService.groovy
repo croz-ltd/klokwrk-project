@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
 import org.axonframework.queryhandling.QueryGateway
 import org.klokwrk.cargotracking.domain.model.value.Customer
-import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdPortOut
+import org.klokwrk.cargotracking.booking.lib.out.customer.port.CustomerByUserIdPortOut
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferDetailsFindByIdQueryPortIn
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferDetailsFindByIdQueryRequest
 import org.klokwrk.cargotracker.booking.queryside.view.feature.bookingoffer.application.port.in.BookingOfferDetailsFindByIdQueryResponse

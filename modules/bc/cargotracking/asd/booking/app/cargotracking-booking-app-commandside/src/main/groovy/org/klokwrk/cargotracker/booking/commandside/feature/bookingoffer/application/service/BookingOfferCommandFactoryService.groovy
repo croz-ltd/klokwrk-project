@@ -33,7 +33,7 @@ import org.klokwrk.cargotracking.domain.model.value.Customer
 import org.klokwrk.cargotracking.domain.model.value.Location
 import org.klokwrk.cargotracking.domain.model.value.PortCapabilityType
 import org.klokwrk.cargotracking.domain.model.value.RouteSpecification
-import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdPortOut
+import org.klokwrk.cargotracking.booking.lib.out.customer.port.CustomerByUserIdPortOut
 import org.springframework.stereotype.Service
 
 import java.time.Clock

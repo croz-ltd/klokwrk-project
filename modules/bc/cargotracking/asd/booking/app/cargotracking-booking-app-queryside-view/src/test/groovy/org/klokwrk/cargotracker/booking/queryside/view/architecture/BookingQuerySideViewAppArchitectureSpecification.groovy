@@ -41,7 +41,7 @@ class BookingQuerySideViewAppArchitectureSpecification extends Specification {
         [
             "org.klokwrk.cargotracker.booking.queryside.view",
             "org.klokwrk.cargotracking.domain.model.value",
-            "org.klokwrk.cargotracker.booking.out.customer"
+            "org.klokwrk.cargotracking.booking.lib.out.customer"
         ],
         ["org.klokwrk.cargotracker.booking.queryside.projection.rdbms"]
     )
@@ -80,7 +80,7 @@ class BookingQuerySideViewAppArchitectureSpecification extends Specification {
         .applicationInboundPorts("..cargotracker.booking.queryside.view.feature.*.application.port.in..")
         .applicationOutboundPorts(
             "..cargotracker.booking.queryside.view.feature.*.application.port.out..",
-            "..cargotracker.booking.out.customer.port.."
+            "..cargotracking.booking.lib.out.customer.port.."
         )
         .applicationServices("..cargotracker.booking.queryside.view.feature.*.application.service..")
 
@@ -92,11 +92,11 @@ class BookingQuerySideViewAppArchitectureSpecification extends Specification {
                 "..cargotracking.booking.lib.queryside.model.rdbms.jpa.."
             ] as String[]
         )
-        .adapterOutbound("out.standalone.customer", "..cargotracker.booking.out.customer.adapter..")
+        .adapterOutbound("out.standalone.customer", "..cargotracking.booking.lib.out.customer.adapter..")
 
         .ignoreDependency( // dependency injection can access and instantiate outbound adapters
             resideInAnyPackage("..cargotracker.booking.queryside.view.infrastructure.."),
-            resideInAnyPackage("..cargotracker.booking.out.customer.adapter..")
+            resideInAnyPackage("..cargotracking.booking.lib.out.customer.adapter..")
         )
 
         .withOptionalLayers(false)

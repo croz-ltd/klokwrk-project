@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.out.customer.adapter
+package org.klokwrk.cargotracking.booking.lib.out.customer.adapter
 
 import groovy.transform.CompileStatic
 import org.klokwrk.cargotracking.domain.model.value.Customer
 import org.klokwrk.cargotracking.domain.model.value.CustomerType
-import org.klokwrk.cargotracker.booking.out.customer.port.CustomerByUserIdPortOut
+import org.klokwrk.cargotracking.booking.lib.out.customer.port.CustomerByUserIdPortOut
 import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.DomainException
 import org.klokwrk.cargotracking.lib.boundary.api.domain.violation.ViolationInfo
 

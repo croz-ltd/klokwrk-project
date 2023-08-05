@@ -146,7 +146,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     String[] cargotrackerBookingBoundaryWebAllPackages = ["org.klokwrk.cargotracker.booking.boundary.web.."]
     String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracking.domain.model.value.."]
     String[] cargotrackerBookingDomainAggregateAllPackages = ["org.klokwrk.cargotracking.domain.model.aggregate.."]
-    String[] cargotrackerBookingStandaloneOutAdapterAllPackages = ["org.klokwrk.cargotracker.booking.out.customer.."]
+    String[] cargotrackerBookingStandaloneOutAdapterAllPackages = ["org.klokwrk.cargotracking.booking.lib.out.customer.."]
 
     String[] cargotrackerLibAxonCqrsCommandPackages = ["org.klokwrk.cargotracking.lib.axon.cqrs.command.."]
     String[] cargotrackerLibBoundaryApiAllPackages = ["org.klokwrk.cargotracking.lib.boundary.api.."]
@@ -211,7 +211,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     String[] cargotrackerBookingCommandsideAppInfrastructurePackages = ["org.klokwrk.cargotracker.booking.commandside.infrastructure.."]
 
     String[] cargotrackerBookingServiceAllPackages = ["org.klokwrk.cargotracking.domain.model.service.."]
-    String[] cargotrackerBookingStandaloneOutAdapterAllPackages = ["org.klokwrk.cargotracker.booking.out.customer.."]
+    String[] cargotrackerBookingStandaloneOutAdapterAllPackages = ["org.klokwrk.cargotracking.booking.lib.out.customer.."]
 
     String[] cargotrackerLibAxonCqrsCommandPackages = ["org.klokwrk.cargotracking.lib.axon.cqrs.command.."]
     String[] cargotrackerLibAxonLoggingAllPackages = ["org.klokwrk.cargotracking.lib.axon.logging.."]

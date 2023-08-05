@@ -30,7 +30,7 @@ import org.klokwrk.cargotracking.domain.model.service.DefaultCargoCreatorService
 import org.klokwrk.cargotracking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracking.domain.model.service.MaxAllowedWeightPerContainerPolicy
 import org.klokwrk.cargotracking.domain.model.service.PercentBasedMaxAllowedWeightPerContainerPolicy
-import org.klokwrk.cargotracker.booking.out.customer.adapter.InMemoryCustomerRegistryService
+import org.klokwrk.cargotracking.booking.lib.out.customer.adapter.InMemoryCustomerRegistryService
 import org.klokwrk.cargotracking.lib.axon.cqrs.command.CommandHandlerExceptionInterceptor
 import org.klokwrk.cargotracking.lib.axon.cqrs.command.NonTransientFailurePredicate
 import org.klokwrk.cargotracking.lib.axon.logging.LoggingCommandHandlerEnhancerDefinition

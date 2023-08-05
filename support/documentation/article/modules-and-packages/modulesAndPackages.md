@@ -486,13 +486,13 @@ To better understand how this works, we can look at the architectural test fragm
         .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
         .applicationOutboundPorts(
             "..cargotracker.booking.commandside.feature.*.application.port.out..",
-            "..cargotracker.booking.out.customer.port.."
+            "..cargotracking.booking.lib.out.customer.port.."
         )
         .applicationServices("..cargotracker.booking.commandside.feature.*.application.service..")
 
         .adapterInbound("in.web", "..cargotracker.booking.commandside.feature.*.adapter.in.web..")
         .adapterOutbound("out.inline.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..")
-        .adapterOutbound("out.standalone.customer", "..cargotracker.booking.out.customer.adapter..")
+        .adapterOutbound("out.standalone.customer", "..cargotracking.booking.lib.out.customer.adapter..")
 
         // ...
 
