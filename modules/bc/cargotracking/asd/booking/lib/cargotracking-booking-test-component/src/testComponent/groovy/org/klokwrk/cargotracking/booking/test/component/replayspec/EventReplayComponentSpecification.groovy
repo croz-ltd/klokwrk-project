@@ -123,9 +123,9 @@ class EventReplayComponentSpecification extends Specification {
   static Tuple2<Integer, Instant> fetchMaxEventGlobalIndexFromProjectionRdbms(PostgreSQLContainer postgresqlServer) {
     Tuple2<Integer, Instant> maxElement = null
 
-    String postgresqlServerJdbcUrl = "jdbc:postgresql://${ postgresqlServer.host }:${ postgresqlServer.getMappedPort(5432) }/cargotracker_booking_query_database"
-    String postgresqlServerUsername = "cargotracker_readonly"
-    String postgresqlServerPassword = "cargotracker_readonly"
+    String postgresqlServerJdbcUrl = "jdbc:postgresql://${ postgresqlServer.host }:${ postgresqlServer.getMappedPort(5432) }/cargotracking_booking_query_database"
+    String postgresqlServerUsername = "cargotracking_readonly"
+    String postgresqlServerPassword = "cargotracking_readonly"
     String postgresqlServerDriverClassName = "org.postgresql.Driver"
 
     Sql.withInstance(postgresqlServerJdbcUrl, postgresqlServerUsername, postgresqlServerPassword, postgresqlServerDriverClassName) { Sql groovySql ->
@@ -167,9 +167,9 @@ class EventReplayComponentSpecification extends Specification {
   static Tuple2<Integer, Instant> fetchMinFailedEventGlobalIndexFromProjectionRdbms(PostgreSQLContainer postgresqlServer, Instant baseTimestamp) {
     Tuple2<Integer, Instant> minElement = null
 
-    String postgresqlServerJdbcUrl = "jdbc:postgresql://${ postgresqlServer.host }:${ postgresqlServer.getMappedPort(5432) }/cargotracker_booking_query_database"
-    String postgresqlServerUsername = "cargotracker_readonly"
-    String postgresqlServerPassword = "cargotracker_readonly"
+    String postgresqlServerJdbcUrl = "jdbc:postgresql://${ postgresqlServer.host }:${ postgresqlServer.getMappedPort(5432) }/cargotracking_booking_query_database"
+    String postgresqlServerUsername = "cargotracking_readonly"
+    String postgresqlServerPassword = "cargotracking_readonly"
     String postgresqlServerDriverClassName = "org.postgresql.Driver"
 
     Sql.withInstance(postgresqlServerJdbcUrl, postgresqlServerUsername, postgresqlServerPassword, postgresqlServerDriverClassName) { Sql groovySql ->

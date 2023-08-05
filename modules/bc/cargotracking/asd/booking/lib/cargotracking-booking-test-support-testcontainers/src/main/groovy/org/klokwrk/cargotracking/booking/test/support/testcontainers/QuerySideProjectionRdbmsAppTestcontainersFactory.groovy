@@ -39,7 +39,7 @@ class QuerySideProjectionRdbmsAppTestcontainersFactory {
    * </ul>
    */
   static GenericContainer makeAndStartQuerySideProjectionRdbmsApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
-    String imageVersion = System.getProperty("cargotrackerBookingProjectionRdbmsAppDockerImageVersion")
+    String imageVersion = System.getProperty("cargotrackingBookingProjectionRdbmsAppDockerImageVersion")
     Integer[] exposedPorts = [8082]
     String containerName = "cargotracking-booking-app-queryside-projection-rdbms"
     String containerNameSuffix = UUID.randomUUID()
@@ -52,11 +52,11 @@ class QuerySideProjectionRdbmsAppTestcontainersFactory {
       withCreateContainerCmdModifier({ CreateContainerCmd cmd -> cmd.withName("${ containerName }-${ containerNameSuffix }") })
       withEnv([
           "TZ": "Europe/Zagreb",
-          "CARGOTRACKER_AXON_SERVER_HOSTNAME": "${ axonServer.containerInfo.config.hostName }".toString(),
-          "CARGOTRACKER_POSTGRES_HOSTNAME": "${ postgresqlServer.containerInfo.name - "/" }".toString(),
-          "CARGOTRACKER_POSTGRES_PORT": "5432",
-          "CARGOTRACKER_POSTGRES_USERNAME": "cargotracker",
-          "CARGOTRACKER_POSTGRES_PASSWORD": "cargotracker",
+          "CARGOTRACKING_AXON_SERVER_HOSTNAME": "${ axonServer.containerInfo.config.hostName }".toString(),
+          "CARGOTRACKING_POSTGRES_HOSTNAME": "${ postgresqlServer.containerInfo.name - "/" }".toString(),
+          "CARGOTRACKING_POSTGRES_PORT": "5432",
+          "CARGOTRACKING_POSTGRES_USERNAME": "cargotracking",
+          "CARGOTRACKING_POSTGRES_PASSWORD": "cargotracking",
           "MANAGEMENT_DEFAULTS_METRICS_EXPORT_ENABLED": "false",
           "MANAGEMENT_TRACING_ENABLED": "false"
       ])

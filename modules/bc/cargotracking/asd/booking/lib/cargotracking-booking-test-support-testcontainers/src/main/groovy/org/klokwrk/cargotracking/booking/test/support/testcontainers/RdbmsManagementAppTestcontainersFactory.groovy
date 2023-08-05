@@ -27,7 +27,7 @@ import org.testcontainers.containers.wait.strategy.Wait
 @CompileStatic
 class RdbmsManagementAppTestcontainersFactory {
   static GenericContainer makeAndStartRdbmsManagementApp(Network klokwrkNetwork, PostgreSQLContainer postgresqlServer) {
-    String imageVersion = System.getProperty("cargotrackerBookingRdbmsManagementAppDockerImageVersion")
+    String imageVersion = System.getProperty("cargotrackingBookingRdbmsManagementAppDockerImageVersion")
     String containerName = "cargotracking-booking-app-rdbms-management"
     String containerNameSuffix = UUID.randomUUID()
 
@@ -36,10 +36,10 @@ class RdbmsManagementAppTestcontainersFactory {
     rdbmsManagementApp.withCreateContainerCmdModifier({ CreateContainerCmd cmd -> cmd.withName("${ containerName }-${ containerNameSuffix }") })
     rdbmsManagementApp.withEnv([
         "TZ": "Europe/Zagreb",
-        "CARGOTRACKER_POSTGRES_HOSTNAME": "${ postgresqlServer.containerInfo.name - "/" }".toString(),
-        "CARGOTRACKER_POSTGRES_PORT": "5432",
-        "CARGOTRACKER_POSTGRES_DB_MIGRATION_USERNAME": "db_migration",
-        "CARGOTRACKER_POSTGRES_DB_MIGRATION_PASSWORD": "db_migration",
+        "CARGOTRACKING_POSTGRES_HOSTNAME": "${ postgresqlServer.containerInfo.name - "/" }".toString(),
+        "CARGOTRACKING_POSTGRES_PORT": "5432",
+        "CARGOTRACKING_POSTGRES_DB_MIGRATION_USERNAME": "db_migration",
+        "CARGOTRACKING_POSTGRES_DB_MIGRATION_PASSWORD": "db_migration",
         "MANAGEMENT_DEFAULTS_METRICS_EXPORT_ENABLED": "false",
         "MANAGEMENT_TRACING_ENABLED": "false"
     ])

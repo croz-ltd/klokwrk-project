@@ -39,7 +39,7 @@ class QuerySideViewAppTestcontainersFactory {
    * </ul>
    */
   static GenericContainer makeAndStartQuerySideViewApp(Network klokwrkNetwork, GenericContainer axonServer, PostgreSQLContainer postgresqlServer) {
-    String imageVersion = System.getProperty("cargotrackerBookingQuerySideViewAppDockerImageVersion")
+    String imageVersion = System.getProperty("cargotrackingBookingQuerySideViewAppDockerImageVersion")
     Integer[] exposedPorts = [8084]
     String containerName = "cargotracking-booking-app-queryside-view"
     String containerNameSuffix = UUID.randomUUID()
@@ -52,11 +52,11 @@ class QuerySideViewAppTestcontainersFactory {
       withCreateContainerCmdModifier({ CreateContainerCmd cmd -> cmd.withName("${ containerName }-${ containerNameSuffix }") })
       withEnv([
           "TZ": "Europe/Zagreb",
-          "CARGOTRACKER_AXON_SERVER_HOSTNAME": "${ axonServer.containerInfo.config.hostName }".toString(),
-          "CARGOTRACKER_POSTGRES_HOSTNAME": "${ postgresqlServer.containerInfo.name - "/" }".toString(),
-          "CARGOTRACKER_POSTGRES_PORT": "5432",
-          "CARGOTRACKER_POSTGRES_USERNAME": "cargotracker_readonly",
-          "CARGOTRACKER_POSTGRES_PASSWORD": "cargotracker_readonly",
+          "CARGOTRACKING_AXON_SERVER_HOSTNAME": "${ axonServer.containerInfo.config.hostName }".toString(),
+          "CARGOTRACKING_POSTGRES_HOSTNAME": "${ postgresqlServer.containerInfo.name - "/" }".toString(),
+          "CARGOTRACKING_POSTGRES_PORT": "5432",
+          "CARGOTRACKING_POSTGRES_USERNAME": "cargotracking_readonly",
+          "CARGOTRACKING_POSTGRES_PASSWORD": "cargotracking_readonly",
           "AXON.EXTENSION.TRACING.ENABLED": "false"
       ])
       withNetwork(klokwrkNetwork)

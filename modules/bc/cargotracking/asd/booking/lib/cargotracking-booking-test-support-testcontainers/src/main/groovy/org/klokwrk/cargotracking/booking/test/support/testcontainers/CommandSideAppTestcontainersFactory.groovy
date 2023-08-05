@@ -38,7 +38,7 @@ class CommandSideAppTestcontainersFactory {
    * </ul>
    */
   static GenericContainer makeAndStartCommandSideApp(Network klokwrkNetwork, GenericContainer axonServer) {
-    String imageVersion = System.getProperty("cargotrackerBookingCommandSideAppDockerImageVersion")
+    String imageVersion = System.getProperty("cargotrackingBookingCommandSideAppDockerImageVersion")
     Integer[] exposedPorts = [8080]
     String containerName = "cargotracking-booking-app-commandside"
     String containerNameSuffix = UUID.randomUUID()
@@ -50,7 +50,7 @@ class CommandSideAppTestcontainersFactory {
       withCreateContainerCmdModifier({ CreateContainerCmd cmd -> cmd.withName("${ containerName }-${ containerNameSuffix }") })
       withEnv([
           "TZ": "Europe/Zagreb",
-          "CARGOTRACKER_AXON_SERVER_HOSTNAME": "${ axonServer.containerInfo.config.hostName }".toString(),
+          "CARGOTRACKING_AXON_SERVER_HOSTNAME": "${ axonServer.containerInfo.config.hostName }".toString(),
           "MANAGEMENT_DEFAULTS_METRICS_EXPORT_ENABLED": "false",
           "MANAGEMENT_TRACING_ENABLED": "false"
       ])

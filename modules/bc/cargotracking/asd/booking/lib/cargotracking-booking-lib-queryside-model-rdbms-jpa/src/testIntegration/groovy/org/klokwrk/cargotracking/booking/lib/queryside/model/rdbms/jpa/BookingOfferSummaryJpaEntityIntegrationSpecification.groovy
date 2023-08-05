@@ -56,8 +56,8 @@ class BookingOfferSummaryJpaEntityIntegrationSpecification extends Specification
     String postgresqlServerHost = postgresqlServer.host
     Integer postgresqlServerPort = postgresqlServer.getMappedPort(5432)
 
-    registry.add("CARGOTRACKER_POSTGRES_HOSTNAME", { "${ postgresqlServerHost }" })
-    registry.add("CARGOTRACKER_POSTGRES_PORT", { "${ postgresqlServerPort }" })
+    registry.add("CARGOTRACKING_POSTGRES_HOSTNAME", { "${ postgresqlServerHost }" })
+    registry.add("CARGOTRACKING_POSTGRES_PORT", { "${ postgresqlServerPort }" })
   }
 
   @Autowired

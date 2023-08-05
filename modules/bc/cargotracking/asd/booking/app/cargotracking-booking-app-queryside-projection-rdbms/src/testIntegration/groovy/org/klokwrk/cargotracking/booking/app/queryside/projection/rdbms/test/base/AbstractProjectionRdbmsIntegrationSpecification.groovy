@@ -46,12 +46,12 @@ abstract class AbstractProjectionRdbmsIntegrationSpecification extends Specifica
   static void configureDynamicTestcontainersProperties(DynamicPropertyRegistry registry) {
     String axonContainerHost = axonServer.host
     Integer axonContainerGrpcPort = axonServer.getMappedPort(8124)
-    registry.add("CARGOTRACKER_AXON_SERVER_HOSTNAME", { axonContainerHost })
-    registry.add("CARGOTRACKER_AXON_SERVER_PORT_GRPC", { "${ axonContainerGrpcPort }" })
+    registry.add("CARGOTRACKING_AXON_SERVER_HOSTNAME", { axonContainerHost })
+    registry.add("CARGOTRACKING_AXON_SERVER_PORT_GRPC", { "${ axonContainerGrpcPort }" })
 
     String postgresqlServerHost = postgresqlServer.host
     Integer postgresqlServerPort = postgresqlServer.getMappedPort(5432)
-    registry.add("CARGOTRACKER_POSTGRES_HOSTNAME", { "${ postgresqlServerHost }" })
-    registry.add("CARGOTRACKER_POSTGRES_PORT", { "${ postgresqlServerPort }" })
+    registry.add("CARGOTRACKING_POSTGRES_HOSTNAME", { "${ postgresqlServerHost }" })
+    registry.add("CARGOTRACKING_POSTGRES_PORT", { "${ postgresqlServerPort }" })
   }
 }
