@@ -2,7 +2,7 @@
 
 This module contains a standalone outbound adapter towards a customer management bounded context.
 
-The module provides resource bundle `cargotrackerBookingOutCustomerMessages` containing messages for domain exceptions thrown from the implementation.
+The module provides resource bundle `cargotracking-booking-lib-out-customer-messages` containing messages for domain exceptions thrown from the implementation.
 
 The adapter is standalone because its functionality is required from different applications.
 
