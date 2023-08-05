@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.domain.model.aggregate
+package org.klokwrk.cargotracking.domain.model.aggregate
 
 import org.klokwrk.cargotracking.domain.model.service.ConstantBasedMaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracking.domain.model.service.MaxAllowedTeuCountPolicy

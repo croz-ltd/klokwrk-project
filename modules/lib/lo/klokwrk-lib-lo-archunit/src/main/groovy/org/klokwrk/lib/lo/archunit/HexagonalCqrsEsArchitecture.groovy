@@ -46,7 +46,7 @@ import static org.hamcrest.Matchers.not
  *     .domainValues("..cargotracking.domain.model.value..")
  *     .domainEvents("..cargotracking.domain.model.event..")
  *     .domainCommands("..cargotracking.domain.model.command..")
- *     .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
+ *     .domainAggregates("..cargotracking.domain.model.aggregate..")
  *
  *     .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
  *     .applicationOutboundPorts("..cargotracker.booking.commandside.feature.*.application.port.out..")

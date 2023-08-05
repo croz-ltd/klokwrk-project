@@ -89,7 +89,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
         "org.hamcrest"
     ]
 
-    String[] cargotrackerBookingDomainAggregateAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.aggregate.."]
+    String[] cargotrackerBookingDomainAggregateAllPackages = ["org.klokwrk.cargotracking.domain.model.aggregate.."]
 
     String[] cargotrackerBookingServiceAllPackages = ["org.klokwrk.cargotracking.domain.model.service.."]
     String[] cargotrackerBookingCommandAllPackages = ["org.klokwrk.cargotracking.domain.model.command.."]
@@ -145,7 +145,7 @@ class BookingCommandSideAppDependenciesSpecification extends Specification {
     String[] cargotrackerBookingEventAllPackages = ["org.klokwrk.cargotracking.domain.model.event.."]
     String[] cargotrackerBookingBoundaryWebAllPackages = ["org.klokwrk.cargotracker.booking.boundary.web.."]
     String[] cargotrackerBookingDomainValueAllPackages = ["org.klokwrk.cargotracking.domain.model.value.."]
-    String[] cargotrackerBookingDomainAggregateAllPackages = ["org.klokwrk.cargotracker.booking.domain.model.aggregate.."]
+    String[] cargotrackerBookingDomainAggregateAllPackages = ["org.klokwrk.cargotracking.domain.model.aggregate.."]
     String[] cargotrackerBookingStandaloneOutAdapterAllPackages = ["org.klokwrk.cargotracker.booking.out.customer.."]
 
     String[] cargotrackerLibAxonCqrsCommandPackages = ["org.klokwrk.cargotracking.lib.axon.cqrs.command.."]

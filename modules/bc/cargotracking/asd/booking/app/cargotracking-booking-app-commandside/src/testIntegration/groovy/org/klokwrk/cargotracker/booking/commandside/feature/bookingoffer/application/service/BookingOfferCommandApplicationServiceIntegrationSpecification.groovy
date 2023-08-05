@@ -24,7 +24,7 @@ import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applica
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestData
 import org.klokwrk.cargotracker.booking.commandside.test.base.AbstractCommandSideIntegrationSpecification
-import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferCargos
+import org.klokwrk.cargotracking.domain.model.aggregate.BookingOfferCargos
 import org.klokwrk.cargotracking.domain.model.value.Cargo
 import org.klokwrk.cargotracking.domain.model.value.Commodity
 import org.klokwrk.cargotracking.domain.model.value.CommodityType

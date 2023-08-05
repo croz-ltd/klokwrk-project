@@ -481,7 +481,7 @@ To better understand how this works, we can look at the architectural test fragm
         .domainEvents("..cargotracking.domain.model.event..")
         .domainCommands("..cargotracking.domain.model.command..")
         .domainServices("..cargotracking.domain.model.service..")
-        .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
+        .domainAggregates("..cargotracking.domain.model.aggregate..")
 
         .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
         .applicationOutboundPorts(

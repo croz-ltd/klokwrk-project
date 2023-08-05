@@ -22,7 +22,7 @@ import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.applica
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponse
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.in.data.CargoRequestData
 import org.klokwrk.cargotracker.booking.commandside.feature.bookingoffer.application.port.out.LocationByUnLoCodeQueryPortOut
-import org.klokwrk.cargotracker.booking.domain.model.aggregate.BookingOfferAggregate
+import org.klokwrk.cargotracking.domain.model.aggregate.BookingOfferAggregate
 import org.klokwrk.cargotracking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracking.domain.model.command.data.CargoCommandData
 import org.klokwrk.cargotracking.domain.model.value.BookingOfferId

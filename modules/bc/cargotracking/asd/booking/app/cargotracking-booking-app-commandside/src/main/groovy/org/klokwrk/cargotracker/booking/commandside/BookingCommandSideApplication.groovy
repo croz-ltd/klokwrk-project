@@ -26,7 +26,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 /**
  * Booking command-side application.
  */
-@SpringBootApplication(scanBasePackages = ["org.klokwrk.cargotracker.booking.commandside", "org.klokwrk.cargotracker.booking.domain.model.aggregate"])
+@SpringBootApplication(scanBasePackages = ["org.klokwrk.cargotracker.booking.commandside", "org.klokwrk.cargotracking.domain.model.aggregate"])
 @CompileStatic
 class BookingCommandSideApplication {
   // Generated annotation ignores main method in JaCoCo report as main method is not covered by JaCoCo (probably it is too early for JaCoCo to chip in)

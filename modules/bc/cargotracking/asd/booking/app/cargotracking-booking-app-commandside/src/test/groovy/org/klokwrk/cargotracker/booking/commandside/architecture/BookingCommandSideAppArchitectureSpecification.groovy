@@ -38,7 +38,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
     importedClasses = ArchUnitUtils.importJavaClassesFromPackages(
         [
             "org.klokwrk.cargotracker.booking.commandside",
-            "org.klokwrk.cargotracker.booking.domain.model.aggregate",
+            "org.klokwrk.cargotracking.domain.model.aggregate",
             "org.klokwrk.cargotracking.domain.model.service",
             "org.klokwrk.cargotracking.domain.model.value",
             "org.klokwrk.cargotracking.domain.model.command",
@@ -94,7 +94,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
     ArchRule rule = Architectures
         .onionArchitecture()
         .domainModels(
-            "..cargotracker.booking.domain.model.aggregate..", // domainEntities
+            "..cargotracking.domain.model.aggregate..", // domainEntities
             "..cargotracking.domain.model.service..",   // domainServices
             "..cargotracking.domain.model.command..",   // domainCommands
             "..cargotracking.domain.model.event..",     // domainEvents
@@ -140,7 +140,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .domainEvents("..cargotracking.domain.model.event..")
         .domainCommands("..cargotracking.domain.model.command..")
         .domainServices("..cargotracking.domain.model.service..")
-        .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
+        .domainAggregates("..cargotracking.domain.model.aggregate..")
 
         .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
         .applicationOutboundPorts(
@@ -185,7 +185,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .domainEvents("..cargotracking.domain.model.event..")
         .domainCommands("..cargotracking.domain.model.command..")
         .domainServices("..cargotracking.domain.model.service..")
-        .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
+        .domainAggregates("..cargotracking.domain.model.aggregate..")
 
         .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
         .applicationOutboundPorts(
