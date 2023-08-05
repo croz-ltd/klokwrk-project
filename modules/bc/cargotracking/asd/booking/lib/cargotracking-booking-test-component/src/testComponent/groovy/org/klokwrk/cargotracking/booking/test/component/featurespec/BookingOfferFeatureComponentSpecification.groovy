@@ -60,7 +60,7 @@ class BookingOfferFeatureComponentSpecification extends AbstractComponentSpecifi
     commandRequestBodyList.each { String commandRequestBody ->
       Map commandResponseMap = createBookingOffer_succeeded(commandRequestBody, commandSideApp)
 
-      if (commandRequestBody.contains("standard-customer@cargotracker.com")) {
+      if (commandRequestBody.contains("standard-customer@cargotracking.com")) {
         countOf_createdBookingOffers_forStandardCustomer++
       }
 

@@ -78,7 +78,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
   void "should work for minimal search request with default paging and sorting of request"() {
     given:
     OperationRequest<BookingOfferSummarySearchAllQueryRequest> operationRequest = new OperationRequest(
-        payload: new BookingOfferSummarySearchAllQueryRequest(userId: "standard-customer@cargotracker.com"),
+        payload: new BookingOfferSummarySearchAllQueryRequest(userId: "standard-customer@cargotracking.com"),
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
     )
 
@@ -111,7 +111,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
     given:
     OperationRequest<BookingOfferSummarySearchAllQueryRequest> operationRequest = new OperationRequest(
         payload: new BookingOfferSummarySearchAllQueryRequest(
-            userId: "standard-customer@cargotracker.com",
+            userId: "standard-customer@cargotracking.com",
             pageRequirement: new PageRequirement(ordinal: 0, size: 10),
             sortRequirementList: [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.DESC)]
         ),
@@ -147,7 +147,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
     given:
     OperationRequest<BookingOfferSummarySearchAllQueryRequest> operationRequest = new OperationRequest(
         payload: new BookingOfferSummarySearchAllQueryRequest(
-            userId: "standard-customer@cargotracker.com",
+            userId: "standard-customer@cargotracking.com",
             customerTypeSearchList: [CustomerType.STANDARD, CustomerType.GOLD],
             originLocationName: "Rijeka",
             totalCommodityWeightFromIncluding: 5_000.kg,
@@ -185,7 +185,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
     given:
     OperationRequest<BookingOfferSummarySearchAllQueryRequest> operationRequest = new OperationRequest(
         payload: new BookingOfferSummarySearchAllQueryRequest(
-            userId: "standard-customer@cargotracker.com",
+            userId: "standard-customer@cargotracking.com",
             originLocationName: "Rijeka",
             commodityTypes: [CommodityType.AIR_COOLED, CommodityType.FROZEN, CommodityType.CHILLED]
         ),
@@ -221,7 +221,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
     given:
     OperationRequest<BookingOfferSummarySearchAllQueryRequest> operationRequest = new OperationRequest(
         payload: new BookingOfferSummarySearchAllQueryRequest(
-            userId: "standard-customer@cargotracker.com",
+            userId: "standard-customer@cargotracking.com",
             pageRequirement: PageRequirement.PAGE_REQUIREMENT_INSTANCE_DEFAULT,
             sortRequirementList: sortRequirementListParam
         ),
@@ -246,7 +246,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
     given:
     OperationRequest<BookingOfferSummarySearchAllQueryRequest> operationRequest = new OperationRequest(
         payload: new BookingOfferSummarySearchAllQueryRequest(
-            userId: "standard-customer@cargotracker.com",
+            userId: "standard-customer@cargotracking.com",
             pageRequirement: PageRequirement.PAGE_REQUIREMENT_INSTANCE_DEFAULT,
             sortRequirementList: [new SortRequirement(propertyName: "nonExistingProperty", direction: SortDirection.ASC)]
         ),

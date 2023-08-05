@@ -101,7 +101,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
   void "makeCreateBookingOfferCommand - should fail for invalid locations in RouteSpecificationData"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userId: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracking.com",
         routeSpecification: new RouteSpecificationRequestData(
             originLocation: originLocationParam, destinationLocation: destinationLocationParam,
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
@@ -131,7 +131,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
   void "makeCreateBookingOfferCommand - should fail for invalid departure instants in RouteSpecificationData"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userId: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracking.com",
         routeSpecification: new RouteSpecificationRequestData(
             originLocation: "HRRJK", destinationLocation: "NLRTM",
             departureEarliestTime: departureEarliestTimeParam, departureLatestTime: departureLatestTimeParam,
@@ -162,7 +162,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
   void "makeCreateBookingOfferCommand - should fail for invalid arrival instant in RouteSpecificationData"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userId: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracking.com",
         routeSpecification: new RouteSpecificationRequestData(
             originLocation: "HRRJK", destinationLocation: "NLRTM",
             departureEarliestTime: currentInstantRoundedAndOneHour, departureLatestTime: currentInstantRoundedAndTwoHours,
@@ -192,7 +192,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
   void "makeCreateBookingOfferCommand - should work for unspecified cargo identifier"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userId: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracking.com",
         routeSpecification: validRouteSpecificationRequestData,
         cargos: [validCargoRequestData]
     )
@@ -217,7 +217,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
     given:
     String myBookingOfferId = CombUuidShortPrefixUtils.makeCombShortPrefix()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userId: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracking.com",
         bookingOfferId: myBookingOfferId,
         routeSpecification: validRouteSpecificationRequestData,
         cargos: [validCargoRequestData]
@@ -241,7 +241,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
   void "makeCreateBookingOfferCommand - should throw for specified cargo identifier in invalid format"() {
     given:
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userId: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracking.com",
         bookingOfferId: "invalid",
         routeSpecification: validRouteSpecificationRequestData,
         cargos: [validCargoRequestData]

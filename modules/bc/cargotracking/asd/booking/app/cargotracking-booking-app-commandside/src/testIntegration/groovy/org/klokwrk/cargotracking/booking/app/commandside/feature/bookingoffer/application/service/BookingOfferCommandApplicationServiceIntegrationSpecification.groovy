@@ -59,7 +59,7 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
 
     String myBookingOfferId = CombUuidShortPrefixUtils.makeCombShortPrefix()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userId: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracking.com",
         bookingOfferId: myBookingOfferId,
         routeSpecification: new RouteSpecificationRequestData(
             originLocation: "NLRTM", destinationLocation: "HRRJK",

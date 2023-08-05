@@ -31,7 +31,7 @@ class BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder implements JsonF
 
   static BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder bookingOfferSummaryFindByIdQueryRequest_standardCustomer() {
     BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder jsonFixtureBuilder = new BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder()
-        .userId("standard-customer@cargotracker.com")
+        .userId("standard-customer@cargotracking.com")
 
     return jsonFixtureBuilder
   }

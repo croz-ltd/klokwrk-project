@@ -62,9 +62,9 @@ class InMemoryCustomerRegistryService implements CustomerByUserIdPortOut {
   static class CustomerSample {
     static final Map<String, Customer> CUSTOMER_SAMPLE_MAP = [
         "anonymous123": customer_anonymous().build(),
-        "standard-customer@cargotracker.com": customer_standard().build(),
-        "gold-customer@cargotracker.com": customer_gold().build(),
-        "platinum-customer@cargotracker.com": customer_platinum().build()
+        "standard-customer@cargotracking.com": customer_standard().build(),
+        "gold-customer@cargotracking.com": customer_gold().build(),
+        "platinum-customer@cargotracking.com": customer_platinum().build()
     ]
 
     static Customer findCustomerByUserId(String userId) {

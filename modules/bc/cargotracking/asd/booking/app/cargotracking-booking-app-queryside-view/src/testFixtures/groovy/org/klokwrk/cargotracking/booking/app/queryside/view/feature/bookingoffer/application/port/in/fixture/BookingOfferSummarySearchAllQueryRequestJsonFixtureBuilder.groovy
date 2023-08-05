@@ -40,14 +40,14 @@ import static org.klokwrk.cargotracking.test.support.fixture.util.JsonFixtureUti
 class BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder implements JsonFixtureBuilder {
   static BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder bookingOfferSummarySearchAllQueryRequest_standardCustomer() {
     BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder jsonFixtureBuilder = new BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder()
-        .userId("standard-customer@cargotracker.com")
+        .userId("standard-customer@cargotracking.com")
 
     return jsonFixtureBuilder
   }
 
   static BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder bookingOfferSummarySearchAllQueryRequest_originOfRijeka() {
     BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder jsonFixtureBuilder = new BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder()
-        .userId("standard-customer@cargotracker.com")
+        .userId("standard-customer@cargotracking.com")
         .customerTypeSearchList(["STANDARD", "GOLD"])
         .originLocationName("Rijeka")
 

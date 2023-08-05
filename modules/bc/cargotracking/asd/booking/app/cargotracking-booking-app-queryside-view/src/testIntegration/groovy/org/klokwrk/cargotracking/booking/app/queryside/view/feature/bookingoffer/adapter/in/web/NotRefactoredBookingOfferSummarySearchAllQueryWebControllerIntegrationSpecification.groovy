@@ -90,7 +90,7 @@ class NotRefactoredBookingOfferSummarySearchAllQueryWebControllerIntegrationSpec
   void "should work for search request with default paging and sorting"() {
     given:
     String requestBody = objectMapper.writeValueAsString([
-        userId: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracking.com",
         customerTypeSearchList: [CustomerType.STANDARD, CustomerType.GOLD],
         originLocationName: "Rijeka",
         totalCommodityWeightFromIncluding: [
@@ -184,7 +184,7 @@ class NotRefactoredBookingOfferSummarySearchAllQueryWebControllerIntegrationSpec
   void "should work for search request with default paging and sorting but with empty page content"() {
     given:
     String requestBody = objectMapper.writeValueAsString([
-        userId: "platinum-customer@cargotracker.com"
+        userId: "platinum-customer@cargotracking.com"
     ])
 
     when:
@@ -236,7 +236,7 @@ class NotRefactoredBookingOfferSummarySearchAllQueryWebControllerIntegrationSpec
 
   void "should fail for invalid property name in sort requirements"() {
     String requestBody = objectMapper.writeValueAsString([
-        userId: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracking.com",
         customerTypeSearchList: [CustomerType.STANDARD, CustomerType.GOLD],
         pageRequirement: [ordinal: 0, size: 25],
         sortRequirementList: [

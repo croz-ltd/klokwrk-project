@@ -43,11 +43,11 @@ class InMemoryCustomerRegistryServiceSpecification extends Specification {
     customer.customerType == customerTypeParam
 
     where:
-    userIdParam                          | customerIdParam                        | customerTypeParam
-    "anonymous123"                       | "44f57e34-cfa5-4413-9329-4c2cc338c997" | CustomerType.ANONYMOUS
-    "standard-customer@cargotracker.com" | "26d5f7d8-9ded-4ce3-b320-03a75f674f4e" | CustomerType.STANDARD
-    "gold-customer@cargotracker.com"     | "7517d07c-0031-4d4f-8d8f-58daeb3fad3c" | CustomerType.GOLD
-    "platinum-customer@cargotracker.com" | "46af8019-f5fe-4b67-a514-e784b8bdde27" | CustomerType.PLATINUM
+    userIdParam                           | customerIdParam                        | customerTypeParam
+    "anonymous123"                        | "44f57e34-cfa5-4413-9329-4c2cc338c997" | CustomerType.ANONYMOUS
+    "standard-customer@cargotracking.com" | "26d5f7d8-9ded-4ce3-b320-03a75f674f4e" | CustomerType.STANDARD
+    "gold-customer@cargotracking.com"     | "7517d07c-0031-4d4f-8d8f-58daeb3fad3c" | CustomerType.GOLD
+    "platinum-customer@cargotracking.com" | "46af8019-f5fe-4b67-a514-e784b8bdde27" | CustomerType.PLATINUM
   }
 
   void "findCustomerByUserId() should fail for invalid param"() {

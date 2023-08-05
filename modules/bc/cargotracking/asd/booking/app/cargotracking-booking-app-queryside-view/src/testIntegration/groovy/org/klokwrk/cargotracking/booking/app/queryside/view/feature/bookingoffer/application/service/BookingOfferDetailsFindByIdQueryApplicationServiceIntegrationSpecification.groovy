@@ -77,7 +77,7 @@ class BookingOfferDetailsFindByIdQueryApplicationServiceIntegrationSpecification
     String myBookingOfferId = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
 
     BookingOfferDetailsFindByIdQueryRequest bookingOfferDetailsFindByIdQueryRequest =
-        new BookingOfferDetailsFindByIdQueryRequest(bookingOfferId: myBookingOfferId, userId: "standard-customer@cargotracker.com")
+        new BookingOfferDetailsFindByIdQueryRequest(bookingOfferId: myBookingOfferId, userId: "standard-customer@cargotracking.com")
 
     OperationRequest<BookingOfferDetailsFindByIdQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferDetailsFindByIdQueryRequest,
@@ -121,7 +121,7 @@ class BookingOfferDetailsFindByIdQueryApplicationServiceIntegrationSpecification
   void "should throw when booking offer details cannot be found"() {
     given:
     BookingOfferDetailsFindByIdQueryRequest bookingOfferDetailsFindByIdQueryRequest =
-        new BookingOfferDetailsFindByIdQueryRequest(bookingOfferId: UUID.randomUUID(), userId: "standard-customer@cargotracker.com")
+        new BookingOfferDetailsFindByIdQueryRequest(bookingOfferId: UUID.randomUUID(), userId: "standard-customer@cargotracking.com")
 
     OperationRequest<BookingOfferDetailsFindByIdQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferDetailsFindByIdQueryRequest,
@@ -147,7 +147,7 @@ class BookingOfferDetailsFindByIdQueryApplicationServiceIntegrationSpecification
     logger.addAppender(listAppender)
 
     BookingOfferDetailsFindByIdQueryRequest bookingOfferDetailsFindByIdQueryRequest =
-        new BookingOfferDetailsFindByIdQueryRequest(bookingOfferId: myBookingOfferId, userId: "standard-customer@cargotracker.com")
+        new BookingOfferDetailsFindByIdQueryRequest(bookingOfferId: myBookingOfferId, userId: "standard-customer@cargotracking.com")
 
     OperationRequest<BookingOfferDetailsFindByIdQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferDetailsFindByIdQueryRequest,

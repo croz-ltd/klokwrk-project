@@ -71,9 +71,9 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
     Instant startedAt = Instant.now()
     String myBookingOfferId = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
 
-    // Note: "standard-customer@cargotracker.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
+    // Note: "standard-customer@cargotracking.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
-        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: myBookingOfferId, userId: "standard-customer@cargotracker.com")
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: myBookingOfferId, userId: "standard-customer@cargotracking.com")
 
     OperationRequest<BookingOfferSummaryFindByIdQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryFindByIdQueryRequest,
@@ -123,7 +123,7 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
   void "should throw when booking offer summary cannot be found"() {
     given:
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
-        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: UUID.randomUUID(), userId: "standard-customer@cargotracker.com")
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: UUID.randomUUID(), userId: "standard-customer@cargotracking.com")
 
     OperationRequest<BookingOfferSummaryFindByIdQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryFindByIdQueryRequest,
@@ -148,9 +148,9 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
 
     String myBookingOfferId = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
 
-    // Note: "standard-customer@cargotracker.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
+    // Note: "standard-customer@cargotracking.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
-        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: myBookingOfferId, userId: "standard-customer@cargotracker.com")
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: myBookingOfferId, userId: "standard-customer@cargotracking.com")
 
     OperationRequest<BookingOfferSummaryFindByIdQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryFindByIdQueryRequest,

@@ -86,7 +86,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
 
   void "should work for correct request with default paging and sorting"() {
     given:
-    BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(userId: "standard-customer@cargotracker.com")
+    BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(userId: "standard-customer@cargotracking.com")
 
     OperationRequest<BookingOfferSummaryFindAllQueryRequest> operationRequest = new OperationRequest(
         payload: bookingOfferSummaryFindAllQueryRequest,
@@ -126,7 +126,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
   void "should work for correct request with explicit paging and sorting"() {
     given:
     BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(
-        userId: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracking.com",
         pageRequirement: new PageRequirement(ordinal: 0, size: 3),
         sortRequirementList: [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.ASC)]
     )
@@ -158,7 +158,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
   void "should fail for invalid sort requirements list"() {
     given:
     BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(
-        userId: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracking.com",
         pageRequirement: new PageRequirement(ordinal: 0, size: 3),
         sortRequirementList: sortRequirementListParam
     )
@@ -185,7 +185,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
   void "should fail for invalid property name in sort requirements"() {
     given:
     BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(
-        userId: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracking.com",
         pageRequirement: new PageRequirement(ordinal: 0, size: 3),
         sortRequirementList: [new SortRequirement(propertyName: "nonExistingProperty", direction: SortDirection.ASC)]
     )
@@ -220,7 +220,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
     logger.addAppender(listAppender)
 
     BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(
-        userId: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracking.com",
         pageRequirement: new PageRequirement(ordinal: 0, size: 100),
         sortRequirementList: [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.ASC)]
     )
@@ -256,7 +256,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
     logger.addAppender(listAppender)
 
     BookingOfferSummaryFindAllQueryRequest bookingOfferSummaryFindAllQueryRequest = new BookingOfferSummaryFindAllQueryRequest(
-        userId: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracking.com",
         pageRequirement: new PageRequirement(ordinal: 0, size: 3),
         sortRequirementList: [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.ASC)]
     )

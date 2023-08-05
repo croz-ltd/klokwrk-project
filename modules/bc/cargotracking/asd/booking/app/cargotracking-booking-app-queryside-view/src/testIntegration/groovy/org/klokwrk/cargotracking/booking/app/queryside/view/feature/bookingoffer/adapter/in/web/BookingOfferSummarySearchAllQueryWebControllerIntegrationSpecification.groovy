@@ -126,7 +126,7 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
     when:
     Map responseMap = bookingOfferSummarySearchAll_succeeded(
         bookingOfferSummarySearchAllQueryRequest_standardCustomer()
-            .userId("platinum-customer@cargotracker.com")
+            .userId("platinum-customer@cargotracking.com")
             .buildAsJsonString(),
         acceptLanguageParam,
         mockMvc

@@ -29,6 +29,8 @@ import org.axonframework.messaging.unitofwork.UnitOfWork
 import org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandPortIn
 import org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandRequest
 import org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.CreateBookingOfferCommandResponse
+import org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.data.CargoRequestData
+import org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestData
 import org.klokwrk.cargotracking.booking.app.commandside.infrastructure.springbootconfig.SpringBootConfig
 import org.klokwrk.cargotracking.booking.app.commandside.test.base.AbstractCommandSideIntegrationSpecification
 import org.klokwrk.cargotracking.booking.lib.boundary.web.metadata.WebMetaDataFixtureBuilder
@@ -76,14 +78,14 @@ abstract class AbstractCommandRetrySchedulerIntegrationSpecification extends Abs
 
     String myBookingOfferId = CombUuidShortPrefixUtils.makeCombShortPrefix()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userId: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracking.com",
         bookingOfferId: myBookingOfferId,
-        routeSpecification: new org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestData(
+        routeSpecification: new RouteSpecificationRequestData(
             originLocation: "NLRTM", destinationLocation: "HRRJK",
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
             arrivalLatestTime: Instant.now() + Duration.ofHours(2)
         ),
-        cargos: [new org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.data.CargoRequestData(commodityType: CommodityType.DRY.name(), commodityWeight: 1000.kg, containerDimensionType: "DIMENSION_ISO_22") ]
+        cargos: [new CargoRequestData(commodityType: CommodityType.DRY.name(), commodityWeight: 1000.kg, containerDimensionType: "DIMENSION_ISO_22") ]
     )
     Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
 
@@ -139,14 +141,14 @@ abstract class AbstractCommandRetrySchedulerIntegrationSpecification extends Abs
 
     String bookingOfferId = CombUuidShortPrefixUtils.makeCombShortPrefix()
     CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
-        userId: "standard-customer@cargotracker.com",
+        userId: "standard-customer@cargotracking.com",
         bookingOfferId: bookingOfferId,
-        routeSpecification: new org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestData(
+        routeSpecification: new RouteSpecificationRequestData(
             originLocation: "NLRTM", destinationLocation: "HRRJK",
             departureEarliestTime: Instant.now(), departureLatestTime: Instant.now() + Duration.ofHours(1),
             arrivalLatestTime: Instant.now() + Duration.ofHours(2)
         ),
-        cargos: [new org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.data.CargoRequestData(commodityType: CommodityType.DRY.name(), commodityWeight: 1000.kg, containerDimensionType: "DIMENSION_ISO_22")]
+        cargos: [new CargoRequestData(commodityType: CommodityType.DRY.name(), commodityWeight: 1000.kg, containerDimensionType: "DIMENSION_ISO_22")]
     )
     Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
 

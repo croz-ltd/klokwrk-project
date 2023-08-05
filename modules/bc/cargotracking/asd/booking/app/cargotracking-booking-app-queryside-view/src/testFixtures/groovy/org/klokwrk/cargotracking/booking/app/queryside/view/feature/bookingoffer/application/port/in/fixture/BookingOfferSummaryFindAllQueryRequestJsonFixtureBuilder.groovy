@@ -34,7 +34,7 @@ import static org.klokwrk.cargotracking.test.support.fixture.util.JsonFixtureUti
 class BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder implements JsonFixtureBuilder {
   static BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder bookingOfferSummaryFindAllQueryRequest_standardCustomer() {
     BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder jsonFixtureBuilder = new BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder()
-        .userId("standard-customer@cargotracker.com")
+        .userId("standard-customer@cargotracking.com")
 
     return jsonFixtureBuilder
   }
