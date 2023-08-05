@@ -44,7 +44,7 @@ class BookingQuerySideProjectionRdbmsAppArchitectureSpecification extends Specif
         .noClasses().that()
             .resideInAPackage("org.klokwrk.cargotracker.booking.queryside.projection.rdbms..")
         .should()
-            .dependOnClassesThat().resideInAPackage("org.klokwrk.cargotracker.booking.domain.model.command..")
+            .dependOnClassesThat().resideInAPackage("org.klokwrk.cargotracking.domain.model.command..")
     // @formatter:on
 
     expect:

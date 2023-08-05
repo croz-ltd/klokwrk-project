@@ -27,8 +27,8 @@ import org.axonframework.modelling.command.AggregateCreationPolicy
 import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
-import org.klokwrk.cargotracker.booking.domain.model.command.CreateBookingOfferCommand
-import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandData
+import org.klokwrk.cargotracking.domain.model.command.CreateBookingOfferCommand
+import org.klokwrk.cargotracking.domain.model.command.data.CargoCommandData
 import org.klokwrk.cargotracking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracking.domain.model.event.data.CargoEventData
 import org.klokwrk.cargotracking.domain.model.event.data.CustomerEventData

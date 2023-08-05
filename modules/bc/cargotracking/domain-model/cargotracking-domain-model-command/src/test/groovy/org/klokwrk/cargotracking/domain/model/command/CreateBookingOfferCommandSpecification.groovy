@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.domain.model.command
+package org.klokwrk.cargotracking.domain.model.command
 
-import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandData
+import org.klokwrk.cargotracking.domain.model.command.data.CargoCommandData
 import org.klokwrk.cargotracking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracking.domain.model.value.Commodity
 import org.klokwrk.cargotracking.domain.model.value.CommodityType

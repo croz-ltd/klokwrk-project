@@ -335,7 +335,7 @@ To better understand how this works, we can look at the test fragment for comman
         .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
         .domainValues("..cargotracking.domain.model.value..")
         .domainEvents("..cargotracking.domain.model.event..")
-        .domainCommands("..cargotracker.booking.domain.model.command..")
+        .domainCommands("..cargotracking.domain.model.command..")
         .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
 
         .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")

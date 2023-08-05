@@ -479,7 +479,7 @@ To better understand how this works, we can look at the architectural test fragm
         .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
         .domainValues("..cargotracking.domain.model.value..")
         .domainEvents("..cargotracking.domain.model.event..")
-        .domainCommands("..cargotracker.booking.domain.model.command..")
+        .domainCommands("..cargotracking.domain.model.command..")
         .domainServices("..cargotracking.domain.model.service..")
         .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
 

@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.domain.model.command
+package org.klokwrk.cargotracking.domain.model.command
 
 import groovy.transform.CompileStatic
 import groovy.transform.Generated
-import org.klokwrk.cargotracker.booking.domain.model.command.data.CargoCommandData
+import org.klokwrk.cargotracking.domain.model.command.data.CargoCommandData
 import org.klokwrk.cargotracking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracking.domain.model.value.Customer
 import org.klokwrk.cargotracking.domain.model.value.Location

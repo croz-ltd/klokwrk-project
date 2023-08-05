@@ -41,7 +41,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
             "org.klokwrk.cargotracker.booking.domain.model.aggregate",
             "org.klokwrk.cargotracking.domain.model.service",
             "org.klokwrk.cargotracking.domain.model.value",
-            "org.klokwrk.cargotracker.booking.domain.model.command",
+            "org.klokwrk.cargotracking.domain.model.command",
             "org.klokwrk.cargotracking.domain.model.event",
             "org.klokwrk.cargotracker.booking.out.customer"
         ],
@@ -96,7 +96,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .domainModels(
             "..cargotracker.booking.domain.model.aggregate..", // domainEntities
             "..cargotracking.domain.model.service..",   // domainServices
-            "..cargotracker.booking.domain.model.command..",   // domainCommands
+            "..cargotracking.domain.model.command..",   // domainCommands
             "..cargotracking.domain.model.event..",     // domainEvents
             "..cargotracking.domain.model.value.."      // domainValueObjects
         )
@@ -138,7 +138,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .architecture()
         .domainValues("..cargotracking.domain.model.value..")
         .domainEvents("..cargotracking.domain.model.event..")
-        .domainCommands("..cargotracker.booking.domain.model.command..")
+        .domainCommands("..cargotracking.domain.model.command..")
         .domainServices("..cargotracking.domain.model.service..")
         .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
 
@@ -183,7 +183,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
         .domainValues("..cargotracking.domain.model.value..")
         .domainEvents("..cargotracking.domain.model.event..")
-        .domainCommands("..cargotracker.booking.domain.model.command..")
+        .domainCommands("..cargotracking.domain.model.command..")
         .domainServices("..cargotracking.domain.model.service..")
         .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
 
