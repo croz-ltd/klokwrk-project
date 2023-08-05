@@ -92,7 +92,7 @@ In this structure variant, all structure-related directories are placed directly
     │   └── klokwrk-tool-gradle-source-repack
     └── ... (other files or directories)
 
-We can think about the project root as equivalent to the whole system. One step below the system, we have organizational directories for each domain in our system (`cargotracker` in our example),
+We can think about the project root as equivalent to the whole system. One step below the system, we have organizational directories for each domain in our system (`cargotracking` in our example),
 then the directory for **generic reusable libraries** (`lib`), and the directory for **language extensions** (`lang`).
 
 Generic reusable libraries contain infrastructural code that often deals with nuances of integration with 3rd party libraries. We can use generic reusable libraries as dependencies of infrastructural
@@ -104,7 +104,7 @@ Just bellow the root we have some additional directories like `tool` (containing
 dependency management), and `support`. Directory `support` contains every other artifact (other than source code) necessary for various aspects of the project. Here we can find documentation,
 supportive scripts, git hooks, etc.
 
-Inside domain directories (`cargotracker` in our example), we have three different artifact types. At the lowest abstraction level are **domain libraries** that can be recognized by
+Inside domain directories (`cargotracking` in our example), we have three different artifact types. At the lowest abstraction level are **domain libraries** that can be recognized by
 `[domain-name]-lib-*` pattern in their name (i.e., `cargotracking-lib-axon-cqrs`, `cargotracking-lib-web`, etc.). Domain libraries contain code reusable across the domain.
 
 Then we have **subdomain libraries**, recognized by `[domain-name]-[subdomain-name]-*` pattern. These contain code reusable only inside a single subdomain. In our example, the name of a subdomain
@@ -184,7 +184,7 @@ in the `support` directory. Therefore, 99% of the time, developers will focus on
 artifacts.
 
 The first level of the `modules` directory content is organized the same as it was with the simple strategic structure. However, there is a significant distinction under the domain directory
-(`cargotracker` in our example). At the domain level, each subdomain has its own dedicated directory (`booking` in our example), and domain libraries are placed in the dedicated `lib` directory. At
+(`cargotracking` in our example). At the domain level, each subdomain has its own dedicated directory (`booking` in our example), and domain libraries are placed in the dedicated `lib` directory. At
 the subdomain level, we further categorize subdomain libraries in the `lib` directory and applications in the `app` directory.
 
 As a result, the elaborate strategic structure will leave little doubt about each module's context and abstraction level. Navigation should be easy and apparent.
