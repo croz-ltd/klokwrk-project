@@ -483,15 +483,15 @@ To better understand how this works, we can look at the architectural test fragm
         .domainServices("..cargotracking.domain.model.service..")
         .domainAggregates("..cargotracking.domain.model.aggregate..")
 
-        .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
+        .applicationInboundPorts("..cargotracking.booking.app.commandside.feature.*.application.port.in..")
         .applicationOutboundPorts(
-            "..cargotracker.booking.commandside.feature.*.application.port.out..",
+            "..cargotracking.booking.app.commandside.feature.*.application.port.out..",
             "..cargotracking.booking.lib.out.customer.port.."
         )
-        .applicationServices("..cargotracker.booking.commandside.feature.*.application.service..")
+        .applicationServices("..cargotracking.booking.app.commandside.feature.*.application.service..")
 
-        .adapterInbound("in.web", "..cargotracker.booking.commandside.feature.*.adapter.in.web..")
-        .adapterOutbound("out.inline.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..")
+        .adapterInbound("in.web", "..cargotracking.booking.app.commandside.feature.*.adapter.in.web..")
+        .adapterOutbound("out.inline.remoting", "..cargotracking.booking.app.commandside.feature.*.adapter.out.remoting..")
         .adapterOutbound("out.standalone.customer", "..cargotracking.booking.lib.out.customer.adapter..")
 
         // ...
