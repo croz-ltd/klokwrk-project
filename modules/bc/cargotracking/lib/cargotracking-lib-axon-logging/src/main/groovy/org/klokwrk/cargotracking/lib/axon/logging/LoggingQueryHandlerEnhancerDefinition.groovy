@@ -31,11 +31,12 @@ import java.lang.reflect.Method
 /**
  * Defines Axon's {@link HandlerEnhancerDefinition} for detailed logging of query handler executions.
  * <p/>
- * Corresponding Slf4j logger uses '<code>cargotracker.axon.query-handler-logging</code>' category and it logs on <code>DEBUG</code> level. Logger output contains information about query's payload.
+ * Corresponding Slf4j logger uses '<code>cargotracking-lib-axon-logging.query-handler-logger</code>' category and it logs on <code>DEBUG</code> level. Logger output contains information about
+ * query's payload.
  * <p/>
  * Logged output looks similar to this:
  * <pre>
- * ... cargotracker.axon.query-handler-logging - Executing QueryHandler method [MyTestQueryHandler.handleSomeQuery(MyTestQuery)] with payload [query:123]
+ * ... cargotracking-lib-axon-logging.query-handler-logger - Executing QueryHandler method [MyTestQueryHandler.handleSomeQuery(MyTestQuery)] with payload [query:123]
  * </pre>
  * To register this HandlerEnhancerDefinition, use standard means as described in Axon documentation. In Spring Boot applications only a simple bean declaration is required.
  */
@@ -54,7 +55,7 @@ class LoggingQueryHandlerEnhancerDefinition implements HandlerEnhancerDefinition
     return selectedMessageHandlingMember
   }
 
-  @Slf4j(category = "cargotracker.axon.query-handler-logging")
+  @Slf4j(category = "cargotracking-lib-axon-logging.query-handler-logger")
   static class LoggingQueryHandlingMember<T> extends WrappedMessageHandlingMember<T> {
     MessageHandlingMember<T> messageHandlingMember
 

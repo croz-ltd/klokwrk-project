@@ -31,12 +31,12 @@ import java.lang.reflect.Method
 /**
  * Defines Axon's {@link HandlerEnhancerDefinition} for detailed logging of event handlers executions.
  * <p/>
- * Corresponding Slf4j logger uses '<code>cargotracker.axon.event-handler-logging</code>' category and it logs on <code>DEBUG</code> level. Logger output contains information about aggregate
- * identifier, sequence number, global index and event id.
+ * Corresponding Slf4j logger uses '<code>cargotracking-lib-axon-logging.event-handler-logger</code>' category and it logs on <code>DEBUG</code> level. Logger output contains information about
+ * aggregate identifier, sequence number, global index and event id.
  * <p/>
  * Logged output looks similar to this (single line in output):
  * <pre>
- * ... cargotracker.axon.event-handler-logging : Executing EventHandler method [BookingOfferSummaryProjectionService.onBookingOfferCreatedEvent(BookingOfferCreatedEvent)]
+ * ... cargotracking-lib-axon-logging.event-handler-logger : Executing EventHandler method [BookingOfferSummaryProjectionService.onBookingOfferCreatedEvent(BookingOfferCreatedEvent)]
  *         with event [eventGlobalIndex: 6, eventId: 76e6ea70-4fd8-47f9-a15b-ce8df4a939e2, BookingOfferCreatedEvent(aggregateIdentifier: eaa1efa4-ff9d-4bd8-8e83-4e4b2c1bbcfb, sequenceNumber: 0)]
  * </pre>
  * To register this HandlerEnhancerDefinition, use standard means as described in Axon documentation. Usually this will require adding a simple bean declaration in the Spring Boot config. However,
@@ -62,7 +62,7 @@ class LoggingEventHandlerEnhancerDefinition implements HandlerEnhancerDefinition
     return selectedMessageHandlingMember
   }
 
-  @Slf4j(category = "cargotracker.axon.event-handler-logging")
+  @Slf4j(category = "cargotracking-lib-axon-logging.event-handler-logger")
   static class LoggingEventHandlingMember<T> extends WrappedMessageHandlingMember<T> {
     MessageHandlingMember<T> messageHandlingMember
 

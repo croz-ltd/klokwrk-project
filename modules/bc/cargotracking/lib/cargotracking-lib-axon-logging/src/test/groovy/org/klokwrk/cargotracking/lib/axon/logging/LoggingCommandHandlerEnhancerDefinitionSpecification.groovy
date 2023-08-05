@@ -70,7 +70,7 @@ class LoggingCommandHandlerEnhancerDefinitionSpecification extends Specification
   }
 
   private List configureLoggerAndListAppender() {
-    Logger logger = LoggerFactory.getLogger("cargotracker.axon.command-handler-logging") as Logger
+    Logger logger = LoggerFactory.getLogger("cargotracking-lib-axon-logging.command-handler-logger") as Logger
     ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
     listAppender.start()
     logger.addAppender(listAppender)

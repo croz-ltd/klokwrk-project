@@ -74,7 +74,7 @@ class LoggingEventSourcingHandlerEnhancerDefinitionSpecification extends Specifi
   }
 
   private List configureLoggerAndListAppender() {
-    Logger logger = LoggerFactory.getLogger("cargotracker.axon.eventsourcing-handler-logging") as Logger
+    Logger logger = LoggerFactory.getLogger("cargotracking-lib-axon-logging.eventsourcing-handler-logger") as Logger
     ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
     listAppender.start()
     logger.addAppender(listAppender)

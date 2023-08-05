@@ -66,7 +66,7 @@ class LoggingQueryHandlerEnhancerDefinitionSpecification extends Specification {
   }
 
   private List configureLoggerAndListAppender() {
-    Logger logger = LoggerFactory.getLogger("cargotracker.axon.query-handler-logging") as Logger
+    Logger logger = LoggerFactory.getLogger("cargotracking-lib-axon-logging.query-handler-logger") as Logger
     ListAppender<ILoggingEvent> listAppender = new ListAppender<>()
     listAppender.start()
     logger.addAppender(listAppender)

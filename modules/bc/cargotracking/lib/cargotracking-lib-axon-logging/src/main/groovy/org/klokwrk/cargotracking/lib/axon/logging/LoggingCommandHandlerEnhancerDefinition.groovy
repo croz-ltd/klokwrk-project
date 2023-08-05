@@ -36,12 +36,12 @@ import static org.klokwrk.lib.xlang.groovy.base.constant.CommonConstants.NOT_AVA
 /**
  * Defines Axon's {@link HandlerEnhancerDefinition} for detailed logging of command handlers executions.
  * <p/>
- * Corresponding Slf4j logger uses '<code>cargotracker.axon.command-handler-logging</code>' category and it logs on <code>DEBUG</code> level. Logger output contains information about aggregate
- * identifier and sequence number.
+ * Corresponding Slf4j logger uses '<code>cargotracking-lib-axon-logging.command-handler-logger</code>' category and it logs on <code>DEBUG</code> level. Logger output contains information about
+ * aggregate identifier and sequence number.
  * <p/>
  * Logged output looks similar to this (single line in output):
  * <pre>
- * ... cargotracker.axon.command-handler-logging : Executing CommandHandler constructor [PredmetAggregate(CreatePredmetCommand,PredmetClassificationDomainService)]
+ * ... cargotracking-lib-axon-logging.command-handler-logger : Executing CommandHandler constructor [PredmetAggregate(CreatePredmetCommand,PredmetClassificationDomainService)]
  *         with command [CreatePredmetCommand(aggregateIdentifier: 0eb588a9-cfeb-4be5-8ea9-04c9d14b7df9)]
  * </pre>
  * To register this HandlerEnhancerDefinition, use standard means as described in Axon documentation. In Spring Boot applications only a simple bean declaration is required.
@@ -64,7 +64,7 @@ class LoggingCommandHandlerEnhancerDefinition implements HandlerEnhancerDefiniti
     return selectedMessageHandlingMember
   }
 
-  @Slf4j(category = "cargotracker.axon.command-handler-logging")
+  @Slf4j(category = "cargotracking-lib-axon-logging.command-handler-logger")
   static class LoggingCommandHandlingMember<T> extends WrappedMessageHandlingMember<T> {
     MessageHandlingMember<T> messageHandlingMember
 
