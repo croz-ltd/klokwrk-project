@@ -18,9 +18,9 @@
 package org.klokwrk.cargotracker.booking.queryside.projection.rdbms.test.base
 
 import com.github.dockerjava.api.command.CreateNetworkCmd
-import org.klokwrk.cargotracker.booking.test.support.testcontainers.AxonServerTestcontainersFactory
-import org.klokwrk.cargotracker.booking.test.support.testcontainers.PostgreSqlTestcontainersFactory
-import org.klokwrk.cargotracker.booking.test.support.testcontainers.RdbmsManagementAppTestcontainersFactory
+import org.klokwrk.cargotracking.booking.test.support.testcontainers.AxonServerTestcontainersFactory
+import org.klokwrk.cargotracking.booking.test.support.testcontainers.PostgreSqlTestcontainersFactory
+import org.klokwrk.cargotracking.booking.test.support.testcontainers.RdbmsManagementAppTestcontainersFactory
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.GenericContainer

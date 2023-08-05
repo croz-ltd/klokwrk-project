@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.test.support.testcontainers
+package org.klokwrk.cargotracking.booking.test.support.testcontainers
 
 import com.github.dockerjava.api.command.CreateContainerCmd
 import groovy.transform.CompileStatic

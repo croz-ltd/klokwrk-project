@@ -27,10 +27,10 @@ import org.klokwrk.cargotracking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracking.domain.model.event.BookingOfferCreatedEventFixtureBuilder
 import org.klokwrk.cargotracker.booking.test.support.queryside.axon.GenericDomainEventMessageFactory
 import org.klokwrk.cargotracker.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
-import org.klokwrk.cargotracker.booking.test.support.testcontainers.AxonServerTestcontainersFactory
-import org.klokwrk.cargotracker.booking.test.support.testcontainers.PostgreSqlTestcontainersFactory
-import org.klokwrk.cargotracker.booking.test.support.testcontainers.QuerySideProjectionRdbmsAppTestcontainersFactory
-import org.klokwrk.cargotracker.booking.test.support.testcontainers.RdbmsManagementAppTestcontainersFactory
+import org.klokwrk.cargotracking.booking.test.support.testcontainers.AxonServerTestcontainersFactory
+import org.klokwrk.cargotracking.booking.test.support.testcontainers.PostgreSqlTestcontainersFactory
+import org.klokwrk.cargotracking.booking.test.support.testcontainers.QuerySideProjectionRdbmsAppTestcontainersFactory
+import org.klokwrk.cargotracking.booking.test.support.testcontainers.RdbmsManagementAppTestcontainersFactory
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.GenericContainer
