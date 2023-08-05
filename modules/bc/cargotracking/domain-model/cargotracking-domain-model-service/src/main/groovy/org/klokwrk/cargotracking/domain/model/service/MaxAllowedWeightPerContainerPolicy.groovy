@@ -15,17 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.domain.model.service
+package org.klokwrk.cargotracking.domain.model.service
 
 import groovy.transform.CompileStatic
+import org.klokwrk.cargotracking.domain.model.value.ContainerType
+
+import javax.measure.Quantity
+import javax.measure.quantity.Mass
 
 /**
- * Domain policy service for prescribing maximum allowed number of container TEU units.
+ * Domain policy service for calculating maximum allowed weight per container.
  * <p/>
- * Intended to be used at the aggregate level to limit TEU units per booking offer.
+ * {@link ContainerType} already specifies maximum allowed weight for that particular container type. However, business might want to reduce that weight further to avoid overweight containers.
  */
 @CompileStatic
-interface MaxAllowedTeuCountPolicy {
-  boolean isTeuCountAllowed(BigDecimal teuCount)
-  BigDecimal getMaxAllowedTeuCount()
+interface MaxAllowedWeightPerContainerPolicy {
+  Quantity<Mass> maxAllowedWeightPerContainer(ContainerType containerType)
 }

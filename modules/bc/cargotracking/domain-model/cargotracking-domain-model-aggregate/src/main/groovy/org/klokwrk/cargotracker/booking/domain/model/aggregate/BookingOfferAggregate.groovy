@@ -33,8 +33,8 @@ import org.klokwrk.cargotracker.booking.domain.model.event.BookingOfferCreatedEv
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
-import org.klokwrk.cargotracker.booking.domain.model.service.CargoCreatorService
-import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
+import org.klokwrk.cargotracking.domain.model.service.CargoCreatorService
+import org.klokwrk.cargotracking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracking.domain.model.value.BookingOfferId
 import org.klokwrk.cargotracking.domain.model.value.Cargo
 import org.klokwrk.cargotracking.domain.model.value.Customer

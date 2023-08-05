@@ -17,8 +17,8 @@
  */
 package org.klokwrk.cargotracker.booking.domain.model.aggregate
 
-import org.klokwrk.cargotracker.booking.domain.model.service.ConstantBasedMaxAllowedTeuCountPolicy
-import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
+import org.klokwrk.cargotracking.domain.model.service.ConstantBasedMaxAllowedTeuCountPolicy
+import org.klokwrk.cargotracking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracking.domain.model.value.Cargo
 import org.klokwrk.cargotracking.domain.model.value.CargoFixtureBuilder
 import org.klokwrk.cargotracking.domain.model.value.Commodity

@@ -18,7 +18,7 @@
 package org.klokwrk.cargotracker.booking.domain.model.aggregate
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
+import org.klokwrk.cargotracking.domain.model.service.MaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracking.domain.model.value.Cargo
 import org.klokwrk.cargotracking.domain.model.value.Commodity
 

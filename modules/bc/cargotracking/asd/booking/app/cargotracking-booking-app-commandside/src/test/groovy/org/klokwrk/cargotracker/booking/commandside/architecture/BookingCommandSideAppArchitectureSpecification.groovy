@@ -39,7 +39,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         [
             "org.klokwrk.cargotracker.booking.commandside",
             "org.klokwrk.cargotracker.booking.domain.model.aggregate",
-            "org.klokwrk.cargotracker.booking.domain.model.service",
+            "org.klokwrk.cargotracking.domain.model.service",
             "org.klokwrk.cargotracking.domain.model.value",
             "org.klokwrk.cargotracker.booking.domain.model.command",
             "org.klokwrk.cargotracker.booking.domain.model.event",
@@ -95,7 +95,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .onionArchitecture()
         .domainModels(
             "..cargotracker.booking.domain.model.aggregate..", // domainEntities
-            "..cargotracker.booking.domain.model.service..",   // domainServices
+            "..cargotracking.domain.model.service..",   // domainServices
             "..cargotracker.booking.domain.model.command..",   // domainCommands
             "..cargotracker.booking.domain.model.event..",     // domainEvents
             "..cargotracking.domain.model.value.."      // domainValueObjects
@@ -112,7 +112,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
 
         .ignoreDependency( // dependency injection can access and instantiate domain services
             resideInAnyPackage("..cargotracker.booking.commandside.infrastructure.."),
-            resideInAnyPackage("..cargotracker.booking.domain.model.service..")
+            resideInAnyPackage("..cargotracking.domain.model.service..")
         )
         .ignoreDependency( // dependency injection can access and instantiate outbound adapters
             resideInAnyPackage("..cargotracker.booking.commandside.infrastructure.."),
@@ -139,7 +139,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .domainValues("..cargotracking.domain.model.value..")
         .domainEvents("..cargotracker.booking.domain.model.event..")
         .domainCommands("..cargotracker.booking.domain.model.command..")
-        .domainServices("..cargotracker.booking.domain.model.service..")
+        .domainServices("..cargotracking.domain.model.service..")
         .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
 
         .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
@@ -155,7 +155,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
 
         .ignoreDependency( // dependency injection can access and instantiate domain services
             resideInAnyPackage("..cargotracker.booking.commandside.infrastructure.."),
-            resideInAnyPackage("..cargotracker.booking.domain.model.service..")
+            resideInAnyPackage("..cargotracking.domain.model.service..")
         )
         .ignoreDependency( // dependency injection can access and instantiate outbound adapters
             resideInAnyPackage("..cargotracker.booking.commandside.infrastructure.."),
@@ -184,7 +184,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .domainValues("..cargotracking.domain.model.value..")
         .domainEvents("..cargotracker.booking.domain.model.event..")
         .domainCommands("..cargotracker.booking.domain.model.command..")
-        .domainServices("..cargotracker.booking.domain.model.service..")
+        .domainServices("..cargotracking.domain.model.service..")
         .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
 
         .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
@@ -200,7 +200,7 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
 
         .ignoreDependency( // dependency injection can access and instantiate domain services
             resideInAnyPackage(["..cargotracker.booking.commandside.infrastructure.."] as String[]),
-            resideInAnyPackage(["..cargotracker.booking.domain.model.service.."] as String[])
+            resideInAnyPackage(["..cargotracking.domain.model.service.."] as String[])
         )
         .ignoreDependency( // dependency injection can access and instantiate outbound adapters
             resideInAnyPackage("..cargotracker.booking.commandside.infrastructure.."),

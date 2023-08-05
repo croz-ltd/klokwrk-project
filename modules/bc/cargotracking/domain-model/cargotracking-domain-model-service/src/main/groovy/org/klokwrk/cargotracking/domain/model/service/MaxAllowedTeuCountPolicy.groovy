@@ -15,20 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.domain.model.service
+package org.klokwrk.cargotracking.domain.model.service
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracking.domain.model.value.Cargo
-import org.klokwrk.cargotracking.domain.model.value.Commodity
-import org.klokwrk.cargotracking.domain.model.value.ContainerDimensionType
 
 /**
- * Domain service for high-level creation of {@link Cargo} instances.
+ * Domain policy service for prescribing maximum allowed number of container TEU units.
+ * <p/>
+ * Intended to be used at the aggregate level to limit TEU units per booking offer.
  */
 @CompileStatic
-interface CargoCreatorService {
-  /**
-   * Creates {@link Cargo} instance from provided {@link ContainerDimensionType} and {@link Commodity}.
-   */
-  Cargo from(ContainerDimensionType containerDimensionType, Commodity commodity)
+interface MaxAllowedTeuCountPolicy {
+  boolean isTeuCountAllowed(BigDecimal teuCount)
+  BigDecimal getMaxAllowedTeuCount()
 }

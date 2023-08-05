@@ -480,7 +480,7 @@ To better understand how this works, we can look at the architectural test fragm
         .domainValues("..cargotracking.domain.model.value..")
         .domainEvents("..cargotracker.booking.domain.model.event..")
         .domainCommands("..cargotracker.booking.domain.model.command..")
-        .domainServices("..cargotracker.booking.domain.model.service..")
+        .domainServices("..cargotracking.domain.model.service..")
         .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
 
         .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")

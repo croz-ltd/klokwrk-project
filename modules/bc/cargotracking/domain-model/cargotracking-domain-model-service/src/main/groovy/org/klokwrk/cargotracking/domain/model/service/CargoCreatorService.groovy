@@ -15,20 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracker.booking.domain.model.service
+package org.klokwrk.cargotracking.domain.model.service
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracking.domain.model.value.ContainerType
-
-import javax.measure.Quantity
-import javax.measure.quantity.Mass
+import org.klokwrk.cargotracking.domain.model.value.Cargo
+import org.klokwrk.cargotracking.domain.model.value.Commodity
+import org.klokwrk.cargotracking.domain.model.value.ContainerDimensionType
 
 /**
- * Domain policy service for calculating maximum allowed weight per container.
- * <p/>
- * {@link ContainerType} already specifies maximum allowed weight for that particular container type. However, business might want to reduce that weight further to avoid overweight containers.
+ * Domain service for high-level creation of {@link Cargo} instances.
  */
 @CompileStatic
-interface MaxAllowedWeightPerContainerPolicy {
-  Quantity<Mass> maxAllowedWeightPerContainer(ContainerType containerType)
+interface CargoCreatorService {
+  /**
+   * Creates {@link Cargo} instance from provided {@link ContainerDimensionType} and {@link Commodity}.
+   */
+  Cargo from(ContainerDimensionType containerDimensionType, Commodity commodity)
 }

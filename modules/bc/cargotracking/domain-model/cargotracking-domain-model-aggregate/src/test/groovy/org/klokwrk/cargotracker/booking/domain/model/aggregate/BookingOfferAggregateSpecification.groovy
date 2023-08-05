@@ -29,11 +29,11 @@ import org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CargoEventDataFixtureBuilder
 import org.klokwrk.cargotracker.booking.domain.model.event.data.CustomerEventData
 import org.klokwrk.cargotracker.booking.domain.model.event.data.RouteSpecificationEventData
-import org.klokwrk.cargotracker.booking.domain.model.service.CargoCreatorService
-import org.klokwrk.cargotracker.booking.domain.model.service.ConstantBasedMaxAllowedTeuCountPolicy
-import org.klokwrk.cargotracker.booking.domain.model.service.DefaultCargoCreatorService
-import org.klokwrk.cargotracker.booking.domain.model.service.MaxAllowedTeuCountPolicy
-import org.klokwrk.cargotracker.booking.domain.model.service.PercentBasedMaxAllowedWeightPerContainerPolicy
+import org.klokwrk.cargotracking.domain.model.service.CargoCreatorService
+import org.klokwrk.cargotracking.domain.model.service.ConstantBasedMaxAllowedTeuCountPolicy
+import org.klokwrk.cargotracking.domain.model.service.DefaultCargoCreatorService
+import org.klokwrk.cargotracking.domain.model.service.MaxAllowedTeuCountPolicy
+import org.klokwrk.cargotracking.domain.model.service.PercentBasedMaxAllowedWeightPerContainerPolicy
 import org.klokwrk.cargotracking.domain.model.value.Cargo
 import org.klokwrk.cargotracking.domain.model.value.Commodity
 import org.klokwrk.cargotracking.domain.model.value.CommodityType
