@@ -1,7 +1,7 @@
 # Starting up and trying the whole thing
 * **Author:** Damir Murat
 * **Created:** 26.05.2020.
-* **Updated:** 30.07.2023.
+* **Updated:** 06.08.2023.
 
 Environment:
 - OSX (should work with any desktop Linux distro and with Windows with appropriate bash-shell like git-bash)
@@ -84,7 +84,7 @@ directory and click Open. You should wait until IDEA completes the import.
 At the root level, klokwrk is pretty compact compared to what you might have seen in some other projects. This is because all code artifacts are organized under a single directory - `modules`. If you
 start exploring, you will undoubtedly notice a very noisy way IDEA uses by default for rendering module names with so-called qualifiers.
 
-![Module names with noisy qualifiers](images/01-module-names-with-noisy-qualifiers.jpg "Module names with noisy qualifiers")
+[![Module names with noisy qualifiers](images/01-module-names-with-noisy-qualifiers.jpg)](images/01-module-names-with-noisy-qualifiers.jpg "Module names with noisy qualifiers")
 
 Luckily, there is an undocumented way to get rid of that noise. From IDEA, open the file `.idea/gradle.xml` in the editor. In that XML file, locate `project/component/option/GradleProjectSettings`
 node. Now add the `useQualifiedModuleNames` option beneath it as shown in the following listing:
@@ -100,7 +100,7 @@ node. Now add the `useQualifiedModuleNames` option beneath it as shown in the fo
 
 After saving `.idea/gradle.xml`, you must reload all Gradle projects (use the Gradle Tool window and its Reload All Gradle Projects button), and unfortunate qualifiers will be gone.
 
-![Module names without noisy qualifiers](images/02-module-names-without-noisy-qualifiers.jpg "Module names without noisy qualifiers")
+[![Module names without noisy qualifiers](images/02-module-names-without-noisy-qualifiers.jpg)](images/02-module-names-without-noisy-qualifiers.jpg "Module names without noisy qualifiers")
 
 ## Running and exercising applications
 As in most distributed systems, we have multiple applications to run. Some of them bring actual functionality, while others have a supportive role. In addition, we also have required infrastructural
@@ -140,14 +140,14 @@ or
     gw -p modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-queryside-projection-rdbms bootRun
     gw -p modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-queryside-view bootRun
 
-If you prefer, you might want to run applications from IDE. In that case, select the application's `bootRun` Gradle task as is shown in the picture for the `cargotracking-booking-app-commandside`
-application.
+If you prefer, you might want to run applications from IDE. In that case, double-click the application's `bootRun` Gradle task as is shown in the picture for the
+`cargotracking-booking-app-commandside` application.
 
-![Starting commandside application from IDE](images/03-commandside-bootRun.jpg "Starting commandside application from IDE")
+[![Starting commandside application from IDE](images/03-commandside-bootRun.jpg)](images/03-commandside-bootRun.jpg "Starting commandside application from IDE")
 
 There is also an additional, more convenient, and easier way via the IDEA Run toolbar, which has been populated with appropriate run configurations during klokwrk import.
 
-![Prepared run configurations](images/04-prepared-run-configurations.jpg "Prepared run configurations")
+[![Prepared run configurations](images/04-prepared-run-configurations.jpg)](images/04-prepared-run-configurations.jpg "Prepared run configurations")
 
 ### Stopping applications
 Once experimenting is finished, you will want to stop applications. But, of course, do not do this yet if you intend to read the sections below.
@@ -163,20 +163,21 @@ them up properly, execute the following shell script (from shell-2):
 For executing HTTP requests, we will use [Postman](https://www.postman.com/). Please [download](https://www.postman.com/downloads/) a free local application for your OS and install it if you don't
 have it already.
 
-First, you have to import `support/http-request/postman/klokwrk-workspace/cargotracking-booking.postman_collection.json` collection.
+First, create a new Postman workspace called `klokwrk-workspace`. Then you have to import the `cargotracking-booking` collection from
+`support/http-request/postman/klokwrk-workspace/cargotracking-booking.postman_collection.json` file.
 
 > <br/>
 > Note: Every time the collection source file changes, the collection must be deleted and reimported in Postman. <br/>
 > <br/>
 
-Inside your Postman workspace, click on `Import` button, select `File` tab in `Import` dialog, and click on `Upload Files` button:
+Inside your Postman workspace, click on the `Import` button and then on the `files` link as shown in the picture:
 
-![Postman Import dialog](images/05-postmanImportDialog.jpg "Postman Import dialog")
+[![Postman Import dialog](images/05-postmanImportDialog.jpg)](images/05-postmanImportDialog.jpg "Postman Import dialog")
 
-Navigate to the `support/http-request/postman/klokwrk-workspace/cargotracking-booking.postman_collection.json` collection and open it. Then, in the `Import` dialog, click the `Import` button to finish
-the process. Now, you should have your `cargotracking-booking` collection available.
+Navigate to the `support/http-request/postman/klokwrk-workspace/cargotracking-booking.postman_collection.json` collection and open it. Now, you should have your `cargotracking-booking` collection
+available.
 
-![Imported Postman collection](images/06-importedPostmanCollection.jpg "Imported Postman collection")
+[![Imported Postman collection](images/06-importedPostmanCollection.jpg)](images/06-importedPostmanCollection.jpg "Imported Postman collection")
 
 #### Commandside requests
 For executing some command requests, expand the collection and navigate to `cargotracking-booking/individual-requests/commandside/booking-offer/create-booking-offer`. Here `create-booking-offer`
@@ -184,7 +185,7 @@ folder corresponds to multiple variations of the `CreateBookingOfferCommand` com
 
 For example, select the `ok, en` request and click the `Send` button. You should get the appropriate response:
 
-![Execute ok,en command request](images/07-executeOkEnCommandRequest.jpg "Execute ok,en command request")
+[![Execute ok,en command request](images/07-executeOkEnCommandRequest.jpg)](images/07-executeOkEnCommandRequest.jpg "Execute ok,en command request")
 
 The previous command request returns a response containing the **booking offer identifier** in the payload (`$.payload.bookingOfferId.identifier`). Utilizing some Postman scripting features, that
 identifier is remembered and made available for subsequent queryside requests.
@@ -203,15 +204,15 @@ Besides individual request execution, Postman also supports the execution of sce
 
 To execute a scenario from our collection, navigate to `cargotracking-booking/scenarios`, click a folder corresponding to the scenario, and click on the `Run` button in the scenario's tab:
 
-![Execute scenario, step 1](images/08-executeScenarioStep1.jpg "Execute scenario, step 1")
+[![Execute scenario, step 1](images/08-executeScenarioStep1.jpg)](images/08-executeScenarioStep1.jpg "Execute scenario, step 1")
 
 This will open the `Runner` tab, where you should click the `Run collection-name` button to execute it:
 
-![Execute scenario, step 2](images/09-executeScenarioStep2.jpg "Execute scenario, step 2")
+[![Execute scenario, step 2](images/09-executeScenarioStep2.jpg)](images/09-executeScenarioStep2.jpg "Execute scenario, step 2")
 
 Each request from the scenario contains tests that verify if a particular request was successful or not:
 
-![Execute scenario, step 3](images/10-executeScenarioStep3.jpg "Execute scenario, step 3")
+[![Execute scenario, step 3](images/10-executeScenarioStep3.jpg)](images/10-executeScenarioStep3.jpg "Execute scenario, step 3")
 
 ### Supportive Gradle tasks
 While working on a project, a developer often needs access to various pieces of information about the current state of a project. These reports might provide beneficial information about code quality
@@ -256,7 +257,7 @@ from the project's root.
 
   Creates a cumulative documentation for the whole project accessible at `build/docs/aggregate-groovydoc/index.html`.
 
-## Observability with Grfana Cloud (optional)
+## Observability with Grafana Cloud (optional)
 To support observability features (metrics, logs, and traces), klokwrk uses the free plan of [Grafana Cloud](https://grafana.com/) offering. The instrumentation of applications is based on
 Spring Boot's micrometer support and OpenTelemetry. For integrating OpenTelemetry with Grafana, klokwrk uses the [grafana-opentelemetry-starter](https://github.com/grafana/grafana-opentelemetry-starter)
 library, and for instrumenting Axon components, the [axon-micrometer](https://github.com/AxonFramework/AxonFramework/blob/master/metrics-micrometer/pom.xml) library.
@@ -265,7 +266,7 @@ The delivery of observability data to the Grafana Cloud leverages [Grafana Agent
 container).
 
 ### Configuring observability infrastructure
-As a first step, you have to assign for a [permanent free plan](https://grafana.com/products/cloud/) at Grafana Clod. Make sure you save your Grafana Cloud API key in a safe place.
+As a first step, you have to assign for a [permanent free plan](https://grafana.com/products/cloud/) at Grafana Cloud. Make sure you save your Grafana Cloud API key in a safe place.
 
 Second, you must configure Grafana Agent for authorized access to all required components of your Grafana Cloud profile. That includes providing URLs and usernames for provisioned Grafana Cloud's
 Prometheus, Loki, and Tempo servers and your Grafana Cloud API key. Assuming you have the API key already, other information can be found on the
@@ -283,8 +284,12 @@ Running the application with observability enabled is similar to running it [wit
 
       ./dockerComposeInfrastructureUpWithObservability.sh
 
+  Similarly, when you want to stop the infrastructure, you must use the `dockerComposeInfrastructureDownWithObservability.sh` script.
+
+      ./dockerComposeInfrastructureDownWithObservability.sh
+
 - to run applications with required environment variables set up, use IDEA run configurations with names ending with "`with observability [bootRun]`" as shown in the following picture:
-  ![Run configuration with observability](images/11-observability-run-configurations.jpg "Run configuration with observability")
+  [![Run configuration with observability](images/11-observability-run-configurations.jpg)](images/11-observability-run-configurations.jpg "Run configuration with observability")
 
 ### Exploring observability data
 After [executing some commands and queries](#executing-http-requests-via-postman), you can access Grafana Cloud UI at `https://your-org.grafana.net/a/cloud-home-app` and explore the collected data.

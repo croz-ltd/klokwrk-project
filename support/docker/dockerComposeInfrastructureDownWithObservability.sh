@@ -15,4 +15,4 @@ grafanaAgentDockerImageVersion=$(prop 'grafanaAgentDockerImageVersion')
 export grafanaAgentDockerImageVersion
 # ---------- Configuring environment variables based on values from gradle.properties in the root directory. - END
 
-docker-compose --file docker-compose-infrastructure.yml down --volumes
+docker-compose --file docker-compose-infrastructure.yml --profile observability down --volumes
