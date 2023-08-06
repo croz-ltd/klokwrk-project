@@ -9,9 +9,9 @@ psql -v ON_ERROR_STOP=1 <<-EOSQL
     CREATE USER db_migration WITH ENCRYPTED PASSWORD 'db_migration';
     ALTER USER db_migration WITH CREATEROLE;
 
-    CREATE DATABASE cargotracker_booking_query_database;
+    CREATE DATABASE cargotracking_booking_query_database;
 EOSQL
 
-psql -d cargotracker_booking_query_database -v ON_ERROR_STOP=1 <<-EOSQL
+psql -d cargotracking_booking_query_database -v ON_ERROR_STOP=1 <<-EOSQL
     GRANT ALL PRIVILEGES ON SCHEMA public TO db_migration;
 EOSQL

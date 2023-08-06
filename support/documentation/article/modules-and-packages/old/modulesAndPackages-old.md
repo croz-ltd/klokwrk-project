@@ -333,17 +333,17 @@ To better understand how this works, we can look at the test fragment for comman
     given:
     ArchRule rule = HexagonalCqrsEsArchitecture
         .architecture(HexagonalCqrsEsArchitecture.ArchitectureSubType.COMMANDSIDE)
-        .domainValues("..cargotracker.booking.domain.model.value..")
-        .domainEvents("..cargotracker.booking.domain.model.event..")
-        .domainCommands("..cargotracker.booking.domain.model.command..")
-        .domainAggregates("..cargotracker.booking.domain.model.aggregate..")
+        .domainValues("..cargotracking.domain.model.value..")
+        .domainEvents("..cargotracking.domain.model.event..")
+        .domainCommands("..cargotracking.domain.model.command..")
+        .domainAggregates("..cargotracking.domain.model.aggregate..")
 
-        .applicationInboundPorts("..cargotracker.booking.commandside.feature.*.application.port.in..")
-        .applicationOutboundPorts("..cargotracker.booking.commandside.feature.*.application.port.out..")
-        .applicationServices("..cargotracker.booking.commandside.feature.*.application.service..")
+        .applicationInboundPorts("..cargotracking.booking.app.commandside.feature.*.application.port.in..")
+        .applicationOutboundPorts("..cargotracking.booking.app.commandside.feature.*.application.port.out..")
+        .applicationServices("..cargotracking.booking.app.commandside.feature.*.application.service..")
 
-        .adapterInbound("in.web", "..cargotracker.booking.commandside.feature.*.adapter.in.web..")
-        .adapterOutbound("out.remoting", "..cargotracker.booking.commandside.feature.*.adapter.out.remoting..")
+        .adapterInbound("in.web", "..cargotracking.booking.app.commandside.feature.*.adapter.in.web..")
+        .adapterOutbound("out.remoting", "..cargotracking.booking.app.commandside.feature.*.adapter.out.remoting..")
 
         .withOptionalLayers(false)
 

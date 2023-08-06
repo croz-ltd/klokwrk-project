@@ -25,8 +25,8 @@ CREATE ROLE read_only_role;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO read_only_role;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT EXECUTE ON FUNCTIONS TO read_only_role;
 
-CREATE USER cargotracker WITH ENCRYPTED PASSWORD 'cargotracker';
-CREATE USER cargotracker_readonly WITH ENCRYPTED PASSWORD 'cargotracker_readonly';
+CREATE USER cargotracking WITH ENCRYPTED PASSWORD 'cargotracking';
+CREATE USER cargotracking_readonly WITH ENCRYPTED PASSWORD 'cargotracking_readonly';
 
-GRANT read_write_role TO cargotracker;
-GRANT read_only_role TO cargotracker_readonly;
+GRANT read_write_role TO cargotracking;
+GRANT read_only_role TO cargotracking_readonly;

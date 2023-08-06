@@ -61,7 +61,7 @@
     <set version="3" name="Action list 1" hiview="Codemap" active="true" todo="false" list="0" />
   </restructuring>
   <grid-set sep="." version="6.1.23194">
-    <grid name="General Architecture" enforce="true" locked="false" strict="false" excludes="cargotracker-booking-commandside-test-support.*,cargotracker-booking-queryside-test-support.*,cargotracking-booking-app-rdbms-management.*,klokwrk-lib-lo-archunit.*,cargotracking-booking-test-component.*">
+    <grid name="General Architecture" enforce="true" locked="false" strict="false" excludes="cargotracking-booking-app-rdbms-management.*,klokwrk-lib-lo-archunit.*,cargotracking-booking-test-component.*">
       <row>
         <cell name="cargotracking (bounded context)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
@@ -192,7 +192,7 @@
   <physical-grid-set sep="." version="6.1.23194">
     <grid name="Workspace spec" enforce="true" locked="true" strict="false">
       <row>
-        <cell name="cargotracker-booking" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="255,255,204">
+        <cell name="cargotracking-booking" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="255,255,204">
           <grid>
             <row>
               <cell name="test-support" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="204,255,204">
@@ -235,25 +235,6 @@
                       </grid>
                     </cell>
                   </row>
-                  <row>
-                    <cell name="domain model" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
-                      <grid>
-                        <row>
-                          <cell name="cargotracking-domain-model-aggregate" pattern="cargotracking-domain-model-aggregate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                        </row>
-                        <row>
-                          <cell name="cargotracking-domain-model-service" pattern="cargotracking-domain-model-service.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                        </row>
-                        <row>
-                          <cell name="cargotracking-domain-model-command" pattern="cargotracking-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                          <cell name="cargotracking-domain-model-event" pattern="cargotracking-domain-model-event.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                        </row>
-                        <row>
-                          <cell name="cargotracking-domain-model-value" pattern="cargotracking-domain-model-value.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                        </row>
-                      </grid>
-                    </cell>
-                  </row>
                 </grid>
               </cell>
             </row>
@@ -261,7 +242,26 @@
         </cell>
       </row>
       <row>
-        <cell name="cargotracker-lib" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="255,255,204">
+        <cell name="cargotracking domain model" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="255,255,204">
+          <grid>
+            <row>
+              <cell name="cargotracking-domain-model-aggregate" pattern="cargotracking-domain-model-aggregate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+            <row>
+              <cell name="cargotracking-domain-model-service" pattern="cargotracking-domain-model-service.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+            <row>
+              <cell name="cargotracking-domain-model-command" pattern="cargotracking-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+              <cell name="cargotracking-domain-model-event" pattern="cargotracking-domain-model-event.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+            <row>
+              <cell name="cargotracking-domain-model-value" pattern="cargotracking-domain-model-value.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+            </row>
+          </grid>
+        </cell>
+      </row>
+      <row>
+        <cell name="cargotracking-lib" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="255,255,204">
           <grid>
             <row>
               <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">

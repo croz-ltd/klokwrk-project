@@ -35,7 +35,7 @@ Concrete details of the prescribed format are given in the "[The format of rende
 structures in JSON, concrete format implementation is not essential. It can be anything else that is more suitable for some chosen protocol, as long as defined structures are followed.
 
 Implementations of response renderers are specific for each supported channel. At the moment, we have an implementation for the Spring MVC channel that can be found in `cargotracking-lib-web` module
-in `org.klokwrk.cargotracker.lib.web.spring.mvc` package.
+in `org.klokwrk.cargotracking.lib.web.spring.mvc` package.
 
 ## Consequences
 ### Positive

@@ -174,12 +174,12 @@ Inside your Postman workspace, click on `Import` button, select `File` tab in `I
 ![Postman Import dialog](images/05-postmanImportDialog.jpg "Postman Import dialog")
 
 Navigate to the `support/http-request/postman/klokwrk-workspace/cargotracking-booking.postman_collection.json` collection and open it. Then, in the `Import` dialog, click the `Import` button to finish
-the process. Now, you should have your `cargotracker-booking` collection available.
+the process. Now, you should have your `cargotracking-booking` collection available.
 
 ![Imported Postman collection](images/06-importedPostmanCollection.jpg "Imported Postman collection")
 
 #### Commandside requests
-For executing some command requests, expand the collection and navigate to `cargotracker-booking/individual-requests/commandside/booking-offer/create-booking-offer`. Here `create-booking-offer`
+For executing some command requests, expand the collection and navigate to `cargotracking-booking/individual-requests/commandside/booking-offer/create-booking-offer`. Here `create-booking-offer`
 folder corresponds to multiple variations of the `CreateBookingOfferCommand` command from the `cargotracking-booking-app-commandside` application.
 
 For example, select the `ok, en` request and click the `Send` button. You should get the appropriate response:
@@ -195,13 +195,13 @@ There are more commandside requests available. Feel free to experiment with them
 Before executing queryside requests, remember they rely on identifiers returned from previously performed commandside requests.
 
 Otherwise, queryside request execution is very similar to the commandside. In this case, navigate to the
-`cargotracker-booking/individual-requests/queryside-view/booking-offer/booking-offer-summary-find-by-id` folder and pick and execute the request. Again, the results should be similar to commandside
+`cargotracking-booking/individual-requests/queryside-view/booking-offer/booking-offer-summary-find-by-id` folder and pick and execute the request. Again, the results should be similar to commandside
 requests.
 
 #### Scenarios
 Besides individual request execution, Postman also supports the execution of scenarios. In that way, we can organize sequences of dependent requests to exercise complete use cases of the system.
 
-To execute a scenario from our collection, navigate to `cargotracker-booking/scenarios`, click a folder corresponding to the scenario, and click on the `Run` button in the scenario's tab:
+To execute a scenario from our collection, navigate to `cargotracking-booking/scenarios`, click a folder corresponding to the scenario, and click on the `Run` button in the scenario's tab:
 
 ![Execute scenario, step 1](images/08-executeScenarioStep1.jpg "Execute scenario, step 1")
 

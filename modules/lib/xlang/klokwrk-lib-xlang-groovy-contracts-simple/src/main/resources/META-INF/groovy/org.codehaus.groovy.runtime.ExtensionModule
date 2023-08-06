@@ -1,4 +1,4 @@
 moduleName=@extensionModuleName@
 moduleVersion=@extensionModuleVersion@
 extensionClasses=\
-  org.klokwrk.lang.groovy.contracts.simple.ContractsSimple
+  org.klokwrk.lib.xlang.groovy.contracts.simple.ContractsSimple

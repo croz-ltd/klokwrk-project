@@ -3,14 +3,14 @@ version: "3.7"
 services:
   cargotracking-booking-app-rdbms-management:
     container_name: cargotracking-booking-app-rdbms-management
-    image: klokwrkprj/cargotracking-booking-app-rdbms-management:${cargotrackerBookingRdbmsManagementAppDockerImageVersion}
+    image: klokwrkprj/cargotracking-booking-app-rdbms-management:${cargotrackingBookingRdbmsManagementAppDockerImageVersion}
     networks:
       - klokwrk-project-network
     environment:
-      - CARGOTRACKER_POSTGRES_HOSTNAME=klokwrk-project-postgres
-      - CARGOTRACKER_POSTGRES_PORT=5432
-      - CARGOTRACKER_POSTGRES_DB_MIGRATION_USERNAME=db_migration
-      - CARGOTRACKER_POSTGRES_DB_MIGRATION_PASSWORD=db_migration
+      - CARGOTRACKING_POSTGRES_HOSTNAME=klokwrk-project-postgres
+      - CARGOTRACKING_POSTGRES_PORT=5432
+      - CARGOTRACKING_POSTGRES_DB_MIGRATION_USERNAME=db_migration
+      - CARGOTRACKING_POSTGRES_DB_MIGRATION_PASSWORD=db_migration
 
 networks:
   klokwrk-project-network:
