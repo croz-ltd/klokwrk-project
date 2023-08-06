@@ -14,7 +14,7 @@ on:
         description: "Run ID of repack tool native image workflow"
         required: false
       jreleaser-version-type:
-        description: "'latest' (default) or 'early-access'"
+        description: "JReleaser version type: 'latest' (default) or 'early-access'"
         required: true
         default: latest
 
