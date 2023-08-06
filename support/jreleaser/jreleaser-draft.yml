@@ -26,7 +26,8 @@ release:
       format: "- [`{{commitShortHash}}`]({{commitsUrl}}/{{commitShortHash}}) {{commitTitle}}"
       links: false
       hide:
-        uncategorized: false
+        # TODO dmurat: Set to false after release. Currently the body of the changelog is too long to be submitted to GitHub REST API.
+        uncategorized: true
       contributors:
         enabled: true
         format: '- {{contributorName}} ({{contributorUsernameAsLink}})'
