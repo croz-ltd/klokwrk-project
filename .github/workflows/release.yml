@@ -7,12 +7,16 @@ on:
         description: "Version of already existing release"
         required: true
       release-type:
-        description: "'draft' or 'release'"
+        description: "'draft' (default) or 'release'"
         required: true
         default: draft
       run-id-of-gradle-source-repack-native-image:
         description: "Run ID of repack tool native image workflow"
         required: false
+      jreleaser-version-type:
+        description: "'latest' (default) or 'early-access'"
+        required: true
+        default: latest
 
 jobs:
   verify-inputs:
@@ -93,8 +97,8 @@ jobs:
       - name: Run JReleaser
         uses: jreleaser/release-action@v2
         with:
-          # You may use "latest" to pull the latest stable release or "early-access" to pull the latest snapshot.
-          version: latest
+          # version may be "latest" (default) to use the latest stable JReleaser's release or "early-access" to use the latest snapshot.
+          version: ${{ github.event.inputs.jreleaser-version-type }}
           arguments: full-release --basedir=${{ github.workspace }} --config-file=${{ github.workspace }}/support/jreleaser/jreleaser-${{ github.event.inputs.release-type }}.yml
           setup-java: false
         env:
