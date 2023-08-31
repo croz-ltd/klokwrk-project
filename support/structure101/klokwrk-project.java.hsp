@@ -61,7 +61,134 @@
     <set version="3" name="Action list 1" hiview="Codemap" active="true" todo="false" list="0" />
   </restructuring>
   <grid-set sep="." version="6.1.23194">
-    <grid name="General Architecture" enforce="true" locked="false" strict="false" excludes="cargotracking-booking-app-rdbms-management.*,klokwrk-lib-lo-archunit.*,cargotracking-booking-test-component.*">
+    <grid name="Arch skeleton - overview" enforce="true" locked="false" strict="false">
+      <row>
+        <cell name="cargotracking (bounded context)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+          <grid>
+            <row>
+              <cell name="booking (subdomain)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+                <grid>
+                  <row>
+                    <cell name="apps" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
+                      <grid>
+                        <row>
+                          <cell name="cargotracking-booking-app-commandside" pattern="cargotracking-booking-app-commandside.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                          <cell name="cargotracking-booking-app-queryside-view" pattern="cargotracking-booking-app-queryside-view.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                          <cell name="cargotracking-booking-app-queryside-projection-rdbms" pattern="cargotracking-booking-app-queryside-projection-rdbms.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                        </row>
+                      </grid>
+                    </cell>
+                  </row>
+                  <row>
+                    <cell name="subdomain libraries" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
+                      <grid>
+                        <row>
+                          <cell name="cargotracking-booking-lib-boundary-web" pattern="cargotracking-booking-lib-boundary-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                          <cell name="cargotracking-booking-lib-queryside-model-rdbms-jpa" pattern="cargotracking-booking-lib-queryside-model-rdbms-jpa.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                          <cell name="cargotracking-booking-lib-out-customer" pattern="cargotracking-booking-lib-out-customer.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                        </row>
+                      </grid>
+                    </cell>
+                  </row>
+                </grid>
+              </cell>
+            </row>
+            <row>
+              <cell name="domain-model" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
+                <grid>
+                  <row>
+                    <cell name="cargotracking-domain-model-aggregate" pattern="cargotracking-domain-model-aggregate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
+                    <cell name="cargotracking-domain-model-command" pattern="cargotracking-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-domain-model-service" pattern="cargotracking-domain-model-service.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-domain-model-event" pattern="cargotracking-domain-model-event.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
+                    <cell name="cargotracking-domain-model-value" pattern="cargotracking-domain-model-value.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                </grid>
+              </cell>
+            </row>
+            <row>
+              <cell name="lib (bounded context libraries)" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
+                <grid>
+                  <row>
+                    <cell name="cargotracking-lib-axon-logging" pattern="cargotracking-lib-axon-logging.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-lib-domain-model-command" pattern="cargotracking-lib-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-lib-axon-cqrs" pattern="cargotracking-lib-axon-cqrs.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-lib-domain-model-event" pattern="cargotracking-lib-domain-model-event.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-lib-web" pattern="cargotracking-lib-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
+                    <cell name="cargotracking-lib-boundary-api" pattern="cargotracking-lib-boundary-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-lib-boundary-query-api" pattern="cargotracking-lib-boundary-query-api.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                </grid>
+              </cell>
+            </row>
+          </grid>
+        </cell>
+      </row>
+      <row>
+        <cell name="klokwrk-lib (generic libraries)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+          <grid>
+            <row>
+              <cell name="hi" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
+                <grid>
+                  <row>
+                    <cell name="klokwrk-lib-hi-jackson-springboot" pattern="klokwrk-lib-hi-jackson-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="klokwrk-lib-hi-datasourceproxy-springboot" pattern="klokwrk-lib-hi-datasourceproxy-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="klokwrk-lib-hi-validation-springboot" pattern="klokwrk-lib-hi-validation-springboot.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="klokwrk-lib-hi-spring-context" pattern="klokwrk-lib-hi-spring-context.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="klokwrk-lib-hi-spring-data-jpa" pattern="klokwrk-lib-hi-spring-data-jpa.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                </grid>
+              </cell>
+            </row>
+            <row>
+              <cell name="lo" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
+                <grid>
+                  <row>
+                    <cell name="klokwrk-lib-lo-jackson" pattern="klokwrk-lib-lo-jackson.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="klokwrk-lib-lo-datasourceproxy" pattern="klokwrk-lib-lo-datasourceproxy.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+                      <grid>
+                        <row>
+                          <cell name="klokwrk-lib-lo-validation-validator" pattern="klokwrk-lib-lo-validation-validator.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                        </row>
+                        <row>
+                          <cell name="klokwrk-lib-lo-validation-constraint" pattern="klokwrk-lib-lo-validation-constraint.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                        </row>
+                      </grid>
+                    </cell>
+                    <cell name="klokwrk-lib-lo-hibernate" pattern="klokwrk-lib-lo-hibernate.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
+                    <cell name="klokwrk-lib-lo-uom" pattern="klokwrk-lib-lo-uom.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                </grid>
+              </cell>
+            </row>
+            <row>
+              <cell name="xlang" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
+                <grid>
+                  <row>
+                    <cell name="klokwrk-lib-xlang-groovy-contracts-simple" pattern="klokwrk-lib-xlang-groovy-contracts-simple.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="klokwrk-lib-xlang-groovy-contracts-match" pattern="klokwrk-lib-xlang-groovy-contracts-match.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
+                    <cell name="klokwrk-lib-xlang-groovy-base" pattern="klokwrk-lib-xlang-groovy-base.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                </grid>
+              </cell>
+            </row>
+          </grid>
+        </cell>
+      </row>
+      <description>&lt;empty&gt;</description>
+    </grid>
+    <grid name="Arch Skeleton - details" enforce="true" locked="false" strict="false" excludes="cargotracking-booking-app-rdbms-management.*,klokwrk-lib-lo-archunit.*,cargotracking-booking-test-component.*">
       <row>
         <cell name="cargotracking (bounded context)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
