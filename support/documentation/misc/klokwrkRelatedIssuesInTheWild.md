@@ -113,6 +113,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * REPORTED - https://youtrack.jetbrains.com/issue/IDEA-292254
 * VERIFIED - https://youtrack.jetbrains.com/issue/IDEA-295389
 * IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-315953
+* IN PROGRESS - https://youtrack.jetbrains.com/issue/IDEA-330241/Provide-a-Packages-view-for-custom-scopes.
 
 ### JReleaser
 * VERIFIED (0.3.0) - https://github.com/jreleaser/jreleaser/issues/85
