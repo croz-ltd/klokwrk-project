@@ -131,7 +131,7 @@
         </cell>
       </row>
       <row>
-        <cell name="klokwrk-lib (generic libraries)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+        <cell name="klokwrk-lib (system libraries)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
             <row>
               <cell name="hi" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
@@ -258,7 +258,7 @@
         </cell>
       </row>
       <row>
-        <cell name="klokwrk-lib (generic libraries)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+        <cell name="klokwrk-lib (system libraries)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
             <row>
               <cell name="hi" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
