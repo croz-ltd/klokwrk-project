@@ -92,7 +92,7 @@ class BookingQuerySideViewAppArchitectureSpecification extends Specification {
                 "..cargotracking.booking.lib.queryside.model.rdbms.jpa.."
             ] as String[]
         )
-        .adapterOutbound("out.standalone.customer", "..cargotracking.booking.lib.out.customer.adapter..")
+        .adapterOutbound("out.customer", "..cargotracking.booking.lib.out.customer.adapter..")
 
         .ignoreDependency( // dependency injection can access and instantiate outbound adapters
             resideInAnyPackage("..cargotracking.booking.app.queryside.view.infrastructure.."),

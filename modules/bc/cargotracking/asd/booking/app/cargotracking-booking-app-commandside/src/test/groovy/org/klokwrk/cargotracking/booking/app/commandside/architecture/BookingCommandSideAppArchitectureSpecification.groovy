@@ -107,8 +107,8 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
             "..cargotracking.booking.lib.out.customer.port.." // portOutbound
         )
         .adapter("in.web", "..cargotracking.booking.app.commandside.feature.*.adapter.in.web..") // adapterInbound
-        .adapter("out.inline.remoting", "..cargotracking.booking.app.commandside.feature.*.adapter.out.remoting..") // adapterOutbound
-        .adapter("out.standalone.customer", "..cargotracking.booking.lib.out.customer.adapter..") // adapterOutbound
+        .adapter("out.remoting", "..cargotracking.booking.app.commandside.feature.*.adapter.out.remoting..") // adapterOutbound
+        .adapter("out.customer", "..cargotracking.booking.lib.out.customer.adapter..") // adapterOutbound
 
         .ignoreDependency( // dependency injection can access and instantiate domain services
             resideInAnyPackage("..cargotracking.booking.app.commandside.infrastructure.."),
@@ -150,8 +150,8 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .applicationServices("..cargotracking.booking.app.commandside.feature.*.application.service..")
 
         .adapterInbound("in.web", "..cargotracking.booking.app.commandside.feature.*.adapter.in.web..")
-        .adapterOutbound("out.inline.remoting", "..cargotracking.booking.app.commandside.feature.*.adapter.out.remoting..")
-        .adapterOutbound("out.standalone.customer", "..cargotracking.booking.lib.out.customer.adapter..")
+        .adapterOutbound("out.remoting", "..cargotracking.booking.app.commandside.feature.*.adapter.out.remoting..")
+        .adapterOutbound("out.customer", "..cargotracking.booking.lib.out.customer.adapter..")
 
         .ignoreDependency( // dependency injection can access and instantiate domain services
             resideInAnyPackage("..cargotracking.booking.app.commandside.infrastructure.."),
@@ -195,8 +195,8 @@ class BookingCommandSideAppArchitectureSpecification extends Specification {
         .applicationServices("..cargotracking.booking.app.commandside.feature.*.application.service..")
 
         .adapterInbound("in.web", "..cargotracking.booking.app.commandside.feature.*.adapter.in.web..")
-        .adapterOutbound("out.inline.remoting", "..cargotracking.booking.app.commandside.feature.*.adapter.out.remoting..")
-        .adapterOutbound("out.standalone.customer", "..cargotracking.booking.lib.out.customer.adapter..")
+        .adapterOutbound("out.remoting", "..cargotracking.booking.app.commandside.feature.*.adapter.out.remoting..")
+        .adapterOutbound("out.customer", "..cargotracking.booking.lib.out.customer.adapter..")
 
         .ignoreDependency( // dependency injection can access and instantiate domain services
             resideInAnyPackage(["..cargotracking.booking.app.commandside.infrastructure.."] as String[]),
