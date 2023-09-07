@@ -201,8 +201,8 @@ Module naming conventions are essential because our modules are not always prese
 of JAR names put in the same directory). For those reasons, our naming scheme closely follows the strategic structure hierarchy where parts of module names are directly pulled from corresponding
 subdirectory names. That way, we can keep the match between alphabetical order and the direction of dependencies.
 
-> Note: When you have multiple bounded contexts and/or multiple subdomains in the project, to get a better match between alphabetical and abstraction orders, you can use the `bc-` prefix for bounded
-> context names and the `asd-` prefix for subdomain names.
+> Note: When you have multiple bounded contexts and/or multiple subdomains in the project, to get the exact match between alphabetical order and the direction of dependencies, you can use the `bc-`
+> prefix in front of bounded context names and the `asd-` prefix for subdomain names.
 
 The same naming principles should also be applied to packages. Here are a few examples of package names:
 

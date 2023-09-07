@@ -69,7 +69,7 @@
               <cell name="booking (subdomain)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                 <grid>
                   <row>
-                    <cell name="apps" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
+                    <cell name="app (subdomain apps)" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
                       <grid>
                         <row>
                           <cell name="cargotracking-booking-app-commandside" pattern="cargotracking-booking-app-commandside.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
@@ -80,7 +80,7 @@
                     </cell>
                   </row>
                   <row>
-                    <cell name="subdomain libraries" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
+                    <cell name="lib (subdomain libs)" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
                       <grid>
                         <row>
                           <cell name="cargotracking-booking-lib-boundary-web" pattern="cargotracking-booking-lib-boundary-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
@@ -111,7 +111,7 @@
               </cell>
             </row>
             <row>
-              <cell name="lib (bounded context libraries)" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
+              <cell name="lib (bounded context libs)" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
                 <grid>
                   <row>
                     <cell name="cargotracking-lib-axon-logging" pattern="cargotracking-lib-axon-logging.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
@@ -131,7 +131,7 @@
         </cell>
       </row>
       <row>
-        <cell name="klokwrk-lib (system libraries)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+        <cell name="klokwrk-lib (system libs)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
             <row>
               <cell name="hi" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
@@ -196,7 +196,7 @@
               <cell name="booking (subdomain)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                 <grid>
                   <row>
-                    <cell name="apps" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+                    <cell name="app (subdomain apps)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                       <grid>
                         <row>
                           <cell name="cargotracking-booking-app-commandside" pattern="cargotracking-booking-app-commandside.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
@@ -207,7 +207,7 @@
                     </cell>
                   </row>
                   <row>
-                    <cell name="subdomain libraries" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+                    <cell name="lib (subdomain libs)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                       <grid>
                         <row>
                           <cell name="cargotracking-booking-lib-boundary-web" pattern="cargotracking-booking-lib-boundary-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
@@ -238,7 +238,7 @@
               </cell>
             </row>
             <row>
-              <cell name="lib (bounded context libraries)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+              <cell name="lib (bounded context libs)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                 <grid>
                   <row>
                     <cell name="cargotracking-lib-axon-logging" pattern="cargotracking-lib-axon-logging.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
@@ -258,7 +258,7 @@
         </cell>
       </row>
       <row>
-        <cell name="klokwrk-lib (system libraries)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+        <cell name="klokwrk-lib (system libs)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
             <row>
               <cell name="hi" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
