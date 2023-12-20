@@ -58,7 +58,7 @@ To **generate and see the cumulative JaCoCo code coverage report**, execute the 
     open build/reports/jacoco/aggregate/html/index.html
 
 ### Exploring the latest changelog (optional)
-After cloning the klokwrk, you have likely checked out a snapshot version. Unfortunately, GitHub does not make public published changelogs for non-released versions. Therefore, you can not just
+After cloning the klokwrk, you have likely checked out a snapshot version. Unfortunately, GitHub does not make public published changelogs for non-released versions. Therefore, you cannot just
 simply go to the website and explore what is happening lately.
 
 However, if you are interested, there is a way to generate a changelog in a local environment:
@@ -68,7 +68,7 @@ However, if you are interested, there is a way to generate a changelog in a loca
 
 - execute the following commands:
 
-      env JRELEASER_PROJECT_VERSION=1.7.0 JRELEASER_GITHUB_TOKEN=1 \
+      env JRELEASER_PROJECT_VERSION=1.9.0 JRELEASER_GITHUB_TOKEN=1 \
       jreleaser changelog --basedir=. --config-file=./support/jreleaser/jreleaser-draft.yml --debug
 
       open out/jreleaser/release/CHANGELOG.md
@@ -107,7 +107,7 @@ As in most distributed systems, we have multiple applications to run. Some of th
 pieces.
 
 ### Starting applications
-In our case, infrastructure comprises Axon Server and PostgreSQL database. To **start those infrastructural components**, open the new shell (shell-2) at the project root and execute the following
+In our case, the infrastructure comprises Axon Server and PostgreSQL database. To **start those infrastructural components**, open the new shell (shell-2) at the project root and execute the following
 commands:
 
     cd support/docker
@@ -122,12 +122,12 @@ or
 
     gw -p modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-rdbms-management bootRun
 
-Alternatively, you can use corresponding shell script:
+Alternatively, you can use the corresponding shell script:
 
     cd support/docker
     ./dockerComposeRdbmsMigration.sh
 
-Now we are ready for **running functional applications**. First, please make sure you are at the root of the project, and then execute the following commands, each one from a separate shell (shell-3,
+Now we are ready for **running functional applications**. First, please make sure you are at the root of the project, and then execute the following commands each one from a separate shell (shell-3,
 shell-4, and shell-5 where shell-3 is reused from the previous step). Wait until applications are fully started:
 
     gw :cargotracking-booking-app-commandside:bootRun
@@ -237,7 +237,7 @@ from the project's root.
 
 - `gw allTestReports`
 
-  Creates a cumulative report of all unit, integration and component tests for all subprojects. You can open it from CLI with
+  Creates a cumulative report of all unit, integration, and component tests for all subprojects. You can open it from CLI with
 
       open build/reports/allTestReports/index.html
 
@@ -255,7 +255,7 @@ from the project's root.
 
 - `gw aggregateGroovydoc`
 
-  Creates a cumulative documentation for the whole project accessible at `build/docs/aggregate-groovydoc/index.html`.
+  Creates cumulative documentation for the whole project accessible at `build/docs/aggregate-groovydoc/index.html`.
 
 ## Observability with Grafana Cloud (optional)
 To support observability features (metrics, logs, and traces), klokwrk uses the free plan of [Grafana Cloud](https://grafana.com/) offering. The instrumentation of applications is based on
