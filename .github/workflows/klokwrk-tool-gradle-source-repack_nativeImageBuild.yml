@@ -98,6 +98,7 @@ jobs:
         with:
           minimum-size: 10GB
           maximum-size: 12GB
+          disk-root: "C:"
 
       - name: Set up Windows pagefile
         run: |
