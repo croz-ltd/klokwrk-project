@@ -71,11 +71,12 @@ class GradleDownloader {
 
     new BufferedOutputStream(new FileOutputStream(gradleDownloaderInfo.downloadTargetFileAbsolutePath), 1024 * 1024).withCloseable { BufferedOutputStream fileOutputStream ->
       Long downloadedBytesCount = 0
+      println "Downloading '${ realDownloadUrl }':" // codenarc-disable-line Println
       streamingHttpClient.exchangeStream(HttpRequest.GET(realDownloadUrl).accept(MediaType.APPLICATION_OCTET_STREAM_TYPE))
                          .map({ HttpResponse<ByteBuffer<?>> byteBufferHttpResponse ->
                            byte[] byteArray = byteBufferHttpResponse.body.orElseThrow({ new NoSuchElementException("No value present") }).toByteArray()
                            downloadedBytesCount += byteArray.length
-                           printOutDownloadProgress(realDownloadUrl, downloadedBytesCount, contentLength)
+                           printOutDownloadProgress(downloadedBytesCount, contentLength)
 
                            return byteArray
                          })
@@ -93,11 +94,12 @@ class GradleDownloader {
     String contentLength
     String realDownloadUrl = gradleDownloaderInfo.fullDownloadUrl
     if (HttpStatus.MOVED_PERMANENTLY == headResponse.status) {
-      String newLocationUrl = headResponse.header("Location")
+      String newLocationUrl = headResponse.header(HttpHeaders.LOCATION)
       log.debug("HTTP status for '{}': {}({}). New location is '{}'.", gradleDownloaderInfo.downloadSiteUrl, HttpStatus.MOVED_PERMANENTLY.reason, HttpStatus.MOVED_PERMANENTLY.code, newLocationUrl)
 
-      realDownloadUrl = newLocationUrl
-      contentLength = fetchRedirectedHeadResponse(realDownloadUrl).header(HttpHeaders.CONTENT_LENGTH) ?: "-1"
+      Tuple2<String, HttpResponse<?>> newLocationUrlAndHeadResponseTuple = fetchRedirectedHeadResponse(newLocationUrl)
+      contentLength = newLocationUrlAndHeadResponseTuple.v2.header(HttpHeaders.CONTENT_LENGTH) ?: "-1"
+      realDownloadUrl = newLocationUrlAndHeadResponseTuple.v1
     }
     else {
       contentLength = headResponse.header(HttpHeaders.CONTENT_LENGTH) ?: "-1"
@@ -124,8 +126,15 @@ class GradleDownloader {
     return headResponse
   }
 
-  protected HttpResponse<?> fetchRedirectedHeadResponse(String url) {
+  protected Tuple2<String, HttpResponse<?>> fetchRedirectedHeadResponse(String url) {
     HttpResponse<?> secondHeadResponse = fetchGeneralHeadResponse(url)
+    String newLocationUrl = url
+
+    if (secondHeadResponse.status == HttpStatus.FOUND) {
+      newLocationUrl = secondHeadResponse.header(HttpHeaders.LOCATION)
+      log.debug("HTTP status for '{}': {}({}). New location is '{}'.", url, HttpStatus.FOUND.reason, HttpStatus.FOUND.code, newLocationUrl) // codenarc-disable-line DuplicateStringLiteral
+      secondHeadResponse = fetchGeneralHeadResponse(newLocationUrl)
+    }
 
     if (secondHeadResponse.status.code != HttpStatus.OK.code) {
       String message = "HEAD request for '${ url }' returned unexpected HTTP response status: [${ secondHeadResponse.status.reason }(${ secondHeadResponse.status.code })]. " +
@@ -133,7 +142,7 @@ class GradleDownloader {
       throw new IllegalStateException(message)
     }
 
-    return secondHeadResponse
+    return Tuple.tuple(newLocationUrl, secondHeadResponse)
   }
 
   protected HttpResponse<?> fetchGeneralHeadResponse(String url) {
@@ -150,8 +159,8 @@ class GradleDownloader {
   }
 
   @SuppressWarnings("CodeNarc.Println")
-  protected void printOutDownloadProgress(String realDownloadUrl, long downloadedBytesCount, String contentLength) {
-    printf("\rDownloading '${ realDownloadUrl }': %d%%", (downloadedBytesCount * 100 / contentLength.toLong()).toLong())
+  protected void printOutDownloadProgress(long downloadedBytesCount, String contentLength) {
+    printf("\r%d%%", (downloadedBytesCount * 100 / contentLength.toLong()).toLong())
   }
 
   @SuppressWarnings("CodeNarc.Println")
