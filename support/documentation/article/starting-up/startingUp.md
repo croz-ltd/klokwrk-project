@@ -6,8 +6,8 @@
 Environment:
 - OSX (should work with any desktop Linux distro and with Windows with appropriate bash-shell like git-bash)
 - JDK 17
-- Gradle 7.6.1
-- IDEA Community/Ultimate 2023.2.0
+- Gradle 8.5
+- IDEA Community/Ultimate 2023.3.2
 - Docker
 - Postman
 
