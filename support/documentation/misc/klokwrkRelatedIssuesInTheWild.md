@@ -152,6 +152,10 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (0.50.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/523
 * VERIFIED (0.50.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/524
 * VERIFIED (0.50.0) - https://github.com/kordamp/kordamp-gradle-plugins/issues/525
+* REPORTED - https://github.com/kordamp/kordamp-gradle-plugins/issues/530
+* REPORTED - https://github.com/kordamp/kordamp-gradle-plugins/issues/531
+* REPORTED - https://github.com/kordamp/kordamp-gradle-plugins/issues/532
+* REPORTED - https://github.com/kordamp/kordamp-gradle-plugins/issues/533
 
 ### micronaut-core
 * OBSOLETE - https://github.com/micronaut-projects/micronaut-core/issues/4622

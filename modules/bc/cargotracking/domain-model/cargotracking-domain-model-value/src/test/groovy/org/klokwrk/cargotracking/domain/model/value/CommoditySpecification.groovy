@@ -187,6 +187,8 @@ class CommoditySpecification extends Specification {
 
   // Here we have an example of adding non existing value to the enum for testing "impossible" switch default cases.
   // Adapted from https://stackoverflow.com/questions/5323505/mocking-java-enum-to-add-a-value-to-test-fail-case/57825724#57825724
+  //
+  // Requires adding "--add-opens java.base/java.lang=ALL-UNNAMED" JVM argument (see test configuration in cargotracking-domain-model-value/build.gradle)
   void "map constructor requestedStorageTemperature check should fail for non existing commodityType"() {
     given:
     Closure<Field> makeAccessibleField = { Class clazz, String fieldName ->
