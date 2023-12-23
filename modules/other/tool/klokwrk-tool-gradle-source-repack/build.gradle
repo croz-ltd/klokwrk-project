@@ -67,9 +67,9 @@ dependencies {
   graalNativeImageDependencies "io.github.classgraph:classgraph"
 
   groovydocMicronautClasspath "com.github.javaparser:javaparser-core"
-  groovydocMicronautClasspath "org.codehaus.groovy:groovy"
-  groovydocMicronautClasspath "org.codehaus.groovy:groovy-ant"
-  groovydocMicronautClasspath "org.codehaus.groovy:groovy-templates"
+  groovydocMicronautClasspath "org.apache.groovy:groovy"
+  groovydocMicronautClasspath "org.apache.groovy:groovy-ant"
+  groovydocMicronautClasspath "org.apache.groovy:groovy-templates"
 
   compileOnly "info.picocli:picocli-codegen"
   compileOnly "io.github.classgraph:classgraph"
@@ -78,10 +78,11 @@ dependencies {
   implementation "info.picocli:picocli"
   implementation "io.micronaut:micronaut-core"
   implementation "io.micronaut:micronaut-http-client-core"
+  implementation "io.micronaut:micronaut-jackson-databind"
   implementation "io.micronaut.picocli:micronaut-picocli"
   implementation "io.micronaut.reactor:micronaut-reactor-http-client"
   implementation "jakarta.inject:jakarta.inject-api"
-  implementation "org.codehaus.groovy:groovy"
+  implementation "org.apache.groovy:groovy"
   implementation "org.slf4j:slf4j-api"
 
   testImplementation "ch.qos.logback:logback-classic"
@@ -147,24 +148,12 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
   String executable = isWindows() ? "native-image.cmd" : "native-image"
   thisExecTask.setExecutable(executable)
   thisExecTask.setWorkingDir(workingDir)
-  thisExecTask.environment("USE_NATIVE_IMAGE_JAVA_PLATFORM_MODULE_SYSTEM", false)
   thisExecTask.setArgs([
       // Enables verbose output that display full configuration used for creating a native image.
       "--verbose",
 
       // A separated list of directories, JAR archives, and ZIP archives to search for class files.
       "--class-path=$nativeImageBuilderClasspath",
-
-      // Allow image building with an incomplete class path. Report type resolution errors at runtime when they are accessed the first time, instead of during image building.
-      //
-      // Some parts of Groovy core (inside groovy-*.jar) are designed to be initialized when accessed at runtime for the first time. At the same time, those Groovy parts expects that
-      // corresponding dependencies are available at classpath.
-      // Even if these core Groovy parts are not used from application, they are still reachable during GraalVM static analysis and it complains about missing dependencies. Therefore, we need to
-      // allow for incomplete classpath if we do not want native image compilation to fail and stop.
-      //
-      // Further, when encountering missing dependencies, GraalVM static analysis will complain with warnings. To eliminate warnings, incriminating Groovy classes needs to be added under
-      // "initialize-at-run-time" option.
-      "--allow-incomplete-classpath",
 
       // Report usage of unsupported methods and fields at runtime when they are accessed the first time, instead of as an error during image building.
       //
@@ -176,12 +165,6 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
       "--features=".concat(String.join(",", [
           "org.klokwrk.tool.gradle.source.repack.graal.GroovyDgmClassesRegistrationFeature",
           "org.klokwrk.tool.gradle.source.repack.graal.GroovyApplicationRegistrationFeature",
-
-          // Add micronaut features, currently annotated with @AutomaticFeature (just to be sure I'll not skip those if annotations will be removed)
-          "io.micronaut.buffer.netty.NettyFeature",
-          "io.micronaut.core.graal.ServiceLoaderFeature",
-          "io.micronaut.http.netty.graal.HttpNettyFeature",
-          "io.micronaut.jackson.JacksonDatabindFeature"
       ])),
 
       // A comma-separated list of packages and classes (and implicitly all of their superclasses) that are initialized during image generation. An empty string designates all packages.
@@ -192,7 +175,9 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
           "groovyjarjarantlr4.v4",
           "java.beans",
           "org.apache.groovy",
-          "org.codehaus.groovy"
+          "org.codehaus.groovy",
+          "ch.qos.logback",
+          "org.slf4j"
       ])),
 
       // A comma-separated list of packages and classes (and implicitly all of their subclasses) that must be initialized at runtime and not during image building. An empty string is currently not
@@ -200,7 +185,8 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
       "--initialize-at-run-time=".concat(String.join(",", [
           "org.codehaus.groovy.control.XStreamUtils",
           "org.codehaus.groovy.vmplugin.v8.Java8\$LookupHolder",
-          "groovy.grape.GrapeIvy"
+          "groovy.grape.GrapeIvy",
+          "io.netty.handler.ssl.BouncyCastleAlpnSslUtils"
       ])),
 
       // Do not fallback on plain JVM when AOT native image compilation fails. Throw an error instead.
@@ -243,6 +229,28 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
       "-H:Name=${ project.name }",
 
       // Configure max heap
-      "-J-Xmx10g"
+      "-J-Xmx10g",
+
+      // I'm not entirely sure about the exact cause of the problem the Groovy has when executing as a native image built with GraalVM, so I will try to describe the issue according to my current
+      // understanding.
+      //
+      // In the native image built with GraalVM, when executing some methods repeatedly for a huge number of times (more than 10000), Groovy can cause the following exception:
+      //
+      //     com.oracle.svm.core.jdk.UnsupportedFeatureError: Unsupported method java.lang.invoke.MethodHandleNatives.setCallSiteTargetNormal(CallSite, MethodHandle) is reachable
+      //
+      // The exception is caused by
+      //
+      //     org.codehaus.groovy.vmplugin.v8.IndyInterface.fromCache(IndyInterface.java:315)
+      //
+      // method. When looking at the source, the corresponding "if"  branch is triggered, besides other things, because "INDY_OPTIMIZE_THRESHOLD" is exceeded. After looking at the definition of the
+      // constant, it is visible that it is read from the "groovy.indy.optimize.threshold" system property and has a default of 10_000. Unfortunately, that system property cannot be just passed to
+      // the native executable but rather must be set during native image building to become effective.
+      //
+      // Along with "groovy.indy.optimize.threshold," there is also a related "groovy.indy.fallback.threshold" system property (relation was concluded from inspecting the source, the values of
+      // properties, and the fact they were changed at the same time in the past). Therefore, we are changing both properties by setting them to 100_000, which is substantially larger than the
+      // default value of 10_000. After those changes, the created native image no longer throws the above mentioned exception.
+      //
+      "-J-Dgroovy.indy.optimize.threshold=100000",
+      "-J-Dgroovy.indy.fallback.threshold=100000"
   ])
 }

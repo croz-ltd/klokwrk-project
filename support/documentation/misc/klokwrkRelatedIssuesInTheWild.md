@@ -91,6 +91,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * VERIFIED (4.0.7) - https://issues.apache.org/jira/browse/GROOVY-10878
 * VERIFIED (4.0.8) - https://issues.apache.org/jira/browse/GROOVY-10882
 * NOT A BUG - https://issues.apache.org/jira/browse/GROOVY-10899
+* FIXED (4.0.18) - https://issues.apache.org/jira/browse/GROOVY-11257
 
 ### datasource-micrometer
 * IN PROGRESS - https://github.com/jdbc-observations/datasource-micrometer/issues/17

@@ -74,7 +74,9 @@ class GradleDownloader {
       println "Downloading '${ realDownloadUrl }':" // codenarc-disable-line Println
       streamingHttpClient.exchangeStream(HttpRequest.GET(realDownloadUrl).accept(MediaType.APPLICATION_OCTET_STREAM_TYPE))
                          .map({ HttpResponse<ByteBuffer<?>> byteBufferHttpResponse ->
-                           byte[] byteArray = byteBufferHttpResponse.body.orElseThrow({ new NoSuchElementException("No value present") }).toByteArray()
+                           // TODO dmurat: Change back getBody() to body when Groovy 4.0.18 is released (https://issues.apache.org/jira/browse/GROOVY-11257), and remove CodeNarc comment
+                           byte[] byteArray = byteBufferHttpResponse.getBody().orElseThrow({ new NoSuchElementException("No value present") }).toByteArray() // codenarc-disable UnnecessaryGetter
+
                            downloadedBytesCount += byteArray.length
                            printOutDownloadProgress(downloadedBytesCount, contentLength)
 

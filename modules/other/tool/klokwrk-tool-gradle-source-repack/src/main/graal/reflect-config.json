@@ -83,6 +83,10 @@
   "methods":[{"name":"<init>","parameterTypes":["java.lang.String","org.codehaus.groovy.reflection.CachedClass","java.lang.Class","java.lang.Class[]"] }]
 },
 {
+  "name":"org.codehaus.groovy.runtime.dgm$1218",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","org.codehaus.groovy.reflection.CachedClass","java.lang.Class","java.lang.Class[]"] }]
+},
+{
   "name":"org.klokwrk.tool.gradle.source.repack.GradleSourceRepackCliArguments",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
