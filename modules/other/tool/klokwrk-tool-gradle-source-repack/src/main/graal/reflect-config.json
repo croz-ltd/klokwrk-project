@@ -186,42 +186,47 @@
   "allDeclaredConstructors":true
 },
 {
-  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_calculateCountOfTargetZipEntries_closure1",
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_calculateCountOfTargetZipEntries_closure2",
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
 },
 {
-  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_calculateCountOfTargetZipEntries_closure1$_closure4",
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_calculateCountOfTargetZipEntries_closure2$_closure5",
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
 },
 {
-  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_calculateCountOfTargetZipEntries_closure1$_closure5",
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_calculateCountOfTargetZipEntries_closure2$_closure6",
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
 },
 {
-  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_repackageZipEntry_closure3",
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_repackageZipEntry_closure4",
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
 },
 {
-  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_repackageZipFile_closure2",
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_repackageZipFile_closure3",
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
 },
 {
-  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_repackageZipFile_closure2$_closure6",
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_repackageZipFile_closure3$_closure7",
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
 },
 {
-  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_repackageZipFile_closure2$_closure6$_closure7",
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_repackageZipFile_closure3$_closure7$_closure8",
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
 },
 {
-  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_repackageZipFile_closure2$_closure6$_closure8",
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_repackageZipFile_closure3$_closure7$_closure9",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"org.klokwrk.tool.gradle.source.repack.repackager.GradleSourceRepackager$_repackGradleSource_closure1",
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
 },

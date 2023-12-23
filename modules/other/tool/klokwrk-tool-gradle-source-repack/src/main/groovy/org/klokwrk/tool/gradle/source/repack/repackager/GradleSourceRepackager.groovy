@@ -34,6 +34,7 @@ import java.util.zip.ZipOutputStream
 class GradleSourceRepackager {
   private static final Logger log = LoggerFactory.getLogger(GradleSourceRepackager)
 
+  @SuppressWarnings("CodeNarc.Println")
   static void repackGradleSource(GradleSourceRepackagerInfo repackagerInfo) {
     log.debug("Starting repackaging with following gradleSourceRepackagerInfo: {}", repackagerInfo)
     log.debug("Repackaging source and target: '{}' ==> '{}'.", repackagerInfo.gradleDistributionZipFilePath, repackagerInfo.gradleApiSourcesFilePath)
@@ -51,7 +52,12 @@ class GradleSourceRepackager {
     log.info("Repackaging Gradle sources: {} ===> {}", repackagerInfo.gradleDistributionZipFilePath, repackagerInfo.gradleApiSourcesFilePath)
 
     Long countOfTargetZipEntries = calculateCountOfTargetZipEntries(repackagerInfo)
-    repackageZipFile(repackagerInfo, countOfTargetZipEntries)
+    List<String> skippedMessageList = repackageZipFile(repackagerInfo, countOfTargetZipEntries)
+    if (skippedMessageList && log.isDebugEnabled()) {
+      println ""
+      log.debug("During repackaging the following entries were skipped:")
+      skippedMessageList.each({ String skippedMessage -> log.debug(skippedMessage) })
+    }
   }
 
   protected static Long calculateCountOfTargetZipEntries(GradleSourceRepackagerInfo repackagerInfo) {
@@ -76,8 +82,9 @@ class GradleSourceRepackager {
     return targetZipEntryName
   }
 
-  @SuppressWarnings("CodeNarc.Indentation")
-  protected static void repackageZipFile(GradleSourceRepackagerInfo repackagerInfo, Long countOfTargetZipEntries) {
+  @SuppressWarnings(["CodeNarc.Indentation", "CodeNarc.Println"])
+  protected static List<String> repackageZipFile(GradleSourceRepackagerInfo repackagerInfo, Long countOfTargetZipEntries) {
+    List<String> skippedMessageList = []
     new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(repackagerInfo.gradleApiSourcesFilePath))).withCloseable { ZipOutputStream targetZipOutputStream ->
       new ZipFile(repackagerInfo.gradleDistributionZipFilePath).withCloseable { ZipFile originalZipFile ->
         Long zipEntriesProcessedCount = Long.valueOf(0)
@@ -88,27 +95,27 @@ class GradleSourceRepackager {
               String targetZipEntryName = calculateTargetZipEntryName(repackagerInfo.gradleDistributionSrcDirPath, originalZipEntry)
               String skippedMessage = repackageZipEntry(originalZipFile, originalZipEntry, targetZipOutputStream, targetZipEntryName)
 
-              if (!skippedMessage) {
+              if (skippedMessage) {
+                skippedMessageList.add(skippedMessage)
+              }
+              else {
                 zipEntriesProcessedCount++
+                if (log.isTraceEnabled()) {
+                  println ""
+                  log.trace("Repacked Gradle source file: {} -> {}", originalZipEntry.name, targetZipEntryName)
+                }
               }
 
               Integer percentage = (zipEntriesProcessedCount * 100 / countOfTargetZipEntries).toInteger()
-              Boolean isLastEntry = countOfTargetZipEntries == zipEntriesProcessedCount
-              String newLineIfNecessary = (isLastEntry || (skippedMessage && log.debugEnabled) || log.traceEnabled) ? "\n" : ""
-              printRepackagingProgressOnConsole(repackagerInfo.gradleApiSourcesFilePath, percentage, newLineIfNecessary)
-
-              if (skippedMessage) {
-                log.debug(skippedMessage)
-              }
-              else {
-                log.trace("Repacked Gradle source file: {} -> {}", originalZipEntry.name, targetZipEntryName)
-              }
+              printRepackagingProgressOnConsole(repackagerInfo.gradleApiSourcesFilePath, percentage)
 
               //noinspection GroovyUnnecessaryReturn
               return // Note: this return is here just to make JaCoCo report more reliable.
             })
       }
     }
+
+    return skippedMessageList
   }
 
   protected static String repackageZipEntry(ZipFile originalZipFile, ZipEntry originalZipEntry, ZipOutputStream targetZipOutputStream, String targetZipEntryName) {
@@ -137,7 +144,7 @@ class GradleSourceRepackager {
   }
 
   @SuppressWarnings("CodeNarc.Println")
-  private static void printRepackagingProgressOnConsole(String gradleApiSourcesFilePath, Integer percentage, String newLineIfNecessary) {
-    print "\rRepackaging into ${ gradleApiSourcesFilePath }: ${ percentage }%${ newLineIfNecessary }"
+  private static void printRepackagingProgressOnConsole(String gradleApiSourcesFilePath, Integer percentage) {
+    print "\rRepackaging into ${ gradleApiSourcesFilePath }: ${ percentage }%"
   }
 }
