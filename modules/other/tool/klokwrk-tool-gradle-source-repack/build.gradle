@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.internal.deprecation.DeprecatableConfiguration
 
@@ -108,7 +109,8 @@ Boolean isWindows() {
 // In addition there is also an issue with missing resources in Micronaut task that causes native image build failing in the presence of both java and groovy source sets. Didn't reported that yet,
 // but I guess it will not get much attention since native image for Groovy is not supported.
 tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
-  def shadowJar = project.tasks.findByName("shadowJar")
+  def project = thisExecTask.getProject()
+  def shadowJar = project.tasks.named("shadowJar", ShadowJar).get()
   thisExecTask.dependsOn shadowJar
 
   String nativeImageBuilderClasspath = null
@@ -132,12 +134,12 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
         })
 
     Set<File> resolvedDependencies = filteredConfigurations.collectMany { Configuration configuration -> configuration.resolve() }
-    nativeImageBuilderClasspath = project.files(resolvedDependencies, shadowJar.archiveFile as RegularFile).asPath
+    nativeImageBuilderClasspath = project.files(resolvedDependencies, shadowJar.archiveFile).asPath
 
     return
   }
 
-  File workingDir = new File(project.buildDir, "native-image")
+  File workingDir = new File(project.layout.buildDirectory.get().asFile, "native-image")
   workingDir.mkdirs()
 
   JavaApplication javaApplication = project.extensions.getByType(JavaApplication)
