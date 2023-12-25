@@ -66,10 +66,6 @@
                 "steps": [
                   {
                     "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
                   }
                 ]
               },
@@ -98,9 +94,10 @@
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.3-cloud.4.aed62623",
+          "pluginVersion": "10.3.0-64399",
           "targets": [
             {
               "datasource": {
@@ -108,7 +105,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(commandBus_successCounter{app=~\"$application\", instance=~\"$instance\"})by(app)",
+              "expr": "sum(commandBus_successCounter_total{app=~\"$application\", instance=~\"$instance\"})by(app)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -150,10 +147,6 @@
                 "steps": [
                   {
                     "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
                   }
                 ]
               },
@@ -182,9 +175,10 @@
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.3-cloud.4.aed62623",
+          "pluginVersion": "10.3.0-64399",
           "targets": [
             {
               "datasource": {
@@ -192,7 +186,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(commandBus_failureCounter{app=~\"$application\", instance=~\"$instance\"}) by (app)",
+              "expr": "sum(commandBus_failureCounter_total{app=~\"$application\", instance=~\"$instance\"}) by (app)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -234,10 +228,6 @@
                 "steps": [
                   {
                     "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
                   }
                 ]
               },
@@ -266,9 +256,10 @@
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.3-cloud.4.aed62623",
+          "pluginVersion": "10.3.0-64399",
           "targets": [
             {
               "datasource": {
@@ -276,7 +267,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(commandBus_processedCounter{app=~\"$application\", instance=~\"$instance\"}) by (app)",
+              "expr": "sum(commandBus_processedCounter_total{app=~\"$application\", instance=~\"$instance\"}) by (app)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -318,10 +309,6 @@
                 "steps": [
                   {
                     "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
                   }
                 ]
               },
@@ -350,9 +337,10 @@
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.3-cloud.4.aed62623",
+          "pluginVersion": "10.3.0-64399",
           "targets": [
             {
               "datasource": {
@@ -360,7 +348,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(commandBus_ingestedCounter{app=~\"$application\", instance=~\"$instance\"}) by(app)",
+              "expr": "sum(commandBus_ingestedCounter_total{app=~\"$application\", instance=~\"$instance\"}) by(app)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -402,10 +390,6 @@
                 "steps": [
                   {
                     "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
                   }
                 ]
               },
@@ -434,9 +418,10 @@
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.3-cloud.4.aed62623",
+          "pluginVersion": "10.3.0-64399",
           "targets": [
             {
               "datasource": {
@@ -444,7 +429,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(commandBus_ignoredCounter{app=~\"$application\", instance=~\"$instance\"}) by (app)",
+              "expr": "sum(commandBus_ignoredCounter_total{app=~\"$application\", instance=~\"$instance\"}) by (app)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -469,6 +454,7 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -482,6 +468,7 @@
                   "tooltip": false,
                   "viz": false
                 },
+                "insertNulls": false,
                 "lineInterpolation": "linear",
                 "lineWidth": 1,
                 "pointSize": 5,
@@ -544,7 +531,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "avg(commandBus_allTimer_percentile{app=~\"$application\", instance=~\"$instance\", phi=\"0.5\"})by(app)",
+              "expr": "avg(commandBus_allTimer_percentile_seconds{app=~\"$application\", instance=~\"$instance\", phi=\"0.5\"})by(app)",
               "instant": false,
               "interval": "",
               "legendFormat": "All timer (quantile=\"0.5\")",
@@ -556,7 +543,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "avg(commandBus_allTimer_percentile{app=~\"$application\", instance=~\"$instance\", phi=\"0.75\"})by(app)",
+              "expr": "avg(commandBus_allTimer_percentile_seconds{app=~\"$application\", instance=~\"$instance\", phi=\"0.75\"})by(app)",
               "instant": false,
               "interval": "",
               "legendFormat": "All timer (quantile=\"0.75\")",
@@ -568,7 +555,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "avg(commandBus_allTimer_percentile{app=~\"$application\", instance=~\"$instance\", phi=\"0.95\"})by(app)",
+              "expr": "avg(commandBus_allTimer_percentile_seconds{app=~\"$application\", instance=~\"$instance\", phi=\"0.95\"})by(app)",
               "instant": false,
               "interval": "",
               "legendFormat": "All timer (quantile=\"0.95\")",
@@ -580,7 +567,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "avg(commandBus_allTimer_percentile{app=~\"$application\", instance=~\"$instance\", phi=\"0.999\"})by(app)",
+              "expr": "avg(commandBus_allTimer_percentile_seconds{app=~\"$application\", instance=~\"$instance\", phi=\"0.999\"})by(app)",
               "hide": false,
               "instant": false,
               "interval": "",
@@ -602,6 +589,7 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -615,6 +603,7 @@
                   "tooltip": false,
                   "viz": false
                 },
+                "insertNulls": false,
                 "lineInterpolation": "linear",
                 "lineWidth": 1,
                 "pointSize": 5,
@@ -678,7 +667,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(irate(commandBus_successCounter{app=~\"$application\", instance=~\"$instance\"}[5m])) by (app)",
+              "expr": "sum(irate(commandBus_successCounter_total{app=~\"$application\", instance=~\"$instance\"}[5m])) by (app)",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -692,7 +681,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(irate(commandBus_failureCounter{app=~\"$application\", instance=~\"$instance\"}[5m])) by (app)",
+              "expr": "sum(irate(commandBus_failureCounter_total{app=~\"$application\", instance=~\"$instance\"}[5m])) by (app)",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -706,7 +695,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(irate(commandBus_processedCounter{app=~\"$application\", instance=~\"$instance\"}[5m])) by (app)",
+              "expr": "sum(irate(commandBus_processedCounter_total{app=~\"$application\", instance=~\"$instance\"}[5m])) by (app)",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -720,7 +709,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(irate(commandBus_ingestedCounter{app=~\"$application\", instance=~\"$instance\"}[5m])) by (app)",
+              "expr": "sum(irate(commandBus_ingestedCounter_total{app=~\"$application\", instance=~\"$instance\"}[5m])) by (app)",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -734,7 +723,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(irate(commandBus_ignoredCounter{app=~\"$application\", instance=~\"$instance\"}[5m])) by (app)",
+              "expr": "sum(irate(commandBus_ignoredCounter_total{app=~\"$application\", instance=~\"$instance\"}[5m])) by (app)",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -757,6 +746,7 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -770,6 +760,7 @@
                   "tooltip": false,
                   "viz": false
                 },
+                "insertNulls": false,
                 "lineInterpolation": "linear",
                 "lineWidth": 1,
                 "pointSize": 5,
@@ -832,7 +823,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(commandBus_capacity{app=~\"$application\", instance=~\"$instance\"}) by (app)",
+              "expr": "sum(commandBus_capacity_ratio{app=~\"$application\", instance=~\"$instance\"}) by (app)",
               "instant": false,
               "interval": "",
               "legendFormat": "Command bus",
@@ -897,10 +888,6 @@
                 "steps": [
                   {
                     "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
                   }
                 ]
               },
@@ -912,7 +899,7 @@
             "h": 3,
             "w": 4,
             "x": 0,
-            "y": 21
+            "y": 2
           },
           "id": 108,
           "links": [],
@@ -929,9 +916,10 @@
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.3-cloud.4.aed62623",
+          "pluginVersion": "10.3.0-64399",
           "targets": [
             {
               "datasource": {
@@ -939,7 +927,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(eventStore_successCounter{app=~\"$application\", instance=~\"$instance\"})by(app)",
+              "expr": "sum(eventStore_successCounter_total{app=~\"$application\", instance=~\"$instance\"})by(app)",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -981,10 +969,6 @@
                 "steps": [
                   {
                     "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
                   }
                 ]
               },
@@ -996,7 +980,7 @@
             "h": 3,
             "w": 4,
             "x": 5,
-            "y": 21
+            "y": 2
           },
           "id": 109,
           "links": [],
@@ -1013,9 +997,10 @@
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.3-cloud.4.aed62623",
+          "pluginVersion": "10.3.0-64399",
           "targets": [
             {
               "datasource": {
@@ -1023,7 +1008,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(eventStore_failureCounter{app=~\"$application\", instance=~\"$instance\"})by(app)",
+              "expr": "sum(eventStore_failureCounter_total{app=~\"$application\", instance=~\"$instance\"})by(app)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -1065,10 +1050,6 @@
                 "steps": [
                   {
                     "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
                   }
                 ]
               },
@@ -1080,7 +1061,7 @@
             "h": 3,
             "w": 4,
             "x": 10,
-            "y": 21
+            "y": 2
           },
           "id": 110,
           "links": [],
@@ -1097,9 +1078,10 @@
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.3-cloud.4.aed62623",
+          "pluginVersion": "10.3.0-64399",
           "targets": [
             {
               "datasource": {
@@ -1107,7 +1089,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(eventStore_processedCounter{app=~\"$application\", instance=~\"$instance\"})by(app)",
+              "expr": "sum(eventStore_processedCounter_total{app=~\"$application\", instance=~\"$instance\"})by(app)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -1149,10 +1131,6 @@
                 "steps": [
                   {
                     "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
                   }
                 ]
               },
@@ -1164,7 +1142,7 @@
             "h": 3,
             "w": 4,
             "x": 15,
-            "y": 21
+            "y": 2
           },
           "id": 111,
           "links": [],
@@ -1181,9 +1159,10 @@
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.3-cloud.4.aed62623",
+          "pluginVersion": "10.3.0-64399",
           "targets": [
             {
               "datasource": {
@@ -1191,7 +1170,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(eventStore_ingestedCounter{app=~\"$application\", instance=~\"$instance\"})by(app)",
+              "expr": "sum(eventStore_ingestedCounter_total{app=~\"$application\", instance=~\"$instance\"})by(app)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -1233,10 +1212,6 @@
                 "steps": [
                   {
                     "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
                   }
                 ]
               },
@@ -1248,7 +1223,7 @@
             "h": 3,
             "w": 4,
             "x": 20,
-            "y": 21
+            "y": 2
           },
           "id": 112,
           "links": [],
@@ -1265,9 +1240,10 @@
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.3-cloud.4.aed62623",
+          "pluginVersion": "10.3.0-64399",
           "targets": [
             {
               "datasource": {
@@ -1275,7 +1251,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(eventStore_ignoredCounter{app=~\"$application\", instance=~\"$instance\"})by(app)",
+              "expr": "sum(eventStore_ignoredCounter_total{app=~\"$application\", instance=~\"$instance\"})by(app)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -1300,6 +1276,7 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -1313,6 +1290,7 @@
                   "tooltip": false,
                   "viz": false
                 },
+                "insertNulls": false,
                 "lineInterpolation": "linear",
                 "lineWidth": 1,
                 "pointSize": 5,
@@ -1352,7 +1330,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 24
+            "y": 5
           },
           "id": 128,
           "options": {
@@ -1375,7 +1353,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "avg(eventStore_allTimer_percentile{app=~\"$application\", instance=~\"$instance\", phi=\"0.5\"})by(app)",
+              "expr": "avg(eventStore_allTimer_percentile_seconds{app=~\"$application\", instance=~\"$instance\", phi=\"0.5\"})by(app)",
               "instant": false,
               "interval": "",
               "legendFormat": "All timer (quantile=\"0.5\")",
@@ -1387,7 +1365,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "avg(eventStore_allTimer_percentile{app=~\"$application\", instance=~\"$instance\", phi=\"0.75\"})by(app)",
+              "expr": "avg(eventStore_allTimer_percentile_seconds{app=~\"$application\", instance=~\"$instance\", phi=\"0.75\"})by(app)",
               "instant": false,
               "interval": "",
               "legendFormat": "All timer (quantile=\"0.75\")",
@@ -1399,7 +1377,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "avg(eventStore_allTimer_percentile{app=~\"$application\", instance=~\"$instance\", phi=\"0.95\"})by(app)",
+              "expr": "avg(eventStore_allTimer_percentile_seconds{app=~\"$application\", instance=~\"$instance\", phi=\"0.95\"})by(app)",
               "instant": false,
               "interval": "",
               "legendFormat": "All timer (quantile=\"0.95\")",
@@ -1411,7 +1389,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "avg(eventStore_allTimer_percentile{app=~\"$application\", instance=~\"$instance\", phi=\"0.999\"})by(app)",
+              "expr": "avg(eventStore_allTimer_percentile_seconds{app=~\"$application\", instance=~\"$instance\", phi=\"0.999\"})by(app)",
               "hide": false,
               "instant": false,
               "interval": "",
@@ -1433,6 +1411,7 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -1446,6 +1425,7 @@
                   "tooltip": false,
                   "viz": false
                 },
+                "insertNulls": false,
                 "lineInterpolation": "linear",
                 "lineWidth": 1,
                 "pointSize": 5,
@@ -1485,7 +1465,7 @@
             "h": 6,
             "w": 24,
             "x": 0,
-            "y": 31
+            "y": 12
           },
           "id": 113,
           "links": [],
@@ -1509,7 +1489,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(irate(eventStore_successCounter{app=~\"$application\", instance=~\"$instance\"}[5m]))by(app)",
+              "expr": "sum(irate(eventStore_successCounter_total{app=~\"$application\", instance=~\"$instance\"}[5m]))by(app)",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -1523,7 +1503,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(irate(eventStore_failureCounter{app=~\"$application\", instance=~\"$instance\"}[5m]))by(app)",
+              "expr": "sum(irate(eventStore_failureCounter_total{app=~\"$application\", instance=~\"$instance\"}[5m]))by(app)",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -1537,7 +1517,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(irate(eventStore_processedCounter{app=~\"$application\", instance=~\"$instance\"}[5m]))by(app)",
+              "expr": "sum(irate(eventStore_processedCounter_total{app=~\"$application\", instance=~\"$instance\"}[5m]))by(app)",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -1551,7 +1531,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(irate(eventStore_ingestedCounter{app=~\"$application\", instance=~\"$instance\"}[5m]))by(app)",
+              "expr": "sum(irate(eventStore_ingestedCounter_total{app=~\"$application\", instance=~\"$instance\"}[5m]))by(app)",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -1565,7 +1545,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(irate(eventStore_ignoredCounter{app=~\"$application\", instance=\"$instance\"}[5m]))by(app)",
+              "expr": "sum(irate(eventStore_ignoredCounter_total{app=~\"$application\", instance=\"$instance\"}[5m]))by(app)",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -1632,10 +1612,6 @@
                 "steps": [
                   {
                     "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
                   }
                 ]
               },
@@ -1647,7 +1623,7 @@
             "h": 3,
             "w": 4,
             "x": 0,
-            "y": 22
+            "y": 3
           },
           "id": 118,
           "links": [],
@@ -1664,9 +1640,10 @@
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.3-cloud.4.aed62623",
+          "pluginVersion": "10.3.0-64399",
           "targets": [
             {
               "datasource": {
@@ -1674,7 +1651,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(queryBus_successCounter{app=~\"$application\", instance=~\"$instance\"})by(app)",
+              "expr": "sum(queryBus_successCounter_total{app=~\"$application\", instance=~\"$instance\"})by(app)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -1716,10 +1693,6 @@
                 "steps": [
                   {
                     "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
                   }
                 ]
               },
@@ -1731,7 +1704,7 @@
             "h": 3,
             "w": 4,
             "x": 5,
-            "y": 22
+            "y": 3
           },
           "id": 119,
           "links": [],
@@ -1748,9 +1721,10 @@
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.3-cloud.4.aed62623",
+          "pluginVersion": "10.3.0-64399",
           "targets": [
             {
               "datasource": {
@@ -1758,7 +1732,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(queryBus_failureCounter{app=~\"$application\", instance=~\"$instance\"})by(app)",
+              "expr": "sum(queryBus_failureCounter_total{app=~\"$application\", instance=~\"$instance\"})by(app)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -1800,10 +1774,6 @@
                 "steps": [
                   {
                     "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
                   }
                 ]
               },
@@ -1815,7 +1785,7 @@
             "h": 3,
             "w": 4,
             "x": 10,
-            "y": 22
+            "y": 3
           },
           "id": 120,
           "links": [],
@@ -1832,9 +1802,10 @@
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.3-cloud.4.aed62623",
+          "pluginVersion": "10.3.0-64399",
           "targets": [
             {
               "datasource": {
@@ -1842,7 +1813,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(queryBus_processedCounter{app=~\"$application\", instance=~\"$instance\"})by(app)",
+              "expr": "sum(queryBus_processedCounter_total{app=~\"$application\", instance=~\"$instance\"})by(app)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -1884,10 +1855,6 @@
                 "steps": [
                   {
                     "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
                   }
                 ]
               },
@@ -1899,7 +1866,7 @@
             "h": 3,
             "w": 4,
             "x": 15,
-            "y": 22
+            "y": 3
           },
           "id": 121,
           "links": [],
@@ -1916,9 +1883,10 @@
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.3-cloud.4.aed62623",
+          "pluginVersion": "10.3.0-64399",
           "targets": [
             {
               "datasource": {
@@ -1926,7 +1894,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(queryBus_ingestedCounter{app=~\"$application\", instance=~\"$instance\"})by(app)",
+              "expr": "sum(queryBus_ingestedCounter_total{app=~\"$application\", instance=~\"$instance\"})by(app)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -1968,10 +1936,6 @@
                 "steps": [
                   {
                     "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
                   }
                 ]
               },
@@ -1983,7 +1947,7 @@
             "h": 3,
             "w": 4,
             "x": 20,
-            "y": 22
+            "y": 3
           },
           "id": 122,
           "links": [],
@@ -2000,9 +1964,10 @@
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.3-cloud.4.aed62623",
+          "pluginVersion": "10.3.0-64399",
           "targets": [
             {
               "datasource": {
@@ -2010,7 +1975,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(queryBus_ignoredCounter{app=~\"$application\", instance=~\"$instance\"})by(app)",
+              "expr": "sum(queryBus_ignoredCounter_total{app=~\"$application\", instance=~\"$instance\"})by(app)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -2035,6 +2000,7 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -2048,6 +2014,7 @@
                   "tooltip": false,
                   "viz": false
                 },
+                "insertNulls": false,
                 "lineInterpolation": "linear",
                 "lineWidth": 1,
                 "pointSize": 5,
@@ -2087,7 +2054,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 25
+            "y": 6
           },
           "id": 131,
           "options": {
@@ -2110,7 +2077,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "avg(queryBus_allTimer_percentile{app=~\"$application\", instance=~\"$instance\", phi=\"0.5\"})by(app)",
+              "expr": "avg(queryBus_allTimer_percentile_seconds{app=~\"$application\", instance=~\"$instance\", phi=\"0.5\"})by(app)",
               "instant": false,
               "interval": "",
               "legendFormat": "All timer (quantile=\"0.5\")",
@@ -2122,7 +2089,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "avg(queryBus_allTimer_percentile{app=~\"$application\", instance=~\"$instance\", phi=\"0.75\"})by(app)",
+              "expr": "avg(queryBus_allTimer_percentile_seconds{app=~\"$application\", instance=~\"$instance\", phi=\"0.75\"})by(app)",
               "instant": false,
               "interval": "",
               "legendFormat": "All timer (quantile=\"0.75\")",
@@ -2134,7 +2101,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "avg(queryBus_allTimer_percentile{app=~\"$application\", instance=~\"$instance\", phi=\"0.95\"})by(app)",
+              "expr": "avg(queryBus_allTimer_percentile_seconds{app=~\"$application\", instance=~\"$instance\", phi=\"0.95\"})by(app)",
               "instant": false,
               "interval": "",
               "legendFormat": "All timer (quantile=\"0.95\")",
@@ -2146,7 +2113,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "avg(queryBus_allTimer_percentile{app=~\"$application\", instance=~\"$instance\", phi=\"0.999\"})by(app)",
+              "expr": "avg(queryBus_allTimer_percentile_seconds{app=~\"$application\", instance=~\"$instance\", phi=\"0.999\"})by(app)",
               "hide": false,
               "instant": false,
               "interval": "",
@@ -2168,6 +2135,7 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -2181,6 +2149,7 @@
                   "tooltip": false,
                   "viz": false
                 },
+                "insertNulls": false,
                 "lineInterpolation": "linear",
                 "lineWidth": 1,
                 "pointSize": 5,
@@ -2220,7 +2189,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 33
+            "y": 14
           },
           "id": 123,
           "links": [],
@@ -2244,7 +2213,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(irate(queryBus_successCounter{app=~\"$application\", instance=~\"$instance\"}[5m]))by(app)",
+              "expr": "sum(irate(queryBus_successCounter_total{app=~\"$application\", instance=~\"$instance\"}[5m]))by(app)",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -2258,7 +2227,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(irate(queryBus_failureCounter{app=~\"$application\", instance=~\"$instance\"}[5m]))by(app)",
+              "expr": "sum(irate(queryBus_failureCounter_total{app=~\"$application\", instance=~\"$instance\"}[5m]))by(app)",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -2272,7 +2241,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(irate(queryBus_processedCounter{app=~\"$application\", instance=~\"$instance\"}[5m]))by(app)",
+              "expr": "sum(irate(queryBus_processedCounter_total{app=~\"$application\", instance=~\"$instance\"}[5m]))by(app)",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -2286,7 +2255,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(irate(queryBus_ingestedCounter{app=~\"$application\", instance=~\"$instance\"}[5m]))by(app)",
+              "expr": "sum(irate(queryBus_ingestedCounter_total{app=~\"$application\", instance=~\"$instance\"}[5m]))by(app)",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -2323,6 +2292,7 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -2336,6 +2306,7 @@
                   "tooltip": false,
                   "viz": false
                 },
+                "insertNulls": false,
                 "lineInterpolation": "linear",
                 "lineWidth": 1,
                 "pointSize": 5,
@@ -2375,7 +2346,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 33
+            "y": 14
           },
           "id": 130,
           "options": {
@@ -2398,7 +2369,7 @@
                 "uid": "grafanacloud-prom"
               },
               "editorMode": "code",
-              "expr": "sum(queryBus_capacity{app=~\"$application\", instance=~\"$instance\"})by(app)",
+              "expr": "sum(queryBus_capacity_ratio{app=~\"$application\", instance=~\"$instance\"})by(app)",
               "instant": false,
               "interval": "",
               "legendFormat": "Query bus",
@@ -2423,9 +2394,10 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 38,
-  "style": "dark",
-  "tags": [],
+  "schemaVersion": 39,
+  "tags": [
+    "klokwrk"
+  ],
   "templating": {
     "list": [
       {
@@ -2525,6 +2497,6 @@
   "timezone": "",
   "title": "klokwrk - Axon app - simple metrics",
   "uid": "klokwrk_axon_simple_metrics_1",
-  "version": 3,
+  "version": 9,
   "weekStart": ""
 }

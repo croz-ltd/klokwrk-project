@@ -21,6 +21,7 @@ import groovy.transform.CompileStatic
 import org.axonframework.eventhandling.GapAwareTrackingToken
 import org.axonframework.eventhandling.GenericTrackedDomainEventMessage
 import org.axonframework.eventhandling.GlobalSequenceTrackingToken
+import org.axonframework.eventhandling.ReplayToken
 import org.axonframework.eventhandling.TrackingToken
 import org.axonframework.messaging.Message
 
@@ -39,17 +40,21 @@ class AxonMessageHelper {
     return globalIndexString
   }
 
-  @SuppressWarnings("CodeNarc.Instanceof")
+  @SuppressWarnings(["CodeNarc.Instanceof", "CodeNarc.CouldBeSwitchStatement"])
   static Long fetchGlobalIndexIfPossible(Message<?> message) {
     Long eventGlobalIndex = null
 
     if (message instanceof GenericTrackedDomainEventMessage) {
       TrackingToken trackingToken = message.trackingToken()
+      if (trackingToken instanceof ReplayToken) {
+        trackingToken = trackingToken.currentToken
+      }
+
       if (trackingToken instanceof GapAwareTrackingToken) {
-        eventGlobalIndex = (trackingToken as GapAwareTrackingToken).index
+        eventGlobalIndex = trackingToken.index
       }
       else if (trackingToken instanceof GlobalSequenceTrackingToken) {
-        eventGlobalIndex = (trackingToken as GlobalSequenceTrackingToken).globalIndex
+        eventGlobalIndex = trackingToken.globalIndex
       }
     }
 

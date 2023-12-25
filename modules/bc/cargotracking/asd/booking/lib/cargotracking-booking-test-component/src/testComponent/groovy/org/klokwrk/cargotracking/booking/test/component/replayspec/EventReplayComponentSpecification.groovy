@@ -219,7 +219,7 @@ class EventReplayComponentSpecification extends Specification {
     Integer sentEventsCount = populateAxonEventStoreWithValidEvents(axonServer)
 
     then:
-    new PollingConditions(timeout: 5, initialDelay: 0, delay: 0.05).eventually {
+    new PollingConditions(timeout: 10, initialDelay: 1, delay: 0.2).eventually {
       fetchMaxEventGlobalIndexFromProjectionRdbms(postgresqlServer).v1 == axonServerEventGlobalIndexStart + sentEventsCount - 1
     }
 

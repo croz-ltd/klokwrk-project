@@ -20,14 +20,7 @@ package org.klokwrk.cargotracking.booking.app.queryside.projection.rdbms.infrast
 import groovy.transform.CompileStatic
 import io.micrometer.observation.Observation
 import io.micrometer.observation.ObservationRegistry
-import io.opentelemetry.api.OpenTelemetry
-import io.opentelemetry.context.propagation.ContextPropagators
 import net.ttddyy.observation.tracing.QueryContext
-import org.axonframework.tracing.MultiSpanFactory
-import org.axonframework.tracing.NestingSpanFactory
-import org.axonframework.tracing.SpanFactory
-import org.axonframework.tracing.attributes.MetadataSpanAttributesProvider
-import org.axonframework.tracing.opentelemetry.OpenTelemetrySpanFactory
 import org.springframework.boot.actuate.autoconfigure.observation.ObservationRegistryCustomizer
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
@@ -40,20 +33,6 @@ import java.util.regex.Pattern
 @CompileStatic
 class OpenTelemetryConfig {
   static final List<Pattern> IGNORED_QUERIES = [~/^update token_entry.*$/, ~/select.*from token_entry.*$/]
-
-  @Bean
-  SpanFactory axonTracingSpanFactory(OpenTelemetry openTelemetry, ContextPropagators contextPropagators) {
-    OpenTelemetrySpanFactory axonOpenTelemetrySpanFactory = OpenTelemetrySpanFactory.builder()
-        .tracer(openTelemetry.getTracer("AxonFramework"))
-        .contextPropagators(contextPropagators.textMapPropagator)
-        .build()
-
-    SpanFactory axonSpanFactory = new MultiSpanFactory([axonOpenTelemetrySpanFactory as SpanFactory])
-    axonSpanFactory.registerSpanAttributeProvider(new MetadataSpanAttributesProvider())
-    NestingSpanFactory axonNestingSpanFactory = NestingSpanFactory.builder().delegate(axonSpanFactory).build()
-
-    return axonNestingSpanFactory
-  }
 
   @SuppressWarnings("CodeNarc.Instanceof")
   @Bean
