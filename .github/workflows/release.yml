@@ -36,14 +36,14 @@ jobs:
     steps:
       - name: Download binaries for last successful repack workflow
         if: ${{ !github.event.inputs.run-id-of-gradle-source-repack-native-image }}
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v3
         with:
           workflow: klokwrk-tool-gradle-source-repack_nativeImageBuild.yml
           workflow_conclusion: success
 
       - name: Download binaries for repack workflow with provided Run ID
         if: ${{ github.event.inputs.run-id-of-gradle-source-repack-native-image }}
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v3
         with:
           workflow: klokwrk-tool-gradle-source-repack_nativeImageBuild.yml
           run_id: ${{ github.event.inputs.run-id-of-gradle-source-repack-native-image }}
