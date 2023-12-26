@@ -58,7 +58,7 @@ jobs:
 
       - name: Test Unit Report Publish
         if: ${{ always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: aggregatedTestUnitReports_${{ matrix.os }}-JDK-${{ matrix.java }}
           path: build/reports/allTestUnitReports/*
@@ -77,7 +77,7 @@ jobs:
 
       - name: Test Integration Report Publish
         if: ${{ matrix.os == 'ubuntu-latest' &&  always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: aggregatedTestIntegrationReports_${{ matrix.os }}-JDK-${{ matrix.java }}
           path: build/reports/allTestIntegrationReports/*
@@ -96,7 +96,7 @@ jobs:
 
       - name: Test Component Report Publish
         if: ${{ matrix.os == 'ubuntu-latest' &&  always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: aggregatedTestComponentReports_${{ matrix.os }}-JDK-${{ matrix.java }}
           path: build/reports/allTestComponentReports/*
@@ -109,7 +109,7 @@ jobs:
 
       - name: Publish CodeNarc Report
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' && always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: aggregatedCodeNarcReports_${{ matrix.os }}_JDK-${{ matrix.java }}
           path: build/reports/codenarc/*
