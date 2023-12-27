@@ -87,7 +87,7 @@ dependencies {
   implementation "org.slf4j:slf4j-api"
 
   testImplementation "ch.qos.logback:logback-classic"
-  testImplementation "com.github.tomakehurst:wiremock-jre8"
+  testImplementation "org.wiremock:wiremock"
   testImplementation "com.google.jimfs:jimfs"
   testImplementation "org.spockframework:spock-core"
 
