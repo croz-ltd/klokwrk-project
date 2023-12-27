@@ -97,7 +97,7 @@ This is a list of all issues, categorized per 3rd party software, that are repor
 * IN PROGRESS - https://github.com/jdbc-observations/datasource-micrometer/issues/17
   * https://github.com/jdbc-observations/datasource-micrometer/issues/21
   * https://github.com/micrometer-metrics/micrometer/pull/3867
-* FIXED (1.0.3) - https://github.com/jdbc-observations/datasource-micrometer/issues/18
+* VERIFIED (1.0.3) - https://github.com/jdbc-observations/datasource-micrometer/issues/18
   * https://github.com/jdbc-observations/datasource-micrometer/pull/19*
 
 ### IDEA
