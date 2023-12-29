@@ -69,7 +69,7 @@ class ResponseFormattingSpringMvcExceptionHandlerSpecification extends Specifica
 
     @SuppressWarnings(["unused", "MVCPathVariableInspection", "CodeNarc.UnusedMethodParameter"])
     @PostMapping("/springMvcExceptionHandlerInvalidTestControllerMethod")
-    OperationResponse<Map> invalidTestControllerMethod(@PathVariable String nonExistingPathVariable) {
+    OperationResponse<Map> invalidTestControllerMethod(@PathVariable("nonExistingPathVariable") String nonExistingPathVariable) {
       return new OperationResponse<Map>(payload: [data: "Some testing data"])
     }
 

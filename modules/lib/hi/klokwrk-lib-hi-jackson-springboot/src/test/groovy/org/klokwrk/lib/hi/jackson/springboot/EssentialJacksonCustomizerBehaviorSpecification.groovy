@@ -20,8 +20,10 @@ package org.klokwrk.lib.hi.jackson.springboot
 import com.fasterxml.jackson.annotation.JsonSetter
 import com.fasterxml.jackson.annotation.Nulls
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.json.JsonTest
+import org.springframework.context.ApplicationContext
 import spock.lang.Specification
 
 import javax.measure.Quantity
@@ -84,6 +86,9 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
     Quantity<Mass> weight
     Quantity length
   }
+
+  @Autowired
+  ApplicationContext applicationContext
 
   @Autowired
   ObjectMapper objectMapper
@@ -182,7 +187,8 @@ class EssentialJacksonCustomizerBehaviorSpecification extends Specification {
 
   void "deserialization - should configure skipNullValues only for default Spring Boot object mapper"() {
     given:
-    EssentialJacksonCustomizer essentialJacksonCustomizer = new EssentialJacksonCustomizer(new EssentialJacksonCustomizerConfigurationProperties())
+    ObjectProvider<EssentialJacksonCustomizerConfigurationProperties> objectProvider = applicationContext.getBeanProvider(EssentialJacksonCustomizerConfigurationProperties)
+    EssentialJacksonCustomizer essentialJacksonCustomizer = new EssentialJacksonCustomizer(objectProvider)
 
     when:
     ObjectMapper objectMapper = essentialJacksonCustomizer.postProcessAfterInitialization(new ObjectMapper(), "nonDefaultSpringBootNameForObjectMapperBean") as ObjectMapper

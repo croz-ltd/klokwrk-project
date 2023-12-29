@@ -33,6 +33,7 @@ import org.klokwrk.lib.lo.jackson.databind.deser.UomQuantityDeserializer
 import org.klokwrk.lib.lo.jackson.databind.ser.GStringSerializer
 import org.klokwrk.lib.lo.jackson.databind.ser.RawJsonWrapperSerializer
 import org.klokwrk.lib.lo.jackson.databind.ser.UomQuantitySerializer
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
@@ -64,15 +65,17 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomizer, BeanPostProcessor {
   static private final String DEFAULT_SPRING_BOOT_OBJECT_MAPPER_BEAN_NAME = "jacksonObjectMapper"
 
-  EssentialJacksonCustomizerConfigurationProperties essentialJacksonCustomizerConfigurationProperties
+  ObjectProvider<EssentialJacksonCustomizerConfigurationProperties> essentialJacksonCustomizerConfigurationPropertiesObjectProvider
 
-  EssentialJacksonCustomizer(EssentialJacksonCustomizerConfigurationProperties essentialJacksonCustomizerConfigurationProperties) {
-    this.essentialJacksonCustomizerConfigurationProperties = essentialJacksonCustomizerConfigurationProperties
+  EssentialJacksonCustomizer(ObjectProvider<EssentialJacksonCustomizerConfigurationProperties> essentialJacksonCustomizerConfigurationPropertiesObjectProvider) {
+    this.essentialJacksonCustomizerConfigurationPropertiesObjectProvider = essentialJacksonCustomizerConfigurationPropertiesObjectProvider
   }
 
   @SuppressWarnings("GroovyPointlessBoolean")
   @Override
   void customize(Jackson2ObjectMapperBuilder jacksonObjectMapperBuilder) {
+    EssentialJacksonCustomizerConfigurationProperties essentialJacksonCustomizerConfigurationProperties = essentialJacksonCustomizerConfigurationPropertiesObjectProvider.object
+
     if (essentialJacksonCustomizerConfigurationProperties.enabled == false) {
       return
     }
@@ -150,12 +153,13 @@ class EssentialJacksonCustomizer implements Jackson2ObjectMapperBuilderCustomize
   @SuppressWarnings(["CodeNarc.Instanceof", "GroovyPointlessBoolean"])
   @Override
   Object postProcessAfterInitialization(Object bean, String beanName) {
-    //noinspection GroovyPointlessBoolean
-    if (essentialJacksonCustomizerConfigurationProperties.enabled == false) {
-      return bean
-    }
-
     if (bean instanceof ObjectMapper && beanName == DEFAULT_SPRING_BOOT_OBJECT_MAPPER_BEAN_NAME) {
+      EssentialJacksonCustomizerConfigurationProperties essentialJacksonCustomizerConfigurationProperties = essentialJacksonCustomizerConfigurationPropertiesObjectProvider.object
+
+      if (essentialJacksonCustomizerConfigurationProperties.enabled == false) {
+        return bean
+      }
+
       if (essentialJacksonCustomizerConfigurationProperties.deserialization.skipNullValues == true) {
         bean.defaultSetterInfo = JsonSetter.Value.forValueNulls(Nulls.SKIP)
       }

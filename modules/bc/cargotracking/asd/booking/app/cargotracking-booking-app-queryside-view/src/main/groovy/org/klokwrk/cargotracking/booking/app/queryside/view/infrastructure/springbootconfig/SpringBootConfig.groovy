@@ -30,6 +30,7 @@ import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizer
 import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
 import org.klokwrk.lib.hi.validation.springboot.ValidationConfigurationProperties
 import org.klokwrk.lib.hi.validation.springboot.ValidationService
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -42,16 +43,14 @@ import org.springframework.transaction.support.DefaultTransactionDefinition
 @Configuration(proxyBeanMethods = false)
 @CompileStatic
 class SpringBootConfig {
-  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Bean
-  BeanPostProcessor dataSourceProxyBeanPostProcessor(DataSourceProxyConfigurationProperties dataSourceProxyConfigurationProperties) {
-    return new DataSourceProxyBeanPostProcessor(dataSourceProxyConfigurationProperties)
+  static BeanPostProcessor dataSourceProxyBeanPostProcessor(ObjectProvider<DataSourceProxyConfigurationProperties> dataSourceProxyConfigurationPropertiesObjectProvider) {
+    return new DataSourceProxyBeanPostProcessor(dataSourceProxyConfigurationPropertiesObjectProvider)
   }
 
-  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Bean
-  EssentialJacksonCustomizer essentialJacksonCustomizer(EssentialJacksonCustomizerConfigurationProperties essentialJacksonCustomizerConfigurationProperties) {
-    return new EssentialJacksonCustomizer(essentialJacksonCustomizerConfigurationProperties)
+  static EssentialJacksonCustomizer essentialJacksonCustomizer(ObjectProvider<EssentialJacksonCustomizerConfigurationProperties> essentialJacksonCustomizerConfigurationPropertiesObjectProvider) {
+    return new EssentialJacksonCustomizer(essentialJacksonCustomizerConfigurationPropertiesObjectProvider)
   }
 
   @Bean

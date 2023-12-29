@@ -20,6 +20,7 @@ package org.klokwrk.lib.hi.datasourceproxy.springboot
 import groovy.transform.CompileStatic
 import net.ttddyy.dsproxy.support.ProxyDataSource
 import org.springframework.aop.framework.ProxyFactory
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.config.BeanPostProcessor
 
 import javax.sql.DataSource
@@ -33,10 +34,9 @@ import javax.sql.DataSource
  * &#64;EnableConfigurationProperties(DataSourceProxyConfigurationProperties)
  * &#64;Configuration
  * class SpringBootConfig {
- *   &#64;SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
  *   &#64;Bean
- *   BeanPostProcessor dataSourceProxyBeanPostProcessor(DataSourceProxyConfigurationProperties dataSourceProxyConfigurationProperties) {
- *     return new DataSourceProxyBeanPostProcessor(dataSourceProxyConfigurationProperties)
+ *   static BeanPostProcessor dataSourceProxyBeanPostProcessor(ObjectProvider&lt;DataSourceProxyConfigurationProperties&gt; dataSourceProxyConfigurationPropertiesObjectProvider) {
+ *     return new DataSourceProxyBeanPostProcessor(dataSourceProxyConfigurationPropertiesObjectProvider)
  *   }
  * }
  * </pre>
@@ -52,7 +52,7 @@ import javax.sql.DataSource
  * queries, like in polling-a-database scenarios. Queries that need to be filtered out are specified as a list of regular expressions. When query string matches regular expression, it won't be
  * present in the log output. For example, following configuration will prevent logging of any updates to the <code>token_entry</code> table.
  * <pre>
- * klokwrk.datasourceproxy.query-logger.filtering-out-regular-expression-list: >
+ * klokwrk.datasourceproxy.query-logger.filtering-out-regular-expression-list: &gt;
  *   ^update token_entry.*$
  * </pre>
  * This 'filterable query logging' feature is implemented in <code>org.klokwrk.lib.lo.datasourceproxy.Slf4jFilterableQueryLoggingListener</code>.
@@ -62,20 +62,21 @@ import javax.sql.DataSource
  */
 @CompileStatic
 class DataSourceProxyBeanPostProcessor implements BeanPostProcessor {
-  DataSourceProxyConfigurationProperties dataSourceProxyConfigurationProperties
+  ObjectProvider<DataSourceProxyConfigurationProperties> dataSourceProxyConfigurationPropertiesObjectProvider
 
-  DataSourceProxyBeanPostProcessor(DataSourceProxyConfigurationProperties dataSourceProxyConfigurationProperties) {
-    this.dataSourceProxyConfigurationProperties = dataSourceProxyConfigurationProperties
+  DataSourceProxyBeanPostProcessor(ObjectProvider<DataSourceProxyConfigurationProperties> dataSourceProxyConfigurationPropertiesObjectProvider) {
+    this.dataSourceProxyConfigurationPropertiesObjectProvider = dataSourceProxyConfigurationPropertiesObjectProvider
   }
 
   @SuppressWarnings("CodeNarc.Instanceof")
   @Override
   Object postProcessAfterInitialization(Object bean, String beanName) {
-    if (!dataSourceProxyConfigurationProperties.enabled) {
-      return bean
-    }
-
     if (bean instanceof DataSource && !(bean instanceof ProxyDataSource)) {
+      DataSourceProxyConfigurationProperties dataSourceProxyConfigurationProperties = dataSourceProxyConfigurationPropertiesObjectProvider.object
+      if (!dataSourceProxyConfigurationProperties.enabled) {
+        return bean
+      }
+
       ProxyFactory aopProxyFactory = new ProxyFactory(bean)
       aopProxyFactory.proxyTargetClass = true
       aopProxyFactory.addAdvice(new DataSourceProxyInterceptor(beanName, bean, dataSourceProxyConfigurationProperties))

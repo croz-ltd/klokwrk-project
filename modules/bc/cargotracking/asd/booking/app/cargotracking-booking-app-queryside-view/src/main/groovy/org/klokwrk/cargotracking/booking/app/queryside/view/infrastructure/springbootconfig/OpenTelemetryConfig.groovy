@@ -15,46 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracking.booking.app.queryside.projection.rdbms.infrastructure.springbootconfig
+package org.klokwrk.cargotracking.booking.app.queryside.view.infrastructure.springbootconfig
 
 import groovy.transform.CompileStatic
-import io.micrometer.observation.Observation
-import io.micrometer.observation.ObservationRegistry
 import io.opentelemetry.api.OpenTelemetry
 import io.opentelemetry.context.propagation.ContextPropagators
-import net.ttddyy.observation.tracing.QueryContext
 import org.axonframework.tracing.SpanFactory
 import org.axonframework.tracing.opentelemetry.OpenTelemetrySpanFactory
-import org.springframework.boot.actuate.autoconfigure.observation.ObservationRegistryCustomizer
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-
-import java.util.regex.Pattern
 
 @ConditionalOnProperty(prefix = "management.tracing", name = "enabled", matchIfMissing = true)
 @Configuration
 @CompileStatic
 class OpenTelemetryConfig {
-  static final List<Pattern> IGNORED_QUERIES = [~/^update token_entry.*$/, ~/select.*from token_entry.*$/]
-
-  @SuppressWarnings("CodeNarc.Instanceof")
-  @Bean
-  ObservationRegistryCustomizer<ObservationRegistry> myObservationRegistryCustomizer() {
-    return (ObservationRegistry observationRegistry) -> {
-      observationRegistry.observationConfig()
-          .observationPredicate((String observationName, Observation.Context observationContext) -> {
-            if (observationContext instanceof QueryContext) {
-              QueryContext queryContext = observationContext
-              boolean shouldIgnore = queryContext.queries.every({ String query -> IGNORED_QUERIES.any({ Pattern pattern -> query.matches(pattern) }) })
-              boolean shouldObserve = !shouldIgnore
-              return shouldObserve
-            }
-            return true
-          })
-    }
-  }
-
   @Bean
   SpanFactory axonTracingSpanFactory(OpenTelemetry openTelemetry, ContextPropagators contextPropagators) {
     OpenTelemetrySpanFactory axonOpenTelemetrySpanFactory = OpenTelemetrySpanFactory

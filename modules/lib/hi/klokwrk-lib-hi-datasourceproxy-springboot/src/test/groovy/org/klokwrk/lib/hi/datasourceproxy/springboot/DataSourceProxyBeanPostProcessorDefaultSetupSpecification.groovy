@@ -23,6 +23,8 @@ import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.read.ListAppender
 import net.ttddyy.dsproxy.support.ProxyDataSource
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.ObjectFactory
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
@@ -75,7 +77,8 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
 
   void "should configure proxying of plain data source for direct call"() {
     given:
-    DataSourceProxyBeanPostProcessor dataSourceProxyBeanPostProcessor = new DataSourceProxyBeanPostProcessor(new DataSourceProxyConfigurationProperties())
+    ObjectProvider<DataSourceProxyConfigurationProperties> objectProvider = applicationContext.getBeanProvider(DataSourceProxyConfigurationProperties)
+    DataSourceProxyBeanPostProcessor dataSourceProxyBeanPostProcessor = new DataSourceProxyBeanPostProcessor(objectProvider)
 
     when:
     DataSource plainDataSource = dataSourceProxyBeanPostProcessor.postProcessAfterInitialization(makePlainDataSource(), "plainDataSource") as DataSource
@@ -87,7 +90,8 @@ class DataSourceProxyBeanPostProcessorDefaultSetupSpecification extends Specific
 
   void "should not configure anything for ProxyDataSource"() {
     given:
-    DataSourceProxyBeanPostProcessor dataSourceProxyBeanPostProcessor = new DataSourceProxyBeanPostProcessor(new DataSourceProxyConfigurationProperties())
+    ObjectFactory<DataSourceProxyConfigurationProperties> objectProvider = applicationContext.getBeanProvider(DataSourceProxyConfigurationProperties)
+    DataSourceProxyBeanPostProcessor dataSourceProxyBeanPostProcessor = new DataSourceProxyBeanPostProcessor(objectProvider)
     ProxyDataSource proxyDataSource = new ProxyDataSource(makePlainDataSource())
 
     when:

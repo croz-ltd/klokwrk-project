@@ -62,7 +62,7 @@ class PostgreSqlAxonDialect extends PostgreSQLDialect {
   static final String BYTEA = "bytea"
 
   PostgreSqlAxonDialect() {
-    super(DatabaseVersion.make(10, 0))
+    super(DatabaseVersion.make(15, 0))
   }
 
   @Override

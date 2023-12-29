@@ -29,10 +29,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties
  * &#64;EnableConfigurationProperties(EssentialJacksonCustomizerConfigurationProperties)
  * &#64;Configuration
  * class SpringBootConfig {
- *   &#64;SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
  *   &#64;Bean
- *   EssentialJacksonCustomizer essentialJacksonCustomizer(EssentialJacksonCustomizerConfigurationProperties essentialJacksonCustomizerConfigurationProperties) {
- *     return new EssentialJacksonCustomizer(essentialJacksonCustomizerConfigurationProperties)
+ *   static EssentialJacksonCustomizer essentialJacksonCustomizer(ObjectProvider&lt;EssentialJacksonCustomizerConfigurationProperties&gt; essentialJacksonCustomizerConfigurationPropertiesObjectProvider) {
+ *     return new EssentialJacksonCustomizer(essentialJacksonCustomizerConfigurationPropertiesObjectProvider)
  *   }
  * }
  * </pre>

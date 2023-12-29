@@ -20,6 +20,7 @@ package org.klokwrk.cargotracking.booking.lib.queryside.model.rdbms.jpa
 import groovy.transform.CompileStatic
 import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
 import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyConfigurationProperties
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -29,9 +30,8 @@ import org.springframework.context.annotation.Bean
 @SpringBootApplication(proxyBeanMethods = false)
 @CompileStatic
 class TestApplication {
-  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Bean
-  BeanPostProcessor dataSourceProxyBeanPostProcessor(DataSourceProxyConfigurationProperties dataSourceProxyConfigurationProperties) {
-    return new DataSourceProxyBeanPostProcessor(dataSourceProxyConfigurationProperties)
+  static BeanPostProcessor dataSourceProxyBeanPostProcessor(ObjectProvider<DataSourceProxyConfigurationProperties> dataSourceProxyConfigurationPropertiesObjectProvider) {
+    return new DataSourceProxyBeanPostProcessor(dataSourceProxyConfigurationPropertiesObjectProvider)
   }
 }
