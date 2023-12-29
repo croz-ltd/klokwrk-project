@@ -17,6 +17,7 @@
  */
 package org.klokwrk.lib.hi.datasourceproxy.springboot
 
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -30,9 +31,8 @@ class TestSpringBootApplication {
     SpringApplication.run(TestSpringBootApplication, args)
   }
 
-  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Bean
-  BeanPostProcessor dataSourceProxyBeanPostProcessor(DataSourceProxyConfigurationProperties dataSourceProxyConfigurationProperties) {
-    return new DataSourceProxyBeanPostProcessor(dataSourceProxyConfigurationProperties)
+  static BeanPostProcessor dataSourceProxyBeanPostProcessor(ObjectProvider<DataSourceProxyConfigurationProperties> dataSourceProxyConfigurationPropertiesObjectProvider) {
+    return new DataSourceProxyBeanPostProcessor(dataSourceProxyConfigurationPropertiesObjectProvider)
   }
 }
