@@ -48,10 +48,9 @@ class SpringBootConfig {
     return new DataSourceProxyBeanPostProcessor(dataSourceProxyConfigurationPropertiesObjectProvider)
   }
 
-  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Bean
-  EssentialJacksonCustomizer essentialJacksonCustomizer(EssentialJacksonCustomizerConfigurationProperties essentialJacksonCustomizerConfigurationProperties) {
-    return new EssentialJacksonCustomizer(essentialJacksonCustomizerConfigurationProperties)
+  static EssentialJacksonCustomizer essentialJacksonCustomizer(ObjectProvider<EssentialJacksonCustomizerConfigurationProperties> essentialJacksonCustomizerConfigurationPropertiesObjectProvider) {
+    return new EssentialJacksonCustomizer(essentialJacksonCustomizerConfigurationPropertiesObjectProvider)
   }
 
   @Bean

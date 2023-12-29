@@ -39,6 +39,7 @@ import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizer
 import org.klokwrk.lib.hi.jackson.springboot.EssentialJacksonCustomizerConfigurationProperties
 import org.klokwrk.lib.hi.validation.springboot.ValidationConfigurationProperties
 import org.klokwrk.lib.hi.validation.springboot.ValidationService
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -55,10 +56,9 @@ class SpringBootConfig {
   static final Integer RETRY_INTERVAL_MILLIS_DEFAULT = 1000
   private static final Integer RETRY_EXECUTOR_POOL_SIZE_DEFAULT = 4
 
-  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Bean
-  EssentialJacksonCustomizer essentialJacksonCustomizer(EssentialJacksonCustomizerConfigurationProperties essentialJacksonCustomizerConfigurationProperties) {
-    return new EssentialJacksonCustomizer(essentialJacksonCustomizerConfigurationProperties)
+  static EssentialJacksonCustomizer essentialJacksonCustomizer(ObjectProvider<EssentialJacksonCustomizerConfigurationProperties> essentialJacksonCustomizerConfigurationPropertiesObjectProvider) {
+    return new EssentialJacksonCustomizer(essentialJacksonCustomizerConfigurationPropertiesObjectProvider)
   }
 
   @Bean

@@ -17,6 +17,7 @@
  */
 package org.klokwrk.lib.hi.jackson.springboot
 
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -29,9 +30,8 @@ class TestSpringBootApplication {
     SpringApplication.run(TestSpringBootApplication, args)
   }
 
-  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Bean
-  EssentialJacksonCustomizer essentialJacksonCustomizer(EssentialJacksonCustomizerConfigurationProperties essentialJacksonCustomizerConfigurationProperties) {
-    return new EssentialJacksonCustomizer(essentialJacksonCustomizerConfigurationProperties)
+  static EssentialJacksonCustomizer essentialJacksonCustomizer(ObjectProvider<EssentialJacksonCustomizerConfigurationProperties> essentialJacksonCustomizerConfigurationPropertiesObjectProvider) {
+    return new EssentialJacksonCustomizer(essentialJacksonCustomizerConfigurationPropertiesObjectProvider)
   }
 }
