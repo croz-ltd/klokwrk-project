@@ -1,11 +1,11 @@
 # Starting up and trying the whole thing
 * **Author:** Damir Murat
 * **Created:** 26.05.2020.
-* **Updated:** 06.08.2023.
+* **Updated:** 22.05.2024.
 
 Environment:
-- OSX (should work with any desktop Linux distro and with Windows with appropriate bash-shell like git-bash)
-- JDK 17
+- OSX (should work with any desktop Linux distro and with Windows with the appropriate bash-shell like git-bash)
+- JDK 21
 - Gradle 8.5
 - IDEA Community/Ultimate 2023.3.2
 - Docker
@@ -140,7 +140,7 @@ or
     gw -p modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-queryside-projection-rdbms bootRun
     gw -p modules/bc/cargotracking/asd/booking/app/cargotracking-booking-app-queryside-view bootRun
 
-If you prefer, you might want to run applications from IDE. In that case, double-click the application's `bootRun` Gradle task as is shown in the picture for the
+If you prefer, you might want to run applications from the IDE. In that case, double-click the application's `bootRun` Gradle task as is shown in the picture for the
 `cargotracking-booking-app-commandside` application.
 
 [![Starting commandside application from IDE](images/03-commandside-bootRun.jpg)](images/03-commandside-bootRun.jpg "Starting commandside application from IDE")
@@ -187,8 +187,8 @@ For example, select the `ok, en` request and click the `Send` button. You should
 
 [![Execute ok,en command request](images/07-executeOkEnCommandRequest.jpg)](images/07-executeOkEnCommandRequest.jpg "Execute ok,en command request")
 
-The previous command request returns a response containing the **booking offer identifier** in the payload (`$.payload.bookingOfferId.identifier`). Utilizing some Postman scripting features, that
-identifier is remembered and made available for subsequent queryside requests.
+The previous command request returns a response containing the **booking offer identifier** in the payload (`$.payload.bookingOfferId.identifier`). Using some Postman scripting features, that
+identifier is remembered and made available for later queryside requests.
 
 There are more commandside requests available. Feel free to experiment with them.
 
