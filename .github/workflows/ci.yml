@@ -1,5 +1,5 @@
 # Main Continuous Integration workflow.
-# Basic job steps (until and including "Test Component Report Publish") are run on all OSes and JDK versions. Subsequent steps are only for "ubuntu-latest" and JDK 17.
+# Basic job steps (until and including "Test Component Report Publish") are run on all OSes and JDK versions. Subsequent steps are only for "ubuntu-latest" and JDK 21.
 
 name: Continuous Integration
 
@@ -17,7 +17,7 @@ jobs:
   build:
     strategy:
       matrix:
-        java: ["17"]
+        java: ["21"]
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     runs-on: ${{ matrix.os }}
@@ -88,22 +88,22 @@ jobs:
           path: build/reports/allTestComponentReports/*
 
       - name: CodeNarc
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '21' }}
         run: ./gradlew aggregateCodenarc --scan
 
       - name: Publish CodeNarc Report
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' && always() }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '21' && always() }}
         uses: actions/upload-artifact@v4
         with:
           name: aggregatedCodeNarcReports_${{ matrix.os }}_JDK-${{ matrix.java }}
           path: build/reports/codenarc/*
 
       - name: JaCoCo Coverage Report
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '21' }}
         run: ./gradlew aggregateJacocoReport --scan
 
       - name: Publish JaCoCo Coverage Report
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '21' }}
         uses: codecov/codecov-action@v4
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
@@ -112,11 +112,11 @@ jobs:
           files: build/reports/jacoco/aggregate/jacocoTestReport.xml
 
       - name: Groovydoc
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '21' }}
         run: ./gradlew aggregateGroovydoc --scan
 
       - name: Publish Groovydoc on GitHub Pages
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' && github.ref == 'refs/heads/master' && github.event_name == 'push' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '21' && github.ref == 'refs/heads/master' && github.event_name == 'push' }}
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
