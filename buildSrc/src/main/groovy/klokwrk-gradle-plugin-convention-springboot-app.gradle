@@ -80,7 +80,7 @@ bootBuildImage {
   // Note: Although Spring Boot Gradle plugin states that it will select the same Java JRE as specified by targetCompatibility property
   //       (https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/#build-image.customization), it does not happen (maybe the reason is Groovy plugin).
   //       Anyway, to select a specific version, we have to use BP_JVM_VERSION environment variable.
-  environment = ["BP_JVM_VERSION" : "17.*"]
+  environment = ["BP_JVM_VERSION" : "21.*"]
 
   imageName = "klokwrkprj/${project.name}:${project.version}"
 }
