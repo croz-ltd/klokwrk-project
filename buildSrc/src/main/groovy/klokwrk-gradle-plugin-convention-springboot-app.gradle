@@ -47,9 +47,5 @@ bootBuildImage {
   enabled = true
   environment = ["BP_JVM_VERSION" : "17.*"]
   imageName = "klokwrkprj/${project.name}:${project.version}"
-
-  // TODO dmurat: check after upgrading Spring Boot to at least 3.2.3. Currently it does not work.
-  //              https://github.com/spring-projects/spring-boot/issues/39323
-  //              https://github.com/spring-projects/spring-boot/commit/a620d348ad74daa15edfbcf5e9098e4f9694fb86
-//  buildpacks = ["gcr.io/paketo-buildpacks/adoptium", "urn:cnb:builder:paketo-buildpacks/java"]
+  buildpacks = ["gcr.io/paketo-buildpacks/adoptium", "urn:cnb:builder:paketo-buildpacks/java"]
 }
