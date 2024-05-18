@@ -30,6 +30,10 @@ java {
 test {
   jvmArgs = ["-XX:TieredStopAtLevel=1"]
   useJUnitPlatform()
+
+  testLogging {
+    showStandardStreams = true
+  }
 }
 
 configurations {

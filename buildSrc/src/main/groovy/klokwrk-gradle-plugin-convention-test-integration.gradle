@@ -56,6 +56,10 @@ tasks.register("testIntegration", Test) { Test testIntegrationTask ->
 
   jvmArgs = ["-XX:TieredStopAtLevel=1", "-XX:ReservedCodeCacheSize=64m"]
 
+  testLogging {
+    showStandardStreams = true
+  }
+
   // Docker based tests in CI environments (like GitHub Actions) may be flaky. Therefore, we will retry 2 times (3 test execution in total) before giving up.
   retry {
     maxRetries = 2
