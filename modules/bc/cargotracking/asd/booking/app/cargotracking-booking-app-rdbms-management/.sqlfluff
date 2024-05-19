@@ -1,0 +1,14 @@
+[sqlfluff]
+dialect = postgres
+exclude_rules = layout.indent
+max_line_length = 200
+
+[sqlfluff:indentation]
+tab_space_size = 2
+ignore_comment_lines = True
+
+[sqlfluff:layout:type:start_bracket]
+spacing_before = any
+
+[sqlfluff:rules:layout.long_lines]
+ignore_comment_lines = True
