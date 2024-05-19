@@ -45,6 +45,29 @@ springBoot {
 
 bootBuildImage {
   enabled = true
+
+  // Using dashaun/builder to be able to build images for arm64 or amd64 platforms, depending on a platform where bootBuildImage is run. Default builders still are not multi-architecture aware and
+  // can be used only for building amd64 images.
+  //
+  // Tip: When running on arm64, if you want to force building amd64 image just comment out "dashaun/builder:base" and use defaults.
+  //
+  // We are using ":base" builder here to be as close as possible to the default behavior that uses "builder-jammy-base:latest" for non GraalVM native images.
+  //
+  // References:
+  // - https://github.com/dashaun/paketo-arm64
+  // - https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-with-GraalVM#building-container-images
+  // - https://github.com/buildpacks/lifecycle/issues/435
+//  builder = "dashaun/builder:tiny"
+  builder = "dashaun/builder:base"
+
+  // default builders (only for reference):
+//  builder = "paketobuildpacks/builder-jammy-base:latest"
+//  builder = "paketobuildpacks/builder-jammy-tiny:latest"
+
+  // Note: Although Spring Boot Gradle plugin states that it will select the same Java JRE as specified by targetCompatibility property
+  //       (https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/#build-image.customization), it does not happen (maybe the reason is Groovy plugin).
+  //       Anyway, to select a specific version, we have to use BP_JVM_VERSION environment variable.
   environment = ["BP_JVM_VERSION" : "17.*"]
+
   imageName = "klokwrkprj/${project.name}:${project.version}"
 }
