@@ -88,7 +88,7 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Configure Windows pagefile
-        uses: al-cheb/configure-pagefile-action@v1.3
+        uses: al-cheb/configure-pagefile-action@v1.4
         with:
           minimum-size: 10GB
           maximum-size: 12GB
