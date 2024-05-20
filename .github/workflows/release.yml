@@ -85,7 +85,7 @@ jobs:
           path: artifacts-klokwrk-tool-gradle-source-repack
 
       - name: Setup Java for JReleaser
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: temurin    # We are using Eclipse Temurin here since it is available locally on GitHub runners (no need to download and install).
           java-version: 17
