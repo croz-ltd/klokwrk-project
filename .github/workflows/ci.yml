@@ -38,23 +38,17 @@ jobs:
           java-version: ${{ matrix.java }}
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Assemble
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: assemble testFixturesClasses testClasses testIntegrationClasses testComponentClasses --continue --exclude-task groovydoc --scan
+        run: ./gradlew assemble testFixturesClasses testClasses testIntegrationClasses testComponentClasses --continue --exclude-task groovydoc --scan
 
       - name: Test Unit
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: test --parallel --continue --scan
+        run: ./gradlew test --parallel --continue --scan
 
       - name: Test Unit Report
         if: ${{ always() }}
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: allTestUnitReports --scan
+        run: ./gradlew allTestUnitReports --scan
 
       - name: Test Unit Report Publish
         if: ${{ always() }}
@@ -65,15 +59,11 @@ jobs:
 
       - name: Test Integration
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: testIntegration --parallel --continue --scan
+        run: ./gradlew testIntegration --parallel --continue --scan
 
       - name: Test Integration Report
         if: ${{ matrix.os == 'ubuntu-latest' && always() }}
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: allTestIntegrationReports --scan
+        run: ./gradlew allTestIntegrationReports --scan
 
       - name: Test Integration Report Publish
         if: ${{ matrix.os == 'ubuntu-latest' &&  always() }}
@@ -84,15 +74,11 @@ jobs:
 
       - name: Test Component
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: testComponent --parallel --continue --scan
+        run: ./gradlew testComponent --parallel --continue --scan
 
       - name: Test Component Report
         if: ${{ matrix.os == 'ubuntu-latest' && always() }}
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: allTestComponentReports --scan
+        run: ./gradlew allTestComponentReports --scan
 
       - name: Test Component Report Publish
         if: ${{ matrix.os == 'ubuntu-latest' &&  always() }}
@@ -103,9 +89,7 @@ jobs:
 
       - name: CodeNarc
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' }}
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: aggregateCodenarc --scan
+        run: ./gradlew aggregateCodenarc --scan
 
       - name: Publish CodeNarc Report
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' && always() }}
@@ -116,9 +100,7 @@ jobs:
 
       - name: JaCoCo Coverage Report
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' }}
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: aggregateJacocoReport --scan
+        run: ./gradlew aggregateJacocoReport --scan
 
       - name: Publish JaCoCo Coverage Report
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' }}
@@ -129,9 +111,7 @@ jobs:
 
       - name: Groovydoc
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' }}
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: aggregateGroovydoc --scan
+        run: ./gradlew aggregateGroovydoc --scan
 
       - name: Publish Groovydoc on GitHub Pages
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == '17' && github.ref == 'refs/heads/master' && github.event_name == 'push' }}
