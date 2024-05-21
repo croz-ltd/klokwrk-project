@@ -57,12 +57,25 @@ bootBuildImage {
   // - https://github.com/dashaun/paketo-arm64
   // - https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-with-GraalVM#building-container-images
   // - https://github.com/buildpacks/lifecycle/issues/435
-//  builder = "dashaun/builder:tiny"
-  builder = "dashaun/builder:base"
+//  builder = "dashaun/builder:tiny" // arm64 on arm CPUs, amd64 on amd CPUs
+//  builder = "dashaun/builder:base" // arm64 on arm CPUs, amd64 on amd CPUs
 
   // default builders (only for reference):
-//  builder = "paketobuildpacks/builder-jammy-base:latest"
-//  builder = "paketobuildpacks/builder-jammy-tiny:latest"
+//  builder = "paketobuildpacks/builder-jammy-base:latest" // amd64 only
+//  builder = "paketobuildpacks/builder-jammy-tiny:latest" // amd64 only
+
+  // NOTE: Configuring KLOKWRK_USE_DEFAULT_BOOT_IMAGE_BUILDER env variable only makes sense on arm64 machines. If "true", you will get amd64 images. If "false" or unset, you will get arm64 images.
+  //       On amd64 machines, you will always get amd64 images, no matter which builder you use. At the moment there is no way to build arm64 images on amd64 machines.
+  //
+  //       For executing local integration/component tests, you need a local docker image with the same architecture as of your machine. For executing tests on GitHub Actions, we need amd64 images
+  //       as there are no available arm64 runners that support virtualization (running docker). Since our GitHub Actions workflows pull our app images from Docker Hub, we have to ensure we have
+  //       amd64 app images there.
+  //
+  //       Therefore, for building local images and running test you don't have to do anything, no matter machine architecture you are using.
+  //
+  //       However, if you are on Apple Silicon and you want to build docker images for pushing on Docker Hub, you have to set KLOKWRK_USE_DEFAULT_BOOT_IMAGE_BUILDER to "true". On amd64 (Intel based
+  //       machines), again you don't have to do anything, since you will get amd64 images in any case and with any builder.
+  builder = System.getenv("KLOKWRK_USE_DEFAULT_BOOT_IMAGE_BUILDER")?.equalsIgnoreCase("true") ? "paketobuildpacks/builder-jammy-base" : "dashaun/builder:base"
 
   // Note: Although Spring Boot Gradle plugin states that it will select the same Java JRE as specified by targetCompatibility property
   //       (https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/#build-image.customization), it does not happen (maybe the reason is Groovy plugin).
