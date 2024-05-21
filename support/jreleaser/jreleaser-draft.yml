@@ -17,7 +17,7 @@ release:
   github:
     releaseName: Release {{tagName}} ({{Env.CURRENT_DATE}})
     username: dmurat
-    overwrite: true
+    overwrite: false
     draft: true
     skipTag: true
     changelog:
