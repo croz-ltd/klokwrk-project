@@ -188,7 +188,8 @@ tasks.register("kwrkNativeImage", Exec) { Exec thisExecTask ->
           "org.codehaus.groovy.control.XStreamUtils",
           "org.codehaus.groovy.vmplugin.v8.Java8\$LookupHolder",
           "groovy.grape.GrapeIvy",
-          "io.netty.handler.ssl.BouncyCastleAlpnSslUtils"
+          "io.netty.handler.ssl.BouncyCastleAlpnSslUtils",
+          "io.netty.handler.ssl.JdkSslServerContext"
       ])),
 
       // Do not fallback on plain JVM when AOT native image compilation fails. Throw an error instead.
