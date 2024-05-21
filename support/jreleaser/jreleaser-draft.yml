@@ -24,9 +24,11 @@ release:
       enabled: true
       formatted: ALWAYS
       format: "- [`{{commitShortHash}}`]({{commitsUrl}}/{{commitShortHash}}) {{commitTitle}}"
+      categoryTitleFormat: '### {{categoryTitle}}'
+      contributorsTitleFormat: '## Contributors'
       links: false
+      skipMergeCommits: false
       hide:
-        # TODO dmurat: Set to false after release. Currently the body of the changelog is too long to be submitted to GitHub REST API.
         uncategorized: true
       contributors:
         enabled: true
