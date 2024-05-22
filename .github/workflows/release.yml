@@ -51,13 +51,15 @@ jobs:
       - name: Set execute permissions on binaries
         run: |
           chmod +x klokwrk-tool-gradle-source-repack_${{ github.event.inputs.release-version }}-linux/klokwrk-tool-gradle-source-repack
-          chmod +x klokwrk-tool-gradle-source-repack_${{ github.event.inputs.release-version }}-mac/klokwrk-tool-gradle-source-repack
+          chmod +x klokwrk-tool-gradle-source-repack_${{ github.event.inputs.release-version }}-mac-amd64/klokwrk-tool-gradle-source-repack
+          chmod +x klokwrk-tool-gradle-source-repack_${{ github.event.inputs.release-version }}-mac-arm64/klokwrk-tool-gradle-source-repack
 
       - name: Compress binaries
         run: |
           mkdir artifacts-klokwrk-tool-gradle-source-repack
           tar -cvzf artifacts-klokwrk-tool-gradle-source-repack/klokwrk-tool-gradle-source-repack_${{ github.event.inputs.release-version }}-linux.tar.gz klokwrk-tool-gradle-source-repack_${{ github.event.inputs.release-version }}-linux/klokwrk-tool-gradle-source-repack
-          tar -cvzf artifacts-klokwrk-tool-gradle-source-repack/klokwrk-tool-gradle-source-repack_${{ github.event.inputs.release-version }}-mac.tar.gz klokwrk-tool-gradle-source-repack_${{ github.event.inputs.release-version }}-mac/klokwrk-tool-gradle-source-repack
+          tar -cvzf artifacts-klokwrk-tool-gradle-source-repack/klokwrk-tool-gradle-source-repack_${{ github.event.inputs.release-version }}-mac-amd64.tar.gz klokwrk-tool-gradle-source-repack_${{ github.event.inputs.release-version }}-mac-amd64/klokwrk-tool-gradle-source-repack
+          tar -cvzf artifacts-klokwrk-tool-gradle-source-repack/klokwrk-tool-gradle-source-repack_${{ github.event.inputs.release-version }}-mac-arm64.tar.gz klokwrk-tool-gradle-source-repack_${{ github.event.inputs.release-version }}-mac-arm64/klokwrk-tool-gradle-source-repack
           zip artifacts-klokwrk-tool-gradle-source-repack/klokwrk-tool-gradle-source-repack_${{ github.event.inputs.release-version }}-java.zip klokwrk-tool-gradle-source-repack_${{ github.event.inputs.release-version }}-jar/*.jar
           zip artifacts-klokwrk-tool-gradle-source-repack/klokwrk-tool-gradle-source-repack_${{ github.event.inputs.release-version }}-win.zip klokwrk-tool-gradle-source-repack_${{ github.event.inputs.release-version }}-win/*.exe
 
@@ -76,7 +78,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0    # Generated changelog displays only the changes from checked-out commits. Therefore, we need a full history.
+          fetch-depth: 0    # The generated changelog displays only the changes from checked-out commits. Therefore, we need a full history.
 
       - name: Download klokwrk-tool-gradle-source-repack binaries
         uses: actions/download-artifact@v4

@@ -6,15 +6,19 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ linux, macos]
+        os: [ linux, mac-amd64, mac-arm64]
         include:
           - os: 'linux'
             version: 'ubuntu-latest'
             label: 'linux'
             native-image-name: 'klokwrk-tool-gradle-source-repack'
-          - os: 'macos'
-            version: 'macos-latest'
-            label: 'mac'
+          - os: 'mac-amd64'
+            version: 'macos-13' # This runs on Intel mac image (https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories)
+            label: 'mac-amd64'
+            native-image-name: 'klokwrk-tool-gradle-source-repack'
+          - os: 'mac-arm64'
+            version: 'macos-14' # This runs on M1 mac image (https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories)
+            label: 'mac-arm64'
             native-image-name: 'klokwrk-tool-gradle-source-repack'
 
     runs-on: ${{ matrix.version }}
