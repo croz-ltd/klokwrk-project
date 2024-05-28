@@ -170,32 +170,12 @@ class BookingOfferCargos {
   }
 
   /**
-   * Precalculates commodity weight and container TEU count totals of the existing consolidated cargo collection if additional cargo collection is added to it.
-   * <p/>
-   * It is intended to be used from the aggregate's command handlers to calculate the totals required to create an events. The alternative would be to publish two events where the second one is
-   * created based on state changes caused by the first event.
-   * <p/>
-   * This method uses {@link #calculateTotalsForCargoCollectionAddition(Collection, Collection)}, but it one also checks if we can accept the cargo addition.
+   * Calculates commodity weight and container TEU count totals of the existing consolidated cargo collection if additional cargo collection is added to it.
    * <p/>
    * The method returns a tuple of 2 where value v1 is the new {@code totalCommodityWeight} and value v2 is the new {@code totalContainerTeuCount}.
-   */
-  static Tuple2<Quantity<Mass>, BigDecimal> preCalculateTotalsForCargoCollectionAddition(
-      Collection<Cargo> existingConsolidatedCargoCollection, Collection<Cargo> cargoCollectionToAdd, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy)
-  {
-    if (!canAcceptCargoCollectionAddition(existingConsolidatedCargoCollection, cargoCollectionToAdd, maxAllowedTeuCountPolicy)) {
-      throw new AssertionError("Cannot proceed with calculating totals since cargo is not acceptable." as Object)
-    }
-
-    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateTotalsForCargoCollectionAddition(existingConsolidatedCargoCollection, cargoCollectionToAdd)
-    return totalsTuple
-  }
-
-  /**
-   * Unconditionally calculates commodity weight and container TEU count totals of the existing consolidated cargo collection if additional cargo collection is added to it.
    * <p/>
-   * Primarily intended to be used from event sourcing handlers. In case  of command handlers, prefer {@link #preCalculateTotalsForCargoCollectionAddition(Collection, Collection, MaxAllowedTeuCountPolicy)}.
-   * <p/>
-   * The method returns a tuple of 2 where value v1 is the new {@code totalCommodityWeight} and value v2 is the new {@code totalContainerTeuCount}.
+   * Before executing this method from the command handler, one should check if cargo can be accepted at all according to the current MaxAllowedTeuCountPolicy. One can use
+   * {@link #canAcceptCargoCollectionAddition(Collection, Collection, MaxAllowedTeuCountPolicy)} for that purpose.
    */
   static Tuple2<Quantity<Mass>, BigDecimal> calculateTotalsForCargoCollectionAddition(Collection<Cargo> existingConsolidatedCargoCollection, Collection<Cargo> cargoCollectionToAdd) {
     Collection<Cargo> myCargoCollectionToAdd = cargoCollectionToAdd

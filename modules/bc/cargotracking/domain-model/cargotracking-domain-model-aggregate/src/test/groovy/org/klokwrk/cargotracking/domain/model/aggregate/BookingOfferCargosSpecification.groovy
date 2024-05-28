@@ -444,44 +444,6 @@ class BookingOfferCargosSpecification extends Specification {
     bookingOfferCargos.totalContainerTeuCount == 6
   }
 
-  void "preCalculateTotalsForCargoCollectionAddition() method should throw when cargo cannot be accepted"() {
-    given:
-    Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_22G1.maxCommodityWeight.value.toInteger()
-    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
-    MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
-
-    when:
-    BookingOfferCargos.preCalculateTotalsForCargoCollectionAddition([], [cargo], maxAllowedTeuCountPolicy)
-
-    then:
-    AssertionError assertionError = thrown()
-    assertionError.message == "Cannot proceed with calculating totals since cargo is not acceptable."
-
-    where:
-    containerCountParam | _
-    5010                | _
-    5001                | _
-  }
-
-  void "preCalculateTotalsForCargoCollectionAddition() method should work for acceptable cargo"() {
-    given:
-    Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_22G1.maxCommodityWeight.value.toInteger()
-    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
-    MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
-
-    when:
-    Tuple2<Quantity<Mass>, BigDecimal> newTotals = BookingOfferCargos.preCalculateTotalsForCargoCollectionAddition([], [cargo], maxAllowedTeuCountPolicy)
-
-    then:
-    newTotals.v1 == (containerCountParam * 21_700).kg
-    newTotals.v2 == containerCountParam
-
-    where:
-    containerCountParam | _
-    4500                | _
-    5000                | _
-  }
-
   void "storeCargoCollectionAddition() should work for single cargo"() {
     given:
     Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 10_000 * 21_500), 21_500.kg)

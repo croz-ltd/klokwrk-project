@@ -92,15 +92,11 @@ class BookingOfferAggregate {
     }
 
     // Note: cannot store here directly as state change should happen in event sourcing handler.
-    //       Alternative is to publish two events (second one applied after the first one updates the state), but we do not want that.
-    Tuple2<Quantity<Mass>, BigDecimal> preCalculatedTotals =
-        BookingOfferCargos.preCalculateTotalsForCargoCollectionAddition(existingConsolidatedCargoCollection, inputCargoCollection, maxAllowedTeuCountPolicy)
-
+    Tuple2<Quantity<Mass>, BigDecimal> preCalculatedTotals = BookingOfferCargos.calculateTotalsForCargoCollectionAddition(existingConsolidatedCargoCollection, inputCargoCollection)
     Quantity<Mass> bookingTotalCommodityWeight = preCalculatedTotals.v1
     BigDecimal bookingTotalContainerTeuCount = preCalculatedTotals.v2
 
     Collection<Cargo> consolidatedCargoCollection = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargoCollection, inputCargoCollection)
-
     BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
         customer: CustomerEventData.fromCustomer(createBookingOfferCommand.customer),
         bookingOfferId: createBookingOfferCommand.bookingOfferId.identifier,
