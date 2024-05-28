@@ -70,12 +70,7 @@ class BookingOfferAggregate {
   BookingOfferAggregate createBookingOffer(
       CreateBookingOfferCommand createBookingOfferCommand, MetaData metaData, CargoCreatorService cargoCreatorService, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy)
   {
-    Collection<Cargo> inputCargoCollection = []
-    createBookingOfferCommand.cargos.forEach { CargoCommandData cargoCommandData ->
-      Cargo cargo = cargoCreatorService.from(cargoCommandData.containerDimensionType, cargoCommandData.commodity)
-      inputCargoCollection << cargo
-    }
-
+    Collection<Cargo> inputConsolidatedCargoCollection = makeInputConsolidatedCargoCollection(createBookingOfferCommand.cargos, cargoCreatorService)
     Collection<Cargo> existingConsolidatedCargoCollection = bookingOfferCargos.bookingOfferCargoCollection
 
     // Check if booking offer can accept cargos addition regarding the total container TEU count of a booking offer.
@@ -85,18 +80,18 @@ class BookingOfferAggregate {
     // We could enrich behavior with two different policies here. For example, one limiting container TEU count per commodity type and another limiting container TEU count for the whole booking. In a
     // simpler case, both policies can be the same. We can allocate full booking capacity with a single commodity type in that case.
     //
-    if (!BookingOfferCargos.canAcceptCargoCollectionAddition(existingConsolidatedCargoCollection, inputCargoCollection, maxAllowedTeuCountPolicy)) {
+    if (!BookingOfferCargos.canAcceptCargoCollectionAddition(existingConsolidatedCargoCollection, inputConsolidatedCargoCollection, maxAllowedTeuCountPolicy)) {
       throw new CommandException(
           ViolationInfo.makeForBadRequestWithCustomCodeKey("bookingOfferAggregate.bookingOfferCargos.cannotAcceptCargo", [maxAllowedTeuCountPolicy.maxAllowedTeuCount.trunc(0).toBigInteger().toString()])
       )
     }
 
     // Note: cannot store here directly as state change should happen in event sourcing handler.
-    Tuple2<Quantity<Mass>, BigDecimal> preCalculatedTotals = BookingOfferCargos.calculateTotalsForCargoCollectionAddition(existingConsolidatedCargoCollection, inputCargoCollection)
+    Tuple2<Quantity<Mass>, BigDecimal> preCalculatedTotals = BookingOfferCargos.calculateTotalsForCargoCollectionAddition(existingConsolidatedCargoCollection, inputConsolidatedCargoCollection)
     Quantity<Mass> bookingTotalCommodityWeight = preCalculatedTotals.v1
     BigDecimal bookingTotalContainerTeuCount = preCalculatedTotals.v2
 
-    Collection<Cargo> consolidatedCargoCollection = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargoCollection, inputCargoCollection)
+    Collection<Cargo> consolidatedCargoCollection = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargoCollection, inputConsolidatedCargoCollection)
     BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
         customer: CustomerEventData.fromCustomer(createBookingOfferCommand.customer),
         bookingOfferId: createBookingOfferCommand.bookingOfferId.identifier,
@@ -108,6 +103,19 @@ class BookingOfferAggregate {
 
     apply(bookingOfferCreatedEvent, metaData)
     return this
+  }
+
+  protected static Collection<Cargo> makeInputConsolidatedCargoCollection(Collection<CargoCommandData> cargoCommandDataCollection, CargoCreatorService cargoCreatorService) {
+    Collection<Cargo> inputCargoCollection = []
+    if (cargoCommandDataCollection) {
+      cargoCommandDataCollection.each { CargoCommandData cargoCommandData ->
+        Cargo cargo = cargoCreatorService.from(cargoCommandData.containerDimensionType, cargoCommandData.commodity)
+        inputCargoCollection << cargo
+      }
+    }
+
+    Collection<Cargo> inputConsolidatedCargoCollection = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition([], inputCargoCollection)
+    return inputConsolidatedCargoCollection
   }
 
   @EventSourcingHandler
