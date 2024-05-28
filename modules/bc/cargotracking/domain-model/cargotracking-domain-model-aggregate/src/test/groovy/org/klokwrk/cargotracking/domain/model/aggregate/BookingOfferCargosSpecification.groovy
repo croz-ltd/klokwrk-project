@@ -372,7 +372,7 @@ class BookingOfferCargosSpecification extends Specification {
     bookingOfferCargos.storeCargoCollectionAddition([cargo])
 
     when:
-    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCargos.calculateTotalsForCargoCollectionAddition(cargoCollectionToAddParam)
+    Tuple2<Quantity<Mass>, BigDecimal> newTotals = BookingOfferCargos.calculateTotalsForCargoCollectionAddition(bookingOfferCargos.bookingOfferCargoCollection, cargoCollectionToAddParam)
 
     then:
     newTotals.v1 == cargo.commodity.weight
@@ -387,15 +387,13 @@ class BookingOfferCargosSpecification extends Specification {
   void "calculateTotalsForCargoCollectionAddition() method should work for empty BookingOfferCargos"() {
     given:
     Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 110_000), 21_000.kg)
-    BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
 
     when:
-    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCargos.calculateTotalsForCargoCollectionAddition([cargo])
+    Tuple2<Quantity<Mass>, BigDecimal> newTotals = BookingOfferCargos.calculateTotalsForCargoCollectionAddition([], [cargo])
 
     then:
     newTotals.v1 == 110_000.kg
     newTotals.v2 == 6
-    bookingOfferCargos.bookingOfferCargoCollection.size() == 0
   }
 
   void "calculateTotalsForCargoCollectionAddition() method should work for non-empty BookingOfferCargos when calculating cargo of already stored commodity type"() {
@@ -407,35 +405,43 @@ class BookingOfferCargosSpecification extends Specification {
     assert bookingOfferCargos.totalContainerTeuCount == 6
 
     when:
-    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCargos.calculateTotalsForCargoCollectionAddition([cargo])
+    Tuple2<Quantity<Mass>, BigDecimal> newTotals = BookingOfferCargos.calculateTotalsForCargoCollectionAddition(bookingOfferCargos.bookingOfferCargoCollection, [cargo])
     Quantity<Mass> newTotalCommodityWeight = newTotals.v1
     BigDecimal newTotalContainerTeuCount = newTotals.v2
 
-    then:
+    then: "calculated values are correct"
     newTotalCommodityWeight == 220_000.kg
     newTotalContainerTeuCount == 11
+
+    and: "existing bookingOfferCargos did not change"
     bookingOfferCargos.bookingOfferCargoCollection.size() == 1
+    bookingOfferCargos.totalCommodityWeight == 110_000.kg
+    bookingOfferCargos.totalContainerTeuCount == 6
   }
 
   void "calculateTotalsForCargoCollectionAddition() method should work for non-empty BookingOfferCargos when calculating cargo of not-already-stored commodity type"() {
     given:
-    Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 110_000), 21_000.kg)
+    Cargo storedCargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, 110_000), 21_000.kg)
     BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
-    bookingOfferCargos.storeCargoCollectionAddition([cargo])
+    bookingOfferCargos.storeCargoCollectionAddition([storedCargo])
     assert bookingOfferCargos.totalCommodityWeight == 110_000.kg
     assert bookingOfferCargos.totalContainerTeuCount == 6
 
     Cargo nonStoredCargo = Cargo.make(ContainerType.TYPE_ISO_42R1_STANDARD_REEFER, Commodity.make(CommodityType.AIR_COOLED, 110_000), 24_500.kg)
 
     when:
-    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCargos.calculateTotalsForCargoCollectionAddition([nonStoredCargo])
+    Tuple2<Quantity<Mass>, BigDecimal> newTotals = BookingOfferCargos.calculateTotalsForCargoCollectionAddition(bookingOfferCargos.bookingOfferCargoCollection, [nonStoredCargo])
     Quantity<Mass> newTotalCommodityWeight = newTotals.v1
     BigDecimal newTotalContainerTeuCount = newTotals.v2
 
     then:
     newTotalCommodityWeight == 220_000.kg
     newTotalContainerTeuCount == 16
+
+    and: "existing bookingOfferCargos did not change"
     bookingOfferCargos.bookingOfferCargoCollection.size() == 1
+    bookingOfferCargos.totalCommodityWeight == 110_000.kg
+    bookingOfferCargos.totalContainerTeuCount == 6
   }
 
   void "preCalculateTotalsForCargoCollectionAddition() method should throw when cargo cannot be accepted"() {
@@ -443,10 +449,9 @@ class BookingOfferCargosSpecification extends Specification {
     Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_22G1.maxCommodityWeight.value.toInteger()
     Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
-    BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
 
     when:
-    bookingOfferCargos.preCalculateTotalsForCargoCollectionAddition([cargo], maxAllowedTeuCountPolicy)
+    BookingOfferCargos.preCalculateTotalsForCargoCollectionAddition([], [cargo], maxAllowedTeuCountPolicy)
 
     then:
     AssertionError assertionError = thrown()
@@ -463,15 +468,13 @@ class BookingOfferCargosSpecification extends Specification {
     Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_22G1.maxCommodityWeight.value.toInteger()
     Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
-    BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
 
     when:
-    Tuple2<Quantity<Mass>, BigDecimal> newTotals = bookingOfferCargos.preCalculateTotalsForCargoCollectionAddition([cargo], maxAllowedTeuCountPolicy)
+    Tuple2<Quantity<Mass>, BigDecimal> newTotals = BookingOfferCargos.preCalculateTotalsForCargoCollectionAddition([], [cargo], maxAllowedTeuCountPolicy)
 
     then:
     newTotals.v1 == (containerCountParam * 21_700).kg
     newTotals.v2 == containerCountParam
-    bookingOfferCargos.bookingOfferCargoCollection.size() == 0
 
     where:
     containerCountParam | _
@@ -489,7 +492,7 @@ class BookingOfferCargosSpecification extends Specification {
 
     then:
     noExceptionThrown()
-    bookingOfferCargos.checkCargoCollectionInvariants()
+    BookingOfferCargos.checkIfCargoCollectionIsConsolidated(bookingOfferCargos.bookingOfferCargoCollection)
     verifyAll(bookingOfferCargos, {
       totalContainerTeuCount == 10_000
       totalCommodityWeight == (10_000 * 21_500).kg
@@ -509,7 +512,7 @@ class BookingOfferCargosSpecification extends Specification {
 
     then:
     noExceptionThrown()
-    bookingOfferCargos.checkCargoCollectionInvariants()
+    BookingOfferCargos.checkIfCargoCollectionIsConsolidated(bookingOfferCargos.bookingOfferCargoCollection)
     verifyAll(bookingOfferCargos, {
       totalContainerTeuCount == 20_000
       totalCommodityWeight == (20_000 * 21_500).kg
@@ -531,7 +534,7 @@ class BookingOfferCargosSpecification extends Specification {
 
     then:
     noExceptionThrown()
-    bookingOfferCargos.checkCargoCollectionInvariants()
+    BookingOfferCargos.checkIfCargoCollectionIsConsolidated(bookingOfferCargos.bookingOfferCargoCollection)
     verifyAll(bookingOfferCargos, {
       totalContainerTeuCount == 20_000
       totalCommodityWeight == (20_000 * 21_500).kg
@@ -554,7 +557,7 @@ class BookingOfferCargosSpecification extends Specification {
     then:
     noExceptionThrown()
     verifyAll(bookingOfferCargos, {
-      checkCargoCollectionInvariants()
+      checkIfCargoCollectionIsConsolidated(it.bookingOfferCargoCollection)
       totalContainerTeuCount == 10_000
       totalCommodityWeight == (10_000 * 21_500).kg
       bookingOfferCargoCollection.size() == 1
@@ -569,7 +572,7 @@ class BookingOfferCargosSpecification extends Specification {
     then:
     noExceptionThrown()
     verifyAll(bookingOfferCargos, {
-      checkCargoCollectionInvariants()
+      checkIfCargoCollectionIsConsolidated(it.bookingOfferCargoCollection)
       totalContainerTeuCount == 20_000
       totalCommodityWeight == (20_000 * 21_500).kg
       bookingOfferCargoCollection.size() == 2
@@ -586,7 +589,7 @@ class BookingOfferCargosSpecification extends Specification {
     then:
     noExceptionThrown()
     verifyAll(bookingOfferCargos, {
-      checkCargoCollectionInvariants()
+      checkIfCargoCollectionIsConsolidated(it.bookingOfferCargoCollection)
       totalContainerTeuCount == 30_000
       totalCommodityWeight == (30_000 * 21_500).kg
       bookingOfferCargoCollection.size() == 2
@@ -603,7 +606,7 @@ class BookingOfferCargosSpecification extends Specification {
     then:
     noExceptionThrown()
     verifyAll(bookingOfferCargos, {
-      checkCargoCollectionInvariants()
+      checkIfCargoCollectionIsConsolidated(it.bookingOfferCargoCollection)
       totalContainerTeuCount == 40_000
       totalCommodityWeight == (40_000 * 21_500).kg
       bookingOfferCargoCollection.size() == 2
@@ -614,39 +617,34 @@ class BookingOfferCargosSpecification extends Specification {
     })
   }
 
-  void "checkCargoCollectionInvariants() method should not throw for empty bookingOfferCargoCollection"() {
-    given:
-    BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
-
+  void "checkIfCargoCollectionIsConsolidated() method should not throw for empty bookingOfferCargoCollection"() {
     when:
-    bookingOfferCargos.checkCargoCollectionInvariants()
+    BookingOfferCargos.checkIfCargoCollectionIsConsolidated([])
 
     then:
     noExceptionThrown()
   }
 
-  void "checkCargoCollectionInvariants() method should not throw for consolidated bookingOfferCargoCollection"() {
+  void "checkIfCargoCollectionIsConsolidated() method should not throw for consolidated bookingOfferCargoCollection"() {
     given:
     BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
     bookingOfferCargos.storeCargoCollectionAddition([CargoFixtureBuilder.cargo_dry().build()])
 
     when:
-    bookingOfferCargos.checkCargoCollectionInvariants()
+    BookingOfferCargos.checkIfCargoCollectionIsConsolidated(bookingOfferCargos.bookingOfferCargoCollection)
 
     then:
     noExceptionThrown()
   }
 
-  void "checkCargoCollectionInvariants() method should throw for non-consolidated bookingOfferCargoCollection"() {
+  void "checkIfCargoCollectionIsConsolidated() method should throw for non-consolidated bookingOfferCargoCollection"() {
     given:
     BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
     bookingOfferCargos.storeCargoCollectionAddition([CargoFixtureBuilder.cargo_dry().build()])
-
-    //noinspection GroovyAccessibility
-    bookingOfferCargos.@bookingOfferCargoCollection.add(CargoFixtureBuilder.cargo_dry().build())
+    bookingOfferCargos.bookingOfferCargoCollection.add(CargoFixtureBuilder.cargo_dry().build())
 
     when:
-    bookingOfferCargos.checkCargoCollectionInvariants()
+    BookingOfferCargos.checkIfCargoCollectionIsConsolidated(bookingOfferCargos.bookingOfferCargoCollection)
 
     then:
     thrown(AssertionError)

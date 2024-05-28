@@ -104,7 +104,7 @@ class BookingOfferAggregateSpecification extends Specification {
       bookingOfferId == createBookingOfferCommandWithAcceptableCargo.bookingOfferId
       routeSpecification == createBookingOfferCommandWithAcceptableCargo.routeSpecification
 
-      bookingOfferCargos.checkCargoCollectionInvariants()
+      BookingOfferCargos.checkIfCargoCollectionIsConsolidated(bookingOfferCargos.bookingOfferCargoCollection)
       bookingOfferCargos.totalCommodityWeight == 10_000.kg
       bookingOfferCargos.totalContainerTeuCount == 1
       bookingOfferCargos.findCargoByExample(expectedBookingOfferCargo) == expectedBookingOfferCargo

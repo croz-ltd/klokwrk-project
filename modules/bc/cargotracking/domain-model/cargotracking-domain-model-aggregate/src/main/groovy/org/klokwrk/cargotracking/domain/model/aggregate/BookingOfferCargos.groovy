@@ -54,15 +54,13 @@ class BookingOfferCargos {
       return myExistingConsolidatedCargos
     }
 
+    checkIfCargoCollectionIsConsolidated(myExistingConsolidatedCargos)
     Map<BookingOfferCargoEquality, List<Cargo>> existingConsolidatedCargosMap = myExistingConsolidatedCargos.groupBy({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) })
-    // Verify that existingConsolidatedCargos param is really consolidated (does not have multiple equal cargos). After grouping, each list MUST have only a single element.
-    assert existingConsolidatedCargosMap.values().every((List<Cargo> cargoList) -> cargoList.size() == 1)
 
     Map<BookingOfferCargoEquality, Cargo> allConsolidatedCargosMap = [:]
 
     // Note: Besides determining resultant consolidated map, we are also using cargosToAddMap as a base for determining maxAllowedWeightPerContainer to use
     Map<BookingOfferCargoEquality, List<Cargo>> cargosToAddMap = cargosToAdd.groupBy({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) })
-
 
     // First, add new entries that have equivalents (by BookingOfferCargoEquality) in the existing cargos
     cargosToAddMap.keySet().each({ BookingOfferCargoEquality bookingOfferCargoEqualityToAdd ->
@@ -148,45 +146,12 @@ class BookingOfferCargos {
 //    return consolidatedCargoCollection
 //  }
 
-  private final Collection<Cargo> bookingOfferCargoCollection = [] as Collection<Cargo>
-
-  private Quantity<Mass> totalCommodityWeight = 0.kg
-  private BigDecimal totalContainerTeuCount = 0 // should be constrained to the max of, say 5000
-
-  Collection<Cargo> getBookingOfferCargoCollection() {
-    return Collections.unmodifiableCollection(bookingOfferCargoCollection)
-  }
-
   /**
-   * Primarily intended to be used from tests.
-   */
-  void checkCargoCollectionInvariants() {
-    bookingOfferCargoCollection
-        .groupBy({ Cargo existingCargo -> BookingOfferCargoEquality.fromCargo(existingCargo) })
-        .entrySet()
-        .each({ Map.Entry<BookingOfferCargoEquality, List<Cargo>> mapEntry -> assert mapEntry.value.size() == 1 })
-  }
-
-  Cargo findCargoByExample(Cargo cargoExample) {
-    return findCargoByEquality(BookingOfferCargoEquality.fromCargo(cargoExample))
-  }
-
-  Cargo findCargoByEquality(BookingOfferCargoEquality cargoEquality) {
-    return bookingOfferCargoCollection.find({ Cargo existingCargo -> BookingOfferCargoEquality.fromCargo(existingCargo) == cargoEquality })
-  }
-
-  Quantity<Mass> getTotalCommodityWeight() {
-    return totalCommodityWeight
-  }
-
-  BigDecimal getTotalContainerTeuCount() {
-    return totalContainerTeuCount
-  }
-
-  /**
-   * Checks if we can accept addition of a {@link Cargo} collection at the {@link BookingOfferAggregate} level.
+   * Checks if we can accept addition of a {@link Cargo} collection at the existing consolidated cargo collection.
    * <p/>
-   * We should use this method from the aggregate's command handler to check if it is valid to add the {@code Cargo} collection to the aggregate state. Actual state change happens later in the
+   * Intended to be used to verify potential cargo addition at the level of the {@link BookingOfferAggregate} instance.
+   * <p/>
+   * We should use this method from the aggregate's command handlers to check if it is valid to add the cargo collection to the aggregate state. Actual state change happens later in the
    * event sourcing handler. Note that we cannot make this check in the event sourcing handler because it must make changes unconditionally to support rehydration from past events.
    */
   static boolean canAcceptCargoCollectionAddition(Collection<Cargo> existingConsolidatedCargoCollection, Collection<Cargo> cargoCollectionToAdd, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
@@ -205,61 +170,39 @@ class BookingOfferCargos {
   }
 
   /**
-   * Without changing state of {@code BookingOfferCargos} instance, calculates totals in the same way as they will be calculated once the cargo is stored via
-   * {@link #storeCargoCollectionAddition(java.util.Collection)}.
+   * Precalculates commodity weight and container TEU count totals of the existing consolidated cargo collection if additional cargo collection is added to it.
    * <p/>
-   * This pre-calculation is used from the aggregate's command handler to calculate the totals required to create an event. The alternative would be to publish two events where the second one is
-   * created based on state changes caused by the first event. However, we need pre-calculation as we want to publish a single event.
+   * It is intended to be used from the aggregate's command handlers to calculate the totals required to create an events. The alternative would be to publish two events where the second one is
+   * created based on state changes caused by the first event.
    * <p/>
-   * This method is very similar to the {@link #calculateTotalsForCargoCollectionAddition(java.util.Collection)}, but this one also checks if we can accept the cargo addition.
+   * This method uses {@link #calculateTotalsForCargoCollectionAddition(Collection, Collection)}, but it one also checks if we can accept the cargo addition.
    * <p/>
    * The method returns a tuple of 2 where value v1 is the new {@code totalCommodityWeight} and value v2 is the new {@code totalContainerTeuCount}.
    */
-  Tuple2<Quantity<Mass>, BigDecimal> preCalculateTotalsForCargoCollectionAddition(Collection<Cargo> cargoCollectionToAdd, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
-    if (!canAcceptCargoCollectionAddition(this.bookingOfferCargoCollection, cargoCollectionToAdd, maxAllowedTeuCountPolicy)) {
+  static Tuple2<Quantity<Mass>, BigDecimal> preCalculateTotalsForCargoCollectionAddition(
+      Collection<Cargo> existingConsolidatedCargoCollection, Collection<Cargo> cargoCollectionToAdd, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy)
+  {
+    if (!canAcceptCargoCollectionAddition(existingConsolidatedCargoCollection, cargoCollectionToAdd, maxAllowedTeuCountPolicy)) {
       throw new AssertionError("Cannot proceed with calculating totals since cargo is not acceptable." as Object)
     }
 
-    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateTotalsForCargoCollectionAddition(cargoCollectionToAdd)
+    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateTotalsForCargoCollectionAddition(existingConsolidatedCargoCollection, cargoCollectionToAdd)
     return totalsTuple
   }
 
-  // use this one in eventSourcingHandler to store past events unconditionally, regardless of potential change in previous business logic
   /**
-   * Stores the cargo collection addition in the internal map by replacing any previously stored equivalent cargos.
+   * Unconditionally calculates commodity weight and container TEU count totals of the existing consolidated cargo collection if additional cargo collection is added to it.
    * <p/>
-   * We should use this method only from the event sourcing handler as it changes the aggregate state and does it unconditionally without checking any invariants. This is necessary to support correct
-   * rehydration of the aggregate from previous events. We should do all invariant checking in the aggregate's command handler.
-   */
-  void storeCargoCollectionAddition(Collection<Cargo> cargoCollectionToAdd) {
-    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateTotalsForCargoCollectionAddition(cargoCollectionToAdd)
-    totalCommodityWeight = totalsTuple.v1
-    totalContainerTeuCount = totalsTuple.v2
-
-    Collection<Cargo> existingConsolidatedCargoCollection = bookingOfferCargoCollection
-    Collection<Cargo> consolidatedCargoCollection = consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargoCollection, cargoCollectionToAdd)
-
-    consolidatedCargoCollection.each({ Cargo consolidatedCargo ->
-      BookingOfferCargoEquality consolidatedCargoEquality = BookingOfferCargoEquality.fromCargo(consolidatedCargo)
-      this.@bookingOfferCargoCollection.removeIf({ Cargo storedCargo -> BookingOfferCargoEquality.fromCargo(storedCargo) == consolidatedCargoEquality })
-      this.@bookingOfferCargoCollection.add(consolidatedCargo)
-    })
-  }
-
-  /**
-   * Without changing the aggregate state, calculates new totals for cargo collection addition based on provided {@link Cargo} collection and the current aggregate state.
-   * <p/>
-   * This method is very similar to the {@link #preCalculateTotalsForCargoCollectionAddition(Collection, MaxAllowedTeuCountPolicy)}, but this one does not check if the cargo can be accepted or not.
+   * Primarily intended to be used from event sourcing handlers. In case  of command handlers, prefer {@link #preCalculateTotalsForCargoCollectionAddition(Collection, Collection, MaxAllowedTeuCountPolicy)}.
    * <p/>
    * The method returns a tuple of 2 where value v1 is the new {@code totalCommodityWeight} and value v2 is the new {@code totalContainerTeuCount}.
    */
-  Tuple2<Quantity<Mass>, BigDecimal> calculateTotalsForCargoCollectionAddition(Collection<Cargo> cargoCollectionToAdd) {
+  static Tuple2<Quantity<Mass>, BigDecimal> calculateTotalsForCargoCollectionAddition(Collection<Cargo> existingConsolidatedCargoCollection, Collection<Cargo> cargoCollectionToAdd) {
     Collection<Cargo> myCargoCollectionToAdd = cargoCollectionToAdd
     if (myCargoCollectionToAdd == null) {
       myCargoCollectionToAdd = []
     }
 
-    Collection<Cargo> existingConsolidatedCargoCollection = bookingOfferCargoCollection
     Collection<Cargo> cargoCollectionWithAdditions = consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargoCollection, myCargoCollectionToAdd)
 
     Quantity<Mass> newTotalCommodityWeight = 0.kg
@@ -271,5 +214,51 @@ class BookingOfferCargos {
     })
 
     return new Tuple2<Quantity<Mass>, BigDecimal>(newTotalCommodityWeight, newTotalContainerTeuCount)
+  }
+
+  static void checkIfCargoCollectionIsConsolidated(Collection<Cargo> existingConsolidatedCargoCollection) {
+    assert existingConsolidatedCargoCollection != null
+    existingConsolidatedCargoCollection
+        .groupBy({ Cargo existingCargo -> BookingOfferCargoEquality.fromCargo(existingCargo) })
+        .entrySet()
+        .each({ Map.Entry<BookingOfferCargoEquality, List<Cargo>> mapEntry -> assert mapEntry.value.size() == 1 })
+  }
+
+  Collection<Cargo> bookingOfferCargoCollection = [] as Collection<Cargo>
+  private Quantity<Mass> totalCommodityWeight = 0.kg
+  private BigDecimal totalContainerTeuCount = 0 // should be constrained to the max of, say 5000
+
+  Cargo findCargoByExample(Cargo cargoExample) {
+    return findCargoByEquality(BookingOfferCargoEquality.fromCargo(cargoExample))
+  }
+
+  Cargo findCargoByEquality(BookingOfferCargoEquality cargoEquality) {
+    return bookingOfferCargoCollection.find({ Cargo existingCargo -> BookingOfferCargoEquality.fromCargo(existingCargo) == cargoEquality })
+  }
+
+  Quantity<Mass> getTotalCommodityWeight() {
+    return totalCommodityWeight
+  }
+
+  BigDecimal getTotalContainerTeuCount() {
+    return totalContainerTeuCount
+  }
+
+  // use this one in eventSourcingHandler to store past events unconditionally, regardless of potential change in previous business logic
+  /**
+   * Stores the cargo collection addition in the internal map by replacing any previously stored equivalent cargos.
+   * <p/>
+   * We should use this method only from the event sourcing handler as it changes the aggregate state and does it unconditionally without checking any invariants. This is necessary to support correct
+   * rehydration of the aggregate from previous events. We should do all invariant checking in the aggregate's command handler.
+   */
+  void storeCargoCollectionAddition(Collection<Cargo> cargoCollectionToAdd) {
+    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateTotalsForCargoCollectionAddition(bookingOfferCargoCollection, cargoCollectionToAdd)
+    totalCommodityWeight = totalsTuple.v1
+    totalContainerTeuCount = totalsTuple.v2
+
+    Collection<Cargo> existingConsolidatedCargoCollection = bookingOfferCargoCollection
+    Collection<Cargo> consolidatedCargoCollection = consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargoCollection, cargoCollectionToAdd)
+    bookingOfferCargoCollection.clear()
+    bookingOfferCargoCollection.addAll(consolidatedCargoCollection)
   }
 }

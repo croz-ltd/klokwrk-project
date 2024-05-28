@@ -418,7 +418,9 @@ ruleset {
   PackageNameMatchesFilePath
   ParameterName
   PropertyName
-  VariableName
+  VariableName {
+    regex = /[a-z_]\w*/
+  }
 
   // rulesets/security.xml
   FileCreateTempFile
