@@ -40,13 +40,16 @@ import org.klokwrk.cargotracking.domain.model.value.Cargo
 import org.klokwrk.cargotracking.domain.model.value.Customer
 import org.klokwrk.cargotracking.domain.model.value.RouteSpecification
 import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.CommandException
-import org.klokwrk.cargotracking.lib.boundary.api.domain.violation.ViolationInfo
 import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
 
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply
+import static org.klokwrk.cargotracking.domain.model.aggregate.BookingOfferCargos.calculateTotalsForCargoCollectionAddition
+import static org.klokwrk.cargotracking.domain.model.aggregate.BookingOfferCargos.canAcceptCargoCollectionAddition
+import static org.klokwrk.cargotracking.domain.model.aggregate.BookingOfferCargos.consolidateCargoCollectionsForCargoAddition
+import static org.klokwrk.cargotracking.lib.boundary.api.domain.violation.ViolationInfo.makeForBadRequestWithCustomCodeKey
 
 @PropertyOptions(propertyHandler = RelaxedPropertyHandler)
 @MapConstructor(noArg = true)
@@ -73,25 +76,18 @@ class BookingOfferAggregate {
     Collection<Cargo> inputConsolidatedCargoCollection = makeInputConsolidatedCargoCollection(createBookingOfferCommand.cargos, cargoCreatorService)
     Collection<Cargo> existingConsolidatedCargoCollection = bookingOfferCargos.bookingOfferCargoCollection
 
-    // Check if booking offer can accept cargos addition regarding the total container TEU count of a booking offer.
-    // The largest ship in the world can carry 24000 TEU of containers. Based on that fact, we are limiting the total container TEU count per a single booking to the max of 5000 TEUs. Of course, the
-    // number of 5000 TEUs is entirely arbitrary and is used only as an example.
-    //
-    // We could enrich behavior with two different policies here. For example, one limiting container TEU count per commodity type and another limiting container TEU count for the whole booking. In a
-    // simpler case, both policies can be the same. We can allocate full booking capacity with a single commodity type in that case.
-    //
-    if (!BookingOfferCargos.canAcceptCargoCollectionAddition(existingConsolidatedCargoCollection, inputConsolidatedCargoCollection, maxAllowedTeuCountPolicy)) {
+    if (!canAcceptCargoCollectionAddition(existingConsolidatedCargoCollection, inputConsolidatedCargoCollection, maxAllowedTeuCountPolicy)) {
       throw new CommandException(
-          ViolationInfo.makeForBadRequestWithCustomCodeKey("bookingOfferAggregate.bookingOfferCargos.cannotAcceptCargo", [maxAllowedTeuCountPolicy.maxAllowedTeuCount.trunc(0).toBigInteger().toString()])
+          makeForBadRequestWithCustomCodeKey("bookingOfferAggregate.bookingOfferCargos.cannotAcceptCargo", [maxAllowedTeuCountPolicy.maxAllowedTeuCount.trunc(0).toBigInteger().toString()])
       )
     }
 
     // Note: cannot store here directly as state change should happen in event sourcing handler.
-    Tuple2<Quantity<Mass>, BigDecimal> preCalculatedTotals = BookingOfferCargos.calculateTotalsForCargoCollectionAddition(existingConsolidatedCargoCollection, inputConsolidatedCargoCollection)
+    Tuple2<Quantity<Mass>, BigDecimal> preCalculatedTotals = calculateTotalsForCargoCollectionAddition(existingConsolidatedCargoCollection, inputConsolidatedCargoCollection)
     Quantity<Mass> bookingTotalCommodityWeight = preCalculatedTotals.v1
     BigDecimal bookingTotalContainerTeuCount = preCalculatedTotals.v2
 
-    Collection<Cargo> consolidatedCargoCollection = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargoCollection, inputConsolidatedCargoCollection)
+    Collection<Cargo> consolidatedCargoCollection = consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargoCollection, inputConsolidatedCargoCollection)
     BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
         customer: CustomerEventData.fromCustomer(createBookingOfferCommand.customer),
         bookingOfferId: createBookingOfferCommand.bookingOfferId.identifier,
@@ -114,7 +110,7 @@ class BookingOfferAggregate {
       }
     }
 
-    Collection<Cargo> inputConsolidatedCargoCollection = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition([], inputCargoCollection)
+    Collection<Cargo> inputConsolidatedCargoCollection = consolidateCargoCollectionsForCargoAddition([], inputCargoCollection)
     return inputConsolidatedCargoCollection
   }
 

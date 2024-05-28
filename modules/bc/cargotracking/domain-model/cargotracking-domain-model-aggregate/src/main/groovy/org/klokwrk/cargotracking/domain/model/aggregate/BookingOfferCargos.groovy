@@ -147,7 +147,13 @@ class BookingOfferCargos {
 //  }
 
   /**
-   * Checks if we can accept addition of a {@link Cargo} collection at the existing consolidated cargo collection.
+   * Checks if we can accept addition of a {@link Cargo} collection at the existing cargo collection in compliance with the current {@link MaxAllowedTeuCountPolicy}.
+   * <p/>
+   * Consider an example. The largest ship in the world can carry 24000 TEU of containers. Based on that fact, we can limit the total container TEU count per a single booking to the max of 5000 TEUs.
+   * Of course, the number of 5000 TEUs is entirely arbitrary and is used only as an example.
+   * <p/>
+   * We could enrich behavior with two different policies here. For example, one limiting container TEU count per commodity type and another limiting container TEU count for the whole booking. In a
+   * simpler case, both policies can be the same. We can allocate full booking capacity with a single commodity type in that case.
    * <p/>
    * Intended to be used to verify potential cargo addition at the level of the {@link BookingOfferAggregate} instance.
    * <p/>
