@@ -238,22 +238,16 @@ class BookingOfferCargosSpecification extends Specification {
   }
 
   void "canAcceptCargoCollectionAddition() method should throw for invalid parameters"() {
-    given:
-    BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
-
     when:
-    bookingOfferCargos.canAcceptCargoCollectionAddition([], null)
+    BookingOfferCargos.canAcceptCargoCollectionAddition([], [], null)
 
     then:
     thrown(AssertionError)
   }
 
   void "canAcceptCargoCollectionAddition() method should work with empty cargoCollectionToAdd param"() {
-    given:
-    BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
-
     when:
-    boolean canAcceptCargoResult = bookingOfferCargos.canAcceptCargoCollectionAddition(cargoCollectionToAddParam, new ConstantBasedMaxAllowedTeuCountPolicy(5000.0))
+    boolean canAcceptCargoResult = BookingOfferCargos.canAcceptCargoCollectionAddition([], cargoCollectionToAddParam, new ConstantBasedMaxAllowedTeuCountPolicy(5000.0))
 
     then:
     canAcceptCargoResult
@@ -269,10 +263,9 @@ class BookingOfferCargosSpecification extends Specification {
     Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_12G1.maxCommodityWeight.value.toInteger()
     Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_12G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
-    BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
 
     when:
-    boolean canAcceptCargoResult = bookingOfferCargos.canAcceptCargoCollectionAddition([cargo], maxAllowedTeuCountPolicy)
+    boolean canAcceptCargoResult = BookingOfferCargos.canAcceptCargoCollectionAddition([], [cargo], maxAllowedTeuCountPolicy)
 
     then:
     canAcceptCargoResult == canAcceptCargoResultParam
@@ -292,10 +285,9 @@ class BookingOfferCargosSpecification extends Specification {
     Cargo cargoToAdd2 = Cargo.make(ContainerType.TYPE_ISO_12G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
 
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
-    BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
 
     when:
-    boolean canAcceptCargoResult = bookingOfferCargos.canAcceptCargoCollectionAddition([cargoToAdd1, cargoToAdd2], maxAllowedTeuCountPolicy)
+    boolean canAcceptCargoResult = BookingOfferCargos.canAcceptCargoCollectionAddition([], [cargoToAdd1, cargoToAdd2], maxAllowedTeuCountPolicy)
 
     then:
     canAcceptCargoResult == canAcceptCargoResultParam
@@ -320,7 +312,7 @@ class BookingOfferCargosSpecification extends Specification {
     bookingOfferCargos.storeCargoCollectionAddition([cargoExisting])
 
     when:
-    boolean canAcceptCargoResult = bookingOfferCargos.canAcceptCargoCollectionAddition([cargoToAdd1, cargoToAdd2], maxAllowedTeuCountPolicy)
+    boolean canAcceptCargoResult = BookingOfferCargos.canAcceptCargoCollectionAddition(bookingOfferCargos.bookingOfferCargoCollection, [cargoToAdd1, cargoToAdd2], maxAllowedTeuCountPolicy)
 
     then:
     canAcceptCargoResult == canAcceptCargoResultParam
@@ -338,10 +330,9 @@ class BookingOfferCargosSpecification extends Specification {
     Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_22G1.maxCommodityWeight.value.toInteger()
     Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_22G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
-    BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
 
     when:
-    boolean canAcceptCargoResult = bookingOfferCargos.canAcceptCargoCollectionAddition([cargo], maxAllowedTeuCountPolicy)
+    boolean canAcceptCargoResult = BookingOfferCargos.canAcceptCargoCollectionAddition([], [cargo], maxAllowedTeuCountPolicy)
 
     then:
     canAcceptCargoResult == canAcceptCargoResultParam
@@ -359,10 +350,9 @@ class BookingOfferCargosSpecification extends Specification {
     Integer containerTypeMaxCommodityWeight = ContainerType.TYPE_ISO_42G1.maxCommodityWeight.value.toInteger()
     Cargo cargo = Cargo.make(ContainerType.TYPE_ISO_42G1, Commodity.make(CommodityType.DRY, containerCountParam * containerTypeMaxCommodityWeight))
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
-    BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
 
     when:
-    boolean canAcceptCargoResult = bookingOfferCargos.canAcceptCargoCollectionAddition([cargo], maxAllowedTeuCountPolicy)
+    boolean canAcceptCargoResult = BookingOfferCargos.canAcceptCargoCollectionAddition([], [cargo], maxAllowedTeuCountPolicy)
 
     then:
     canAcceptCargoResult == canAcceptCargoResultParam

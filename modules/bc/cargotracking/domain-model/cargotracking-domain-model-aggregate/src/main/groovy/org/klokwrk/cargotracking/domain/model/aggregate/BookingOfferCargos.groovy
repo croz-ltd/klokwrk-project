@@ -25,8 +25,6 @@ import org.klokwrk.cargotracking.domain.model.value.Commodity
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
 
-import static org.hamcrest.Matchers.notNullValue
-
 /**
  * Handles cargos at the {@link BookingOfferAggregate} level, by encapsulating some invariant checks and keeping the internal {@code bookingOfferCargoCollection} consolidated.
  * <p/>
@@ -166,7 +164,7 @@ class BookingOfferCargos {
     bookingOfferCargoCollection
         .groupBy({ Cargo existingCargo -> BookingOfferCargoEquality.fromCargo(existingCargo) })
         .entrySet()
-        .each({ Map.Entry<BookingOfferCargoEquality, List<Cargo>> mapEntry -> requireTrue(mapEntry.value.size() == 1) })
+        .each({ Map.Entry<BookingOfferCargoEquality, List<Cargo>> mapEntry -> assert mapEntry.value.size() == 1 })
   }
 
   Cargo findCargoByExample(Cargo cargoExample) {
@@ -191,14 +189,13 @@ class BookingOfferCargos {
    * We should use this method from the aggregate's command handler to check if it is valid to add the {@code Cargo} collection to the aggregate state. Actual state change happens later in the
    * event sourcing handler. Note that we cannot make this check in the event sourcing handler because it must make changes unconditionally to support rehydration from past events.
    */
-  boolean canAcceptCargoCollectionAddition(Collection<Cargo> cargoCollectionToAdd, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
-    requireMatch(maxAllowedTeuCountPolicy, notNullValue())
+  static boolean canAcceptCargoCollectionAddition(Collection<Cargo> existingConsolidatedCargoCollection, Collection<Cargo> cargoCollectionToAdd, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
+    assert maxAllowedTeuCountPolicy != null
 
     if (!cargoCollectionToAdd) {
       return true
     }
 
-    Collection<Cargo> existingConsolidatedCargoCollection = bookingOfferCargoCollection
     Collection<Cargo> cargoCollectionWithAdditions = consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargoCollection, cargoCollectionToAdd)
 
     BigDecimal newTotalContainerTeuCount = 0
@@ -219,7 +216,7 @@ class BookingOfferCargos {
    * The method returns a tuple of 2 where value v1 is the new {@code totalCommodityWeight} and value v2 is the new {@code totalContainerTeuCount}.
    */
   Tuple2<Quantity<Mass>, BigDecimal> preCalculateTotalsForCargoCollectionAddition(Collection<Cargo> cargoCollectionToAdd, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
-    if (!canAcceptCargoCollectionAddition(cargoCollectionToAdd, maxAllowedTeuCountPolicy)) {
+    if (!canAcceptCargoCollectionAddition(this.bookingOfferCargoCollection, cargoCollectionToAdd, maxAllowedTeuCountPolicy)) {
       throw new AssertionError("Cannot proceed with calculating totals since cargo is not acceptable." as Object)
     }
 

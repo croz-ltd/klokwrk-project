@@ -84,7 +84,7 @@ class BookingOfferAggregate {
     // We could enrich behavior with two different policies here. For example, one limiting container TEU count per commodity type and another limiting container TEU count for the whole booking. In a
     // simpler case, both policies can be the same. We can allocate full booking capacity with a single commodity type in that case.
     //
-    if (!bookingOfferCargos.canAcceptCargoCollectionAddition(inputCargoCollection, maxAllowedTeuCountPolicy)) {
+    if (!BookingOfferCargos.canAcceptCargoCollectionAddition(bookingOfferCargos.bookingOfferCargoCollection, inputCargoCollection, maxAllowedTeuCountPolicy)) {
       throw new CommandException(
           ViolationInfo.makeForBadRequestWithCustomCodeKey(
               "bookingOfferAggregate.bookingOfferCargos.cannotAcceptCargo",

@@ -34,8 +34,6 @@ dependencies {
   implementation project(":cargotracking-lib-domain-model-event")
   implementation project(":klokwrk-lib-lo-uom")
   implementation project(":klokwrk-lib-xlang-groovy-base")
-  implementation project(":klokwrk-lib-xlang-groovy-contracts-match")
-  implementation project(":klokwrk-lib-xlang-groovy-contracts-simple")
 
   implementation "javax.measure:unit-api"
   implementation "org.apache.groovy:groovy"
@@ -44,7 +42,6 @@ dependencies {
   implementation "org.axonframework:axon-messaging"
   implementation "org.axonframework:axon-modelling"
   implementation "org.axonframework:axon-spring"
-  implementation "org.hamcrest:hamcrest"
   implementation "tech.units:indriya"
 
   testImplementation testFixtures(project(":cargotracking-domain-model-command"))
