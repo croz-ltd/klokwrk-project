@@ -42,53 +42,82 @@ class BookingOfferCargosSpecification extends Specification {
     bookingOfferCargos.totalContainerTeuCount == 0
   }
 
-  void "consolidateCargoCollectionsForCargoAddition() should work with empty cargoCollectionToAdd param"() {
-    given:
-    Collection<Cargo> consolidatedCargoCollectionStartingPoint = [CargoFixtureBuilder.cargo_dry().build()]
-
+  void "consolidateCargoCollectionsForCargoAddition() should return empty collection for null or empty inputs"() {
     when:
-    Collection<Cargo> consolidatedCargoCollection = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition(consolidatedCargoCollectionStartingPoint, cargoCollectionToAddParam)
+    Collection<Cargo> consolidatedCargos = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargosParam, cargosToAddParam)
 
     then:
-    consolidatedCargoCollection.size() == consolidatedCargoCollectionStartingPoint.size()
-    consolidatedCargoCollection.containsAll(consolidatedCargoCollectionStartingPoint)
+    consolidatedCargos.size() == 0
 
     where:
-    cargoCollectionToAddParam | _
-    null                      | _
-    []                        | _
+    cargosToAddParam | existingConsolidatedCargosParam
+    null             | []
+    []               | []
+    null             | null
+    []               | null
   }
 
-  void "consolidateCargoCollectionsForCargoAddition() should work with empty consolidatedCargoCollectionStartingPoint param"() {
-    given:
-    Collection<Cargo> cargoCollectionToAdd = [CargoFixtureBuilder.cargo_dry().build()]
-
+  void "consolidateCargoCollectionsForCargoAddition() should work with empty cargosToAdd param"() {
     when:
-    Collection<Cargo> consolidatedCargoCollection = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition(consolidatedCargoCollectionStartingPointParam, cargoCollectionToAdd)
+    Collection<Cargo> consolidatedCargos = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargosParam, cargosToAddParam)
 
     then:
-    consolidatedCargoCollection.size() == cargoCollectionToAdd.size()
-    consolidatedCargoCollection.containsAll(cargoCollectionToAdd)
+    consolidatedCargos != null
+    consolidatedCargos.size() == existingConsolidatedCargosParam.size()
+    consolidatedCargos.containsAll(existingConsolidatedCargosParam)
 
     where:
-    consolidatedCargoCollectionStartingPointParam | _
-    null                                          | _
-    []                                            | _
+    cargosToAddParam | existingConsolidatedCargosParam
+    null             | [CargoFixtureBuilder.cargo_dry().build(), CargoFixtureBuilder.cargo_airCooled().build()]
+    []               | [CargoFixtureBuilder.cargo_dry().build(), CargoFixtureBuilder.cargo_airCooled().build()]
+    null             | [CargoFixtureBuilder.cargo_dry().build()]
+    []               | [CargoFixtureBuilder.cargo_dry().build()]
+    null             | []
+    []               | []
+  }
+
+  void "consolidateCargoCollectionsForCargoAddition() should work with empty or null existingConsolidatedCargos param"() {
+    when:
+    Collection<Cargo> consolidatedCargos = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargosParam, cargosToAddParam)
+
+    then:
+    consolidatedCargos.size() == cargosToAddParam.size()
+    consolidatedCargos.containsAll(cargosToAddParam)
+
+    where:
+    existingConsolidatedCargosParam | cargosToAddParam
+    null                            | [CargoFixtureBuilder.cargo_dry().build(), CargoFixtureBuilder.cargo_airCooled().build()]
+    []                              | [CargoFixtureBuilder.cargo_dry().build(), CargoFixtureBuilder.cargo_airCooled().build()]
+    null                            | [CargoFixtureBuilder.cargo_dry().build()]
+    []                              | [CargoFixtureBuilder.cargo_dry().build()]
+    null                            | []
+    []                              | []
+  }
+
+  void "consolidateCargoCollectionsForCargoAddition() should throw when existingConsolidatedCargos param is not consolidated"() {
+    given:
+    Collection<Cargo> existingConsolidatedCargos_notReallyConsolidated = [CargoFixtureBuilder.cargo_dry().build(), CargoFixtureBuilder.cargo_dry().build()]
+
+    when:
+    BookingOfferCargos.consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargos_notReallyConsolidated, [CargoFixtureBuilder.cargo_dry().build()])
+
+    then:
+    thrown(AssertionError)
   }
 
   void "consolidateCargoCollectionsForCargoAddition() should work as expected - single type of cargo equality"() {
     given:
     Cargo cargoDry = CargoFixtureBuilder.cargo_dry().build()
     BookingOfferCargoEquality bookingOfferCargoDryEquality = BookingOfferCargoEquality.fromCargo(cargoDry)
-    Collection<Cargo> cargoCollectionToAdd = [cargoDry, CargoFixtureBuilder.cargo_dry().build(), CargoFixtureBuilder.cargo_dry().build()]
+    Collection<Cargo> cargosToAdd = [cargoDry, CargoFixtureBuilder.cargo_dry().build(), CargoFixtureBuilder.cargo_dry().build()]
 
     when:
-    Collection<Cargo> consolidatedCargoCollection1 = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition([], cargoCollectionToAdd)
+    Collection<Cargo> consolidatedCargos1 = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition([], cargosToAdd)
 
     then:
-    consolidatedCargoCollection1.size() == 1
+    consolidatedCargos1.size() == 1
 
-    Cargo consolidatedCargoFound1 = consolidatedCargoCollection1.find({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) == bookingOfferCargoDryEquality })
+    Cargo consolidatedCargoFound1 = consolidatedCargos1.find({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) == bookingOfferCargoDryEquality })
     verifyAll(consolidatedCargoFound1, {
       commodity.commodityType == cargoDry.commodity.commodityType
       commodity.requestedStorageTemperature == cargoDry.commodity.requestedStorageTemperature
@@ -101,18 +130,18 @@ class BookingOfferCargosSpecification extends Specification {
     })
 
     and:
-    Collection<Cargo> consolidatedCargoCollectionStartingPoint2 = [cargoDry]
+    Collection<Cargo> existingConsolidatedCargos2 = [cargoDry]
     Commodity commodityToAdd2 = CommodityFixtureBuilder.dry_default().weightKg(25_000).build()
     Cargo cargoToAdd2 = CargoFixtureBuilder.cargo_dry().commodity(commodityToAdd2).build()
-    Collection<Cargo> cargoCollectionToAdd2 = [cargoToAdd2]
+    Collection<Cargo> cargosToAdd2 = [cargoToAdd2]
 
     when:
-    Collection<Cargo> consolidatedCargoCollection2 = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition(consolidatedCargoCollectionStartingPoint2, cargoCollectionToAdd2)
+    Collection<Cargo> consolidatedCargos2 = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargos2, cargosToAdd2)
 
     then:
-    consolidatedCargoCollection2.size() == 1
+    consolidatedCargos2.size() == 1
 
-    Cargo consolidatedCargoFound2 = consolidatedCargoCollection2.find({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) == bookingOfferCargoDryEquality })
+    Cargo consolidatedCargoFound2 = consolidatedCargos2.find({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) == bookingOfferCargoDryEquality })
     verifyAll(consolidatedCargoFound2, {
       commodity.commodityType == cargoDry.commodity.commodityType
       commodity.requestedStorageTemperature == cargoDry.commodity.requestedStorageTemperature
@@ -133,16 +162,16 @@ class BookingOfferCargosSpecification extends Specification {
     Cargo cargoAirCooled = CargoFixtureBuilder.cargo_airCooled().build()
     BookingOfferCargoEquality bookingOfferCargoAirCooledEquality = BookingOfferCargoEquality.fromCargo(cargoAirCooled)
 
-    Collection<Cargo> consolidatedCargoCollectionStartingPoint = [cargoDry, cargoAirCooled]
-    Collection<Cargo> cargoCollectionToAdd = [CargoFixtureBuilder.cargo_dry().build(), CargoFixtureBuilder.cargo_airCooled().build()]
+    Collection<Cargo> existingConsolidatedCargos = [cargoDry, cargoAirCooled]
+    Collection<Cargo> cargosToAdd = [CargoFixtureBuilder.cargo_dry().build(), CargoFixtureBuilder.cargo_airCooled().build()]
 
     when:
-    Collection<Cargo> consolidatedCargoCollection = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition(consolidatedCargoCollectionStartingPoint, cargoCollectionToAdd)
+    Collection<Cargo> consolidatedCargos = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargos, cargosToAdd)
 
     then:
-    consolidatedCargoCollection.size() == 2
+    consolidatedCargos.size() == 2
 
-    Cargo consolidatedCargoDryFound = consolidatedCargoCollection.find({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) == bookingOfferCargoDryEquality })
+    Cargo consolidatedCargoDryFound = consolidatedCargos.find({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) == bookingOfferCargoDryEquality })
     verifyAll(consolidatedCargoDryFound, {
       commodity.commodityType == cargoDry.commodity.commodityType
       commodity.requestedStorageTemperature == cargoDry.commodity.requestedStorageTemperature
@@ -154,7 +183,7 @@ class BookingOfferCargosSpecification extends Specification {
       containerTeuCount == 1
     })
 
-    Cargo consolidatedCargoAirCooledFound = consolidatedCargoCollection.find({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) == bookingOfferCargoAirCooledEquality })
+    Cargo consolidatedCargoAirCooledFound = consolidatedCargos.find({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) == bookingOfferCargoAirCooledEquality })
     verifyAll(consolidatedCargoAirCooledFound, {
       commodity.commodityType == cargoAirCooled.commodity.commodityType
       commodity.requestedStorageTemperature == cargoAirCooled.commodity.requestedStorageTemperature
@@ -175,15 +204,15 @@ class BookingOfferCargosSpecification extends Specification {
     Cargo cargoToAddTemp2 = CargoFixtureBuilder.cargo_airCooled().commodity(CommodityFixtureBuilder.airCooled_default().requestedStorageTemperatureDegC(10).build()).build()
     BookingOfferCargoEquality bookingOfferCargoTemp2Equality = BookingOfferCargoEquality.fromCargo(cargoToAddTemp2)
 
-    Collection<Cargo> consolidatedCargoCollectionStartingPoint = [CargoFixtureBuilder.cargo_airCooled().build(), CargoFixtureBuilder.cargo_airCooled().build()]
+    Collection<Cargo> existingConsolidatedCargos = [CargoFixtureBuilder.cargo_airCooled().commodity(CommodityFixtureBuilder.airCooled_default().weightKg(2000).build()).build()]
 
     when:
-    Collection<Cargo> consolidatedCargoCollection = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition(consolidatedCargoCollectionStartingPoint, [cargoToAddTemp1, cargoToAddTemp2])
+    Collection<Cargo> consolidatedCargos = BookingOfferCargos.consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargos, [cargoToAddTemp1, cargoToAddTemp2])
 
     then:
-    consolidatedCargoCollection.size() == 2
+    consolidatedCargos.size() == 2
 
-    Cargo consolidatedCargoTemp1Found = consolidatedCargoCollection.find({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) == bookingOfferCargoTemp1Equality })
+    Cargo consolidatedCargoTemp1Found = consolidatedCargos.find({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) == bookingOfferCargoTemp1Equality })
     verifyAll(consolidatedCargoTemp1Found, {
       commodity.commodityType == CommodityType.AIR_COOLED
       commodity.requestedStorageTemperature == CommodityType.AIR_COOLED.recommendedStorageTemperature
@@ -195,7 +224,7 @@ class BookingOfferCargosSpecification extends Specification {
       containerTeuCount == 1
     })
 
-    Cargo consolidatedCargoTemp2Found = consolidatedCargoCollection.find({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) == bookingOfferCargoTemp2Equality })
+    Cargo consolidatedCargoTemp2Found = consolidatedCargos.find({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) == bookingOfferCargoTemp2Equality })
     verifyAll(consolidatedCargoTemp2Found, {
       commodity.commodityType == CommodityType.AIR_COOLED
       commodity.requestedStorageTemperature.value == 10
