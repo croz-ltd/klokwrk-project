@@ -40,7 +40,7 @@ import org.codehaus.groovy.macro.runtime.MacroContext
  * <p/>
  * Implementation uses Groovy macro methods to extract textual representation of tested item and used matcher, which is very convenient to have in {@code AssertionError} messages.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings(["unused", "CodeNarc.UnusedMethodParameter", "CodeNarc.DuplicateStringLiteral"])
 @CompileStatic
 class ContractsMatch {
   /**
@@ -51,14 +51,29 @@ class ContractsMatch {
    * At the implementation level, when this Groovy macro method is expanded and replaced, we end up with the method call to
    * {@link ContractsMatchBase#requireMatchBase(java.lang.Object, org.hamcrest.Matcher, java.lang.String, java.lang.String)}.
    */
-  @SuppressWarnings("CodeNarc.UnusedMethodParameter")
   @Macro
   static Expression requireMatch(MacroContext macroContext, Expression itemExpression, Expression matcherExpression) {
     String itemDescription = itemExpression.text
     String matcherDescription = matcherExpression.text.replaceAll("this.", "")
 
     StaticMethodCallExpression staticMethodCallExpression = GeneralUtils.callX(
-        new ClassNode(ContractsMatchBase), "requireMatchBase", GeneralUtils.args(itemExpression, matcherExpression, new ConstantExpression(itemDescription), new ConstantExpression(matcherDescription))
+        new ClassNode(ContractsMatchBase),
+        "requireMatchBase",
+        GeneralUtils.args(itemExpression, matcherExpression, new ConstantExpression(itemDescription), new ConstantExpression(matcherDescription))
+    )
+
+    return staticMethodCallExpression
+  }
+
+  @Macro
+  static Expression requireMatchWhenNotNull(MacroContext macroContext, Expression itemExpression, Expression matcherExpression) {
+    String itemDescription = itemExpression.text
+    String matcherDescription = matcherExpression.text.replaceAll("this.", "")
+
+    StaticMethodCallExpression staticMethodCallExpression = GeneralUtils.callX(
+        new ClassNode(ContractsMatchBase),
+        "requireMatchWhenNotNullBase",
+        GeneralUtils.args(itemExpression, matcherExpression, new ConstantExpression(itemDescription), new ConstantExpression(matcherDescription))
     )
 
     return staticMethodCallExpression

@@ -30,7 +30,7 @@ class ContractsMatchBaseSpecification extends Specification {
     String lastName
   }
 
-  void "should throw for invalid matcher parameter"() {
+  void "requireMatchBase() - should throw for invalid matcher parameter"() {
     when:
     ContractsMatchBase.requireMatchBase("123", null)
 
@@ -39,7 +39,7 @@ class ContractsMatchBaseSpecification extends Specification {
     assertionError.message.contains("[condition: (matcher != null)]")
   }
 
-  void "should throw for mismatch"() {
+  void "requireMatchBase() - should throw for mismatch"() {
     when:
     ContractsMatchBase.requireMatchBase("123", is(emptyString()))
 
@@ -48,7 +48,7 @@ class ContractsMatchBaseSpecification extends Specification {
     assertionError.message.contains("[item: 123, expected: is an empty string, actual: 123]")
   }
 
-  void "should throw for mismatch with custom messages"() {
+  void "requireMatchBase() - should throw for mismatch with custom messages"() {
     when:
     ContractsMatchBase.requireMatchBase("123", is(emptyString()), itemDescritpion, matcherDescription)
 
@@ -67,7 +67,7 @@ class ContractsMatchBaseSpecification extends Specification {
     "item description" | "matcher description" | "[item: item description, expected: matcher description, actual: 123]"
   }
 
-  void "should not throw when matching"() {
+  void "requireMatchBase() - should not throw when matching"() {
     when:
     ContractsMatchBase.requireMatchBase("123", not(emptyString()))
 
@@ -75,7 +75,7 @@ class ContractsMatchBaseSpecification extends Specification {
     true
   }
 
-  void "should throw for invalid object's properties with custom messages"() {
+  void "requireMatchBase() - should throw for invalid object's properties with custom messages"() {
     given:
     Person person = new Person(firstName: "First Name")
 
@@ -85,5 +85,70 @@ class ContractsMatchBaseSpecification extends Specification {
     then:
     AssertionError assertionError = thrown()
     assertionError.message.contains("[item: person.lastName, expected: not(blankOrNullString()), actual: null]")
+  }
+
+  void "requireMatchWhenNotNullBase() - should throw for invalid matcher parameter"() {
+    when:
+    ContractsMatchBase.requireMatchWhenNotNullBase("123", null)
+
+    then:
+    AssertionError assertionError = thrown()
+    assertionError.message.contains("[condition: (matcher != null)]")
+  }
+
+  void "requireMatchWhenNotNullBase() - should throw for mismatch"() {
+    when:
+    ContractsMatchBase.requireMatchWhenNotNullBase("123", is(emptyString()))
+
+    then:
+    AssertionError assertionError = thrown()
+    assertionError.message.contains("[item: 123, expected: is an empty string, actual: 123]")
+  }
+
+  void "requireMatchWhenNotNullBase() - should throw for mismatch with custom messages"() {
+    when:
+    ContractsMatchBase.requireMatchWhenNotNullBase("123", is(emptyString()), itemDescritpion, matcherDescription)
+
+    then:
+    AssertionError assertionError = thrown()
+    assertionError.message.contains(messageContainedString)
+
+    where:
+    itemDescritpion    | matcherDescription    | messageContainedString
+    null               | null                  | "[item: 123, expected: is an empty string, actual: 123]"
+    ""                 | null                  | "[item: 123, expected: is an empty string, actual: 123]"
+    null               | ""                    | "[item: 123, expected: is an empty string, actual: 123]"
+    ""                 | ""                    | "[item: 123, expected: is an empty string, actual: 123]"
+    "item description" | ""                    | "[item: item description, expected: is an empty string, actual: 123]"
+    ""                 | "matcher description" | "[item: 123, expected: matcher description, actual: 123]"
+    "item description" | "matcher description" | "[item: item description, expected: matcher description, actual: 123]"
+  }
+
+  void "requireMatchWhenNotNullBase() - should not throw when matching"() {
+    when:
+    ContractsMatchBase.requireMatchWhenNotNullBase("123", not(emptyString()))
+
+    then:
+    true
+  }
+
+  void "requireMatchWhenNotNullBase() - should throw for invalid object's properties with custom messages"() {
+    given:
+    Person person = new Person(firstName: "First Name", lastName: "   ")
+
+    when:
+    ContractsMatchBase.requireMatchWhenNotNullBase(person.lastName, not(blankOrNullString()), "person.lastName", "not(blankOrNullString())")
+
+    then:
+    AssertionError assertionError = thrown()
+    assertionError.message.contains("[item: person.lastName, expected: not(blankOrNullString()), actual:    ]")
+  }
+
+  void "requireMatchWhenNotNullBase() - should ignore null values"() {
+    when:
+    ContractsMatchBase.requireMatchWhenNotNullBase(null, is(emptyString()))
+
+    then:
+    true
   }
 }
