@@ -23,6 +23,9 @@ import tech.units.indriya.format.NumberDelimiterQuantityFormat
 import javax.measure.format.QuantityFormat
 import java.text.NumberFormat
 
+/**
+ * Customization of {@link NumberDelimiterQuantityFormat} with neutral locale, turned off digit grouping, and with {@link KwrkSimpleUnitFormat} set.
+ */
 @CompileStatic
 class KwrkQuantityFormat {
   @SuppressWarnings("CodeNarc.Indentation")

@@ -18,6 +18,7 @@
 package org.klokwrk.lib.lo.uom.groovy.extension
 
 import groovy.transform.CompileStatic
+import org.klokwrk.lib.lo.uom.format.KwrkQuantityFormat
 import si.uom.NonSI
 import systems.uom.common.USCustomary
 import tech.units.indriya.ComparableQuantity
@@ -36,6 +37,23 @@ import javax.measure.quantity.Temperature
 @SuppressWarnings("unused")
 @CompileStatic
 class QuantityExtension {
+  /**
+   * Convenient conversion of quantity into a string based on {@link KwrkQuantityFormat}.
+   * <p/>
+   * Instead of
+   * <pre>
+   * KwrkQuantityFormat.instance.format(quantity)
+   * </pre>
+   * one can simply use
+   * <pre>
+   * quantity.format()
+   * </pre>
+   */
+  static String format(Quantity quantity) {
+    String formattedString = KwrkQuantityFormat.instance.format(quantity)
+    return formattedString
+  }
+
   /**
    * Convenient negation of a quantity.
    * <p/>
