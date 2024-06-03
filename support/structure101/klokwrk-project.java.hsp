@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<local-project language="java" version="6.1.23194" xml-version="3" flavor="j2se">
+<local-project language="java" version="7.0.24461" xml-version="3" flavor="j2se">
   <property name="show-as-module" value="false" />
   <property name="force-classpath" value="false" />
   <property name="publish-architecture-artifacts" value="true" />
@@ -32,6 +32,7 @@
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/domain-model/cargotracking-domain-model-service/build/classes/groovy/main" module="cargotracking-domain-model-service" displaymodule="cargotracking-domain-model-service" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/domain-model/cargotracking-domain-model-value/build/classes/groovy/main" module="cargotracking-domain-model-value" displaymodule="cargotracking-domain-model-value" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-axon-cqrs/build/classes/groovy/main" module="cargotracking-lib-axon-cqrs" displaymodule="cargotracking-lib-axon-cqrs" />
+    <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-axon-errorhandling/build/classes/groovy/main" module="cargotracking-lib-axon-errorhandling" displaymodule="cargotracking-lib-axon-errorhandling" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-axon-logging/build/classes/groovy/main" module="cargotracking-lib-axon-logging" displaymodule="cargotracking-lib-axon-logging" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-boundary-api/build/classes/groovy/main" module="cargotracking-lib-boundary-api" displaymodule="cargotracking-lib-boundary-api" />
     <classpathentry kind="lib" path="../../modules/bc/cargotracking/lib/cargotracking-lib-boundary-query-api/build/classes/groovy/main" module="cargotracking-lib-boundary-query-api" displaymodule="cargotracking-lib-boundary-query-api" />
@@ -60,16 +61,16 @@
   <restructuring>
     <set version="3" name="Action list 1" hiview="Codemap" active="true" todo="false" list="0" />
   </restructuring>
-  <grid-set sep="." version="6.1.23194">
+  <grid-set sep="." version="7.0.24461">
     <grid name="Arch skeleton - overview" enforce="true" locked="false" strict="false">
       <row>
         <cell name="cargotracking (bounded context)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
           <grid>
             <row>
-              <cell name="booking (subdomain)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
+              <cell name="booking (subdomain)" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
                 <grid>
                   <row>
-                    <cell name="app (subdomain apps)" pattern="" vexpanded="false" illegal="false" visibility="public" drill="true">
+                    <cell name="app (subdomain apps)" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true">
                       <grid>
                         <row>
                           <cell name="cargotracking-booking-app-commandside" pattern="cargotracking-booking-app-commandside.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
@@ -115,8 +116,9 @@
                 <grid>
                   <row>
                     <cell name="cargotracking-lib-axon-logging" pattern="cargotracking-lib-axon-logging.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
-                    <cell name="cargotracking-lib-domain-model-command" pattern="cargotracking-lib-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-lib-axon-errorhandling" pattern="cargotracking-lib-axon-errorhandling.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                     <cell name="cargotracking-lib-axon-cqrs" pattern="cargotracking-lib-axon-cqrs.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                    <cell name="cargotracking-lib-domain-model-command" pattern="cargotracking-lib-domain-model-command.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                     <cell name="cargotracking-lib-domain-model-event" pattern="cargotracking-lib-domain-model-event.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                     <cell name="cargotracking-lib-web" pattern="cargotracking-lib-web.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
@@ -316,7 +318,7 @@
       <description>Top-level breakout</description>
     </grid>
   </grid-set>
-  <physical-grid-set sep="." version="6.1.23194">
+  <physical-grid-set sep="." version="7.0.24461">
     <grid name="Workspace spec" enforce="true" locked="true" strict="false">
       <row>
         <cell name="cargotracking-booking" pattern="" vexpanded="true" illegal="false" visibility="public" drill="true" bgcolor="255,255,204">
@@ -395,6 +397,9 @@
                 <grid>
                   <row>
                     <cell name="cargotracking-lib-axon-cqrs" pattern="cargotracking-lib-axon-cqrs.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
+                  </row>
+                  <row>
+                    <cell name="cargotracking-lib-axon-errorhandling" pattern="cargotracking-lib-axon-errorhandling.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
                   </row>
                   <row>
                     <cell name="cargotracking-lib-axon-logging" pattern="cargotracking-lib-axon-logging.*" vexpanded="false" illegal="false" visibility="public" drill="true" />
