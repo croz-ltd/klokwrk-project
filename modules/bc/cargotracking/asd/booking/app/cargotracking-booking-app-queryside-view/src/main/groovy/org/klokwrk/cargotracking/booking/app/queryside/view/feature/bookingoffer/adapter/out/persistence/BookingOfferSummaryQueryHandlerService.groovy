@@ -80,7 +80,7 @@ class BookingOfferSummaryQueryHandlerService {
   protected Map<String, Object> fetchBookingOfferSummaryJpaEntityProperties(BookingOfferSummaryJpaEntity bookingOfferSummaryJpaEntity) {
     return bookingOfferSummaryJpaEntity.properties.tap({
       it[this.BOOKING_OFFER_IDENTIFIER] = bookingOfferSummaryJpaEntity.bookingOfferId.toString()
-      it[this.TOTAL_COMMODITY_WEIGHT] = KwrkQuantityFormat.instance.parse(bookingOfferSummaryJpaEntity.totalCommodityWeight)
+      it[this.TOTAL_COMMODITY_WEIGHT] = bookingOfferSummaryJpaEntity.totalCommodityWeight ? KwrkQuantityFormat.instance.parse(bookingOfferSummaryJpaEntity.totalCommodityWeight) : null
     })
   }
 

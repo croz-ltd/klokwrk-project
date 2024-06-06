@@ -30,6 +30,8 @@ import org.axonframework.spring.stereotype.Aggregate
 import org.klokwrk.cargotracking.domain.model.command.CreateBookingOfferCommand
 import org.klokwrk.cargotracking.domain.model.command.data.CargoCommandData
 import org.klokwrk.cargotracking.domain.model.event.BookingOfferCreatedEvent
+import org.klokwrk.cargotracking.domain.model.event.CargoAddedEvent
+import org.klokwrk.cargotracking.domain.model.event.RouteSpecificationAddedEvent
 import org.klokwrk.cargotracking.domain.model.event.data.CargoEventData
 import org.klokwrk.cargotracking.domain.model.event.data.CustomerEventData
 import org.klokwrk.cargotracking.domain.model.event.data.RouteSpecificationEventData
@@ -56,8 +58,9 @@ import static org.klokwrk.cargotracking.lib.boundary.api.domain.violation.Violat
 @Aggregate
 @CompileStatic
 class BookingOfferAggregate {
-  Customer customer
   BookingOfferId bookingOfferId
+  Integer lastEventSequenceNumber = -1
+  Customer customer
   RouteSpecification routeSpecification
   BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()
 
@@ -73,41 +76,73 @@ class BookingOfferAggregate {
   BookingOfferAggregate createBookingOffer(
       CreateBookingOfferCommand createBookingOfferCommand, MetaData metaData, CargoCreatorService cargoCreatorService, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy)
   {
-    Collection<Cargo> inputConsolidatedCargoCollection = makeInputConsolidatedCargoCollection(createBookingOfferCommand.cargos, cargoCreatorService)
-    Collection<Cargo> existingConsolidatedCargoCollection = bookingOfferCargos.bookingOfferCargoCollection
+    BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
+        bookingOfferId: createBookingOfferCommand.bookingOfferId.identifier,
+        customer: CustomerEventData.fromCustomer(createBookingOfferCommand.customer)
+    )
 
-    if (!canAcceptCargoCollectionAddition(existingConsolidatedCargoCollection, inputConsolidatedCargoCollection, maxAllowedTeuCountPolicy)) {
-      throw new CommandException(
-          makeForBadRequestWithCustomCodeKey("bookingOfferAggregate.bookingOfferCargos.cannotAcceptCargo", [maxAllowedTeuCountPolicy.maxAllowedTeuCount.trunc(0).toBigInteger().toString()])
+    RouteSpecificationAddedEvent routeSpecificationAddedEvent = null
+    if (createBookingOfferCommand.routeSpecification != null) {
+      routeSpecificationAddedEvent = new RouteSpecificationAddedEvent(
+          bookingOfferId: createBookingOfferCommand.bookingOfferId.identifier,
+          routeSpecification: RouteSpecificationEventData.fromRouteSpecification(createBookingOfferCommand.routeSpecification)
       )
     }
 
-    // Note: cannot store here directly as state change should happen in event sourcing handler.
-    Tuple2<Quantity<Mass>, BigDecimal> preCalculatedTotals = calculateTotalsForCargoCollectionAddition(existingConsolidatedCargoCollection, inputConsolidatedCargoCollection)
-    Quantity<Mass> bookingTotalCommodityWeight = preCalculatedTotals.v1
-    BigDecimal bookingTotalContainerTeuCount = preCalculatedTotals.v2
+    List<CargoAddedEvent> cargoAddedEventList = []
+    if (createBookingOfferCommand.cargos) {
+      Collection<Cargo> inputConsolidatedCargoCollection = makeInputConsolidatedCargoCollection(createBookingOfferCommand.cargos, cargoCreatorService)
+      Collection<Cargo> existingConsolidatedCargoCollection = bookingOfferCargos.bookingOfferCargoCollection // existingConsolidatedCargoCollection is an empty list for the new aggregate
 
-    Collection<Cargo> consolidatedCargoCollection = consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargoCollection, inputConsolidatedCargoCollection)
-    BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
-        customer: CustomerEventData.fromCustomer(createBookingOfferCommand.customer),
-        bookingOfferId: createBookingOfferCommand.bookingOfferId.identifier,
-        routeSpecification: RouteSpecificationEventData.fromRouteSpecification(createBookingOfferCommand.routeSpecification),
-        cargos: CargoEventData.fromCargoCollection(consolidatedCargoCollection),
-        totalCommodityWeight: bookingTotalCommodityWeight,
-        totalContainerTeuCount: bookingTotalContainerTeuCount
-    )
+      if (!canAcceptCargoCollectionAddition(existingConsolidatedCargoCollection, inputConsolidatedCargoCollection, maxAllowedTeuCountPolicy)) {
+        throw new CommandException(
+            makeForBadRequestWithCustomCodeKey("bookingOfferAggregate.bookingOfferCargos.cannotAcceptCargo", [maxAllowedTeuCountPolicy.maxAllowedTeuCount.trunc(0).toBigInteger().toString()])
+        )
+      }
+
+      // For each consolidated input cargo we want to create independent CargoAddedEvent. The order of handling input cargos is not important but the order of created events is significant.
+      // This is because each CargoAddedEvent contains totalCommodityWeight and totalContainerTeuCount at the point of event creation, where totalCommodityWeight and totalContainerTeuCount are
+      // cumulative values at the level of the aggregate. Therefore, when creating CargoAddedEvent we have to take into account all previous events for calculating totals. The order of publishing
+      // (or applying) events must be the same as the order of their creation.
+      // That way, when we have multiple consolidated input cargos during booking offer creation, we will end up with multiple CargoAddedEvent with increasing totalCommodityWeight and
+      // totalContainerTeuCount
+
+      Collection<Cargo> intermediateCargoCollection = []
+      inputConsolidatedCargoCollection.each((Cargo cargo) -> {
+        intermediateCargoCollection << cargo
+        Tuple2<Quantity<Mass>, BigDecimal> preCalculatedTotals = calculateTotalsForCargoCollectionAddition(existingConsolidatedCargoCollection, intermediateCargoCollection)
+        Quantity<Mass> bookingTotalCommodityWeight = preCalculatedTotals.v1
+        BigDecimal bookingTotalContainerTeuCount = preCalculatedTotals.v2
+
+        CargoAddedEvent cargoAddedEvent = new CargoAddedEvent(
+            bookingOfferId: createBookingOfferCommand.bookingOfferId.identifier,
+            cargo: CargoEventData.fromCargo(cargo),
+            totalCommodityWeight: bookingTotalCommodityWeight,
+            totalContainerTeuCount: bookingTotalContainerTeuCount
+        )
+
+        cargoAddedEventList << cargoAddedEvent
+      })
+    }
 
     apply(bookingOfferCreatedEvent, metaData)
+
+    if (routeSpecificationAddedEvent) {
+      apply(routeSpecificationAddedEvent, metaData)
+    }
+
+    if (!cargoAddedEventList.isEmpty()) {
+      cargoAddedEventList.each((CargoAddedEvent cargoAddedEvent) -> apply(cargoAddedEvent, metaData))
+    }
+
     return this
   }
 
   protected static Collection<Cargo> makeInputConsolidatedCargoCollection(Collection<CargoCommandData> cargoCommandDataCollection, CargoCreatorService cargoCreatorService) {
     Collection<Cargo> inputCargoCollection = []
-    if (cargoCommandDataCollection) {
-      cargoCommandDataCollection.each { CargoCommandData cargoCommandData ->
-        Cargo cargo = cargoCreatorService.from(cargoCommandData.containerDimensionType, cargoCommandData.commodity)
-        inputCargoCollection << cargo
-      }
+    cargoCommandDataCollection.each { CargoCommandData cargoCommandData ->
+      Cargo cargo = cargoCreatorService.from(cargoCommandData.containerDimensionType, cargoCommandData.commodity)
+      inputCargoCollection << cargo
     }
 
     Collection<Cargo> inputConsolidatedCargoCollection = consolidateCargoCollectionsForCargoAddition([], inputCargoCollection)
@@ -116,11 +151,20 @@ class BookingOfferAggregate {
 
   @EventSourcingHandler
   void onBookingOfferCreatedEvent(BookingOfferCreatedEvent bookingOfferCreatedEvent) {
-    customer = bookingOfferCreatedEvent.customer.toCustomer()
     bookingOfferId = BookingOfferId.make(bookingOfferCreatedEvent.bookingOfferId)
-    routeSpecification = bookingOfferCreatedEvent.routeSpecification.toRouteSpecification()
+    lastEventSequenceNumber++
+    customer = bookingOfferCreatedEvent.customer.toCustomer()
+  }
 
-    Collection<Cargo> cargoCollection = bookingOfferCreatedEvent.cargos.collect({ CargoEventData cargoEventData -> cargoEventData.toCargo() })
-    bookingOfferCargos.storeCargoCollectionAddition(cargoCollection)
+  @EventSourcingHandler
+  void onRouteSpecificationAddedEvent(RouteSpecificationAddedEvent routeSpecificationAddedEvent) {
+    lastEventSequenceNumber++
+    routeSpecification = routeSpecificationAddedEvent.routeSpecification.toRouteSpecification()
+  }
+
+  @EventSourcingHandler
+  void onCargoAddedEvent(CargoAddedEvent cargoAddedEvent) {
+    lastEventSequenceNumber++
+    bookingOfferCargos.storeCargoCollectionAddition([cargoAddedEvent.cargo.toCargo()])
   }
 }

@@ -99,7 +99,7 @@ abstract class AbstractCommandRetrySchedulerIntegrationSpecification extends Abs
 
     then:
     createBookingOfferCommandResponseMetadata.isEmpty()
-    createBookingOfferCommandResponsePayload.bookingOfferId.identifier == myBookingOfferId
+    createBookingOfferCommandResponsePayload.bookingOfferId == myBookingOfferId
 
     loggingEventList.size() == 1
     loggingEventList[0].level == Level.INFO

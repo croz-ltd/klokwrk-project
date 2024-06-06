@@ -25,6 +25,10 @@ import org.klokwrk.cargotracking.domain.model.command.CreateBookingOfferCommandF
 import org.klokwrk.cargotracking.domain.model.command.data.CargoCommandDataFixtureBuilder
 import org.klokwrk.cargotracking.domain.model.event.BookingOfferCreatedEvent
 import org.klokwrk.cargotracking.domain.model.event.BookingOfferCreatedEventFixtureBuilder
+import org.klokwrk.cargotracking.domain.model.event.CargoAddedEvent
+import org.klokwrk.cargotracking.domain.model.event.CargoAddedEventFixtureBuilder
+import org.klokwrk.cargotracking.domain.model.event.RouteSpecificationAddedEvent
+import org.klokwrk.cargotracking.domain.model.event.RouteSpecificationAddedEventFixtureBuilder
 import org.klokwrk.cargotracking.domain.model.event.data.CargoEventData
 import org.klokwrk.cargotracking.domain.model.event.data.CargoEventDataFixtureBuilder
 import org.klokwrk.cargotracking.domain.model.event.data.CustomerEventData
@@ -33,6 +37,7 @@ import org.klokwrk.cargotracking.domain.model.service.CargoCreatorService
 import org.klokwrk.cargotracking.domain.model.service.ConstantBasedMaxAllowedTeuCountPolicy
 import org.klokwrk.cargotracking.domain.model.service.DefaultCargoCreatorService
 import org.klokwrk.cargotracking.domain.model.service.MaxAllowedTeuCountPolicy
+import org.klokwrk.cargotracking.domain.model.service.MaxAllowedWeightPerContainerPolicy
 import org.klokwrk.cargotracking.domain.model.service.PercentBasedMaxAllowedWeightPerContainerPolicy
 import org.klokwrk.cargotracking.domain.model.value.Cargo
 import org.klokwrk.cargotracking.domain.model.value.Commodity
@@ -41,11 +46,19 @@ import org.klokwrk.cargotracking.domain.model.value.ContainerType
 import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.CommandException
 import spock.lang.Specification
 
+import javax.measure.Quantity
+import javax.measure.quantity.Mass
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
+
 class BookingOfferAggregateSpecification extends Specification {
+  MaxAllowedWeightPerContainerPolicy maxAllowedWeightPerContainerPolicy
   AggregateTestFixture aggregateTestFixture
 
   void setup() {
-    CargoCreatorService cargoCreatorService = new DefaultCargoCreatorService(new PercentBasedMaxAllowedWeightPerContainerPolicy(95))
+    maxAllowedWeightPerContainerPolicy = new PercentBasedMaxAllowedWeightPerContainerPolicy(95)
+    CargoCreatorService cargoCreatorService = new DefaultCargoCreatorService(maxAllowedWeightPerContainerPolicy)
     MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy = new ConstantBasedMaxAllowedTeuCountPolicy(5000.0)
 
     aggregateTestFixture = new AggregateTestFixture(BookingOfferAggregate)
@@ -53,15 +66,20 @@ class BookingOfferAggregateSpecification extends Specification {
     aggregateTestFixture.registerInjectableResource(maxAllowedTeuCountPolicy)
   }
 
-  void "should work when origin and destination locations are both container ports at sea"() {
+  void "should work for command with customer only"() {
     given:
-    CreateBookingOfferCommand createBookingOfferCommand = CreateBookingOfferCommandFixtureBuilder.createBookingOfferCommand_default().build()
+    Clock aClock = Clock.fixed(Instant.now(), ZoneId.systemDefault())
+
+    CreateBookingOfferCommand createBookingOfferCommand = CreateBookingOfferCommandFixtureBuilder
+        .createBookingOfferCommand_default(aClock)
+        .routeSpecification(null)
+        .cargos(null)
+        .build()
+
     BookingOfferCreatedEvent expectedBookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder
-        .bookingOfferCreatedEvent_default()
-        .customer(CustomerEventData.fromCustomer(createBookingOfferCommand.customer))
+        .bookingOfferCreatedEvent_default(aClock)
         .bookingOfferId(createBookingOfferCommand.bookingOfferId.identifier)
-        .routeSpecification(RouteSpecificationEventData.fromRouteSpecification(createBookingOfferCommand.routeSpecification))
-        .cargos([CargoEventDataFixtureBuilder.cargo_dry().maxAllowedWeightPerContainer(20615.kg).build()])
+        .customer(CustomerEventData.fromCustomer(createBookingOfferCommand.customer))
         .build()
 
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
@@ -75,6 +93,80 @@ class BookingOfferAggregateSpecification extends Specification {
         .expectEvents(expectedBookingOfferCreatedEvent)
   }
 
+  void "should work for command with customer and routeSpecification"() {
+    given:
+    Clock aClock = Clock.fixed(Instant.now(), ZoneId.systemDefault())
+
+    CreateBookingOfferCommand createBookingOfferCommand = CreateBookingOfferCommandFixtureBuilder
+        .createBookingOfferCommand_default(aClock)
+        .cargos(null)
+        .build()
+
+    BookingOfferCreatedEvent expectedBookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder
+        .bookingOfferCreatedEvent_default(aClock)
+        .bookingOfferId(createBookingOfferCommand.bookingOfferId.identifier)
+        .customer(CustomerEventData.fromCustomer(createBookingOfferCommand.customer))
+        .build()
+
+    RouteSpecificationAddedEvent expectedRouteSpecificationAddedEvent = RouteSpecificationAddedEventFixtureBuilder
+        .routeSpecificationAddedEvent_default(aClock)
+        .bookingOfferId(createBookingOfferCommand.bookingOfferId.identifier)
+        .build()
+
+    TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
+
+    when:
+    ResultValidator<BookingOfferAggregate> resultValidator = testExecutor.when(createBookingOfferCommand)
+
+    then:
+    resultValidator
+        .expectSuccessfulHandlerExecution()
+        .expectEvents(expectedBookingOfferCreatedEvent, expectedRouteSpecificationAddedEvent)
+  }
+
+  void "should work for command with customer, routeSpecification and cargos"() {
+    given:
+    Clock aClock = Clock.fixed(Instant.now(), ZoneId.systemDefault())
+
+    CreateBookingOfferCommand createBookingOfferCommand = CreateBookingOfferCommandFixtureBuilder.createBookingOfferCommand_default(aClock).build()
+
+    BookingOfferCreatedEvent expectedBookingOfferCreatedEvent = BookingOfferCreatedEventFixtureBuilder
+        .bookingOfferCreatedEvent_default(aClock)
+        .bookingOfferId(createBookingOfferCommand.bookingOfferId.identifier)
+        .customer(CustomerEventData.fromCustomer(createBookingOfferCommand.customer))
+        .build()
+
+    RouteSpecificationAddedEvent expectedRouteSpecificationAddedEvent = RouteSpecificationAddedEventFixtureBuilder
+        .routeSpecificationAddedEvent_default(aClock)
+        .bookingOfferId(createBookingOfferCommand.bookingOfferId.identifier)
+        .build()
+
+    CargoAddedEvent expectedCargoAddedEvent = makeExpectedCargoAddedEvent(createBookingOfferCommand, aClock, maxAllowedWeightPerContainerPolicy)
+
+    TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
+
+    when:
+    ResultValidator<BookingOfferAggregate> resultValidator = testExecutor.when(createBookingOfferCommand)
+
+    then:
+    resultValidator
+        .expectSuccessfulHandlerExecution()
+        .expectEvents(expectedBookingOfferCreatedEvent, expectedRouteSpecificationAddedEvent, expectedCargoAddedEvent)
+  }
+
+  private CargoAddedEvent makeExpectedCargoAddedEvent(CreateBookingOfferCommand createBookingOfferCommand, Clock aClock, MaxAllowedWeightPerContainerPolicy maxAllowedWeightPerContainerPolicy) {
+    CargoEventDataFixtureBuilder cargoEventDataFixtureBuilder = CargoEventDataFixtureBuilder.cargo_dry()
+    Quantity<Mass> maxAllowedWeightPerContainer = maxAllowedWeightPerContainerPolicy.maxAllowedWeightPerContainer(cargoEventDataFixtureBuilder.containerType)
+
+    CargoAddedEvent expectedCargoAddedEvent = CargoAddedEventFixtureBuilder
+        .cargoAddedEvent_default(aClock)
+        .bookingOfferId(createBookingOfferCommand.bookingOfferId.identifier)
+        .cargo(cargoEventDataFixtureBuilder.maxAllowedWeightPerContainer(maxAllowedWeightPerContainer).build())
+        .build()
+
+    return expectedCargoAddedEvent
+  }
+
   void "should work with acceptable cargo"() {
     given:
     CreateBookingOfferCommand createBookingOfferCommandWithAcceptableCargo = CreateBookingOfferCommandFixtureBuilder
@@ -83,22 +175,31 @@ class BookingOfferAggregateSpecification extends Specification {
         .build()
 
     TestExecutor<BookingOfferAggregate> testExecutor = aggregateTestFixture.givenNoPriorActivity()
-    Cargo expectedBookingOfferCargo = Cargo.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommandWithAcceptableCargo.cargos[0].commodity, 20_615.kg)
 
     BookingOfferCreatedEvent expectedBookingOfferCreatedEvent = new BookingOfferCreatedEvent(
-        customer: CustomerEventData.fromCustomer(createBookingOfferCommandWithAcceptableCargo.customer),
         bookingOfferId: createBookingOfferCommandWithAcceptableCargo.bookingOfferId.identifier,
-        routeSpecification: RouteSpecificationEventData.fromRouteSpecification(createBookingOfferCommandWithAcceptableCargo.routeSpecification),
-        cargos: [CargoEventData.fromCargo(expectedBookingOfferCargo)],
+        customer: CustomerEventData.fromCustomer(createBookingOfferCommandWithAcceptableCargo.customer)
+    )
+
+    RouteSpecificationAddedEvent expectedRouteSpecificationAddedEvent = new RouteSpecificationAddedEvent(
+        bookingOfferId: createBookingOfferCommandWithAcceptableCargo.bookingOfferId.identifier,
+        routeSpecification: RouteSpecificationEventData.fromRouteSpecification(createBookingOfferCommandWithAcceptableCargo.routeSpecification)
+    )
+
+    Quantity<Mass> maxAllowedWeightPerContainer = maxAllowedWeightPerContainerPolicy.maxAllowedWeightPerContainer(ContainerType.TYPE_ISO_22G1)
+    Cargo expectedBookingOfferCargo = Cargo.make(ContainerType.TYPE_ISO_22G1, createBookingOfferCommandWithAcceptableCargo.cargos[0].commodity, maxAllowedWeightPerContainer)
+    CargoAddedEvent expectedCargoAddedEvent = new CargoAddedEvent(
+        bookingOfferId: createBookingOfferCommandWithAcceptableCargo.bookingOfferId.identifier,
+        cargo: CargoEventData.fromCargo(expectedBookingOfferCargo),
         totalCommodityWeight: 10_000.kg,
-        totalContainerTeuCount: 1
+        totalContainerTeuCount: 1.00
     )
 
     when:
     ResultValidator<BookingOfferAggregate> resultValidator = testExecutor.when(createBookingOfferCommandWithAcceptableCargo)
 
     then:
-    resultValidator.expectEvents(expectedBookingOfferCreatedEvent)
+    resultValidator.expectEvents(expectedBookingOfferCreatedEvent, expectedRouteSpecificationAddedEvent, expectedCargoAddedEvent)
 
     verifyAll(resultValidator.state.get().wrappedAggregate.aggregateRoot as BookingOfferAggregate, {
       bookingOfferId == createBookingOfferCommandWithAcceptableCargo.bookingOfferId

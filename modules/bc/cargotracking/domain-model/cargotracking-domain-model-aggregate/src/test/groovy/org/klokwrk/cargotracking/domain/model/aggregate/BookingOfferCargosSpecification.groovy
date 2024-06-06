@@ -599,6 +599,14 @@ class BookingOfferCargosSpecification extends Specification {
     noExceptionThrown()
   }
 
+  void "checkIfCargoCollectionIsConsolidated() method should throw for null collection"() {
+    when:
+    BookingOfferCargos.checkIfCargoCollectionIsConsolidated(null)
+
+    then:
+    thrown(AssertionError)
+  }
+
   void "checkIfCargoCollectionIsConsolidated() method should throw for non-consolidated bookingOfferCargoCollection"() {
     given:
     BookingOfferCargos bookingOfferCargos = new BookingOfferCargos()

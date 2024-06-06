@@ -18,26 +18,15 @@
 package org.klokwrk.cargotracking.domain.model.event
 
 import groovy.transform.CompileStatic
-import org.klokwrk.cargotracking.domain.model.event.data.CargoEventData
 import org.klokwrk.cargotracking.domain.model.event.data.CustomerEventData
-import org.klokwrk.cargotracking.domain.model.event.data.RouteSpecificationEventData
 import org.klokwrk.cargotracking.lib.domain.model.event.BaseEvent
 import org.klokwrk.lib.xlang.groovy.base.transform.KwrkImmutable
 
-import javax.measure.Quantity
-import javax.measure.quantity.Mass
-
-@KwrkImmutable(knownImmutableClasses = [Quantity])
+@KwrkImmutable
 @CompileStatic
 class BookingOfferCreatedEvent implements BaseEvent {
   String bookingOfferId
   CustomerEventData customer
-
-  Collection<CargoEventData> cargos
-  Quantity<Mass> totalCommodityWeight
-  BigDecimal totalContainerTeuCount
-
-  RouteSpecificationEventData routeSpecification
 
   String getAggregateIdentifier() {
     return bookingOfferId

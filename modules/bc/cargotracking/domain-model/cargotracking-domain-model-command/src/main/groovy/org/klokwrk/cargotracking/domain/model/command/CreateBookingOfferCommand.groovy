@@ -39,20 +39,21 @@ import static org.hamcrest.Matchers.notNullValue
 @KwrkImmutable
 @CompileStatic
 class CreateBookingOfferCommand implements BaseCreateCommand, PostMapConstructorCheckable {
-  Customer customer
   BookingOfferId bookingOfferId
+  Customer customer
   RouteSpecification routeSpecification
   Collection<CargoCommandData> cargos
 
   @Override
+  String getAggregateIdentifier() {
+    return bookingOfferId.identifier
+  }
+
+  @Override
   void postMapConstructorCheck(Map<String, ?> constructorArguments) {
     // Here we are comply to the validation ordering as explained in ADR-0013.
-    requireMatch(customer, notNullValue())
     requireMatch(bookingOfferId, notNullValue())
-    requireMatch(routeSpecification, notNullValue())
-    requireMatch(cargos, notNullValue())
-    requireMatch(cargos, not(empty()))
-    requireMatch(cargos, everyItem(instanceOf(CargoCommandData)))
+    requireMatch(customer, notNullValue())
 
     // Since they are pretty closely related to particular use-cases, commands can check for use-case-specific constraints (in contrast with, for example, value objects that are not
     // use-case-specific).
@@ -69,19 +70,22 @@ class CreateBookingOfferCommand implements BaseCreateCommand, PostMapConstructor
     // After all this discussion, it is worth mentioning that constraints are not really use-case specific in our concrete example here, and we can safely move them into the RouteSpecification value
     // object. In fact, that concrete constraint is repeated in RouteSpecification, therefore the same constraint in command will never be violated as RouteSpecification is already constructed.
     // Still, we'll also leave constraint here for illustration purposes.
+    requireKnownLocationWhenNotNull(routeSpecification?.originLocation, "createBookingOfferCommand.originLocationUnknown")
+    requireKnownLocationWhenNotNull(routeSpecification?.destinationLocation, "createBookingOfferCommand.destinationLocationUnknown")
 
-    requireKnownLocation(routeSpecification.originLocation, "createBookingOfferCommand.originLocationUnknown")
-    requireKnownLocation(routeSpecification.destinationLocation, "createBookingOfferCommand.destinationLocationUnknown")
+    requireMatchWhenNotNull(cargos, not(empty()))
+    requireMatchWhenNotNull(cargos, everyItem(instanceOf(CargoCommandData)))
   }
 
-  @Generated // To avoid unnecessary drop-down in code coverage (see the last paragraph in comment inside postMapConstructorCheck() method).
-  private void requireKnownLocation(Location location, String violationCodeKey) {
+  // @Generated is used to avoid unnecessary drop-down in code coverage (see the last paragraph in comment inside postMapConstructorCheck() method).
+  @Generated
+  private void requireKnownLocationWhenNotNull(Location location, String violationCodeKey) {
+    if (location == null) {
+      return
+    }
+
     if (location == Location.UNKNOWN_LOCATION) {
       throw new CommandException(ViolationInfo.makeForBadRequestWithCustomCodeKey(violationCodeKey))
     }
-  }
-
-  String getAggregateIdentifier() {
-    return bookingOfferId.identifier
   }
 }

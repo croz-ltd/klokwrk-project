@@ -23,6 +23,7 @@ import groovy.transform.PropertyOptions
 import org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.data.CargoRequestData
 import org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.data.RouteSpecificationRequestData
 import org.klokwrk.lib.lo.validation.constraint.NotBlankWhenNullableConstraint
+import org.klokwrk.lib.lo.validation.constraint.NotEmptyWhenNullableConstraint
 import org.klokwrk.lib.lo.validation.constraint.NotNullElementsConstraint
 import org.klokwrk.lib.lo.validation.constraint.RandomUuidFormatConstraint
 import org.klokwrk.lib.lo.validation.constraint.TrimmedStringConstraint
@@ -35,8 +36,6 @@ import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandle
 import jakarta.validation.GroupSequence
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotEmpty
-import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 /**
@@ -74,7 +73,6 @@ class CreateBookingOfferCommandRequest {
    * Must be not {@code null} and valid.
    */
   @Valid
-  @NotNull(groups = [Level1])
   RouteSpecificationRequestData routeSpecification
 
   /**
@@ -84,6 +82,6 @@ class CreateBookingOfferCommandRequest {
    */
   @Valid
   @NotNullElementsConstraint(groups = [Level2])
-  @NotEmpty(groups = [Level1])
+  @NotEmptyWhenNullableConstraint(groups = [Level1])
   Collection<CargoRequestData> cargos
 }

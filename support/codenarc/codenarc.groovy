@@ -397,6 +397,7 @@ ruleset {
   FactoryMethodName
   FieldName {
     ignoreFieldNames = "serialVersionUID,log,logger"
+    regex = /[a-z_]\w*/
   }
   InterfaceName
   InterfaceNameSameAsSuperInterface
@@ -417,7 +418,9 @@ ruleset {
   PackageName
   PackageNameMatchesFilePath
   ParameterName
-  PropertyName
+  PropertyName {
+    regex = /[a-z_]\w*/
+  }
   VariableName {
     regex = /[a-z_]\w*/
   }

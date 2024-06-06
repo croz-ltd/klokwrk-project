@@ -22,6 +22,8 @@ import groovy.transform.CompileStatic
 import org.axonframework.eventhandling.DomainEventMessage
 import org.axonframework.eventhandling.EventHandler
 import org.klokwrk.cargotracking.domain.model.event.BookingOfferCreatedEvent
+import org.klokwrk.cargotracking.domain.model.event.CargoAddedEvent
+import org.klokwrk.cargotracking.domain.model.event.RouteSpecificationAddedEvent
 import org.springframework.stereotype.Service
 
 @Service
@@ -30,20 +32,37 @@ class BookingOfferProjectionService {
   private final BookingOfferSummaryProjectionJpaRepository bookingOfferSummaryProjectionJpaRepository
   private final BookingOfferDetailsProjectionJpaRepository bookingOfferDetailsProjectionJpaRepository
   private final ObjectMapper objectMapper
+  private final BookingOfferSummaryProjectionHelper bookingOfferSummaryProjectionHelper
+  private final BookingOfferDetailsProjectionHelper bookingOfferDetailsProjectionHelper
 
-  @SuppressWarnings('SpringJavaInjectionPointsAutowiringInspection')
   BookingOfferProjectionService(
-      BookingOfferSummaryProjectionJpaRepository bookingOfferSummaryProjectionJpaRepository, BookingOfferDetailsProjectionJpaRepository bookingOfferDetailsProjectionJpaRepository,
+      BookingOfferSummaryProjectionJpaRepository bookingOfferSummaryProjectionJpaRepository,
+      BookingOfferDetailsProjectionJpaRepository bookingOfferDetailsProjectionJpaRepository,
       ObjectMapper objectMapper)
   {
     this.bookingOfferSummaryProjectionJpaRepository = bookingOfferSummaryProjectionJpaRepository
     this.bookingOfferDetailsProjectionJpaRepository = bookingOfferDetailsProjectionJpaRepository
     this.objectMapper = objectMapper
+
+    this.bookingOfferSummaryProjectionHelper = new BookingOfferSummaryProjectionHelper(bookingOfferSummaryProjectionJpaRepository)
+    this.bookingOfferDetailsProjectionHelper = new BookingOfferDetailsProjectionHelper(bookingOfferDetailsProjectionJpaRepository, objectMapper)
   }
 
   @EventHandler
   void onBookingOfferCreatedEvent(BookingOfferCreatedEvent bookingOfferCreatedEvent, DomainEventMessage domainEventMessage) {
-    bookingOfferSummaryProjectionJpaRepository.persist(BookingOfferSummaryJpaEntityFactory.makeBookingOfferSummaryJpaEntity(bookingOfferCreatedEvent, domainEventMessage))
-    bookingOfferDetailsProjectionJpaRepository.persist(BookingOfferDetailsJpaEntityFactory.makeBookingOfferDetailsJpaEntity(bookingOfferCreatedEvent, domainEventMessage, objectMapper))
+    bookingOfferSummaryProjectionHelper.storeBookingOfferCreatedEvent(bookingOfferCreatedEvent, domainEventMessage)
+    bookingOfferDetailsProjectionHelper.storeBookingOfferCreatedEvent(bookingOfferCreatedEvent, domainEventMessage)
+  }
+
+  @EventHandler
+  void onRouteSpecificationAddedEvent(RouteSpecificationAddedEvent routeSpecificationAddedEvent, DomainEventMessage domainEventMessage) {
+    bookingOfferSummaryProjectionHelper.storeRouteSpecificationAddedEvent(routeSpecificationAddedEvent, domainEventMessage)
+    bookingOfferDetailsProjectionHelper.storeRouteSpecificationAddedEvent(routeSpecificationAddedEvent, domainEventMessage)
+  }
+
+  @EventHandler
+  void onCargoAddedEvent(CargoAddedEvent cargoAddedEvent, DomainEventMessage domainEventMessage) {
+    bookingOfferSummaryProjectionHelper.storeCargoAddedEvent(cargoAddedEvent, domainEventMessage)
+    bookingOfferDetailsProjectionHelper.storeCargoAddedEvent(cargoAddedEvent, domainEventMessage)
   }
 }

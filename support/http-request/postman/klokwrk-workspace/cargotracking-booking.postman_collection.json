@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "0f613845-ee27-4119-bcc9-08dfc1ee8ff6",
+		"_postman_id": "0a62345e-857a-4ed6-af8d-250edec5f4d4",
 		"name": "cargotracking-booking",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "1601377"
@@ -50,13 +50,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "hr",
-														"type": "text"
+														"value": "hr"
 													}
 												],
 												"body": {
@@ -85,7 +83,7 @@
 											"response": []
 										},
 										{
-											"name": "ok, en",
+											"name": "ok, en - complete",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -116,18 +114,148 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
 													"mode": "raw",
 													"raw": "{\n  \"userId\": \"standard-customer@cargotracking.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"dry\", \n      \"commodityWeight\": {\n        \"value\": 50500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-commandside}}",
+													"path": [
+														"cargotracking-booking-app-commandside",
+														"booking-offer",
+														"create-booking-offer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "ok, en - partial - customer",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracking_booking.setCurrentTimeVariables(pm.collectionVariables);"
+														],
+														"type": "text/javascript",
+														"packages": {}
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracking_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+															"pm.klokwrk_cargotracking_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript",
+														"packages": {}
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "en"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracking.com\"\n}\n",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-commandside}}",
+													"path": [
+														"cargotracking-booking-app-commandside",
+														"booking-offer",
+														"create-booking-offer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "ok, en - partial - customer and routeSpecification",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracking_booking.setCurrentTimeVariables(pm.collectionVariables);"
+														],
+														"type": "text/javascript",
+														"packages": {}
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracking_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+															"pm.klokwrk_cargotracking_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript",
+														"packages": {}
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "en"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracking.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  }\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -182,13 +310,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "hr",
-														"type": "text"
+														"value": "hr"
 													}
 												],
 												"body": {
@@ -248,13 +374,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "hr",
-														"type": "text"
+														"value": "hr"
 													}
 												],
 												"body": {
@@ -314,13 +438,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "hr",
-														"type": "text"
+														"value": "hr"
 													}
 												],
 												"body": {
@@ -380,18 +502,82 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "hr",
-														"type": "text"
+														"value": "hr"
 													}
 												],
 												"body": {
 													"mode": "raw",
 													"raw": "{\n  \"userId\": \"standard-customer@cargotracking.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"air_cooled\", \n      \"commodityWeight\": {\n        \"value\": 1500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"commodityRequestedStorageTemperature\": {\n        \"value\": 10,\n        \"unitSymbol\": \"°C\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }\n  ]\n}\n",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://{{host}}:{{port-commandside}}/cargotracking-booking-app-commandside/booking-offer/create-booking-offer",
+													"protocol": "http",
+													"host": [
+														"{{host}}"
+													],
+													"port": "{{port-commandside}}",
+													"path": [
+														"cargotracking-booking-app-commandside",
+														"booking-offer",
+														"create-booking-offer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "ok, hr, air_cooled, dry, chilled",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracking_booking.setCurrentTimeVariables(pm.collectionVariables);"
+														],
+														"type": "text/javascript",
+														"packages": {}
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.klokwrk_cargotracking_booking.unsetCurrentTimeVariables(pm.collectionVariables);",
+															"pm.klokwrk_cargotracking_booking.setReceivedBookingOfferIdIfPossible(pm.response, pm.collectionVariables);",
+															"postman.setNextRequest(null);"
+														],
+														"type": "text/javascript",
+														"packages": {}
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept-Charset",
+														"value": "utf-8"
+													},
+													{
+														"key": "Accept-Language",
+														"value": "hr"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"userId\": \"standard-customer@cargotracking.com\",\n  \"routeSpecification\": {\n    \"originLocation\": \"NLRTM\",\n    \"destinationLocation\": \"USNYC\",\n    \"departureEarliestTime\": \"{{currentTimeAndOneHour}}\",\n    \"departureLatestTime\": \"{{currentTimeAndTwoHours}}\",\n    \"arrivalLatestTime\": \"{{currentTimeAndThreeHours}}\"\n  },\n  \"cargos\": [\n    {\n      \"commodityType\": \"air_cooled\", \n      \"commodityWeight\": {\n        \"value\": 1500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"commodityRequestedStorageTemperature\": {\n        \"value\": 10,\n        \"unitSymbol\": \"°C\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    },\n    {\n      \"commodityType\": \"dry\", \n      \"commodityWeight\": {\n        \"value\": 50500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    },\n    {\n      \"commodityType\": \"chilled\",\n      \"commodityWeight\": {\n        \"value\": 1500,\n        \"unitSymbol\": \"kg\"\n      },\n      \"commodityRequestedStorageTemperature\": {\n        \"value\": 5,\n        \"unitSymbol\": \"°C\"\n      },\n      \"containerDimensionType\": \"DIMENSION_ISO_22\"\n    }    \n  ]\n}\n",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -446,13 +632,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "hr",
-														"type": "text"
+														"value": "hr"
 													}
 												],
 												"body": {
@@ -512,13 +696,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "hr",
-														"type": "text"
+														"value": "hr"
 													}
 												],
 												"body": {
@@ -578,13 +760,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "hr",
-														"type": "text"
+														"value": "hr"
 													}
 												],
 												"body": {
@@ -644,13 +824,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "hr",
-														"type": "text"
+														"value": "hr"
 													}
 												],
 												"body": {
@@ -699,13 +877,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "hr-HR",
-														"type": "text"
+														"value": "hr-HR"
 													}
 												],
 												"body": {
@@ -754,13 +930,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
@@ -809,13 +983,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "hr-HR",
-														"type": "text"
+														"value": "hr-HR"
 													}
 												],
 												"body": {
@@ -864,13 +1036,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
@@ -929,13 +1099,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "hr",
-														"type": "text"
+														"value": "hr"
 													}
 												],
 												"body": {
@@ -994,13 +1162,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
@@ -1061,13 +1227,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "hr",
-														"type": "text"
+														"value": "hr"
 													}
 												],
 												"body": {
@@ -1114,13 +1278,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
@@ -1167,13 +1329,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "hr",
-														"type": "text"
+														"value": "hr"
 													}
 												],
 												"body": {
@@ -1219,13 +1379,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
@@ -1271,13 +1429,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "hr",
-														"type": "text"
+														"value": "hr"
 													}
 												],
 												"body": {
@@ -1323,13 +1479,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
@@ -1380,13 +1534,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
@@ -1433,13 +1585,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
@@ -1486,13 +1636,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
@@ -1544,13 +1692,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
@@ -1597,13 +1743,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
@@ -1660,13 +1804,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
@@ -1713,13 +1855,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
@@ -1771,13 +1911,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
@@ -1824,13 +1962,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
@@ -1876,13 +2012,11 @@
 												"header": [
 													{
 														"key": "Accept-Charset",
-														"value": "utf-8",
-														"type": "text"
+														"value": "utf-8"
 													},
 													{
 														"key": "Accept-Language",
-														"value": "en",
-														"type": "text"
+														"value": "en"
 													}
 												],
 												"body": {
@@ -1963,13 +2097,11 @@
 								"header": [
 									{
 										"key": "Accept-Charset",
-										"value": "utf-8",
-										"type": "text"
+										"value": "utf-8"
 									},
 									{
 										"key": "Accept-Language",
-										"value": "hr",
-										"type": "text"
+										"value": "hr"
 									}
 								],
 								"body": {
@@ -2021,13 +2153,11 @@
 								"header": [
 									{
 										"key": "Accept-Charset",
-										"value": "utf-8",
-										"type": "text"
+										"value": "utf-8"
 									},
 									{
 										"key": "Accept-Language",
-										"value": "hr",
-										"type": "text"
+										"value": "hr"
 									}
 								],
 								"body": {
@@ -2095,13 +2225,11 @@
 								"header": [
 									{
 										"key": "Accept-Charset",
-										"value": "utf-8",
-										"type": "text"
+										"value": "utf-8"
 									},
 									{
 										"key": "Accept-Language",
-										"value": "en",
-										"type": "text"
+										"value": "en"
 									}
 								],
 								"body": {
@@ -2153,13 +2281,11 @@
 								"header": [
 									{
 										"key": "Accept-Charset",
-										"value": "utf-8",
-										"type": "text"
+										"value": "utf-8"
 									},
 									{
 										"key": "Accept-Language",
-										"value": "en",
-										"type": "text"
+										"value": "en"
 									}
 								],
 								"body": {
@@ -2223,13 +2349,11 @@
 								"header": [
 									{
 										"key": "Accept-Charset",
-										"value": "utf-8",
-										"type": "text"
+										"value": "utf-8"
 									},
 									{
 										"key": "Accept-Language",
-										"value": "en",
-										"type": "text"
+										"value": "en"
 									}
 								],
 								"body": {
@@ -2305,13 +2429,11 @@
 								"header": [
 									{
 										"key": "Accept-Charset",
-										"value": "utf-8",
-										"type": "text"
+										"value": "utf-8"
 									},
 									{
 										"key": "Accept-Language",
-										"value": "en",
-										"type": "text"
+										"value": "en"
 									}
 								],
 								"body": {
@@ -2390,7 +2512,7 @@
 					"",
 					"Object.prototype.klokwrk_cargotracking_booking.setReceivedBookingOfferIdIfPossible = function(response, variableScope) {",
 					"    if (response.to.have.status(200)) {",
-					"        var receivedBookingOfferId = response.json().payload.bookingOfferId.identifier",
+					"        var receivedBookingOfferId = response.json().payload.bookingOfferId",
 					"        variableScope.set(\"execution_receivedBookingOfferId\", receivedBookingOfferId)",
 					"    }",
 					"}",

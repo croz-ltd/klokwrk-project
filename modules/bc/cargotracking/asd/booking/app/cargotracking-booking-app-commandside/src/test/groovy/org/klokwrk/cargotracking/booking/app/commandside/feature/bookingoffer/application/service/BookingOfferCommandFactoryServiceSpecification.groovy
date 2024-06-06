@@ -285,9 +285,7 @@ class BookingOfferCommandFactoryServiceSpecification extends Specification {
           customerType: "STANDARD"
       ]
 
-      bookingOfferId == [
-          identifier: myBookingOfferId
-      ]
+      bookingOfferId == myBookingOfferId
 
       routeSpecification == [
           originLocation: [

@@ -45,6 +45,9 @@ import java.time.Duration
 import java.time.Instant
 
 import static org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion.assertResponseHasPayloadThat
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestProjectionHelpers.waitProjectionBookingOfferSummary_forCompleteBookingOfferCreation
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestProjectionHelpers.waitProjectionBookingOfferSummary_forPartialBookingOfferCreation_withCustomer
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestProjectionHelpers.waitProjectionBookingOfferSummary_forPartialBookingOfferCreation_withCustomerAndRouteSpecification
 import static org.klokwrk.cargotracking.test.support.assertion.MetaDataAssertion.assertResponseHasMetaDataThat
 import static org.klokwrk.lib.xlang.groovy.base.misc.InstantUtils.roundUpInstantToTheHour
 
@@ -71,10 +74,10 @@ class BookingOfferDetailsFindByIdQueryApplicationServiceIntegrationSpecification
   @Autowired
   ObjectMapper objectMapper
 
-  void "should work for correct request"() {
+  void "should work for correct request - partial booking offer exists - customer"() {
     given:
-    Instant startedAt = Instant.now()
-    String myBookingOfferId = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
+    Instant startedAt = Instant.now() - Duration.ofMillis(1)
+    String myBookingOfferId = waitProjectionBookingOfferSummary_forPartialBookingOfferCreation_withCustomer(eventBus, groovySql)
 
     BookingOfferDetailsFindByIdQueryRequest bookingOfferDetailsFindByIdQueryRequest =
         new BookingOfferDetailsFindByIdQueryRequest(bookingOfferId: myBookingOfferId, userId: "standard-customer@cargotracking.com")
@@ -94,13 +97,85 @@ class BookingOfferDetailsFindByIdQueryApplicationServiceIntegrationSpecification
     }
 
     assertResponseHasPayloadThat(operationResponseMap) {
-      isSuccessful()
+      isSuccessful_partialBookingOffer_customer()
+
+      hasBookingOfferId(myBookingOfferId)
+      hasCustomerTypeOfStandard()
+      hasEventMetadataOfTheFirstEventWithCorrectTiming(startedAt)
+    }
+  }
+
+  void "should work for correct request - partial booking offer exists - customer and routeSpecification"() {
+    given:
+    Instant startedAt = Instant.now() - Duration.ofMillis(1)
+    String myBookingOfferId = waitProjectionBookingOfferSummary_forPartialBookingOfferCreation_withCustomerAndRouteSpecification(eventBus, groovySql)
+
+    BookingOfferDetailsFindByIdQueryRequest bookingOfferDetailsFindByIdQueryRequest =
+        new BookingOfferDetailsFindByIdQueryRequest(bookingOfferId: myBookingOfferId, userId: "standard-customer@cargotracking.com")
+
+    OperationRequest<BookingOfferDetailsFindByIdQueryRequest> operationRequest = new OperationRequest(
+        payload: bookingOfferDetailsFindByIdQueryRequest,
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
+    )
+
+    when:
+    OperationResponse<BookingOfferDetailsFindByIdQueryResponse> operationResponse = bookingOfferDetailsFindByIdQueryPortIn.bookingOfferDetailsFindByIdQuery(operationRequest)
+    Map operationResponseMap = objectMapper.readValue(objectMapper.writeValueAsString(operationResponse), Map)
+
+    then:
+    assertResponseHasMetaDataThat(operationResponseMap) {
+      isSuccessful_asReturnedFromFacadeApi()
+    }
+
+    assertResponseHasPayloadThat(operationResponseMap) {
+      isSuccessful_partialBookingOffer_customerAndRouteSpecification()
+
+      hasBookingOfferId(myBookingOfferId)
+      hasCustomerTypeOfStandard()
+
+      hasRouteSpecificationThat {
+        hasCreationTimeGreaterThan(startedAt)
+        hasDepartureEarliestTime(roundUpInstantToTheHour(startedAt + Duration.ofHours(1)))
+        hasDepartureLatestTime(roundUpInstantToTheHour(startedAt + Duration.ofHours(2)))
+        hasArrivalLatestTime(roundUpInstantToTheHour(startedAt + Duration.ofHours(3)))
+        hasOriginLocationOfRijeka()
+        hasDestinationLocationOfRotterdam()
+      }
+
+      hasEventMetadataOfMultipleEventsWithCorrectTiming(startedAt)
+    }
+  }
+
+  void "should work for correct request - complete booking offer exists"() {
+    given:
+    Instant startedAt = Instant.now() - Duration.ofMillis(1)
+    String myBookingOfferId = waitProjectionBookingOfferSummary_forCompleteBookingOfferCreation(eventBus, groovySql)
+
+    BookingOfferDetailsFindByIdQueryRequest bookingOfferDetailsFindByIdQueryRequest =
+        new BookingOfferDetailsFindByIdQueryRequest(bookingOfferId: myBookingOfferId, userId: "standard-customer@cargotracking.com")
+
+    OperationRequest<BookingOfferDetailsFindByIdQueryRequest> operationRequest = new OperationRequest(
+        payload: bookingOfferDetailsFindByIdQueryRequest,
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
+    )
+
+    when:
+    OperationResponse<BookingOfferDetailsFindByIdQueryResponse> operationResponse = bookingOfferDetailsFindByIdQueryPortIn.bookingOfferDetailsFindByIdQuery(operationRequest)
+    Map operationResponseMap = objectMapper.readValue(objectMapper.writeValueAsString(operationResponse), Map)
+
+    then:
+    assertResponseHasMetaDataThat(operationResponseMap) {
+      isSuccessful_asReturnedFromFacadeApi()
+    }
+
+    assertResponseHasPayloadThat(operationResponseMap) {
+      isSuccessful_completeBookingOffer()
 
       hasBookingOfferId(myBookingOfferId)
       hasCustomerTypeOfStandard()
       hasTotalCommodityWeight(1000.kg)
       hasTotalContainerTeuCount(1.0G)
-      hasEventMetadataOfTheFirstEventWithCorrectTiming(startedAt)
+      hasEventMetadataOfMultipleEventsWithCorrectTiming(startedAt)
 
       hasCargosWithFirstCargoThat {
         isDryDefaultCargo()
@@ -138,7 +213,7 @@ class BookingOfferDetailsFindByIdQueryApplicationServiceIntegrationSpecification
 
   void "should execute expected single select statement"() {
     given:
-    String myBookingOfferId = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
+    String myBookingOfferId = waitProjectionBookingOfferSummary_forCompleteBookingOfferCreation(eventBus, groovySql)
 
     Logger logger = LoggerFactory.getLogger("klokwrk.datasourceproxy.queryLogger") as Logger
     logger.level = Level.DEBUG

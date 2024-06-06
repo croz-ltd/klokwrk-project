@@ -29,8 +29,8 @@ import static org.klokwrk.lib.xlang.groovy.base.constant.CommonConstants.NOT_AVA
 
 @CompileStatic
 class AxonMessageHelper {
-  // TODO dmurat: If the need arises, following two constants should go into standalone module (module could be named something like infrastructure-project-axon-base or
-  //              infrastructure-project-axon-constant)
+  // Note: If there will be a need, the following two constants can go into standalone module (module could be named something like infrastructure-project-axon-base or
+  //       infrastructure-project-axon-constant)
   static final String AGGREGATE_IDENTIFIER = "aggregateIdentifier"
   static final String SEQUENCE_NUMBER = "sequenceNumber"
 

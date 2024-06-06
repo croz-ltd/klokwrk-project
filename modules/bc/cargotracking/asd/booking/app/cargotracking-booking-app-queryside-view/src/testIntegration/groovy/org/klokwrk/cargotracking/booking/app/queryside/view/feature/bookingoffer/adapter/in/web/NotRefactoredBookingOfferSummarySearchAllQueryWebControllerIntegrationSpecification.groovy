@@ -20,7 +20,7 @@ package org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffe
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
-import org.klokwrk.cargotracking.booking.app.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
+import org.klokwrk.cargotracking.booking.app.queryside.view.test.base.AbstractQuerySide_forFindAllAndSearchAllTests_IntegrationSpecification
 import org.klokwrk.cargotracking.domain.model.value.CustomerType
 import org.klokwrk.cargotracking.lib.boundary.api.domain.severity.Severity
 import org.klokwrk.cargotracking.lib.boundary.query.api.sorting.SortDirection
@@ -47,11 +47,10 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 /**
  * This class exists only for comparison with {@link BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification} to be able to see the close difference in test implementations.
  */
-@SuppressWarnings("GroovyAccessibility")
 @EnableSharedInjection
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class NotRefactoredBookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
+class NotRefactoredBookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification extends AbstractQuerySide_forFindAllAndSearchAllTests_IntegrationSpecification {
   @TestConfiguration
   static class TestSpringBootConfiguration {
     @Bean
@@ -77,9 +76,7 @@ class NotRefactoredBookingOfferSummarySearchAllQueryWebControllerIntegrationSpec
   MockMvc mockMvc
 
   void setupSpec() {
-    makeForSearch_pastBookingOfferCreatedEvents().each {
-      publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql, it)
-    }
+    setupProjection_forFindAllAndSearchAllTests(eventBus, groovySql)
   }
 
   void setup() {
@@ -170,7 +167,7 @@ class NotRefactoredBookingOfferSummarySearchAllQueryWebControllerIntegrationSpec
               unitSymbol: "kg"
           ]
           totalContainerTeuCount == 1.00G
-          lastEventSequenceNumber == 0
+          lastEventSequenceNumber == 2
         }
       }
     }

@@ -69,31 +69,46 @@ class BookingOfferCommandFactoryService {
     //       and Location registry data (a.k.a. master data) from the outbound adapter.
 
     Customer customer = customerByUserIdPortOut.findCustomerByUserId(createBookingOfferCommandRequest.userId)
-    Location resolvedOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(createBookingOfferCommandRequest.routeSpecification.originLocation)
-    Location resolvedDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(createBookingOfferCommandRequest.routeSpecification.destinationLocation)
 
-    Collection<CargoCommandData> cargos = []
-    createBookingOfferCommandRequest.cargos.forEach({ CargoRequestData cargoRequestData ->
-      CargoCommandData cargoCommandData = new CargoCommandData(
-          commodity: Commodity.make(
-              CommodityType.valueOf(cargoRequestData.commodityType.toUpperCase()),
-              cargoRequestData.commodityWeight,
-              cargoRequestData.commodityRequestedStorageTemperature
-          ),
-          containerDimensionType: ContainerDimensionType.valueOf(cargoRequestData.containerDimensionType.toUpperCase())
+    Location resolvedOriginLocation = null
+    if (createBookingOfferCommandRequest.routeSpecification?.originLocation != null) {
+      resolvedOriginLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(createBookingOfferCommandRequest.routeSpecification.originLocation)
+    }
+    Location resolvedDestinationLocation = null
+    if (createBookingOfferCommandRequest.routeSpecification?.destinationLocation != null) {
+      resolvedDestinationLocation = locationByUnLoCodeQueryPortOut.locationByUnLoCodeQuery(createBookingOfferCommandRequest.routeSpecification.destinationLocation)
+    }
+
+    RouteSpecification routeSpecification = null
+    if (resolvedOriginLocation && resolvedDestinationLocation) {
+      routeSpecification = RouteSpecification.make(
+          resolvedOriginLocation, resolvedDestinationLocation,
+          createBookingOfferCommandRequest.routeSpecification.departureEarliestTime, createBookingOfferCommandRequest.routeSpecification.departureLatestTime,
+          createBookingOfferCommandRequest.routeSpecification.arrivalLatestTime, clock
       )
+    }
 
-      cargos << cargoCommandData
-    })
+    Collection<CargoCommandData> cargos = null
+    if (createBookingOfferCommandRequest.cargos != null) {
+      cargos = []
+      createBookingOfferCommandRequest.cargos.forEach({ CargoRequestData cargoRequestData ->
+        CargoCommandData cargoCommandData = new CargoCommandData(
+            commodity: Commodity.make(
+                CommodityType.valueOf(cargoRequestData.commodityType.toUpperCase()),
+                cargoRequestData.commodityWeight,
+                cargoRequestData.commodityRequestedStorageTemperature
+            ),
+            containerDimensionType: ContainerDimensionType.valueOf(cargoRequestData.containerDimensionType.toUpperCase())
+        )
+
+        cargos << cargoCommandData
+      })
+    }
 
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
         customer: customer,
         bookingOfferId: BookingOfferId.makeWithGeneratedIdentifierIfNeeded(createBookingOfferCommandRequest.bookingOfferId),
-        routeSpecification: RouteSpecification.make(
-            resolvedOriginLocation, resolvedDestinationLocation,
-            createBookingOfferCommandRequest.routeSpecification.departureEarliestTime, createBookingOfferCommandRequest.routeSpecification.departureLatestTime,
-            createBookingOfferCommandRequest.routeSpecification.arrivalLatestTime, clock
-        ),
+        routeSpecification: routeSpecification,
         cargos: cargos
     )
 
@@ -122,25 +137,35 @@ class BookingOfferCommandFactoryService {
     //
     //       If clients still decide to use direct responses from aggregate for gaining data, they should be aware of consequences and have a robust suite of regression tests in place.
 
-    Map<String, ?> originLocationMap = makeMapFromLocation(bookingOfferAggregate.routeSpecification.originLocation)
-    Map<String, ?> destinationLocationMap = makeMapFromLocation(bookingOfferAggregate.routeSpecification.destinationLocation)
+    Map<String, ?> originLocationMap = makeMapFromLocation(bookingOfferAggregate.routeSpecification?.originLocation)
+    Map<String, ?> destinationLocationMap = makeMapFromLocation(bookingOfferAggregate.routeSpecification?.destinationLocation)
+    Map<String, ?> routeSpecificationMap = null
+    if (originLocationMap && destinationLocationMap) {
+      routeSpecificationMap = [
+          originLocation: originLocationMap, destinationLocation: destinationLocationMap,
+          departureEarliestTime: bookingOfferAggregate.routeSpecification.departureEarliestTime, departureLatestTime: bookingOfferAggregate.routeSpecification.departureLatestTime,
+          arrivalLatestTime: bookingOfferAggregate.routeSpecification.arrivalLatestTime
+      ]
+    }
+
+    Map<String, ?> bookingOfferCargosMap = null
+    if (bookingOfferAggregate.bookingOfferCargos.bookingOfferCargoCollection) {
+      bookingOfferCargosMap = [
+          bookingOfferCargoCollection: bookingOfferAggregate.bookingOfferCargos.bookingOfferCargoCollection,
+          totalCommodityWeight: bookingOfferAggregate.bookingOfferCargos.totalCommodityWeight,
+          totalContainerTeuCount: bookingOfferAggregate.bookingOfferCargos.totalContainerTeuCount
+      ]
+    }
 
     CreateBookingOfferCommandResponse createBookingOfferCommandResponse = new CreateBookingOfferCommandResponse(
+        bookingOfferId: bookingOfferAggregate.bookingOfferId.identifier,
+        lastEventSequenceNumber: bookingOfferAggregate.lastEventSequenceNumber,
         customer: [
             customerId: bookingOfferAggregate.customer.customerId.identifier,
             customerType: bookingOfferAggregate.customer.customerType.name()
         ],
-        bookingOfferId: [identifier: bookingOfferAggregate.bookingOfferId.identifier],
-        routeSpecification: [
-            originLocation: originLocationMap, destinationLocation: destinationLocationMap,
-            departureEarliestTime: bookingOfferAggregate.routeSpecification.departureEarliestTime, departureLatestTime: bookingOfferAggregate.routeSpecification.departureLatestTime,
-            arrivalLatestTime: bookingOfferAggregate.routeSpecification.arrivalLatestTime
-        ],
-        bookingOfferCargos: [
-            bookingOfferCargoCollection: bookingOfferAggregate.bookingOfferCargos.bookingOfferCargoCollection,
-            totalCommodityWeight: bookingOfferAggregate.bookingOfferCargos.totalCommodityWeight,
-            totalContainerTeuCount: bookingOfferAggregate.bookingOfferCargos.totalContainerTeuCount
-        ]
+        routeSpecification: routeSpecificationMap,
+        bookingOfferCargos: bookingOfferCargosMap
     )
 
     return createBookingOfferCommandResponse
@@ -150,6 +175,10 @@ class BookingOfferCommandFactoryService {
    * Creates, or "render" a map from {@link Location} instance.
    */
   protected Map<String, ?> makeMapFromLocation(Location location) {
+    if (location == null) {
+      return [:]
+    }
+
     Map<String, ?> renderedMap = [
         name: location.name.nameInternationalized,
         countryName: location.countryName.nameInternationalized,

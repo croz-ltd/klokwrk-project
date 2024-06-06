@@ -330,6 +330,8 @@ class PageablePayloadAssertionSpecification extends Specification {
     when:
     assertion = assertion.hasPageContentWithAnyItemThat {
       hasAge(2)
+      hasFirstName("a first name 2")
+      hasLastName("a last name 2")
     }
 
     then:

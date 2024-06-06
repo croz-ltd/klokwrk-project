@@ -15,20 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in
+package org.klokwrk.cargotracking.domain.model.event
 
 import groovy.transform.CompileStatic
-import groovy.transform.MapConstructor
-import groovy.transform.PropertyOptions
-import org.klokwrk.lib.xlang.groovy.base.transform.options.RelaxedPropertyHandler
+import org.klokwrk.cargotracking.domain.model.event.data.CargoEventData
+import org.klokwrk.cargotracking.lib.domain.model.event.BaseEvent
+import org.klokwrk.lib.xlang.groovy.base.transform.KwrkImmutable
 
-@PropertyOptions(propertyHandler = RelaxedPropertyHandler)
-@MapConstructor
+import javax.measure.Quantity
+import javax.measure.quantity.Mass
+
+@KwrkImmutable(knownImmutableClasses = [Quantity])
 @CompileStatic
-class CreateBookingOfferCommandResponse {
+class CargoAddedEvent implements BaseEvent {
   String bookingOfferId
-  Integer lastEventSequenceNumber
-  Map<String, ?> customer
-  Map<String, ?> routeSpecification
-  Map<String, ?> bookingOfferCargos
+  CargoEventData cargo
+  Quantity<Mass> totalCommodityWeight
+  BigDecimal totalContainerTeuCount
+
+  String getAggregateIdentifier() {
+    return bookingOfferId
+  }
 }

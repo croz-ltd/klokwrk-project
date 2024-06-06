@@ -46,7 +46,79 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
   @Autowired
   CreateBookingOfferCommandPortIn createBookingOfferCommandPortIn
 
-  void "should work for correct request"() {
+  void "should work for correct request - partial booking offer command - customer"() {
+    given:
+    String myBookingOfferId = CombUuidShortPrefixUtils.makeCombShortPrefix()
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        userId: "standard-customer@cargotracking.com",
+        bookingOfferId: myBookingOfferId,
+    )
+    Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
+
+    when:
+    OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommandOperationResponse =
+        createBookingOfferCommandPortIn.createBookingOfferCommand(new OperationRequest<>(payload: createBookingOfferCommandRequest, metaData: requestMetadataMap))
+
+    CreateBookingOfferCommandResponse createBookingOfferCommandResponsePayload = createBookingOfferCommandOperationResponse.payload
+    Map createBookingOfferCommandResponseMetadata = createBookingOfferCommandOperationResponse.metaData
+
+    then:
+    createBookingOfferCommandResponseMetadata.isEmpty()
+    verifyAll(createBookingOfferCommandResponsePayload) {
+      bookingOfferId == myBookingOfferId
+      routeSpecification == null
+      bookingOfferCargos ==  null
+    }
+  }
+
+  void "should work for correct request - partial booking offer command - customer and routeSpecification"() {
+    given:
+    Instant currentInstant = Instant.now()
+    Instant departureEarliestTime = currentInstant + Duration.ofHours(1)
+    Instant departureLatestTime = currentInstant + Duration.ofHours(2)
+    Instant arrivalLatestTime = currentInstant + Duration.ofHours(3)
+
+    Instant expectedDepartureEarliestTime = InstantUtils.roundUpInstantToTheHour(departureEarliestTime)
+    Instant expectedDepartureLatestTime = InstantUtils.roundUpInstantToTheHour(departureLatestTime)
+    Instant expectedArrivalLatestTime = InstantUtils.roundUpInstantToTheHour(arrivalLatestTime)
+
+    String myBookingOfferId = CombUuidShortPrefixUtils.makeCombShortPrefix()
+    CreateBookingOfferCommandRequest createBookingOfferCommandRequest = new CreateBookingOfferCommandRequest(
+        userId: "standard-customer@cargotracking.com",
+        bookingOfferId: myBookingOfferId,
+        routeSpecification: new RouteSpecificationRequestData(
+            originLocation: "NLRTM", destinationLocation: "HRRJK",
+            departureEarliestTime: departureEarliestTime, departureLatestTime: departureLatestTime,
+            arrivalLatestTime: arrivalLatestTime
+        )
+    )
+    Map requestMetadataMap = WebMetaDataFixtureBuilder.webMetaData_booking_default().build()
+
+    when:
+    OperationResponse<CreateBookingOfferCommandResponse> createBookingOfferCommandOperationResponse =
+        createBookingOfferCommandPortIn.createBookingOfferCommand(new OperationRequest<>(payload: createBookingOfferCommandRequest, metaData: requestMetadataMap))
+
+    CreateBookingOfferCommandResponse createBookingOfferCommandResponsePayload = createBookingOfferCommandOperationResponse.payload
+    Map createBookingOfferCommandResponseMetadata = createBookingOfferCommandOperationResponse.metaData
+
+    then:
+    createBookingOfferCommandResponseMetadata.isEmpty()
+    verifyAll(createBookingOfferCommandResponsePayload) {
+      bookingOfferId == myBookingOfferId
+
+      verifyAll(it.routeSpecification) {
+        originLocation.name == "Rotterdam"
+        destinationLocation.name == "Rijeka"
+        it.departureEarliestTime == expectedDepartureEarliestTime
+        it.departureLatestTime == expectedDepartureLatestTime
+        it.arrivalLatestTime == expectedArrivalLatestTime
+      }
+
+      bookingOfferCargos == null
+    }
+  }
+
+  void "should work for correct request - complete booking offer command"() {
     given:
     Instant currentInstant = Instant.now()
     Instant departureEarliestTime = currentInstant + Duration.ofHours(1)
@@ -83,7 +155,7 @@ class BookingOfferCommandApplicationServiceIntegrationSpecification extends Abst
     then:
     createBookingOfferCommandResponseMetadata.isEmpty()
     verifyAll(createBookingOfferCommandResponsePayload) {
-      bookingOfferId.identifier == myBookingOfferId
+      bookingOfferId == myBookingOfferId
 
       verifyAll(it.routeSpecification) {
         originLocation.name == "Rotterdam"

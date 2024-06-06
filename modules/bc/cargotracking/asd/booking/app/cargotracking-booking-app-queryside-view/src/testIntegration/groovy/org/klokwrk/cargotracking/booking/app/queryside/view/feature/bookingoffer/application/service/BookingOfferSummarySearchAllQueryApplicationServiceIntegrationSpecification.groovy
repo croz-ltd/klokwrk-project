@@ -22,7 +22,7 @@ import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryPortIn
 import org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryRequest
 import org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummarySearchAllQueryResponse
-import org.klokwrk.cargotracking.booking.app.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
+import org.klokwrk.cargotracking.booking.app.queryside.view.test.base.AbstractQuerySide_forFindAllAndSearchAllTests_IntegrationSpecification
 import org.klokwrk.cargotracking.domain.model.value.CommodityType
 import org.klokwrk.cargotracking.domain.model.value.CustomerType
 import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationRequest
@@ -45,11 +45,10 @@ import spock.lang.Shared
 import jakarta.validation.ConstraintViolationException
 import javax.sql.DataSource
 
-@SuppressWarnings("GroovyAccessibility")
 @EnableSharedInjection
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
+class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecification extends AbstractQuerySide_forFindAllAndSearchAllTests_IntegrationSpecification {
   @TestConfiguration
   static class TestSpringBootConfiguration {
     @Bean
@@ -70,9 +69,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
   BookingOfferSummarySearchAllQueryPortIn bookingOfferSummarySearchAllQueryPortIn
 
   void setup() {
-    makeForSearch_pastBookingOfferCreatedEvents().each {
-      publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql, it)
-    }
+    setupProjection_forFindAllAndSearchAllTests(eventBus, groovySql)
   }
 
   void "should work for minimal search request with default paging and sorting of request"() {
@@ -103,6 +100,17 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       destinationLocationName == "Rotterdam"
       totalCommodityWeight == 45000.kg
       totalContainerTeuCount == 3.00G
+      lastEventSequenceNumber == 2
+    }
+
+    verifyAll(operationResponse.payload.pageContent.last()) {
+      propertiesFiltered.size() == 17
+
+      customerType == CustomerType.STANDARD
+      originLocationName == null
+      destinationLocationName == null
+      totalCommodityWeight == null
+      totalContainerTeuCount == null
       lastEventSequenceNumber == 0
     }
   }
@@ -112,7 +120,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
     OperationRequest<BookingOfferSummarySearchAllQueryRequest> operationRequest = new OperationRequest(
         payload: new BookingOfferSummarySearchAllQueryRequest(
             userId: "standard-customer@cargotracking.com",
-            pageRequirement: new PageRequirement(ordinal: 0, size: 10),
+            pageRequirement: new PageRequirement(ordinal: 0, size: 16),
             sortRequirementList: [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.DESC)]
         ),
         metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
@@ -127,7 +135,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       pageOrdinal == 0
       pageElementsCount >= 8
       first
-      requestedPageRequirement == new PageRequirement(ordinal: 0, size: 10)
+      requestedPageRequirement == new PageRequirement(ordinal: 0, size: 16)
       requestedSortRequirementList == [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.DESC)]
     }
 
@@ -139,7 +147,18 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       destinationLocationName == "Rotterdam"
       totalCommodityWeight == 45000.kg
       totalContainerTeuCount == 3.00G
-      lastEventSequenceNumber == 0
+      lastEventSequenceNumber == 2
+    }
+
+    verifyAll(operationResponse.payload.pageContent.last()) {
+      propertiesFiltered.size() == 17
+
+      customerType == CustomerType.STANDARD
+      originLocationName == "Rijeka"
+      destinationLocationName == "Rotterdam"
+      totalCommodityWeight == null
+      totalContainerTeuCount == null
+      lastEventSequenceNumber == 1
     }
   }
 
@@ -177,7 +196,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       destinationLocationName == "Los Angeles"
       totalCommodityWeight == 15000.kg
       totalContainerTeuCount == 1.00G
-      lastEventSequenceNumber == 0
+      lastEventSequenceNumber == 2
     }
   }
 
@@ -213,7 +232,7 @@ class BookingOfferSummarySearchAllQueryApplicationServiceIntegrationSpecificatio
       destinationLocationName == "New York"
       totalCommodityWeight == 30000.kg
       totalContainerTeuCount == 2.00G
-      lastEventSequenceNumber == 0
+      lastEventSequenceNumber == 2
     }
   }
 

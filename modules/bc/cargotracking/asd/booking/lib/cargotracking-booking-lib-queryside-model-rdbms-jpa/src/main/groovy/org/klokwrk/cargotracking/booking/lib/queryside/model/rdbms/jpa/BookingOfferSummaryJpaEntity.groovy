@@ -42,6 +42,8 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.Table
 import java.time.Instant
 
+import static org.hamcrest.Matchers.blankOrNullString
+import static org.hamcrest.Matchers.blankString
 import static org.hamcrest.Matchers.empty
 import static org.hamcrest.Matchers.emptyOrNullString
 import static org.hamcrest.Matchers.everyItem
@@ -79,30 +81,30 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
   @Column(nullable = false, updatable = false) String customerId
   @Column(nullable = false) @Enumerated(EnumType.STRING) CustomerType customerType
 
-  @Column(nullable = false) String originLocationUnLoCode
-  @Column(nullable = false) String originLocationName
-  @Column(nullable = false) String originLocationCountryName
+  @Column String originLocationUnLoCode
+  @Column String originLocationName
+  @Column String originLocationCountryName
 
-  @Column(nullable = false) String destinationLocationUnLoCode
-  @Column(nullable = false) String destinationLocationName
-  @Column(nullable = false) String destinationLocationCountryName
+  @Column String destinationLocationUnLoCode
+  @Column String destinationLocationName
+  @Column String destinationLocationCountryName
 
-  @Column(nullable = false, columnDefinition = "timestamptz") Instant departureEarliestTime
-  @Column(nullable = false, columnDefinition = "timestamptz") Instant departureLatestTime
-  @Column(nullable = false, columnDefinition = "timestamptz") Instant arrivalLatestTime
+  @Column(columnDefinition = "timestamptz") Instant departureEarliestTime
+  @Column(columnDefinition = "timestamptz") Instant departureLatestTime
+  @Column(columnDefinition = "timestamptz") Instant arrivalLatestTime
 
   @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name = "booking_offer_summary_commodity_type", joinColumns = @JoinColumn(name = "booking_offer_id"))
   @Enumerated(EnumType.STRING)
-  @Column(nullable = false, name = "commodity_type")
+  @Column(name = "commodity_type")
   Set<CommodityType> commodityTypes
 
-  @Column(nullable = false) String totalCommodityWeight
+  @Column String totalCommodityWeight
 
   // totalCommodityWeightKg should be used only for easier and more flexible searching. Should not be used in returned results.
-  @Column(nullable = false) Long totalCommodityWeightKg
+  @Column Long totalCommodityWeightKg
 
-  @Column(nullable = false, precision = 9, scale = 2) BigDecimal totalContainerTeuCount
+  @Column(precision = 9, scale = 2) BigDecimal totalContainerTeuCount
 
   @Column(nullable = false) String inboundChannelName
   @Column(nullable = false) String inboundChannelType
@@ -120,30 +122,24 @@ class BookingOfferSummaryJpaEntity implements PostMapConstructorCheckable {
     requireMatch(customerId, not(emptyOrNullString()))
     requireMatch(customerType, notNullValue())
 
-    requireMatch(originLocationUnLoCode, not(emptyOrNullString()))
-    requireMatch(originLocationName, not(emptyOrNullString()))
-    requireMatch(originLocationCountryName, not(emptyOrNullString()))
+    requireMatchWhenNotNull(originLocationUnLoCode, not(blankString()))
+    requireMatchWhenNotNull(originLocationName, not(blankString()))
+    requireMatchWhenNotNull(originLocationCountryName, not(blankString()))
 
-    requireMatch(destinationLocationUnLoCode, not(emptyOrNullString()))
-    requireMatch(destinationLocationName, not(emptyOrNullString()))
-    requireMatch(destinationLocationCountryName, not(emptyOrNullString()))
+    requireMatchWhenNotNull(destinationLocationUnLoCode, not(blankString()))
+    requireMatchWhenNotNull(destinationLocationName, not(blankString()))
+    requireMatchWhenNotNull(destinationLocationCountryName, not(blankString()))
 
-    requireMatch(departureEarliestTime, notNullValue())
-    requireMatch(departureLatestTime, notNullValue())
-    requireMatch(arrivalLatestTime, notNullValue())
+    requireMatchWhenNotNull(commodityTypes, not(empty()))
+    requireMatchWhenNotNull(commodityTypes, everyItem(not(blankOrNullString())))
 
-    requireMatch(commodityTypes, not(empty()))
-    requireMatch(commodityTypes, everyItem(not(emptyOrNullString())))
+    requireMatchWhenNotNull(totalCommodityWeightKg, greaterThanOrEqualTo(1L))
 
-    requireMatch(totalCommodityWeightKg, notNullValue())
-    requireMatch(totalCommodityWeightKg, greaterThanOrEqualTo(1L))
+    requireMatchWhenNotNull(totalContainerTeuCount, greaterThanOrEqualTo(1.0G))
+    requireMatchWhenNotNull(totalContainerTeuCount?.scale(), lessThanOrEqualTo(2))
 
-    requireMatch(totalContainerTeuCount, notNullValue())
-    requireMatch(totalContainerTeuCount, greaterThanOrEqualTo(1.0G))
-    requireMatch(totalContainerTeuCount.scale(), lessThanOrEqualTo(2))
-
-    requireMatch(inboundChannelName, not(emptyOrNullString()))
-    requireMatch(inboundChannelType, not(emptyOrNullString()))
+    requireMatch(inboundChannelName, not(blankOrNullString()))
+    requireMatch(inboundChannelType, not(blankOrNullString()))
 
     requireMatch(firstEventRecordedAt, notNullValue())
     requireMatch(lastEventRecordedAt, notNullValue())
