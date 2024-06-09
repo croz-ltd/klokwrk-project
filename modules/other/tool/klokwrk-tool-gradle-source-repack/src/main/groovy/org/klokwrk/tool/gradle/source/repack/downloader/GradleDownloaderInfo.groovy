@@ -24,7 +24,7 @@ import groovy.transform.ToString
 /**
  * Encapsulates data needed for downloading Gradle distribution or helper files.
  */
-@ToString(includeNames = true) // TODO dmurat: Move annotation attribute into @Immutable when and if https://github.com/micronaut-projects/micronaut-core/issues/7220 gets fixed.
+@ToString(includeNames = true) // Workaround for a bug with @Immutable annotation: https://github.com/micronaut-projects/micronaut-core/issues/7220
 @Immutable
 @CompileStatic
 class GradleDownloaderInfo {
