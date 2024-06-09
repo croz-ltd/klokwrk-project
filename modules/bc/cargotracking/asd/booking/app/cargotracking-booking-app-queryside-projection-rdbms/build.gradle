@@ -29,6 +29,7 @@ dependencies {
   implementation project(":cargotracking-booking-lib-queryside-model-rdbms-jpa")
   implementation project(":cargotracking-domain-model-event")
   implementation project(":cargotracking-domain-model-value")
+  implementation project(":cargotracking-lib-axon-errorhandling")
   implementation project(":cargotracking-lib-axon-logging")
   implementation project(":cargotracking-lib-boundary-api")
   implementation project(":cargotracking-lib-domain-model-event")

@@ -24,7 +24,7 @@ import groovy.transform.ToString
 /**
  * Encapsulates data needed for reporting result of SHA-256 check on Gradle distribution ZIP file.
  */
-@ToString(includeNames = true) // TODO dmurat: Move annotation attribute into @Immutable when and if https://github.com/micronaut-projects/micronaut-core/issues/7220 gets fixed.
+@ToString(includeNames = true) // Workaround for a bug with @Immutable annotation: https://github.com/micronaut-projects/micronaut-core/issues/7220
 @Immutable
 @CompileStatic
 class GradleSha256CheckInfo {

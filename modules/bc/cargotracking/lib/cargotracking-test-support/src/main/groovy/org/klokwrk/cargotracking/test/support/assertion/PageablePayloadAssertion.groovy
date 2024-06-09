@@ -93,7 +93,7 @@ abstract class PageablePayloadAssertion<SELF extends PageablePayloadAssertion<SE
 
       (pageContent as List<Map>).with {
         it.each {
-          getPageItemAssertionInstance(it).isSuccessful()
+          getPageItemAssertionInstance(it).isSuccessful(it.size())
         }
       }
     }
@@ -230,6 +230,21 @@ abstract class PageablePayloadAssertion<SELF extends PageablePayloadAssertion<SE
       ) Closure aClosure)
   {
     hasPageContentWithItemAtIndexThat(0, aClosure)
+    return this as SELF
+  }
+
+  SELF hasPageContentWithLastItemThat(
+      @DelegatesTo(type = "PAGE_ITEM_ASSERTION", strategy = Closure.DELEGATE_FIRST)
+      @ClosureParams(
+          value = FromString,
+          options = "PAGE_ITEM_ASSERTION"
+      ) Closure aClosure)
+  {
+    Object pageContentListAsObject = payloadMap.pageContent
+    assert pageContentListAsObject instanceof List
+    List<Map> pageContentList = pageContentListAsObject as List<Map>
+
+    hasPageContentWithItemAtIndexThat(pageContentList.size() - 1, aClosure)
     return this as SELF
   }
 

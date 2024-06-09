@@ -52,4 +52,28 @@ class ContractsMatchBase {
       throw new AssertionError(assertionErrorMessage as Object)
     }
   }
+
+  /**
+   * DBC precondition check for non-null values based on Hamcrest matcher.
+   * <p/>
+   * When {@code null}, item is ignored.
+   * <p/>
+   * When mismatch occurs, {@link AssertionError} is thrown.
+   *
+   * @param item Object that is checked.
+   * @param matcher Hamcrest matcher expressing precondition.
+   * @param itemDescription Optional description of the item.
+   * @param matcherDescription Optional description of the Hamcrest matcher.
+   */
+  static <T> void requireMatchWhenNotNullBase(T item, Matcher<?> matcher, String itemDescription = null, String matcherDescription = null) {
+    requireTrue(matcher != null)
+
+    if (item != null && !matcher.matches(item)) {
+      String myItemDescription = itemDescription?.trim() ?: item
+      String myMatcherDescription = matcherDescription?.trim() ?: new StringDescription().appendDescriptionOf(matcher).toString()
+      String assertionErrorMessage = "${ REQUIRE_MATCH_MESSAGE_DEFAULT } - [item: $myItemDescription, expected: $myMatcherDescription, actual: ${ item }]"
+
+      throw new AssertionError(assertionErrorMessage as Object)
+    }
+  }
 }

@@ -20,17 +20,11 @@ package org.klokwrk.cargotracking.domain.model.event
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
-import org.klokwrk.cargotracking.domain.model.event.data.CargoEventData
-import org.klokwrk.cargotracking.domain.model.event.data.CargoEventDataFixtureBuilder
 import org.klokwrk.cargotracking.domain.model.event.data.CustomerEventData
 import org.klokwrk.cargotracking.domain.model.event.data.CustomerEventDataFixtureBuilder
-import org.klokwrk.cargotracking.domain.model.event.data.RouteSpecificationEventData
-import org.klokwrk.cargotracking.domain.model.event.data.RouteSpecificationEventDataFixtureBuilder
+import org.klokwrk.cargotracking.lib.domain.model.event.BaseEvent
 import org.klokwrk.lib.xlang.groovy.base.misc.CombUuidShortPrefixUtils
-import tech.units.indriya.unit.Units
 
-import javax.measure.Quantity
-import javax.measure.quantity.Mass
 import java.time.Clock
 
 @Builder(builderStrategy = SimpleStrategy, prefix = "")
@@ -41,44 +35,29 @@ class BookingOfferCreatedEventFixtureBuilder {
    * {@code CreateBookingOfferCommandFixtureBuilder.createBookingOfferCommand_default()}.
    */
   static BookingOfferCreatedEventFixtureBuilder bookingOfferCreatedEvent_default(Clock currentTimeClock = Clock.systemUTC()) {
-    CargoEventData cargo = CargoEventDataFixtureBuilder.cargo_dry().build()
-
     BookingOfferCreatedEventFixtureBuilder builder = new BookingOfferCreatedEventFixtureBuilder()
-        .customer(CustomerEventDataFixtureBuilder.customer_standard().build())
         .bookingOfferId(CombUuidShortPrefixUtils.makeCombShortPrefix(currentTimeClock).toString())
-        .routeSpecification(RouteSpecificationEventDataFixtureBuilder.routeSpecification_rijekaToRotterdam(currentTimeClock).build())
-        .cargos([cargo])
+        .customer(CustomerEventDataFixtureBuilder.customer_standard().build())
 
     return builder
   }
 
-  CustomerEventData customer
+  @SuppressWarnings("CodeNarc.UnnecessaryCast")
+  static List<BaseEvent> bookingOfferCreation_complete_defaultEventsSequence(Clock currentTimeClock = Clock.systemUTC()) {
+    BookingOfferCreatedEvent bookingOfferCreatedEvent = bookingOfferCreatedEvent_default(currentTimeClock).build()
+    String bookingOfferId = bookingOfferCreatedEvent.bookingOfferId
+
+    RouteSpecificationAddedEvent routeSpecificationAddedEvent = RouteSpecificationAddedEventFixtureBuilder.routeSpecificationAddedEvent_default().bookingOfferId(bookingOfferId).build()
+    CargoAddedEvent cargoAddedEvent = CargoAddedEventFixtureBuilder.cargoAddedEvent_default().bookingOfferId(bookingOfferId).build()
+
+    return [bookingOfferCreatedEvent, routeSpecificationAddedEvent, cargoAddedEvent] as List<BaseEvent>
+  }
+
   String bookingOfferId
-  RouteSpecificationEventData routeSpecification
-  Collection<CargoEventData> cargos = []
+  CustomerEventData customer
 
   BookingOfferCreatedEvent build() {
-    Quantity<Mass> totalCommodityWeightQuantity = 0.kg
-    cargos.each({ CargoEventData cargoEventData ->
-      Quantity<Mass> commodityWeightQuantity = cargoEventData.commodityWeight
-      totalCommodityWeightQuantity = totalCommodityWeightQuantity + commodityWeightQuantity
-    })
-    Quantity<Mass> totalCommodityWeight = totalCommodityWeightQuantity.to(Units.KILOGRAM)
-
-    BigDecimal totalContainerTeuCount = 0
-    cargos.each({ CargoEventData cargoEventData ->
-      totalContainerTeuCount += cargoEventData.containerTeuCount
-    })
-
-    BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(
-        customer: customer,
-        bookingOfferId: bookingOfferId,
-        routeSpecification: routeSpecification,
-        cargos: cargos,
-        totalCommodityWeight: totalCommodityWeight,
-        totalContainerTeuCount: totalContainerTeuCount
-    )
-
+    BookingOfferCreatedEvent bookingOfferCreatedEvent = new BookingOfferCreatedEvent(bookingOfferId: bookingOfferId, customer: customer)
     return bookingOfferCreatedEvent
   }
 }

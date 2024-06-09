@@ -40,10 +40,13 @@ import java.time.Instant
 
 import static org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.assertion.BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion.assertResponseHasPayloadThat
 import static org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummaryFindByIdQueryRequestJsonFixtureBuilder.bookingOfferSummaryFindByIdQueryRequest_standardCustomer
-import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestHelpers.BOOKING_OFFER_SUMMARY_FIND_BY_ID_URL_PATH
-import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindById_failed
-import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindById_failedNotFound
-import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindById_succeeded
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestProjectionHelpers.waitProjectionBookingOfferSummary_forCompleteBookingOfferCreation
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestProjectionHelpers.waitProjectionBookingOfferSummary_forPartialBookingOfferCreation_withCustomer
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestProjectionHelpers.waitProjectionBookingOfferSummary_forPartialBookingOfferCreation_withCustomerAndRouteSpecification
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestRequestHelpers.BOOKING_OFFER_SUMMARY_FIND_BY_ID_URL_PATH
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestRequestHelpers.bookingOfferSummaryFindById_failed
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestRequestHelpers.bookingOfferSummaryFindById_failedNotFound
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestRequestHelpers.bookingOfferSummaryFindById_succeeded
 import static org.klokwrk.cargotracking.test.support.assertion.MetaDataAssertion.assertResponseHasMetaDataThat
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
@@ -77,11 +80,81 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
     mockMvc ?= webAppContextSetup(webApplicationContext).defaultResponseCharacterEncoding(Charset.forName("UTF-8")).build()
   }
 
-  @SuppressWarnings("CodeNarc.AbcMetric")
-  void "should work for correct request"() {
+  void "should work for correct request - partial booking offer exists - customer"() {
     given:
-    Instant startedAt = Instant.now()
-    String myBookingOfferId = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
+    Instant startedAt = Instant.now() - Duration.ofMillis(1)
+    String myBookingOfferId = waitProjectionBookingOfferSummary_forPartialBookingOfferCreation_withCustomer(eventBus, groovySql)
+
+    when:
+    Map responseMap = bookingOfferSummaryFindById_succeeded(
+        bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
+            .bookingOfferId(myBookingOfferId)
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
+    )
+
+    then:
+    assertResponseHasMetaDataThat(responseMap) {
+      isSuccessful()
+      has_general_locale(localeStringParam)
+    }
+
+    assertResponseHasPayloadThat(responseMap) {
+      isSuccessful_partialBookingOffer_customer()
+      hasBookingOfferId(myBookingOfferId)
+      hasCustomerTypeOfStandard()
+      hasEventMetadataOfTheFirstEventWithCorrectTiming(startedAt)
+    }
+
+    where:
+    acceptLanguageParam | localeStringParam
+    "hr-HR"             | "hr_HR"
+    "en"                | "en"
+  }
+
+  void "should work for correct request - partial booking offer exists - customer and routeSpecification"() {
+    given:
+    Instant startedAt = Instant.now() - Duration.ofMillis(1)
+    String myBookingOfferId = waitProjectionBookingOfferSummary_forPartialBookingOfferCreation_withCustomerAndRouteSpecification(eventBus, groovySql)
+
+    when:
+    Map responseMap = bookingOfferSummaryFindById_succeeded(
+        bookingOfferSummaryFindByIdQueryRequest_standardCustomer()
+            .bookingOfferId(myBookingOfferId)
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
+    )
+
+    then:
+    assertResponseHasMetaDataThat(responseMap) {
+      isSuccessful()
+      has_general_locale(localeStringParam)
+    }
+
+    assertResponseHasPayloadThat(responseMap) {
+      isSuccessful_partialBookingOffer_customerAndRouteSpecification()
+      hasBookingOfferId(myBookingOfferId)
+      hasCustomerTypeOfStandard()
+      hasOriginLocationOfRijeka()
+      hasDestinationLocationOfRotterdam()
+      hasDepartureEarliestTimeGreaterThan(startedAt + Duration.ofHours(1))
+      hasDepartureLatestTimeGreaterThan(startedAt + Duration.ofHours(2))
+      hasArrivalLatestTimeGreaterThan(startedAt + Duration.ofHours(3))
+      hasEventMetadataOfTheMultipleEventsWithCorrectTiming(startedAt)
+    }
+
+    where:
+    acceptLanguageParam | localeStringParam
+    "hr-HR"             | "hr_HR"
+    "en"                | "en"
+  }
+
+  void "should work for correct request - complete booking offer exists"() {
+    given:
+    Instant startedAt = Instant.now() - Duration.ofMillis(1)
+    String myBookingOfferId = waitProjectionBookingOfferSummary_forCompleteBookingOfferCreation(eventBus, groovySql)
 
     when:
     Map responseMap = bookingOfferSummaryFindById_succeeded(
@@ -108,7 +181,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
       hasDepartureEarliestTimeGreaterThan(startedAt + Duration.ofHours(1))
       hasDepartureLatestTimeGreaterThan(startedAt + Duration.ofHours(2))
       hasArrivalLatestTimeGreaterThan(startedAt + Duration.ofHours(3))
-      hasEventMetadataOfTheFirstEventWithCorrectTiming(startedAt)
+      hasEventMetadataOfTheMultipleEventsWithCorrectTiming(startedAt)
     }
 
     where:
@@ -159,7 +232,7 @@ class BookingOfferSummaryFindByIdQueryWebControllerIntegrationSpecification exte
 
   void "should return expected response when specified user can not be found - stateful validation failure"() {
     given:
-    String myBookingOfferId = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
+    String myBookingOfferId = waitProjectionBookingOfferSummary_forCompleteBookingOfferCreation(eventBus, groovySql)
 
     when:
     Map responseMap = bookingOfferSummaryFindById_failed(

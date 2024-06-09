@@ -28,5 +28,5 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 interface PageItemAssertionable {
-  <A> A isSuccessful()
+  <A> A isSuccessful(Integer payloadSize)
 }

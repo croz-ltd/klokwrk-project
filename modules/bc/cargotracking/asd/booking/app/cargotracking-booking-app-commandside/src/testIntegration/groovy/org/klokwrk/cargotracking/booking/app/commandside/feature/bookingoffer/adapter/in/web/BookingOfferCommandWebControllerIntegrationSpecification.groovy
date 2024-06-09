@@ -38,6 +38,7 @@ import java.time.Duration
 import java.time.Instant
 
 import static org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.assertion.CreateBookingOfferCommandResponseWebContentPayloadAssertion.assertResponseHasPayloadThat
+import static org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_base
 import static org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_cargoDry
 import static org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam
 import static org.klokwrk.cargotracking.booking.app.commandside.feature.bookingoffer.application.port.in.fixture.CreateBookingOfferCommandRequestJsonFixtureBuilder.createBookingOfferCommandRequest_rijekaToRotterdam_cargoDry
@@ -68,7 +69,80 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
     mockMvc ?= webAppContextSetup(webApplicationContext).defaultResponseCharacterEncoding(Charset.forName("UTF-8")).build()
   }
 
-  void "should work for correct request"() {
+  void "should work for correct request - partial booking offer command - customer"() {
+    given:
+    String myBookingOfferId = CombUuidShortPrefixUtils.makeCombShortPrefix()
+
+    when:
+    Map responseMap = createBookingOffer_succeeded(
+        createBookingOfferCommandRequest_base()
+            .bookingOfferId(myBookingOfferId)
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
+    )
+
+    then:
+    assertResponseHasMetaDataThat(responseMap) {
+      isSuccessful()
+      has_general_locale(localeStringParam)
+    }
+
+    verifyAll(responseMap) {
+      size() == 2
+
+      verifyAll(it.payload as Map) {
+        size() == 3
+        bookingOfferId == myBookingOfferId
+        lastEventSequenceNumber == 0
+        customer
+      }
+    }
+
+    where:
+    acceptLanguageParam | localeStringParam
+    "hr-HR"             | "hr_HR"
+    "en"                | "en"
+  }
+
+  void "should work for correct request - partial booking offer command - customer and routeSpecification"() {
+    given:
+    String myBookingOfferId = CombUuidShortPrefixUtils.makeCombShortPrefix()
+
+    when:
+    Map responseMap = createBookingOffer_succeeded(
+        createBookingOfferCommandRequest_rijekaToRotterdam()
+            .bookingOfferId(myBookingOfferId)
+            .buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
+    )
+
+    then:
+    assertResponseHasMetaDataThat(responseMap) {
+      isSuccessful()
+      has_general_locale(localeStringParam)
+    }
+
+    verifyAll(responseMap) {
+      size() == 2
+
+      verifyAll(it.payload as Map) {
+        size() == 4
+        bookingOfferId == myBookingOfferId
+        lastEventSequenceNumber == 1
+        customer
+        routeSpecification
+      }
+    }
+
+    where:
+    acceptLanguageParam | localeStringParam
+    "hr-HR"             | "hr_HR"
+    "en"                | "en"
+  }
+
+  void "should work for correct request - complete booking offer command"() {
     given:
     Instant currentTime = Instant.now()
     Instant departureEarliestTime = currentTime + Duration.ofHours(1)
@@ -97,16 +171,12 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
       size() == 2
 
       verifyAll(it.payload as Map) {
-        size() == 4
+        size() == 5
+        bookingOfferId == myBookingOfferId
+        lastEventSequenceNumber == 2
         customer
-        bookingOfferId
         routeSpecification
         bookingOfferCargos
-
-        verifyAll(it.bookingOfferId as Map) {
-          size() == 1
-          identifier == myBookingOfferId
-        }
 
         verifyAll(it.customer as Map) {
           size() == 2
@@ -283,16 +353,12 @@ class BookingOfferCommandWebControllerIntegrationSpecification extends AbstractC
       size() == 2
 
       verifyAll(it.payload as Map) {
-        size() == 4
-        bookingOfferId
+        size() == 5
+        bookingOfferId == myBookingOfferId
+        lastEventSequenceNumber == 2
         customer
         routeSpecification
         bookingOfferCargos
-
-        verifyAll(it.bookingOfferId as Map) {
-          size() == 1
-          identifier == myBookingOfferId
-        }
 
         verifyAll(it.customer as Map) {
           size() == 2

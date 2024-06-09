@@ -1,0 +1,91 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2020-2024 CROZ d.o.o, the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.klokwrk.cargotracking.booking.app.queryside.view.test.base
+
+import com.github.dockerjava.api.command.CreateNetworkCmd
+import groovy.sql.Sql
+import groovy.transform.CompileStatic
+import groovy.util.logging.Slf4j
+import org.axonframework.eventhandling.EventBus
+import org.klokwrk.cargotracking.booking.test.support.testcontainers.AxonServerTestcontainersFactory
+import org.klokwrk.cargotracking.booking.test.support.testcontainers.PostgreSqlTestcontainersFactory
+import org.klokwrk.cargotracking.booking.test.support.testcontainers.QuerySideProjectionRdbmsAppTestcontainersFactory
+import org.klokwrk.cargotracking.booking.test.support.testcontainers.RdbmsManagementAppTestcontainersFactory
+import org.springframework.test.context.DynamicPropertyRegistry
+import org.springframework.test.context.DynamicPropertySource
+import org.testcontainers.containers.GenericContainer
+import org.testcontainers.containers.Network
+import org.testcontainers.containers.PostgreSQLContainer
+import spock.lang.Specification
+
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestProjectionHelpers.makePastEvents_forSearch_completeBookingOfferCreation
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestProjectionHelpers.waitProjectionBookingOfferSummary_forCompleteBookingOfferCreation
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestProjectionHelpers.waitProjectionBookingOfferSummary_forPartialBookingOfferCreation_withCustomer
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestProjectionHelpers.waitProjectionBookingOfferSummary_forPartialBookingOfferCreation_withCustomerAndRouteSpecification
+
+@Slf4j("logger")
+@CompileStatic
+class AbstractQuerySide_forFindAllAndSearchAllTests_IntegrationSpecification extends Specification {
+  static GenericContainer axonServer
+  static PostgreSQLContainer postgresqlServer
+  static Network klokwrkNetwork
+
+  static {
+    klokwrkNetwork = Network.builder().createNetworkCmdModifier({ CreateNetworkCmd createNetworkCmd -> createNetworkCmd.withName("klokwrk-network-${ UUID.randomUUID() }") }).build()
+
+    postgresqlServer = PostgreSqlTestcontainersFactory.makeAndStartPostgreSqlServer(klokwrkNetwork)
+    RdbmsManagementAppTestcontainersFactory.makeAndStartRdbmsManagementApp(klokwrkNetwork, postgresqlServer)
+
+    axonServer = AxonServerTestcontainersFactory.makeAndStartAxonServer(klokwrkNetwork)
+    QuerySideProjectionRdbmsAppTestcontainersFactory.makeAndStartQuerySideProjectionRdbmsApp(klokwrkNetwork, axonServer, postgresqlServer)
+  }
+
+  @DynamicPropertySource
+  static void configureDynamicTestcontainersProperties(DynamicPropertyRegistry registry) {
+    String axonContainerHost = axonServer.host
+    Integer axonContainerGrpcPort = axonServer.getMappedPort(8124)
+    registry.add("CARGOTRACKING_AXON_SERVER_HOSTNAME", { axonContainerHost })
+    registry.add("CARGOTRACKING_AXON_SERVER_PORT_GRPC", { "${ axonContainerGrpcPort }" })
+
+    String postgresqlServerHost = postgresqlServer.host
+    Integer postgresqlServerPort = postgresqlServer.getMappedPort(5432)
+    registry.add("CARGOTRACKING_POSTGRES_HOSTNAME", { "${ postgresqlServerHost }" })
+    registry.add("CARGOTRACKING_POSTGRES_PORT", { "${ postgresqlServerPort }" })
+  }
+
+  private static boolean isFirstCallTo_setupProjection_forFindAllAndSearchAllTests = true
+
+  static void setupProjection_forFindAllAndSearchAllTests(EventBus eventBus, Sql groovySql) {
+    synchronized (AbstractQuerySide_forFindAllAndSearchAllTests_IntegrationSpecification) {
+      if (isFirstCallTo_setupProjection_forFindAllAndSearchAllTests) {
+        logger.info("Setting up projections for findAll and searchAll tests")
+        5.times { waitProjectionBookingOfferSummary_forPartialBookingOfferCreation_withCustomer(eventBus, groovySql) }
+        5.times { waitProjectionBookingOfferSummary_forPartialBookingOfferCreation_withCustomerAndRouteSpecification(eventBus, groovySql) }
+        5.times { waitProjectionBookingOfferSummary_forCompleteBookingOfferCreation(eventBus, groovySql) }
+        makePastEvents_forSearch_completeBookingOfferCreation().each {
+          waitProjectionBookingOfferSummary_forCompleteBookingOfferCreation(eventBus, groovySql, it)
+        }
+
+        isFirstCallTo_setupProjection_forFindAllAndSearchAllTests = false
+      }
+      else {
+        logger.info("Projections for findAll and searchAll tests are already set up")
+      }
+    }
+  }
+}

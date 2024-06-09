@@ -29,7 +29,7 @@ class TestPersonAssertion implements PageItemAssertionable {
   }
 
   @Override
-  TestPersonAssertion isSuccessful() {
+  TestPersonAssertion isSuccessful(Integer payloadSize) {
     pageElementMap.with {
       assert size() == 3
       assert firstName

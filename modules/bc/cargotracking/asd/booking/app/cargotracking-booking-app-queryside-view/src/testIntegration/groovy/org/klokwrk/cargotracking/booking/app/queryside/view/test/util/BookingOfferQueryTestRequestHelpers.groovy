@@ -30,7 +30,7 @@ import static org.springframework.http.HttpStatus.OK
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 
 @CompileStatic
-class BookingOfferQueryTestHelpers {
+class BookingOfferQueryTestRequestHelpers {
   static final String BOOKING_OFFER_SUMMARY_FIND_BY_ID_URL_PATH = "/booking-offer/booking-offer-summary-find-by-id"
   static final String BOOKING_OFFER_SUMMARY_FIND_ALL_URL_PATH = "/booking-offer/booking-offer-summary-find-all"
   static final String BOOKING_OFFER_SUMMARY_SEARCH_ALL_URL_PATH = "/booking-offer/booking-offer-summary-search-all"

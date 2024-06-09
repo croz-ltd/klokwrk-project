@@ -36,6 +36,14 @@ class BookingOfferSummarySqlHelper {
     return groovyRowResult.recordsCount as Integer
   }
 
+  static Long selectFromBookingOfferSummary_lastEventSequenceNumber(Sql groovySql, UUID bookingOfferId) {
+    GroovyRowResult groovyRowResult = groovySql.firstRow(
+        [bookingOfferId: bookingOfferId],
+        "SELECT last_event_sequence_number as lastEventSequenceNumber from booking_offer_summary where booking_offer_id = :bookingOfferId"
+    )
+    return groovyRowResult?.lastEventSequenceNumber as Long
+  }
+
   static Map<String, ?> selectBookingOfferSummaryRecord(Sql groovySql, UUID bookingOfferId) {
     // because of join, for each value of contained collection we will have duplicate records of parent columns. So we have to filter the result set.
     List<GroovyRowResult> groovyRowResultList =

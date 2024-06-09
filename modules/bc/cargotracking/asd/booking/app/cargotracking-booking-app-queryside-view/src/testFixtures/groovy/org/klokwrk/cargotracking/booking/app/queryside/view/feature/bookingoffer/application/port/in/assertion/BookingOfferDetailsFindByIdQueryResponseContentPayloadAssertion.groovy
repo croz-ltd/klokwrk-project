@@ -71,8 +71,88 @@ class BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion {
     return this
   }
 
+  BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion isSuccessful_partialBookingOffer_customer() {
+    payloadMap.with {
+      assert size() == 5
+
+      assert bookingOfferId
+      assert lastEventSequenceNumber != null
+
+      assert customer instanceof Map
+      (customer as Map).with {
+        assert customerId
+        assert customerType
+      }
+
+      assert firstEventRecordedAt
+      assert lastEventRecordedAt
+    }
+
+    return this
+  }
+
+  BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion isSuccessful_partialBookingOffer_customerAndRouteSpecification() {
+    payloadMap.with {
+      assert size() == 6
+
+      assert bookingOfferId
+      assert lastEventSequenceNumber != null
+
+      assert customer instanceof Map
+      (customer as Map).with {
+        assert customerId
+        assert customerType
+      }
+
+      assert routeSpecification instanceof Map
+      (routeSpecification as Map).with {
+        assert creationTime
+        assert departureEarliestTime
+        assert departureLatestTime
+        assert arrivalLatestTime
+
+        assert originLocation instanceof Map
+        (originLocation as Map).with {
+          assert name
+          assert unLoCode
+          assert countryName
+
+          assert portCapabilities instanceof List
+          (portCapabilities as List).with {
+            assert size() >= 1
+            assert every { it instanceof String }
+          }
+
+          assert unLoCodeFunction
+          assert unLoCodeCoordinates
+        }
+
+        assert destinationLocation instanceof Map
+        (destinationLocation as Map).with {
+          assert name
+          assert unLoCode
+          assert countryName
+
+          assert portCapabilities instanceof List
+          (portCapabilities as List).with {
+            assert size() >= 1
+            assert every { it instanceof String }
+          }
+
+          assert unLoCodeFunction
+          assert unLoCodeCoordinates
+        }
+      }
+
+      assert firstEventRecordedAt
+      assert lastEventRecordedAt
+    }
+
+    return this
+  }
+
   @SuppressWarnings("CodeNarc.AbcMetric")
-  BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion isSuccessful() {
+  BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion isSuccessful_completeBookingOffer() {
     payloadMap.with {
       assert size() == 9
 
@@ -223,6 +303,16 @@ class BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion {
       assert Instant.parse(firstEventRecordedAt as String) > comparableOperationStartTime
       assert firstEventRecordedAt == lastEventRecordedAt
       assert lastEventSequenceNumber == 0
+    }
+
+    return this
+  }
+
+  BookingOfferDetailsFindByIdQueryResponseContentPayloadAssertion hasEventMetadataOfMultipleEventsWithCorrectTiming(Instant comparableOperationStartTime) {
+    payloadMap.with {
+      assert Instant.parse(firstEventRecordedAt as String) > comparableOperationStartTime
+      assert Instant.parse(firstEventRecordedAt as String) <= Instant.parse(lastEventRecordedAt as String)
+      assert lastEventSequenceNumber as Long >= 0L
     }
 
     return this

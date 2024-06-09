@@ -46,6 +46,10 @@ import javax.sql.DataSource
 import java.time.Duration
 import java.time.Instant
 
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestProjectionHelpers.waitProjectionBookingOfferSummary_forCompleteBookingOfferCreation
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestProjectionHelpers.waitProjectionBookingOfferSummary_forPartialBookingOfferCreation_withCustomer
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestProjectionHelpers.waitProjectionBookingOfferSummary_forPartialBookingOfferCreation_withCustomerAndRouteSpecification
+
 @SpringBootTest
 @ActiveProfiles("testIntegration")
 class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
@@ -66,10 +70,10 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
   @Autowired
   BookingOfferSummaryFindByIdQueryPortIn bookingOfferSummaryFindByIdQueryPortIn
 
-  void "should work for correct request"() {
+  void "should work for correct request - partial booking offer exists - customer"() {
     given:
-    Instant startedAt = Instant.now()
-    String myBookingOfferId = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
+    Instant startedAt = Instant.now() - Duration.ofMillis(1)
+    String myBookingOfferId = waitProjectionBookingOfferSummary_forPartialBookingOfferCreation_withCustomer(eventBus, groovySql)
 
     // Note: "standard-customer@cargotracking.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
@@ -88,6 +92,115 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
       propertiesFiltered.size() == 17
 
       bookingOfferId == myBookingOfferId
+      lastEventSequenceNumber == 0
+
+      customerType == CustomerType.STANDARD
+
+      originLocationUnLoCode == null
+      originLocationName == null
+      originLocationCountryName == null
+
+      destinationLocationUnLoCode == null
+      destinationLocationName == null
+      destinationLocationCountryName == null
+
+      departureEarliestTime == null
+      departureLatestTime == null
+      arrivalLatestTime == null
+
+      commodityTypes.isEmpty()
+      totalCommodityWeight == null
+      totalContainerTeuCount == null
+
+      firstEventRecordedAt >= startedAt
+      lastEventRecordedAt >= startedAt
+    }
+
+    verifyAll(operationResponse.metaData) {
+      general.timestamp
+      general.severity == Severity.INFO.name().toLowerCase()
+      general.locale == null
+      violation == null
+    }
+  }
+
+  void "should work for correct request - partial booking offer exists - customer and route specification"() {
+    given:
+    Instant startedAt = Instant.now() - Duration.ofMillis(1)
+    String myBookingOfferId = waitProjectionBookingOfferSummary_forPartialBookingOfferCreation_withCustomerAndRouteSpecification(eventBus, groovySql)
+
+    // Note: "standard-customer@cargotracking.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
+    BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: myBookingOfferId, userId: "standard-customer@cargotracking.com")
+
+    OperationRequest<BookingOfferSummaryFindByIdQueryRequest> operationRequest = new OperationRequest(
+        payload: bookingOfferSummaryFindByIdQueryRequest,
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
+    )
+
+    when:
+    OperationResponse<BookingOfferSummaryFindByIdQueryResponse> operationResponse = bookingOfferSummaryFindByIdQueryPortIn.bookingOfferSummaryFindByIdQuery(operationRequest)
+
+    then:
+    verifyAll(operationResponse.payload) {
+      propertiesFiltered.size() == 17
+
+      bookingOfferId == myBookingOfferId
+      lastEventSequenceNumber == 1
+
+      customerType == CustomerType.STANDARD
+
+      originLocationUnLoCode == "HRRJK"
+      originLocationName == "Rijeka"
+      originLocationCountryName == "Croatia"
+
+      destinationLocationUnLoCode == "NLRTM"
+      destinationLocationName == "Rotterdam"
+      destinationLocationCountryName == "Netherlands"
+
+      departureEarliestTime >= startedAt + Duration.ofHours(1)
+      departureLatestTime >= startedAt + Duration.ofHours(2)
+      arrivalLatestTime >= startedAt + Duration.ofHours(3)
+
+      commodityTypes.isEmpty()
+      totalCommodityWeight == null
+      totalContainerTeuCount == null
+
+      firstEventRecordedAt >= startedAt
+      lastEventRecordedAt >= startedAt
+    }
+
+    verifyAll(operationResponse.metaData) {
+      general.timestamp
+      general.severity == Severity.INFO.name().toLowerCase()
+      general.locale == null
+      violation == null
+    }
+  }
+
+  void "should work for correct request - complete booking offer exists"() {
+    given:
+    Instant startedAt = Instant.now() - Duration.ofMillis(1)
+    String myBookingOfferId = waitProjectionBookingOfferSummary_forCompleteBookingOfferCreation(eventBus, groovySql)
+
+    // Note: "standard-customer@cargotracking.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
+    BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
+        new BookingOfferSummaryFindByIdQueryRequest(bookingOfferId: myBookingOfferId, userId: "standard-customer@cargotracking.com")
+
+    OperationRequest<BookingOfferSummaryFindByIdQueryRequest> operationRequest = new OperationRequest(
+        payload: bookingOfferSummaryFindByIdQueryRequest,
+        metaData: [(MetaDataConstant.INBOUND_CHANNEL_REQUEST_LOCALE_KEY): Locale.forLanguageTag("en")]
+    )
+
+    when:
+    OperationResponse<BookingOfferSummaryFindByIdQueryResponse> operationResponse = bookingOfferSummaryFindByIdQueryPortIn.bookingOfferSummaryFindByIdQuery(operationRequest)
+
+    then:
+    verifyAll(operationResponse.payload) {
+      propertiesFiltered.size() == 17
+
+      bookingOfferId == myBookingOfferId
+      lastEventSequenceNumber == 2
 
       customerType == CustomerType.STANDARD
 
@@ -109,7 +222,6 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
 
       firstEventRecordedAt >= startedAt
       lastEventRecordedAt >= startedAt
-      lastEventSequenceNumber == 0
     }
 
     verifyAll(operationResponse.metaData) {
@@ -146,7 +258,7 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
     listAppender.start()
     logger.addAppender(listAppender)
 
-    String myBookingOfferId = publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql)
+    String myBookingOfferId = waitProjectionBookingOfferSummary_forCompleteBookingOfferCreation(eventBus, groovySql)
 
     // Note: "standard-customer@cargotracking.com" corresponds to the customerId.identifier created by publishAndWaitForProjectedBookingOfferCreatedEvent
     BookingOfferSummaryFindByIdQueryRequest bookingOfferSummaryFindByIdQueryRequest =
@@ -163,8 +275,9 @@ class BookingOfferSummaryFindByIdQueryApplicationServiceIntegrationSpecification
     then:
     operationResponse.payload.bookingOfferId
 
-    List<ILoggingEvent> filteredLoggingEventList =
-        listAppender.list.dropWhile({ ILoggingEvent iLoggingEvent -> iLoggingEvent.formattedMessage.contains("SELECT count(*) as recordsCount from booking_offer_summary") })
+    List<ILoggingEvent> filteredLoggingEventList = listAppender.list.dropWhile({ ILoggingEvent iLoggingEvent ->
+      iLoggingEvent.formattedMessage.contains("SELECT last_event_sequence_number as lastEventSequenceNumber from booking_offer_summary")
+    })
     filteredLoggingEventList.size() == 1
 
     String formattedMessage = filteredLoggingEventList.first().formattedMessage

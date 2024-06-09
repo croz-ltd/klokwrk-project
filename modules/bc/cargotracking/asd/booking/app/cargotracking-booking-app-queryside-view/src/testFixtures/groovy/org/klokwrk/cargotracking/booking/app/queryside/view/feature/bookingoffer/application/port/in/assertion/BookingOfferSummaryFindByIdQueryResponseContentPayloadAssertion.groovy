@@ -77,7 +77,62 @@ class BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion implements
     return this
   }
 
-  BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion isSuccessful() {
+  BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion isSuccessful(Integer payloadSize = 17) {
+    switch (payloadSize) {
+      case 17: return isSuccessful_completeBookingOffer()
+      case 15: return isSuccessful_partialBookingOffer_customerAndRouteSpecification()
+      case 6: return isSuccessful_partialBookingOffer_customer()
+      default: throw new IllegalArgumentException("The payloadSize of $payloadSize is not supported")
+    }
+  }
+
+  BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion isSuccessful_partialBookingOffer_customer() {
+    payloadMap.with {
+      assert size() == 6
+
+      assert bookingOfferId
+      assert customerType
+
+      assert (commodityTypes as List).isEmpty()
+
+      assert firstEventRecordedAt
+      assert lastEventRecordedAt
+      assert lastEventSequenceNumber != null
+    }
+
+    return this
+  }
+
+  BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion isSuccessful_partialBookingOffer_customerAndRouteSpecification() {
+    payloadMap.with {
+      assert size() == 15
+
+      assert bookingOfferId
+      assert customerType
+
+      assert originLocationUnLoCode
+      assert originLocationName
+      assert originLocationCountryName
+
+      assert destinationLocationUnLoCode
+      assert destinationLocationName
+      assert destinationLocationCountryName
+
+      assert departureEarliestTime
+      assert departureLatestTime
+      assert arrivalLatestTime
+
+      assert (commodityTypes as List).isEmpty()
+
+      assert firstEventRecordedAt
+      assert lastEventRecordedAt
+      assert lastEventSequenceNumber != null
+    }
+
+    return this
+  }
+
+  BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion isSuccessful_completeBookingOffer() {
     payloadMap.with {
       assert size() == 17
 
@@ -130,6 +185,11 @@ class BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion implements
       assert originLocationCountryName == "Croatia"
     }
 
+    return this
+  }
+
+  BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion hasOriginLocationName(String expectedOriginLocationName) {
+    assert payloadMap.originLocationName == expectedOriginLocationName
     return this
   }
 
@@ -226,10 +286,29 @@ class BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion implements
     return this
   }
 
+  @SuppressWarnings("unused")
   BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion hasEventMetadataOfTheFirstEvent() {
     payloadMap.with {
       assert firstEventRecordedAt == lastEventRecordedAt
       assert lastEventSequenceNumber == 0
+    }
+
+    return this
+  }
+
+  BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion hasEventMetadataOfTheMultipleEvents() {
+    payloadMap.with {
+      assert Instant.parse(firstEventRecordedAt as String) <= Instant.parse(lastEventRecordedAt as String)
+      assert lastEventSequenceNumber as Long > 0
+    }
+
+    return this
+  }
+
+  BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion hasEventMetadataOfTheFirstEventOrMultipleEvents() {
+    payloadMap.with {
+      assert Instant.parse(firstEventRecordedAt as String) <= Instant.parse(lastEventRecordedAt as String)
+      assert lastEventSequenceNumber as Long >= 0
     }
 
     return this
@@ -240,6 +319,16 @@ class BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion implements
       assert Instant.parse(firstEventRecordedAt as String) > comparableOperationStartTime
       assert firstEventRecordedAt == lastEventRecordedAt
       assert lastEventSequenceNumber == 0
+    }
+
+    return this
+  }
+
+  BookingOfferSummaryFindByIdQueryResponseContentPayloadAssertion hasEventMetadataOfTheMultipleEventsWithCorrectTiming(Instant comparableOperationStartTime) {
+    payloadMap.with {
+      assert Instant.parse(firstEventRecordedAt as String) > comparableOperationStartTime
+      assert Instant.parse(lastEventRecordedAt as String) >= Instant.parse(firstEventRecordedAt as String)
+      assert lastEventSequenceNumber as Long > 0L
     }
 
     return this

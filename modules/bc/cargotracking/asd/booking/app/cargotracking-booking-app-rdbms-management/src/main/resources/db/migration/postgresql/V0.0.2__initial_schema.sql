@@ -33,21 +33,21 @@ CREATE TABLE booking_offer_summary (
   customer_id text NOT NULL,
   customer_type text NOT NULL,
 
-  origin_location_un_lo_code text NOT NULL,
-  origin_location_name text NOT NULL,
-  origin_location_country_name text NOT NULL,
+  origin_location_un_lo_code text,
+  origin_location_name text,
+  origin_location_country_name text,
 
-  destination_location_un_lo_code text NOT NULL,
-  destination_location_name text NOT NULL,
-  destination_location_country_name text NOT NULL,
+  destination_location_un_lo_code text,
+  destination_location_name text,
+  destination_location_country_name text,
 
-  departure_earliest_time timestamptz NOT NULL,
-  departure_latest_time timestamptz NOT NULL,
-  arrival_latest_time timestamptz NOT NULL,
+  departure_earliest_time timestamptz,
+  departure_latest_time timestamptz,
+  arrival_latest_time timestamptz,
 
-  total_commodity_weight text NOT NULL,
-  total_commodity_weight_kg bigint NOT NULL,
-  total_container_teu_count numeric(9, 2) NOT NULL,
+  total_commodity_weight text,
+  total_commodity_weight_kg bigint,
+  total_container_teu_count numeric(9, 2),
 
   inbound_channel_name text NOT NULL,
   inbound_channel_type text NOT NULL,

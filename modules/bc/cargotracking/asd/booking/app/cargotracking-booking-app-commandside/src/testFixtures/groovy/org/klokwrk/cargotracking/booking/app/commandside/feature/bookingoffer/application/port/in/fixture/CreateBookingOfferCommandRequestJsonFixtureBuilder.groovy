@@ -108,7 +108,7 @@ class CreateBookingOfferCommandRequestJsonFixtureBuilder implements JsonFixtureB
   String userId
   String bookingOfferId
   RouteSpecificationRequestDataJsonFixtureBuilder routeSpecification
-  Collection<CargoRequestDataJsonFixtureBuilder> cargos = []
+  Collection<CargoRequestDataJsonFixtureBuilder> cargos
 
   /**
    * Adds a cargo into {@code cargos} collection.
@@ -116,7 +116,7 @@ class CreateBookingOfferCommandRequestJsonFixtureBuilder implements JsonFixtureB
    * In some cases, this can be slightly more convenient then setting up whole collection at once.
    */
   CreateBookingOfferCommandRequestJsonFixtureBuilder cargos_add(CargoRequestDataJsonFixtureBuilder cargoRequestDataJsonFixtureBuilder) {
-    assert cargos != null
+    cargos ?= []
     cargos.add(cargoRequestDataJsonFixtureBuilder)
     return this
   }

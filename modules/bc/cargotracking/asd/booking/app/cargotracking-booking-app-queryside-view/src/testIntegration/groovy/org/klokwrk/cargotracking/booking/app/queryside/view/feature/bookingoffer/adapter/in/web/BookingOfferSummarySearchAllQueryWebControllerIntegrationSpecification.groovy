@@ -20,7 +20,7 @@ package org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffe
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
-import org.klokwrk.cargotracking.booking.app.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
+import org.klokwrk.cargotracking.booking.app.queryside.view.test.base.AbstractQuerySide_forFindAllAndSearchAllTests_IntegrationSpecification
 import org.spockframework.spring.EnableSharedInjection
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -38,16 +38,15 @@ import static org.klokwrk.cargotracking.booking.app.queryside.view.feature.booki
 import static org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder.bookingOfferSummarySearchAllQueryRequest_originOfRijeka
 import static org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummarySearchAllQueryRequestJsonFixtureBuilder.bookingOfferSummarySearchAllQueryRequest_standardCustomer
 import static org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.fixture.data.SortRequirementJsonFixtureBuilder.sortRequirement_default
-import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummarySearchAll_failed
-import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummarySearchAll_succeeded
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestRequestHelpers.bookingOfferSummarySearchAll_failed
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestRequestHelpers.bookingOfferSummarySearchAll_succeeded
 import static org.klokwrk.cargotracking.test.support.assertion.MetaDataAssertion.assertResponseHasMetaDataThat
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
-@SuppressWarnings("GroovyAccessibility")
 @EnableSharedInjection
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
+class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification extends AbstractQuerySide_forFindAllAndSearchAllTests_IntegrationSpecification {
   @TestConfiguration
   static class TestSpringBootConfiguration {
     @Bean
@@ -73,13 +72,52 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
   MockMvc mockMvc
 
   void setupSpec() {
-    makeForSearch_pastBookingOfferCreatedEvents().each {
-      publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql, it)
-    }
+    setupProjection_forFindAllAndSearchAllTests(eventBus, groovySql)
   }
 
   void setup() {
     mockMvc ?= webAppContextSetup(webApplicationContext).defaultResponseCharacterEncoding(Charset.forName("UTF-8")).build()
+  }
+
+  void "should work for minimal search request with default paging and sorting of request"() {
+    when:
+    Map responseMap = bookingOfferSummarySearchAll_succeeded(
+        bookingOfferSummarySearchAllQueryRequest_standardCustomer().buildAsJsonString(),
+        acceptLanguageParam,
+        mockMvc
+    )
+
+    then:
+    // Here we are using closure-style top-level API.
+    assertResponseHasMetaDataThat(responseMap) {
+      isSuccessful()
+      has_general_locale(localeStringParam)
+    }
+
+    assertResponseHasPageablePayloadThat(responseMap) {
+      isSuccessful()
+      hasPageInfoOfFirstPageWithDefaults()
+      hasPageInfoThat {
+        hasPageElementsCountGreaterThenOrEqual(5)
+      }
+      hasPageContentWithFirstItemThat {
+        hasCustomerTypeOfStandard()
+        hasOriginLocationName("Hamburg")
+        hasDestinationLocationName("Rotterdam")
+        hasTotalCommodityWeight(45000.kg)
+        hasTotalContainerTeuCount(3.00G)
+        hasLastEventSequenceNumber(2)
+      }
+      hasPageContentWithLastItemThat {
+        hasCustomerTypeOfStandard()
+        hasLastEventSequenceNumber(0)
+      }
+    }
+
+    where:
+    acceptLanguageParam | localeStringParam
+    "hr-HR"             | "hr_HR"
+    "en"                | "en"
   }
 
   void "should work for search request with default paging and sorting"() {
@@ -112,7 +150,7 @@ class BookingOfferSummarySearchAllQueryWebControllerIntegrationSpecification ext
         hasDestinationLocationName("Los Angeles")
         hasTotalCommodityWeight(15000.kg)
         hasTotalContainerTeuCount(1.00G)
-        hasLastEventSequenceNumber(0)
+        hasLastEventSequenceNumber(2)
       }
     }
 

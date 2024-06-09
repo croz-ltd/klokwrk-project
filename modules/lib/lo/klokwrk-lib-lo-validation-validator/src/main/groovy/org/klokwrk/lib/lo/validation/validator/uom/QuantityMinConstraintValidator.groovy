@@ -107,7 +107,7 @@ class QuantityMinConstraintValidator implements ConstraintValidator<QuantityMinC
 
     hibernateContext.addExpressionVariable("expectedMinQuantity", minQuantityParameterString)
     hibernateContext.addExpressionVariable("expectedMinQuantityUnit", minQuantityParameter.unit.toString())
-    hibernateContext.addExpressionVariable("providedQuantity", KwrkQuantityFormat.instance.format(validatedQuantity))
+    hibernateContext.addExpressionVariable("providedQuantity", validatedQuantity.format())
     hibernateContext.addExpressionVariable("providedQuantityUnit", validatedQuantity.unit.toString())
 
     hibernateContext.buildConstraintViolationWithTemplate(messageTemplate).enableExpressionLanguage().addConstraintViolation()

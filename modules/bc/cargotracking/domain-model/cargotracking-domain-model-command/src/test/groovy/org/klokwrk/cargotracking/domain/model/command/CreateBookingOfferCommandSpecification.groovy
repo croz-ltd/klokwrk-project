@@ -27,9 +27,6 @@ import org.klokwrk.cargotracking.domain.model.value.CustomerType
 import org.klokwrk.cargotracking.domain.model.value.Location
 import org.klokwrk.cargotracking.domain.model.value.PortCapabilities
 import org.klokwrk.cargotracking.domain.model.value.RouteSpecification
-import org.klokwrk.cargotracking.lib.boundary.api.domain.exception.DomainException
-import org.klokwrk.cargotracking.lib.boundary.api.domain.severity.Severity
-import org.klokwrk.lib.xlang.groovy.base.misc.RandomUuidUtils
 import spock.lang.Specification
 
 import java.time.Clock
@@ -61,70 +58,38 @@ class CreateBookingOfferCommandSpecification extends Specification {
 
   void "map constructor should work for correct input params"() {
     when:
-    BookingOfferId bookingOfferId = BookingOfferId.makeWithGeneratedIdentifier()
     CreateBookingOfferCommand createBookingOfferCommand = new CreateBookingOfferCommand(
-        customer: Customer.make("26d5f7d8-9ded-4ce3-b320-03a75f674f4e", CustomerType.STANDARD),
-        bookingOfferId: bookingOfferId,
-        routeSpecification: validRouteSpecification,
-        cargos: validCargos
-    )
-
-    then:
-    createBookingOfferCommand.bookingOfferId
-    RandomUuidUtils.checkIfRandomUuidString(createBookingOfferCommand.bookingOfferId.identifier)
-
-    createBookingOfferCommand.routeSpecification.originLocation.unLoCode.code == "NLRTM"
-    createBookingOfferCommand.routeSpecification.destinationLocation.unLoCode.code == "DEHAM"
-    createBookingOfferCommand.routeSpecification.creationTime == currentInstantRounded
-    createBookingOfferCommand.routeSpecification.departureEarliestTime == currentInstantRoundedAndOneHour
-    createBookingOfferCommand.routeSpecification.departureLatestTime == currentInstantRoundedAndTwoHours
-    createBookingOfferCommand.routeSpecification.arrivalLatestTime == currentInstantRoundedAndThreeHours
-  }
-
-  void "map constructor should fail for null input params"() {
-    when:
-    //noinspection GroovyAssignabilityCheck
-    new CreateBookingOfferCommand(
-        customer: customerParam,
         bookingOfferId: bookingOfferIdParam,
+        customer: customerParam,
         routeSpecification: routeSpecificationParam,
         cargos: cargosParam
     )
+
+    then:
+    noExceptionThrown()
+    createBookingOfferCommand
+
+    where:
+    bookingOfferIdParam                          | customerParam         | routeSpecificationParam | cargosParam
+    BookingOfferId.makeWithGeneratedIdentifier() | validStandardCustomer | null                    | null
+    BookingOfferId.makeWithGeneratedIdentifier() | validStandardCustomer | validRouteSpecification | null
+    BookingOfferId.makeWithGeneratedIdentifier() | validStandardCustomer | validRouteSpecification | validCargos
+  }
+
+  void "map constructor should fail for invalid null input params"() {
+    when:
+    //noinspection GroovyAssignabilityCheck
+    new CreateBookingOfferCommand(customer: customerParam, bookingOfferId: bookingOfferIdParam, routeSpecification: routeSpecificationParam, cargos: cargosParam)
 
     then:
     AssertionError assertionError = thrown()
     assertionError.message.contains(messagePartParam)
 
     where:
-    customerParam         | bookingOfferIdParam                          | routeSpecificationParam | cargosParam | messagePartParam
-    null                  | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | validCargos | "notNullValue"
-    validStandardCustomer | null                                         | validRouteSpecification | validCargos | "notNullValue"
-    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | null                    | validCargos | "notNullValue"
-    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | null        | "notNullValue"
-    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | []          | "not(empty())"
-    validStandardCustomer | BookingOfferId.makeWithGeneratedIdentifier() | validRouteSpecification | ["123"]     | "everyItem(instanceOf(CargoCommandData))"
-  }
-
-  void "map constructor should fail when some of business rules of routeSpecification are not satisfied"() {
-    when:
-    new CreateBookingOfferCommand(
-        routeSpecification: RouteSpecification.make(
-            originLocationParam, destinationLocationParam,
-            currentInstantRoundedAndOneHour, currentInstantRoundedAndTwoHours,
-            currentInstantRoundedAndThreeHours, clock
-        )
-    )
-
-    then:
-    DomainException domainException = thrown()
-    domainException.violationInfo.severity == Severity.WARNING
-    domainException.violationInfo.violationCode.code == "400"
-    domainException.violationInfo.violationCode.codeMessage == "Bad Request"
-    domainException.violationInfo.violationCode.resolvableMessageKey == resolvableMessageKeyParam
-
-    where:
-    originLocationParam        | destinationLocationParam   | resolvableMessageKeyParam
-    locationSampleMap["NLRTM"] | locationSampleMap["NLRTM"] | "routeSpecification.originAndDestinationLocationAreEqual"
-    locationSampleMap["NLRTM"] | locationSampleMap["HRZAG"] | "routeSpecification.cannotRouteCargoFromOriginToDestination"
+    bookingOfferIdParam                          | customerParam         | routeSpecificationParam | cargosParam | messagePartParam
+    null                                         | validStandardCustomer | validRouteSpecification | validCargos | "notNullValue"
+    BookingOfferId.makeWithGeneratedIdentifier() | null                  | validRouteSpecification | validCargos | "notNullValue"
+    BookingOfferId.makeWithGeneratedIdentifier() | validStandardCustomer | validRouteSpecification | []          | "not(empty())"
+    BookingOfferId.makeWithGeneratedIdentifier() | validStandardCustomer | validRouteSpecification | ["123"]     | "everyItem(instanceOf(CargoCommandData))"
   }
 }

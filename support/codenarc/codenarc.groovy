@@ -397,6 +397,7 @@ ruleset {
   FactoryMethodName
   FieldName {
     ignoreFieldNames = "serialVersionUID,log,logger"
+    regex = /[a-z_]\w*/
   }
   InterfaceName
   InterfaceNameSameAsSuperInterface
@@ -417,8 +418,12 @@ ruleset {
   PackageName
   PackageNameMatchesFilePath
   ParameterName
-  PropertyName
-  VariableName
+  PropertyName {
+    regex = /[a-z_]\w*/
+  }
+  VariableName {
+    regex = /[a-z_]\w*/
+  }
 
   // rulesets/security.xml
   FileCreateTempFile

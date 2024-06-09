@@ -26,9 +26,7 @@ import org.axonframework.eventhandling.EventBus
 import org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryPortIn
 import org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryRequest
 import org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.BookingOfferSummaryFindAllQueryResponse
-import org.klokwrk.cargotracking.booking.app.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
-import org.klokwrk.cargotracking.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
-import org.klokwrk.cargotracking.domain.model.value.CustomerFixtureBuilder
+import org.klokwrk.cargotracking.booking.app.queryside.view.test.base.AbstractQuerySide_forFindAllAndSearchAllTests_IntegrationSpecification
 import org.klokwrk.cargotracking.domain.model.value.CustomerType
 import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationRequest
 import org.klokwrk.cargotracking.lib.boundary.api.application.operation.OperationResponse
@@ -51,11 +49,10 @@ import spock.lang.Shared
 import jakarta.validation.ConstraintViolationException
 import javax.sql.DataSource
 
-@SuppressWarnings("GroovyAccessibility")
 @EnableSharedInjection
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
+class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification extends AbstractQuerySide_forFindAllAndSearchAllTests_IntegrationSpecification {
   @TestConfiguration
   static class TestSpringBootConfiguration {
     @Bean
@@ -75,13 +72,8 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
   @Autowired
   BookingOfferSummaryFindAllQueryPortIn bookingOfferSummaryFindAllQueryPortIn
 
-  @Shared
-  Integer initialBookingOfferSummaryRecordsCount = null
-
   void setupSpec() {
-    String customerId = CustomerFixtureBuilder.customer_standard().build().customerId.identifier
-    initialBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount_forCustomerId(groovySql, customerId)
-    5.times { publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql) }
+    setupProjection_forFindAllAndSearchAllTests(eventBus, groovySql)
   }
 
   void "should work for correct request with default paging and sorting"() {
@@ -101,24 +93,35 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
       propertiesFiltered.size() == 8
 
       pageOrdinal == 0
-      pageElementsCount == Math.min(initialBookingOfferSummaryRecordsCount + 5, PageRequirement.PAGE_REQUIREMENT_SIZE_DEFAULT)
+      pageElementsCount == 25
       first
-      totalElementsCount == initialBookingOfferSummaryRecordsCount + 5
+      totalElementsCount == 25
 
       requestedPageRequirement == PageRequirement.PAGE_REQUIREMENT_INSTANCE_DEFAULT
       requestedSortRequirementList == [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.DESC)]
     }
 
-    operationResponse.payload.pageContent.size() == Math.min(initialBookingOfferSummaryRecordsCount + 5, PageRequirement.PAGE_REQUIREMENT_SIZE_DEFAULT)
+    operationResponse.payload.pageContent.size() == 25
 
-    verifyAll(operationResponse.payload.pageContent[0]) {
+    verifyAll(operationResponse.payload.pageContent.first()) {
       propertiesFiltered.size() == 17
 
       customerType == CustomerType.STANDARD
-      originLocationName == "Rijeka"
+      originLocationName == "Hamburg"
       destinationLocationName == "Rotterdam"
-      totalCommodityWeight == 1000.kg
-      totalContainerTeuCount == 1.00G
+      totalCommodityWeight == 45000.kg
+      totalContainerTeuCount == 3.00G
+      lastEventSequenceNumber == 2
+    }
+
+    verifyAll(operationResponse.payload.pageContent.last()) {
+      propertiesFiltered.size() == 17
+
+      customerType == CustomerType.STANDARD
+      originLocationName == null
+      destinationLocationName == null
+      totalCommodityWeight == null
+      totalContainerTeuCount == null
       lastEventSequenceNumber == 0
     }
   }
@@ -146,7 +149,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
       pageOrdinal == 0
       pageElementsCount == 3
       first
-      totalElementsCount == initialBookingOfferSummaryRecordsCount + 5
+      totalElementsCount == 25
 
       requestedPageRequirement == new PageRequirement(ordinal: 0, size: 3)
       requestedSortRequirementList == [new SortRequirement(propertyName: "lastEventRecordedAt", direction: SortDirection.ASC)]
@@ -234,7 +237,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
     OperationResponse<BookingOfferSummaryFindAllQueryResponse> operationResponse = bookingOfferSummaryFindAllQueryPortIn.bookingOfferSummaryFindAllQuery(operationRequest)
 
     then:
-    operationResponse.payload.pageInfo.totalElementsCount == initialBookingOfferSummaryRecordsCount + 5
+    operationResponse.payload.pageInfo.totalElementsCount == 25
     listAppender.list.size() == 2
 
     String firstFormattedMessage = listAppender.list[0].formattedMessage
@@ -270,7 +273,7 @@ class BookingOfferSummaryFindAllQueryApplicationServiceIntegrationSpecification 
     OperationResponse<BookingOfferSummaryFindAllQueryResponse> operationResponse = bookingOfferSummaryFindAllQueryPortIn.bookingOfferSummaryFindAllQuery(operationRequest)
 
     then:
-    operationResponse.payload.pageInfo.totalElementsCount == initialBookingOfferSummaryRecordsCount + 5
+    operationResponse.payload.pageInfo.totalElementsCount == 25
     listAppender.list.size() == 3
 
     String firstFormattedMessage = listAppender.list[0].formattedMessage

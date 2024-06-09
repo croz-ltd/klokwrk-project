@@ -22,9 +22,9 @@ import org.axonframework.config.Configuration as AxonConfiguration
 import org.axonframework.config.Configurer
 import org.axonframework.config.ConfigurerModule
 import org.axonframework.config.EventProcessingConfigurer
-import org.axonframework.eventhandling.PropagatingErrorHandler
 import org.axonframework.eventhandling.pooled.PooledStreamingEventProcessor
 import org.axonframework.messaging.annotation.HandlerEnhancerDefinition
+import org.klokwrk.cargotracking.lib.axon.errorhandling.PropagatingAndLoggingErrorHandler
 import org.klokwrk.cargotracking.lib.axon.logging.LoggingEventHandlerEnhancerDefinition
 import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyBeanPostProcessor
 import org.klokwrk.lib.hi.datasourceproxy.springboot.DataSourceProxyConfigurationProperties
@@ -57,12 +57,17 @@ class SpringBootConfig {
 
   @Bean
   ConfigurerModule axonEventProcessingConfigurerModule() {
+    PropagatingAndLoggingErrorHandler propagatingAndLoggingErrorHandler = new PropagatingAndLoggingErrorHandler()
+
     return { Configurer configurer ->
       configurer
           .eventProcessing({ EventProcessingConfigurer eventProcessingConfigurer ->
             eventProcessingConfigurer
                 .registerDefaultListenerInvocationErrorHandler({ AxonConfiguration configuration ->
-                  return PropagatingErrorHandler.instance()
+                  return propagatingAndLoggingErrorHandler
+                })
+                .registerDefaultErrorHandler({ AxonConfiguration configuration ->
+                  return propagatingAndLoggingErrorHandler
                 })
                 .usingPooledStreamingEventProcessors({ AxonConfiguration configuration, PooledStreamingEventProcessor.Builder builder ->
                   builder

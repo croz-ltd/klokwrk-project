@@ -20,10 +20,7 @@ package org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffe
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.sql.Sql
 import org.axonframework.eventhandling.EventBus
-import org.klokwrk.cargotracking.booking.app.queryside.view.test.base.AbstractQuerySideIntegrationSpecification
-import org.klokwrk.cargotracking.booking.test.support.queryside.feature.bookingoffer.sql.BookingOfferSummarySqlHelper
-import org.klokwrk.cargotracking.domain.model.value.CustomerFixtureBuilder
-import org.klokwrk.cargotracking.lib.boundary.query.api.paging.PageRequirement
+import org.klokwrk.cargotracking.booking.app.queryside.view.test.base.AbstractQuerySide_forFindAllAndSearchAllTests_IntegrationSpecification
 import org.spockframework.spring.EnableSharedInjection
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -41,16 +38,15 @@ import static org.klokwrk.cargotracking.booking.app.queryside.view.feature.booki
 import static org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.fixture.BookingOfferSummaryFindAllQueryRequestJsonFixtureBuilder.bookingOfferSummaryFindAllQueryRequest_standardCustomer
 import static org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.fixture.data.PageRequirementJsonFixtureBuilder.pageRequirement_default
 import static org.klokwrk.cargotracking.booking.app.queryside.view.feature.bookingoffer.application.port.in.fixture.data.SortRequirementJsonFixtureBuilder.sortRequirement_default
-import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindAll_failed
-import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestHelpers.bookingOfferSummaryFindAll_succeeded
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestRequestHelpers.bookingOfferSummaryFindAll_failed
+import static org.klokwrk.cargotracking.booking.app.queryside.view.test.util.BookingOfferQueryTestRequestHelpers.bookingOfferSummaryFindAll_succeeded
 import static org.klokwrk.cargotracking.test.support.assertion.MetaDataAssertion.assertResponseHasMetaDataThat
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
-@SuppressWarnings("GroovyAccessibility")
 @EnableSharedInjection
 @SpringBootTest
 @ActiveProfiles("testIntegration")
-class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification extends AbstractQuerySideIntegrationSpecification {
+class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification extends AbstractQuerySide_forFindAllAndSearchAllTests_IntegrationSpecification {
   @TestConfiguration
   static class TestSpringBootConfiguration {
     @Bean
@@ -73,15 +69,10 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
   @Autowired
   ObjectMapper objectMapper
 
-  @Shared
-  Long initialBookingOfferSummaryRecordsCount = null
-
   MockMvc mockMvc
 
   void setupSpec() {
-    String customerId = CustomerFixtureBuilder.customer_standard().build().customerId.identifier
-    initialBookingOfferSummaryRecordsCount = BookingOfferSummarySqlHelper.selectCurrentBookingOfferSummaryRecordsCount_forCustomerId(groovySql, customerId)
-    5.times { publishAndWaitForProjectedBookingOfferCreatedEvent(eventBus, groovySql) }
+    setupProjection_forFindAllAndSearchAllTests(eventBus, groovySql)
   }
 
   void setup() {
@@ -105,8 +96,8 @@ class BookingOfferSummaryFindAllQueryWebControllerIntegrationSpecification exten
       isSuccessful()
       hasPageInfoOfFirstPageWithDefaults()
       hasPageInfoThat({
-        hasPageElementsCount(Math.min(this.initialBookingOfferSummaryRecordsCount + 5, PageRequirement.PAGE_REQUIREMENT_SIZE_DEFAULT))
-        hasTotalElementsCount(this.initialBookingOfferSummaryRecordsCount + 5)
+        hasPageElementsCount(25)
+        hasTotalElementsCount(25)
       })
       hasPageContentWithAllItemsThat({
         hasCustomerTypeOfStandard()

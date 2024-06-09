@@ -108,7 +108,7 @@ class QuantityMaxConstraintValidator implements ConstraintValidator<QuantityMaxC
 
     hibernateContext.addExpressionVariable("expectedMaxQuantity", maxQuantityParameterString)
     hibernateContext.addExpressionVariable("expectedMaxQuantityUnit", maxQuantityParameter.unit.toString())
-    hibernateContext.addExpressionVariable("providedQuantity", KwrkQuantityFormat.instance.format(validatedQuantity))
+    hibernateContext.addExpressionVariable("providedQuantity", validatedQuantity.format())
     hibernateContext.addExpressionVariable("providedQuantityUnit", validatedQuantity.unit.toString())
 
     hibernateContext.buildConstraintViolationWithTemplate(messageTemplate).enableExpressionLanguage().addConstraintViolation()

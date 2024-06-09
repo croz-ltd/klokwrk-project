@@ -21,7 +21,16 @@ import groovy.transform.CompileStatic
 import io.hypersistence.utils.spring.repository.HibernateRepository
 import org.klokwrk.cargotracking.booking.lib.queryside.model.rdbms.jpa.BookingOfferSummaryJpaEntity
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 
 @CompileStatic
 interface BookingOfferSummaryProjectionJpaRepository extends JpaRepository<BookingOfferSummaryJpaEntity, UUID>, HibernateRepository<BookingOfferSummaryJpaEntity> {
+  @Query("""
+    select bos
+    from BookingOfferSummaryJpaEntity bos
+    left join fetch bos.commodityTypes
+    where bos.bookingOfferId = :bookingOfferId
+  """)
+  Optional<BookingOfferSummaryJpaEntity> findByIdWithCommodityTypes(@Param("bookingOfferId") UUID bookingOfferId)
 }

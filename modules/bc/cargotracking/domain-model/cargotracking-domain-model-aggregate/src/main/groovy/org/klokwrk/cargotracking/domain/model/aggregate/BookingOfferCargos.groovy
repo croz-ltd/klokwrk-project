@@ -25,8 +25,6 @@ import org.klokwrk.cargotracking.domain.model.value.Commodity
 import javax.measure.Quantity
 import javax.measure.quantity.Mass
 
-import static org.hamcrest.Matchers.notNullValue
-
 /**
  * Handles cargos at the {@link BookingOfferAggregate} level, by encapsulating some invariant checks and keeping the internal {@code bookingOfferCargoCollection} consolidated.
  * <p/>
@@ -49,51 +47,56 @@ import static org.hamcrest.Matchers.notNullValue
 @CompileStatic
 class BookingOfferCargos {
 
-  @SuppressWarnings("DuplicatedCode")
-  static Collection<Cargo> consolidateCargoCollectionsForCargoAddition(Collection<Cargo> consolidatedCargoCollectionStartingPoint, Collection<Cargo> cargoCollectionToAdd) {
-    if (!cargoCollectionToAdd) {
-      return consolidatedCargoCollectionStartingPoint
+  static Collection<Cargo> consolidateCargoCollectionsForCargoAddition(Collection<Cargo> existingConsolidatedCargos, Collection<Cargo> cargosToAdd) {
+    Collection<Cargo> myExistingConsolidatedCargos = existingConsolidatedCargos ?: [] as Collection<Cargo>
+
+    if (!cargosToAdd) {
+      return myExistingConsolidatedCargos
     }
 
-    Collection<Cargo> myConsolidatedCargoCollectionStartingPoint = consolidatedCargoCollectionStartingPoint ?: [] as Collection<Cargo>
-    Map<BookingOfferCargoEquality, Cargo> allCargoConsolidatedMap = [:]
+    checkIfCargoCollectionIsConsolidated(myExistingConsolidatedCargos)
+    Map<BookingOfferCargoEquality, List<Cargo>> existingConsolidatedCargosMap = myExistingConsolidatedCargos.groupBy({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) })
 
-    // Note: Besides determining resultant consolidated map, we are also using cargoListToAddMap as a base for determining maxAllowedWeightPerContainer to use
-    Map<BookingOfferCargoEquality, List<Cargo>> cargoListToAddMap = cargoCollectionToAdd.groupBy({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) })
-    Map<BookingOfferCargoEquality, List<Cargo>> consolidatedCargoListStartingPointMap = myConsolidatedCargoCollectionStartingPoint.groupBy({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) })
+    Map<BookingOfferCargoEquality, Cargo> allConsolidatedCargosMap = [:]
 
-    // First, add new entries that have existing equivalents in starting point
-    cargoListToAddMap.keySet().each({ BookingOfferCargoEquality bookingOfferCargoEqualityToAdd ->
-      Collection<Quantity<Mass>> cargoCommodityWeightQuantities = cargoListToAddMap.get(bookingOfferCargoEqualityToAdd)*.commodity.weight
-      if (consolidatedCargoListStartingPointMap.get(bookingOfferCargoEqualityToAdd) != null) {
-        cargoCommodityWeightQuantities.addAll(consolidatedCargoListStartingPointMap.get(bookingOfferCargoEqualityToAdd)*.commodity.weight as Collection<Quantity<Mass>>)
+    // Note: Besides determining resultant consolidated map, we are also using cargosToAddMap as a base for determining maxAllowedWeightPerContainer to use
+    Map<BookingOfferCargoEquality, List<Cargo>> cargosToAddMap = cargosToAdd.groupBy({ Cargo cargo -> BookingOfferCargoEquality.fromCargo(cargo) })
+
+    // First, add new entries that have equivalents (by BookingOfferCargoEquality) in the existing cargos
+    cargosToAddMap.keySet().each({ BookingOfferCargoEquality bookingOfferCargoEqualityToAdd ->
+      Collection<Quantity<Mass>> cargoCommodityWeightQuantities = cargosToAddMap.get(bookingOfferCargoEqualityToAdd)*.commodity.weight
+      if (existingConsolidatedCargosMap.get(bookingOfferCargoEqualityToAdd) != null) {
+        cargoCommodityWeightQuantities.addAll(existingConsolidatedCargosMap.get(bookingOfferCargoEqualityToAdd)*.commodity.weight as Collection<Quantity<Mass>>)
       }
 
       Quantity<Mass> totalCargoCommodityWeightQuantity = 0.kg
       cargoCommodityWeightQuantities.each { Quantity<Mass> cargoCommodityWeightQuantity -> totalCargoCommodityWeightQuantity = totalCargoCommodityWeightQuantity + cargoCommodityWeightQuantity }
 
-      // Note: selecting the cargoConsolidationBase element is significant because it determines maxAllowedWeightPerContainer to use with consolidated cargo.
-      //       The maxAllowedWeightPerContainer of cargoConsolidationBase is determined by currently active MaxAllowedWeightPerContainerPolicy (during initial creation of a cargo value object in the
-      //       aggregate).
-      Cargo cargoConsolidationBase = cargoListToAddMap.get(bookingOfferCargoEqualityToAdd).first()
+      // Note: Selecting the cargoConsolidationBase element is significant because it determines maxAllowedWeightPerContainer to use with consolidated cargo. The maxAllowedWeightPerContainer must
+      //       be aligned and produced by currently active MaxAllowedWeightPerContainerPolicy. Here we assume that all Cargo instances in input collection cargosToAdd are created with currently
+      //       active MaxAllowedWeightPerContainerPolicy. The current MaxAllowedWeightPerContainerPolicy is used by CargoCreatorService when the command handlers of the aggregate convert input DTOs
+      //       into real Cargo value objects.
+      //       Also see the inline comment a few lines bellow related to the assumptions about policy changes.
+      Cargo cargoConsolidationBase = cargosToAddMap.get(bookingOfferCargoEqualityToAdd).first()
 
       Commodity consolidatedCommodity = Commodity.make(cargoConsolidationBase.commodity.commodityType, totalCargoCommodityWeightQuantity, cargoConsolidationBase.commodity.requestedStorageTemperature)
       Cargo consolidatedCargo = Cargo.make(cargoConsolidationBase.containerType, consolidatedCommodity, cargoConsolidationBase.maxAllowedWeightPerContainer)
-      allCargoConsolidatedMap.put(bookingOfferCargoEqualityToAdd, consolidatedCargo)
+      allConsolidatedCargosMap.put(bookingOfferCargoEqualityToAdd, consolidatedCargo)
     })
 
     // Second, add starting point entries that are not changed because there are no equivalents to add
-    consolidatedCargoListStartingPointMap.keySet().each({ BookingOfferCargoEquality bookingOfferCargoEqualityStartingPoint ->
-      if (!allCargoConsolidatedMap.containsKey(bookingOfferCargoEqualityStartingPoint)) {
-        // Note: for not-changed cargos, we are not updating maxAllowedWeightPerContainer based on current MaxAllowedWeightPerContainerPolicy. If this is ok or not is a business decision.
-        //       From the logical standpoint, it looks like maxAllowedWeightPerContainer of not-changed cargos should be updated also, but this would require adding MaxAllowedWeightPerContainerPolicy
-        //       as additional method parameter. Therefore, we are not doing this at the moment, since it is not clear whether we should do this or not. If MaxAllowedWeightPerContainerPolicy does not
-        //       change often and does not change dramatically, the influence of this decision should be minimal.
-        allCargoConsolidatedMap.put(bookingOfferCargoEqualityStartingPoint, consolidatedCargoListStartingPointMap.get(bookingOfferCargoEqualityStartingPoint).first())
+    existingConsolidatedCargosMap.keySet().each({ BookingOfferCargoEquality bookingOfferCargoEqualityStartingPoint ->
+      if (!allConsolidatedCargosMap.containsKey(bookingOfferCargoEqualityStartingPoint)) {
+        // Note: For not-changed cargos, we are not updating maxAllowedWeightPerContainer based on current MaxAllowedWeightPerContainerPolicy. This is ok as long as the active
+        //       MaxAllowedWeightPerContainerPolicy does not change. If it does changes, any further modifications (through commands) of the BookingOfferAggregate should be prevented, and aggregate
+        //       should go into effectively dormant state. However, there should be option for the user to create a new BookingOfferAggregate based on the dormant one, where all data should be copied
+        //       but now with updated max allowed weights for each cargo type. Therefore, for the active BookingOfferAggregates, we are assuming that policies do not change and stay the same as they
+        //       were during aggregate creation.
+        allConsolidatedCargosMap.put(bookingOfferCargoEqualityStartingPoint, existingConsolidatedCargosMap.get(bookingOfferCargoEqualityStartingPoint).first())
       }
     })
 
-    Collection<Cargo> consolidatedCargoCollection = allCargoConsolidatedMap.values()
+    Collection<Cargo> consolidatedCargoCollection = allConsolidatedCargosMap.values()
     return consolidatedCargoCollection
   }
 
@@ -143,24 +146,73 @@ class BookingOfferCargos {
 //    return consolidatedCargoCollection
 //  }
 
-  private final Collection<Cargo> bookingOfferCargoCollection = [] as Collection<Cargo>
+  /**
+   * Checks if we can accept addition of a {@link Cargo} collection at the existing cargo collection in compliance with the current {@link MaxAllowedTeuCountPolicy}.
+   * <p/>
+   * Consider an example. The largest ship in the world can carry 24000 TEU of containers. Based on that fact, we can limit the total container TEU count per a single booking to the max of 5000 TEUs.
+   * Of course, the number of 5000 TEUs is entirely arbitrary and is used only as an example.
+   * <p/>
+   * We could enrich behavior with two different policies here. For example, one limiting container TEU count per commodity type and another limiting container TEU count for the whole booking. In a
+   * simpler case, both policies can be the same. We can allocate full booking capacity with a single commodity type in that case.
+   * <p/>
+   * Intended to be used to verify potential cargo addition at the level of the {@link BookingOfferAggregate} instance.
+   * <p/>
+   * We should use this method from the aggregate's command handlers to check if it is valid to add the cargo collection to the aggregate state. Actual state change happens later in the
+   * event sourcing handler. Note that we cannot make this check in the event sourcing handler because it must make changes unconditionally to support rehydration from past events.
+   */
+  static boolean canAcceptCargoCollectionAddition(Collection<Cargo> existingConsolidatedCargoCollection, Collection<Cargo> cargoCollectionToAdd, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
+    assert maxAllowedTeuCountPolicy != null
 
-  private Quantity<Mass> totalCommodityWeight = 0.kg
-  private BigDecimal totalContainerTeuCount = 0 // should be constrained to the max of, say 5000
+    if (!cargoCollectionToAdd) {
+      return true
+    }
 
-  Collection<Cargo> getBookingOfferCargoCollection() {
-    return Collections.unmodifiableCollection(bookingOfferCargoCollection)
+    Collection<Cargo> cargoCollectionWithAdditions = consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargoCollection, cargoCollectionToAdd)
+
+    BigDecimal newTotalContainerTeuCount = 0
+    cargoCollectionWithAdditions.each({ Cargo cargo -> newTotalContainerTeuCount = newTotalContainerTeuCount + cargo.containerTeuCount })
+
+    return maxAllowedTeuCountPolicy.isTeuCountAllowed(newTotalContainerTeuCount)
   }
 
   /**
-   * Primarily intended to be used from tests.
+   * Calculates commodity weight and container TEU count totals of the existing consolidated cargo collection if additional cargo collection is added to it.
+   * <p/>
+   * The method returns a tuple of 2 where value v1 is the new {@code totalCommodityWeight} and value v2 is the new {@code totalContainerTeuCount}.
+   * <p/>
+   * Before executing this method from the command handler, one should check if cargo can be accepted at all according to the current MaxAllowedTeuCountPolicy. One can use
+   * {@link #canAcceptCargoCollectionAddition(Collection, Collection, MaxAllowedTeuCountPolicy)} for that purpose.
    */
-  void checkCargoCollectionInvariants() {
-    bookingOfferCargoCollection
+  static Tuple2<Quantity<Mass>, BigDecimal> calculateTotalsForCargoCollectionAddition(Collection<Cargo> existingConsolidatedCargoCollection, Collection<Cargo> cargoCollectionToAdd) {
+    Collection<Cargo> myCargoCollectionToAdd = cargoCollectionToAdd
+    if (myCargoCollectionToAdd == null) {
+      myCargoCollectionToAdd = []
+    }
+
+    Collection<Cargo> cargoCollectionWithAdditions = consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargoCollection, myCargoCollectionToAdd)
+
+    Quantity<Mass> newTotalCommodityWeight = 0.kg
+    BigDecimal newTotalContainerTeuCount = 0
+
+    cargoCollectionWithAdditions.each({ Cargo consolidatedCargo ->
+      newTotalCommodityWeight = newTotalCommodityWeight + consolidatedCargo.commodity.weight
+      newTotalContainerTeuCount = newTotalContainerTeuCount + consolidatedCargo.containerTeuCount
+    })
+
+    return new Tuple2<Quantity<Mass>, BigDecimal>(newTotalCommodityWeight, newTotalContainerTeuCount)
+  }
+
+  static void checkIfCargoCollectionIsConsolidated(Collection<Cargo> existingConsolidatedCargoCollection) {
+    assert existingConsolidatedCargoCollection != null
+    existingConsolidatedCargoCollection
         .groupBy({ Cargo existingCargo -> BookingOfferCargoEquality.fromCargo(existingCargo) })
         .entrySet()
-        .each({ Map.Entry<BookingOfferCargoEquality, List<Cargo>> mapEntry -> requireTrue(mapEntry.value.size() == 1) })
+        .each({ Map.Entry<BookingOfferCargoEquality, List<Cargo>> mapEntry -> assert mapEntry.value.size() == 1 })
   }
+
+  Collection<Cargo> bookingOfferCargoCollection = [] as Collection<Cargo>
+  private Quantity<Mass> totalCommodityWeight = 0.kg
+  private BigDecimal totalContainerTeuCount = 0 // should be constrained to the max of, say 5000
 
   Cargo findCargoByExample(Cargo cargoExample) {
     return findCargoByEquality(BookingOfferCargoEquality.fromCargo(cargoExample))
@@ -178,48 +230,6 @@ class BookingOfferCargos {
     return totalContainerTeuCount
   }
 
-  /**
-   * Checks if we can accept addition of a {@link Cargo} collection at the {@link BookingOfferAggregate} level.
-   * <p/>
-   * We should use this method from the aggregate's command handler to check if it is valid to add the {@code Cargo} collection to the aggregate state. Actual state change happens later in the
-   * event sourcing handler. Note that we cannot make this check in the event sourcing handler because it must make changes unconditionally to support rehydration from past events.
-   */
-  boolean canAcceptCargoCollectionAddition(Collection<Cargo> cargoCollectionToAdd, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
-    requireMatch(maxAllowedTeuCountPolicy, notNullValue())
-
-    if (!cargoCollectionToAdd) {
-      return true
-    }
-
-    Collection<Cargo> existingConsolidatedCargoCollection = bookingOfferCargoCollection
-    Collection<Cargo> cargoCollectionWithAdditions = consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargoCollection, cargoCollectionToAdd)
-
-    BigDecimal newTotalContainerTeuCount = 0
-    cargoCollectionWithAdditions.each({ Cargo cargo -> newTotalContainerTeuCount = newTotalContainerTeuCount + cargo.containerTeuCount })
-
-    return maxAllowedTeuCountPolicy.isTeuCountAllowed(newTotalContainerTeuCount)
-  }
-
-  /**
-   * Without changing state of {@code BookingOfferCargos} instance, calculates totals in the same way as they will be calculated once the cargo is stored via
-   * {@link #storeCargoCollectionAddition(java.util.Collection)}.
-   * <p/>
-   * This pre-calculation is used from the aggregate's command handler to calculate the totals required to create an event. The alternative would be to publish two events where the second one is
-   * created based on state changes caused by the first event. However, we need pre-calculation as we want to publish a single event.
-   * <p/>
-   * This method is very similar to the {@link #calculateTotalsForCargoCollectionAddition(java.util.Collection)}, but this one also checks if we can accept the cargo addition.
-   * <p/>
-   * The method returns a tuple of 2 where value v1 is the new {@code totalCommodityWeight} and value v2 is the new {@code totalContainerTeuCount}.
-   */
-  Tuple2<Quantity<Mass>, BigDecimal> preCalculateTotalsForCargoCollectionAddition(Collection<Cargo> cargoCollectionToAdd, MaxAllowedTeuCountPolicy maxAllowedTeuCountPolicy) {
-    if (!canAcceptCargoCollectionAddition(cargoCollectionToAdd, maxAllowedTeuCountPolicy)) {
-      throw new AssertionError("Cannot proceed with calculating totals since cargo is not acceptable." as Object)
-    }
-
-    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateTotalsForCargoCollectionAddition(cargoCollectionToAdd)
-    return totalsTuple
-  }
-
   // use this one in eventSourcingHandler to store past events unconditionally, regardless of potential change in previous business logic
   /**
    * Stores the cargo collection addition in the internal map by replacing any previously stored equivalent cargos.
@@ -228,44 +238,13 @@ class BookingOfferCargos {
    * rehydration of the aggregate from previous events. We should do all invariant checking in the aggregate's command handler.
    */
   void storeCargoCollectionAddition(Collection<Cargo> cargoCollectionToAdd) {
-    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateTotalsForCargoCollectionAddition(cargoCollectionToAdd)
+    Tuple2<Quantity<Mass>, BigDecimal> totalsTuple = calculateTotalsForCargoCollectionAddition(bookingOfferCargoCollection, cargoCollectionToAdd)
     totalCommodityWeight = totalsTuple.v1
     totalContainerTeuCount = totalsTuple.v2
 
     Collection<Cargo> existingConsolidatedCargoCollection = bookingOfferCargoCollection
     Collection<Cargo> consolidatedCargoCollection = consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargoCollection, cargoCollectionToAdd)
-
-    consolidatedCargoCollection.each({ Cargo consolidatedCargo ->
-      BookingOfferCargoEquality consolidatedCargoEquality = BookingOfferCargoEquality.fromCargo(consolidatedCargo)
-      this.@bookingOfferCargoCollection.removeIf({ Cargo storedCargo -> BookingOfferCargoEquality.fromCargo(storedCargo) == consolidatedCargoEquality })
-      this.@bookingOfferCargoCollection.add(consolidatedCargo)
-    })
-  }
-
-  /**
-   * Without changing the aggregate state, calculates new totals for cargo collection addition based on provided {@link Cargo} collection and the current aggregate state.
-   * <p/>
-   * This method is very similar to the {@link #preCalculateTotalsForCargoCollectionAddition(Collection, MaxAllowedTeuCountPolicy)}, but this one does not check if the cargo can be accepted or not.
-   * <p/>
-   * The method returns a tuple of 2 where value v1 is the new {@code totalCommodityWeight} and value v2 is the new {@code totalContainerTeuCount}.
-   */
-  Tuple2<Quantity<Mass>, BigDecimal> calculateTotalsForCargoCollectionAddition(Collection<Cargo> cargoCollectionToAdd) {
-    Collection<Cargo> myCargoCollectionToAdd = cargoCollectionToAdd
-    if (myCargoCollectionToAdd == null) {
-      myCargoCollectionToAdd = []
-    }
-
-    Collection<Cargo> existingConsolidatedCargoCollection = bookingOfferCargoCollection
-    Collection<Cargo> cargoCollectionWithAdditions = consolidateCargoCollectionsForCargoAddition(existingConsolidatedCargoCollection, myCargoCollectionToAdd)
-
-    Quantity<Mass> newTotalCommodityWeight = 0.kg
-    BigDecimal newTotalContainerTeuCount = 0
-
-    cargoCollectionWithAdditions.each({ Cargo consolidatedCargo ->
-      newTotalCommodityWeight = newTotalCommodityWeight + consolidatedCargo.commodity.weight
-      newTotalContainerTeuCount = newTotalContainerTeuCount + consolidatedCargo.containerTeuCount
-    })
-
-    return new Tuple2<Quantity<Mass>, BigDecimal>(newTotalCommodityWeight, newTotalContainerTeuCount)
+    bookingOfferCargoCollection.clear()
+    bookingOfferCargoCollection.addAll(consolidatedCargoCollection)
   }
 }

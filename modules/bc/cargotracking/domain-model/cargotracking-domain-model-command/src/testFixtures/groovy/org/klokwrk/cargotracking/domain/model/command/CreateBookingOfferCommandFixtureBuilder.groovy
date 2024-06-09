@@ -38,8 +38,8 @@ class CreateBookingOfferCommandFixtureBuilder {
   @SuppressWarnings("CodeNarc.FactoryMethodName")
   static CreateBookingOfferCommandFixtureBuilder createBookingOfferCommand_default(Clock currentTimeClock = Clock.systemUTC()) {
     CreateBookingOfferCommandFixtureBuilder builder = new CreateBookingOfferCommandFixtureBuilder()
-        .customer(customer_standard().build())
         .bookingOfferId(BookingOfferId.make(CombUuidShortPrefixUtils.makeCombShortPrefix(currentTimeClock).toString()))
+        .customer(customer_standard().build())
         .routeSpecification(routeSpecification_rijekaToRotterdam(currentTimeClock).build())
         .cargos([CargoCommandDataFixtureBuilder.createCargoCommandData_default().build()])
 

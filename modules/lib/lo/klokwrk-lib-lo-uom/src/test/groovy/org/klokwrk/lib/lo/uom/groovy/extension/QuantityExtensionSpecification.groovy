@@ -30,6 +30,19 @@ import javax.measure.quantity.Mass
 import javax.measure.quantity.Temperature
 
 class QuantityExtensionSpecification extends Specification {
+  void "format() should work as expected"() {
+    when:
+    String formattedString = quantityParam.format()
+
+    then:
+    formattedString == formattedStringParam
+
+    where:
+    quantityParam | formattedStringParam
+    1.kg          | "1 kg"
+    1.degC        | "1 °C"
+  }
+
   void "negative() should work as expected"() {
     given:
     Quantity<Mass> givenMassQuantity = Quantities.getQuantity(10, Units.KILOGRAM)
